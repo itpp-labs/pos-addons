@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>   
+        <!-- Vue formulaire -->
+        <record model="ir.ui.view" id="view_pos_cashier_form">
+            <field name="model">pos.order</field>
+            <field name="name">view.inherit.pos.order.form</field>
+            <field name="view_type">form</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="cashier_name"/>
+                </field>
+                <group name="order_total" position="replace">
+                    <group col="3">
+                        <group class="oe_subtotal_footer">     
+                            <field name="special_discount" readonly="1"/>  
+                            <field name="discount" string="Total discount"  class="oe_subtotal_footer_separator" readonly="1"/> 
+                        </group>
+                        <group class="oe_subtotal_footer">              
+                        </group>
+                        <group  class="oe_subtotal_footer">
+                            <field name="amount_total" string="Total" class="oe_subtotal_footer_separator"/>
+                            <button name="button_dummy"
+                                    states="draft" string="(update)" class="oe_edit_only oe_link"/>
+                            
+                            <separator string="&#160;"/>
+                            <field name="amount_tax"/> 
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <!-- Vue Tree -->
+        <record model="ir.ui.view" id="view_pos_cashier_tree">
+            <field name="model">pos.order</field>
+            <field name="name">view.inherit.pos.order.tree</field>
+            <field name="view_type">tree</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="replace">
+                    <field name="cashier_name"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

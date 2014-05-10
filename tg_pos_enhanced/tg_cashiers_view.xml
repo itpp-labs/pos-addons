@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="pos_cashier_form" model="ir.ui.view">
+        <field name="name">pos.cashier.form</field>
+        <field name="model">pos.cashier</field>
+        <field name="arch" type="xml">
+          <form string="Cashiers" version="7.0">  
+          <group col="4">     
+            <field name="cashier_name" />
+            <field name="pos_config_id" widget="selection" eval="ref('pos.config.name')" />  
+            <field name="active"/>
+            </group>
+          </form>
+        </field>
+    </record>
+  
+    <record id="pos_cashier_tree" model="ir.ui.view">
+      <field name="name">pos.cashier.tree</field>
+      <field name="model">pos.cashier</field>
+      <field name="arch" type="xml">
+        <tree string="Cashiers">
+          <field name="cashier_name"/> 
+          <field name="pos_config_id" ref="pos.config.name"/>       
+          <field name="active"/> 
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_pos_cashier_search">
+      <field name="name">pos.cashier.search.view</field>
+      <field name="model">pos.cashier</field>
+      <field name="arch" type="xml">
+        <search string="Point of Sale Cashier">
+          <field name="cashier_name" />
+          <filter name="filter_see_all" string="All" domain="['|', ('active', '=',True), ('active', '=',False)]" />
+          <filter name="filter_see_active" string="Active" domain="[('active', '=',True)]" />
+          <filter name="filter_see_inactive" string="Inactive" domain="[('active', '=',False)]" />
+        </search>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_pos_cashier">
+      <field name="name">Cashiers</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">pos.cashier</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="pos_cashier_tree"/>
+      <field name="context">{"search_default_filter_see_all":1}</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click here to create a cashier for the Point Of Sale.
+        </p>
+      </field>
+    </record>
+    
+    <!-- Menu gauche  Vendeurs -->   
+    <menuitem 
+              name="Cashiers" 
+              id="menu_point_of_sale_cashiers" 
+              parent="point_of_sale.menu_point_root" 
+              sequence="16" 
+              groups="point_of_sale.group_pos_manager"
+              />
+    <menuitem
+            id="menu_action_pos_cashier"
+            parent="menu_point_of_sale_cashiers"
+            action="action_pos_cashier"    
+            />
+    <!-- # -->
+
+  </data>
+</openerp>

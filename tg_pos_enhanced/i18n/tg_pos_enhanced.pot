@@ -1,0 +1,984 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* tg_pos_enhanced
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131206-002433\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-05 16:44+0000\n"
+"PO-Revision-Date: 2014-01-05 16:44+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tg_pos_enhanced
+#: field:pos.order,discount:0
+msgid "Remise"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:460
+#, python-format
+msgid "Comment :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:435
+#, python-format
+msgid "Zip Code:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:53
+#, python-format
+msgid ": Select a cashier"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:pos.cashier,pos_config_id:0
+msgid "Point Of Sale"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:796
+#, python-format
+msgid "Discount object :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:121
+#, python-format
+msgid "Make :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:663
+#, python-format
+msgid "Thank you for your visit and see you soon"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:449
+#, python-format
+msgid "Please type Mobile number with at least 8 chars"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:350
+#, python-format
+msgid "Zip Code"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:255
+#, python-format
+msgid "This customer has no sales yet"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:730
+#, python-format
+msgid "&nbsp;"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:431
+#, python-format
+msgid "Firstname :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.actions.act_window,name:tg_pos_enhanced.action_pos_cashier
+#: model:ir.ui.menu,name:tg_pos_enhanced.menu_action_pos_cashier
+#: model:ir.ui.menu,name:tg_pos_enhanced.menu_point_of_sale_cashiers
+#: view:pos.cashier:0
+msgid "Cashiers"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:240
+#, python-format
+msgid "Quantity"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: code:addons/tg_pos_enhanced/tg_pos_enhanced.py:206
+#, python-format
+msgid "No cash statement found for this session. Unable to record returned cash."
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:660
+#, python-format
+msgid "You have accumulated"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: code:addons/tg_pos_enhanced/tg_pos_enhanced.py:211
+#, python-format
+msgid "return"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.actions.act_window,help:tg_pos_enhanced.action_pos_cashier
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"          Click here to create a cashier for the Point Of Sale.\n"
+"        </p>\n"
+"      "
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:352
+#, python-format
+msgid "Mobile"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:331
+#, python-format
+msgid "Refresh"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:482
+#, python-format
+msgid "Error!"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:242
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:549
+#, python-format
+msgid "Amount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:546
+#, python-format
+msgid "Products"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:579
+#, python-format
+msgid "Total Products:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:res.users,pos_manager_pwd:0
+msgid "POS Manager Password"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:283
+#, python-format
+msgid "name"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:689
+#, python-format
+msgid "Select items"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:548
+#, python-format
+msgid "Tax"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:456
+#, python-format
+msgid "Please type a valid email"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:382
+#, python-format
+msgid "VIP"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.order:0
+msgid "(update)"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.model,name:tg_pos_enhanced.model_res_partner
+msgid "Partner"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:604
+#, python-format
+msgid "Total discount:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:485
+#, python-format
+msgid "Firstname is Empty"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.order:0
+msgid "Total discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:679
+#, python-format
+msgid "Select an item and its variant (if any) for each line in the Pack, then click \"Add Pack\" button. Pack will be added to the order with it's own price. Items in the pack will be added too but their prices will be set to 0.00"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:291
+#, python-format
+msgid "State"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:642
+#, python-format
+msgid "Change:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:pos.order,special_discount:0
+msgid "Special discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/js/tg_pos.js:901
+#, python-format
+msgid "Print"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:476
+#, python-format
+msgid "Save"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:353
+#, python-format
+msgid "Email"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:171
+#, python-format
+msgid "See customer's sales"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: help:pos.cashier,active:0
+msgid "If a cashier is not active, it will not be displayed in POS"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:661
+#, python-format
+msgid "shopping in our stores."
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:46
+#, python-format
+msgid "You must create at least one cashier!"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:289
+#, python-format
+msgid "Voucher"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:346
+#, python-format
+msgid "POScomment"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:555
+#, python-format
+msgid "With a"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: sql_constraint:pos.cashier:0
+msgid "A cashier already exists with this name in this Point Of sale. Cashier's name must be unique!"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:265
+#, python-format
+msgid "- Sales history"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:443
+#, python-format
+msgid "Please type Phone number with at least 8 chars"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:690
+#, python-format
+msgid "Select one variant"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: code:addons/tg_pos_enhanced/tg_pos_enhanced.py:205
+#, python-format
+msgid "error!"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:272
+#, python-format
+msgid "Orders are displayed below. Click a row to display order details. Click again the detail to hide."
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.model,name:tg_pos_enhanced.model_pos_order
+msgid "Point of Sale"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:322
+#, python-format
+msgid "Select a customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:91
+#, python-format
+msgid "Delete special discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:413
+#, python-format
+msgid "There is no customer having name starting with this letter (or word)"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:441
+#, python-format
+msgid "Phone :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:res.partner,montantCumule:0
+msgid "Cumulative"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:284
+#, python-format
+msgid "done"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:674
+#, python-format
+msgid "Customize Pack :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:31
+#, python-format
+msgid "Find customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:91
+#, python-format
+msgid "Call shop manager for special discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:484
+#, python-format
+msgid "Name is empty"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:109
+#, python-format
+msgid "Paid :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:351
+#, python-format
+msgid "Phone"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:282
+#, python-format
+msgid "id"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:287
+#: field:pos.cashier,cashier_name:0
+#: field:pos.order,cashier_name:0
+#, python-format
+msgid "Cashier"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:344
+#, python-format
+msgid "ID"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:488
+#, python-format
+msgid "Mobile number is not valid (must be 8 chars lenght minimum)"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:57
+#, python-format
+msgid "Logout"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:817
+#, python-format
+msgid "Password you entered does not match the stored one"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.cashier:0
+#: field:pos.cashier,active:0
+msgid "Active"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:591
+#, python-format
+msgid "Special discount:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:616
+#, python-format
+msgid "Amount payable:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:320
+#, python-format
+msgid "Search"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:792
+#, python-format
+msgid "Special discount (amount) :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:81
+#, python-format
+msgid "Total:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:345
+#, python-format
+msgid "MontantCumule"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:556
+#, python-format
+msgid "% discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:27
+#, python-format
+msgid "Amount cumulated"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:75
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:535
+#, python-format
+msgid "Cashier :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:285
+#, python-format
+msgid "Date"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:487
+#, python-format
+msgid "Phone number is not valid (must be 8 chars lenght minimum)"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/js/tg_pos.js:2914
+#, python-format
+msgid "Self-Checkout"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:438
+#, python-format
+msgid "Please type Zip Code with at least 4 chars"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:234
+#, python-format
+msgid "Click to hide"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:813
+#, python-format
+msgid "Validate"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:463
+#, python-format
+msgid "Comment is visible on receipt"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: help:res.users,pos_manager_pwd:0
+msgid "Pasword is required for some actions to be made by manager in POS"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:422
+#, python-format
+msgid "Create Customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.order:0
+msgid " "
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:784
+#, python-format
+msgid "Manager password is required for this operation"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:489
+#, python-format
+msgid "Email is not valid"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.cashier:0
+msgid "Point of Sale Cashier"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:502
+#, python-format
+msgid "Receipt"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:446
+#, python-format
+msgid "Mobile :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:547
+#, python-format
+msgid "Qty."
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:756
+#, python-format
+msgid "Qty"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.cashier:0
+msgid "Inactive"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:90
+#, python-format
+msgid "Special discount :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:474
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:705
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:811
+#, python-format
+msgid "Cancel"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:267
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:328
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:832
+#, python-format
+msgid "Close"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:211
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:214
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:217
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:220
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:223
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:226
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:229
+#, python-format
+msgid "Click to show detail"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:453
+#, python-format
+msgid "Email :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:143
+#, python-format
+msgid "Pay"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:707
+#, python-format
+msgid "Add the Pack to the order"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:157
+#, python-format
+msgid "Remove customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:325
+#, python-format
+msgid "---"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:427
+#, python-format
+msgid "Name :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:164
+#, python-format
+msgid "Edit customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:622
+#, python-format
+msgid "Taxes:"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: help:res.partner,pos_comment:0
+msgid "Comment visible on POS receipt"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:238
+#, python-format
+msgid "Product"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:325
+#, python-format
+msgid "Customer count"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.model,name:tg_pos_enhanced.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:349
+#, python-format
+msgid "Firstname"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:761
+#, python-format
+msgid "Return selected Product"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:res.partner,pos_comment:0
+msgid "Comment in POS"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:241
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:288
+#, python-format
+msgid "Discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:103
+#, python-format
+msgid "Total payable after rebates :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:806
+#, python-format
+msgid "Manager password :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:138
+#, python-format
+msgid "You must select a cashier"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:18
+#, python-format
+msgid "Customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: field:pos.order,special_discount_object:0
+msgid "Special discount object"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:286
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:348
+#, python-format
+msgid "Name"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:319
+#, python-format
+msgid "Clear"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:726
+#, python-format
+msgid "Item"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:115
+#, python-format
+msgid "Left to pay :"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: model:ir.model,name:tg_pos_enhanced.model_pos_cashier
+msgid "pos.cashier"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:32
+#, python-format
+msgid "Create customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:239
+#, python-format
+msgid "Price Unit"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:818
+#, python-format
+msgid "Type the object of this special discount"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#: view:pos.cashier:0
+msgid "All"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:486
+#, python-format
+msgid "Zip code is not valid (must be 4 chars length minimum)"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:323
+#, python-format
+msgid "Select a sponsor"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:421
+#, python-format
+msgid "Edit Customer"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/xml/tg_pos.xml:290
+#: view:pos.order:0
+#, python-format
+msgid "Total"
+msgstr ""
+
+#. module: tg_pos_enhanced
+#. openerp-web
+#: code:addons/tg_pos_enhanced/static/src/js/tg_pos.js:909
+#, python-format
+msgid "Next Order"
+msgstr ""
+

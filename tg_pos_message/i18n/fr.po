@@ -1,0 +1,198 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* tg_pos_message
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131128-002544\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-30 11:24+0000\n"
+"PO-Revision-Date: 2013-12-30 11:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tg_pos_message
+#: selection:pos.message,message_type:0
+msgid "Information"
+msgstr "Information"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+msgid "Message type"
+msgstr "Type de message"
+
+#. module: tg_pos_message
+#: field:pos.message,title:0
+msgid "Title"
+msgstr "Titre"
+
+#. module: tg_pos_message
+#: selection:pos.message,message_type:0
+msgid "Question"
+msgstr "Question"
+
+#. module: tg_pos_message
+#: help:pos.message,message_type:0
+msgid "Select the type of the message to be displayed on POS"
+msgstr "Sélectionnez le type de message à afficher dans le Point de Vente"
+
+#. module: tg_pos_message
+#: model:ir.model,name:tg_pos_message.model_pos_message
+msgid "pos.message"
+msgstr ""
+
+#. module: tg_pos_message
+#: selection:pos.message,message_type:0
+msgid "Other"
+msgstr "Autre"
+
+#. module: tg_pos_message
+#: help:pos.message,frequency:0
+msgid "Set the frequency of occurrence of the message"
+msgstr "Définissez la fréquence d'occurence du message"
+
+#. module: tg_pos_message
+#: model:ir.actions.act_window,help:tg_pos_message.action_pos_message
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"			Click here to create a message to be displayed in the Point Of Sale.\n"
+"			</p>\n"
+"		"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"			Cliquez ici pour créer un message à afficher dans le Point de vente.\n"
+"			</p>\n"
+"		"
+
+#. module: tg_pos_message
+#: field:pos.message,message_type:0
+msgid "Type"
+msgstr "Type"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+msgid "Period - Occurence"
+msgstr "Période - Occurence"
+
+#. module: tg_pos_message
+#: field:pos.message,immediate:0
+msgid "Immediate display"
+msgstr "Affichage instantané"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+msgid "Recipients"
+msgstr "Destinataires"
+
+#. module: tg_pos_message
+#: field:pos.message.read,message_id:0
+msgid "Message id"
+msgstr ""
+
+#. module: tg_pos_message
+#: selection:pos.message,message_type:0
+msgid "Alert"
+msgstr "Alerte"
+
+#. module: tg_pos_message
+#: selection:pos.message,message_type:0
+msgid "Warning"
+msgstr "Attention"
+
+#. module: tg_pos_message
+#: field:pos.message,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: tg_pos_message
+#: field:pos.message,start_at:0
+msgid "Starting Date"
+msgstr "Date de début"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+msgid "Messages to be displayed in Point Of Sale"
+msgstr "Messages à afficher dans le Point de Vente"
+
+#. module: tg_pos_message
+#: help:pos.message,immediate:0
+msgid "check for the message to be displayed instantly in POS"
+msgstr "Cliquez pour afficher le message instantanément dans le Point de Vente"
+
+#. module: tg_pos_message
+#: field:pos.message.read,date_read:0
+msgid "Date read"
+msgstr "Date de lecture"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+#: field:pos.message,interval:0
+msgid "Interval"
+msgstr "Intervale"
+
+#. module: tg_pos_message
+#: model:ir.actions.act_window,name:tg_pos_message.action_pos_message
+#: model:ir.ui.menu,name:tg_pos_message.menu_action_pos_message
+#: field:pos.config,message_ids:0
+msgid "Messages"
+msgstr "Messages"
+
+#. module: tg_pos_message
+#: model:ir.model,name:tg_pos_message.model_pos_message_read
+msgid "pos.message.read"
+msgstr ""
+
+#. module: tg_pos_message
+#: help:pos.message,interval:0
+msgid "Display message each x hours"
+msgstr "Afficher le message toutes les X heures"
+
+#. module: tg_pos_message
+#: model:ir.model,name:tg_pos_message.model_pos_config
+msgid "pos.config"
+msgstr ""
+
+#. module: tg_pos_message
+#: selection:pos.message,frequency:0
+msgid "Every X hours"
+msgstr "Toutes les X heures"
+
+#. module: tg_pos_message
+#: selection:pos.message,frequency:0
+msgid "Once"
+msgstr "Une seule fois"
+
+#. module: tg_pos_message
+#: field:pos.message,stop_at:0
+msgid "Ending Date"
+msgstr "Date de fin"
+
+#. module: tg_pos_message
+#: field:pos.message.read,pos_id:0
+msgid "POS id"
+msgstr ""
+
+#. module: tg_pos_message
+#: view:pos.message:0
+#: field:pos.message,frequency:0
+msgid "Frequency"
+msgstr "Fréquence"
+
+#. module: tg_pos_message
+#: view:pos.message:0
+#: field:pos.message,message:0
+msgid "Message"
+msgstr "Message"
+
+#. module: tg_pos_message
+#: field:pos.message,pos_ids:0
+msgid "Point of Sale"
+msgstr "Point de Vente"
+
+#. module: tg_pos_message
+#: model:ir.ui.menu,name:tg_pos_message.menu_point_of_sale_tools
+msgid "Tools"
+msgstr "Outils"
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+ <record id="rule_pos_cashiers" model="ir.rule">
+        <field name="name">Point Of Sale Cashiers</field>
+        <field name="model_id" ref="model_pos_cashier" />
+        <field name="global" eval="True" />
+        <field name="domain_force">[('pos_config_id', '=', user.pos_config.id)]</field>
+    </record>
+</data>
+</openerp>

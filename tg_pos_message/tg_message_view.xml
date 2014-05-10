@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+	<record id="pos_message_form" model="ir.ui.view">
+		<field name="name">pos.message.form</field>
+		<field name="model">pos.message</field>
+		<field name="arch" type="xml">
+    		<form string="Message" version="7.0">  
+    			<group col="4">
+    				<field name="title" />
+    				<field name="message_type" string="Message type"/>
+    				<field name="active"/> 
+    			</group>
+    			<separator string="Period - Occurence" colspan="4"/>
+    			<group col="4">
+    				<field name="frequency" string="Frequency"/>     
+    				<field name="start_at"/>  
+    				<field name="interval" string="Interval" attrs="{'invisible':[('frequency', '=', 1)]}"/>
+    				<field name="stop_at"/>    
+    			</group>
+    			<separator string="Recipients" colspan="4"/>
+    			<field name="pos_ids" />
+    			<separator string="Message" colspan="4"/>
+    			<field name="message" 
+                       string="Message" 
+                       widget="html"
+                       options='{"safe": True}'
+                       editor_width="100%%"
+                       editor_height="350"
+                       editor_controls="bold italic underline strikethrough subscript superscript | font size style | color highlight removeformat | bullets numbering | outdent indent | alignleft center alignright justify | undo redo | rule image link unlink | cut copy paste pastetext | print source"
+    			/>
+    		</form>
+		</field>
+	</record>
+
+	<record id="pos_message_tree" model="ir.ui.view">
+		<field name="name">pos.message.tree</field>
+		<field name="model">pos.message</field>
+		<field name="arch" type="xml">
+			<tree string="Messages to be displayed in Point Of Sale">    
+				<field name="message_type"/> 
+				<field name="title"/> 
+				<field name="start_at"/>       
+				<field name="stop_at"/> 
+				<field name="active"/> 
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_pos_message">
+		<field name="name">Messages</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">pos.message</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="pos_message_tree"/>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+			Click here to create a message to be displayed in the Point Of Sale.
+			</p>
+		</field>
+	</record>
+
+	<!-- Menu gauche  Messages -->   
+	<menuitem 
+        name="Tools" 
+        id="menu_point_of_sale_tools" 
+        parent="point_of_sale.menu_point_root" 
+        sequence="17" 
+        groups="base.group_no_one"
+	/>
+	<menuitem
+        id="menu_action_pos_message"
+        parent="menu_point_of_sale_tools"
+        action="action_pos_message"    
+	/>
+	<!-- # -->
+
+	</data>
+</openerp>

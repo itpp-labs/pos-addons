@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vim:fdl=1:
+-->
+<templates id="template" xml:space="preserve">
+    <t t-extend="PosWidget" >
+
+        <t t-jquery=".point-of-sale" t-operation="prepend">
+            <div class="placeholder-AlertPwdWidget"></div>
+            <div class="placeholder-MessageWidget"></div>
+        </t>
+
+        <!-- panneau left -->
+        <t t-jquery="#leftpane" t-operation="append">
+            <div id="cache_left_pane"></div>
+            <!-- panneau affichage client sélectionné -->
+            <header>
+            	<div id="header-customer">
+                    <img src="tg_pos_enhanced/static/src/img/disabled_client.png" title="Customer" id="img-sel_cus"/> :  
+                    <span id="selected-customer-name">?</span> <span id="selected-vip"></span>
+                    <div id="btns-customer">
+                    </div>
+                </div>
+            	<div id="header-btns">
+	            	<div class="shadow-top"></div>
+	            	<div id="client-btns">
+                        <li>
+                            <img id="img_amountcumul" src="tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Amount cumulated"/> : <span id="montantCumule"></span>
+                        </li>      
+                    </div>
+                    <div id="cust-btns">
+                        <li><img id="btn-findcust" src="tg_pos_enhanced/static/src/img/find_client.png" title="Find customer"/></li>
+                        <li><img id="btn-addcust" src="tg_pos_enhanced/static/src/img/add_client.png" title="Create customer"/></li>
+                    </div>
+            	</div>
+                <div id="cache-header-cust"></div>
+            </header>
+            <div id="placeholder-CustFormWidget"></div>
+
+        </t>
+
+        <!-- Cashiers drop-down list under NumPad -->
+        <t t-jquery="footer" t-operation="replace">
+            <footer>
+            <div id="placeholder-GoToPayWidget"></div>
+            <div id="placeholder-NumpadWidget"></div>
+            <div id="AlertNoCashier">You must create at least one cashier!</div>
+            <div id="cashier-footer">               
+                <div id="cashier-frame">
+                    <t t-esc="widget.get_cashiers(widget.get_cur_pos_config_id())" />
+                    <select id="cashier-select" onchange="javascript:void(0)" >
+                    </select>   
+                </div>  
+                <div id="cashier-title">
+                    : Select a cashier             
+                </div>         
+            </div>
+            <span id="label_deconexion">Logout</span>
+        </footer>
+        </t>
+
+        <!-- panneau right -->
+        <t t-jquery="#rightpane" t-operation="append">
+            <div id="cache-right-pan"></div>
+        </t>
+    </t>
+
+    <!-- Name of the cashier on Payement Page -->
+    <t t-extend="PaymentScreenWidget" >
+        <t t-jquery=".pos-step-container" t-operation="replace">
+            <div class="pos-step-container">
+                <div id="pay-container">
+                    <div class='pay-scroller'>
+                        <div id="pay-frame">
+                            <div class="pos-payment-container">
+                                <div id="pay-screen-cashier">Cashier : 
+                                    <span id="pay-screen-cashier-name">
+                                    </span>
+                                </div>
+                                <div class="header">
+                                    <div>
+                                        <span class="left-block">
+                                            Total:
+                                        </span>
+                                        <span class='right-block' id="payment-due-total"></span>
+                                    </div>
+
+                                </div>
+                                <table>
+                                    <tr class="paymentline">
+                                        <td class="paymentline-type">
+                                            Special discount :  <img id="btn-call-manager" class="pos-call-manager" src="tg_pos_enhanced/static/src/img/call_shop_manager.png" title="Call shop manager for special discount"/> <img id="btn-delremspec" class=".pos-btn-del-discount" src="tg_pos_enhanced/static/src/img/remove.png" title="Delete special discount"/>
+                                        </td>
+                                        <td class="align_right">
+                                            <input type="text" id="enter_special_discount" style="color: red;" value="0.00" readonly="readonly" disabled="disabled"/>
+                                            <img src="tg_pos_enhanced/static/src/img/spacer.gif" width="9" height="11" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table id="paymentlines">
+                                </table>
+                                <div class="footer">     
+                                    <div class="infoline-soustotalapresremises">
+                                        <span class='left-block pos-soustotalapresremises'>
+                                            Total payable after rebates :
+                                        </span>
+                                        <span class='right-block pos-soustotalapresremises' id="soustotalapresremises" ></span>
+                                    </div>     
+                                    <div class="infoline">
+                                        <span class='left-block pos-montant-paid'>
+                                            Paid :
+                                        </span>
+                                        <span class='right-block pos-montant-paid' id="payment-paid-total" ></span>
+                                    </div>
+                                    <div class="infoline pos-montant-a-payer">
+                                        <span class='left-block'>
+                                            Left to pay :
+                                        </span>
+                                        <span class='right-block' id="payment-remaining" style="font-weight: bold;"></span>
+                                    </div>
+                                    <div class="infoline pos-montant-a-rendre">
+                                        <span class='left-block'>
+                                            Make :
+                                        </span>
+                                        <span class='right-block' id="payment-change" style="font-weight: bold;"></span>
+                                    </div>
+                                </div>                                        
+                            </div>
+                            <div id="placeholder-PaypadWidget"></div>
+                        </div> 
+                    </div>
+                    <span class="placeholder-ScrollbarWidget" /> 
+                </div>                                               
+            </div>
+        </t>
+    </t>
+
+    <t t-name="GoToPayWidget">
+        <div id="gotopay"><div id="msg_cashier">You must select a cashier</div></div>
+        
+    </t>
+
+    <t t-name="GoToPayButtonWidget">
+        <button class="gotopay-button">Pay</button>
+        <br />
+    </t>
+
+    <t t-name="PaypadButtonWidget">
+        <button class="paypad-button" t-att-cash-register-id="widget.cashRegister.get('id')">
+            <t t-esc="widget.cashRegister.get('journal').name"/>
+        </button> 
+    </t>
+
+
+    <!-- remove client -->
+    <t t-name="ClientRemoveWidget">
+        <span class="cus-remove">
+            <img src="tg_pos_enhanced/static/src/img/remove_client.png" title="Remove customer"/>
+        </span>
+    </t>
+
+    <!-- edit client -->
+    <t t-name="ClientEditWidget">
+        <span class="cus-edit">
+            <img src="tg_pos_enhanced/static/src/img/edit_client.png" title="Edit customer"/>
+        </span>
+    </t>
+
+    <!-- ventes du client  -->
+    <t t-name="ClientSalesWidget">
+        <span class="cus-sales">
+            <img id="cust_sales_btn" src="tg_pos_enhanced/static/src/img/see_sales.png" title="See customer's sales"/>
+        </span>
+    </t>
+
+    <!-- lettres de tri des clients -->
+    <t t-name="ClientsLettersWidget">
+        <div class="letters">
+        </div>
+    </t>
+
+    <!-- Une lettre -->
+    <t t-name="OneLetterWidget">
+        <li class="one-letter">
+            <t t-esc="letter"/>
+        </li>
+    </t>
+
+    <!-- 1 sale detail-->
+    <t t-name="DetailWidget">
+        <tr class="detail_line">
+            <td class="d-product" width="20%"><t t-esc="d_product"/></td>
+            <td class="d-price-unit right" width="25%"><t t-esc="d_price_unit"/></td>
+            <td class="d-qty right" width="15%"><t t-esc="d_qty"/></td>
+            <td class="d-discount right" width="10%"><t t-esc="d_discount"/></td>
+            <td class="d-amount right" width="10%"><t t-esc="d_amount"/></td>
+        </tr>
+    </t>
+
+    <!-- 1 sale -->
+    <t t-name="SaleWidget">
+        <tr class="sale_line" id="lx">
+            <td style="display:none" class="s-id">
+                <t t-esc="s_id"/>
+            </td>
+            <td style="display:none" class="s-name">
+                <t t-esc="s_name"/>
+            </td>
+            <td style="display:none" class="s-done">
+                <t t-esc="s_done"/>
+            </td>
+            <td class="s-date" width="20%" title="Click to show detail">
+                <t t-esc="s_date"/>
+            </td>
+            <td class="s-posref" width="25%" title="Click to show detail">
+                <t t-esc="s_posref"/>
+            </td>
+            <td class="s-cashier" width="15%" title="Click to show detail">
+                <t t-esc="s_cashier"/>
+            </td>
+            <td class="s-discount right" width="10%" title="Click to show detail">
+                <t t-esc="s_discount"/>
+            </td>
+            <td class="s-voucher right" width="10%" title="Click to show detail">
+                <t t-esc="s_voucher"/>
+            </td>
+            <td class="s-total right" width="10%" title="Click to show detail">
+                <t t-esc="s_total"/>
+            </td>
+            <td class="s-state" width="10%" title="Click to show detail">
+                <t t-esc="s_state"/>
+            </td>
+        </tr>
+        <tr class="sale_detail" id="dx">
+            <td colspan="10" class="ord_detail" title="Click to hide">
+                <table class="table_sale_detail">
+                    <thead id="detail-thead">
+                        <tr>
+                            <th width="52%">Product</th>
+                            <th width="12%">Price Unit</th>
+                            <th width="12%">Quantity</th>
+                            <th width="12%">Discount</th>
+                            <th width="12%">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="detail-list" id="dlx">
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </t>
+
+    <!-- no sale -->
+    <t t-name="NoSaleWidget">
+        <tr>
+            <td colspan="9"><div class="nosale_line">This customer has no sales yet</div></td>
+        </tr>
+    </t>
+
+    <!-- panneau des ventes -->
+    <t t-name="SalesScreenWidget">
+        <div id="id_salesscreen">
+            <header>
+                <div id="header-salesscreen">
+                    <div id="screen-saletitle">    
+                        <span id="titleCustSales"><span id="cust_sales_name"/> - Sales history</span> 
+                        <div id="cs-close">
+                            <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-salesclosebtn"/>
+                        </div>
+                    </div>
+                </div>
+                <div id="header-salesComment">
+                    <div id="sale_comment">
+                        Orders are displayed below. Click a row to display order details. Click again the detail to hide.
+                    </div>
+                </div>
+            </header>
+            <div id="sales-list-header">
+                <div class="table-block">
+                    <table class="cust-table-head">
+                        <thead id="sales-thead">
+                            <tr>
+                                <td style="display:none">id</td>
+                                <td style="display:none">name</td>
+                                <td style="display:none">done</td>
+                                <th width="20%">Date</th>
+                                <th width="25%">Name</th>
+                                <th width="15%">Cashier</th>
+                                <th width="10%">Discount</th>
+                                <th width="10%">Voucher</th>
+                                <th width="10%">Total</th>
+                                <th width="10%">State</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="head-block">.</div>
+            </div>
+            <div id="sales-list-container">
+                <div class='cust-list-scroller'>
+                    <table class="cust-table-data">
+                        <tbody id="sales-list">
+                        </tbody>
+                    </table> 
+                    <div class="shadow-top"></div>
+                    <span class="placeholder-ScrollbarWidget" />  
+                    <div class="cust-table-bot"></div> 
+                </div> 
+            </div> 
+        </div>
+    </t>
+        
+    <!-- panneau affichage clients -->
+    <t t-name="ClientScreenWidget">
+        <div id="id-clientscreenwidget">
+            <header>
+                <div id="header-custscreen">
+                    <div id="screen-custtitle">
+                        <div id="cs-search">
+                            <img src="tg_pos_enhanced/static/src/img/remove.png" title="Clear" id="cs-clearsearchbtn"/>
+                            <input type="texte" id="input_search"/><img src="tg_pos_enhanced/static/src/img/search.png" title="Search" id="cs-searchbtn"/>
+                        </div>
+                        <span id="titleSelectCustomer">Select a customer</span>     
+                        <div id="cs-nbcustomers">
+                            <span id="nb_customers" title="Customer count">---</span>
+                        </div>
+                        <div id="cs-close">
+                            <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-closebtn"/>
+                        </div>
+                        <div id="cs-refresh">
+                            <img src="tg_pos_enhanced/static/src/img/refresh_data.png" title="Refresh" id="cs-refreshbtn"/>
+                        </div>
+                    </div>
+                </div>
+                <div id="header-custletter">
+                    <div id="placeholder-ClientsLettersWidget"></div>
+                </div>
+            </header>
+            <div id="cust-list-header">
+                <div class="table-block">
+                    <table class="cust-table-head">
+                        <thead id="cust-thead">
+                            <tr>
+                                <th style="display:none">ID</th>
+                                <th style="display:none">MontantCumule</th>
+                                <th style="display:none">POScomment</th>
+                                <th width="4%"></th>
+                                <th width="16%">Name</th>
+                                <th width="16%">Firstname</th>
+                                <th width="10%">Zip Code</th>
+                                <th width="12%">Phone</th>
+                                <th width="12%">Mobile</th>
+                                <th width="30%">Email</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="head-block">.</div>
+            </div>
+            <div id="cust-list-container">
+                <div class='cust-list-scroller'>
+                    <table class="cust-table-data">
+                        <tbody id="client-list">
+                        </tbody>
+                    </table> 
+                    <div class="shadow-top"></div>
+                    <span class="placeholder-ScrollbarWidget" />  
+                    <div class="cust-table-bot"></div> 
+                </div> 
+            </div> 
+        </div>
+    </t>
+
+    <!-- 1 client -->
+    <t t-name="ClientWidget">
+        <tr class="client-line">
+            <td style="display:none" class="c-id"><t t-esc="c_id"/></td>
+            <td style="display:none" class="c-montant-cumule"><t t-esc="c_montantCumule"/></td>
+            <td style="display:none" class="c-comment"><t t-esc="c_comment"/></td>
+            <td class="c-vip" width="4%">
+                <t t-if="c_montantCumule >= 500">
+                    <img src="tg_pos_enhanced/static/src/img/vip.png" title="VIP"/>
+                </t>
+            </td>
+            <td class="c-name" width="16%"><t t-esc="c_name"/></td>
+            <td class="c-firstname" width="16%"><t t-esc="c_firstname"/></td>
+            <td width="10%" class="c-zip">
+                <t t-if="c_zip != false">
+                    <t t-esc="c_zip"/>
+                </t>
+            </td>
+            <td width="12%" class="c-phone">
+                <t t-if="c_phone !== false">
+                    <t t-esc="c_phone"/>
+                </t>
+            </td>
+            <td width="12%" class="c-mobile">
+                <t t-if="c_mobile !== false">
+                    <t t-esc="c_mobile"/>
+                </t>
+            </td>
+            <td class="c-email" width="30%">
+                <t t-if="c_email !== false">
+                    <t t-esc="c_email"/>
+                </t>
+            </td>
+        </tr>
+    </t>
+
+    <!-- pas de client -->
+    <t t-name="NoClientWidget">
+        <tr>
+            <td colspan="12"><div class="noclient-line">There is no customer having name starting with this letter (or word)</div></td>
+        </tr>
+    </t>
+
+    <!-- form client -->
+    <t t-name="FormClientWidget">
+        <div id="form-client">
+            <div id="titre-formclient">
+                <span id="titre_form_edit_client">Edit Customer</span>
+                <span id="titre_form_create_client">Create Customer</span>
+            </div>
+            <div id="table-formclient">
+                    <table>
+                        <tr>
+                            <td class="form-key">Name :</td>
+                            <td class="form-value"><input type="texte" id="input_name"/><span class="form-obligado">*</span></td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Firstname :</td>
+                            <td class="form-value"><input type="texte" id="input_firstname"/><span class="form-obligado">*</span></td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Zip Code:</td>
+                            <td class="form-value">
+                                <input type="texte" id="input_zip"/> 
+                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Zip Code with at least 4 chars"/></td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Phone :</td>
+                            <td class="form-value"><input type="texte" id="input_phone"/> 
+                            <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Phone number with at least 8 chars"/></td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Mobile :</td>
+                            <td class="form-value">
+                                <input type="texte" id="input_mobile"/> 
+                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Mobile number with at least 8 chars"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Email :</td>
+                            <td class="form-value">
+                                <input type="texte" id="input_email"/> 
+                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type a valid email"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Comment :</td>
+                            <td class="form-value">
+                                <input type="texte" id="input_comment"/> 
+                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Comment is visible on receipt"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-line" colspan="2">
+                                &#160;
+                                <input type="hidden" class="input_partner_id" id="input_partner_id" value="0"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form-button" colspan="2">
+                                <button class="input_cancel" id="input_cancel" style="display: inline;">Cancel</button> 
+                                &#160; &#160; 
+                                <button class="input_send_formclient" id="input_send_formclient" style="display: inline;">Save</button>
+                            </td>
+                        </tr>
+                    </table>
+                <div id="error-formclient">
+                    <div id="error-msg">
+                        <span id="title-msg">Error!</span>
+                        <ol>
+                            <li id="error_cname">Name is empty</li>
+                            <li id="error_cfirstname">Firstname is Empty</li>
+                            <li id="error_czip">Zip code is not valid (must be 4 chars length minimum)</li>
+                            <li id="error_cphone">Phone number is not valid (must be 8 chars lenght minimum)</li>
+                            <li id="error_cmobile">Mobile number is not valid (must be 8 chars lenght minimum)</li>
+                            <li id="error_cemail">Email is not valid</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+    <t t-extend="ReceiptScreenWidget">
+        <t t-jquery="#receipt-screen" t-operation="replace">
+            <div id="receipt-screen" class="screen" >
+                <header>
+                    <h2>Receipt</h2>
+                </header>
+                <div id="ticket-container">
+                    <div class='ticket-scroller'>
+                        <div class="pos-step-container">
+                            <div class="pos-receipt-container">
+                            </div>
+                        </div>                   
+                    </div>
+                    <span class="placeholder-ScrollbarWidget" /> 
+                </div>
+            </div>
+        </t>
+    </t>
+
+   <!--  Reçu de paiement / ticket de caisse -->
+    <t t-extend="PosTicket" >
+        <t t-jquery=".pos-sale-ticket" t-operation="replace">
+            <div class="pos-sale-ticket">
+                <div id="header-ticket">
+                    <div id="logo_ticket">
+                        <img src="tg_pos_enhanced/static/src/img/logo_ticket_300x58.png" />
+                    </div>
+                    <t t-esc="new Date().toString(Date.CultureInfo.formatPatterns.shortDate + ' ' +
+                    Date.CultureInfo.formatPatterns.longTime)"/> 
+                    <br />
+                    <t t-esc="widget.currentOrder.attributes.name"/>
+                    <br />
+                    <t t-esc="widget.shop_obj.name"/>
+                    <t t-if="widget.company.contact_address != false">
+                        <br />
+                        <t t-esc="widget.company.contact_address"/>
+                    </t>
+                    <br />
+                    Cashier : <span id="ticket-screen-cashier-name"></span>
+                </div>
+                <table>
+                    <colgroup>
+                        <col width='50%' />
+                        <col width='15%' />
+                        <col width='15%' />
+                        <col width='20%' />
+                    </colgroup>
+                    <tr class="ticket_head_lines">
+                        <td>Products</td>
+                        <td class="pos-right-align">Qty.</td>
+                        <td class="pos-right-align">Tax</td>
+                        <td class="pos-right-align">Amount</td>
+                    </tr>
+                    <tr t-foreach="widget.currentOrderLines.toArray()" t-as="orderline">
+                        <td>
+                            <t t-esc="orderline.get_product().get('name')"/>
+                             <t t-if="orderline.get_discount() > 0">
+                                <div class="pos-disc-font">
+                                    With a <t t-esc="orderline.get_discount()"/>% discount
+                                </div>
+                            </t>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.get_product_tax()"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <div class="horizontal-line-gray"></div>
+                        </td>
+                    </tr>
+                    <tr class="emph">
+                        <td>Total Products:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(widget.currentOrder.getSubtotal())"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="horizontal-line-space"></div>
+                        </td>
+                    </tr>
+                    <t t-if="widget.currentOrder.get_special_discount() != 0">
+                        <tr>
+                            <td>Special discount:</td>
+                            <td class="pos-right-align">
+                                <t t-esc="widget.format_currency(widget.currentOrder.get_special_discount())"/>
+                            </td>
+                        </tr>
+                    </t>
+                    <t t-if="widget.currentOrder.getDiscountTotal() != 0">
+                        <tr>
+                            <td colspan="2">
+                                <div class="horizontal-line-gray"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Total discount:</td>
+                            <td class="pos-right-align">
+                                <t t-esc="widget.format_currency(widget.currentOrder.getDiscountTotal())"/>
+                            </td>
+                        </tr>   
+                    </t>
+                    <tr>
+                        <td colspan="2">
+                            <div class="horizontal-line-space"></div>
+                        </td>
+                    </tr>    
+                    <tr class="emph">
+                        <td>Amount payable:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(widget.currentOrder.getTotalTaxIncluded() - widget.currentOrder.getDiscountAfter())"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Taxes:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(widget.currentOrder.getTax())"/>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr t-foreach="widget.currentPaymentLines.toArray()" t-as="pline">
+                        <td>
+                            <t t-esc="pline.get_cashregister().get('journal_id')[1]"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(pline.get_amount())"/>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr>
+                        <td>Change:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(widget.currentOrder.getPaidTotal() - widget.currentOrder.getTotalTaxIncluded() + widget.currentOrder.getDiscountAfter())"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="horizontal-line-gray"></div>
+                            <div class="horizontal-line-space"></div>
+                        </td>
+                    </tr> 
+                </table>
+                <div id="ticket_comment">
+                    <t t-if="widget.getTicketComment() != 'false'">
+                        <t t-esc="widget.getTicketComment()"/>
+                    </t>
+                </div>
+                <div id="ticket_bottom_comment">
+                    <t t-if="widget.getTicketMontantCumule() != false">
+                        You have accumulated <t t-esc="widget.format_currency(widget.getTicketMontantCumule())"/> shopping in our stores.<br />
+                    </t>
+                    <strong>Thank you for your visit and see you soon</strong>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <!-- Pack Screen -->
+    <t t-name="PackScreenWidget">
+        <div id="pack_screen">
+            <header>
+                <div id="header-packscreen">
+                    <div id="screen-packtitle">
+                        Customize Pack : <span id="pack_name"/>
+                    </div>
+                </div>
+                <div id="header-pack_comment">
+                    <div id="pack_comment">
+                        Select an item and its variant (if any) for each line in the Pack, then click "Add Pack" button. Pack will be added to the order with it's own price. Items in the pack will be added too but their prices will be set to 0.00
+                    </div>
+                </div>
+            </header>
+             <div id="pack-list-header">
+                <div class="table-block">
+                    <table class="cust-table-head">
+                        <thead id="packs-thead">
+                            <tr>
+                                <th width="50%">Select items</th>
+                                <th width="50%">Select one variant</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="head-block">.</div>
+            </div>
+            <div id="pack-list-container">
+                <div class='cust-list-scroller'>
+                    <table class="cust-table-data">
+                        <tbody id="packs-list">
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="form-button" colspan="2">
+                                    <button class="input_cancel_pack" id="input_cancel_pack" style="display: inline;">Cancel</button> 
+                                    &#160; &#160; 
+                                    <button class="input_add_pack" id="input_add_pack" style="display: inline;">Add the Pack to the order</button>
+                                    <input type="hidden" class="nb_items" id="input_nb_items" value="0"/>
+                                    <input type="hidden" class="pack_product_id" id="pack_product_id" value="0"/>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table> 
+                    <div class="shadow-top"></div>
+                    <span class="placeholder-ScrollbarWidget" />  
+                    <div class="cust-table-bot"></div> 
+                </div> 
+            </div> 
+        </div>
+    </t>
+
+    <!-- Pack form -->
+    <t t-name="PackWidget">
+        <tr class="pack_line_top">
+            <td width="50%">
+                <div class="pack_item_txt">
+                    Item <span class="item_number"/>
+                </div>
+            </td>
+            <td width="50%">&#38;nbsp;</td>
+        </tr>
+        <tr class="pack_line_bottom">
+            <td width="50%">
+                <div class="pack_template">
+                    <select class="pack_item_select" onclick="javascript:void(0)" >
+                    </select>
+                    <input type="hidden" class="pack_obj" value=""/>
+                </div>
+            </td>
+            <td width="50%">
+                <div class="pack_variant">
+                    <select class="pack_product_select">
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </t>
+
+   <!--  Numpad -->
+    <t t-extend="NumpadWidget" >
+        <t t-jquery="#numpad" t-operation="replace">
+            <div id="numpad">
+                <button class="input-button number-char">7</button>
+                <button class="input-button number-char">8</button>
+                <button class="input-button number-char">9</button>             
+                <button class="mode-button" data-mode='quantity'>Qty</button>
+                <br />
+                <button class="input-button number-char">4</button>
+                <button class="input-button number-char">5</button>
+                <button class="input-button number-char">6</button>
+                <button class="input-button" id="numpad-return" title="Return selected Product" disabled="disabled">
+                    <img id="return_img" src="tg_pos_enhanced/static/src/img/disabled_return_product.png" />
+                </button>
+                <br />
+                <button class="input-button number-char">1</button>
+                <button class="input-button number-char">2</button>
+                <button class="input-button number-char">3</button>
+                <button class="input-button" disabled="disabled"></button>
+                
+                <br />
+                <button class="input-button-large number-char">0</button>
+                <button class="input-button number-char">.</button>
+                <button class="input-button" id="numpad-backspace">
+                    <img src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
+                </button>
+                
+                <br />
+            </div>
+        </t>
+    </t> 
+
+    <t t-name="AlertPwdWidget">
+        <div id="pwd_frame">
+            <div id="pwd_frame_titre">
+                Manager password is required for this operation
+            </div>
+            <div id="pwd_frame_form">
+                <span class="pwd_space"/>
+                <span class="pwd_form">
+                    <table id="table_form_pwd">
+                        <tr>
+                            <td width="50%" class="form-key">Special discount (amount) : </td>
+                            <td width="50%" class="form-value"><input id="discount_mngr" value="0.00" /> *</td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Discount object : </td>
+                            <td class="form-value"><input id="discount_obj_mngr" value="" size="40"/> *</td>
+                        </tr>
+                         <tr>
+                            <td class="form-line" colspan="2">&#160;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&#160;</td>
+                        </tr>
+                        <tr>
+                            <td class="form-key">Manager password :</td>
+                            <td class="form-value"><input id="pwd_mngr" value="" type="password"/> *</td>
+                        </tr>
+                        <tr>
+                            <td class="form-button" colspan="2">
+                                <button class="input_pwd_cancel" id="input_pwd_cancel" style="display: inline;">Cancel</button> 
+                                &#160; &#160; 
+                                <button class="input_pwd_send" id="input_pwd_send" style="display: inline;">Validate</button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="error_pwd">Password you entered does not match the stored one</div>
+                    <div id="error_obj">Type the object of this special discount</div>
+                </span>
+                <span class="pwd_space" />
+            </div>
+        </div>
+    </t>
+
+    <t t-name="tgMessageWidget">
+        <div id="msg_frame">
+            <div id="msg_div">
+                <input type="hidden" name="mid" id="mid" value="0" />
+                <div id="msg_header">
+                    <span id="msg_title"></span>
+                    <div id="msg_close_btn">
+                        <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="message-closebtn"/>
+                    </div>
+                </div>
+                <div id="msg_content">
+                </div>
+            </div>
+        </div>
+    </t>
+        
+</templates>

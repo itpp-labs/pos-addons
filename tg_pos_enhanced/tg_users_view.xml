@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="inherit_view_users_form">
+            <field name="model">res.users</field>
+            <field name="name">inherit.view.users.form</field>
+            <field name="inherit_id" ref="point_of_sale.res_users_form_view"/>
+            <field name="arch" type="xml">
+                <field name="pos_config" position="after">
+                    <field name="pos_manager_pwd" />         
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
