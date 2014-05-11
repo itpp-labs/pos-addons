@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record id="view_partner_form_debt" model="ir.ui.view">
+		<field name="name">res.partner.form.debt</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+		  <data>
+			 <xpath expr="//field[@name='credit_limit']" position="after">
+				<field name="debt"/>
+			 </xpath>
+		  </data>
+		</field>
+	 </record>
+  </data>
+</openerp>
