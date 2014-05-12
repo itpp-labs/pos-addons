@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record id="debt_account" model="account.account">
             <field name="code">XDEBT</field>
             <field name="name">Debt</field>
@@ -18,7 +18,8 @@
         <record id="debt_journal" model="account.journal">
             <field name="name">Debt Journal</field>
             <field name="code">TDEBT</field>
-            <field name="type">cash</field>
+            <field name="type">bank</field>
+            <field name="debt" eval="True"/>
             <field name="journal_user" eval="True"/>
             <field name="sequence_id" ref="sequence_debt_journal"/>
             <field model="account.account" name="default_debit_account_id" ref="debt_account"/>

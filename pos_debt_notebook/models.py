@@ -28,3 +28,9 @@ class res_partner(osv.Model):
         'debt':fields.function(_get_debt, type='float', string='Debt'),
     }
 
+class account_journal(osv.Model):
+    _inherit = 'account.journal'
+
+    _columns = {
+        'debt': fields.boolean('Debt'),
+    }

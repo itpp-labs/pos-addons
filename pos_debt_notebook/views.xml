@@ -13,5 +13,18 @@
 		  </data>
 		</field>
 	 </record>
+     <record model="ir.ui.view" id="view_tg_partner_tree">
+         <field name="model">res.partner</field>
+         <field name="name">view.tg.partner.tree</field>
+         <field name="view_type">tree</field>
+         <field name="inherit_id" ref="base.view_partner_tree"/>
+         <field name="arch" type="xml">
+			 <data>
+				 <xpath expr="//field[@name='name']" position="after">
+					 <field name="debt" />
+				 </xpath>
+			 </data>
+         </field>
+     </record>
   </data>
 </openerp>
