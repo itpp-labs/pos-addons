@@ -322,7 +322,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     var round_pr = instance.web.round_precision;
 
     // // unselect customer
-    var unselect_client = function(){
+    module.unselect_client = function(){
 
             $('#selected-customer-name').html('?');
             $('#btns-customer').html('');
@@ -575,7 +575,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         select_client: function(cid, cname, cfname, cmontantcumule){
             var self = this;   
 
-                unselect_client();
+                module.unselect_client();
 
                 var sel_client = cname + ' ' + cfname;
                 var mc = Number(cmontantcumule).toFixed(2);
@@ -592,7 +592,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 var close_button = QWeb.render('ClientRemoveWidget',{});
                 $(close_button).appendTo($('#btns-customer')).click(function(){
                     self.pos.get('selectedOrder').set_partner_id(0);
-                    unselect_client();
+                    module.unselect_client();
                 });
 
                 var edit_button = QWeb.render('ClientEditWidget',{});
@@ -922,7 +922,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                             cashier_change(globalCashier);
                         }
 
-                        unselect_client();
+                        module.unselect_client();
                         
                         // check for new messages
                         get_pos_messages();
@@ -1874,7 +1874,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         select_client: function(cid, cname, cfname, cmontantcumule){
             var self = this;   
 
-            unselect_client();
+            module.unselect_client();
 
             var sel_client = cname + ' ' + cfname;
             var mc = Number(cmontantcumule).toFixed(2);
@@ -1891,7 +1891,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var close_button = QWeb.render('ClientRemoveWidget',{});
             $(close_button).appendTo($('#btns-customer')).click(function(){
                 self.pos.get('selectedOrder').set_partner_id(0);
-                unselect_client();
+                module.unselect_client();
             });
 
             var edit_button = QWeb.render('ClientEditWidget',{});
@@ -2208,7 +2208,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         select_client: function(cid, cname, cfname, cmontantcumule){
             var self = this;   
 
-                unselect_client();
+                module.unselect_client();
 
                 var sel_client = cname + ' ' + cfname;
                 var mc = Number(cmontantcumule).toFixed(2);
@@ -2225,7 +2225,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 var close_button = QWeb.render('ClientRemoveWidget',{});
                 $(close_button).appendTo($('#btns-customer')).click(function(){
                     self.pos.get('selectedOrder').set_partner_id(0);
-                    unselect_client();
+                    module.unselect_client();
                 });
 
                 var edit_button = QWeb.render('ClientEditWidget',{});
@@ -2843,7 +2843,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             this.$('#btn-addcust').click(function(){
 
-                unselect_client();
+                module.unselect_client();
 
                 $('#id-clientscreenwidget').css('display', 'none');
                 $('#products-screen').css('display', 'block');           
