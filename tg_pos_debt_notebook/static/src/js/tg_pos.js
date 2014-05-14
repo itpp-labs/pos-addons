@@ -36,6 +36,50 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                 $('.paypad-button.debt').removeClass('disabled').addClass('disabled')
             else
                 $('.paypad-button.debt').removeClass('disabled')
+        },
+        updatePaymentSummary:function(){
+            this._super();
+            var currentOrder = this.pos.get('selectedOrder');
+
+            var specialDiscount = $('#enter_special_discount').val();
+            var paidTotal = currentOrder.getPaidTotal();
+
+            // on déclare la somme due
+            var totalDeDepart = currentOrder.getTotalTaxIncluded();
+
+            // total des remises
+            var totalRemises = 0;
+            totalRemises = parseFloat(specialDiscount);
+
+            // C'est l'histoire de Totaux...
+            var sousTotalApayer = parseFloat(totalDeDepart) - parseFloat(totalRemises); // 59 - 9.10 = 49.9 - 10% = 44.91
+            var resteApayer = parseFloat(sousTotalApayer) - parseFloat(paidTotal); // 4.30 - paidTotal
+            var remaining = sousTotalApayer > paidTotal ? parseFloat(sousTotalApayer) - parseFloat(paidTotal) : 0;     
+
+            var emptyOrder = false;
+            var onlyPayback = false;
+            if(currentOrder.selected_orderline === undefined ){
+                //remaining = 1;  // What is this ? (Maybe it means that there are no prouducts at list)
+                emptyOrder = true;
+                if (currentOrder.get('partner_id')) {
+                    var hasPositiveAmount = false;
+                    var hasDebt = false;
+                    currentOrder.get('paymentLines').each((function(paymentLine){
+                        var isDebt = paymentLine.get_cashregister().get('journal').debt;
+                        if (!isDebt && (paymentLine.get_amount() > 0.000001))
+                            hasPositiveAmount = true;
+                        if (isDebt)
+                            hasDebt = true;
+                    }), false)
+                    onlyPayback = hasPositiveAmount && hasDebt;
+                }
+            }
+
+            if(this.pos_widget.action_bar){
+                this.pos_widget.action_bar.set_button_disabled('validation', (sousTotalApayer < 0 || remaining > 0.000001 || emptyOrder && !onlyPayback) );
+            }
+
+
         }
     });
 
