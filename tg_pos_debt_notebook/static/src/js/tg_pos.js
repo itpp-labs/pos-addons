@@ -2,14 +2,10 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
     //var module = instance.point_of_sale;
 
     module.Order = module.Order.extend({
-
         addPaymentLine: function(cashRegister) {
-        var journal = cashRegister.get('journal')
+            var self = this;
+            var journal = cashRegister.get('journal')
             if (journal.debt && ! this.get('partner_id')){
-                alert(' You have to select cutstomer (TODO: delete this alert)')
-                setTimeout(function(){
-                    //Show customers table here
-                })
                 return;
             }
 
@@ -30,12 +26,25 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
     })
     module.PaymentScreenWidget.include({
         show: function(){
+            var self=this;
             this._super();
             var order = this.pos.get('selectedOrder');
-            if (!order.get('partner_id'))
+            if (!order.get('partner_id')){
                 $('.paypad-button.debt').removeClass('disabled').addClass('disabled')
-            else
+                this.select_partner_button = this.add_action_button({
+                    label: 'Find customer',
+                    icon: '/tg_pos_enhanced/static/src/img/find_client.png',
+                    click: function(){
+                        self.back_button.click_action();
+                        self.pos_widget.$('#btn-findcust').click();
+                        order.set('payment_after_select_client', 1)
+                    }
+                });
+            }else{
                 $('.paypad-button.debt').removeClass('disabled')
+            }
+            
+            
         },
         updatePaymentSummary:function(){
             this._super();
@@ -107,6 +116,11 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
         var debt = Number(cdebt).toFixed(2);
         $('#current_debt').html(debt);
         $('#img_current_debt').attr('src', 'tg_pos_enhanced/static/src/img/montant_cumule.png')
+
+        var order = this.pos.get('selectedOrder');
+        if (order.get('payment_after_select_client')){
+            this.pos_widget.$('#gotopay button').click()
+        }
     }
 
     module.ClientsLettersWidget.include({
