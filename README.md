@@ -8,4 +8,4 @@ Related links:
 * https://www.odoo.com/forum/Help-1/question/POS-Enhanced---with-screenshots--dl-link-40364
 
 ## tg_pos_debt_notebook
-Module allow account payments on notebook (by debt)
+Module allow make payments on notebook (by debt)
