@@ -33,7 +33,7 @@
             <field name="view_type">tree</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="display_name" position="after">
                     <field name="firstname" />
                     <field name="zip"/>
                 </field>

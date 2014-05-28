@@ -7,78 +7,20 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
         return this.substr(0,index) + chr + this.substr(index+1);
     }
 
-    module.PosModel = Backbone.Model.extend({
-        initialize: function(session, attributes) {
-            Backbone.Model.prototype.initialize.call(this, attributes);
-            var  self = this;
-            this.session = session;                 
-            this.ready = $.Deferred();                          // used to notify the GUI that the PosModel has loaded all resources
-            this.flush_mutex = new $.Mutex();                   // used to make sure the orders are sent to the server once at time
+    var PosModelSuper = module.PosModel;
+    module.PosModel = module.PosModel.extend({
+        initialize:function(session, attributes){
 
-            this.barcode_reader = new module.BarcodeReader({'pos': this});  // used to read barcodes
-            this.proxy = new module.ProxyDevice();              // used to communicate to the hardware devices via a local proxy
-            this.db = new module.PosLS();                       // a database used to store the products and categories
-            this.db.clear('products','categories');
-            this.debug = jQuery.deparam(jQuery.param.querystring()).debug !== undefined;    //debug mode 
-
-            // default attributes values. If null, it will be loaded below.
-            this.set({
-                'nbr_pending_operations': 0,    
-
-                'currency':         {symbol: '$', position: 'after'},
-                'shop':             null, 
-                'company':          null,
-                'user':             null,   // the user that loaded the pos
-                'pwd':              null,   // pwd manager
-                'user_list':        null,   // list of all users
-                'partner_list':     null,   // list of all partners with an ean
-                'cashier':          null,   // the logged cashier, if different from user
-
-                'orders':           new module.OrderCollection(),
-                //this is the product list as seen by the product list widgets, it will change based on the category filters
-                'products':         new module.ProductCollection(), 
-                'cashRegisters':    null, 
-
-                'bank_statements':  null,
-                'taxes':            null,
-                'pos_session':      null,
-                'pos_config':       null,
-                'units':            null,
-                'units_by_id':      null,
-                'pricelist':        null,
-
-                'selectedOrder':    null,
-            });
-
-            this.get('orders').bind('remove', function(){ self.on_removed_order(); });
-            
-            // We fetch the backend data on the server asynchronously. this is done only when the pos user interface is launched,
-            // Any change on this data made on the server is thus not reflected on the point of sale until it is relaunched. 
-            // when all the data has loaded, we compute some stuff, and declare the Pos ready to be used. 
-            $.when(this.load_server_data())
-                .done(function(){
-                    //self.log_loaded_data(); //Uncomment if you want to log the data to the console for easier debugging
-                    self.ready.resolve();
-                }).fail(function(){
-                    //we failed to load some backend data, or the backend was badly configured.
-                    //the error messages will be displayed in PosWidget
-                    self.ready.reject();
-                });
+            PosModelSuper.prototype.initialize.call(this, session, attributes);
+            this.set({'pwd':null})
         },
-
-        // helper function to load data from the server
-        fetch: function(model, fields, domain, ctx){
-            return new instance.web.Model(model).query(fields).filter(domain).context(ctx).all()
-        },
-        // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded. 
         load_server_data: function(){
             var self = this;
 
-            var loaded = self.fetch('res.users',['name','company_id', 'pos_manager_pwd'],[['id','=',this.session.uid]]) 
+            var loaded = self.fetch('res.users',['name','company_id', 'pos_manager_pwd'],[['id','=',this.session.uid]])
                 .then(function(users){
-                    self.set('user',users[0]);
+                    self.user = users[0];
                     self.set('pwd',users[0].pos_manager_pwd);
-
                     return self.fetch('res.company',
                     [
                         'currency_id',
@@ -90,90 +32,91 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                         'phone',
                         'partner_id',
                     ],
-                    [['id','=',users[0].company_id[0]]]);
+                    [['id','=',users[0].company_id[0]]],
+                    {show_address_only: true});
                 }).then(function(companies){
-                    self.set('company',companies[0]);
-
-                    return self.fetch('res.partner',['contact_address'],[['id','=',companies[0].partner_id[0]]]);
-                }).then(function(company_partners){
-                    self.get('company').contact_address = company_partners[0].contact_address;
+                    self.company = companies[0];
 
                     return self.fetch('product.uom', null, null);
                 }).then(function(units){
-                    self.set('units',units);
+                    self.units = units;
                     var units_by_id = {};
                     for(var i = 0, len = units.length; i < len; i++){
                         units_by_id[units[i].id] = units[i];
                     }
-                    self.set('units_by_id',units_by_id);
-                    
-                    return self.fetch('product.packaging', null, null);
-                }).then(function(packagings){
-                    self.set('product.packaging',packagings);
-                    
+                    self.units_by_id = units_by_id;
+
                     return self.fetch('res.users', ['name','ean13'], [['ean13', '!=', false]]);
                 }).then(function(users){
-                    self.set('user_list',users);
+                    self.users = users;
 
                     return self.fetch('res.partner', ['name','ean13'], [['ean13', '!=', false]]);
                 }).then(function(partners){
-                    self.set('partner_list',partners);
+                    self.partners = partners;
 
-                    return self.fetch('account.tax', ['amount', 'price_include', 'type']);
+                    return self.fetch('account.tax', ['name','amount', 'price_include', 'type']);
                 }).then(function(taxes){
-                    self.set('taxes', taxes);
+                    self.taxes = taxes;
 
                     return self.fetch(
-                        'pos.session', 
+                        'pos.session',
                         ['id', 'journal_ids','name','user_id','config_id','start_at','stop_at'],
                         [['state', '=', 'opened'], ['user_id', '=', self.session.uid]]
                     );
-                }).then(function(sessions){
-                    self.set('pos_session', sessions[0]);
+                }).then(function(pos_sessions){
+                    self.pos_session = pos_sessions[0];
 
                     return self.fetch(
                         'pos.config',
-                        ['name','journal_ids','shop_id','journal_id',
+                        ['name','journal_ids','warehouse_id','journal_id','pricelist_id',
                          'iface_self_checkout', 'iface_led', 'iface_cashdrawer',
-                         'iface_payment_terminal', 'iface_electronic_scale', 'iface_barscan', 'iface_vkeyboard',
-                         'iface_print_via_proxy','iface_cashdrawer','state','sequence_id','session_ids'],
-                        [['id','=', self.get('pos_session').config_id[0]]]
+                         'iface_payment_terminal', 'iface_electronic_scale', 'iface_barscan',
+                         'iface_vkeyboard','iface_print_via_proxy','iface_scan_via_proxy',
+                         'iface_cashdrawer','iface_invoicing','iface_big_scrollbars',
+                         'receipt_header','receipt_footer','proxy_ip',
+                         'state','sequence_id','session_ids'],
+                        [['id','=', self.pos_session.config_id[0]]]
                     );
                 }).then(function(configs){
-                    var pos_config = configs[0];
-                    self.set('pos_config', pos_config);
-                    self.iface_electronic_scale    =  !!pos_config.iface_electronic_scale;  
-                    self.iface_print_via_proxy     =  !!pos_config.iface_print_via_proxy;
-                    self.iface_vkeyboard           =  !!pos_config.iface_vkeyboard; 
-                    self.iface_self_checkout       =  !!pos_config.iface_self_checkout;
-                    self.iface_cashdrawer          =  !!pos_config.iface_cashdrawer;
+                    self.config = configs[0];
+                    self.config.use_proxy = self.config.iface_payment_terminal ||
+                                            self.config.iface_electronic_scale ||
+                                            self.config.iface_print_via_proxy  ||
+                                            self.config.iface_scan_via_proxy   ||
+                                            self.config.iface_cashdrawer;
 
-                    return self.fetch('sale.shop',[],[['id','=',pos_config.shop_id[0]]]);
+                    return self.fetch('stock.warehouse',[],[['id','=', self.config.warehouse_id[0]]]);
                 }).then(function(shops){
-                    self.set('shop',shops[0]);
+                    self.shop = shops[0];
 
-                    return self.fetch('product.pricelist',['currency_id'],[['id','=',self.get('shop').pricelist_id[0]]]);
+                    return self.fetch('product.pricelist',['currency_id'],[['id','=',self.config.pricelist_id[0]]]);
                 }).then(function(pricelists){
-                    self.set('pricelist',pricelists[0]);
+                    self.pricelist = pricelists[0];
 
-                    return self.fetch('res.currency',['symbol','position','rounding','accuracy'],[['id','=',self.get('pricelist').currency_id[0]]]);
+                    return self.fetch('res.currency',['symbol','position','rounding','accuracy'],[['id','=',self.pricelist.currency_id[0]]]);
                 }).then(function(currencies){
-                    self.set('currency',currencies[0]);
+                    self.currency = currencies[0];
 
+                    /*
+                    return (new instance.web.Model('decimal.precision')).call('get_precision',[['Account']]);
+                }).then(function(precision){
+                    self.accounting_precision = precision;
+                    console.log("PRECISION",precision);
+*/
                     return self.fetch('product.packaging',['ean','product_id']);
                 }).then(function(packagings){
                     self.db.add_packagings(packagings);
 
-                    return self.fetch('pos.category', ['id','name','parent_id','child_id','image'])
+                    return self.fetch('product.public.category', ['id','name','parent_id','child_id','image'])
                 }).then(function(categories){
                     self.db.add_categories(categories);
 
                     return self.fetch(
-                        'product.product', 
-                        ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
+                        'product.product',
+                        ['name', 'list_price','price','public_categ_id', 'taxes_id', 'ean13', 'default_code',
                          'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description', 'is_pack'],
                         [['sale_ok','=',true],['available_in_pos','=',true]],
-                        {pricelist: self.get('shop').pricelist_id[0]} // context for price
+                        {pricelist: self.pricelist.id} // context for price
                     );
                 }).then(function(products){
                     self.db.add_products(products);
@@ -181,135 +124,68 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                     return self.fetch(
                         'account.bank.statement',
                         ['account_id','currency','journal_id','state','name','user_id','pos_session_id'],
-                        [['state','=','open'],['pos_session_id', '=', self.get('pos_session').id]]
+                        [['state','=','open'],['pos_session_id', '=', self.pos_session.id]]
                     );
-                }).then(function(bank_statements){
-                    var journals = new Array();
-                    _.each(bank_statements,function(statement) {
+                }).then(function(bankstatements){
+                    var journals = [];
+                    _.each(bankstatements,function(statement) {
                         journals.push(statement.journal_id[0])
                     });
-                    self.set('bank_statements', bank_statements);
+                    self.bankstatements = bankstatements;
                     return self.fetch('account.journal', undefined, [['id','in', journals]]);
                 }).then(function(journals){
-                    self.set('journals',journals);
+                    self.journals = journals;
 
-                    // associate the bank statements with their journals. 
-                    var bank_statements = self.get('bank_statements');
-                    for(var i = 0, ilen = bank_statements.length; i < ilen; i++){
+                    // associate the bank statements with their journals.
+                    var bankstatements = self.bankstatements
+                    for(var i = 0, ilen = bankstatements.length; i < ilen; i++){
                         for(var j = 0, jlen = journals.length; j < jlen; j++){
-                            if(bank_statements[i].journal_id[0] === journals[j].id){
-                                bank_statements[i].journal = journals[j];
-                                bank_statements[i].self_checkout_payment_method = journals[j].self_checkout_payment_method;
+                            if(bankstatements[i].journal_id[0] === journals[j].id){
+                                bankstatements[i].journal = journals[j];
+                                bankstatements[i].self_checkout_payment_method = journals[j].self_checkout_payment_method;
                             }
                         }
                     }
-                    self.set({'cashRegisters' : new module.CashRegisterCollection(self.get('bank_statements'))});
+                    self.cashregisters = bankstatements;
+
+                    // Load the company Logo
+
+                    self.company_logo = new Image();
+                    self.company_logo.crossOrigin = 'anonymous';
+                    var  logo_loaded = new $.Deferred();
+                    self.company_logo.onload = function(){
+                        var img = self.company_logo;
+                        var ratio = 1;
+                        var targetwidth = 300;
+                        var maxheight = 150;
+                        if( img.width !== targetwidth ){
+                            ratio = targetwidth / img.width;
+                        }
+                        if( img.height * ratio > maxheight ){
+                            ratio = maxheight / img.height;
+                        }
+                        var width  = Math.floor(img.width * ratio);
+                        var height = Math.floor(img.height * ratio);
+                        var c = document.createElement('canvas');
+                            c.width  = width;
+                            c.height = height
+                        var ctx = c.getContext('2d');
+                            ctx.drawImage(self.company_logo,0,0, width, height);
+
+                        self.company_logo_base64 = c.toDataURL();
+                        window.logo64 = self.company_logo_base64;
+                        logo_loaded.resolve(); //TODO uncomment it and fix problems
+                    };
+                    self.company_logo.onerror = function(){
+                        logo_loaded.reject();
+                    };
+                    self.company_logo.src = window.location.origin + '/web/binary/company_logo';
+
+                    return logo_loaded;
                 });
-        
+
             return loaded;
-        },
-
-        // logs the usefull posmodel data to the console for debug purposes
-        log_loaded_data: function(){
-            console.log('PosModel data has been loaded:');
-            console.log('PosModel: units:',this.get('units'));
-            console.log('PosModel: bank_statements:',this.get('bank_statements'));
-            console.log('PosModel: journals:',this.get('journals'));
-            console.log('PosModel: taxes:',this.get('taxes'));
-            console.log('PosModel: pos_session:',this.get('pos_session'));
-            console.log('PosModel: pos_config:',this.get('pos_config'));
-            console.log('PosModel: cashRegisters:',this.get('cashRegisters'));
-            console.log('PosModel: shop:',this.get('shop'));
-            console.log('PosModel: company:',this.get('company'));
-            console.log('PosModel: currency:',this.get('currency'));
-            console.log('PosModel: user_list:',this.get('user_list'));
-            console.log('PosModel: user:',this.get('user'));
-            console.log('PosModel.session:',this.session);
-            console.log('PosModel end of data log.');
-        },
-        
-        // this is called when an order is removed from the order collection. It ensures that there is always an existing
-        // order and a valid selected order
-        on_removed_order: function(removed_order){
-            if( this.get('orders').isEmpty()){
-                this.add_new_order();
-            }else{
-                this.set({ selectedOrder: this.get('orders').last() });
-            }
-        },
-
-        // saves the order locally and try to send it to the backend. 'record' is a bizzarely defined JSON version of the Order
-        push_order: function(record) {
-            this.db.add_order(record);
-            this.flush();
-        },
-
-        //creates a new empty order and sets it as the current order
-        add_new_order: function(){
-            var order = new module.Order({pos:this});
-            this.get('orders').add(order);
-            this.set('selectedOrder', order);
-        },
-
-        // attemps to send all pending orders ( stored in the pos_db ) to the server,
-        // and remove the successfully sent ones from the db once
-        // it has been confirmed that they have been sent correctly.
-        flush: function() {
-            //TODO make the mutex work 
-            //this makes sure only one _int_flush is called at the same time
-            /*
-            return this.flush_mutex.exec(_.bind(function() {
-                return this._flush(0);
-            }, this));
-            */
-            this._flush(0);
-        },
-        // attempts to send an order of index 'index' in the list of order to send. The index
-        // is used to skip orders that failed. do not call this method outside the mutex provided
-        // by flush() 
-        _flush: function(index){
-            var self = this;
-            var orders = this.db.get_orders();
-            self.set('nbr_pending_operations',orders.length);
-
-            var order  = orders[index];
-            if(!order){
-                return;
-            }
-            //try to push an order to the server
-            // shadow : true is to prevent a spinner to appear in case of timeout
-            (new instance.web.Model('pos.order')).call('create_from_ui',[[order]],undefined,{ shadow:true })
-                .fail(function(unused, event){
-                    //don't show error popup if it fails 
-                    event.preventDefault();
-                    console.error('Failed to send order:',order);
-                    self._flush(index+1);
-                })
-                .done(function(){
-                    //remove from db if success
-                    self.db.remove_order(order.id);
-                    self._flush(index);
-                });
-        },
-
-        scan_product: function(parsed_ean){
-            var self = this;
-            var product = this.db.get_product_by_ean13(parsed_ean.base_ean);
-            var selectedOrder = this.get('selectedOrder');
-
-            if(!product){
-                return false;
-            }
-
-            if(parsed_ean.type === 'price'){
-                selectedOrder.addProduct(new module.Product(product), {price:parsed_ean.value});
-            }else if(parsed_ean.type === 'weight'){
-                selectedOrder.addProduct(new module.Product(product), {quantity:parsed_ean.value, merge:false});
-            }else{
-                selectedOrder.addProduct(new module.Product(product));
-            }
-            return true;
-        },
+        }
     });
 };
 
@@ -354,7 +230,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#products-screen').css('display', 'block');
             $('#cache_left_pane').css('display', 'none');
         };
-        
+
     // hide message
     var close_pos_messages = function(){
         $('#mid').val('0');
@@ -362,20 +238,20 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         $('#msg_content').html('');
         self.$('#msg_frame').css('display', 'none');
     };
-    
+
      // get POS messages
     var get_pos_messages = function(){
-        var self = this;   
+        var self = this;
         msg_list = [];
-        
+
         $('#msg_title').html('');
         $('#msg_content').html('');
         $('#mid').val('0');
-        
+
         posid = parseInt(posid);
 
-        if(posid != 0){     
-            
+        if(posid != 0){
+
             var Mget = new instance.web.Model('pos.message');
 
             Mget.call('get_available_message', [posid], undefined, { shadow:true })
@@ -390,9 +266,9 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     $('#msg_title').html(message.m_title);
                     $('#msg_content').html(message.m_content);
 
-                    
+
                     var url_img = '';
-                    
+
                     switch(message.m_type){
                         case 1 : url_img = 'tg_pos_message/static/src/img/m_information.png';
                             break;
@@ -407,9 +283,9 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         default : url_img = 'tg_pos_message/static/src/img/m_information.png';
                             break;
                     }
-                    
+
                     $('#msg_header').css('background-image', 'url(' + url_img + ')');
-                    
+
                 }
             });
 
@@ -417,7 +293,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             close_pos_messages();
         }
     };
-    
+
     // show customer form
     var show_form_client = function(){
             $('.order-container').css('display', 'none');
@@ -437,13 +313,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             globalCashier = name;
 
             $('#pay-screen-cashier-name').html(name);
-            
+
             if(name != '' && name != 'nobody'){
-                $('.gotopay-button').removeAttr('disabled');    
-                $('#msg_cashier').css('display', 'none');            
+                $('.gotopay-button').removeAttr('disabled');
+                $('#msg_cashier').css('display', 'none');
             } else{
                 $('.gotopay-button').attr('disabled', 'disabled');
-                $('#msg_cashier').css('display', 'inline-block'); 
+                $('#msg_cashier').css('display', 'inline-block');
             }
         };
 
@@ -469,7 +345,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
             this.client_letter_widget = this;
         },
 
@@ -482,7 +358,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         get_clients: function(letter){
             var self = this;
             var clients_list = [];
-            var l_filter = [['customer', '=', true], 
+            var l_filter = [['customer', '=', true],
                            ['name','=ilike', letter + '%']];
 
             if(letter == '0-9'){
@@ -503,14 +379,14 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             var loaded = fetch(
                                 'res.partner',
-                                ['id', 
-                                 'name', 
-                                 'firstname', 
-                                 'zip', 
-                                 'phone', 
-                                 'mobile', 
-                                 'email', 
-                                 'montantCumule',  
+                                ['id',
+                                 'name',
+                                 'firstname',
+                                 'zip',
+                                 'phone',
+                                 'mobile',
+                                 'email',
+                                 'montantCumule',
                                  'pos_comment'],
                                 l_filter
                                 )
@@ -525,18 +401,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         clients_list[i]['zip'] = clients[i].zip;
                         clients_list[i]['phone'] = clients[i].phone;
                         clients_list[i]['mobile'] = clients[i].mobile;
-                        clients_list[i]['email'] = clients[i].email; 
-                        clients_list[i]['comment'] = clients[i].pos_comment;                     
+                        clients_list[i]['email'] = clients[i].email;
+                        clients_list[i]['comment'] = clients[i].pos_comment;
                      };
 
                     // remove customers lines
                     $('#client-list tr').remove();
 
-                    if(clients_list.length > 0){          
+                    if(clients_list.length > 0){
                         for(var i = 0, len = clients_list.length; i < len; i++){
                            var one_client = QWeb.render('ClientWidget',{
                                                         c_id:clients_list[i].id,
-                                                        c_name:clients_list[i].name, 
+                                                        c_name:clients_list[i].name,
                                                         c_firstname:clients_list[i].firstname,
                                                         c_zip:clients_list[i].zip,
                                                         c_phone:clients_list[i].phone,
@@ -556,7 +432,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                 var s_email = $('.c-email', this).html().trim();
                                 var s_comment = $('.c-comment', this).html().trim();
                                 var s_montant_cumule = $('.c-montant-cumule', this).html().trim();
-                                
+
                                 self.select_client(s_id, s_name, s_fname, s_montant_cumule);
                            });
                         }
@@ -573,7 +449,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         // select one customer
         select_client: function(cid, cname, cfname, cmontantcumule){
-            var self = this;   
+            var self = this;
 
                 module.unselect_client();
 
@@ -582,7 +458,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 $('#selected-customer-name').html(ellipseName(sel_client));
                 $('#montantCumule').html(mc);
-                
+
                 if(cmontantcumule >= 500){
                     $('#selected-vip').html('<img src="tg_pos_enhanced/static/src/img/vip.png"/>');
                 }else{
@@ -601,16 +477,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 });
 
                 if(Number(cmontantcumule) > 0){
-                    var sales_button = QWeb.render('ClientSalesWidget',{});      
+                    var sales_button = QWeb.render('ClientSalesWidget',{});
                     $(sales_button).appendTo($('#btns-customer')).click(function(){
                         self.see_customer_sales();
                     });
-                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png'); 
+                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png');
                     $('#cust_sales_btn').css('cursor', 'pointer');
                 }else{
-                    var sales_button = QWeb.render('ClientSalesWidget',{});                         
+                    var sales_button = QWeb.render('ClientSalesWidget',{});
                     $(sales_button).appendTo($('#btns-customer'));
-                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png'); 
+                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png');
                     $('#cust_sales_btn').css('cursor', 'default');
                 }
 
@@ -646,19 +522,19 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             var loaded = fetch(
                                 'res.partner',
-                                ['name', 
-                                 'firstname', 
-                                 'zip', 
-                                 'phone', 
-                                 'mobile', 
-                                 'email', 
+                                ['name',
+                                 'firstname',
+                                 'zip',
+                                 'phone',
+                                 'mobile',
+                                 'email',
                                  'pos_comment',
                                  'montantCumule'],
                                 [['id' , '=', parseInt(cid)]]
                                 )
                 .then(function(client){
                      var the_client = client[0];
-                        
+
                         // form edit
                         $('#input_name').val(the_client.name);
                         $('#input_firstname').val(the_client.firstname || '');
@@ -684,11 +560,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             show_form_client();
         },
-      
+
         // letters for the search
         build_letters: function(){
             var self = this;
-            var letters = ['0-9','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 
+            var letters = ['0-9','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
             for(var i = 0, len = letters.length; i < len; i++){
@@ -696,7 +572,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 var button = QWeb.render('OneLetterWidget',{letter:aLetter});
 
                 $(button).appendTo($('.letters')).click(function(){
-                    
+
                     $('.letters').children('li').each(function(index){
                         index + ": " + $(this).removeClass().addClass('one-letter');
                     });
@@ -706,11 +582,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     self.get_clients(global_letter);
                 });
             }
-        },          
+        },
     });
 
     module.tgPayScreenWidget = module.PaymentScreenWidget.include({
-        template: 'PaymentScreenWidget', 
+        template: 'PaymentScreenWidget',
 
         show: function(){
             this._super();
@@ -729,7 +605,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.back_button = this.add_action_button({
                 label: 'Back',
                 icon: '/point_of_sale/static/src/img/icons/png48/go-previous.png',
-                click: function(){  
+                click: function(){
                     self.pos_widget.screen_selector.set_current_screen(self.back_screen);
                     $('#cache-header-cust').css('display', 'none');
 
@@ -754,11 +630,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     });
 
                     global_letter = 'A';
-                    self.validateCurrentOrder(); 
+                    self.validateCurrentOrder();
                 },
             });
 
-            this.updatePaymentSummary();
+            this.update_payment_summary();
             this.line_refocus();
         },
 
@@ -780,15 +656,15 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         renderElement: function() {
             var self = this;
             this._super();
-            
+
             this.$('#btn-delremspec').click(function() {
                 $('#enter_special_discount').val('0.00');
                 self.pos.get('selectedOrder').set_special_discount_object('');
                 $(this).hide();
                 $('#btn-call-manager').show();
-                self.updatePaymentSummary();
+                self.update_payment_summary();
             });
-            
+
             this.$('#btn-delremspec').hide();
             this.$('#btn-call-manager').show();
 
@@ -796,8 +672,9 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 self.call_manager_special_discount();
             });
 
-            this.updatePaymentSummary();
+            this.update_payment_summary();
 
+            /*
             this.scrollbar = new module.ScrollbarWidget(this,{
                 target_widget:   this,
                 target_selector: '.pay-scroller',
@@ -810,17 +687,17 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
-
+             */
         },
 
-        updatePaymentSummary: function() {
+        update_payment_summary: function() {
             var self = this;
             this._super();
 
             var currentOrder = this.pos.get('selectedOrder');
             var specialDiscount = $('#enter_special_discount').val();
             var paidTotal = currentOrder.getPaidTotal();
-        
+
             // on déclare la somme due
             var totalDeDepart = currentOrder.getTotalTaxIncluded();
 
@@ -831,10 +708,10 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             // C'est l'histoire de Totaux...
             var sousTotalApayer = parseFloat(totalDeDepart) - parseFloat(totalRemises); // 59 - 9.10 = 49.9 - 10% = 44.91
             var resteApayer = parseFloat(sousTotalApayer) - parseFloat(paidTotal); // 4.30 - paidTotal
-            var remaining = sousTotalApayer > paidTotal ? parseFloat(sousTotalApayer) - parseFloat(paidTotal) : 0;     
+            var remaining = sousTotalApayer > paidTotal ? parseFloat(sousTotalApayer) - parseFloat(paidTotal) : 0;
             var monnaieArendre = paidTotal > sousTotalApayer ? parseFloat(paidTotal) - parseFloat(sousTotalApayer) : 0;
 
-            var rounding = this.pos.get('currency').rounding;
+            var rounding = this.pos.currency.rounding;
             var round_pr = instance.web.round_precision
             remaining = round_pr(remaining, rounding);
 
@@ -845,15 +722,15 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.$('#payment-change').html(this.format_currency(monnaieArendre));
 
             if(currentOrder.selected_orderline === undefined){
-                remaining = 1;  // What is this ? 
+                remaining = 1;  // What is this ?
             }
-                
+
             if(this.pos_widget.action_bar){
                 this.pos_widget.action_bar.set_button_disabled('validation', (sousTotalApayer < 0 || remaining > 0));
             }
         },
 
-    }); 
+    });
 
     module.tgReceiptScreenWidget = module.ReceiptScreenWidget.include({
 
@@ -862,8 +739,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('.pos-receipt-container', this.$el).html(QWeb.render('PosTicket',{widget:this}));
 
             if(globalCashier != ''){
-                this.$('#ticket-screen-cashier-name').html(globalCashier);           
-            }         
+                this.$('#ticket-screen-cashier-name').html(globalCashier);
+            }
         },
 
         getTicketComment: function(){
@@ -900,18 +777,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.add_action_button({
                     label: _t('Print'),
                     icon: '/point_of_sale/static/src/img/icons/png48/printer.png',
-                    click: function(){  
-                        self.print();              
+                    click: function(){
+                        self.print();
                     },
                 });
 
             this.add_action_button({
                     label: _t('Next Order'),
                     icon: '/point_of_sale/static/src/img/icons/png48/go-next.png',
-                    click: function() { 
-                        self.finishOrder(); 
+                    click: function() {
+                        self.finishOrder();
                         $('#cache_left_pane').css('display', 'none');
-                        $('#cache-header-cust').css('display', 'none');  
+                        $('#cache-header-cust').css('display', 'none');
 
                         $('#numpad-return').attr('disabled', 'disabled');
                         $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
@@ -923,7 +800,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         }
 
                         module.unselect_client();
-                        
+
                         // check for new messages
                         get_pos_messages();
                     },
@@ -937,6 +814,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         renderElement: function(){
             var self = this;
             this._super();
+            /*
             this.scrollbar = new module.ScrollbarWidget(this,{
                 target_widget:   this,
                 target_selector: '.ticket-scroller',
@@ -949,12 +827,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
+*/
         },
     });
 
     module.GoToPayWidget = module.PosBaseWidget.extend({
         template: 'GoToPayWidget',
-        
+
         init: function(parent, options) {
             this._super(parent);
         },
@@ -970,7 +849,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
     module.GoToPayButtonWidget = module.PosBaseWidget.extend({
         template: 'GoToPayButtonWidget',
-        
+
         init: function(parent, options) {
             this._super(parent);
         },
@@ -993,7 +872,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
 
     });
@@ -1003,7 +882,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
 
         renderElement: function(){
@@ -1046,7 +925,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 $('#btn-call-manager').hide();
                 $('#pwd_frame').css('display', 'none');
 
-                $(window)[0].screen_selector.current_screen.updatePaymentSummary();
+                $(window)[0].screen_selector.current_screen.update_payment_summary();
             }
         },
     });
@@ -1056,7 +935,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
 
         start: function() {
@@ -1109,7 +988,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 special_discount: null,
                 special_disobj: null,
             });
-            this.pos =     attributes.pos; 
+            this.pos =     attributes.pos;
             this.selected_orderline = undefined;
             this.screen_data = {};  // see ScreenSelector
             this.receipt_type = 'receipt';  // 'receipt' || 'invoice'
@@ -1154,12 +1033,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 // this is a Pack !!
                 this.show_screen_pack(attr.name);
 
-                // get templates 
+                // get templates
                 this.get_templates(attr.id);
 
             }
         },
-         
+
         get_templates: function(pack_id){
             var self = this;
             var grp_list = [];
@@ -1176,22 +1055,22 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         if(groupe_tmpl[i].group_id != grp_id){
                             grp_id = groupe_tmpl[i].group_id;
                             var one_pack = new module.PackWidget(this, {});
-                            one_pack.appendTo($('#packs-list'));  
+                            one_pack.appendTo($('#packs-list'));
 
                             item_number++;
-                            one_pack.$('.item_number').html(item_number);  
+                            one_pack.$('.item_number').html(item_number);
                             one_pack.$('.pack_item_select').attr('id', 'p_' + grp_id);
 
                             var sel_variant_id = 'v_' + grp_id;
                                 one_pack.$('.pack_product_select').attr('id', sel_variant_id);
 
-                            one_pack.$('.pack_item_select').change(function(){ 
+                            one_pack.$('.pack_item_select').change(function(){
                                 var product_tmpl_id = this.value;
                                 var sel_id = $(this).attr('id');
                                 sel_id = sel_id.setCharAt(0, 'v');
                                 self.get_variant(product_tmpl_id, sel_id);
-                            });                 
-                        }      
+                            });
+                        }
 
                         var content = one_pack.$('.pack_item_select').html();
                         var new_option = '<option value="' + groupe_tmpl[i].item_tmpl_id[0] + '">' + groupe_tmpl[i].item_tmpl_id[1] + '</option>\n';
@@ -1208,7 +1087,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     //pack_id
                     $('#pack_product_id').val(pack_id);
                 });
-        }, 
+        },
 
         get_variant: function(product_tmpl_id, sel_variant_id){
             var self = this;
@@ -1243,7 +1122,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var pack_product = null;
 
             pack_product = self.pos.db.get_product_by_id(parseInt(pack_id));
-            
+
             // add pack product to the order
             if(pack_product){
                 var is_pack_previous = pack_product.is_pack;
@@ -1260,12 +1139,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 pack_product.is_pack = is_pack_previous;
                 pack_product.name = pack_name;
-            }    
+            }
 
             for(var i = 1; i <= nb_items; i++){
-                var field = $('#v_' + i);              
+                var field = $('#v_' + i);
                 var product_id = parseInt(field.val());
-                var product = self.pos.db.get_product_by_id(product_id);  
+                var product = self.pos.db.get_product_by_id(product_id);
 
                 //add products to the order
                 if(product){
@@ -1282,7 +1161,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     // change name + price back
                     product.name = previous_name;
                     product.price = previous_price;
-                }   
+                }
             };
 
             self.hide_screen_pack();
@@ -1465,19 +1344,19 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 partner_id: this.get_partner_id(),
                 invoice_id: null,   //TODO
                 cashier: cashier ? cashier.name : null,
-                date: { 
-                    year: date.getFullYear(), 
-                    month: date.getMonth(), 
-                    date: date.getDate(),       // day of the month 
-                    day: date.getDay(),         // day of the week 
-                    hour: date.getHours(), 
-                    minute: date.getMinutes() 
-                }, 
+                date: {
+                    year: date.getFullYear(),
+                    month: date.getMonth(),
+                    date: date.getDate(),       // day of the month
+                    day: date.getDay(),         // day of the week
+                    hour: date.getHours(),
+                    minute: date.getMinutes()
+                },
                 company:{
                     email: company.email,
                     website: company.website,
                     company_registry: company.company_registry,
-                    contact_address: company.contact_address, 
+                    contact_address: company.contact_address,
                     vat: company.vat,
                     name: company.name,
                     phone: company.phone,
@@ -1485,7 +1364,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 shop:{
                     name: shop.name,
                 },
-                currency: this.pos.get('currency'),
+                currency: this.pos.currency,
             };
         },
         exportAsJSON: function() {
@@ -1500,7 +1379,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 return paymentLines.push([0, 0, item.export_as_JSON()]);
             }, this));
 
-            var rounding = this.pos.get('currency').rounding;
+            var rounding = this.pos.currency.rounding;
 
             return {
                 name: this.getName(),
@@ -1594,8 +1473,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             return this.type;
         },
 
-        // sets the quantity of the product. The quantity will be rounded according to the 
-        // product's unity of measure properties. Quantities greater than zero will not get 
+        // sets the quantity of the product. The quantity will be rounded according to the
+        // product's unity of measure properties. Quantities greater than zero will not get
         // rounded to zero
         set_quantity: function(quantity){
             var self = this;
@@ -1617,10 +1496,10 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                     var flag_cur = false;
 
-                    for(var i = 0,  len = o_lines.length; i < len; i++){                 
+                    for(var i = 0,  len = o_lines.length; i < len; i++){
 
                         // when we found current line
-                        if(o_lines[i] == sel_line){           
+                        if(o_lines[i] == sel_line){
                             flag_cur = true;
                         }
 
@@ -1633,8 +1512,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                             }else{
                                 // until we found that this is not an item of the selected pack
                                 if(cur_product_name[0] != '■'){
-                                    flag_cur = false; 
-                                }  
+                                    flag_cur = false;
+                                }
                             }
                         }
                     }
@@ -1692,13 +1571,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             return this.pos.get('units_by_id')[unit_id];
         },
         // return the product of this orderline
-        get_product: function(){           
+        get_product: function(){
             return this.product;
         },
 
         get_product_tax: function(){
             var self = this;
-            var product =  this.get_product(); 
+            var product =  this.get_product();
             var taxes_ids = product.get('taxes_id');
             var taxes =  self.pos.get('taxes');
             var p_tax = null;
@@ -1750,7 +1629,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 return false;
             }else if(this.price !== orderline.price){
                 return false;
-            }else{ 
+            }else{
                 return true;
             }
         },
@@ -1787,11 +1666,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.trigger('change');
         },
         get_unit_price: function(){
-            var rounding = this.pos.get('currency').rounding;
+            var rounding = this.pos.currency.rounding;
             return round_pr(this.price,rounding);
         },
         get_display_price: function(){
-            var rounding = this.pos.get('currency').rounding;
+            var rounding = this.pos.currency.rounding;
             return  round_pr(round_pr(this.get_unit_price() * this.get_quantity(),rounding) * (1- this.get_discount()/100.0),rounding);
         },
         get_price_without_tax: function(){
@@ -1806,13 +1685,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         get_all_prices: function(){
             var self = this;
-            var currency_rounding = this.pos.get('currency').rounding;
+            var currency_rounding = this.pos.currency.rounding;
             var base = round_pr(this.get_quantity() * this.get_unit_price() * (1.0 - (this.get_discount() / 100.0)), currency_rounding);
             var totalTax = base;
             var totalNoTax = base;
-            
+
             var product_list = this.pos.get('product_list');
-            var product =  this.get_product(); 
+            var product =  this.get_product();
             var taxes_ids = product.get('taxes_id');
             var taxes =  self.pos.get('taxes');
             var taxtotal = 0;
@@ -1822,7 +1701,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 if (tax.price_include) {
                     var tmp;
                     if (tax.type === "percent") {
-                        tmp =  base - round_pr(base / (1 + tax.amount),currency_rounding); 
+                        tmp =  base - round_pr(base / (1 + tax.amount),currency_rounding);
                     } else if (tax.type === "fixed") {
                         tmp = round_pr(tax.amount * self.get_quantity(),currency_rounding);
                     } else {
@@ -1859,7 +1738,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
 
         hide_form_client: function(){
@@ -1867,12 +1746,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache-header-cust').css('display', 'none');
             $('#cache-right-pan').css('display', 'none');
             $('.order-container').css('display', 'block');
-            $('#leftpane footer').css('display', 'block');  
+            $('#leftpane footer').css('display', 'block');
         },
 
                 // select one customer
         select_client: function(cid, cname, cfname, cmontantcumule){
-            var self = this;   
+            var self = this;
 
             module.unselect_client();
 
@@ -1881,7 +1760,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             $('#selected-customer-name').html(ellipseName(sel_client));
             $('#montantCumule').html(mc);
-            
+
             if(cmontantcumule >= 500){
                 $('#selected-vip').html('<img src="tg_pos_enhanced/static/src/img/vip.png"/>');
             }else{
@@ -1900,16 +1779,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             if(Number(cmontantcumule) > 0){
-                var sales_button = QWeb.render('ClientSalesWidget',{});      
+                var sales_button = QWeb.render('ClientSalesWidget',{});
                 $(sales_button).appendTo($('#btns-customer')).click(function(){
                     self.see_customer_sales();
                 });
-                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png'); 
+                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png');
                 $('#cust_sales_btn').css('cursor', 'pointer');
             }else{
-                var sales_button = QWeb.render('ClientSalesWidget',{});                         
+                var sales_button = QWeb.render('ClientSalesWidget',{});
                 $(sales_button).appendTo($('#btns-customer'));
-                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png'); 
+                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png');
                 $('#cust_sales_btn').css('cursor', 'default');
             }
 
@@ -1936,19 +1815,19 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             var loaded = fetch(
                                 'res.partner',
-                                ['name', 
-                                 'firstname', 
-                                 'zip', 
-                                 'phone', 
-                                 'mobile', 
+                                ['name',
+                                 'firstname',
+                                 'zip',
+                                 'phone',
+                                 'mobile',
                                  'email',
-                                 'pos_comment', 
+                                 'pos_comment',
                                  'montantCumule'],
                                 [['id' , '=', parseInt(cid)]]
                                 )
                 .then(function(client){
                      var the_client = client[0];
-                        
+
                         // form edit
                         $('#input_name').val(the_client.name);
                         $('#input_firstname').val(the_client.firstname || '');
@@ -1979,7 +1858,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         get_clients: function(letter){
             var self = this;
             var clients_list = [];
-            var l_filter = [['customer', '=', true], 
+            var l_filter = [['customer', '=', true],
                            ['name','=ilike', letter + '%']];
 
             if(letter == '0-9'){
@@ -2000,14 +1879,14 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 var loaded = fetch(
                                 'res.partner',
-                                ['id', 
-                                 'name', 
-                                 'firstname', 
-                                 'zip', 
-                                 'phone', 
-                                 'mobile', 
-                                 'email', 
-                                 'montantCumule',  
+                                ['id',
+                                 'name',
+                                 'firstname',
+                                 'zip',
+                                 'phone',
+                                 'mobile',
+                                 'email',
+                                 'montantCumule',
                                  'pos_comment'],
                                 l_filter
                                 )
@@ -2021,18 +1900,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         clients_list[i]['zip'] = clients[i].zip;
                         clients_list[i]['phone'] = clients[i].phone;
                         clients_list[i]['mobile'] = clients[i].mobile;
-                        clients_list[i]['email'] = clients[i].email; 
-                        clients_list[i]['comment'] = clients[i].pos_comment; 
+                        clients_list[i]['email'] = clients[i].email;
+                        clients_list[i]['comment'] = clients[i].pos_comment;
                      };
 
                     // remove lines
                     $('#client-list tr').remove();
 
-                    if(clients_list.length > 0){          
+                    if(clients_list.length > 0){
                         for(var i = 0, len = clients_list.length; i < len; i++){
                            var one_client = QWeb.render('ClientWidget',{
                                                         c_id:clients_list[i].id,
-                                                        c_name:clients_list[i].name, 
+                                                        c_name:clients_list[i].name,
                                                         c_firstname:clients_list[i].firstname,
                                                         c_zip:clients_list[i].zip,
                                                         c_phone:clients_list[i].phone,
@@ -2052,7 +1931,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                 var s_email = $('.c-email', this).html().trim();
                                 var s_comment = $('.c-comment', this).html().trim();
                                 var s_montant_cumule = $('.c-montant-cumule', this).html().trim();
-                                
+
                                 self.select_client(s_id, s_name, s_fname, s_montant_cumule);
                            });
                         }
@@ -2133,7 +2012,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     $('#error_cname').css('display', 'block');
                     nb_error++;
                 }
-                
+
                 if (c_firstname == ''){
                     $('#error_cfirstname').css('display', 'block');
                     nb_error++;
@@ -2143,33 +2022,33 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     $('#error_czip').css('display', 'block');
                     nb_error++;
                 }
-                
+
                 if (c_phone.length < 8  && c_phone != ''){
                     $('#error_cphone').css('display', 'block');
                     nb_error++;
                 }
-                
+
                 if (c_mobile.length < 8 && c_mobile != ''){
                     $('#error_cmobile').css('display', 'block');
                     nb_error++;
                 }
-                
+
                 if (c_email != '' && !self.validateEmail(c_email)){
                     $('#error_cemail').css('display', 'block');
                     nb_error++;
                 }
-                
+
                 if (nb_error > 0){
-                    $('#error-msg').css('display', 'block');                
+                    $('#error-msg').css('display', 'block');
                 } else{
-                    self.save_client(c_id.trim(), 
-                                     c_name.trim(), 
-                                     c_firstname.trim(), 
-                                     c_zip.trim(), 
-                                     c_phone.trim(), 
-                                     c_mobile.trim(), 
-                                     c_email.trim(), 
-                                     c_comment.trim(), 
+                    self.save_client(c_id.trim(),
+                                     c_name.trim(),
+                                     c_firstname.trim(),
+                                     c_zip.trim(),
+                                     c_phone.trim(),
+                                     c_mobile.trim(),
+                                     c_email.trim(),
+                                     c_comment.trim(),
                                      c_montant_cumule.trim()
                                      );
                 }
@@ -2194,7 +2073,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     });
 
     module.ClientScreenWidget = module.ScreenWidget.extend({
-        template:'ClientScreenWidget',  
+        template:'ClientScreenWidget',
 
         start: function(){
             var self = this;
@@ -2202,11 +2081,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.clients_letters_widget.replace($('#placeholder-ClientsLettersWidget'));
 
             this.$('#id-clientscreenwidget').css('display', 'none');
-        },  
+        },
 
         // select customer
         select_client: function(cid, cname, cfname, cmontantcumule){
-            var self = this;   
+            var self = this;
 
                 module.unselect_client();
 
@@ -2215,7 +2094,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 $('#selected-customer-name').html(ellipseName(sel_client));
                 $('#montantCumule').html(mc);
-                
+
                 if(cmontantcumule >= 500){
                     $('#selected-vip').html('<img src="tg_pos_enhanced/static/src/img/vip.png"/>');
                 }else{
@@ -2267,19 +2146,19 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             var loaded = fetch(
                                 'res.partner',
-                                ['name', 
-                                 'firstname', 
-                                 'zip', 
-                                 'phone', 
-                                 'mobile', 
+                                ['name',
+                                 'firstname',
+                                 'zip',
+                                 'phone',
+                                 'mobile',
                                  'email',
-                                 'pos_comment', 
+                                 'pos_comment',
                                  'montantCumule'],
                                 [['id' , '=', parseInt(cid)]]
                                 )
                 .then(function(client){
                      var the_client = client[0];
-                        
+
                         // form edit
                         $('#input_name').val(the_client.name);
                         $('#input_firstname').val(the_client.firstname || '');
@@ -2311,7 +2190,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         get_clients: function(letter){
             var self = this;
             var clients_list = [];
-            var l_filter = [['customer', '=', true], 
+            var l_filter = [['customer', '=', true],
                            ['name','=ilike', letter + '%']];
 
             if(letter == '0-9'){
@@ -2328,16 +2207,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                             ['name','=ilike', '8%'],
                             ['name','=ilike', '9%']
                             ];
-            } 
+            }
 
             var loaded = fetch(
                                 'res.partner',
-                                ['id', 
-                                'name', 
-                                'firstname', 
-                                'zip', 'phone', 
-                                'mobile', 
-                                'email', 
+                                ['id',
+                                'name',
+                                'firstname',
+                                'zip', 'phone',
+                                'mobile',
+                                'email',
                                 'pos_comment',
                                 'montantCumule'],
                                 l_filter
@@ -2352,18 +2231,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         clients_list[i]['zip'] = clients[i].zip;
                         clients_list[i]['phone'] = clients[i].phone;
                         clients_list[i]['mobile'] = clients[i].mobile;
-                        clients_list[i]['email'] = clients[i].email; 
-                        clients_list[i]['comment'] = clients[i].pos_comment; 
+                        clients_list[i]['email'] = clients[i].email;
+                        clients_list[i]['comment'] = clients[i].pos_comment;
                      };
 
                     // remove lines
                     $('#client-list tr').remove();
 
-                    if(clients_list.length > 0){          
+                    if(clients_list.length > 0){
                         for(var i = 0, len = clients_list.length; i < len; i++){
                            var one_client = QWeb.render('ClientWidget',{
                                                         c_id:clients_list[i].id,
-                                                        c_name:clients_list[i].name, 
+                                                        c_name:clients_list[i].name,
                                                         c_firstname:clients_list[i].firstname,
                                                         c_zip:clients_list[i].zip,
                                                         c_phone:clients_list[i].phone,
@@ -2383,7 +2262,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                 var s_email = $('.c-email', this).html().trim();
                                 var s_comment = $('.c-comment', this).html().trim();
                                 var s_montant_cumule = $('.c-montant-cumule', this).html().trim();
-                                                    
+
                                 self.select_client(s_id, s_name, s_fname, s_montant_cumule);
                            });
                         }
@@ -2395,11 +2274,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                     $('#nb_customers').html(clients_list.length);
                 });
-        },  
+        },
 
         renderElement: function(){
             var self = this;
             this._super();
+            /*
             this.scrollbar = new module.ScrollbarWidget(this,{
                 target_widget:   this,
                 target_selector: '.cust-list-scroller',
@@ -2412,7 +2292,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
-
+*/
             this.$('#cs-closebtn').click(function(){
                 close_cs_window();
             });
@@ -2452,10 +2332,10 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
     });
-    
+
 
     module.SalesScreenWidget = module.ScreenWidget.extend({
         template : 'SalesScreenWidget',
@@ -2468,7 +2348,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.show_histo_handler = function(){
                 setInterval(function(){
                     var sales_visibility = $('#id_salesscreen').css('display');
-                    if( sales_visibility == 'block'){    
+                    if( sales_visibility == 'block'){
 
                         if(can_show_histo == true){
                             self.show_histo();
@@ -2484,7 +2364,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         show_histo: function(){
             var self = this;
-            
+
             // remove sales lines
             $('#sales-list tr').remove();
 
@@ -2498,8 +2378,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     alert('Partner orders : get_partner_orders = failed');
                 })
                 .done(function(orders){
-                    
-                    if(orders.length > 0){ 
+
+                    if(orders.length > 0){
                         for(var i = 0, len = orders.length; i < len; i++){
 
                             var one_sale = QWeb.render('SaleWidget',{
@@ -2512,13 +2392,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                             s_discount:orders[i].discount.toFixed(2),
                                             s_total:orders[i].amount_total.toFixed(2),
                                             s_done:'false',
-                                        }); 
-                            
+                                        });
+
                             var tr_line_id = 'l_' + orders[i].id;
                             var tr_detail_id = 'd_' + orders[i].id;
                             var tr_oline_id = 'dl_' + orders[i].id;
 
-                            $(one_sale).appendTo($('#sales-list'));    
+                            $(one_sale).appendTo($('#sales-list'));
 
                             // replace TRs id
                             $('#lx').replaceWith('<tr class="sale_line" id="' + tr_line_id + '">' + $('#lx').html() + "</tr>");
@@ -2541,7 +2421,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                     self.get_sale_detail(parseInt(sel_id), 'dl_' + sel_id);
                                 }
                             });
-                            
+
                             // hide detail
                             $('#' + tr_detail_id).click(function(){
                                 var detail_id = $(this).attr('id');
@@ -2558,7 +2438,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         $(no_sale).appendTo($('#sales-list'));
                     }
 
-                    $('#cust_sales_name').html($('#selected-vip').html() + ' ' 
+                    $('#cust_sales_name').html($('#selected-vip').html() + ' '
                             + $('#selected-customer-name').html());
                 });
             }
@@ -2566,7 +2446,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         get_sale_detail: function(sid, tr_id){
             var self = this;
-            oline_list = []; 
+            oline_list = [];
 
             if(! sid){
                 return false;
@@ -2606,10 +2486,10 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                 [['id', 'in', p_ids]]
                                 );
 
-                }).then(function(products){ 
+                }).then(function(products){
 
-                    if(oline_list.length > 0){  
-      
+                    if(oline_list.length > 0){
+
                         for(var i = 0, len = oline_list.length; i < len; i++){
 
                             // product name
@@ -2628,7 +2508,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                                             d_amount:oline_list[i].amount.toFixed(2),
                                         });
 
-                            $(one_line).appendTo($('#' + tr_id)); 
+                            $(one_line).appendTo($('#' + tr_id));
                         }
                     }
 
@@ -2647,12 +2527,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache-header-cust').css('display', 'none');
             $('#id_salesscreen').css('display', 'none');
             $('#products-screen').css('display', 'block');
-           
+
         },
 
         renderElement: function(){
             var self = this;
             this._super();
+            /*
             this.scrollbar = new module.ScrollbarWidget(this,{
                 target_widget:   this,
                 target_selector: '.cust-list-scroller',
@@ -2665,7 +2546,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
-
+*/
             this.$('#cs-salesclosebtn').click(function(){
                 self.close_sales_window();
             });
@@ -2675,7 +2556,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             setInterval(function(){
                     var sales_visibility = $('#id_salesscreen').css('display');
-                    if( sales_visibility == 'block'){    
+                    if( sales_visibility == 'block'){
 
                         if(can_show_histo == true){
                             self.show_histo();
@@ -2690,7 +2571,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         },
 
         bind_events:function(){
-            $(window).show_histo(function(){     
+            $(window).show_histo(function(){
             });
         },
     });
@@ -2700,12 +2581,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         init: function(parent, options){
             this._super(parent);
-            var  self = this; 
+            var  self = this;
         },
 
         renderElement: function(){
             var self = this;
             this._super();
+/*
             this.scrollbar = new module.ScrollbarWidget(this,{
                 target_widget:   this,
                 target_selector: '.cust-list-scroller',
@@ -2718,29 +2600,29 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
-
+*/
             this.$('#cs-salesclosebtn').click(function(){
                 self.close_sales_window();
             });
         },
     });
-    
-    
+
+
     module.tgMessageWidget = module.ScreenWidget.extend({
         template: 'tgMessageWidget',
-        
+
         init: function(parent, options) {
             this._super(parent);
-            var  self = this;     
+            var  self = this;
         },
-        
+
         close_message_read: function(){
-            var  self = this;     
+            var  self = this;
             var mid = $('#mid').val();
-            
+
             posid = parseInt(posid);
             mid = parseInt(mid);
-            
+
             if (mid != 0 && posid != 0){
                 var Mread = new instance.web.Model('pos.message.read');
 
@@ -2755,11 +2637,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 console.log("POS messaging : close_message_read = mid not set!");
             }
         },
-        
+
         renderElement: function() {
             var self = this;
             this._super();
-            
+
             this.$('#message-closebtn').click(function(){
                 self.close_message_read();
             });
@@ -2767,11 +2649,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     });
 
     module.tgPosWidget = module.PosWidget.include({
-        template: 'PosWidget',  
+        template: 'PosWidget',
 
         init: function(parent, options) {
             this._super(parent);
-            var  self = this;     
+            var  self = this;
         },
 
          // get current POS id
@@ -2779,13 +2661,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var self = this;
             var config = self.pos.get('pos_config');
             var config_id = null;
-                     
+
             if(config){
                 config_id = config.id;
-                
+
                 return config_id;
-            }        
-            return '';    
+            }
+            return '';
         },
 
         get_cashiers: function(config_id){
@@ -2806,7 +2688,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                             var new_option = '<option value="nobody"></option>\n';
                             self.$('#cashier-select').html(content + new_option);
                         }
-                        
+
                         for(var i = 0, len = cashier_list.length; i < len; i++){
                             var content = self.$('#cashier-select').html();
                             var new_option = '<option value="' + cashier_list[i] + '">' + cashier_list[i] + '</option>\n';
@@ -2825,7 +2707,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         self.$('.gotopay-button').attr('disabled', 'disabled');
                     }
                 });
-        }, 
+        },
 
         renderElement: function() {
             var self = this;
@@ -2846,7 +2728,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 module.unselect_client();
 
                 $('#id-clientscreenwidget').css('display', 'none');
-                $('#products-screen').css('display', 'block');           
+                $('#products-screen').css('display', 'block');
                 $('.order-container').css('display', 'none');
                 $('#leftpane footer').css('display', 'none');
                 $('#form-client').css('display', 'block');
@@ -2865,12 +2747,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             });
 
             global_pwd = self.pos.attributes.pwd;
-            
-            var pos_config = self.pos.get('pos_config');         
+
+            var pos_config = self.pos.get('pos_config');
             if (pos_config != null){
                 posid = pos_config.id;
-            } 
-            
+            }
+
             get_pos_messages();
         },
 
@@ -2887,15 +2769,15 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.formclient = new module.FormClientWidget(this, {});
             this.formclient.replace(this.$('#placeholder-CustFormWidget'));
 
-            this.gotopay = new module.GoToPayWidget(this, {});  
-            this.gotopay.replace(this.$('#placeholder-GoToPayWidget')); 
+            this.gotopay = new module.GoToPayWidget(this, {});
+            this.gotopay.replace(this.$('#placeholder-GoToPayWidget'));
 
             this.sales = new module.SalesScreenWidget(this,{});
             this.sales.appendTo($('#rightpane'));
 
             this.pwd_alert = new module.AlertPwdWidget(this,{});
-            this.pwd_alert.replace(this.$('.placeholder-AlertPwdWidget')); 
-            
+            this.pwd_alert.replace(this.$('.placeholder-AlertPwdWidget'));
+
             this.msgs = new module.tgMessageWidget(this, {});
             this.msgs.replace(this.$('.placeholder-MessageWidget'));
 
@@ -2919,22 +2801,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     });
 };
 
-openerp.point_of_sale = function(instance) {
-    instance.point_of_sale = {};
-
-    var module = instance.point_of_sale;
-
-    openerp_pos_db(instance,module);            // import db.js
-    openerp_pos_models(instance,module);        // import pos_models.js
-    tg_pos_enhanced_models(instance,module);    // import tg_pos_enhanced_models/tg_pos_enhanced.js
-    openerp_pos_basewidget(instance,module);    // import pos_basewidget.js
-    openerp_pos_keyboard(instance,module);      // import pos_keyboard_widget.js
-    openerp_pos_scrollbar(instance,module);     // import pos_scrollbar_widget.js
-    openerp_pos_screens(instance,module);       // import pos_screens.js
-    openerp_pos_widgets(instance,module);       // import pos_widgets.js
-    openerp_pos_devices(instance,module);       // import pos_devices.js
-
-    tg_pos_enhanced(instance,module);           // import tg_pos_enhanced/tg_pos_enhanced.js
-
-    instance.web.client_actions.add('pos.ui', 'instance.point_of_sale.PosWidget');
-};
+(function(){
+    var _super = window.openerp.point_of_sale;
+    window.openerp.point_of_sale = function(instance){
+        _super(instance);
+        var module = instance.point_of_sale;
+        tg_pos_enhanced_models(instance,module);    // import tg_pos_enhanced_models/tg_pos_enhanced.js
+        tg_pos_enhanced(instance,module);           // import tg_pos_enhanced/tg_pos_enhanced.js
+    }
+})()
