@@ -35,9 +35,9 @@ Numerous modifications of the Point Of Sale :
     'js': [
         'static/src/js/tg_pos.js',
     ],
-    'css':[
-        'static/src/css/tg_pos.css',
-    ],
+    #'css':[
+    #    'static/src/css/tg_pos.css',
+    #],
     'installable': True,
     'application': False,
     'auto_install': False,

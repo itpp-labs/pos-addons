@@ -4,18 +4,23 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="PosWidget" >
 
-        <t t-jquery=".point-of-sale" t-operation="prepend">
+        <t t-jquery=".pos" t-operation="prepend">
             <div class="placeholder-AlertPwdWidget"></div>
             <div class="placeholder-MessageWidget"></div>
         </t>
 
         <!-- panneau left -->
-        <t t-jquery="#leftpane" t-operation="append">
+        <t t-jquery=".pos-leftpane" t-operation="append">
+                        <div class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix'>
+
+
             <div id="cache_left_pane"></div>
             <!-- panneau affichage client sélectionné -->
             <header>
             	<div id="header-customer">
-                    <img src="tg_pos_enhanced/static/src/img/disabled_client.png" title="Customer" id="img-sel_cus"/> :  
+                    <img src="/tg_pos_enhanced/static/src/img/disabled_client.png" title="Customer" id="img-sel_cus"/> :  
                     <span id="selected-customer-name">?</span> <span id="selected-vip"></span>
                     <div id="btns-customer">
                     </div>
@@ -24,23 +29,25 @@
 	            	<div class="shadow-top"></div>
 	            	<div id="client-btns">
                         <li>
-                            <img id="img_amountcumul" src="tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Amount cumulated"/> : <span id="montantCumule"></span>
+                            <img id="img_amountcumul" src="/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Amount cumulated"/> : <span id="montantCumule"></span>
                         </li>      
                     </div>
                     <div id="cust-btns">
-                        <li><img id="btn-findcust" src="tg_pos_enhanced/static/src/img/find_client.png" title="Find customer"/></li>
-                        <li><img id="btn-addcust" src="tg_pos_enhanced/static/src/img/add_client.png" title="Create customer"/></li>
+                        <li><img id="btn-findcust" src="/tg_pos_enhanced/static/src/img/find_client.png" title="Find customer"/></li>
+                        <li><img id="btn-addcust" src="/tg_pos_enhanced/static/src/img/add_client.png" title="Create customer"/></li>
                     </div>
             	</div>
                 <div id="cache-header-cust"></div>
             </header>
             <div id="placeholder-CustFormWidget"></div>
 
+                                </div>
+                            </div>
+                        </div>
         </t>
 
         <!-- Cashiers drop-down list under NumPad -->
-        <t t-jquery="footer" t-operation="replace">
-            <footer>
+        <t t-jquery=".subwindow-container-fix.pads" t-operation="inner">
             <div id="placeholder-GoToPayWidget"></div>
             <div id="placeholder-NumpadWidget"></div>
             <div id="AlertNoCashier">You must create at least one cashier!</div>
@@ -55,11 +62,10 @@
                 </div>         
             </div>
             <span id="label_deconexion">Logout</span>
-        </footer>
         </t>
 
         <!-- panneau right -->
-        <t t-jquery="#rightpane" t-operation="append">
+        <t t-jquery=".rightpane" t-operation="append">
             <div id="cache-right-pan"></div>
         </t>
     </t>
@@ -88,11 +94,11 @@
                                 <table>
                                     <tr class="paymentline">
                                         <td class="paymentline-type">
-                                            Special discount :  <img id="btn-call-manager" class="pos-call-manager" src="tg_pos_enhanced/static/src/img/call_shop_manager.png" title="Call shop manager for special discount"/> <img id="btn-delremspec" class=".pos-btn-del-discount" src="tg_pos_enhanced/static/src/img/remove.png" title="Delete special discount"/>
+                                            Special discount :  <img id="btn-call-manager" class="pos-call-manager" src="/tg_pos_enhanced/static/src/img/call_shop_manager.png" title="Call shop manager for special discount"/> <img id="btn-delremspec" class=".pos-btn-del-discount" src="/tg_pos_enhanced/static/src/img/remove.png" title="Delete special discount"/>
                                         </td>
                                         <td class="align_right">
                                             <input type="text" id="enter_special_discount" style="color: red;" value="0.00" readonly="readonly" disabled="disabled"/>
-                                            <img src="tg_pos_enhanced/static/src/img/spacer.gif" width="9" height="11" />
+                                            <img src="/tg_pos_enhanced/static/src/img/spacer.gif" width="9" height="11" />
                                         </td>
                                     </tr>
                                 </table>
@@ -145,8 +151,8 @@
     </t>
 
     <t t-name="PaypadButtonWidget">
-        <button class="paypad-button" t-att-cash-register-id="widget.cashRegister.get('id')">
-            <t t-esc="widget.cashRegister.get('journal').name"/>
+        <button class="paypad-button" t-att-cash-register-id="widget.cashregister.id">
+            <t t-esc="widget.cashregister.journal.name"/>
         </button> 
     </t>
 
@@ -154,21 +160,21 @@
     <!-- remove client -->
     <t t-name="ClientRemoveWidget">
         <span class="cus-remove">
-            <img src="tg_pos_enhanced/static/src/img/remove_client.png" title="Remove customer"/>
+            <img src="/tg_pos_enhanced/static/src/img/remove_client.png" title="Remove customer"/>
         </span>
     </t>
 
     <!-- edit client -->
     <t t-name="ClientEditWidget">
         <span class="cus-edit">
-            <img src="tg_pos_enhanced/static/src/img/edit_client.png" title="Edit customer"/>
+            <img src="/tg_pos_enhanced/static/src/img/edit_client.png" title="Edit customer"/>
         </span>
     </t>
 
     <!-- ventes du client  -->
     <t t-name="ClientSalesWidget">
         <span class="cus-sales">
-            <img id="cust_sales_btn" src="tg_pos_enhanced/static/src/img/see_sales.png" title="See customer's sales"/>
+            <img id="cust_sales_btn" src="/tg_pos_enhanced/static/src/img/see_sales.png" title="See customer's sales"/>
         </span>
     </t>
 
@@ -264,7 +270,7 @@
                     <div id="screen-saletitle">    
                         <span id="titleCustSales"><span id="cust_sales_name"/> - Sales history</span> 
                         <div id="cs-close">
-                            <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-salesclosebtn"/>
+                            <img src="/tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-salesclosebtn"/>
                         </div>
                     </div>
                 </div>
@@ -316,18 +322,18 @@
                 <div id="header-custscreen">
                     <div id="screen-custtitle">
                         <div id="cs-search">
-                            <img src="tg_pos_enhanced/static/src/img/remove.png" title="Clear" id="cs-clearsearchbtn"/>
-                            <input type="texte" id="input_search"/><img src="tg_pos_enhanced/static/src/img/search.png" title="Search" id="cs-searchbtn"/>
+                            <img src="/tg_pos_enhanced/static/src/img/remove.png" title="Clear" id="cs-clearsearchbtn"/>
+                            <input type="texte" id="input_search"/><img src="/tg_pos_enhanced/static/src/img/search.png" title="Search" id="cs-searchbtn"/>
                         </div>
                         <span id="titleSelectCustomer">Select a customer</span>     
                         <div id="cs-nbcustomers">
                             <span id="nb_customers" title="Customer count">---</span>
                         </div>
                         <div id="cs-close">
-                            <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-closebtn"/>
+                            <img src="/tg_pos_enhanced/static/src/img/close.png" title="Close" id="cs-closebtn"/>
                         </div>
                         <div id="cs-refresh">
-                            <img src="tg_pos_enhanced/static/src/img/refresh_data.png" title="Refresh" id="cs-refreshbtn"/>
+                            <img src="/tg_pos_enhanced/static/src/img/refresh_data.png" title="Refresh" id="cs-refreshbtn"/>
                         </div>
                     </div>
                 </div>
@@ -378,7 +384,7 @@
             <td style="display:none" class="c-comment"><t t-esc="c_comment"/></td>
             <td class="c-vip" width="4%">
                 <t t-if="c_montantCumule >= 500">
-                    <img src="tg_pos_enhanced/static/src/img/vip.png" title="VIP"/>
+                    <img src="/tg_pos_enhanced/static/src/img/vip.png" title="VIP"/>
                 </t>
             </td>
             <td class="c-name" width="16%"><t t-esc="c_name"/></td>
@@ -434,32 +440,32 @@
                             <td class="form-key">Zip Code:</td>
                             <td class="form-value">
                                 <input type="texte" id="input_zip"/> 
-                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Zip Code with at least 4 chars"/></td>
+                                <img class="form-help" src="/tg_pos_enhanced/static/src/img/help-info.png" title="Please type Zip Code with at least 4 chars"/></td>
                         </tr>
                         <tr>
                             <td class="form-key">Phone :</td>
                             <td class="form-value"><input type="texte" id="input_phone"/> 
-                            <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Phone number with at least 8 chars"/></td>
+                            <img class="form-help" src="/tg_pos_enhanced/static/src/img/help-info.png" title="Please type Phone number with at least 8 chars"/></td>
                         </tr>
                         <tr>
                             <td class="form-key">Mobile :</td>
                             <td class="form-value">
                                 <input type="texte" id="input_mobile"/> 
-                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type Mobile number with at least 8 chars"/>
+                                <img class="form-help" src="/tg_pos_enhanced/static/src/img/help-info.png" title="Please type Mobile number with at least 8 chars"/>
                             </td>
                         </tr>
                         <tr>
                             <td class="form-key">Email :</td>
                             <td class="form-value">
                                 <input type="texte" id="input_email"/> 
-                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Please type a valid email"/>
+                                <img class="form-help" src="/tg_pos_enhanced/static/src/img/help-info.png" title="Please type a valid email"/>
                             </td>
                         </tr>
                         <tr>
                             <td class="form-key">Comment :</td>
                             <td class="form-value">
                                 <input type="texte" id="input_comment"/> 
-                                <img class="form-help" src="tg_pos_enhanced/static/src/img/help-info.png" title="Comment is visible on receipt"/>
+                                <img class="form-help" src="/tg_pos_enhanced/static/src/img/help-info.png" title="Comment is visible on receipt"/>
                             </td>
                         </tr>
                         <tr>
@@ -495,11 +501,7 @@
 
 
     <t t-extend="ReceiptScreenWidget">
-        <t t-jquery="#receipt-screen" t-operation="replace">
-            <div id="receipt-screen" class="screen" >
-                <header>
-                    <h2>Receipt</h2>
-                </header>
+        <t t-jquery=".receipt-screen" t-operation="inner">
                 <div id="ticket-container">
                     <div class='ticket-scroller'>
                         <div class="pos-step-container">
@@ -509,7 +511,6 @@
                     </div>
                     <span class="placeholder-ScrollbarWidget" /> 
                 </div>
-            </div>
         </t>
     </t>
 
@@ -519,7 +520,7 @@
             <div class="pos-sale-ticket">
                 <div id="header-ticket">
                     <div id="logo_ticket">
-                        <img src="tg_pos_enhanced/static/src/img/logo_ticket_300x58.png" />
+                        <img src="/tg_pos_enhanced/static/src/img/logo_ticket_300x58.png" />
                     </div>
                     <t t-esc="new Date().toString(Date.CultureInfo.formatPatterns.shortDate + ' ' +
                     Date.CultureInfo.formatPatterns.longTime)"/> 
@@ -549,7 +550,7 @@
                     </tr>
                     <tr t-foreach="widget.currentOrderLines.toArray()" t-as="orderline">
                         <td>
-                            <t t-esc="orderline.get_product().get('name')"/>
+                            <t t-esc="orderline.get_product().name"/>
                              <t t-if="orderline.get_discount() > 0">
                                 <div class="pos-disc-font">
                                     With a <t t-esc="orderline.get_discount()"/>% discount
@@ -628,7 +629,7 @@
                 <table>
                     <tr t-foreach="widget.currentPaymentLines.toArray()" t-as="pline">
                         <td>
-                            <t t-esc="pline.get_cashregister().get('journal_id')[1]"/>
+                            <t t-esc="pline.get_cashregister().journal_id[1]"/>
                         </td>
                         <td class="pos-right-align">
                             <t t-esc="widget.format_currency(pline.get_amount())"/>
@@ -747,8 +748,7 @@
 
    <!--  Numpad -->
     <t t-extend="NumpadWidget" >
-        <t t-jquery="#numpad" t-operation="replace">
-            <div id="numpad">
+        <t t-jquery=".numpad" t-operation="inner">
                 <button class="input-button number-char">7</button>
                 <button class="input-button number-char">8</button>
                 <button class="input-button number-char">9</button>             
@@ -758,7 +758,7 @@
                 <button class="input-button number-char">5</button>
                 <button class="input-button number-char">6</button>
                 <button class="input-button" id="numpad-return" title="Return selected Product" disabled="disabled">
-                    <img id="return_img" src="tg_pos_enhanced/static/src/img/disabled_return_product.png" />
+                    <img id="return_img" src="/tg_pos_enhanced/static/src/img/disabled_return_product.png" />
                 </button>
                 <br />
                 <button class="input-button number-char">1</button>
@@ -774,7 +774,6 @@
                 </button>
                 
                 <br />
-            </div>
         </t>
     </t> 
 
@@ -828,7 +827,7 @@
                 <div id="msg_header">
                     <span id="msg_title"></span>
                     <div id="msg_close_btn">
-                        <img src="tg_pos_enhanced/static/src/img/close.png" title="Close" id="message-closebtn"/>
+                        <img src="/tg_pos_enhanced/static/src/img/close.png" title="Close" id="message-closebtn"/>
                     </div>
                 </div>
                 <div id="msg_content">

@@ -952,7 +952,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var cur_order = cur_pos.get('selectedOrder');
             var cur_oline = cur_order.getSelectedLine();
 
-           if(cur_oline.product.get('is_pack') == false){
+           if(cur_oline.product.is_pack == false){
 
                 cur_oline.is_return = true;
                 cur_oline.price = - Math.abs(cur_oline.price);
@@ -1224,8 +1224,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         selectLine: function(line){
             if(line){
-                var product_name = line.product.attributes.name;
-                var is_pack = line.product.attributes.is_pack;
+                var product_name = line.product.name;
+                var is_pack = line.product.is_pack;
 
                 if(product_name[1] != '├'){
                    // this.selected_orderline.set_selected(undefined);
@@ -1272,7 +1272,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         // rounded to zero
         set_quantity: function(quantity){
             var self = this;
-            var product_name = this.get_product().get('name');
+            var product_name = this.get_product().name;
 
             if(quantity === 'remove'){
 
@@ -1299,7 +1299,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                         // we delete items of the pack
                         if(flag_cur == true){
-                            var cur_product_name = o_lines[i].product.attributes.name;
+                            var cur_product_name = o_lines[i].product.name;
 
                             if(cur_product_name[1] == '├'){
                                 this.order.removeOrderline(o_lines[i]);
@@ -1324,7 +1324,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 if(product_name[0] != '■'){
                     // packages must be sold one by one
-                    OrderlineSuper.prototype.set_quantity(this, quantity);
+                    OrderlineSuper.prototype.set_quantity.call(this, quantity);
                     return;
                 }
             }
@@ -1341,8 +1341,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         get_product_tax: function(){
             var self = this;
             var product =  this.get_product();
-            var taxes_ids = product.get('taxes_id');
-            var taxes =  self.pos.get('taxes');
+            var taxes_ids = product.taxes_id;
+            var taxes =  self.pos.taxes;
             var p_tax = null;
 
             _.each(taxes_ids, function(el) {
@@ -1368,13 +1368,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         // when we add an new orderline we want to merge it with the last line to see reduce the number of items
         // in the orderline. This returns true if it makes sense to merge the two
         can_be_merged_with: function(orderline){
-            var product_name = this.get_product().get('name');
+            var product_name = this.get_product().name;
 
             // do not merge if this is an item of the pack nor if this is a return (for visual)
             if(product_name[1] == '├' || this.is_return == true){
                 return false;
             }
-            return OrderlineSuper.prototype.can_be_merged_with(this, orderline);
+            return OrderlineSuper.prototype.can_be_merged_with.call(this, orderline);
         },
 
         get_unit_price: function(){
@@ -1394,7 +1394,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var totalNoTax = base;
 
             var product =  this.get_product();
-            var taxes_ids = product.get('taxes_id');
+            var taxes_ids = product.taxes_id;
             var taxes =  self.pos.taxes;
             var taxtotal = 0;
             var taxdetail = {};

@@ -1,6 +1,6 @@
 /* ORIGINAL POINT OF SALE  */
 
-.point-of-sale #topheader {
+.pos #topheader {
     background: linear-gradient(#495793, #001433) repeat scroll 0 0 rgba(0, 0, 0, 0);
     color: #808080;
     height: 34px;
@@ -12,12 +12,12 @@
     width: 100%;
 }
 
-.point-of-sale .order-container{
+.pos .order-container{
     position: absolute;
     top: 83px;
 }
 
-.point-of-sale #paypad button:hover, .point-of-sale #numpad button:hover, .point-of-sale #numpad .selected-mode, .point-of-sale .popup button:hover {
+.pos #paypad button:hover, .pos #numpad button:hover, .pos #numpad .selected-mode, .pos .popup button:hover {
     border: none;
     color: white;
     background: #7f82ac;
@@ -33,7 +33,7 @@
             box-shadow:  0px 0px 2px rgba(0,0,0,0.3) inset, 0px 1px 2px rgba(0,0,0,0.1);
 }
 
-.point-of-sale #rightheader button {
+.pos #rightheader button {
     color: #273972;
     height:27px;
     margin:3px;
@@ -46,16 +46,16 @@
     background:      linear-gradient(#b2c6d7, #7f93ac);
 }
 
-.point-of-sale .order .orderline.selected{
+.pos .order .orderline.selected{
     background: rgba(181, 161, 204, 0.2);
 }
 
-.point-of-sale .order .orderline .info-list{
+.pos .order .orderline .info-list{
     font-size: 13px;
     font-style: italic;
 }
 
-.point-of-sale #paypad button {
+.pos #paypad button {
     height: 40px;
     width:0;
     min-width: 150px;
@@ -68,12 +68,12 @@
 }
 
 
-.point-of-sale .pos-step-container {
+.pos .pos-step-container {
     font-size: 1.2em;
     display: inline-block;
 }
 
-.point-of-sale .pos-payment-container {
+.pos .pos-payment-container {
     text-align: left;
     min-width: 400px;
     width: 80%;
@@ -84,7 +84,7 @@
     box-shadow: 0px 1px 0px white,0px -1px 0px white, 0px 4px 0px #DFDFDF, 0px 10px 30px rgba(0, 0, 0, 0.21); 
 }
 
-.point-of-sale .pos-step-container input{
+.pos .pos-step-container input{
     font-size: 1em;
     outline: none;
     border: none;
@@ -98,13 +98,13 @@
     -webkit-animation: all 250ms linear;
 }
 
-.point-of-sale .pos-step-container input:focus{
+.pos .pos-step-container input:focus{
     box-shadow: 0px -1px 0px #C9CFFD inset,0px 1px 0px #B8C8FC inset, 0px 4px 0px #9FD5FF inset, 0px 4px 9px rgba(0, 31, 255, 0.55) inset;
     color: #5d7ad6;
     -webkit-animation: all 250ms linear;
 }
 
-.point-of-sale .pos-payment-container .left-block{
+.pos .pos-payment-container .left-block{
     display: inline-block;
     width:49%;
     margin:0;
@@ -112,18 +112,18 @@
     text-align:left;
 }
 
-.point-of-sale .pos-payment-container .header{
+.pos .pos-payment-container .header{
     margin-top: 20px;
     margin-bottom:5px;
     font-weight: bold;
 }
 
-.point-of-sale .pos-payment-container .infoline{
+.pos .pos-payment-container .infoline{
     margin-top:2px;
     margin-bottom:2px;
 }
 
-.point-of-sale .pos-payment-container .right-block{
+.pos .pos-payment-container .right-block{
     display: inline-block;
     width:49%;
     margin:0;
@@ -131,27 +131,27 @@
     text-align:right;
 }
 
-.point-of-sale .pos-payment-container table {
+.pos .pos-payment-container table {
     width: 100%;
     margin-bottom: 10px;
 }
 
-.point-of-sale .pos-payment-container td {
+.pos .pos-payment-container td {
     vertical-align: middle;
 }
 
-.point-of-sale .pos-payment-container .paymentline-type {
+.pos .pos-payment-container .paymentline-type {
     font-size: 0.75em;
     font-weight: bold;
     margin-right:10px;
 }
 
-.point-of-sale .align_right, .point-of-sale .align_right input
+.pos .align_right, .pos .align_right input
 {
     text-align: right;
 }
 
-.point-of-sale .pos-actionbar .button:hover {
+.pos .pos-actionbar .button:hover {
     color: white;
     background: #7f82ac;
     border: 1px solid #7f82ac;
@@ -166,11 +166,11 @@
 }
 
 
-.point-of-sale .pos-receipt-container {
+.pos .pos-receipt-container {
     font-size: 11px;
 }
 
-.point-of-sale .pos-sale-ticket {
+.pos .pos-sale-ticket {
     text-align: left;
     width: 300px;
     background-color: white;
@@ -183,14 +183,14 @@
     box-shadow: 0px 1px 0px white, 0px 3px 0px #C1B9D6, 0px 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.point-of-sale .pos-sale-ticket .emph{
+.pos .pos-sale-ticket .emph{
     font-size: 150%;
     margin:5px;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.point-of-sale #numpad .input-button-large{
+.pos #numpad .input-button-large{
     height: 50px;
     width: 104px;
     margin: 0px 0px 4px 0px;
@@ -200,18 +200,18 @@
     border-top: 1px solid #efefef;
 }
 
-.point-of-sale .input-button-large {
+.pos .input-button-large {
     font-size: 24px;
 }
 
 @media print {
-    .point-of-sale #topheader, .point-of-sale #leftpane {
+    .pos #topheader, .pos #leftpane {
         display: none !important;
     }
-    .point-of-sale #content {
+    .pos #content {
         top: 0px !important;
     }
-    .point-of-sale #rightpane {
+    .pos #rightpane {
         left: 0px !important;
         background-color: white;
     }
@@ -233,12 +233,12 @@
     .debug-widget{
         display: none !important;
     }
-    .point-of-sale *{
+    .pos *{
         text-shadow: none !important;
         box-shadow: none !important;
         background: transparent !important;
     }
-    .point-of-sale .pos-sale-ticket{
+    .pos .pos-sale-ticket{
         margin-left: auto !important;
         margin-right: auto !important;
         border: solid 1px white !important;
