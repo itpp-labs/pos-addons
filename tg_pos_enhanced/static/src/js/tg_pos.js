@@ -1260,11 +1260,11 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
     });
 
-    var OrderLineSuper = module.OrderLine;
+    var OrderlineSuper = module.Orderline;
 
     module.Orderline = module.Orderline.extend({
         initialize: function(attr,options){
-            OrderLineSuper.prototype.initialize.call(this, attr, options)
+            OrderlineSuper.prototype.initialize.call(this, attr, options)
             this.is_return = false;
         },
         // sets the quantity of the product. The quantity will be rounded according to the
@@ -1324,7 +1324,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 if(product_name[0] != '■'){
                     // packages must be sold one by one
-                    OrderLineSuper.prototype.set_quantity(this, quantity);
+                    OrderlineSuper.prototype.set_quantity(this, quantity);
                     return;
                 }
             }
@@ -1374,7 +1374,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             if(product_name[1] == '├' || this.is_return == true){
                 return false;
             }
-            return OrderLineSuper.prototype.can_be_merged_with(this, orderline);
+            return OrderlineSuper.prototype.can_be_merged_with(this, orderline);
         },
 
         get_unit_price: function(){
