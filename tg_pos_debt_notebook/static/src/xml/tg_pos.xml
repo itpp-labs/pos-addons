@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="PaypadButtonWidget">
-        <button t-attf-class="paypad-button #{widget.cashRegister.get('journal').debt and 'debt' or ''}" t-att-cash-register-id="widget.cashRegister.get('id')">
-           <t t-esc="widget.cashRegister.get('journal').name"/>
+        <button t-attf-class="paypad-button #{widget.cashregister.journal.debt and 'debt' or ''}" t-att-cash-register-id="widget.cashregister.id">
+           <t t-esc="widget.cashregister.journal.name"/>
         </button>
     </t>
 	<t t-extend="PosWidget">
 		<t t-jquery="#client-btns" t-operation="append">
             <li>
-                <img id="img_current_debt" src="tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Current debt amount"/> : <span id="current_debt"></span>
+                <img id="img_current_debt" src="/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Current debt amount"/> : <span id="current_debt"></span>
             </li>      
 		</t>
 	</t>
