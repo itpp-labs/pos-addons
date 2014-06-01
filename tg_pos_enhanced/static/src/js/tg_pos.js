@@ -227,7 +227,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     // hide customer window
     var close_cs_window = function(){
             $('#id-clientscreenwidget').css('display', 'none');
-            $('#products-screen').css('display', 'block');
+            $('.screens').css('display', 'block');
             $('#cache_left_pane').css('display', 'none');
         };
 
@@ -516,7 +516,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache_left_pane').css('display', 'block');
             $('#cache-header-cust').css('display', 'block');
             $('#id-clientscreenwidget').css('display', 'none');
-            $('#products-screen').css('display', 'none');
+            $('.screens').css('display', 'none');
             $('#id_salesscreen').css('display', 'block');
         },
 
@@ -1152,7 +1152,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache_left_pane').css('display', 'block');
             $('#cache-header-cust').css('display', 'block');
             $('#id-clientscreenwidget').css('display', 'none');
-            $('#products-screen').css('display', 'none');
+            $('.screens').css('display', 'none');
             $('#id_salesscreen').css('display', 'none');
             $('#pack_screen').css('display', 'block');
 
@@ -1170,7 +1170,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         hide_screen_pack: function(){
             $('#cache_left_pane').css('display', 'none');
             $('#cache-header-cust').css('display', 'none');
-            $('#products-screen').css('display', 'block');
+            $('.screens').css('display', 'block');
             $('#pack_screen').css('display', 'none');
         },
 
@@ -1852,7 +1852,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache-header-cust').css('display', 'block');
             $('#cache_left_pane').css('display', 'block');
             $('#id-clientscreenwidget').css('display', 'none');
-            $('#products-screen').css('display', 'none');
+            $('.screens').css('display', 'none');
             $('#id_salesscreen').css('display', 'block');
         },
 
@@ -2244,7 +2244,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#cache_left_pane').css('display', 'none');
             $('#cache-header-cust').css('display', 'none');
             $('#id_salesscreen').css('display', 'none');
-            $('#products-screen').css('display', 'block');
+            $('.screens').css('display', 'block');
 
         },
 
@@ -2434,7 +2434,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.$('#btn-findcust').click(function(){
                 $('#id-clientscreenwidget').css('display', 'block');
                 $('#input_search').val('');
-                $('#products-screen').css('display', 'none');
+                $('.screens').css('display', 'none');
 
                 $('#titleSelectCustomer').css('display', 'inline');
                 $('#titleSelectSponsor').css('display', 'none');
@@ -2446,7 +2446,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 module.unselect_client();
 
                 $('#id-clientscreenwidget').css('display', 'none');
-                $('#products-screen').css('display', 'block');
+                $('.screens').css('display', 'block');
                 //$('.order-container').css('display', 'none');
                 //$('#leftpane footer').css('display', 'none');
                 //$('#form-client').css('display', 'block');
@@ -2479,10 +2479,10 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this._super();
 
             this.clients = new module.ClientScreenWidget(this, {});
-            this.clients.appendTo($('#rightpane'));
+            this.clients.prependTo($('.rightpane>.window'));
 
             this.pack = new module.PackScreenWidget(this, {});
-            this.pack.appendTo($('#rightpane'));
+            this.pack.prependTo($('.rightpane>.window'));
 
             this.formclient = new module.FormClientWidget(this, {});
             this.formclient.replace(this.$('#placeholder-CustFormWidget'));
@@ -2491,7 +2491,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.gotopay.replace(this.$('#placeholder-GoToPayWidget'));
 
             this.sales = new module.SalesScreenWidget(this,{});
-            this.sales.appendTo($('#rightpane'));
+            this.sales.prependTo($('.rightpane>.window'));
 
             this.pwd_alert = new module.AlertPwdWidget(this,{});
             this.pwd_alert.replace(this.$('.placeholder-AlertPwdWidget'));

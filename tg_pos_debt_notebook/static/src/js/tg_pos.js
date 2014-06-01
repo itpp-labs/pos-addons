@@ -43,8 +43,8 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             }else{
                 $('.paypad-button.debt').removeClass('disabled')
             }
-            
-            
+
+
         },
         updatePaymentSummary:function(){
             this._super();
@@ -63,7 +63,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             // C'est l'histoire de Totaux...
             var sousTotalApayer = parseFloat(totalDeDepart) - parseFloat(totalRemises); // 59 - 9.10 = 49.9 - 10% = 44.91
             var resteApayer = parseFloat(sousTotalApayer) - parseFloat(paidTotal); // 4.30 - paidTotal
-            var remaining = sousTotalApayer > paidTotal ? parseFloat(sousTotalApayer) - parseFloat(paidTotal) : 0;     
+            var remaining = sousTotalApayer > paidTotal ? parseFloat(sousTotalApayer) - parseFloat(paidTotal) : 0;
 
             var emptyOrder = false;
             var onlyPayback = false;
@@ -96,7 +96,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
         _super = module.unselect_client;
         module.unselect_client = function(){
             _super();
-            $('#img_current_debt').attr('src', 'tg_pos_enhanced/static/src/img/disabled_montant_cumule.png')
+            $('#img_current_debt').attr('src', '/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png')
             $('#current_debt').html('')
         }
     })()
@@ -115,7 +115,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
 
         var debt = Number(cdebt).toFixed(2);
         $('#current_debt').html(debt);
-        $('#img_current_debt').attr('src', 'tg_pos_enhanced/static/src/img/montant_cumule.png')
+        $('#img_current_debt').attr('src', '/tg_pos_enhanced/static/src/img/montant_cumule.png')
 
         var order = this.pos.get('selectedOrder');
         if (order.get('payment_after_select_client')){
@@ -139,7 +139,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
     var get_clients = function(letter){
         var self = this;
         var clients_list = [];
-        var l_filter = [['customer', '=', true], 
+        var l_filter = [['customer', '=', true],
                         ['name','=ilike', letter + '%']];
 
         if(letter == '0-9'){
@@ -160,13 +160,13 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
 
         var loaded = fetch(
             'res.partner',
-            ['id', 
-             'name', 
-             'firstname', 
-             'zip', 
-             'phone', 
-             'mobile', 
-             'email', 
+            ['id',
+             'name',
+             'firstname',
+             'zip',
+             'phone',
+             'mobile',
+             'email',
              'montantCumule',
              'debt',
              'pos_comment'],
@@ -183,18 +183,18 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                         clients_list[i]['zip'] = clients[i].zip;
                         clients_list[i]['phone'] = clients[i].phone;
                         clients_list[i]['mobile'] = clients[i].mobile;
-                        clients_list[i]['email'] = clients[i].email; 
-                        clients_list[i]['comment'] = clients[i].pos_comment; 
+                        clients_list[i]['email'] = clients[i].email;
+                        clients_list[i]['comment'] = clients[i].pos_comment;
                     };
 
                     // remove lines
                     $('#client-list tr').remove();
 
-                    if(clients_list.length > 0){          
+                    if(clients_list.length > 0){
                         for(var i = 0, len = clients_list.length; i < len; i++){
                             var one_client = QWeb.render('ClientWidget',{
                                 c_id:clients_list[i].id,
-                                c_name:clients_list[i].name, 
+                                c_name:clients_list[i].name,
                                 c_firstname:clients_list[i].firstname,
                                 c_zip:clients_list[i].zip,
                                 c_phone:clients_list[i].phone,
@@ -216,7 +216,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                                 var s_comment = $('.c-comment', this).html().trim();
                                 var s_montant_cumule = $('.c-montant-cumule', this).html().trim();
                                 var s_current_debt = $('.c-current-debt', this).html().trim();
-                                
+
                                 self.select_client(s_id, s_name, s_fname, s_montant_cumule, s_current_debt);
                             });
                         }

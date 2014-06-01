@@ -608,21 +608,25 @@
 }
 
 #cust-list-container{
-    position:absolute;
+    /*
+	position:absolute;
     top: 120px;
     bottom:20px;
     left:0px;
     right:0px;
+	*/
     padding-left: 20px;
     padding-right: 74px;
 }
 
 #cust-list-header{
+/*
     position:absolute;
     top: 70px;
     bottom:0px;
     left:0px;
     right:0px;
+*/
     padding-left: 20px;
     padding-right: 74px;
 }

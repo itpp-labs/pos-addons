@@ -306,7 +306,7 @@
                         <tbody id="sales-list">
                         </tbody>
                     </table> 
-                    <div class="shadow-top"></div>
+                    <!-- <div class="shadow-top"></div> -->
                     <span class="placeholder-ScrollbarWidget" />  
                     <div class="cust-table-bot"></div> 
                 </div> 
@@ -316,6 +316,10 @@
         
     <!-- panneau affichage clients -->
     <t t-name="ClientScreenWidget">
+                        <div class='subwindow collapsed'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix'>
+
         <div id="id-clientscreenwidget">
             <header>
                 <div id="header-custscreen">
@@ -367,12 +371,16 @@
                         <tbody id="client-list">
                         </tbody>
                     </table> 
-                    <div class="shadow-top"></div>
+                    <!-- <div class="shadow-top"></div> -->
                     <span class="placeholder-ScrollbarWidget" />  
                     <div class="cust-table-bot"></div> 
                 </div> 
             </div> 
         </div>
+
+                                </div>
+                            </div>
+                        </div>
     </t>
 
     <!-- 1 client -->
