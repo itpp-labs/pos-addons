@@ -206,8 +206,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             $('#selected-vip').html('');
 
             //images
-            $('#img-sel_cus').attr('src', 'tg_pos_enhanced/static/src/img/disabled_client.png');
-            $('#img_amountcumul').attr('src', 'tg_pos_enhanced/static/src/img/disabled_montant_cumule.png');
+            $('#img-sel_cus').attr('src', '/tg_pos_enhanced/static/src/img/disabled_client.png');
+            $('#img_amountcumul').attr('src', '/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png');
 
             //css
             $('#client-btns li').css('background', '#d3d3d3');
@@ -296,11 +296,17 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
     // show customer form
     var show_form_client = function(){
-            $('.order-container').css('display', 'none');
-            $('#leftpane footer').css('display', 'none');
-            $('#form-client').css('display', 'block');
-            $('#cache-header-cust').css('display', 'block');
-            $('#cache-right-pan').css('display', 'block');
+            //$('.order-container').css('display', 'none');
+            $('.order-container').addClass('oe_hidden');
+            //$('#leftpane footer').css('display', 'none');
+            $('.pos-leftpane .pads').addClass('oe_hidden');
+            //$('#form-client').css('display', 'block');
+            $('#form-client').removeClass('oe_hidden');
+
+            //$('#cache-header-cust').css('display', 'block');
+            $('#cache-header-cust').removeClass('oe_hidden');
+            //$('#cache-right-pan').css('display', 'block');
+            $('#cache-right-pan').removeClass('oe_hidden')
         };
 
     // get data from DB
@@ -481,18 +487,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     $(sales_button).appendTo($('#btns-customer')).click(function(){
                         self.see_customer_sales();
                     });
-                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png');
+                    $('#cust_sales_btn').attr('src', '/tg_pos_enhanced/static/src/img/see_sales.png');
                     $('#cust_sales_btn').css('cursor', 'pointer');
                 }else{
                     var sales_button = QWeb.render('ClientSalesWidget',{});
                     $(sales_button).appendTo($('#btns-customer'));
-                    $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png');
+                    $('#cust_sales_btn').attr('src', '/tg_pos_enhanced/static/src/img/disabled_see_sales.png');
                     $('#cust_sales_btn').css('cursor', 'default');
                 }
 
                 //images
-                $('#img-sel_cus').attr('src', 'tg_pos_enhanced/static/src/img/client.png');
-                $('#img_amountcumul').attr('src', 'tg_pos_enhanced/static/src/img/montant_cumule.png');
+                $('#img-sel_cus').attr('src', '/tg_pos_enhanced/static/src/img/client.png');
+                $('#img_amountcumul').attr('src', '/tg_pos_enhanced/static/src/img/montant_cumule.png');
 
                 // css
                 $('#client-btns li').css('background', '#fff');
@@ -610,7 +616,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     $('#cache-header-cust').css('display', 'none');
 
                     $('#numpad-return').removeAttr('disabled');
-                    $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/return_product.png');
+                    $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/return_product.png');
                 },
             });
 
@@ -630,12 +636,12 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     });
 
                     global_letter = 'A';
-                    self.validateCurrentOrder();
+                    self.validate_order();
                 },
             });
 
             this.update_payment_summary();
-            this.line_refocus();
+            this.focus_selected_line();
         },
 
         deleteLine: function(lineWidget) {
@@ -721,12 +727,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.$('#payment-remaining').html(this.format_currency(remaining));
             this.$('#payment-change').html(this.format_currency(monnaieArendre));
 
+
+            /*
+            //in 8.0 currentOrder.selected_orderline always false if we use
+            // function self.pos_widget.screen_selector.set_current_screen('payment');
+            // in GoToPayWidget
             if(currentOrder.selected_orderline === undefined){
                 remaining = 1;  // What is this ?
             }
+             */
 
             if(this.pos_widget.action_bar){
-                this.pos_widget.action_bar.set_button_disabled('validation', (sousTotalApayer < 0 || remaining > 0));
+                this.pos_widget.action_bar.set_button_disabled('validation', (sousTotalApayer < 0 || remaining > 0 || totalDeDepart <= 0));
             }
         },
 
@@ -736,7 +748,6 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         refresh: function() {
             this._super();
-            $('.pos-receipt-container', this.$el).html(QWeb.render('PosTicket',{widget:this}));
 
             if(globalCashier != ''){
                 this.$('#ticket-screen-cashier-name').html(globalCashier);
@@ -791,7 +802,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         $('#cache-header-cust').css('display', 'none');
 
                         $('#numpad-return').attr('disabled', 'disabled');
-                        $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
+                        $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
 
                         if(nbCashiers > 1){
                             $('#cashier-select').val('nobody');
@@ -807,9 +818,6 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 });
         },
 
-        print: function() {
-            window.print();
-        },
 
         renderElement: function(){
             var self = this;
@@ -862,7 +870,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 self.pos_widget.screen_selector.set_current_screen('payment');
                 $('#cache-header-cust').css('display', 'block');
                 $('#numpad-return').attr('disabled', 'disabled');
-                $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
+                $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
             });
         },
     });
@@ -1240,20 +1248,20 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                     if(is_pack == false){
                         $('#numpad-return').removeAttr('disabled');
-                        $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/return_product.png');
+                        $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/return_product.png');
                     } else{
                         $('#numpad-return').attr('disabled', 'disabled');
-                        $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
+                        $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
                     }
 
                 }else{
                     $('#numpad-return').attr('disabled', 'disabled');
-                    $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
+                    $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
                 }
             }else{
                 this.selected_orderline = undefined;
                 $('#numpad-return').attr('disabled', 'disabled');
-                $('#return_img').attr('src', 'tg_pos_enhanced/static/src/img/disabled_return_product.png');
+                $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
             }
 
         },
@@ -1447,11 +1455,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         },
 
         hide_form_client: function(){
-            $('#form-client').css('display', 'none');
-            $('#cache-header-cust').css('display', 'none');
-            $('#cache-right-pan').css('display', 'none');
-            $('.order-container').css('display', 'block');
-            $('#leftpane footer').css('display', 'block');
+            //$('#form-client').css('display', 'none');
+            $('#form-client').addClass('oe_hidden');
+            //$('#cache-header-cust').css('display', 'none');
+            $('#cache-header-cust').addClass('oe_hidden');
+            //$('#cache-right-pan').css('display', 'none');
+            $('#cache-right-pan').addClass('oe_hidden')
+            //$('.order-container').css('display', 'block');
+            $('.order-container').removeClass('oe_hidden');
+            //$('#leftpane footer').css('display', 'block');
+            $('.pos-leftpane .pads').removeClass('oe_hidden');
         },
 
                 // select one customer
@@ -1488,18 +1501,18 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 $(sales_button).appendTo($('#btns-customer')).click(function(){
                     self.see_customer_sales();
                 });
-                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/see_sales.png');
+                $('#cust_sales_btn').attr('src', '/tg_pos_enhanced/static/src/img/see_sales.png');
                 $('#cust_sales_btn').css('cursor', 'pointer');
             }else{
                 var sales_button = QWeb.render('ClientSalesWidget',{});
                 $(sales_button).appendTo($('#btns-customer'));
-                $('#cust_sales_btn').attr('src', 'tg_pos_enhanced/static/src/img/disabled_see_sales.png');
+                $('#cust_sales_btn').attr('src', '/tg_pos_enhanced/static/src/img/disabled_see_sales.png');
                 $('#cust_sales_btn').css('cursor', 'default');
             }
 
             //images
-            $('#img-sel_cus').attr('src', 'tg_pos_enhanced/static/src/img/client.png');
-            $('#img_amountcumul').attr('src', 'tg_pos_enhanced/static/src/img/montant_cumule.png');
+            $('#img-sel_cus').attr('src', '/tg_pos_enhanced/static/src/img/client.png');
+            $('#img_amountcumul').attr('src', '/tg_pos_enhanced/static/src/img/montant_cumule.png');
 
             // css
             $('#client-btns li').css('background', '#fff');
@@ -1819,8 +1832,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
 
                 //images
-                $('#img-sel_cus').attr('src', 'tg_pos_enhanced/static/src/img/client.png');
-                $('#img_amountcumul').attr('src', 'tg_pos_enhanced/static/src/img/montant_cumule.png');
+                $('#img-sel_cus').attr('src', '/tg_pos_enhanced/static/src/img/client.png');
+                $('#img_amountcumul').attr('src', '/tg_pos_enhanced/static/src/img/montant_cumule.png');
 
                 // css
                 $('#client-btns li').css('background', '#fff');
@@ -2364,7 +2377,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
          // get current POS id
         get_cur_pos_config_id: function(){
             var self = this;
-            var config = self.pos.get('pos_config');
+            var config = self.pos.config;
             var config_id = null;
 
             if(config){
@@ -2434,14 +2447,14 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
                 $('#id-clientscreenwidget').css('display', 'none');
                 $('#products-screen').css('display', 'block');
-                $('.order-container').css('display', 'none');
-                $('#leftpane footer').css('display', 'none');
-                $('#form-client').css('display', 'block');
+                //$('.order-container').css('display', 'none');
+                //$('#leftpane footer').css('display', 'none');
+                //$('#form-client').css('display', 'block');
                 $('#titre_form_edit_client').css('display', 'none');
                 $('#titre_form_create_client').css('display', 'block');
-                $('#cache-header-cust').css('display', 'block');
-                $('#cache-right-pan').css('display', 'block');
-
+                //$('#cache-header-cust').css('display', 'block');
+                //$('#cache-right-pan').css('display', 'block');
+                show_form_client();
             });
 
             $('#id_salesscreen').css('display', 'none');
@@ -2453,7 +2466,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             global_pwd = self.pos.attributes.pwd;
 
-            var pos_config = self.pos.get('pos_config');
+            var pos_config = self.pos.config
             if (pos_config != null){
                 posid = pos_config.id;
             }
@@ -2493,15 +2506,15 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
             this.close1_button = new module.HeaderButtonWidget(this,{
                 label: label_deco,
-                action: function(){ self.try_close(); },
+                action: function(){ self.close(); },
             });
-            this.close1_button.appendTo(this.$('#rightheader'));
+            this.close1_button.appendTo(this.$('.pos-rightheader'));
 
             this.client_button = new module.HeaderButtonWidget(this,{
                 label: _t('Self-Checkout'),
                 action: function(){ self.screen_selector.set_user_mode('client'); },
             });
-            this.client_button.appendTo(this.$('#rightheader'));
+            this.client_button.appendTo(this.$('.pos-rightheader'));
         },
     });
 };

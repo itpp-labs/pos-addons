@@ -10,8 +10,8 @@
         </t>
 
         <!-- panneau left -->
-        <t t-jquery=".pos-leftpane" t-operation="append">
-                        <div class='subwindow'>
+        <t t-jquery=".pos-leftpane>.window" t-operation="prepend">
+                        <div class='subwindow collapsed'>
                             <div class='subwindow-container'>
                                 <div class='subwindow-container-fix'>
 
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             	<div id="header-btns">
-	            	<div class="shadow-top"></div>
+	            	<!--<div class="shadow-top"></div>-->
 	            	<div id="client-btns">
                         <li>
                             <img id="img_amountcumul" src="/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Amount cumulated"/> : <span id="montantCumule"></span>
@@ -49,7 +49,7 @@
         <!-- Cashiers drop-down list under NumPad -->
         <t t-jquery=".subwindow-container-fix.pads" t-operation="inner">
             <div id="placeholder-GoToPayWidget"></div>
-            <div id="placeholder-NumpadWidget"></div>
+            <div class="placeholder-NumpadWidget"></div>
             <div id="AlertNoCashier">You must create at least one cashier!</div>
             <div id="cashier-footer">               
                 <div id="cashier-frame">
@@ -72,8 +72,8 @@
 
     <!-- Name of the cashier on Payement Page -->
     <t t-extend="PaymentScreenWidget" >
-        <t t-jquery=".pos-step-container" t-operation="replace">
-            <div class="pos-step-container">
+        <t t-jquery=".pos-payment-container" t-operation="replace">
+            <!--<div class="pos-step-container">-->
                 <div id="pay-container">
                     <div class='pay-scroller'>
                         <div id="pay-frame">
@@ -102,8 +102,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table id="paymentlines">
-                                </table>
+								<div class='payment-lines'></div>
                                 <div class="footer">     
                                     <div class="infoline-soustotalapresremises">
                                         <span class='left-block pos-soustotalapresremises'>
@@ -136,7 +135,7 @@
                     </div>
                     <span class="placeholder-ScrollbarWidget" /> 
                 </div>                                               
-            </div>
+            <!-- </div> -->
         </t>
     </t>
 
@@ -421,7 +420,7 @@
 
     <!-- form client -->
     <t t-name="FormClientWidget">
-        <div id="form-client">
+        <div id="form-client"  class="oe_hidden">
             <div id="titre-formclient">
                 <span id="titre_form_edit_client">Edit Customer</span>
                 <span id="titre_form_create_client">Create Customer</span>
@@ -525,12 +524,12 @@
                     <t t-esc="new Date().toString(Date.CultureInfo.formatPatterns.shortDate + ' ' +
                     Date.CultureInfo.formatPatterns.longTime)"/> 
                     <br />
-                    <t t-esc="widget.currentOrder.attributes.name"/>
+                    <t t-esc="order.get('name')"/>
                     <br />
-                    <t t-esc="widget.shop_obj.name"/>
-                    <t t-if="widget.company.contact_address != false">
+                    <t t-esc="widget.pos.shop.name"/>
+                    <t t-if="widget.pos.company.contact_address != false">
                         <br />
-                        <t t-esc="widget.company.contact_address"/>
+                        <t t-esc="widget.pos.company.contact_address"/>
                     </t>
                     <br />
                     Cashier : <span id="ticket-screen-cashier-name"></span>
@@ -548,7 +547,7 @@
                         <td class="pos-right-align">Tax</td>
                         <td class="pos-right-align">Amount</td>
                     </tr>
-                    <tr t-foreach="widget.currentOrderLines.toArray()" t-as="orderline">
+                    <tr t-foreach="orderlines" t-as="orderline">
                         <td>
                             <t t-esc="orderline.get_product().name"/>
                              <t t-if="orderline.get_discount() > 0">
@@ -578,7 +577,7 @@
                     <tr class="emph">
                         <td>Total Products:</td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(widget.currentOrder.getSubtotal())"/>
+                            <t t-esc="widget.format_currency(order.getSubtotal())"/>
                         </td>
                     </tr>
                     <tr>
@@ -586,15 +585,15 @@
                             <div class="horizontal-line-space"></div>
                         </td>
                     </tr>
-                    <t t-if="widget.currentOrder.get_special_discount() != 0">
+                    <t t-if="order.get_special_discount() != 0">
                         <tr>
                             <td>Special discount:</td>
                             <td class="pos-right-align">
-                                <t t-esc="widget.format_currency(widget.currentOrder.get_special_discount())"/>
+                                <t t-esc="widget.format_currency(order.get_special_discount())"/>
                             </td>
                         </tr>
                     </t>
-                    <t t-if="widget.currentOrder.getDiscountTotal() != 0">
+                    <t t-if="order.getDiscountTotal() != 0">
                         <tr>
                             <td colspan="2">
                                 <div class="horizontal-line-gray"></div>
@@ -603,7 +602,7 @@
                         <tr>
                             <td>Total discount:</td>
                             <td class="pos-right-align">
-                                <t t-esc="widget.format_currency(widget.currentOrder.getDiscountTotal())"/>
+                                <t t-esc="widget.format_currency(order.getDiscountTotal())"/>
                             </td>
                         </tr>   
                     </t>
@@ -615,21 +614,21 @@
                     <tr class="emph">
                         <td>Amount payable:</td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(widget.currentOrder.getTotalTaxIncluded() - widget.currentOrder.getDiscountAfter())"/>
+                            <t t-esc="widget.format_currency(order.getTotalTaxIncluded() - order.getDiscountAfter())"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Taxes:</td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(widget.currentOrder.getTax())"/>
+                            <t t-esc="widget.format_currency(order.getTax())"/>
                         </td>
                     </tr>
                 </table>
                 <br />
                 <table>
-                    <tr t-foreach="widget.currentPaymentLines.toArray()" t-as="pline">
+                    <tr t-foreach="paymentlines" t-as="pline">
                         <td>
-                            <t t-esc="pline.get_cashregister().journal_id[1]"/>
+                            <t t-esc="pline.cashregister.journal.name"/>
                         </td>
                         <td class="pos-right-align">
                             <t t-esc="widget.format_currency(pline.get_amount())"/>
@@ -641,7 +640,7 @@
                     <tr>
                         <td>Change:</td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(widget.currentOrder.getPaidTotal() - widget.currentOrder.getTotalTaxIncluded() + widget.currentOrder.getDiscountAfter())"/>
+                            <t t-esc="widget.format_currency(order.getPaidTotal() - order.getTotalTaxIncluded() + order.getDiscountAfter())"/>
                         </td>
                     </tr>
                     <tr>
@@ -772,8 +771,7 @@
                 <button class="input-button" id="numpad-backspace">
                     <img src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
                 </button>
-                
-                <br />
+				<br />
         </t>
     </t> 
 
