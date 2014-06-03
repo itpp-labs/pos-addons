@@ -239,8 +239,8 @@ class inherit_pos_order(osv.Model):
                 'auto_picking': True,
             }, context=context)
             self.write(cr, uid, [order.id], {'picking_id': picking_id}, context=context)
-            location_id = order.shop_id.warehouse_id.lot_stock_id.id
-            output_id = order.shop_id.warehouse_id.lot_output_id.id
+            location_id = order.warehouse_id.lot_stock_id.id
+            output_id = order.warehouse_id.lot_output_id.id
 
             for line in order.lines:
 
@@ -308,4 +308,4 @@ class inherit_res_users(osv.Model):
 
     _columns={
         'pos_manager_pwd': fields.char('POS Manager Password', size=64, help='Pasword is required for some actions to be made by manager in POS'),
-    }
+    } 

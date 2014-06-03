@@ -1217,8 +1217,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             res.currency = this.pos.currency;
             return res;
         },
-        exportAsJSON: function() {
-            var res = OrderSuper.prototype.export_for_printing.call(this);
+        export_as_JSON: function() {
+            var res = OrderSuper.prototype.export_as_JSON.call(this);
             var rounding = this.pos.currency.rounding;
             res.amount_return = round_pr(this.getChange(), rounding);
             res.discount = this.getDiscountAfter();
