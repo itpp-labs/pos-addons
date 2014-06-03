@@ -202,42 +202,7 @@
 }
 
 @media print {
-    .pos .pos-topheader, .pos .pos-leftpane {
-        display: none !important;
-    }
-    .pos #content {
-        top: 0px !important;
-    }
-    .pos .rightpane {
-        left: 0px !important;
-        background-color: white;
-    }
-    .receipt-screen header {
-        display: none !important;
-    }
-    .receipt-screen {
-        text-align: left;
-    }
-    .pos-actionbar {
-        display: none !important;
-    }
-    .scrollbar{
-        display: none !important;
-    }
-    .pos-sale-ticket {
-        margin : 0;
-    }
-    .debug-widget{
-        display: none !important;
-    }
-    .pos *{
-        text-shadow: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-    }
     .pos .pos-sale-ticket{
-        margin-left: auto !important;
-        margin-right: auto !important;
         border: solid 1px white !important;
     }
 }

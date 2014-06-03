@@ -505,22 +505,6 @@
             </div>
         </div>
     </t>
-
-
-    <t t-extend="ReceiptScreenWidget">
-        <t t-jquery=".receipt-screen" t-operation="inner">
-                <div id="ticket-container">
-                    <div class='ticket-scroller'>
-                        <div class="pos-step-container">
-                            <div class="pos-receipt-container">
-                            </div>
-                        </div>                   
-                    </div>
-                    <span class="placeholder-ScrollbarWidget" /> 
-                </div>
-        </t>
-    </t>
-
    <!--  Reçu de paiement / ticket de caisse -->
     <t t-extend="PosTicket" >
         <t t-jquery=".pos-sale-ticket" t-operation="replace">
