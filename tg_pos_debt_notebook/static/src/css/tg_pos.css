@@ -1,10 +1,10 @@
-.point-of-sale #paypad button.disabled{
+.pos .paypad button.disabled{
 	opacity:0.5;
 }
 
-.point-of-sale #current_debt.positive{
+.pos #current_debt.positive{
 	color: red;
 }
-.point-of-sale #current_debt.negative{
+.pos #current_debt.negative{
 	color: green;
 }

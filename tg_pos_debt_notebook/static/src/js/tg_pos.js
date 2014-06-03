@@ -2,15 +2,15 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
     //var module = instance.point_of_sale;
 
     module.Order = module.Order.extend({
-        addPaymentLine: function(cashRegister) {
+        addPaymentline: function(cashregister) {
             var self = this;
-            var journal = cashRegister.get('journal')
+            var journal = cashregister.journal
             if (journal.debt && ! this.get('partner_id')){
                 return;
             }
 
             var paymentLines = this.get('paymentLines');
-            var newPaymentline = new module.Paymentline({},{cashRegister:cashRegister});
+            var newPaymentline = new module.Paymentline({},{cashregister:cashregister});
 
             if(journal.type !== 'cash'){
                 var val;
@@ -21,6 +21,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                 newPaymentline.set_amount( val );
             }
             paymentLines.add(newPaymentline);
+            this.selectPaymentline(newPaymentline);
         }
 
     })
@@ -74,7 +75,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                     var hasPositiveAmount = false;
                     var hasDebt = false;
                     currentOrder.get('paymentLines').each((function(paymentLine){
-                        var isDebt = paymentLine.get_cashregister().get('journal').debt;
+                        var isDebt = paymentLine.cashregister.journal.debt;
                         if (!isDebt && (paymentLine.get_amount() > 0.000001))
                             hasPositiveAmount = true;
                         if (isDebt)
