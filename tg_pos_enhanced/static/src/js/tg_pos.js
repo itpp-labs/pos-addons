@@ -640,6 +640,28 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 },
             });
 
+            if( this.pos.config.iface_invoicing ){
+                this.add_action_button({
+                        label: 'Invoice',
+                        name: 'invoice',
+                        icon: '/point_of_sale/static/src/img/icons/png48/invoice.png',
+                        click: function(){
+                            self.validate_order({invoice: true});
+                        },
+                    });
+            }
+
+            if( this.pos.config.iface_cashdrawer ){
+                this.add_action_button({
+                        label: _t('Cash'),
+                        name: 'cashbox',
+                        icon: '/point_of_sale/static/src/img/open-cashbox.png',
+                        click: function(){
+                            self.pos.proxy.open_cashbox();
+                        },
+                    });
+            }
+
             this.update_payment_summary();
             this.focus_selected_line();
         },
