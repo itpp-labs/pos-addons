@@ -71,7 +71,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                         ['name','journal_ids','warehouse_id','journal_id','pricelist_id',
                          'iface_self_checkout', 'iface_led', 'iface_cashdrawer',
                          'iface_payment_terminal', 'iface_electronic_scale', 'iface_barscan',
-                         'iface_vkeyboard','iface_print_via_proxy','iface_scan_via_proxy',
+                         'iface_vkeyboard','iface_print_via_proxy','iface_auto_print', 'iface_scan_via_proxy',
                          'iface_cashdrawer','iface_invoicing','iface_big_scrollbars',
                          'receipt_header','receipt_footer','proxy_ip',
                          'state','sequence_id','session_ids'],
@@ -79,6 +79,8 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                     );
                 }).then(function(configs){
                     self.config = configs[0];
+                    self.config.iface_print_via_proxy2 = self.config.iface_print_via_proxy;
+
                     self.config.use_proxy = self.config.iface_payment_terminal ||
                                             self.config.iface_electronic_scale ||
                                             self.config.iface_print_via_proxy  ||
@@ -717,6 +719,17 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             this.scrollbar.replace(this.$('.placeholder-ScrollbarWidget'));
              */
         },
+        validate_order:function(options){
+            var iface_print_via_proxy = this.pos.config.iface_print_via_proxy;
+            var iface_auto_print = this.pos.config.iface_auto_print;
+            if (iface_print_via_proxy && ! iface_auto_print){
+                this.pos.config.iface_print_via_proxy = false;
+                this._super(options);
+                this.pos.config.iface_print_via_proxy = iface_print_via_proxy;
+            }else{
+                this._super(options);
+            }
+        },
 
         update_payment_summary: function() {
             var self = this;
@@ -839,7 +852,15 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     },
                 });
         },
+        print:function(){
+            if (this.pos.config.iface_print_via_proxy2){
+                var currentOrder = this.pos.get('selectedOrder');
+                this.pos.proxy.print_receipt(currentOrder.export_for_printing());
+            }else{
+                window.print();
+            }
 
+        },
 
         renderElement: function(){
             var self = this;

@@ -309,3 +309,10 @@ class inherit_res_users(osv.Model):
     _columns={
         'pos_manager_pwd': fields.char('POS Manager Password', size=64, help='Pasword is required for some actions to be made by manager in POS'),
     } 
+
+
+class pos_config(osv.Model):
+    _inherit = 'pos.config'
+    _columns = {
+        'iface_auto_print' : fields.boolean('Auto print', help="Auto print receipt")
+        }

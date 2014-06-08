@@ -18,6 +18,7 @@ Numerous modifications of the Point Of Sale :
     - Custom packs (can contain templates and their variants : on demand)
     - POS internal messaging (instant, delayed, recurrent / text or image)
     - Special discount : shop manager can allow special discount by entering a password
+    - Auto print option
 
     """,
     'depends': ["base", "account", "point_of_sale", "tg_pos_packs", "tg_partner_firstname", "tg_pos_message"],
@@ -28,6 +29,7 @@ Numerous modifications of the Point Of Sale :
         'tg_cashiers_view.xml',
         'tg_order_view.xml',
         'tg_users_view.xml',
+        'tg_pos_config_view.xml',
     ],
     'qweb': [
         'static/src/xml/tg_pos.xml',
