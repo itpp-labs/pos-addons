@@ -813,45 +813,6 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 return new_cumul.toFixed(2);
         },
 
-        show: function(){
-            this._super();
-            var self = this;
-
-            // remove previous buttons
-            $('.pos-actionbar-button-list .button').remove();
-
-            this.add_action_button({
-                    label: _t('Print'),
-                    icon: '/point_of_sale/static/src/img/icons/png48/printer.png',
-                    click: function(){
-                        self.print();
-                    },
-                });
-
-            this.add_action_button({
-                    label: _t('Next Order'),
-                    icon: '/point_of_sale/static/src/img/icons/png48/go-next.png',
-                    click: function() {
-                        self.finishOrder();
-                        $('#cache_left_pane').css('display', 'none');
-                        $('#cache-header-cust').css('display', 'none');
-
-                        $('#numpad-return').attr('disabled', 'disabled');
-                        $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
-
-                        if(nbCashiers > 1){
-                            $('#cashier-select').val('nobody');
-                            globalCashier = 'nobody';
-                            cashier_change(globalCashier);
-                        }
-
-                        module.unselect_client();
-
-                        // check for new messages
-                        get_pos_messages();
-                    },
-                });
-        },
         print:function(){
             if (this.pos.config.iface_print_via_proxy2){
                 var currentOrder = this.pos.get('selectedOrder');
@@ -1026,6 +987,26 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
+        destroy: function(){
+            OrderSuper.prototype.destroy.call(this)
+            //TODO remove it from here
+            $('#cache_left_pane').css('display', 'none');
+            $('#cache-header-cust').css('display', 'none');
+
+            $('#numpad-return').attr('disabled', 'disabled');
+            $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/disabled_return_product.png');
+
+            if(nbCashiers > 1){
+                $('#cashier-select').val('nobody');
+                globalCashier = 'nobody';
+                cashier_change(globalCashier);
+            }
+
+            module.unselect_client();
+
+            // check for new messages
+            get_pos_messages();
+        },
         initialize: function(attributes){
             OrderSuper.prototype.initialize.call(this, attributes)
             this.set({
