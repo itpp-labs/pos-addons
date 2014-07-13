@@ -712,7 +712,7 @@
                 <br />
                 <button class="input-button-large number-char">0</button>
                 <button class="input-button number-char">.</button>
-                <button class="input-button" id="numpad-backspace">
+                <button class="input-button numpad-backspace" >
                     <img src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
                 </button>
 				<br />

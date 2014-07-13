@@ -960,7 +960,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var cur_order = cur_pos.get('selectedOrder');
             var cur_oline = cur_order.getSelectedLine();
 
-           if(cur_oline.product.is_pack == false){
+           if(!cur_oline.product.is_pack){
 
                 cur_oline.is_return = true;
                 cur_oline.price = - Math.abs(cur_oline.price);
@@ -1266,7 +1266,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                         this.selected_orderline.set_selected(true);
                     }
 
-                    if(is_pack == false){
+                    if(!is_pack){
                         $('#numpad-return').removeAttr('disabled');
                         $('#return_img').attr('src', '/tg_pos_enhanced/static/src/img/return_product.png');
                     } else{
