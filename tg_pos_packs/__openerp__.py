@@ -33,11 +33,6 @@
 Allows the creation of products as Packs that can contain products with variants.
 =====================================================================================
 
-Building products :
--------------------
-
-- Create products using product_variant_multi (from Akretion - http://www.akretion.com), meaning using variants features
-
 Building a Pack :
 -------------------
 
@@ -62,7 +57,7 @@ but also, you can build your pack on-demand, by making groups of templates .
     """,
     
     'depends': [
-        'product', 'product_variant_multi', 'point_of_sale'
+        'product', 'point_of_sale'
     ], 
     'data': [
         'pos_product_pack_view.xml',

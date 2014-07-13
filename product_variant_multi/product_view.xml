@@ -204,7 +204,7 @@
                         <field name="is_multi_variants"/>
                     </group>
                 </xpath>
-                <xpath expr="//form/notebook" position="inside">
+                <xpath expr="//notebook" position="inside">
                     <page string="Variants">
                         <group colspan="1" col="4" attrs="{'invisible':[('is_multi_variants','=',False)]}">
                             <field name="dimension_type_ids" nolabel="1" colspan="4" />

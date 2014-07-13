@@ -21,7 +21,7 @@ Numerous modifications of the Point Of Sale :
     - Auto print option
 
     """,
-    'depends': ["base", "account", "point_of_sale", "tg_pos_packs", "tg_partner_firstname", "tg_pos_message"],
+    'depends': ["base", "account", "point_of_sale", "tg_partner_firstname", "tg_pos_message"],
     'data': [
         'tg_partner_view.xml',
         'security/tg_cashiers_security.xml',
@@ -30,13 +30,14 @@ Numerous modifications of the Point Of Sale :
         'tg_order_view.xml',
         'tg_users_view.xml',
         'tg_pos_config_view.xml',
+        'tg_data.xml',
     ],
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
-    'js': [
-        'static/src/js/tg_pos.js',
-    ],
+    #'js': [
+    #    'static/src/js/tg_pos.js',
+    #],
     #'css':[
     #    'static/src/css/tg_pos.css',
     #],

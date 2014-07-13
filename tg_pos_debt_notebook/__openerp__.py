@@ -11,16 +11,17 @@ To make repayment of a debt create payment of another type (e.g., cash ). This p
     """,
     'depends' : ['tg_pos_enhanced', 'pos_debt_notebook'],
     'data':[
+        'tg_data.xml',
         ],
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
-    'js': [
-        'static/src/js/tg_pos.js',
-    ],
-    'css':[
-        'static/src/css/tg_pos.css',
-    ],
+    #'js': [
+    #    'static/src/js/tg_pos.js',
+    #],
+    #'css':[
+    #    'static/src/css/tg_pos.css',
+    #],
     'installable': True,
     'auto_install': True
 }

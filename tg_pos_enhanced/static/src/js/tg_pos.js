@@ -87,10 +87,6 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                                             self.config.iface_scan_via_proxy   ||
                                             self.config.iface_cashdrawer;
 
-                    return self.fetch('stock.warehouse',[],[['id','=', self.config.warehouse_id[0]]]);
-                }).then(function(shops){
-                    self.shop = shops[0];
-
                     return self.fetch('product.pricelist',['currency_id'],[['id','=',self.config.pricelist_id[0]]]);
                 }).then(function(pricelists){
                     self.pricelist = pricelists[0];
@@ -109,13 +105,13 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                 }).then(function(packagings){
                     self.db.add_packagings(packagings);
 
-                    return self.fetch('product.public.category', ['id','name','parent_id','child_id','image'])
+                    return self.fetch('pos.category', ['id','name','parent_id','child_id','image'])
                 }).then(function(categories){
                     self.db.add_categories(categories);
 
                     return self.fetch(
                         'product.product',
-                        ['name', 'list_price','price','public_categ_id', 'taxes_id', 'ean13', 'default_code',
+                        ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
                          'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description', 'is_pack'],
                         [['sale_ok','=',true],['available_in_pos','=',true]],
                         {pricelist: self.pricelist.id} // context for price
@@ -1028,7 +1024,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             // we send it to the order
             var attr = JSON.parse(JSON.stringify(product));
 
-            if(attr.is_pack == false)
+            if(!attr.is_pack)
                 return OrderSuper.prototype.addProduct.call(this, product, options)
 
             // this is a Pack !!
@@ -2550,5 +2546,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         var module = instance.point_of_sale;
         tg_pos_enhanced_models(instance,module);    // import tg_pos_enhanced_models/tg_pos_enhanced.js
         tg_pos_enhanced(instance,module);           // import tg_pos_enhanced/tg_pos_enhanced.js
+
+        $('<link rel="stylesheet" href="/tg_pos_enhanced/static/src/css/tg_pos.css"/>').appendTo($("head"))
     }
 })()
