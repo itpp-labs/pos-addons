@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    
+        <!-- Product Sequences -->
+        <record id="seq_type_ean13_sequence" model="ir.sequence.type">
+            <field name="name">EAN13 code</field>
+            <field name="code">product.ean13.code</field>
+        </record>
+        <record id="seq_ean13_sequence" model="ir.sequence">
+            <field name="name">Ean13 code</field>
+            <field name="code">product.ean13.code</field>
+            <field name="prefix">000000</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+
+    </data>
+</openerp>
