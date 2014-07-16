@@ -5,6 +5,7 @@
     'category' : 'Point Of Sale',
     'website' : 'https://it-projects.info',
     'description': """
+click on summary line of pos order and input discount value
     """,
     'depends' : ['point_of_sale'],
     'data':[
