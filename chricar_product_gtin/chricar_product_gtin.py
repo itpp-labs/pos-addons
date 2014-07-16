@@ -19,7 +19,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from osv import fields, osv
+from openerp.osv import fields, osv
 import operator
 
 def is_pair(x):
@@ -65,6 +65,21 @@ class product_product(osv.osv):
     _constraints = [(_check_ean_key, 'Error: Invalid EAN code', ['ean13'])]
 
 product_product()
+
+class product_template(osv.osv):
+    _inherit = "product.template"
+
+    def _check_ean_key(self, cr, uid, ids, context=None):
+        for rec in self.browse(cr, uid, ids, context=context):
+            res = check_ean(rec.ean13)
+        return res
+
+    _columns = {
+        'ean13': fields.related('product_variant_ids', 'ean13', type='char', string='EAN'),
+
+    }
+
+product_template()
 
 
 class product_packaging(osv.osv):
