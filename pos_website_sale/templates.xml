@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<!-- website -->
+		<template id="products_quick_add_to_cart" inherit_id="website_sale.products_item" optional="enabled" name="Quick add to Cart">
+			<xpath expr="//div[@itemtype='http://schema.org/Product']" position="inside">
+                <div class="quick_add_to_cart input-group">
+                    <span class="input-group-addon">
+                        <a t-attf-href="#" class="mb8 js_add_cart_json">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </span>
+                    <input type="text" class="js_quantity form-control"
+                           t-att-data-product-id="product.id"
+                           t-att-value="'0'"/>
+                    <span class="input-group-addon">
+                        <a t-attf-href="#" class="mb8 float_left js_add_cart_json">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+
+			</xpath>
+		</template>
+		<template id="products" inherit_id="website_sale.products">
+			<xpath expr="//t[@t-set='head']" position="inside">
+				<script type="text/javascript" src="/pos_website_sale/static/src/js/shop.js"></script>
+				<link rel='stylesheet' href='/pos_website_sale/static/src/css/main.css'/>
+			</xpath>
+		</template>
+		<template id="cart" inherit_id="website_sale.cart">
+			<xpath expr="//ul[@class='wizard pull-right']" position="replace">
+				<ul class="wizard pull-right">
+					<li class="text-primary">Сделать заказ<span class="chevron"></span></li>
+					<li class="text-muted">Получить номер<span class="chevron"></span></li>
+					<li class="text-muted">Забрать товары<span class="chevron"></span></li>
+				</ul>
+			</xpath>
+			<xpath expr="//div[@id='right_column']" position="replace">
+				<div class="col-lg-3 col-lg-offset-1 col-sm-3 col-md-3 text-muted" id="right_column">
+				</div>
+			</xpath>
+		</template>
+		<template id="checkout" inherit_id="website_sale.checkout">
+			<xpath expr="//div[@id='wrap']" position="replace">
+				<div id="wrap">
+					<div class="container oe_website_sale">
+
+						<ul class="wizard pull-right">
+              <li><a href="/shop/cart" class="text-success">Сделать заказ<span class="chevron"></span></a></li>
+							<li class="text-primary">Получить номер<span class="chevron"></span></li>
+							<li class="text-muted">Забрать товары<span class="chevron"></span></li>
+						</ul>
+
+						<div class="row">
+							<div class="col-md-8 oe_cart">
+								<form action="/shop/checkout" method="post" class="form-horizontal">
+									<!--
+									<div class="form-group ">
+										<label class="col-md-3 col-sm-4 control-label" for="contact_name">Ваше имя</label>
+										<div class="col-md-7 col-sm-8">
+											<input type="text" class="form-control" name="contact_name"/>
+										</div>
+									</div>
+									-->
+									<div name="email_from_container" class="form-group ">
+										<label class="col-md-3 col-sm-4 control-label" for="email_from">Электронная почта</label>
+										<div class="col-md-7 col-sm-8">
+											<input required="True" type="email" class="form-control" name="email_from" placeholder="например, ivan@mail.ru"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+											<button class="btn btn-primary btn-lg">Получить номер заказа</button>
+										</div>
+									</div>
+								</form>
+							</div>
+
+							<div class="col-lg-offset-1 col-lg-3 col-md-3 text-muted">
+								<h3 class="page-header mt16">Your Order <small><a href="/shop/cart"><span class="fa fa-arrow-right"/> change</a></small></h3>
+								<t t-set="website_sale_order" t-value="website.sale_get_order()"/>
+								<div class="row">
+									<div class="col-sm-6 text-right">Subtotal:</div>
+									<div class="col-sm-6"><span t-field="website_sale_order.amount_untaxed" t-field-options='{
+									"widget": "monetary",
+									"display_currency": "website.pricelist_id.currency_id"
+									}'/></div>
+									<div class="col-sm-6 text-right">Taxes:</div>
+									<div class="col-sm-6"><span t-field="website_sale_order.amount_tax" t-field-options='{
+									"widget": "monetary",
+									"display_currency": "website.pricelist_id.currency_id"
+									}'/></div>
+									<div class="col-sm-6 text-right"><h4>Total To Pay:</h4></div>
+									<div class="col-sm-6"><h4><span t-field="website_sale_order.amount_total" t-field-options='{
+									"widget": "monetary",
+									"display_currency": "website.pricelist_id.currency_id"
+									}'/></h4></div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</xpath>
+		</template>
+		<template id="ready">
+			<t t-call="website.layout">
+				<t t-set="head">
+					<link rel='stylesheet' href='/website_sale/static/src/css/website_sale.css'/>
+					<!--<script type="text/javascript" src="/website_sale/static/src/js/website_sale_validate.js"></script>-->
+					<t t-raw="head or ''"/>
+				</t>
+				<t t-set="additional_title">Shop - Confirmed</t>
+				<div id="wrap">
+					<div class="container oe_website_sale">
+						<h2>Заказ принят!</h2>
+						<h3>На ваш почтовый адрес отправлен номер заказа.</h3>
+					</div>
+					<div class="oe_structure"/>
+				</div>
+
+			</t>
+		</template>
+		<!-- POS -->
+        <template id="assets_backend" name="point_of_sale assets" inherit_id="point_of_sale.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_website_sale/static/src/js/pos.js"></script>
+			</xpath>
+		</template>
+    </data>
+</openerp>
