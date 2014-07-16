@@ -20,10 +20,7 @@
 #
 ##############################################################################
 from openerp.osv import fields, osv
-import operator
-
-def is_pair(x):
-    return not x%2
+import math
 
 def check_ean(eancode):
      if not eancode:
@@ -34,22 +31,64 @@ def check_ean(eancode):
          int(eancode)
      except:
          return False
-     sum=0
-     ean13_len= int(len(eancode))
-     for i in range(ean13_len-1):
-         pos=int(ean13_len-2-i)
-         if is_pair(i): 
-             sum += 3 * int(eancode[pos])
-         else:
-             sum += int(eancode[pos])
-     check = 10 - operator.mod(sum,10)
-     if check == 10 :
-         check = 0
-     if check != int(eancode[ean13_len-1]): # last digit
-         return False
-     return True
+     res = ean_checksum(eancode[:-1]) == int(eancode[-1])
+     if not res and len(eancode)==8:
+         res = ean_checksum(convert_UPCE_to_UPCA(eancode)[:-1]) == int(eancode[-1])
+     return res
+# tests (should return empty list):
+# [ (name, code) for name, code in (('upc-e','04904500'),('ean-13','2112345678900'),('ean-8','02345673'),('upc-a','416000336108'),('upc-e','00123457'),) if not check_ean(code)]
 
-# need to replace the check_ean13_key function 
+def ean_checksum(eancode):
+    # eancode -- code without check digit
+    oddsum=0
+    evensum=0
+    total=0
+    eanvalue=eancode
+    finalean = eanvalue[::-1]
+    for i in range(len(finalean)):
+        if i % 2 == 0:
+            oddsum += int(finalean[i])
+        else:
+            evensum += int(finalean[i])
+    total=(oddsum * 3) + evensum
+    check = int(10 - math.ceil(total % 10.0)) %10
+    return check
+
+# from http://code.activestate.com/recipes/528911-barcodes-convert-upc-e-to-upc-a/
+def convert_UPCE_to_UPCA(upce_value):
+    """Test value 04182635 -> 041800000265"""
+    if len(upce_value)==6:
+        middle_digits=upce_value #assume we're getting just middle 6 digits
+    elif len(upce_value)==7:
+        #truncate last digit, assume it is just check digit
+        middle_digits=upce_value[:6]
+    elif len(upce_value)==8:
+        #truncate first and last digit,
+        #assume first digit is number system digit
+        #last digit is check digit
+        middle_digits=upce_value[1:7]
+    else:
+        return False
+    d1,d2,d3,d4,d5,d6=list(middle_digits)
+    if d6 in ["0","1","2"]:
+        mfrnum=d1+d2+d6+"00"
+        itemnum="00"+d3+d4+d5
+    elif d6=="3":
+        mfrnum=d1+d2+d3+"00"
+        itemnum="000"+d4+d5
+    elif d6=="4":
+        mfrnum=d1+d2+d3+d4+"0"
+        itemnum="0000"+d5
+    else:
+        mfrnum=d1+d2+d3+d4+d5
+        itemnum="0000"+d6
+    newmsg="0"+mfrnum+itemnum
+    #calculate check digit, they are the same for both UPCA and UPCE
+    check_digit=ean_checksum(newmsg)
+    return newmsg+str(check_digit)
+
+
+# need to replace the check_ean13_key function
 class product_product(osv.osv):
     _inherit = "product.product"
 
