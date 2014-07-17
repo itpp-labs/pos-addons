@@ -118,16 +118,19 @@ function chricar_product_gtin(instance, module){ //module is instance.point_of_s
 
             function get_basecode(ean,pattern){
                 var base = '';
-                for(var i = 0; i < pattern.length; i++){
+                var max = Math.max(pattern.length, ean.length)
+                for(var i = 0; i < max; i++){
                     var p = pattern[i];
                     var v = ean[i];
-                    if( p === 'x'  || is_number(p)){
+                    if (!v)
+                        break;
+                    if( !p || p === 'x'  || is_number(p)){
                         base += v;
                     }else{
                         base += '0';
                     }
                 }
-                return self.sanitize_ean(base);
+                return base;
             }
 
             var patterns = this.sorted_patterns;
