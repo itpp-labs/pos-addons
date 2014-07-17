@@ -31,9 +31,9 @@ def check_ean(eancode):
          int(eancode)
      except:
          return False
-     res = ean_checksum(eancode[:-1]) == int(eancode[-1])
+     res = ean_checksum(eancode) == int(eancode[-1])
      if not res and len(eancode)==8:
-         res = ean_checksum(convert_UPCE_to_UPCA(eancode)[:-1]) == int(eancode[-1])
+         res = ean_checksum(convert_UPCE_to_UPCA(eancode)) == int(eancode[-1])
      return res
 # tests (should return empty list):
 # [ (name, code) for name, code in (('upc-e','04904500'),('ean-13','2112345678900'),('ean-8','02345673'),('upc-a','416000336108'),('upc-e','00123457'),) if not check_ean(code)]
@@ -44,7 +44,8 @@ def ean_checksum(eancode):
     evensum=0
     total=0
     eanvalue=eancode
-    finalean = eanvalue[::-1]
+    reversevalue = eanvalue[::-1]
+    finalean=reversevalue[1:]
     for i in range(len(finalean)):
         if i % 2 == 0:
             oddsum += int(finalean[i])
@@ -84,7 +85,7 @@ def convert_UPCE_to_UPCA(upce_value):
         itemnum="0000"+d6
     newmsg="0"+mfrnum+itemnum
     #calculate check digit, they are the same for both UPCA and UPCE
-    check_digit=ean_checksum(newmsg)
+    check_digit=ean_checksum(newmsg+'0')
     return newmsg+str(check_digit)
 
 

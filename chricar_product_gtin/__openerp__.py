@@ -10,7 +10,7 @@ makes EAN visible in simplified view
 """
 , "init_xml"     : []
 , "demo_xml"     : []
-, "update_xml"   : ["chricar_product_gtin_view.xml"]
+, "update_xml"   : ["chricar_product_gtin_view.xml", "data.xml"]
 , "auto_install" : False
 , "installable"  : True
 }
