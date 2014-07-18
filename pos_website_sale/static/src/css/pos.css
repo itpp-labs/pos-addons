@@ -1,0 +1,16 @@
+.pos .website_order {
+	background: #f5f5f5;
+	border-top: solid 1px #cecece;
+	border-bottom: solid 1px #cecece;
+	padding:16px;
+}
+.pos .website_order button {
+	height: 39px;
+	display: block;
+	width: 100%;
+	margin: 0px -6px 4px -2px;
+	font-weight: bold;
+	vertical-align: middle;
+	color: #555555;
+	font-size: 14px;
+}

@@ -1,0 +1,11 @@
+.pos .order .summary{
+	cursor: pointer;
+}
+
+.pos .order .summary.selected{
+	background: rgba(140,143,183,0.2);
+	-webkit-transition: background 250ms ease-in-out;
+	-moz-transition: background 250ms ease-in-out;
+	transition: background 250ms ease-in-out;
+	cursor: default;
+}

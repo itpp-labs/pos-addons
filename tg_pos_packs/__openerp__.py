@@ -64,7 +64,8 @@ but also, you can build your pack on-demand, by making groups of templates .
         'security/ir.model.access.csv',
     ],
     'installable': True,
-    'active': True,
+    'active': False,
+    'auto_install': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
