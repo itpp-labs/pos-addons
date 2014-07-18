@@ -14,7 +14,6 @@ Module introduce barcode sequences:
     'depends' : ['point_of_sale', 'product_barcode_generator'],
     'data':[
         'data.xml',
-        'views.xml',
         ],
     'installable': True,
     'auto_install': False,
