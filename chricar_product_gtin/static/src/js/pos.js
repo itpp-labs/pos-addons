@@ -130,7 +130,9 @@ function chricar_product_gtin(instance, module){ //module is instance.point_of_s
                         base += '0';
                     }
                 }
-                return base;
+                if (base.length != 13)
+                    return base;
+                return self.sanitize_ean(base);
             }
 
             var patterns = this.sorted_patterns;
