@@ -13,7 +13,7 @@
         <record id="seq_ean13_internal" model="ir.sequence">
             <field name="name">Internal EAN13 (240000...)</field>
             <field name="code">product.ean13.code</field>
-            <field name="prefix">210000</field>
+            <field name="prefix">240000</field>
             <field name="padding">5</field>
             <field name="suffix"></field>
             <field name="number_next">1</field>
