@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import osv,fields
-from openerp import SUPERUSER_ID, api
+from openerp import SUPERUSER_ID
 
 class product_product(osv.Model):
     _inherit = 'product.product'
