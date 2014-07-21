@@ -65,8 +65,10 @@ class product_product(orm.Model):
             ean = sequence_obj.next_by_id(cr, uid, product.categ_id.ean_sequence_id.id, context=context)
         elif product.company_id and product.company_id.ean_sequence_id:
             ean = sequence_obj.next_by_id(cr, uid, product.company_id.ean_sequence_id.id, context=context)
+        elif context.get('sequence_id'):
+            ean = sequence_obj.next_by_id(cr, uid, context.get('sequence_id'), context=context)
         else:
-            ean = sequence_obj.next_by_code(cr, uid, 'product.ean13.code', context=context)
+            return None
         if len(ean) > 12:
             raise orm.except_orm(_("Configuration Error!"),
                  _("There next sequence is upper than 12 characters. This can't work."
@@ -89,10 +91,8 @@ class product_product(orm.Model):
         ean13 = False
         if context is None: context = {}
         ean = self._get_ean_next_code(cr, uid, product, context=context)
-        if len(ean) != 12:
-            raise orm.except_orm(_("Configuration Error!"),
-                 _("This sequence is different than 12 characters. This can't work."
-                   "You will have to redefine the sequence or create a new one"))
+        if not ean:
+            return None
         key = self._get_ean_key(ean)
         ean13 = ean + key
         return ean13
@@ -104,17 +104,12 @@ class product_product(orm.Model):
             if product.ean13:
                 continue
             ean13 = self._generate_ean13_value(cr, uid, product, context=context)
+            if not ean13:
+                continue
             self.write(cr, uid, [product.id], {
                         'ean13': ean13
                     }, context=context)
         return True
-   
-    def create(self, cr, uid, vals, context=None):
-        if context is None: context = {}
-        id = super(product_product, self).create(cr, uid, vals, context=context)
-        if not vals.get('ean13'):
-            ean13 = self.generate_ean13(cr, uid, [id], context=context)
-        return id
     
     def copy(self, cr, uid, id, default=None, context=None):
         if default is None: default = {}
