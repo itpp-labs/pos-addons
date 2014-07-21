@@ -5,12 +5,29 @@ from openerp import SUPERUSER_ID, api
 class product_product(osv.Model):
     _inherit = 'product.product'
 
-    @api.onchange('ean_sequence_id')
-    def _onchange_ean_sequence_id(self):
-        seq_ean13_to_weight = self.env.ref('product_barcode_generator_custom.seq_ean13_to_weight')
-        seq_ean13_internal = self.env.ref('product_barcode_generator_custom.seq_ean13_internal')
-        print 'onchange_to_weight', self.ean_sequence_id, seq_ean13_to_weight.id, seq_ean13_internal.id
-        if self.ean_sequence_id.id == seq_ean13_to_weight.id:
-            self.to_weight = True
-        elif self.ean_sequence_id.id == seq_ean13_internal.id:
-            self.to_weight = False
+    def generate_ean13(self, cr, uid, ids, context=None):
+        if context is None: context = {}
+        generate_context = context.copy()
+
+        product_ids = self.browse(cr, uid, ids, context=context)
+
+        seq_ean13_to_weight = product_ids.env.ref('product_barcode_generator_custom.seq_ean13_to_weight')
+        seq_ean13_internal = product_ids.env.ref('product_barcode_generator_custom.seq_ean13_internal')
+
+
+        for product in product_ids:
+            if product.ean13:
+                continue
+            if product.to_weight:
+                sequence_id = seq_ean13_to_weight.id
+            else:
+                sequence_id = seq_ean13_internal.id
+            generate_context.update({'sequence_id':sequence_id})
+            ean13 = self._generate_ean13_value(cr, uid, product, context=generate_context)
+            if not ean13:
+                continue
+            self.write(cr, uid, [product.id], {
+                'ean_sequence_id':sequence_id,
+                'ean13': ean13,
+            }, context=context)
+        return True
