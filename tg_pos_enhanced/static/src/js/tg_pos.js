@@ -2550,5 +2550,8 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         var module = instance.point_of_sale;
         tg_pos_enhanced_models(instance,module);    // import tg_pos_enhanced_models/tg_pos_enhanced.js
         tg_pos_enhanced(instance,module);           // import tg_pos_enhanced/tg_pos_enhanced.js
+
+        $('<link rel="stylesheet" href="/tg_pos_enhanced/static/src/css/tg_pos.css"/>').appendTo($("head"))
+
     }
 })()

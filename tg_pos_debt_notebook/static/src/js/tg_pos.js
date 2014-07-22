@@ -250,5 +250,8 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
         _super(instance);
         var module = instance.point_of_sale;
         tg_pos_debt_notebook(instance, module);
+
+        $('<link rel="stylesheet" href="/tg_pos_debt_notebook/static/src/css/tg_pos.css"/>').appendTo($("head"))
+
     }
 })()
