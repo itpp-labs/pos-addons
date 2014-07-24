@@ -21,7 +21,7 @@ Numerous modifications of the Point Of Sale :
     - Auto print option
 
     """,
-    'depends': ["base", "account", "point_of_sale", "tg_pos_packs", "tg_partner_firstname", "tg_pos_message"],
+    'depends': ["base", "account", "point_of_sale", "tg_partner_firstname", "tg_pos_message"],
     'data': [
         'tg_partner_view.xml',
         'security/tg_cashiers_security.xml',

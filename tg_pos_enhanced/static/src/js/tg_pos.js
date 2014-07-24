@@ -1028,7 +1028,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             // we send it to the order
             var attr = JSON.parse(JSON.stringify(product));
 
-            if(attr.is_pack == false)
+            if(!attr.is_pack)
                 return OrderSuper.prototype.addProduct.call(this, product, options)
 
             // this is a Pack !!
