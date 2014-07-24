@@ -218,62 +218,6 @@ class inherit_pos_order(osv.Model):
     def test_session(self, cr, uid, context=None):
         return True
 
-    def create_picking(self, cr, uid, ids, context=None):
-        """Create a picking for each order and validate it."""
-        picking_obj = self.pool.get('stock.picking')
-        partner_obj = self.pool.get('res.partner')
-        move_obj = self.pool.get('stock.move')
-
-        for order in self.browse(cr, uid, ids, context=context):
-            if not order.state=='draft':
-                continue
-            addr = order.partner_id and partner_obj.address_get(cr, uid, [order.partner_id.id], ['delivery']) or {}
-            picking_id = picking_obj.create(cr, uid, {
-                'origin': order.name,
-                'partner_id': addr.get('delivery',False),
-                'type': 'out',
-                'company_id': order.company_id.id,
-                'move_type': 'direct',
-                'note': order.note or "",
-                'invoice_state': 'none',
-                'auto_picking': True,
-            }, context=context)
-            self.write(cr, uid, [order.id], {'picking_id': picking_id}, context=context)
-            location_id = order.warehouse_id.lot_stock_id.id
-            output_id = order.warehouse_id.lot_output_id.id
-
-            for line in order.lines:
-
-                if line.product_id and line.product_id.type == 'service':
-                    continue
-
-                # line price < 0 = c'est un retour produit
-                # on retourne le produit de sortie -> Stock
-                if line.price_subtotal < 0:
-                    location_id, output_id = output_id, location_id
-
-                move_obj.create(cr, uid, {
-                    'name': line.name,
-                    'product_uom': line.product_id.uom_id.id,
-                    'product_uos': line.product_id.uom_id.id,
-                    'picking_id': picking_id,
-                    'product_id': line.product_id.id,
-                    'product_uos_qty': line.qty,
-                    'product_qty': line.qty,
-                    'tracking_id': False,
-                    'state': 'draft',
-                    'location_id': location_id,
-                    'location_dest_id': output_id,
-                }, context=context)
-                
-                if line.price_subtotal < 0:
-                    location_id, output_id = output_id, location_id
-
-            wf_service = netsvc.LocalService("workflow")
-            wf_service.trg_validate(uid, 'stock.picking', picking_id, 'button_confirm', cr)
-            picking_obj.force_assign(cr, uid, [picking_id], context)
-        return True
-        
     def get_partner_orders(self, cr, uid, partner_id, context=None):
         if context is None:
             context = {}
