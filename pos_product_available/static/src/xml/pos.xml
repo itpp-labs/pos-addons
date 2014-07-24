@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+	<t t-extend="Product">
+		<t t-jquery=".product-img" t-operation="append">
+			<span t-attf-class="qty-tag #{product.qty_available lte 0 ? 'not-available':''}">
+				<t t-esc="product.qty_available"/>
+			</span>
+		</t>
+	</t>
+	<t t-extend="Orderline">
+		<t t-jquery=".info em" t-operation="after">
+			<t t-set='qty_available' t-value='line.get_product().qty_available'/>
+			(of <span t-attf-class="qty-info #{qty_available lt line.quantity ? 'not-available':''}"><t t-esc="qty_available"/></span>)
+		</t>
+	</t>
+
+</templates>
