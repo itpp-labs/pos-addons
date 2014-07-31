@@ -1,10 +1,6 @@
-.pos .paypad button.disabled{
-	opacity:0.5;
-}
-
-.pos #current_debt.positive{
+.pos .clientlist-screen .client-detail > .client-debt.positive{
 	color: red;
 }
-.pos #current_debt.negative{
+.pos .clientlist-screen .client-detail > .client-debt.negative{
 	color: green;
 }

@@ -5,17 +5,12 @@
            <t t-esc="widget.cashregister.journal.name"/>
         </button>
     </t>
-	<t t-extend="PosWidget">
-		<t t-jquery="#client-btns" t-operation="append">
-            <li>
-                <img id="img_current_debt" src="/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Current debt amount"/> : <span id="current_debt"></span>
-            </li>      
+	<t t-extend="ClientDetails">
+		<t t-jquery=".client-details-right" t-operation="append">
+			<div class="client-detail">
+				<span class='label'>Debt</span>
+				<span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}"><t t-esc='partner.debt'/></span>
+			</div>
 		</t>
 	</t>
-	<t t-extend="ClientWidget">
-		<t t-jquery=".c-montant-cumule" t-operation="after">
-			<td style="display:none" class="c-current-debt"><t t-esc="c_current_debt"/></td>
-		</t>
-	</t>
-		
 </templates>
