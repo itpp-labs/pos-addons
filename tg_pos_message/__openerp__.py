@@ -24,7 +24,6 @@
     'name': 'TG POS Messaging',
     'version': '1.0.0',
     'category': 'Point Of Sale',
-    'sequence': 1,
     'author': 'Thierry Godin',
     'summary': 'POS internal messaging',
     'description': """

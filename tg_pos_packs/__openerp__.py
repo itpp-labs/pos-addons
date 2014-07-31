@@ -25,7 +25,6 @@
     'name': 'TG customizable product packs',
     'version': '1.0',
     'category': 'Point of sale',
-    'sequence': 1,
     'author': 'Thierry Godin',
     'website': '',
     'summary': 'Create on demand packs of products for Point of sale',

@@ -24,7 +24,6 @@
     'name': 'TG Partner Firstname',
     'version': '1.0.0',
     'category': 'Tools',
-    'sequence': 1,
     'author': 'Thierry Godin',
     'summary': 'Add Partner Firstname',
     'description': """
