@@ -9,9 +9,10 @@ function pos_product_available(instance, module){
             loaded = loaded.then(function(){
                 return self.fetch(
                     'product.product',
-                    ['name', 'list_price','price','public_categ_id', 'taxes_id', 'ean13', 'default_code', 'variants',
+                    ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code', 'variants',
                      'qty_available',
-                     'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description'],
+                     'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description',
+                     'product_tmpl_id'],
                     [['sale_ok','=',true],['available_in_pos','=',true]],
                     {pricelist: self.pricelist.id} // context for price
                 );

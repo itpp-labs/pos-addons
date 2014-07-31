@@ -12,9 +12,6 @@
     'qweb': [
         'static/src/xml/pos.xml',
     ],
-    'js': [
-        'static/src/js/pos.js'
-    ],
     'installable': True,
     'description': """
     """,
