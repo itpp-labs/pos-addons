@@ -15,5 +15,5 @@ click on summary line of pos order and input discount value
         'static/src/xml/pos.xml',
     ],
     'installable': True,
-    'auto_install': True
+    'auto_install': False,
 }
