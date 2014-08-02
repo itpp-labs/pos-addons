@@ -42,9 +42,7 @@
 			</t>
 
             <div>--------------------------------</div>
-			<line>
-				<right><pre>QUANTITY   UNIT PRICE   TOTAL PRICE</pre></right>
-			</line>
+			<div><pre>    QUANTITY   UNIT   TOTAL</pre></div>
             <div>--------------------------------</div>
 
             <div line-ratio='0.6'>
@@ -106,9 +104,7 @@
             </line>
 
             <t t-if='taxincluded'>
-				<line>
-					<right><pre>      SUBTOTAL TAX TOTAL</pre></right>
-				</line>
+				<div><pre>      SUBTOTAL TAX TOTAL</pre></div>
                 <t t-foreach='receipt.tax_details_extra' t-as='tax'>
                     <line>
                         <left><t t-esc='tax.name' /></left>
