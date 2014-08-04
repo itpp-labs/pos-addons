@@ -22,6 +22,39 @@ function pos(instance, module){
             })
             return loaded;
         },
+        scan_product: function(parsed_code){
+            var self = this;
+            var selectedOrder = this.get('selectedOrder');
+            if(parsed_code.encoding === 'ean13'){
+                var product = this.db.get_product_by_ean13(parsed_code.base_code);
+            }else if(parsed_code.encoding === 'reference'){
+                var product = this.db.get_product_by_reference(parsed_code.code);
+            }
+
+            if(!product){
+                return false;
+            }
+
+            //added code
+            if (product.lot_id){
+                var lot_product = this.db.get_product_by_id(product.lot_id[0])
+                if (lot_product.ean13==parsed_code.base_code)
+                    //lot with same ean has priority
+                    product = lot_product;
+            }
+
+            if(parsed_code.type === 'price'){
+                selectedOrder.addProduct(product, {price:parsed_code.value});
+            }else if(parsed_code.type === 'weight'){
+                selectedOrder.addProduct(product, {quantity:parsed_code.value, merge:false});
+            }else if(parsed_code.type === 'discount'){
+                selectedOrder.addProduct(product, {discount:parsed_code.value, merge:false});
+            }else{
+                selectedOrder.addProduct(product);
+            }
+            return true;
+        },
+
     })
 }
 
