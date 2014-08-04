@@ -10,3 +10,8 @@
     border-radius: 2px;
 	font-weight: bold;
 }
+
+.pos .order .orderline .unpack-lot{
+	font-size: 16px;
+	height:35px;
+}

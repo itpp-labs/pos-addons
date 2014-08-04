@@ -1,5 +1,34 @@
 (function(){
 
+// from http://vk.com/js/common.js
+function geByClass(searchClass, node, tag) {
+  var classElements = new Array();
+  if (node == null)
+    node = document;
+  if (tag == null)
+    tag = '*';
+  if (node.getElementsByClassName) {
+    classElements = node.getElementsByClassName(searchClass);
+    if (tag != '*') {
+      for (i = 0; i < classElements.length; i++) {
+        if (classElements.nodeName == tag)
+          classElements.splice(i, 1);
+      }
+    }
+    return classElements;
+  }
+  var els = node.getElementsByTagName(tag);
+  var elsLen = els.length;
+  var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+  for (i = 0, j = 0; i < elsLen; i++) {
+    if ( pattern.test(els[i].className) ) {
+      classElements[j] = els[i];
+      j++;
+    }
+  }
+  return classElements;
+}
+
 function pos(instance, module){
     var PosModelSuper = module.PosModel
     module.PosModel = module.PosModel.extend({
@@ -56,6 +85,37 @@ function pos(instance, module){
         },
 
     })
+
+    module.OrderWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent,options);
+
+            this.unpack_lot_handler = function(){
+                var product = this.orderline.product;
+                var lot_product = self.pos.db.get_product_by_id(product.lot_id[0]);
+
+                lot_product.qty_available -= 1;
+                product.qty_available += lot_product.lot_qty;
+
+                self.rerender_orderline(this.orderline);
+                self.pos.refresh_qty_available(product);
+                self.pos.refresh_qty_available(lot_product);
+            }
+        },
+        render_orderline: function(orderline){
+            var el_node = this._super(orderline);
+            var button = geByClass('unpack-lot', el_node)
+            if (button && button.length){
+                button = button[0]
+                button.orderline = orderline;
+                button.addEventListener('click', this.unpack_lot_handler)
+            }
+
+            return el_node;
+        },
+    })
+
 }
 
 var _super = window.openerp.point_of_sale;
