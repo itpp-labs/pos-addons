@@ -89,8 +89,9 @@ function pos(instance, module){
             //added code
             if (product.lot_id){
                 var lot_product = this.db.get_product_by_id(product.lot_id[0])
-                if (lot_product.ean13==parsed_code.base_code)
-                    //lot with same ean has priority
+                if (parsed_code.encoding === 'ean13' && lot_product.ean13 == parsed_code.base_code
+                  || parsed_code.encoding === 'reference' && lot_product.default_code == parsed_code.code)
+                    //lot with same code has priority
                     product = lot_product;
             }
 
