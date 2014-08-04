@@ -32,6 +32,28 @@ function geByClass(searchClass, node, tag) {
 function pos(instance, module){
     var PosModelSuper = module.PosModel
     module.PosModel = module.PosModel.extend({
+        flush: function(){
+            var old_flushed = PosModelSuper.prototype.flush.call(this);
+
+            var self = this;
+            var flushed = new $.Deferred();
+
+            old_flushed.done(function(){
+                self.flush_mutex.exec(function(){
+                    var done = new $.Deferred();
+
+                    self._flush_all_split_lot()
+                    .done(  function(){ flushed.resolve();})
+                    .fail(  function(){ flushed.reject(); })
+                    .always(function(){ done.resolve();   });
+
+                    return done;
+                });
+            }).fail(function(){
+                flushed.reject();
+            })
+            return flushed;
+        },
         load_server_data: function(){
             var self = this;
             var loaded = PosModelSuper.prototype.load_server_data.call(this);
@@ -84,7 +106,106 @@ function pos(instance, module){
             return true;
         },
 
+        /* push to server */
+
+        _flush_all_split_lot: function () {
+            var self = this;
+            self.set('synch', {
+                state: 'connecting',
+                pending: self.get('synch').pending
+            });
+            return self._save_to_server_split_lot(self.db.get_split_lot_records()).done(function () {
+                var pending = self.db.get_split_lot_records().length;
+                self.set('synch', {
+                    state: pending ? 'connecting' : 'connected',
+                    pending: pending
+                });
+            });
+        },
+        _save_to_server_split_lot: function (records, options) {
+            if (!records || !records.length) {
+                var result = $.Deferred();
+                result.resolve();
+                return result;
+            }
+
+            options = options || {};
+
+            var self = this;
+            var timeout = typeof options.timeout === 'number' ? options.timeout : 7500 * records.length;
+
+            // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
+            // then we want to notify the user that we are waiting on something )
+            var ppModel = new instance.web.Model('product.product');
+            return ppModel.call('split_lot_from_ui',
+                [records],
+                undefined,
+                {
+                    shadow: true,
+                    timeout: timeout
+                }
+            ).then(function () {
+                _.each(records, function (r) {
+                    self.db.remove_split_lot(r.id);
+                });
+            }).fail(function (unused, event){
+                // prevent an error popup creation by the rpc failure
+                // we want the failure to be silent as we send the records in the background
+                event.preventDefault();
+                console.error('Failed to send records:', records);
+            });
+        },
+        push_split_lot:function(product, qty){
+            var self = this;
+
+            var r_id = this.db.add_split_lot({'product':{'id':product.id},
+                                                  'qty': qty || 1});
+            var pushed = new $.Deferred();
+
+            this.set('synch',{state:'connecting', pending:self.db.get_split_lot_records().length});
+
+            this.flush_mutex.exec(function(){
+                var flushed = self._flush_all_split_lot();
+
+                flushed.always(function(){
+                    pushed.resolve();
+                });
+
+                return flushed;
+            });
+            return pushed;
+
+        }
     })
+    module.PosDB.include({
+        getTime: function(){
+            return String(new Date().getTime());
+        },
+        getUniqueTime: function() {
+            var time = this.getTime();
+            while (time == this.getTime());
+            return this.getTime();
+        },
+        add_split_lot:function(r){
+            var records  = this.load('split_lot_records',[]);
+
+            r.id = this.getUniqueTime();
+
+            records.push(r)
+
+            this.save('split_lot_records', records);
+        },
+        remove_split_lot:function(id){
+            var records = this.load('split_lot_records',[]);
+            records = _.filter(records, function(order){
+                return order.id !== id;
+            });
+            this.save('split_lot_records',records);
+        },
+        get_split_lot_records:function(){
+            return this.load('split_lot_records',[]);
+        }
+    });
 
     module.OrderWidget.include({
         init: function(parent, options) {
@@ -94,13 +215,15 @@ function pos(instance, module){
             this.unpack_lot_handler = function(){
                 var product = this.orderline.product;
                 var lot_product = self.pos.db.get_product_by_id(product.lot_id[0]);
+                var qty = 1;
 
-                lot_product.qty_available -= 1;
-                product.qty_available += lot_product.lot_qty;
+                lot_product.qty_available -= qty;
+                product.qty_available += qty * lot_product.lot_qty;
 
                 self.rerender_orderline(this.orderline);
                 self.pos.refresh_qty_available(product);
                 self.pos.refresh_qty_available(lot_product);
+                self.pos.push_split_lot(lot_product, qty);
             }
         },
         render_orderline: function(orderline){

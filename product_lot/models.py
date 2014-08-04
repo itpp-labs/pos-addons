@@ -26,11 +26,7 @@ class product_product(orm.Model):
     def button_split_lot(self, cr, uid, ids, context=None):
         return self._split_lot(cr, uid, ids[0], context=context)
 
-    def split_lot(self, cr, uid, lot_id, qty, context=None):
-        return self._split_lot(cr, uid, lot_id, qty, context=context)
-
     def _split_lot(self, cr, uid, lot_id, qty=1.0, context=None):
-        print 'split_lot', lot_id, qty
         lot = self.browse(cr, uid, lot_id, context=context)
         assert lot.is_lot, "You can split only lot product"
         assert lot.lot_product_id, "Product in lot is not specified"
