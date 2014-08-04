@@ -11,9 +11,6 @@ Modules allows to create product which is a set of some product (e.g. box of 100
     'data':[
         'views.xml',
         ],
-    'qweb': [
-        'static/src/xml/pos.xml',
-    ],
     'installable': True,
     'auto_install': False,
 }

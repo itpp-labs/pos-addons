@@ -9,16 +9,15 @@ function pos_product_available(instance, module){
             loaded = loaded.then(function(){
                 return self.fetch(
                     'product.product',
-                    ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code', 'variants',
-                     'qty_available',
-                     'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description',
-                     'product_tmpl_id'],
+                    ['qty_available'],
                     [['sale_ok','=',true],['available_in_pos','=',true]],
-                    {pricelist: self.pricelist.id} // context for price
+                    {}
                 );
 
             }).then(function(products){
-                self.db.add_products(products);
+                $.each(products, function(){
+                    $.extend(self.db.get_product_by_id(this.id) || {}, this)
+                });
                 return $.when()
             })
             return loaded;
