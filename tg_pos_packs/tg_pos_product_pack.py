@@ -65,7 +65,7 @@ class inherit_product(orm.Model):
             product_obj =  self.pool.get('product.product')       
             products = product_obj.browse(cr, uid, ids)
 
-            pos_cat_obj =  self.pool.get('product.public.category')       
+            pos_cat_obj =  self.pool.get('pos.category')       
             pos_cat_id = pos_cat_obj.search(cr, uid, [('name', '=', 'Custom Packs'), ('is_pack', '=', True)], context=context)
 
             if pos_cat_id:
@@ -79,7 +79,7 @@ class inherit_product(orm.Model):
                     tmpl_obj = self.pool.get('product.template')
                     tmpl_obj.write(cr, uid, tmpl_id, {'type': 'service'}, context=context)
 
-            return {'value': {'type': 'service', 'public_categ_id': cat_id}}
+            return {'value': {'type': 'service', 'pos_cat_id': cat_id}}
         else:
             return {'value': {'type': None}}
         return {}
@@ -127,7 +127,7 @@ class inherit_product_category(orm.Model):
         return True
 
 class inherit_product_public_category(orm.Model):
-    _inherit = "product.public.category"
+    _inherit = "pos.category"
 
     _columns = {
         'is_pack': fields.boolean('Custom Pack Category'),
