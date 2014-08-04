@@ -225,6 +225,7 @@ function pos(instance, module){
                 self.pos.refresh_qty_available(product);
                 self.pos.refresh_qty_available(lot_product);
                 self.pos.push_split_lot(lot_product, qty);
+                self.renderElement();
             }
         },
         render_orderline: function(orderline){
