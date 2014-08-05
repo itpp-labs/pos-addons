@@ -5,6 +5,12 @@ function pos(instance, module){
         scan: function(code){
             if(code.length < 3){
                 return;
+            }else if(this.pos.db.get_product_by_reference(code)){
+                var parse_result = {
+                    encoding: 'reference',
+                    type: 'product',
+                    code: code,
+                };
             }else if(code.length === 13 && this.check_ean(code)){
                 var parse_result = this.parse_ean(code);
             }else if(code.length === 12 && this.check_ean('0'+code)){
@@ -12,12 +18,6 @@ function pos(instance, module){
                 // This is because ean-13 are UCP-A with an additional zero at the beginning,
                 // so by stripping zeros you get retrocompatibility with UCP-A systems.
                 var parse_result = this.parse_ean('0'+code);
-            }else if(this.pos.db.get_product_by_reference(code)){
-                var parse_result = {
-                    encoding: 'reference',
-                    type: 'product',
-                    code: code,
-                };
             }else{
                 var parse_result = {
                     encoding: 'error',
