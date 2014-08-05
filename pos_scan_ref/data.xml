@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets_backend">
+            <xpath expr="." position="inside">
+				<script type="text/javascript" src="/pos_scan_ref/static/src/js/pos.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
