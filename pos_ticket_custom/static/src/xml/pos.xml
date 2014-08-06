@@ -45,7 +45,7 @@
 			<div><pre>    QUANTITY   UNIT   TOTAL</pre></div>
             <div>--------------------------------</div>
 
-            <div line-ratio='0.6'>
+            <div line-ratio='0.3'>
                 <t t-foreach='receipt.orderlines' t-as='line'>
                     <line><left><t t-esc='line.product_name' /></left></line>
 
@@ -104,7 +104,8 @@
             </line>
 
             <t t-if='taxincluded'>
-				<div><pre>      SUBTOTAL TAX TOTAL</pre></div>
+				<div line-ratio="0.3">
+				<div><right>SUBTOTAL TAX TOTAL</right></div>
                 <t t-foreach='receipt.tax_details_extra' t-as='tax'>
                     <line>
                         <left><t t-esc='tax.name' /></left>
@@ -115,6 +116,7 @@
 						</right>
                     </line>
                 </t>
+				</div>
             </t>
 
             <!-- Payment Lines -->
