@@ -1,5 +1,8 @@
 function pos_ticket_custom(instance, module){
 
+    var round_di = instance.web.round_decimals;
+    var round_pr = instance.web.round_precision
+
     var ModuleOrderlineSuper = module.Orderline;
     module.Orderline = module.Orderline.extend({
         export_for_printing:function(){
@@ -17,6 +20,10 @@ function pos_ticket_custom(instance, module){
             })
 
             res.tax_name = tax_name.join(',')
+
+            var currency_rounding = this.pos.currency.rounding;
+            res.price_without_discount = round_pr(this.get_quantity() * this.get_unit_price(), currency_rounding);
+
             return res;
         }
     })
@@ -30,8 +37,10 @@ function pos_ticket_custom(instance, module){
             var client  = this.get('client');
             var client_data = {};
             if (client){
+                var address = '' + (client.zip?client.zip + ' ' : '') + (client.street?client.street + ' ' : '') + (client.city?client.city +' ' : '') + (client.country_id?client.country_id[1] +' ' : '') ;
+
                 client_data = {
-                    address: ''+ (client.city || '') + (client.street || ''),
+                    address: address,
                     tax_id: ''
                 }
             }
