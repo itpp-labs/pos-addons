@@ -2,6 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="XmlReceipt">
         <receipt align='center' width='40' value-thousands-separator='' >
+			<div line-ratio="0.1">
 			<line>
 				<right>
 					<div><t t-esc='receipt.date.localestring' /></div>
@@ -12,6 +13,7 @@
 					<div><t t-esc='receipt.name' /></div>
 				</right>
 			</line>
+			</div>
             <t t-if='receipt.company.logo'>
                 <img t-att-src='receipt.company.logo' />
                 <br/>
