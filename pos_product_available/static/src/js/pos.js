@@ -37,6 +37,7 @@ function pos_product_available(instance, module){
                 product.qty_available -= line.get_quantity();
                 self.refresh_qty_available(product);
             })
+            return pushed;
         }
     })
 }
