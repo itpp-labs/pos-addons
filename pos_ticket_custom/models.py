@@ -13,8 +13,6 @@ class pos_config(osv.Model):
         prefix = values.get('pos_order_sequence_prefix')
 
         if not prefix:
-            default_seq_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'point_of_sale', 'seq_pos_order')[1]
-            values.update({'pos_order_sequence_id':default_seq_id})
             return values
 
         seq_prefix = prefix + '-%(month)s%(y)s-'
@@ -24,7 +22,7 @@ class pos_config(osv.Model):
             seq_id = self.pool.get('ir.sequence').create(cr, uid, {
                 'name':'Pos order sequence',
                 'padding':5,
-                'code':'pos.order',
+                'code':'pos.order.custom',
                 'prefix': seq_prefix,
                 'auto_reset': True,
                 'reset_period': 'month',
@@ -57,7 +55,8 @@ class pos_order(osv.Model):
         res_id = super(pos_order, self).create(cr, uid, values, context=context)
         order = self.browse(cr, uid, res_id, context)
         seq = order.session_id.config_id.pos_order_sequence_id
-        name = self.pool.get('ir.sequence').next_by_id(cr, uid, seq.id, context)
+        if seq:
+            name = self.pool.get('ir.sequence').next_by_id(cr, uid, seq.id, context)
         self.write(cr, uid, [res_id], {'name':name}, context)
         return res_id
 

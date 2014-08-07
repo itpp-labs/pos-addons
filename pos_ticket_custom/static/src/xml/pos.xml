@@ -10,7 +10,7 @@
 			</line>
 			<line>
 				<right>
-					<div><t t-esc='receipt.name' /></div>
+					<div><t t-esc='receipt.name_custom' /></div>
 				</right>
 			</line>
 			</div>
