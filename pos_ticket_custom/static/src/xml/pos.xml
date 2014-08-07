@@ -62,8 +62,8 @@
 							x
                             <value value-decimals='2'>
                                 <t t-esc='line.price' />
-                            </value><t t-esc='receipt.currency.symbol'/>
-                            <value value-decimals='2'><t t-esc='line.price_without_discount' /></value><t t-esc='receipt.currency.symbol'/>
+                            </value>
+                            <value value-decimals='2'><t t-esc='line.price_without_discount' /></value>
                         </right>
                     </line>
                 </t>
@@ -80,12 +80,12 @@
 			</t>
             <t t-if='!taxincluded'>
                 <line><right>--------</right></line>
-                <line><left>Subtotal</left><right> <value><t t-esc="receipt.subtotal" /></value><t t-esc='receipt.currency.symbol'/></right></line>
+                <line><left>Subtotal</left><right> <value><t t-esc="receipt.subtotal" /></value></right></line>
                 <line><right>TAXES:</right></line>
                 <t t-foreach='receipt.tax_details' t-as='tax'>
                     <line>
                         <left><t t-esc='tax.name' /></left>
-                        <right><value><t t-esc='tax.amount' /></value><t t-esc='receipt.currency.symbol'/></right>
+                        <right><value><t t-esc='tax.amount' /></value></right>
                     </line>
                 </t>
             </t>
@@ -93,16 +93,16 @@
             <t t-if='receipt.total_discount'>
                 <line>
                     <left>Subtotal:</left>
-                    <right><value><t t-esc='receipt.total_with_tax  + receipt.total_discount'/></value><t t-esc='receipt.currency.symbol'/></right>
+                    <right><value><t t-esc='receipt.total_with_tax  + receipt.total_discount'/></value></right>
                 </line>
                 <line>
                     <left>Discount:</left>
-                    <right><value><t t-esc='receipt.total_discount'/></value><t t-esc='receipt.currency.symbol'/></right>
+                    <right><value><t t-esc='receipt.total_discount'/></value></right>
                 </line>
             </t>
             <line size='double-height'>
                 <left>TOTAL</left>
-                <right><value><t t-esc='receipt.total_with_tax' /></value><t t-esc='receipt.currency.symbol'/></right>
+                <right><value><t t-esc='receipt.total_with_tax' /></value><t t-esc='receipt.currency.name'/></right>
             </line>
 
             <t t-if='taxincluded'>
@@ -112,9 +112,9 @@
                     <line>
                         <left><t t-esc='tax.name' /></left>
                         <right>
-							<value><t t-esc='tax.base' /></value><t t-esc='receipt.currency.symbol'/>
-							<value><t t-esc='tax.amount' /></value><t t-esc='receipt.currency.symbol'/>
-							<value><t t-esc='tax.base + tax.amount' /></value><t t-esc='receipt.currency.symbol'/>
+							<value><t t-esc='tax.base' /></value>
+							<value><t t-esc='tax.amount' /></value>
+							<value><t t-esc='tax.base + tax.amount' /></value>
 						</right>
                     </line>
                 </t>
@@ -126,14 +126,14 @@
             <t t-foreach='receipt.paymentlines' t-as='line'>
                 <line>
                     <left><t t-esc='line.journal' /></left>
-                    <right><value><t t-esc='line.amount'/></value><t t-esc='receipt.currency.symbol'/></right>
+                    <right><value><t t-esc='line.amount'/></value></right>
                 </line>
             </t>
             <br/> 
 
             <line size='double-height'>
                 <left>CHANGE</left>
-                <right><value><t t-esc='receipt.change' /></value><t t-esc='receipt.currency.symbol'/></right>
+                <right><value><t t-esc='receipt.change' /></value><t t-esc='receipt.currency.name'/></right>
             </line>
             <br/>
 

@@ -51,6 +51,11 @@ function pos_ticket_custom(instance, module){
 
             }).then(function(sequence){
                 self.config.pos_order_sequence = sequence[0];
+
+                return self.fetch('res.currency',['name', 'symbol','position','rounding','accuracy'],[['id','=',self.pricelist.currency_id[0]]]);
+            }).then(function(currencies){
+                self.currency = currencies[0];
+
                 return $.when()
             })
             return loaded;
