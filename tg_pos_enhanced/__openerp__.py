@@ -6,6 +6,13 @@
     'author': 'Thierry Godin',
     'summary': 'POS modifications',
     'description': """
+It's a fork of TG_POS_ENHANCED module. It was not publish on github by author
+
+Related links:
+
+* http://thierry-godin.developpez.com/openerp/openerp-module-pos-enhanced-en/
+* https://www.odoo.com/forum/Help-1/question/POS-Enhanced---with-screenshots--dl-link-40364
+
 Numerous modifications of the Point Of Sale :
 =============================================
 
