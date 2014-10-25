@@ -60,6 +60,6 @@ function pos_discount_widgets(instance, module){
 
         pos_discount_widgets(instance, module);
 
-        $('<link rel="stylesheet" href="/pos_discount/static/src/css/pos.css"/>').appendTo($("head"))
+        $('<link rel="stylesheet" href="/pos_discount_total/static/src/css/pos.css"/>').appendTo($("head"))
     }
 })()
