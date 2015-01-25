@@ -11,14 +11,6 @@ class CheckoutError(Exception):
     pass
 
 class pos_website_sale(http.Controller):
-    @http.route(['/shop/get_order_numbers'], type='json', auth="public", website=True)
-    def get_order_numbers(self):
-        res = {}
-        order = request.website.sale_get_order()
-        for line in order.website_order_line:
-            res[line.product_id.id] = line.product_uom_qty
-        return res
-
     @http.route(['/shop/checkout'], type='http', auth='public', website=True)
     def shop_checkout(self, contact_name=None, email_from=None):
         post = {

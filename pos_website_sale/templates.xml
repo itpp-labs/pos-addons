@@ -2,32 +2,6 @@
 <openerp>
     <data>
 		<!-- website -->
-		<template id="products_quick_add_to_cart" inherit_id="website_sale.products_item" optional="enabled" name="Quick add to Cart">
-			<xpath expr="//div[@itemtype='http://schema.org/Product']" position="inside">
-                <div class="quick_add_to_cart input-group">
-                    <span class="input-group-addon">
-                        <a t-attf-href="#" class="mb8 js_add_cart_json">
-                            <i class="fa fa-minus"></i>
-                        </a>
-                    </span>
-                    <input type="text" class="js_quantity form-control"
-                           t-att-data-product-id="product.id"
-                           t-att-value="'0'"/>
-                    <span class="input-group-addon">
-                        <a t-attf-href="#" class="mb8 float_left js_add_cart_json">
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </span>
-                </div>
-
-			</xpath>
-		</template>
-		<template id="products" inherit_id="website_sale.products">
-			<xpath expr="//t[@t-set='head']" position="inside">
-				<script type="text/javascript" src="/pos_website_sale/static/src/js/shop.js"></script>
-				<link rel='stylesheet' href='/pos_website_sale/static/src/css/main.css'/>
-			</xpath>
-		</template>
 		<template id="cart" inherit_id="website_sale.cart">
 			<xpath expr="//ul[@class='wizard pull-right']" position="replace">
 				<ul class="wizard pull-right">
