@@ -1,11 +1,11 @@
 {
-    'name' : 'combination of POS and e-commerce',
+    'name' : 'Sale orders in POS',
     'version' : '1.1.0',
     'author' : 'Ivan Yelizariev',
     'category' : 'Sale',
     'website' : 'https://it-projects.info',
     'description': '''
-    Customer create order online and buy items offline via order ID.
+Fill pos cart by sale order ID.
 
     ''',
     'depends' : ['point_of_sale', 'website_sale'],
