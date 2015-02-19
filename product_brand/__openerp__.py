@@ -26,7 +26,7 @@
     'author': 'byf.vn, Ivan Yelizariev',
     'category': 'Sales Management',
     'depends': ['product'],
-    'website' : 'https://it-projects.info',
+    'website' : 'https://yelizariev.github.io',
     'description': """
 Module adds brand field to product
     """,
