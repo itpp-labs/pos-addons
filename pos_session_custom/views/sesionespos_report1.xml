@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+	<report
+    	id="sessionespos_report_caja"
+    	model="pos.session"
+    	string="Cierre de Caja"
+   	 report_type="qweb-pdf"
+    	name="sesionespos.report_caja"
+   	 file="sesionespos.report_caja"
+        attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+/>
+
+	
+
+    </data>
+</openerp>

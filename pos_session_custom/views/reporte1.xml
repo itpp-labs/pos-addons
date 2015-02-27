@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="report_caja">
+			<t t-call="report.html_container">
+			    <t t-foreach="docs" t-as="o">
+				<t t-call="sesionespos.external_layout_pos">
+				    <div class="page">
+					 	 						
+					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+					<center>CIERRE DE VENTAS</center>
+					
+					<p>
+                				<center><h4><span t-field="o.start_at"/></h4></center>
+					</p>
+
+					<p>
+						<h4><span t-field="o.nro_facturas"/></h4>
+					</p>
+           				<p>---------------------------------------------------------------</p>
+					<p>
+						<h4>SUBTOTAL: <span t-field="o.subtotal"/></h4>
+
+					</p>	
+
+					<p>
+						<h4>ISV: <span t-field="o.isv"/></h4>
+
+					</p>
+					<p>
+						<h4>DESCUENTO:<span t-field="o.descuento"/></h4>
+
+					</p>
+
+					<p>
+						<h4>VENTA BRUTA: <span t-field="o.venta_bruta"/></h4>
+
+					</p>
+					<p>---------------------------------------------------------------</p>
+					<table>
+					<tbody>
+
+					<tr t-foreach="o.statement_ids" t-as="i">
+						<td><h4><span t-field="i.journal_id"/></h4></td>
+						<td> </td>
+                				<td><h4><span t-field="i.balance_end_real"/></h4></td>
+						
+									
+				        </tr>
+					</tbody>
+					</table>
+					<p>---------------------------------------------------------------</p>
+					<p>
+						
+                				<h4><span t-field="o.dinero_entrante"/></h4>
+
+					</p>	
+					<p>
+						
+                				<h4><span t-field="o.dinero_saliente"/></h4>
+
+					</p>
+					<p>---------------------------------------------------------------</p>
+					<p>
+						<h4>SALDO DE APERTURA: <span t-field="o.cash_register_balance_start"/></h4>
+
+					</p>
+
+
+					<p>
+						<h4>DINERO SEGUN CIERRE: <span t-field="o.dn_cierre"/></h4>
+
+					</p>
+					<p>
+						<h4>DINERO REPORTADO: <span t-field="o.dn_reportado"/></h4>
+
+					</p>
+
+					<p>
+						<h4>DIFERENCIA: <span t-field="o.diferencia2"/></h4>
+
+					</p>
+					    
+			                </div>
+				
+
+				</t>
+			    </t>
+			</t>
+		</template>
+	</data>
+</openerp>
