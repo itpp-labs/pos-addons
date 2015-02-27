@@ -40,12 +40,12 @@ class sessionpos(osv.Model):
         flag=False
         for session in self.browse(cr,uid,ids,context=context):
             for order in session.order_ids:
-            flag=False
-            for producto in order.lines:
-                if producto.product_id.expense_pdt or producto.product_id.income_pdt:
-                    flag=True
-            if flag==False:
-                total+=order.amount_total
+                flag=False
+                for producto in order.lines:
+                    if producto.product_id.expense_pdt or producto.product_id.income_pdt:
+                        flag=True
+                if flag==False:
+                    total+=order.amount_total
             res[session.id]=total
         return res
 
@@ -73,21 +73,21 @@ class sessionpos(osv.Model):
         for session in self.browse(cr,uid,ids,context=context):
             for order in session.order_ids:
                 count+=1
-            array.append(order.pos_reference)
+                array.append(order.pos_reference)
             if array:
-            res[session.id]=str(count) + " facturas "+str(array[len(array)-1])+" A "+str(array[0])
+                res[session.id]=str(count) + " facturas "+str(array[len(array)-1])+" A "+str(array[0])
 
         return res
 
     def _calc_discount(self,cr,uid,ids,fields,args,context=None):
         res={}
-        des_total=0
         for session in self.browse(cr,uid,ids,context=context):
+            des_total=0
             for order in session.order_ids:
-            discount=0
-            for desc in order.lines:
-                discount+=desc.price_unit*(desc.discount/100)
-            des_total+=discount
+                discount=0
+                for desc in order.lines:
+                    discount+=desc.price_unit*(desc.discount/100)
+                des_total+=discount
             res[session.id]=des_total
         return res
 
@@ -114,16 +114,15 @@ class sessionpos(osv.Model):
         counttotal=0
         for session in self.browse(cr,uid,ids,context=context):
             for order in session.order_ids:
-            total2=0
-            count=0
-            for desc in order.lines:
-
-                if desc.product_id.expense_pdt:
-                    count+=1
-                    total2+=desc.price_subtotal_incl
-            total+=total2
-            counttotal+=count
-        res[session.id]=str(counttotal) + " Salida(s) "+"  Total Salidas "+ str(total)
+                total2=0
+                count=0
+                for desc in order.lines:
+                    if desc.product_id.expense_pdt:
+                        count+=1
+                        total2+=desc.price_subtotal_incl
+                total+=total2
+                counttotal+=count
+            res[session.id]=str(counttotal) + " Salida(s) "+"  Total Salidas "+ str(total)
         return res
 
     _inherit = 'pos.session'

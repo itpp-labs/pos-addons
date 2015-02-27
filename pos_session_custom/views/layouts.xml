@@ -13,7 +13,7 @@
         <t t-set="company" t-value="res_company"></t>
     </t>
 
-    <t t-call="sesionespos.external_layout_close" />
+    <t t-call="pos_session_custom.external_layout_close" />
     <t t-raw="0" />
 
 </template>
@@ -27,31 +27,7 @@
             <div class="col-xs-3">
                 <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="height: 80px;"/>
             </div>
-            <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>
         </div>
-        <div class="row zero_min_height">
-            <div class="col-xs-12">
-                <div style="border-bottom: 1px solid black;"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-8">
-                  <p>
-                	<strong>Address:</strong>
-                	<span t-field="company.street"/>
-			<br/>
-			<strong>RTN:</strong>
-                	<span t-field="company.vat"/>
-			<br/>
-			<strong>Telefono:</strong>
-                	<span t-field="company.phone"/>
-           	  </p>
-
-            </div>
-	    
-
-        </div>
-
     </div>
 </template>
 </data>

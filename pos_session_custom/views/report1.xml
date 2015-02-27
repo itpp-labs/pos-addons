@@ -4,7 +4,7 @@
 		<template id="report">
 			<t t-call="report.html_container">
 			    <t t-foreach="docs" t-as="o">
-				<t t-call="sesionespos.external_layout_pos">
+				<t t-call="pos_session_custom.external_layout_pos">
 				    <div class="page">
 					 	 						
 					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
