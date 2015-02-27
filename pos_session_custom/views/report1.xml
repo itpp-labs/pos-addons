@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-		<template id="report_caja">
+		<template id="report">
 			<t t-call="report.html_container">
 			    <t t-foreach="docs" t-as="o">
 				<t t-call="sesionespos.external_layout_pos">
 				    <div class="page">
 					 	 						
 					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-					<center>CIERRE DE VENTAS</center>
+					<center>CLOSE OF SALES</center>
 					
 					<p>
                 				<center><h4><span t-field="o.start_at"/></h4></center>
@@ -28,12 +28,12 @@
 
 					</p>
 					<p>
-						<h4>DESCUENTO:<span t-field="o.descuento"/></h4>
+						<h4>DISCOUNT:<span t-field="o.discount"/></h4>
 
 					</p>
 
 					<p>
-						<h4>VENTA BRUTA: <span t-field="o.venta_bruta"/></h4>
+						<h4>GROSS SALES: <span t-field="o.venta_bruta"/></h4>
 
 					</p>
 					<p>---------------------------------------------------------------</p>
@@ -52,32 +52,32 @@
 					<p>---------------------------------------------------------------</p>
 					<p>
 						
-                				<h4><span t-field="o.dinero_entrante"/></h4>
+                				<h4><span t-field="o.money_incoming"/></h4>
 
 					</p>	
 					<p>
 						
-                				<h4><span t-field="o.dinero_saliente"/></h4>
+                				<h4><span t-field="o.money_outgoing"/></h4>
 
 					</p>
 					<p>---------------------------------------------------------------</p>
 					<p>
-						<h4>SALDO DE APERTURA: <span t-field="o.cash_register_balance_start"/></h4>
+						<h4>OPENING BALANCE: <span t-field="o.cash_register_balance_start"/></h4>
 
 					</p>
 
 
 					<p>
-						<h4>DINERO SEGUN CIERRE: <span t-field="o.dn_cierre"/></h4>
+						<h4>MONEY CLOSE: <span t-field="o.money_close"/></h4>
 
 					</p>
 					<p>
-						<h4>DINERO REPORTADO: <span t-field="o.dn_reportado"/></h4>
+						<h4>MONEY REPORTED: <span t-field="o.money_reported"/></h4>
 
 					</p>
 
 					<p>
-						<h4>DIFERENCIA: <span t-field="o.diferencia2"/></h4>
+						<h4>DIFFERENCE: <span t-field="o.difference2"/></h4>
 
 					</p>
 					    

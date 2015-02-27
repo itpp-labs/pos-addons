@@ -3,12 +3,12 @@
     <data>
         
 	<report
-    	id="sessionespos_report_caja"
+    	id="sessionespos_report"
     	model="pos.session"
-    	string="Cierre de Caja"
+    	string="Close de Caja"
    	 report_type="qweb-pdf"
-    	name="sesionespos.report_caja"
-   	 file="sesionespos.report_caja"
+    	name="sesionespos.report"
+   	 file="sesionespos.report"
         attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
 />
 

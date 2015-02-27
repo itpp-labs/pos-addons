@@ -10,15 +10,15 @@
 		
 
 		<field name="cash_register_balance_end_real" position="before">
-			<field  name="validar" invisible="1"/>
+			<field  name="validate" invisible="1"/>
 			<field name="subtotal" invisible="1"/>
 			<field name="isv" invisible="1"/>
 			<field name="venta_bruta" invisible="1"/>
 			<field name="nro_facturas" invisible="1"/>
-			<field name="descuento" invisible="1"/>
-			<field name="dinero_entrante" invisible="1"/>
-			<field name="dinero_saliente" invisible="1"/>
-			<field name="dn_cierre" invisible="1"/>
+			<field name="discount" invisible="1"/>
+			<field name="money_incoming" invisible="1"/>
+			<field name="money_outgoing" invisible="1"/>
+			<field name="money_close" invisible="1"/>
 
 		</field>
 
@@ -41,8 +41,8 @@
 
 
 	<field name="cash_register_difference" position="replace">
-		<field name="diferencia" invisible="1"/>
-		<field name="diferencia2" string="Diferencia" readonly="1" attrs="{'invisible':[('state','!=','closed')]}"/>
+		<field name="difference" invisible="1"/>
+		<field name="difference2" string="Difference" readonly="1" attrs="{'invisible':[('state','!=','closed')]}"/>
 		<field name="cash_register_difference" class="oe_subtotal_footer_separator oe_right oe_pos_total oe_pos_difference" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="1"/>
 	</field>
 
@@ -78,7 +78,7 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
             <field name="arch" type="xml">
 		<field name="state" position="after">
-		<field name="diferencia2" string="Diferencia" attrs="{'invisible':[('state','!=','closed')]}"/>
+		<field name="difference2" string="Difference" attrs="{'invisible':[('state','!=','closed')]}"/>
 		
 		
 		</field>

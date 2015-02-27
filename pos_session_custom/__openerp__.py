@@ -8,7 +8,7 @@
 	'data':[
 	    'views/session_view.xml',
 	    'views/sesionespos_report1.xml',
-	    'views/reporte1.xml',
+	    'views/report1.xml',
 	    'views/layouts.xml',
 	    ],
 	'depends': ['base','point_of_sale'],

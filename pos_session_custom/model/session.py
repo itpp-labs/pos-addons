@@ -6,7 +6,7 @@ class sessionpos(osv.Model):
 	
 	
 
-	def _fun_diferencia(self,cr,uid,ids,fields,args,context=None):
+	def _fun_difference(self,cr,uid,ids,fields,args,context=None):
 		res={}
 		total=0
 		totali=0		
@@ -31,9 +31,9 @@ class sessionpos(osv.Model):
 				total=-total
 
 			if session.state!='closed':
-			    self.write(cr,uid,session.id,{'diferencia2':total},context=context)
-			    self.write(cr,uid,session.id,{'dn_cierre':totali},context=context)
-			    self.write(cr,uid,session.id,{'dn_reportado':totalf},context=context)
+			    self.write(cr,uid,session.id,{'difference2':total},context=context)
+			    self.write(cr,uid,session.id,{'money_close':totali},context=context)
+			    self.write(cr,uid,session.id,{'money_reported':totalf},context=context)
 		return res
 
 
@@ -84,20 +84,20 @@ class sessionpos(osv.Model):
 		    						 
 		return res
 
-	def _calc_descuento(self,cr,uid,ids,fields,args,context=None):
+	def _calc_discount(self,cr,uid,ids,fields,args,context=None):
 		res={}
 		des_total=0
 		for session in self.browse(cr,uid,ids,context=context):
 		    for order in session.order_ids:
-			descuento=0
+			discount=0
 			for desc in order.lines:
-			    descuento+=desc.price_unit*(desc.discount/100)
-			des_total+=descuento
+			    discount+=desc.price_unit*(desc.discount/100)
+			des_total+=discount
 		    res[session.id]=des_total	    				 
 		return res
 
 
-	def _calc_dn_entrante(self,cr,uid,ids,fields,args,context=None):
+	def _calc_money_incoming(self,cr,uid,ids,fields,args,context=None):
 		res={}
 		total=0
 		counttotal=0
@@ -115,7 +115,7 @@ class sessionpos(osv.Model):
 		    res[session.id]=str(counttotal) + " Entrada(s) "+" Total Entradas "+ str(total)						 
 		return res
 
-	def _calc_dn_saliente(self,cr,uid,ids,fields,args,context=None):
+	def _calc_money_outgoing(self,cr,uid,ids,fields,args,context=None):
 		res={}
 		total=0
 		counttotal=0
@@ -140,17 +140,17 @@ class sessionpos(osv.Model):
 		  
 	_inherit = 'pos.session'
 	_columns = {
-	   'validar':fields.boolean(string="Validacion",help="validacion"),
-	   'diferencia':fields.function(_fun_diferencia,string="Diferencia"),
-	   'diferencia2':fields.float('diferencia2'),
-	   'venta_bruta':fields.function(_calc_vb,'venta bruta'),
+	   'validate':fields.boolean(string="Validation",help="validation"),
+	   'difference':fields.function(_fun_difference,string="Difference"),
+	   'difference2':fields.float('difference2'),
+	   'venta_bruta':fields.function(_calc_vb,'Venta bruta', help='Gross sales'),
 	   'isv':fields.function(_calc_isv,'ISV'),
 	   'subtotal':fields.function(_calc_subtotal,'subtotal'),
 	   'nro_facturas':fields.function(_calc_no_facturas,'nro facturas',type="char"),
-	   'descuento':fields.function(_calc_descuento,'descuento'),
-	   'dinero_entrante':fields.function(_calc_dn_entrante,'dinero entrante',type="char"),
-	   'dinero_saliente':fields.function(_calc_dn_saliente,'dinero saliente',type="char"),
-	   'dn_cierre':fields.float('dinero Cierre'),
-	   'dn_reportado':fields.float('dinero Cierre'),
+	   'discount':fields.function(_calc_discount,'discount'),
+	   'money_incoming':fields.function(_calc_money_incoming,'money incoming',type="char"),
+	   'money_outgoing':fields.function(_calc_money_outgoing,'money outgoing',type="char"),
+	   'money_close':fields.float('money Close'),
+	   'money_reported':fields.float('money Reported'),
 }
 	
