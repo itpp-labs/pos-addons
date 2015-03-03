@@ -1,87 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
+		<template id="line">
+			<p>---------------------------------------------------</p>
+			
+		</template>
+		<template id="dline">
+			<p>===============================</p>
+		</template>
 		<template id="report">
 			<t t-call="report.html_container">
 			    <t t-foreach="docs" t-as="o">
 				<t t-call="pos_session_custom.external_layout_pos">
 				    <div class="page">
-					 	 						
-					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-					<center>CLOSE OF SALES</center>
+
+<style type="text/css">
+	table{
+	width:100%;
+	}
+</style>
+
+
+				<div class="text-center">
+					<t t-set="company" t-value="o.config_id.company_id"/>
+					<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="height: 80px;"/>
+				</div>
+
+
+
+					<center><b>POS SESSION REPORT</b></center>
+
+					<p>
+						<!--Date: <br/>-->
+						<span>User: </span><span t-field="o.user_id"/><br/>
+						<b>Opening Date:</b> <span t-field="o.start_at"/>
+					</p>
+
+					<p>
+						Number of Tickets: <span t-esc="o.tickets_num"/><br/>
+						From: <span t-field="o.ticket_first_id.pos_reference"/><br/>
+						To: <span t-field="o.ticket_last_id.pos_reference"/>
+					</p>
+
+					<hr/>
+					<br/>
+					<center><b>Summary by Payment Methods</b></center>
 					
-					<p>
-                				<center><h4><span t-field="o.start_at"/></h4></center>
-					</p>
 
-					<p>
-						<h4><span t-field="o.nro_facturas"/></h4>
-					</p>
-           				<p>---------------------------------------------------------------</p>
-					<p>
-						<h4>SUBTOTAL: <span t-field="o.subtotal"/></h4>
-
-					</p>	
-
-					<p>
-						<h4>ISV: <span t-field="o.isv"/></h4>
-
-					</p>
-					<p>
-						<h4>DISCOUNT:<span t-field="o.discount"/></h4>
-
-					</p>
-
-					<p>
-						<h4>GROSS SALES: <span t-field="o.venta_bruta"/></h4>
-
-					</p>
-					<p>---------------------------------------------------------------</p>
 					<table>
 					<tbody>
 
 					<tr t-foreach="o.statement_ids" t-as="i">
 						<td><h4><span t-field="i.journal_id"/></h4></td>
-						<td> </td>
-                				<td><h4><span t-field="i.balance_end_real"/></h4></td>
-						
-									
-				        </tr>
+                		<td class="text-right"><h4><span t-field="i.balance_end_real"/></h4></td>
+				    </tr>
 					</tbody>
 					</table>
-					<p>---------------------------------------------------------------</p>
-					<p>
-						
-                				<h4><span t-field="o.money_incoming"/></h4>
 
-					</p>	
-					<p>
-						
-                				<h4><span t-field="o.money_outgoing"/></h4>
+					<t t-call="pos_session_custom.line"/>
 
-					</p>
-					<p>---------------------------------------------------------------</p>
-					<p>
-						<h4>OPENING BALANCE: <span t-field="o.cash_register_balance_start"/></h4>
+					<table>
+					<tbody>
+						<tr>
+							<td>Total Payments Received:</td>
+							<td class="text-right"><span t-field="o.statements_total"/></td>
+						</tr>
+					</tbody>
+					</table>
+					
+					<t t-call="pos_session_custom.dline"/>
+					<br/>
+					<center><b>Summary Sales by Product</b></center>
 
-					</p>
+					<table>
+					<tbody>
+						<tr>
+							<th>PRODUCT</th>
+							<th>QTY.</th>
+							<th class="text-right">TOTAL</th>
+						</tr>
+						<tr t-foreach="o.summary_by_product()" t-as="i">
+							<td><span t-esc="i['product']"/></td>
+							<td><span t-esc="i['qty']"/></td>
+							<td class="text-right"><span t-esc="i['total']"/></td>
+						</tr>
+					</tbody>
+					</table>
+
+					<t t-call="pos_session_custom.dline"/>
+					<br/>
+					<center><b>TAX Resume</b></center>
+
+					<table>
+					<tbody>
+						<tr>
+							<th></th>
+							<th>BASE</th>
+							<th>TAX</th>
+							<th class="text-right">TOTAL</th>
+						</tr>
+						<tr t-foreach="o.summary_by_tax()" t-as="i">
+							<td><span t-esc="i['name']"/></td>
+							<td><span t-esc="i['base']"/></td>
+							<td><span t-esc="i['tax']"/></td>
+							<td class="text-right"><span t-esc="i['total']"/></td>
+						</tr>
+					</tbody>
+					</table>
+
+					<t t-call="pos_session_custom.dline"/>
+					<br/>
+					<center><b>Cash Control</b></center>
 
 
-					<p>
-						<h4>MONEY CLOSE: <span t-field="o.money_close"/></h4>
+					<table>
+					<tbody>
+						<tr>
+							<td>Opening balance:</td>
+							<td class="text-right"><span t-field="o.cash_register_balance_start"/></td>
+						</tr>
+						<tr>
+							<td>+ Transactions</td>
+							<td class="text-right"><span t-field="o.cash_register_total_entry_encoding"/></td>
+						</tr>
+					</tbody>
+					</table>
 
-					</p>
-					<p>
-						<h4>MONEY REPORTED: <span t-field="o.money_reported"/></h4>
+					<t t-call="pos_session_custom.line"/>
 
-					</p>
+					<table>
+					<tbody>
+						<tr>
+							<td>Theoretical Closing Balance:</td>
+							<td class="text-right"><span t-field="o.cash_register_balance_end"/></td>
+						</tr>
+					</tbody>
+					</table>
 
-					<p>
-						<h4>DIFFERENCE: <span t-field="o.difference2"/></h4>
+					<t t-call="pos_session_custom.line"/>
 
-					</p>
-					    
-			                </div>
+					<table>
+					<tbody>
+						<tr>
+							<td>Real Closing Balance:</td>
+							<td class="text-right"><span t-field="o.cash_register_balance_end_real"/></td>
+						</tr>
+					</tbody>
+					</table>
+
+					<t t-call="pos_session_custom.dline"/>
+					
+					<table>
+					<tbody>
+						<tr>
+							<td>Difference:</td>
+							<td class="text-right"><span t-field="o.difference2"/></td>
+						</tr>
+					</tbody>
+					</table>
+			        </div>
 				
 
 				</t>

@@ -23,11 +23,6 @@
 
 <template id="external_layout_close">
     <div class="header">
-        <div class="row">
-            <div class="col-xs-3">
-                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="height: 80px;"/>
-            </div>
-        </div>
     </div>
 </template>
 </data>
