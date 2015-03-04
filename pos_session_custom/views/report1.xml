@@ -33,7 +33,8 @@
 					<p>
 						<!--Date: <br/>-->
 						<span>User: </span><span t-field="o.user_id"/><br/>
-						<b>Opening Date:</b> <span t-field="o.start_at"/>
+						<b>Opening Date:</b> <span t-field="o.start_at"/><br/>
+						<b>Closing Date:</b> <span t-field="o.stop_at"/>
 					</p>
 
 					<p>
@@ -76,12 +77,12 @@
 					<tbody>
 						<tr>
 							<th>PRODUCT</th>
-							<th>QTY.</th>
+							<th class="text-right">QTY.</th>
 							<th class="text-right">TOTAL</th>
 						</tr>
 						<tr t-foreach="o.summary_by_product()" t-as="i">
 							<td><span t-esc="i['product']"/></td>
-							<td><span t-esc="i['qty']"/></td>
+							<td class="text-right"><span t-esc="i['qty']"/></td>
 							<td class="text-right"><span t-esc="i['total']"/></td>
 						</tr>
 					</tbody>
@@ -107,6 +108,18 @@
 						</tr>
 					</tbody>
 					</table>
+
+					<t t-call="pos_session_custom.line"/>
+
+					<table>
+					<tbody>
+						<tr>
+							<td>Total Sales without taxes:</td>
+							<td class="text-right"><span t-field="o.tax_base_total"/></td>
+						</tr>
+					</tbody>
+					</table>
+
 
 					<t t-call="pos_session_custom.dline"/>
 					<br/>
@@ -159,7 +172,12 @@
 					</tbody>
 					</table>
 			        </div>
-				
+
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<center><em>signature</em></center>
 
 				</t>
 			    </t>
