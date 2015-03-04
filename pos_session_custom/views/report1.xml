@@ -114,8 +114,8 @@
 					<table>
 					<tbody>
 						<tr>
-							<td>Total Sales without taxes:</td>
-							<td class="text-right"><span t-field="o.tax_base_total"/></td>
+							<td>Untaxed sales:</td>
+							<td class="text-right"><span t-esc="o.untaxed_sales"/></td>
 						</tr>
 					</tbody>
 					</table>

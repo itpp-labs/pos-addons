@@ -213,6 +213,17 @@ class sessionpos(osv.Model):
                     res[session.id]['tax_base_total'] += taxes['total']
         return res
 
+    def _calc_sales(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        for session in self.browse(cr,uid,ids,context=context):
+            res[session.id] = {'untaxed_sales':0}
+            for order in session.order_ids:
+                for line in order.lines:
+                    if not line.product_id.taxes_id:
+                        res[session.id]['untaxed_sales'] += line.price_subtotal
+        return res
+
+
 
     _inherit = 'pos.session'
     _columns = {
@@ -225,6 +236,7 @@ class sessionpos(osv.Model):
         'nro_facturas':fields.function(_calc_no_facturas,'nro facturas',type="char"),
         'discount':fields.function(_calc_discount,'discount'),
         'tax_base_total':fields.function(_calc_tax,'Total Sales without taxes', multi='tax'),
+        'untaxed_sales':fields.function(_calc_sales,'Untaxed sales', multi='sales'),
         'money_incoming':fields.function(_calc_money_incoming,'money incoming',type="char"),
         'money_outgoing':fields.function(_calc_money_outgoing,'money outgoing',type="char"),
         'statements_total':fields.function(_calc_statements_total,'Total Payments Received'),
