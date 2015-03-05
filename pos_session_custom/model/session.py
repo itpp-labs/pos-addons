@@ -54,7 +54,7 @@ class sessionpos(osv.Model):
         for session in self.browse(cr,uid,ids,context=context):
             total=0
             for st in session.statement_ids:
-                total += st.balance_end_real
+                total += st.total_entry_encoding
             res[session.id]=total
         return res
 

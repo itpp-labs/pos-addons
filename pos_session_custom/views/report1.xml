@@ -53,7 +53,7 @@
 
 					<tr t-foreach="o.statement_ids" t-as="i">
 						<td><h4><span t-field="i.journal_id"/></h4></td>
-                		<td class="text-right"><h4><span t-field="i.balance_end_real"/></h4></td>
+                		<td class="text-right"><h4><span t-field="i.total_entry_encoding"/></h4></td>
 				    </tr>
 					</tbody>
 					</table>
@@ -167,7 +167,7 @@
 					<tbody>
 						<tr>
 							<td>Difference:</td>
-							<td class="text-right"><span t-field="o.difference2"/></td>
+							<td class="text-right"><span t-field="o.cash_register_difference"/></td>
 						</tr>
 					</tbody>
 					</table>
