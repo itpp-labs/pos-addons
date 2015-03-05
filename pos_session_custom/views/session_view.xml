@@ -73,6 +73,7 @@
 	
 	</record>
 
+	<!--
 	<record id="view_sessionpos_tree" model="ir.ui.view">
             <field name="name">sessionpos_inherit_tree</field>
             <field name="model">pos.session</field>
@@ -86,7 +87,7 @@
 
 	</field>
 	</record>
-
+	-->
 
     </data>
 </openerp>
