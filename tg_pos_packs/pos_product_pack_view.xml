@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets_backend">
+            <xpath expr="." position="inside">
+				<script type="text/javascript" src="/tg_pos_packs/static/src/js/pos.js"></script>
+            </xpath>
+        </template>
+
+
         <record id="product_pack_product_form_view" model="ir.ui.view">
             <field name="name">product.pack.product_form_view</field>
             <field name="model">product.product</field>

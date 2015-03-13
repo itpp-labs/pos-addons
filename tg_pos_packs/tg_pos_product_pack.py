@@ -29,7 +29,7 @@ _logger = logging.getLogger(__name__)
 class product_pack(orm.Model):
     _name = "product.pack"
     _description = "Product packs"
-    
+
     _order = 'group_id, sequence'
     _columns = {
         'product_id': fields.many2one('product.product', 'Product', required=True),
@@ -47,8 +47,7 @@ class product_pack(orm.Model):
 class inherit_product(orm.Model):
     _name = "product.product"
     _inherit = "product.product"
-    _order ='name_template asc, name asc'
-    
+
     _columns = {
         'is_pack': fields.boolean('Custom Pack'),
         'pack_ids': fields.one2many('product.pack', 'product_id', 'Items in the pack'),

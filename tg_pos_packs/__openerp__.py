@@ -25,8 +25,8 @@
     'name': 'TG customizable product packs',
     'version': '1.0',
     'category': 'Point of sale',
-    'author': 'Thierry Godin',
-    'website': '',
+    'author': 'Thierry Godin, Ivan Yelizariev',
+    'website': 'https://yelizariev.github.io/',
     'summary': 'Create on demand packs of products for Point of sale',
     'description': """
 Allows the creation of products as Packs that can contain products with variants.
@@ -35,12 +35,12 @@ Allows the creation of products as Packs that can contain products with variants
 Building a Pack :
 -------------------
 
-- Create a product as usual and name it, say Pack1
+- Create a product as usual (via Product Variants Menu) and name it, say Pack1
 - Check Custom Pack checkbox
 - Type of product should be set to Service automatically
 - Go on Pack tab
 - Add templates products grouped by index :  each group of templates will be displayed in a list in POS
-- That's all 
+- That's all
 
 Packs are avaiable in POS :
 -------------------
@@ -53,14 +53,18 @@ Pack is added to caddie as well as its products, but thoses products prices are 
 
 This way, you can set a reduced price for the pack , even if the sumn of each products may be superior. (This is for what packs are made), 
 but also, you can build your pack on-demand, by making groups of templates .
+
+Tested on odoo 8.0 33a8989d77f44b093214550b8f23cb386a990981
     """,
-    
     'depends': [
         'product', 'point_of_sale'
-    ], 
+    ],
     'data': [
         'pos_product_pack_view.xml',
         'security/ir.model.access.csv',
+    ],
+    'qweb': [
+        'static/src/xml/tg_pos.xml',
     ],
     'installable': True,
     'active': False,

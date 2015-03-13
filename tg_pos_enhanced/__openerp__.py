@@ -21,7 +21,6 @@ Numerous modifications of the Point Of Sale :
     - Intuitive browsing for customers (right pan) - by letter
     - Browse customer sales history : see its sales and all its products
     - Cashier pannel at bottom-left
-    - Custom packs (can contain templates and their variants : on demand)
     - POS internal messaging (instant, delayed, recurrent / text or image)
     - Special discount : shop manager can allow special discount by entering a password
     - Auto print option
