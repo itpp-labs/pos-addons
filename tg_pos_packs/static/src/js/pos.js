@@ -218,6 +218,7 @@ function tg_pos_packs(instance, module){
             var self = this;
             var product = this.get_product();
 
+            quantity = quantity || 'remove'
             if(quantity === 'remove'){
 
                 // when we remove a pack
@@ -243,12 +244,10 @@ function tg_pos_packs(instance, module){
             }else{
 
                 // packages must be sold one by one
-                if(!product.is_pack_container){
-                    OrderlineSuper.prototype.set_quantity.call(this, quantity);
-                    return;
+                if(!product.pack_code){
+                    return OrderlineSuper.prototype.set_quantity.call(this, quantity);
                 }
             }
-            this.trigger('change');
         },
 
         // when we add an new orderline we want to merge it with the last line to see reduce the number of items
