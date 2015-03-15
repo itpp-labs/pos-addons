@@ -43,7 +43,7 @@ Building a Pack :
 - That's all
 
 Packs are avaiable in POS :
--------------------
+---------------------------
 
 Packs are avaiable in POS as usual products (visualy).
 
@@ -64,7 +64,7 @@ Tested on odoo 8.0 33a8989d77f44b093214550b8f23cb386a990981
         'security/ir.model.access.csv',
     ],
     'qweb': [
-        'static/src/xml/tg_pos.xml',
+        'static/src/xml/pos.xml',
     ],
     'installable': True,
     'active': False,

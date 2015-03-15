@@ -1,4 +1,9 @@
-function pos_product_available(instance, module){
+function tg_pos_packs(instance, module){
+
+    String.prototype.setCharAt = function(index,chr) {
+        if(index > this.length-1) return str;
+        return this.substr(0,index) + chr + this.substr(index+1);
+    }
 
     var PosModelSuper = module.PosModel
     module.PosModel = module.PosModel.extend({
@@ -35,7 +40,7 @@ function pos_product_available(instance, module){
                 return OrderSuper.prototype.addProduct.call(this, product, options)
 
             // this is a Pack !!
-            this.show_screen_pack(attr.name);
+            this.show_screen_pack(attr.display_name);
 
             // get templates
             this.get_templates(attr.id);
@@ -48,7 +53,7 @@ function pos_product_available(instance, module){
             var grp_id = 0;
             var item_number = 0;
 
-            var loaded = fetch('product.pack',['item_tmpl_id', 'group_id'],[['product_id','=', parseInt(pack_id)]])
+            var loaded = self.pos.fetch('product.pack',['item_tmpl_id', 'group_id'],[['product_id','=', parseInt(pack_id)]])
                 .then(function(groupe_tmpl){
 
                     for(var i = 0, len = groupe_tmpl.length; i < len; i++){
@@ -90,6 +95,29 @@ function pos_product_available(instance, module){
                     $('#pack_product_id').val(pack_id);
                 });
         },
+        get_variant: function(product_tmpl_id, sel_variant_id){
+            var self = this;
+            var product_list = [];
+
+            var loaded = self.pos.fetch('product.product', ['display_name', 'id'],
+                                     [['sale_ok','=',true],
+                                      ['available_in_pos','=',true],
+                                      ['product_tmpl_id', '=', parseInt(product_tmpl_id)]
+                                     ])
+                .then(function(products){
+
+                    // remove all previouses options
+                    $('#' + sel_variant_id).find('option').remove().end();
+
+                    // add all products
+                    for(var i = 0, len = products.length; i < len; i++){
+                        var content = $('#' + sel_variant_id).html();
+                        var new_option = '<option value=\'' + products[i].id + '\'>' + products[i].display_name + '</option>\n';
+                        $('#' + sel_variant_id).html(content + new_option);
+                    }
+                });
+
+        },
 
         add_products_from_pack: function(){
             var self = this;
@@ -100,44 +128,44 @@ function pos_product_available(instance, module){
             var pack_product = null;
 
             pack_product = self.pos.db.get_product_by_id(parseInt(pack_id));
+            pack_product = JSON.parse(JSON.stringify(pack_product)) // make a copy
 
             // add pack product to the order
             if(pack_product){
                 var is_pack_previous = pack_product.is_pack;
-                var pack_name = pack_product.name;
+                var pack_name = pack_product.display_name;
 
                 pack_product.is_pack = false;
-                pack_product.name = '■ ' + pack_product.name;
+                pack_product.display_name = '■ ' + pack_product.display_name;
 
-                var m_pack_product = new module.Product(pack_product);
-                selectedOrder.addProduct(m_pack_product);
+                selectedOrder.addProduct(pack_product);
 
                 var cur_oline = selectedOrder.getSelectedLine();
-                cur_oline.product.set('is_pack', is_pack_previous);
+                cur_oline.product.is_pack = is_pack_previous;
 
                 pack_product.is_pack = is_pack_previous;
-                pack_product.name = pack_name;
+                pack_product.display_name = pack_name;
             }
 
             for(var i = 1; i <= nb_items; i++){
                 var field = $('#v_' + i);
                 var product_id = parseInt(field.val());
                 var product = self.pos.db.get_product_by_id(product_id);
+                product = JSON.parse(JSON.stringify(product)) // make a copy
 
                 //add products to the order
                 if(product){
                     // change name (suffix)  + price = 0.00
-                    var previous_name = product.name;
+                    var previous_name = product.display_name;
                     var previous_price = product.price;
 
-                    product.name = '⁪├ ' + product.name;
+                    product.display_name = '⁪├ ' + product.display_name;
                     product.price = '0.00';
 
-                    var m_product = new module.Product(product);
-                    selectedOrder.addProduct(m_product);
+                    selectedOrder.addProduct(product);
 
                     // change name + price back
-                    product.name = previous_name;
+                    product.display_name = previous_name;
                     product.price = previous_price;
                 }
             };
@@ -178,10 +206,10 @@ function pos_product_available(instance, module){
         },
 
         selectLine: function(line){
-            if (!line || line.product.name[1] == '├' || line.is_pack){
+            if (!line || line.product && line.product && line.product.display_name && line.product.display_name[1] == '├' || line.is_pack){
                 //TODO don't allow return product
             }
-            return OrderSuper.prototype.addProduct.call(this, line)
+            return OrderSuper.prototype.selectLine.call(this, line)
         }
 
     })
@@ -190,7 +218,7 @@ function pos_product_available(instance, module){
     module.Orderline = module.Orderline.extend({
         set_quantity: function(quantity){
             var self = this;
-            var product_name = this.get_product().name;
+            var product_name = this.get_product().display_name;
 
             if(quantity === 'remove'){
 
@@ -217,7 +245,7 @@ function pos_product_available(instance, module){
 
                         // we delete items of the pack
                         if(flag_cur == true){
-                            var cur_product_name = o_lines[i].product.name;
+                            var cur_product_name = o_lines[i].product.display_name;
 
                             if(cur_product_name[1] == '├'){
                                 this.order.removeOrderline(o_lines[i]);
@@ -246,10 +274,10 @@ function pos_product_available(instance, module){
         // when we add an new orderline we want to merge it with the last line to see reduce the number of items
         // in the orderline. This returns true if it makes sense to merge the two
         can_be_merged_with: function(orderline){
-            var product_name = this.get_product().name;
+            var product_name = this.get_product().display_name;
 
             // do not merge if this is an item of the pack nor if this is a return (for visual)
-            if(product_name[1] == '├' || this.is_return == true){
+            if(product_name && product_name[1] == '├' || this.is_return == true){
                 return false;
             }
             return OrderlineSuper.prototype.can_be_merged_with.call(this, orderline);
@@ -295,7 +323,7 @@ function pos_product_available(instance, module){
             var self = this;
             this._super();
             this.pack = new module.PackScreenWidget(this, {});
-            this.pack.prependTo($('.rightpane>.window'));
+            this.pack.prependTo($('.rightpane>.window>.subwindow>.subwindow-container'));
 
 
         }
@@ -317,7 +345,7 @@ function pos_product_available(instance, module){
         _super(instance);
         var module = instance.point_of_sale;
 
-        pos_product_available(instance, module);
+        tg_pos_packs(instance, module);
 
         $('<link rel="stylesheet" href="/tg_pos_packs/static/src/css/pos.css"/>').appendTo($("head"))
     }

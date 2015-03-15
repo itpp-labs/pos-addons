@@ -1012,32 +1012,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         },
 
 
-        get_variant: function(product_tmpl_id, sel_variant_id){
-            var self = this;
-            var product_list = [];
-
-            var loaded = fetch('product.product', ['name', 'id'],
-                                     [['sale_ok','=',true],
-                                      ['available_in_pos','=',true],
-                                      ['product_tmpl_id', '=', parseInt(product_tmpl_id)]
-                                     ])
-                .then(function(products){
-
-                    // remove all previouses options
-                    $('#' + sel_variant_id).find('option').remove().end();
-
-                    // add all products
-                    for(var i = 0, len = products.length; i < len; i++){
-                        var content = $('#' + sel_variant_id).html();
-                        var new_option = '<option value=\'' + products[i].id + '\'>' + products[i].name + '</option>\n';
-                        $('#' + sel_variant_id).html(content + new_option);
-                    }
-                });
-
-        },
-
-
-
+        
         getDiscountBefore: function() {
             return OrderSuper.prototype.getDiscountTotal.call(this)
         },
