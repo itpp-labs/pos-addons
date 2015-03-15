@@ -34,16 +34,30 @@ function tg_pos_packs(instance, module){
         addProduct: function(product, options){
             // if is_pack = false, this is a real product
             // we send it to the order
-            var attr = JSON.parse(JSON.stringify(product));
+            options = options || {}
+            if (options.pack_code){
+                product = $.extend({'is_pack_item': options.is_pack_item,
+                                    'is_pack_container': options.is_pack_container,
+                                    'pack_code': options.pack_code
+                                   },
+                                   JSON.parse(JSON.stringify(product)))
+                if (options.is_pack_container){
+                    product.display_name = '■ ' + product.display_name
+                }
+                if (options.is_pack_item){
+                    product.display_name = '⁪├ ' + product.display_name
+                    product.price = 0;
+                }
+            }
 
-            if(!attr.is_pack)
+
+            if(!product.is_pack || options.is_pack_container)
                 return OrderSuper.prototype.addProduct.call(this, product, options)
-
             // this is a Pack !!
-            this.show_screen_pack(attr.display_name);
+            this.show_screen_pack(product.display_name);
 
             // get templates
-            this.get_templates(attr.id);
+            this.get_templates(product.id);
         },
 
         get_templates: function(pack_id){
@@ -126,47 +140,26 @@ function tg_pos_packs(instance, module){
 
             var pack_id = $('#pack_product_id').val()
             var pack_product = null;
+            var pack_code = 'pack-'+pack_id+'-'+new Date().getTime();
 
             pack_product = self.pos.db.get_product_by_id(parseInt(pack_id));
-            pack_product = JSON.parse(JSON.stringify(pack_product)) // make a copy
 
             // add pack product to the order
             if(pack_product){
-                var is_pack_previous = pack_product.is_pack;
-                var pack_name = pack_product.display_name;
-
-                pack_product.is_pack = false;
-                pack_product.display_name = '■ ' + pack_product.display_name;
-
-                selectedOrder.addProduct(pack_product);
+                selectedOrder.addProduct(pack_product, {'is_pack_container':1, 'pack_code': pack_code});
 
                 var cur_oline = selectedOrder.getSelectedLine();
-                cur_oline.product.is_pack = is_pack_previous;
 
-                pack_product.is_pack = is_pack_previous;
-                pack_product.display_name = pack_name;
             }
 
             for(var i = 1; i <= nb_items; i++){
                 var field = $('#v_' + i);
                 var product_id = parseInt(field.val());
                 var product = self.pos.db.get_product_by_id(product_id);
-                product = JSON.parse(JSON.stringify(product)) // make a copy
 
                 //add products to the order
                 if(product){
-                    // change name (suffix)  + price = 0.00
-                    var previous_name = product.display_name;
-                    var previous_price = product.price;
-
-                    product.display_name = '⁪├ ' + product.display_name;
-                    product.price = '0.00';
-
-                    selectedOrder.addProduct(product);
-
-                    // change name + price back
-                    product.display_name = previous_name;
-                    product.price = previous_price;
+                    selectedOrder.addProduct(product, {is_pack_item:1, 'pack_code': pack_code});
                 }
             };
 
@@ -206,7 +199,7 @@ function tg_pos_packs(instance, module){
         },
 
         selectLine: function(line){
-            if (!line || line.product && line.product && line.product.display_name && line.product.display_name[1] == '├' || line.is_pack){
+            if (!line || line.get_product().is_pack_item || line.is_pack_container){
                 //TODO don't allow return product
             }
             return OrderSuper.prototype.selectLine.call(this, line)
@@ -216,15 +209,20 @@ function tg_pos_packs(instance, module){
 
     var OrderlineSuper = module.Orderline;
     module.Orderline = module.Orderline.extend({
+        /*
+        initialize: function(attr, options){
+            OrderlineSuper.prototype.initialize.call(attr, options)
+        },
+         */
         set_quantity: function(quantity){
             var self = this;
-            var product_name = this.get_product().display_name;
+            var product = this.get_product();
 
             if(quantity === 'remove'){
 
                 // when we remove a pack
                 // we have too remove items too !
-                if(product_name[0] == '■'){
+                if(product.is_pack_container){
 
                     var o_lines = [];
                     var cur_order = this.pos.get('selectedOrder');
@@ -234,27 +232,9 @@ function tg_pos_packs(instance, module){
                         return o_lines.push(item);
                     }, this));
 
-                    var flag_cur = false;
-
                     for(var i = 0,  len = o_lines.length; i < len; i++){
-
-                        // when we found current line
-                        if(o_lines[i] == sel_line){
-                            flag_cur = true;
-                        }
-
-                        // we delete items of the pack
-                        if(flag_cur == true){
-                            var cur_product_name = o_lines[i].product.display_name;
-
-                            if(cur_product_name[1] == '├'){
-                                this.order.removeOrderline(o_lines[i]);
-                            }else{
-                                // until we found that this is not an item of the selected pack
-                                if(cur_product_name[0] != '■'){
-                                    flag_cur = false;
-                                }
-                            }
+                        if (o_lines[i].get_product().pack_code == product.pack_code){
+                            this.order.removeOrderline(o_lines[i]);
                         }
                     }
 
@@ -262,8 +242,8 @@ function tg_pos_packs(instance, module){
                 return OrderlineSuper.prototype.set_quantity.call(this, quantity);
             }else{
 
-                if(product_name[0] != '■'){
-                    // packages must be sold one by one
+                // packages must be sold one by one
+                if(!product.is_pack_container){
                     OrderlineSuper.prototype.set_quantity.call(this, quantity);
                     return;
                 }
@@ -274,10 +254,8 @@ function tg_pos_packs(instance, module){
         // when we add an new orderline we want to merge it with the last line to see reduce the number of items
         // in the orderline. This returns true if it makes sense to merge the two
         can_be_merged_with: function(orderline){
-            var product_name = this.get_product().display_name;
-
             // do not merge if this is an item of the pack nor if this is a return (for visual)
-            if(product_name && product_name[1] == '├' || this.is_return == true){
+            if(this.get_product().is_pack_item || this.is_return == true){
                 return false;
             }
             return OrderlineSuper.prototype.can_be_merged_with.call(this, orderline);
