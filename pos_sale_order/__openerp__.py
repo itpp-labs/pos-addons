@@ -4,16 +4,9 @@
     'author' : 'Ivan Yelizariev',
     'category' : 'Sale',
     'website' : 'https://yelizariev.github.io',
-    'description': '''
-Fill pos cart by sale order ID.
-
-    ''',
     'depends' : ['point_of_sale', 'website_sale'],
     'data':[
-        'data.xml',
-        'views.xml',
         'templates.xml',
-        'email_templates.xml',
         ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True

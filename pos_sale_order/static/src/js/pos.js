@@ -8,40 +8,52 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
             this.numpad_state = this.pos_widget.numpad.state;
             this.order_name = false;
         },
+        find_sale_order: function(name_like){
+            return new instance.web.Model('sale.order').query(['partner_id', 'amount_total']).filter([['name','=like',name_like]]).all()
+        },
+        load_sale_order_lines: function(id){
+            return new instance.web.Model('sale.order.line').query(['product_id', 'product_uom_qty','discount']).filter([['order_id','=',id]]).all();
+        },
+        apply_sale_order: function(id){
+            var self = this;
+            self.load_sale_order_lines(id)
+            .then(function(lines){
+                var order = self.pos.get('selectedOrder');
+                $.each(lines, function(k, item){
+                    var product = self.pos.db.get_product_by_id(item.product_id[0]);
+                    var options = {
+                        'quantity':item.product_uom_qty
+                    }
+                    order.addProduct(product, options);
+                    if (item.discount)
+                        order.getSelectedLine().set_discount(item.discount);
+                });
+                self.hide();
+            })
+        },
         start:function(){
             this._super();
             var self = this;
 
             this.enable_numpad();
             $('.website_order button').click(function(){
-                new instance.web.Model('sale.order').query(['partner_id', 'amount_total']).filter([['name','=like',self.order_name+'%']]).all()
-                .then(function(sale_order){
-                    //TODO show to cashier list of orders if length>1
-                    sale_order = sale_order[0]
+                self.find_sale_order(self.order_name+'%').then(function(orders){
+                    if (orders.length > 1){
+                        //TODO show orders list
+                        //return;
+                    }
+                    var sale_order = orders[0]
                     if (! sale_order){
-                        //TODO show msg
+                        // TODO show message
                         return;
                     }
-                    //sale_order.partner_id; //[id, name]
-                    return new instance.web.Model('sale.order.line').query(['product_id', 'product_uom_qty','discount']).filter([['order_id','=',sale_order.id]]).all();
-                }).then(function(lines){
-                    var order = self.pos.get('selectedOrder');
-                    $.each(lines, function(k, item){
-                        var product = self.pos.db.get_product_by_id(item.product_id[0]);
-                        var options = {
-                            'quantity':item.product_uom_qty
-                        }
-                        order.addProduct(product, options);
-                        if (item.discount)
-                            order.getSelectedLine().set_discount(item.discount);
-                    });
-                    self.hide();
+                    self.apply_sale_order(sale_order.id)
                 })
             })
         },
         set_value:function(val){
             var order = this.pos.get('selectedOrder');
-            if (order.get('orderLines').length){
+            if (order.get('orderLines').length || val == 'remove'){
                 this.hide();
                 return;
             }
@@ -88,4 +100,4 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
     }
 })()
 
-$('<link rel="stylesheet" href="/pos_website_sale/static/src/css/pos.css"></link>').appendTo($("head"))
+$('<link rel="stylesheet" href="/pos_sale_order/static/src/css/pos.css"></link>').appendTo($("head"))
