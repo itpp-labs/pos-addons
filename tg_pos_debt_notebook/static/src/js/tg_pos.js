@@ -23,15 +23,16 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             var self = this;
             var pushed = PosModelSuper.prototype.push_order.call(this, order);
             var client = order.get_client();
-            if (!client)
-                return;
-            order.get('paymentLines').each(function(line){
-                var journal = line.cashregister.journal;
-                if (!journal.debt)
-                    return;
-                var amount = line.get_amount();
-                client.debt += amount;
-            })
+            if (client && order){
+                order.get('paymentLines').each(function(line){
+                    var journal = line.cashregister.journal;
+                    if (!journal.debt)
+                        return;
+                    var amount = line.get_amount();
+                    client.debt += amount;
+                })
+            }
+            return pushed;
         },
     })
 
