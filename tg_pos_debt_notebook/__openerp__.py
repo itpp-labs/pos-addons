@@ -1,5 +1,5 @@
 {
-    'name' : 'Debt payment for POS (TG)',
+    'name' : 'Debt payment for POS',
     'version' : '1.0.0',
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',

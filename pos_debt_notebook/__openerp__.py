@@ -1,5 +1,5 @@
 {
-    'name' : 'Debt payment for POS',
+    'name' : 'Debt payment for POS (technical core)',
     'version' : '1.0.0',
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
