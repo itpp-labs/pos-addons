@@ -5,7 +5,7 @@
     'category': 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'price': 9.00,
-    'currency': 'USD',
+    'currency': 'EUR',
     'depends' : ['point_of_sale', 'stock'],
     'data':[
         'data.xml',
