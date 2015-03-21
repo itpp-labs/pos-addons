@@ -4,7 +4,7 @@
     'author' : 'Ivan Yelizariev',
     'category' : 'Sale',
     'website' : 'https://yelizariev.github.io',
-    'depends' : ['point_of_sale', 'website_sale'],
+    'depends' : ['point_of_sale'],
     'data':[
         'templates.xml',
         ],
