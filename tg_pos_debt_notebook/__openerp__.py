@@ -5,6 +5,7 @@
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'depends' : ['pos_debt_notebook', 'point_of_sale'],
+    'images': ['images/screenshot-2.png', 'images/screenshot-3.png', 'images/screenshot-1.png'],
     'data':[
         'tg_data.xml',
         ],
