@@ -4,16 +4,12 @@
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
-    'description': """
-click on summary line of pos order and input discount value
-    """,
+    'price': 9.00,
+    'currency': 'EUR',
     'depends' : ['point_of_sale'],
     'data':[
         'data.xml',
         ],
-    'qweb': [
-        'static/src/xml/pos.xml',
-    ],
     'installable': True,
     'auto_install': False,
 }
