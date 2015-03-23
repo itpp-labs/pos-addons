@@ -5,7 +5,6 @@
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'depends' : ['account', 'point_of_sale'],
-    'images': ['images/screenshot-1.png', 'images/screenshot-2.png', 'images/screenshot-3.png'],
     'data':[
         'data.xml',
         'views.xml',
