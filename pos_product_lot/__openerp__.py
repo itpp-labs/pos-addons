@@ -4,9 +4,6 @@
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
-    'description': """
-    Split lot product in POS interface
-    """,
     'depends' : ['product_lot', 'pos_product_available'],
     'data':[
         'data.xml',
