@@ -1,5 +1,5 @@
-Debt payment for POS
-====================
+Debt notebook for POS
+=====================
 
 Description: https://apps.odoo.com/apps/modules/8.0/tg_pos_debt_notebook/
 
