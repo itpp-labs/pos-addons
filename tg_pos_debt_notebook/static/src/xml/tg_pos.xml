@@ -9,7 +9,7 @@
 		<t t-jquery=".client-details-right" t-operation="append">
 			<div class="client-detail">
 				<span class='label'>Debt</span>
-				<span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}"><t t-esc='partner.debt'/></span>
+				<span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}"><t t-esc='widget.format_currency(partner.debt)'/></span>
 			</div>
 		</t>
 	</t>

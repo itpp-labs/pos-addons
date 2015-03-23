@@ -18,7 +18,7 @@
         <record id="debt_journal" model="account.journal">
             <field name="name">Debt Journal</field>
             <field name="code">TDEBT</field>
-            <field name="type">bank</field>
+            <field name="type">cash</field>
             <field name="debt" eval="True"/>
             <field name="journal_user" eval="True"/>
             <field name="sequence_id" ref="sequence_debt_journal"/>
