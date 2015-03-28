@@ -4,11 +4,8 @@
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
-    'description': """
-By default, if you put ean13 barcode in "Internal Reference" in product form, then when you scan item in pos Odoo cannot find product.
-
-This module fix this behaviour
-    """,
+    'price': 9.00,
+    'currency': 'EUR',
     'depends' : ['point_of_sale'],
     'data':[
         'data.xml',
