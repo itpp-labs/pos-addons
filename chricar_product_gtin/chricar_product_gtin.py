@@ -99,10 +99,10 @@ class product_product(osv.osv):
         return res
 
     _columns = {
-        'ean13': fields.char('EAN', help ='Code for EAN8 EAN13 UPC JPC GTIN http://de.wikipedia.org/wiki/Global_Trade_Item_Number', size=14),
+        'ean13': fields.char('Barcode', help ='Code for EAN8 EAN13 UPC JPC GTIN http://de.wikipedia.org/wiki/Global_Trade_Item_Number', size=14),
     }
 
-    _constraints = [(_check_ean_key, 'Error: Invalid EAN code', ['ean13'])]
+    _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
 
 product_product()
 
@@ -115,7 +115,7 @@ class product_template(osv.osv):
         return res
 
     _columns = {
-        'ean13': fields.related('product_variant_ids', 'ean13', type='char', string='EAN'),
+        'ean13': fields.related('product_variant_ids', 'ean13', type='char', string='Barcode'),
 
     }
 
@@ -131,9 +131,9 @@ class product_packaging(osv.osv):
         return res
 
     _columns = {
-        'ean':    fields.char('EAN', help ='Barcode number for EAN8 EAN13 UPC JPC GTIN', size=14),
+        'ean':    fields.char('Barcode', help ='Barcode number for EAN8 EAN13 UPC JPC GTIN', size=14),
     }
-    _constraints = [(_check_ean_key, 'Error: Invalid EAN code', ['ean'])]
+    _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean'])]
 
 product_packaging()
 
@@ -147,10 +147,10 @@ class res_partner(osv.osv):
         return res
 
     _columns = {
-        'ean13':    fields.char('EAN', help ='Code for EAN8 EAN13 UPC JPC GTIN http://de.wikipedia.org/wiki/Global_Trade_Item_Number', size=14),
+        'ean13':    fields.char('Barcode', help ='Code for EAN8 EAN13 UPC JPC GTIN http://de.wikipedia.org/wiki/Global_Trade_Item_Number', size=14),
     }
 
-    _constraints = [(_check_ean_key, 'Error: Invalid EAN code', ['ean13'])]
+    _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
 
 res_partner()
 
