@@ -16,7 +16,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                     self.partners = partners;
                     self.db.add_partners(partners);
 
-                    return $.when()
+                    return $.when();
                 })
             return loaded;
         },
@@ -40,7 +40,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
     module.Order = module.Order.extend({
         addPaymentline: function(cashregister) {
             var self = this;
-            var journal = cashregister.journal
+            var journal = cashregister.journal;
             if (journal.debt && ! this.get_client()){
                 setTimeout(function(){
                     var ss = self.pos.pos_widget.screen_selector;

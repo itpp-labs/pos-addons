@@ -1,52 +1,52 @@
- # -*- coding: utf-8 -*-
-from openerp.osv import osv,fields
-from openerp import SUPERUSER_ID
+# -*- coding: utf-8 -*-
+from openerp import models, fields, api
+import openerp.addons.decimal_precision as dp
 
-class res_partner(osv.Model):
+
+class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    def _get_debt(self, cr, uid, ids, field_name, arg, context=None):
-        obj_data = self.pool.get('ir.model.data')
-        debt_account_id = obj_data.get_object_reference(cr, uid, 'pos_debt_notebook', 'debt_account')[1]
-        debt_journal_id = obj_data.get_object_reference(cr, uid, 'pos_debt_notebook', 'debt_journal')[1]
+    @api.multi
+    def _get_debt(self):
+        debt_account = self.env.ref('pos_debt_notebook.debt_account')
+        debt_journal = self.env.ref('pos_debt_notebook.debt_journal')
 
-        cr.execute("""SELECT l.partner_id, SUM(l.debit-l.credit)
-                      FROM account_move_line l
-                      WHERE l.account_id = %s
-                      AND l.partner_id IN %s
-                      GROUP BY l.partner_id
-                      """,
-                   (debt_account_id, tuple(ids),))
+        self._cr.execute(
+            """SELECT l.partner_id, SUM(l.debit - l.credit)
+            FROM account_move_line l
+            WHERE l.account_id = %s AND l.partner_id IN %s
+            GROUP BY l.partner_id
+            """,
+            (debt_account.id, tuple(self.ids)))
 
         res = {}
-        for id in ids:
-            res[id] = 0
-        for id,val in cr.fetchall():
-            res[id] = val or 0
+        for partner in self:
+            res[partner.id] = 0
+        for partner_id, val in self._cr.fetchall():
+            res[partner_id] += val
 
-        statement_obj = self.pool.get('account.bank.statement')
-        statement_ids = statement_obj.search(cr, uid, [('journal_id', '=', debt_journal_id),('state', '=', 'open')])
-        if not statement_ids:
-            return res
+        statements = self.env['account.bank.statement'].search(
+            [('journal_id', '=', debt_journal.id), ('state', '=', 'open')])
+        if statements:
 
-        cr.execute("""SELECT l.partner_id, SUM(l.amount)
-                      FROM account_bank_statement_line l
-                      WHERE l.statement_id IN %s
-                      AND l.partner_id IN %s
-                      GROUP BY l.partner_id
-                      """,
-                   (tuple(statement_ids), tuple(ids),))
-        for id,val in cr.fetchall():
-            res[id] += val or 0
-        return res
+            self._cr.execute(
+                """SELECT l.partner_id, SUM(l.amount)
+                FROM account_bank_statement_line l
+                WHERE l.statement_id IN %s AND l.partner_id IN %s
+                GROUP BY l.partner_id
+                """,
+                (tuple(statements.ids), tuple(self.ids)))
+            for partner_id, val in self._cr.fetchall():
+                res[partner_id] += val
+        for partner in self:
+            partner.debt = res[partner.id]
 
-    _columns = {
-        'debt':fields.function(_get_debt, type='float', string='Debt'),
-    }
+    debt = fields.Float(
+        compute='_get_debt', string='Debt', readonly=True,
+        digits=dp.get_precision('Account'))
 
-class account_journal(osv.Model):
+
+class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    _columns = {
-        'debt': fields.boolean('Debt'),
-    }
+    debt = fields.Boolean(string='Debt Payment Method')
