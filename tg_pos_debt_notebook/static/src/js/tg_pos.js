@@ -10,13 +10,12 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
 
             loaded =
                 loaded.then(function(){
-                    return self.fetch('res.partner', ['name','street','city','country_id','phone','zip','mobile','email','ean13', 'debt']);
+                    return self.fetch('res.partner', ['debt']);
                 }).then(function(partners){
-                    self.db.partners_sorted = [];
-                    self.partners = partners;
-                    self.db.add_partners(partners);
-
-                    return $.when();
+                    $.each(partners, function(){
+                        $.extend(self.db.get_partner_by_id(this.id) || {}, this)
+                    });
+                return $.when();
                 })
             return loaded;
         },
