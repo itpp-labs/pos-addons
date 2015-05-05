@@ -1,0 +1,52 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tg_pos_debt_notebook
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-02 22:47+0000\n"
+"PO-Revision-Date: 2015-05-02 22:47+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tg_pos_debt_notebook
+#. openerp-web
+#: code:addons/tg_pos_debt_notebook/static/src/xml/tg_pos.xml:11
+#, python-format
+msgid "Debt"
+msgstr ""
+
+#. module: tg_pos_debt_notebook
+#. openerp-web
+#: code:addons/tg_pos_debt_notebook/static/src/js/tg_pos.js:90
+#, python-format
+msgid "Empty Order"
+msgstr ""
+
+#. module: tg_pos_debt_notebook
+#. openerp-web
+#: code:addons/tg_pos_debt_notebook/static/src/js/tg_pos.js:91
+#, python-format
+msgid "There must be at least one product in your order before it can be validated. (Hint: you can use some dummy zero price product)"
+msgstr ""
+
+#. module: tg_pos_debt_notebook
+#. openerp-web
+#: code:addons/tg_pos_debt_notebook/static/src/js/tg_pos.js:82
+#, python-format
+msgid "Unknown customer"
+msgstr ""
+
+#. module: tg_pos_debt_notebook
+#. openerp-web
+#: code:addons/tg_pos_debt_notebook/static/src/js/tg_pos.js:83
+#, python-format
+msgid "You cannot use Debt payment. Select customer first."
+msgstr ""
+
