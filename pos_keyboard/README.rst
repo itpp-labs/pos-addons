@@ -12,11 +12,11 @@ type        additional keyboard   basic keyboard
 =========== ===================== =================
 
 numChar     0-9                   0-9
-mode qty    '/'                   'q'
-mode disk   '-'                   'd'
-mode price  '*'                   'p'
+mode qty    ``/``                 ``q``
+mode disk   ``-``                 ``d``
+mode price  ``*``                 ``p``
 backspace   backspace             backspace
-dot         '.'                   '.'
+dot         ``.``                 ``.``
 
 =========== ===================== =================
 
