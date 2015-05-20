@@ -6,18 +6,17 @@ Module to connect an additional usb keyboard for Point of Sale.
 The processed keys:
 ----------------------------
 =========== ===================== =================
-             additional keyboard   basic keyboard  
+
+type        additional keyboard   basic keyboard  
+
 =========== ===================== =================
-numChar      0-9                   0-9
-=========== ===================== =================
-mode qty     '/'                   'q'
-=========== ===================== =================
-mode disk    '-'                   'd'
-=========== ===================== =================
-mode price   '*'                   'p'
-=========== ===================== =================
-backspace    backspace             backspace
-=========== ===================== =================
-dot          '.'                   '.'
+
+numChar     0-9                   0-9
+mode qty    '/'                   'q'
+mode disk   '-'                   'd'
+mode price  '*'                   'p'
+backspace   backspace             backspace
+dot         '.'                   '.'
+
 =========== ===================== =================
 
