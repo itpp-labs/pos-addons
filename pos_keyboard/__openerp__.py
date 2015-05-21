@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "pos_keyboard",
-    'summary': "usb keyboard in point of sale",
+    'name': "Keyboard support in Point Of Sale",
     'author': "Ivan Yelizariev",
     "website" : "https://yelizariev.github.io",
     'category' : 'Point Of Sale',
