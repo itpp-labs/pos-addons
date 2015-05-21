@@ -3,7 +3,7 @@ Module allows to use usual keyboard (not virtual one) in Point of Sale.
 Usage:
 
 =========== ===================== =================
-type        Numpad                Extra keys  
+Type        Numpad                Extra keys  
 =========== ===================== =================
 mode qty    ``/``                 ``q``
 ----------- --------------------- -----------------
