@@ -14,4 +14,4 @@ mode price  ``*``                 ``p``
 +/-         ``+``                 ``s``
 =========== ===================== =================
 
-Tested on Odoo 8.0 9a5b6c8b98d4db3a190c3ac46bd5f3a6df3069b2
+Tested on Odoo 8.0 612b44648ee79c5f8bb10e16efdee3cc81abaa08
