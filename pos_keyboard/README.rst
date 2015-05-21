@@ -1,15 +1,10 @@
-USB keyboard in Point of Sale.
-******************************
-Module to connect an additional usb keyboard for Point of Sale.
+Module allows to use usual keyboard (not virtual one) in Point of Sale.
 ================================================================
-The processed keys:
-----------------------------
+Usage:
 
 =========== ===================== =================
-type        additional keyboard   basic keyboard  
+type        Numpad                Extra keys  
 =========== ===================== =================
-numChar     ``0-9``               ``0-9``
------------ --------------------- -----------------
 mode qty    ``/``                 ``q``
 ----------- --------------------- -----------------
 mode disk   ``-``                 ``d``
@@ -17,9 +12,5 @@ mode disk   ``-``                 ``d``
 mode price  ``*``                 ``p``
 ----------- --------------------- -----------------
 +/-         ``+``                 ``s``
------------ --------------------- -----------------
-backspace   ``backspace``         ``backspace``
------------ --------------------- -----------------
-dot         ``.``                 ``.``
 =========== ===================== =================
 
