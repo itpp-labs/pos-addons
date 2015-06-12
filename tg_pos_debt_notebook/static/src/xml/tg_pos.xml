@@ -13,6 +13,11 @@
             </div>
         </t>
     </t>
+    <t t-extend="OrderButtonWidget">
+        <t t-jquery=".fa" t-operation="after">
+            <t t-esc="(widget.order.get_client() ? '[Debt: ' + widget.order.get_client().debt.toString() + ']': '')"/>
+        </t>
+    </t>
     <t t-extend="Paymentline" >
         <t t-jquery=".paymentline-input" t-operation="append">
             <t t-if="line.cashregister.journal.debt">

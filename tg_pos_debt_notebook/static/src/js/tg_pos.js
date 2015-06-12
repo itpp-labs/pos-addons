@@ -106,6 +106,8 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
                 }
             return el_node;
         },
+        /* Ideas for enhancement :
+        - only display the button "Pay Full Debt" when the user has a debt */
 
         pay_full_debt: function(line){
             partner = this.pos.get_order().get_client();
