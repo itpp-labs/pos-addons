@@ -5,12 +5,21 @@
            <t t-esc="widget.cashregister.journal.name"/>
         </button>
     </t>
-	<t t-extend="ClientDetails">
-		<t t-jquery=".client-details-right" t-operation="append">
-			<div class="client-detail">
-				<span class='label'>Debt</span>
-				<span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}"><t t-esc='widget.format_currency(partner.debt)'/></span>
-			</div>
-		</t>
-	</t>
+    <t t-extend="ClientDetails">
+        <t t-jquery=".client-details-right" t-operation="append">
+            <div class="client-detail">
+                <span class='label'>Debt</span>
+                <span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}"><t t-esc='widget.format_currency(partner.debt)'/></span>
+            </div>
+        </t>
+    </t>
+    <t t-extend="Paymentline" >
+        <t t-jquery=".paymentline-input" t-operation="append">
+            <t t-if="line.cashregister.journal.debt">
+                <span class="pay-full-debt">
+                    <button>Pay Full Debt</button>
+                </span>
+            </t>
+        </t>
+    </t>
 </templates>

@@ -1,8 +1,8 @@
-function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_sale
-    //var module = instance.point_of_sale;
+openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of_sale
+    var module = instance.point_of_sale;
     var _t = instance.web._t;
 
-    var PosModelSuper = module.PosModel
+    var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         load_server_data: function(){
             var self = this;
@@ -19,6 +19,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
                 })
             return loaded;
         },
+
         push_order: function(order){
             var self = this;
             var pushed = PosModelSuper.prototype.push_order.call(this, order);
@@ -34,7 +35,7 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             }
             return pushed;
         },
-    })
+    });
 
     module.Order = module.Order.extend({
         addPaymentline: function(cashregister) {
@@ -60,9 +61,10 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             }
             paymentLines.add(newPaymentline);
             this.selectPaymentline(newPaymentline);
-        }
+        },
 
-    })
+    });
+
     module.PaymentScreenWidget.include({
         validate_order: function(options) {
             var currentOrder = this.pos.get('selectedOrder');
@@ -93,20 +95,22 @@ function tg_pos_debt_notebook(instance, module){ //module is instance.point_of_s
             }
 
             this._super(options);
-        }
-    })
-}
+        },
 
+        render_paymentline: function(line){
+            el_node = this._super(line);
+            var self = this;
+            if (line.cashregister.journal.debt){
+                el_node.querySelector('.pay-full-debt')
+                    .addEventListener('click', function(){self.pay_full_debt(line)});
+                }
+            return el_node;
+        },
 
-
-(function(){
-    var _super = window.openerp.point_of_sale;
-    window.openerp.point_of_sale = function(instance){
-        _super(instance);
-        var module = instance.point_of_sale;
-        tg_pos_debt_notebook(instance, module);
-    }
-
-    $('<link rel="stylesheet" href="/tg_pos_debt_notebook/static/src/css/tg_pos.css"/>').appendTo($("head"))
-
-})()
+        pay_full_debt: function(line){
+            partner = this.pos.get_order().get_client();
+            // Now I write in the amount the debt x -1
+            line.set_amount(partner.debt * -1);
+            },
+    });
+};
