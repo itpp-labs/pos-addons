@@ -117,4 +117,66 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
             this.rerender_paymentline(line);
             },
     });
+
+    module.ClientListScreenWidget.include({
+        toggle_save_button: function(){
+            this._super();
+            var $button = this.$('.button.set-customer-pay-full-debt');
+            if (this.editing_client) {
+                $button.addClass('oe_hidden');
+                return;
+            } else if (this.new_client){
+                if (!this.old_client){
+                    $button.text(_t('Set Customer and Pay Full Debt'));
+                }else{
+                    $button.text(_t('Change Customer and Pay Full Debt'));
+                }
+            }
+
+            $button.toggleClass('oe_hidden',!this.has_client_changed());
+        },
+
+        show: function(){
+            this._super();
+            var self = this;
+            this.$('.button.set-customer-pay-full-debt').click(function(){
+                self.save_changes();
+                self.pos_widget.screen_selector.back();
+                if (self.new_client.debt <= 0) {
+                    self.pos_widget.screen_selector.show_popup('error',{
+                    'message':_t('Error: No Debt'),
+                    'comment':_t("The selected customer has no debt."),
+                    });
+                    return;
+                }
+                // if the order is empty, add a dummy product with price = 0
+                order = self.pos.get_order();
+                if (order) {
+                    orderlines = order.getOrderline();
+                    if (orderlines === null){
+                        // TODO : don't hardcode the ID of dummy product
+                        // make it configurable ??
+                        dummy_product = self.pos.db.get_product_by_id(1);
+                        order.addProduct(dummy_product, {'price': 0});
+                        }
+                }
+
+                // select debt journal
+                var debtjournal = false;
+                _.each(self.pos.cashregisters, function(cashregister) {
+                    if (cashregister.journal.debt) {
+                        debtjournal = cashregister;
+                    }
+                });
+
+                // add payment line with amount = debt *-1
+                var paymentLines = order.get('paymentLines');
+                var newDebtPaymentline = new module.Paymentline({},{cashregister:debtjournal, pos:self.pos});
+                newDebtPaymentline.set_amount(self.new_client.debt * -1);
+                paymentLines.add(newDebtPaymentline);
+                self.pos_widget.screen_selector.set_current_screen('payment');
+
+            });
+        },
+    });
 };
