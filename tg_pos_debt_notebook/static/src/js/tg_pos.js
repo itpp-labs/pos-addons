@@ -113,6 +113,8 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
             partner = this.pos.get_order().get_client();
             // Now I write in the amount the debt x -1
             line.set_amount(partner.debt * -1);
+            // refresh the display of the payment line
+            this.rerender_paymentline(line);
             },
     });
 };
