@@ -131,9 +131,10 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
                 }else{
                     $button.text(_t('Change Customer and Pay Full Debt'));
                 }
+                if (this.new_client.debt > 0){
+                    $button.toggleClass('oe_hidden',!this.has_client_changed());
+                }
             }
-
-            $button.toggleClass('oe_hidden',!this.has_client_changed());
         },
 
         show: function(){
