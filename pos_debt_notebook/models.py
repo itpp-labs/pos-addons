@@ -50,3 +50,15 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    debt_dummy_product_id = fields.Many2one(
+        'product.product', string='Dummy Product for Debt',
+        domain=[('available_in_pos', '=', True)], required=True,
+        help="Dummy product used when a customer pays his debt "
+        "without ordering new products. This is a workaround to the fact "
+        "that Odoo needs to have at least one product on the order to "
+        "validate the transaction.")
