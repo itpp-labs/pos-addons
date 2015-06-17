@@ -1,6 +1,11 @@
 Odoo POS addons
 ===============
 
-Different modules for Odoo v8. 
+Different modules for Odoo. 
 
-Some modules are described on the website https://yelizariev.github.io
+List of repositories:
+---------------------
+
+* https://github.com/yelizariev/addons-yelizariev
+* https://github.com/yelizariev/website-addons
+* https://github.com/yelizariev/pos-addons
