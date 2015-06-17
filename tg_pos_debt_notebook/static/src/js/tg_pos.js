@@ -153,8 +153,8 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
                 // if the order is empty, add a dummy product with price = 0
                 order = self.pos.get_order();
                 if (order) {
-                    orderlines = order.getOrderline();
-                    if (orderlines === null &&
+                    lastorderline = order.getLastOrderline();
+                    if (lastorderline == null &&
                             self.pos.config.debt_dummy_product_id){
                         dummy_product = self.pos.db.get_product_by_id(
                             self.pos.config.debt_dummy_product_id[0]);
