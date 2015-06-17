@@ -21,12 +21,12 @@
 
 .screen .top-content .button.next {
     right: auto;
-    left: 50%;
+    left: 55%;
 }
 
 .screen .top-content .button.set-customer-pay-full-debt {
     right: 0px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .pos .clientlist-screen .searchbox {

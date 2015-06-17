@@ -15,7 +15,7 @@
     </t>
     <t t-extend="OrderButtonWidget">
         <t t-jquery=".fa" t-operation="after">
-            <t t-esc="(widget.order.get_client() ? '[Debt: ' + widget.order.get_client().debt.toString() + ']': '')"/>
+            <t t-esc="(widget.order.get_client() ? '[Debt: ' + (Math.round(widget.order.get_client().debt * 100) / 100).toString() + ']': '')"/>
         </t>
     </t>
     <t t-extend="Paymentline">
