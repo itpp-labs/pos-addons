@@ -2,12 +2,12 @@
 <openerp><data>
 
 <template id="report_detailsofsales" inherit_id="point_of_sale.report_detailsofsales">
-	<xpath expr="//table[0]" position="replace">
+	<xpath expr="//table[1]" position="replace">
         <table class="table table-condensed">
             <thead>
                 <th><strong>Category</strong></th>
                 <th><strong>Product Quantity</strong></th>
-                <th><strong>Total Price</strong></th>
+                <th class="text-right"><strong>Total Price</strong></th>
 			</thead>
             <tbody>
                 <tr t-foreach="pos_sales_details_custom(data['form'])" t-as="line_ids">
