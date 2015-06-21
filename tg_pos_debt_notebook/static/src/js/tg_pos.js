@@ -172,11 +172,22 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
 
                 // add payment line with amount = debt *-1
                 var paymentLines = order.get('paymentLines');
+                if (paymentLines.length) {
+                    /* Delete existing debt line
+                    Usefull for the scenario where a customer comes to
+                    pay his debt and the user clicks on the "Debt journal"
+                    which opens the partner list and then selects partner
+                    and clicks on "Select Customer and Pay Full Debt" */
+                    _.each(paymentLines.models, function(paymentLine) {
+                        if (paymentLine.cashregister.journal.debt){
+                            paymentLine.destroy();
+                        }
+                    });
+                }
                 var newDebtPaymentline = new module.Paymentline({},{cashregister:debtjournal, pos:self.pos});
                 newDebtPaymentline.set_amount(self.new_client.debt * -1);
                 paymentLines.add(newDebtPaymentline);
                 self.pos_widget.screen_selector.set_current_screen('payment');
-
             });
         },
     });
