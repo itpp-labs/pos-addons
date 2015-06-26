@@ -13,7 +13,7 @@ class pos_details_custom(pos_details):
         for r in res:
             self.qty += r['product_qty']
             self.total += r['price_total']
-            self.dictfetchall += r['total_discount']
+            self.discount += r['total_discount']
         return res
 
     def __init__(self, cr, uid, name, context):
