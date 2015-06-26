@@ -10,6 +10,10 @@ class pos_details_custom(pos_details):
         user_ids = form['user_ids'] or self._get_all_users()
         company_id = user_obj.browse(self.cr, self.uid, self.uid).company_id.id
         res = self.pool.get('report.pos.order').read_group(self.cr, self.uid, groupby=["product_categ_id"], fields=["product_categ_id", "product_qty", "price_total"], domain=[('date','>=',form['date_start'] + ' 00:00:00'),('date','<=',form['date_end'] + ' 23:59:59'),('user_id','in',user_ids),('state','in',['done','paid','invoiced']),('company_id','=',company_id)])
+        for r in res:
+            self.qty += r['product_qty']
+            self.total += r['price_total']
+            self.dictfetchall += r['total_discount']
         return res
 
     def __init__(self, cr, uid, name, context):
