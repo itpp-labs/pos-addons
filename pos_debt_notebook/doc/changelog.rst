@@ -3,6 +3,11 @@
 Changelog
 =========
 
+`1.0.2`
+-------
+
+- Add Dummy product settings to pay debt
+
 `1.0.1`
 -------
 

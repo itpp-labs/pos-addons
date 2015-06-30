@@ -1,6 +1,6 @@
 {
     'name': 'Debt notebook (technical core)',
-    'version': '1.0.1',
+    'version': '1.0.2',
     'author': 'Ivan Yelizariev',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
