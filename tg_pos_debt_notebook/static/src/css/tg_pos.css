@@ -1,6 +1,38 @@
 .pos .clientlist-screen .client-detail > .client-debt.positive{
-	color: red;
+    color: red;
 }
+
 .pos .clientlist-screen .client-detail > .client-debt.negative{
-	color: green;
+    color: green;
+}
+
+.pos .pay-full-debt button {
+    width: 150px;
+    height: 60px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align:center;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    left: 105%;
+    bottom: 10px;
+    position: absolute;
+}
+
+.screen .top-content .button.next {
+    right: auto;
+    left: 55%;
+}
+
+.screen .top-content .button.set-customer-pay-full-debt {
+    right: 0px;
+    font-size: 15px;
+}
+
+.pos .clientlist-screen .searchbox {
+    left: 30%;
+}
+
+.pos .clientlist-screen .button.new-customer {
+    left: 30%;
 }

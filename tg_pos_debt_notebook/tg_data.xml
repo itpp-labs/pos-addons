@@ -6,5 +6,10 @@
                 <script type="text/javascript" src="/tg_pos_debt_notebook/static/src/js/tg_pos.js"></script>
             </xpath>
         </template>
+        <template id="index" name="tg_pos_debt_notebook index" inherit_id="point_of_sale.index">
+            <xpath expr="//link[@id='pos-stylesheet']" position="after">
+                <link rel="stylesheet" href="/tg_pos_debt_notebook/static/src/css/tg_pos.css" id="tg_pos_debt_notebook-stylesheet"/>
+            </xpath>
+        </template>
     </data>
 </openerp>
