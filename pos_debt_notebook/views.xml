@@ -53,6 +53,16 @@
     </field>
 </record>
 
+<record id="view_pos_config_form" model="ir.ui.view">
+    <field name="name">pos.payment.terminal.config.form</field>
+    <field name="model">pos.config</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+    <field name="arch" type="xml">
+        <field name="currency_id" position="after">
+            <field name="debt_dummy_product_id"/>
+        </field>
+    </field>
+</record>
 
 </data>
 </openerp>
