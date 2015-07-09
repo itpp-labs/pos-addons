@@ -2311,8 +2311,13 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
         get_clients: function(letter){
             var self = this;
             var clients_list = [];
-            var l_filter = [['customer', '=', true], 
-                           ['name','=ilike', letter + '%']];
+            var l_filter = ['|','|','|',
+                           ['name','=ilike', letter + '%'],
+                           ['firstname','=ilike', letter + '%'],
+                           ['ref','=ilike', '%' + letter + '%'],
+                           ['vat','=ilike', '%' + letter + '%']
+                           ];
+            l_filter.unshift(['customer', '=', true]);
 
             if(letter == '0-9'){
                 l_filter = [['customer', '=', true],
