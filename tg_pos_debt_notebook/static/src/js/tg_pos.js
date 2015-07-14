@@ -116,6 +116,39 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
             // refresh the display of the payment line
             this.rerender_paymentline(line);
             },
+
+        /* I inherit the native is_paid() method below for the following reason:
+        without this inherit, if you have a customer with a debt and he comes
+        to pay his debt without buying new items:
+        1) cashier selects "debt journal"
+        2) cashier selects the customer and clicks on "Select Customer and Pay Full Debt"
+        3) a dummy product is automatically added to the pos order and
+           the debt journal is selected with a negative amount corresponding
+           to the debt.
+           AT THAT MOMENT, the "Validate" button is active...
+           so the cashier can click on it by accident !
+           He should not, because he still has to select the payment method used
+           to pay the debt.
+
+        This problem is linked to the fact that the native is_paid() method
+        returns with the following code:
+
+        return (currentOrder.getTotalTaxIncluded() < 0.000001
+                            || currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded());
+
+        (cf odoo/addons/point_of_sale/static/src/js/screens.js line 1256)
+
+        So is_paid() always returns True when
+        "currentOrder.getTotalTaxIncluded() < 0.000001" which is the case
+        in this scenario with a pos.order with the dummy product with price = 0
+        I must say that I don't understand what is the use case behind the
+        "currentOrder.getTotalTaxIncluded() < 0.000001" */
+        is_paid: function(){
+            var currentOrder = this.pos.get('selectedOrder');
+            return (
+                currentOrder.getPaidTotal() + 0.000001 >=
+                currentOrder.getTotalTaxIncluded());
+            },
     });
 
     module.ClientListScreenWidget.include({
