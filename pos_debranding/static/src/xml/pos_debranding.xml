@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="PosWidget">
+        <t t-jquery=".pos-logo" t-operation="replace">
+            <!--
+            <img class="pos-logo" src="/your_custom_module/static/src/img/logo.png" />
+            -->
+        </t>
+    </t>
+</templates>
