@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-02 22:38+0000\n"
-"PO-Revision-Date: 2015-05-02 22:38+0000\n"
+"POT-Creation-Date: 2015-07-16 23:25+0000\n"
+"PO-Revision-Date: 2015-07-16 23:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,16 @@ msgid "Debt:"
 msgstr "Dette :"
 
 #. module: pos_debt_notebook
+#: field:pos.config,debt_dummy_product_id:0
+msgid "Dummy Product for Debt"
+msgstr "Article spécial pour la dette"
+
+#. module: pos_debt_notebook
+#: help:pos.config,debt_dummy_product_id:0
+msgid "Dummy product used when a customer pays his debt without ordering new products. This is a workaround to the fact that Odoo needs to have at least one product on the order to validate the transaction."
+msgstr "Article spécial utilisé quand un client solde son compte sans acheter de nouveaux articles. Cela permet de contourner le fait qu'Odoo exige d'avoir au moins un article pour valider un ticket de caisse."
+
+#. module: pos_debt_notebook
 #: model:ir.model,name:pos_debt_notebook.model_account_journal
 msgid "Journal"
 msgstr "Journal"
@@ -34,4 +44,14 @@ msgstr "Journal"
 #: model:ir.model,name:pos_debt_notebook.model_res_partner
 msgid "Partner"
 msgstr "Partenaire"
+
+#. module: pos_debt_notebook
+#: model:product.template,name:pos_debt_notebook.product_pay_debt_product_template
+msgid "Pay Debt"
+msgstr "Règlement de la dette"
+
+#. module: pos_debt_notebook
+#: model:product.template,description:pos_debt_notebook.product_pay_debt_product_template
+msgid "This is a dummy product used when a customer pays his debt without ordering new products. This is a workaround to the fact that Odoo needs to have at least one product on the order to validate the transaction."
+msgstr "Ceci est un article spécial utilisé quand un client solde son compte sans acheter de nouveaux articles. Cela permet de contourner le fait qu'Odoo exige d'avoir au moins un article pour valider un ticket de caisse."
 
