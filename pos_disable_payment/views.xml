@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp><data>
+
+<template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets_backend">
+    <xpath expr="." position="inside">
+        <script type="text/javascript" src="/pos_disable_payment/static/src/js/pos_disable_payment.js"></script>
+    </xpath>
+</template>
+
+<record model="ir.ui.view" id="view_pos_config_form">
+    <field name="name">pos.config.form.view.inherit</field>
+    <field name="model">pos.config</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//group[@string='Features']" position="inside">
+            <group>
+                <field name="allow_payments"/>
+            </group>
+        </xpath>
+        <xpath expr="//field[@name='journal_ids']" position="attributes">
+            <attribute name="attrs">{'readonly':[('allow_payments', '=', False)]}</attribute>
+        </xpath>
+    </field>
+</record>
+
+</data></openerp>
