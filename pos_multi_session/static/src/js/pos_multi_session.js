@@ -14,7 +14,55 @@ openerp.pos_multi_session = function(instance){
                                  return self.multi_session.start();
                              }
                          });
+            this.multi_session_syncing_in_progress = false;
         },
+        multi_session_on_update: function(data){
+            this.multi_session_syncing_in_progress = true;
+            var sequence_number = data.sequence_number;
+            this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
+
+            var order = this.get('orders').find(function(order){
+                return order.uid == data.uid;
+            })
+            if (!order){
+                order = new module.Order({pos:this});
+                this.get('orders').add(order);
+            }
+            //STOPHERE: update order
+            this.multi_session_syncing_in_progress = false;
+        }
+    })
+
+    var OrderSuper = module.Order;
+    module.Order = module.Order.extend({
+        initialize: function(){
+            var self = this;
+            OrderSuper.prototype.initialize.apply(this, arguments);
+            this.get('orderLines').bind('remove', function(){
+                self.trigger('change:sync')
+            })
+            this.bind('change:sync', function(){
+                self.multi_session_update();
+            })
+        },
+        multi_session_update: function(){
+            if (this.pos.multi_session_syncing_in_progress)
+                return;
+            if (! this.pos.multi_session )
+                return;
+            var data = this.export_as_JSON();
+            this.pos.multi_session.update(data)
+        }
+    })
+    var OrderlineSuper = module.Orderline;
+    module.Orderline = module.Orderline.extend({
+        initialize: function(){
+            var self = this;
+            OrderlineSuper.prototype.initialize.apply(this, arguments);
+            this.bind('change', function(line){
+                this.order.trigger('change:sync')
+            })
+        }
     })
 
     module.MultiSession = Backbone.Model.extend({
@@ -29,7 +77,6 @@ openerp.pos_multi_session = function(instance){
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
 
-            this.update('ping '+instance.session.uid)
             //return done;
         },
         update: function(data){
@@ -51,20 +98,7 @@ openerp.pos_multi_session = function(instance){
             var message = notification[1];
 
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-                alert (message)
-                return;
-                // message to display in the chatview
-                if (message.type === "message" || message.type === "meta") {
-                    self.received_message(message);
-                }
-                // activate the received session
-                if(message.uuid){
-                    this.apply_session(message);
-                }
-                // user status notification
-                if(message.im_status){
-                    self.trigger("im_new_user_status", [message]);
-                }
+                this.pos.multi_session_on_update(message)
             }
         }
     })
