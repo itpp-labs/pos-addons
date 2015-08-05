@@ -2,6 +2,13 @@ openerp.pos_multi_session = function(instance){
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
+    module.OrderWidget.include({
+        rerender_orderline: function(order_line){
+            if (order_line.node)
+                return this._super(order_line);
+        }
+    })
+
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(){
