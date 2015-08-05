@@ -8,6 +8,11 @@ openerp.pos_multi_session = function(instance){
                 return this._super(order_line);
         }
     })
+    module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
+        finishOrder: function() {
+            this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
+        }
+    })
 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
@@ -28,6 +33,16 @@ openerp.pos_multi_session = function(instance){
             });
 
         },
+        on_removed_order: function(removed_order,index,reason){
+            if (this.multi_session){
+                if( reason === 'finishOrder'  && this.get('orders').size() > 0){
+                    return this.set({'selectedOrder' : this.get('orders').at(index) || this.get('orders').first()});
+                }
+            }
+            var self = this;
+            return PosModelSuper.prototype.on_removed_order.apply(this, arguments)
+        },
+
         ms_on_update: function(message){
             this.ms_syncing_in_progress = true;
             console.log('on_update', message)
@@ -36,9 +51,9 @@ openerp.pos_multi_session = function(instance){
             var order = this.get('orders').find(function(order){
                 return order.uid == data.uid;
             })
-            if (order && action=='remove_order'){
+            if (order && action == 'remove_order'){
                 order.destroy({'reason': 'abandon'})
-            } else {
+            } else if (action == 'update') {
                 this.ms_do_update(order, data);
             }
             this.ms_syncing_in_progress = false;
