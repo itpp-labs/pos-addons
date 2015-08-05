@@ -6,6 +6,7 @@ The module allows to use multiple POS for handling orders. For example, order co
 Usage
 =====
 
+* be sure, that your odoo instance support longpolling, i.e. Instant Messaging works
 * open "Point of Sale/Configuration/Point of Sales"
   * create or open some "Point of Sale" record
   * set Multi-session value (create new one if needed)
