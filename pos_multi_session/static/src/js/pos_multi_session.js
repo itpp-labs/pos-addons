@@ -35,8 +35,13 @@ openerp.pos_multi_session = function(instance){
         },
         on_removed_order: function(removed_order,index,reason){
             if (this.multi_session){
-                if( reason === 'finishOrder'  && this.get('orders').size() > 0){
-                    return this.set({'selectedOrder' : this.get('orders').at(index) || this.get('orders').first()});
+                if (reason === 'finishOrder'){
+                    if (this.get('orders').size() > 0){
+                        return this.set({'selectedOrder' : this.get('orders').at(index) || this.get('orders').first()});
+                    }
+                    this.add_new_order();
+                    this.get('selectedOrder').ms_replace_empty_order = true;
+                    return;
                 }
             }
             var self = this;
@@ -68,7 +73,7 @@ openerp.pos_multi_session = function(instance){
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
                 this.get('orders').add(order);
-                if (current_order.is_first_order && current_order.is_empty()){
+                if (current_order.ms_replace_empty_order && current_order.is_empty()){
                     //replace order
                     current_order.destroy({'reason': 'abandon'})
                 }else{
@@ -107,7 +112,7 @@ openerp.pos_multi_session = function(instance){
         initialize: function(){
             var self = this;
             OrderSuper.prototype.initialize.apply(this, arguments);
-            this.is_first_order = is_first_order;
+            this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.get('orderLines').bind('remove', function(){
                 self.trigger('change:sync')
