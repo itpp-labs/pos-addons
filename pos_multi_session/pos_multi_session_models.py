@@ -15,10 +15,10 @@ class pos_multi_session(models.Model):
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
 
     @api.one
-    def update(self, data):
+    def broadcast(self, message):
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'),('config_id.multi_session_id', '=', self.id)]):
             if ps.user_id.id != self.env.user.id:
-                notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), data])
+                notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
         self.env['bus.bus'].sendmany(notifications)
         return 1

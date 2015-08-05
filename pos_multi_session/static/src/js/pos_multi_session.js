@@ -23,17 +23,30 @@ openerp.pos_multi_session = function(instance){
                          });
             this.multi_session_syncing_in_progress = false;
             this.multi_session_update_timeout = false;
-        },
-        multi_session_on_update: function(data){
-            this.multi_session_syncing_in_progress = true;
-            console.log('on_update', data)
-            var pos = this;
-            var sequence_number = data.sequence_number;
-            this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
+            this.get('orders').bind('remove', function(order,_unused_,options){ 
+                order.multi_session_remove_order();
+            });
 
+        },
+        multi_session_on_update: function(message){
+            this.multi_session_syncing_in_progress = true;
+            console.log('on_update', message)
+            var action = message.action;
+            var data = message.data
             var order = this.get('orders').find(function(order){
                 return order.uid == data.uid;
             })
+            if (order && action=='remove_order'){
+                order.destroy({'reason': 'abandon'})
+            } else {
+                this.multi_session_do_update(order, data);
+            }
+            this.multi_session_syncing_in_progress = false;
+        },
+        multi_session_do_update: function(order, data){
+            var pos = this;
+            var sequence_number = data.sequence_number;
+            this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
             if (!order){
                 order = new module.Order({pos:pos});
                 order.uid = data.uid;
@@ -70,7 +83,6 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').add(line)
             })
 
-            this.multi_session_syncing_in_progress = false;
         }
     })
 
@@ -89,11 +101,16 @@ openerp.pos_multi_session = function(instance){
                 self.multi_session_update();
             })
         },
-        multi_session_update: function(){
-            var self = this;
+        multi_session_check: function(){
             if (! this.pos.multi_session )
                 return;
             if (this.pos.multi_session_syncing_in_progress)
+                return;
+            return true;
+        },
+        multi_session_update: function(){
+            var self = this;
+            if (!this.multi_session_check())
                 return;
             if (this.pos.multi_session_update_timeout)
                 // restart timeout
@@ -103,6 +120,14 @@ openerp.pos_multi_session = function(instance){
                     self.pos.multi_session_update_timeout = false;
                     self.do_multi_session_update();
                 }, 300)
+        },
+        multi_session_remove_order: function(){
+            if (!this.multi_session_check())
+                return;
+            this.do_multi_session_remove_order();
+        },
+        do_multi_session_remove_order: function(){
+            this.pos.multi_session.remove_order({'uid': this.uid});
         },
         do_multi_session_update: function(){
             var data = this.export_as_JSON();
@@ -140,11 +165,17 @@ openerp.pos_multi_session = function(instance){
 
             //return done;
         },
+        remove_order: function(data){
+            this.send({action: 'remove_order', data: data})
+        },
         update: function(data){
-            console.log('update', data)
-            var self = this;
+            this.send({action: 'update', data: data})
+        },
+        send: function(message){
+            console.log('send', message)
+           var self = this;
             var send_it = function() {
-                return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], data: data});
+                return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
             var tries = 0;
             send_it().fail(function(error, e) {

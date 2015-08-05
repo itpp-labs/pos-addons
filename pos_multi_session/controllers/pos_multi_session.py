@@ -10,6 +10,6 @@ class Controller(openerp.addons.bus.bus.Controller):
 
 
     @openerp.http.route('/pos_multi_session/update', type="json", auth="public")
-    def multi_session_update(self, multi_session_id, data):
-        res = request.env["pos.multi_session"].browse(int(multi_session_id)).update(data)
+    def multi_session_update(self, multi_session_id, message):
+        res = request.env["pos.multi_session"].browse(int(multi_session_id)).broadcast(message)
         return res
