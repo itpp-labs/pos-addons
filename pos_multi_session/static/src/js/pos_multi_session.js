@@ -15,9 +15,12 @@ openerp.pos_multi_session = function(instance){
                              }
                          });
             this.multi_session_syncing_in_progress = false;
+            this.multi_session_update_timeout = false;
         },
         multi_session_on_update: function(data){
             this.multi_session_syncing_in_progress = true;
+            console.log('on_update', data)
+            var pos = this;
             var sequence_number = data.sequence_number;
             this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
 
@@ -25,10 +28,36 @@ openerp.pos_multi_session = function(instance){
                 return order.uid == data.uid;
             })
             if (!order){
-                order = new module.Order({pos:this});
+                order = new module.Order({pos:pos});
+                order.uid = data.uid;
+                order.sequence_number = data.sequence_number
+                var current_order = this.get_order();
                 this.get('orders').add(order);
+                // keep current_order active
+                this.set('selectedOrder', current_order);
             }
-            //STOPHERE: update order
+            _.each(data.lines, function(dline){
+                dline = dline[2];
+                var line = order.get('orderLines').find(function(r){
+                    return dline.uid == r.uid
+                })
+                var product = pos.db.get_product_by_id(dline.product_id);
+                if (!line){
+                    line = new module.Orderline({}, {pos: pos, order: order, product: product});
+                    line.uid = dline.uid
+                }
+                if(dline.qty !== undefined){
+                    line.set_quantity(dline.qty);
+                }
+                if(dline.price_unit !== undefined){
+                    line.set_unit_price(dline.price_unit);
+                }
+                if(dline.discount !== undefined){
+                    line.set_discount(dline.discount);
+                }
+                order.get('orderLines').add(line)
+            })
+
             this.multi_session_syncing_in_progress = false;
         }
     })
@@ -46,12 +75,23 @@ openerp.pos_multi_session = function(instance){
             })
         },
         multi_session_update: function(){
-            if (this.pos.multi_session_syncing_in_progress)
-                return;
+            var self = this;
             if (! this.pos.multi_session )
                 return;
+            if (this.pos.multi_session_syncing_in_progress)
+                return;
+            if (this.pos.multi_session_update_timeout)
+                // restart timeout
+                clearTimeout(this.pos.multi_session_update_timeout)
+            this.pos.multi_session_update_timeout = setTimeout(
+                function(){
+                    self.pos.multi_session_update_timeout = false;
+                    self.do_multi_session_update();
+                }, 300)
+        },
+        do_multi_session_update: function(){
             var data = this.export_as_JSON();
-            this.pos.multi_session.update(data)
+            this.pos.multi_session.update(data);
         }
     })
     var OrderlineSuper = module.Orderline;
@@ -60,8 +100,14 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.bind('change', function(line){
-                this.order.trigger('change:sync')
+                line.order.trigger('change:sync')
             })
+            this.uid = this.order.generateUniqueId() + '-' + this.id;
+        },
+        export_as_JSON: function(){
+            var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
+            data.uid = this.uid;
+            return data;
         }
     })
 
@@ -80,6 +126,7 @@ openerp.pos_multi_session = function(instance){
             //return done;
         },
         update: function(data){
+            console.log('update', data)
             var self = this;
             var send_it = function() {
                 return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], data: data});
