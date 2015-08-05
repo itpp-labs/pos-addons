@@ -40,8 +40,13 @@ openerp.pos_multi_session = function(instance){
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
                 this.get('orders').add(order);
-                // keep current_order active
-                this.set('selectedOrder', current_order);
+                if (current_order.is_first_order && current_order.is_empty()){
+                    //replace order
+                    current_order.destroy({'reason': 'abandon'})
+                }else{
+                    // keep current_order active
+                    this.set('selectedOrder', current_order);
+                }
             }
             _.each(data.lines, function(dline){
                 dline = dline[2];
@@ -69,11 +74,14 @@ openerp.pos_multi_session = function(instance){
         }
     })
 
+    var is_first_order = true;
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
         initialize: function(){
             var self = this;
             OrderSuper.prototype.initialize.apply(this, arguments);
+            this.is_first_order = is_first_order;
+            is_first_order = false;
             this.get('orderLines').bind('remove', function(){
                 self.trigger('change:sync')
             })
