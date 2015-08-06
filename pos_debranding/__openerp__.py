@@ -5,6 +5,8 @@
     'category': 'Debranding',
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
+    'price': 30.00,
+    'currency': 'EUR',
     'data': [
         'views.xml',
         ],
