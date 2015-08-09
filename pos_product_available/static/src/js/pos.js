@@ -11,7 +11,7 @@ function pos_product_available(instance, module){
                     'product.product',
                     ['qty_available'],
                     [['sale_ok','=',true],['available_in_pos','=',true]],
-                    {}
+                    {'location': self.config.stock_location_id[0]}
                 );
 
             }).then(function(products){
