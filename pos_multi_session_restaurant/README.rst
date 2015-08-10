@@ -12,6 +12,7 @@ Usage
 
   * create floor
   * open POS
+
     * create tables
     * close POS
 
