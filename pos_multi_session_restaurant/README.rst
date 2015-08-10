@@ -12,8 +12,8 @@ Usage
 
   * create floor
   * open POS
-	* create tables
-	* close POS
+    * create tables
+    * close POS
 
 * Open POS form ("Point of Sale/Configuration/Point of Sales")
 
