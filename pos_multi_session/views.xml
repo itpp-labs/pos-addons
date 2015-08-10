@@ -16,7 +16,7 @@
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
         <xpath expr="//group[@string='Features']" position="after">
-            <group string="Multi-session">
+            <group string="Multi-session" name="multi_session">
                 <group>
                     <field name="multi_session_id"/>
                 </group>

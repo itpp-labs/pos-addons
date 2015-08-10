@@ -75,7 +75,11 @@ openerp.pos_multi_session = function(instance){
             var sequence_number = data.sequence_number;
             this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
             if (!order){
-                order = new module.Order({}, {pos:pos});
+                var options = {pos:pos}
+                if (pos.config.multi_session_table_id){
+                    options['table'] = pos.tables_by_id[pos.config.multi_session_table_id[0]];
+                }
+                order = new module.Order({}, options);
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
@@ -116,7 +120,7 @@ openerp.pos_multi_session = function(instance){
     var is_first_order = true;
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
-        initialize: function(){
+        initialize: function(attributes, options){
             var self = this;
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_replace_empty_order = is_first_order;
@@ -127,6 +131,10 @@ openerp.pos_multi_session = function(instance){
             this.bind('change:sync', function(){
                 self.ms_update();
             })
+            if (options && options.table){
+                this.table = options.table;
+                this.save_to_db();
+            }
         },
         ms_check: function(){
             if (! this.pos.multi_session )
