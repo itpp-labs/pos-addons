@@ -2,7 +2,7 @@
 {
     'name': 'TG POS enhanced',
     'version': '1.0.0',
-    'category': 'Point Of Sale',
+    'category': 'Hidden',
     'author': 'Thierry Godin',
     'summary': 'POS modifications',
     'description': """
