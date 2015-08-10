@@ -9,9 +9,16 @@ openerp.pos_multi_session = function(instance){
         }
     })
     module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
-        finishOrder: function() {
+        finish_order: function() {
+            if (!this._locked) {
+                this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
+            }
+        },
+        /* since saas-6:
+        click_next: function() {
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
+         */
     })
 
     var PosModelSuper = module.PosModel;
@@ -68,7 +75,7 @@ openerp.pos_multi_session = function(instance){
             var sequence_number = data.sequence_number;
             this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
             if (!order){
-                order = new module.Order({pos:pos});
+                order = new module.Order({}, {pos:pos});
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
@@ -83,7 +90,7 @@ openerp.pos_multi_session = function(instance){
             }
             _.each(data.lines, function(dline){
                 dline = dline[2];
-                var line = order.get('orderLines').find(function(r){
+                var line = order.orderlines.find(function(r){
                     return dline.uid == r.uid
                 })
                 var product = pos.db.get_product_by_id(dline.product_id);
@@ -100,7 +107,7 @@ openerp.pos_multi_session = function(instance){
                 if(dline.discount !== undefined){
                     line.set_discount(dline.discount);
                 }
-                order.get('orderLines').add(line)
+                order.orderlines.add(line)
             })
 
         }
@@ -114,7 +121,7 @@ openerp.pos_multi_session = function(instance){
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
-            this.get('orderLines').bind('remove', function(){
+            this.orderlines.bind('remove', function(){
                 self.trigger('change:sync')
             })
             this.bind('change:sync', function(){
@@ -162,7 +169,7 @@ openerp.pos_multi_session = function(instance){
             this.bind('change', function(line){
                 line.order.trigger('change:sync')
             })
-            this.uid = this.order.generateUniqueId() + '-' + this.id;
+            this.uid = this.order.generate_unique_id() + '-' + this.id;
         },
         export_as_JSON: function(){
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp><data>
 
+<!-- since saas-6:
+<template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets">
+-->
 <template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets_backend">
     <xpath expr="." position="inside">
         <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
