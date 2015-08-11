@@ -31,6 +31,11 @@ openerp.pos_multi_session = function(instance){
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
             });
+            this.get('orders').bind('add', function(order,_unused_,options){ 
+                if (!self.ms_syncing_in_progress){
+                    self.multi_session.sync_sequence_number();
+                }
+            });
 
         },
         on_removed_order: function(removed_order,index,reason){
@@ -70,7 +75,8 @@ openerp.pos_multi_session = function(instance){
             if (action == 'sync_sequence_number'){
                 this.ms_do_sync_sequence_number(data);
             } else if (action == 'request_sync_all'){
-                this.multi_session.sync_sequence_number();
+                //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
+                //this.multi_session.sync_sequence_number();
                 this.get('orders').each(function(r){
                     if (!r.is_empty()){
                         r.ms_update();
