@@ -73,7 +73,7 @@ openerp.pos_multi_session = function(instance){
             }
         },
         ms_create_order: function(){
-            return new module.Order({}, {pos: this));
+            return new module.Order({pos: this});
         },
         ms_do_update: function(order, data){
             var pos = this;
