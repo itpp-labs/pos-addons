@@ -23,11 +23,11 @@ openerp.pos_multi_session = function(instance){
             this.ready = this.ready.then(function(){
                              if (self.config.multi_session_id){
                                  self.multi_session = new module.MultiSession(self);
-                                 return self.multi_session.start();
+                                 self.multi_session.start();
+                                 self.multi_session.request_sync_all();
                              }
                          });
             this.ms_syncing_in_progress = false;
-            this.ms_update_timeout = false;
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
             });
@@ -49,10 +49,10 @@ openerp.pos_multi_session = function(instance){
         },
 
         ms_on_update: function(message){
-            this.ms_syncing_in_progress = true;
+            this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             console.log('on_update', message)
             var action = message.action;
-            var data = message.data
+            var data = message.data || {}
             var order = false;
             if (data.uid){
                 order = this.get('orders').find(function(order){
@@ -63,10 +63,20 @@ openerp.pos_multi_session = function(instance){
                 order.destroy({'reason': 'abandon'})
             } else if (action == 'update') {
                 this.ms_do_update(order, data);
-            } else if (action == 'sync_sequence_number'){
-                this.ms_do_sync_sequence_number(data);
             }
             this.ms_syncing_in_progress = false;
+
+
+            if (action == 'sync_sequence_number'){
+                this.ms_do_sync_sequence_number(data);
+            } else if (action == 'request_sync_all'){
+                this.multi_session.sync_sequence_number();
+                this.get('orders').each(function(r){
+                    if (!r.is_empty()){
+                        r.ms_update();
+                    }
+                })
+            }
         },
         ms_on_add_order: function(current_order){
             if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
@@ -109,6 +119,7 @@ openerp.pos_multi_session = function(instance){
                 } else if (sequence_number < this.pos_session.sequence_number){
                     // another pos has obsolete sequence_number
                     pos.multi_session.sync_sequence_number();
+                    this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
                 }
                 order = this.ms_create_order()
                 order.uid = data.uid;
@@ -180,12 +191,12 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             if (!this.ms_check())
                 return;
-            if (this.pos.ms_update_timeout)
+            if (this.ms_update_timeout)
                 // restart timeout
-                clearTimeout(this.pos.ms_update_timeout)
-            this.pos.ms_update_timeout = setTimeout(
+                clearTimeout(this.ms_update_timeout)
+            this.ms_update_timeout = setTimeout(
                 function(){
-                    self.pos.ms_update_timeout = false;
+                    self.ms_update_timeout = false;
                     self.do_ms_update();
                 }, 300)
         },
@@ -228,10 +239,14 @@ openerp.pos_multi_session = function(instance){
             //var  done = new $.Deferred();
 
             this.bus = instance.bus.bus;
+            this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
 
             //return done;
+        },
+        request_sync_all: function(){
+            this.send({'action': 'request_sync_all'})
         },
         sync_sequence_number: function(){
             var orders = {};
@@ -272,6 +287,7 @@ openerp.pos_multi_session = function(instance){
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 this.pos.ms_on_update(message)
             }
+            this.pos.db.save('bus_last', this.bus.last)
         }
     })
 }
