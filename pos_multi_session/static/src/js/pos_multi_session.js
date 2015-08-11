@@ -47,6 +47,11 @@ openerp.pos_multi_session = function(instance){
                     this.add_new_order();
                     this.get('selectedOrder').ms_replace_empty_order = true;
                     return;
+                } else if (this.ms_syncing_in_progress){
+                    if (this.get('orders').size() == 0){
+                        this.add_new_order();
+                    }
+                    return;
                 }
             }
             var self = this;
