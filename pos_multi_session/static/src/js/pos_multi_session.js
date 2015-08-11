@@ -63,23 +63,29 @@ openerp.pos_multi_session = function(instance){
             }
             this.ms_syncing_in_progress = false;
         },
+        ms_on_add_order: function(current_order){
+            if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
+                //replace order
+                current_order.destroy({'reason': 'abandon'})
+            }else{
+                // keep current_order active
+                this.set('selectedOrder', current_order);
+            }
+        },
+        ms_create_order: function(){
+            return new module.Order({}, {pos: this));
+        },
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
             this.pos_session.sequence_number = Math.max(this.pos_session.sequence_number, sequence_number + 1);
             if (!order){
-                order = new module.Order({pos:pos});
+                order = this.ms_create_order()
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
                 this.get('orders').add(order);
-                if (current_order.ms_replace_empty_order && current_order.is_empty()){
-                    //replace order
-                    current_order.destroy({'reason': 'abandon'})
-                }else{
-                    // keep current_order active
-                    this.set('selectedOrder', current_order);
-                }
+                this.ms_on_add_order(current_order);
             }
             _.each(data.lines, function(dline){
                 dline = dline[2];
