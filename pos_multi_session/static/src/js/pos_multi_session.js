@@ -87,11 +87,15 @@ openerp.pos_multi_session = function(instance){
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
             }
+            var not_found = order.get('orderLines').map(function(r){
+                                return r.uid;
+                            })
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.get('orderLines').find(function(r){
                     return dline.uid == r.uid
                 })
+                not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
                 if (!line){
                     line = new module.Orderline({}, {pos: pos, order: order, product: product});
@@ -109,6 +113,13 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').add(line)
             })
 
+            _.each(not_found, function(uid){
+                var line = order.get('orderLines').find(function(r){
+                               return uid == r.uid;
+                           })
+                order.get('orderLines').remove(line);
+            })
+
         }
     })
 
@@ -120,12 +131,13 @@ openerp.pos_multi_session = function(instance){
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
-            this.get('orderLines').bind('remove', function(){
-                self.trigger('change:sync')
-            })
             this.bind('change:sync', function(){
                 self.ms_update();
             })
+        },
+        removeOrderline: function(line){
+            OrderSuper.prototype.removeOrderline.apply(this, arguments);
+            line.order.trigger('change:sync');
         },
         ms_check: function(){
             if (! this.pos.multi_session )
