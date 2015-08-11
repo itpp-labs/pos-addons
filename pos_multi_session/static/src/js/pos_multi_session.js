@@ -38,6 +38,18 @@ openerp.pos_multi_session = function(instance){
             });
 
         },
+        ms_my_info: function(){
+            return {
+                'user': {
+                    'id': this.pos_session.user_id[0],
+                    'name': this.pos_session.user_id[1],
+                },
+                'pos': {
+                    'id': this.config.id,
+                    'name': this.config.name,
+                }
+            }
+        },
         on_removed_order: function(removed_order,index,reason){
             if (this.multi_session){
                 if (reason === 'finishOrder'){
@@ -153,6 +165,7 @@ openerp.pos_multi_session = function(instance){
                     line = new module.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid
                 }
+                line.ms_info = dline.ms_info || {}
                 if(dline.qty !== undefined){
                     line.set_quantity(dline.qty);
                 }
@@ -190,6 +203,10 @@ openerp.pos_multi_session = function(instance){
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
             line.order.trigger('change:sync');
+        },
+        addProduct: function(){
+            OrderSuper.prototype.addProduct.apply(this, arguments);
+            this.trigger('change:sync')
         },
         ms_check: function(){
             if (! this.pos.multi_session )
@@ -229,14 +246,29 @@ openerp.pos_multi_session = function(instance){
         initialize: function(){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
+            this.ms_info = {}
+            if (this.order.ms_check()){
+                this.ms_info['created'] = this.order.pos.ms_my_info();
+            }
             this.bind('change', function(line){
-                line.order.trigger('change:sync')
+                if (self.order.ms_check() && !line.ms_changing_selected){
+                    line.ms_info['changed'] = line.order.pos.ms_my_info();
+                    var order_lines = line.order.get('orderLines');
+                    order_lines.trigger('change', order_lines); // to rerender line
+                    line.order.trigger('change:sync')
+                }
             })
             this.uid = this.order.generateUniqueId() + '-' + this.id;
+        },
+        set_selected: function(){
+            this.ms_changing_selected = true;
+            OrderlineSuper.prototype.set_selected.apply(this, arguments);
+            this.ms_changing_selected = false;
         },
         export_as_JSON: function(){
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
             data.uid = this.uid;
+            data.ms_info = this.ms_info;
             return data;
         }
     })

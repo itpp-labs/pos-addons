@@ -7,6 +7,12 @@
     </xpath>
 </template>
 
+<template id="index" name="pos_multi_session index" inherit_id="point_of_sale.index">
+    <xpath expr="//link[@id='pos-stylesheet']" position="after">
+        <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
+    </xpath>
+</template>
+
 <record model="ir.ui.view" id="view_pos_config_form">
     <field name="name">pos.config.form.view.inherit</field>
     <field name="model">pos.config</field>
