@@ -101,12 +101,15 @@ openerp.pos_multi_session = function(instance){
             } else if (action == 'request_sync_all'){
                 //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
                 //this.multi_session.sync_sequence_number();
-                this.get('orders').each(function(r){
+                _.each(this.ms_orders_to_sync(), function(r){
                     if (!r.is_empty()){
                         r.ms_update();
                     }
                 })
             }
+        },
+        ms_orders_to_sync: function(){
+            return this.get('orders').models;
         },
         ms_on_add_order: function(current_order){
             if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){

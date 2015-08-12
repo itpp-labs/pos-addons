@@ -2,6 +2,25 @@ openerp.pos_multi_session_restaurant = function(instance){
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
+    module.FloorScreenWidget.include({
+        start: function() {
+            var self = this;
+            this._super();
+            this.pos.bind('change:orders-count-on-floor-screen', function(){
+                self.renderElement();
+            })
+        }
+    })
+
+    module.OrderWidget.include({
+        update_summary: function(){
+            var order = this.pos.get('selectedOrder');
+            if (order){
+                this._super();
+            }
+        }
+    })
+
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(){
@@ -22,6 +41,17 @@ openerp.pos_multi_session_restaurant = function(instance){
             }
             return order;
         },
+/*
+        ms_orders_to_sync: function(){
+            var self = this;
+            if (!this.ms_table){
+                return PosModelSuper.prototype.ms_orders_to_sync.apply(this, arguments)
+            }
+            return this.get('orders').filter(function(r){
+                       return r.table === self.ms_table;
+                   })
+        },
+*/
         ms_on_add_order: function(current_order){
             if (!current_order && this.ms_table){
                 // no current_order, because we on floor screen
@@ -30,6 +60,7 @@ openerp.pos_multi_session_restaurant = function(instance){
                         o.destroy({'reason': 'abandon'})
                     }
                 })
+                this.trigger('change:orders-count-on-floor-screen');
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
             }
