@@ -30,6 +30,12 @@ openerp.pos_multi_session_restaurant = function(instance){
             this.ready = this.ready.then(function(){
                              if (self.config.multi_session_table_id){
                                  self.ms_table = self.tables_by_id[self.config.multi_session_table_id[0]]
+                                 if (!self.ms_table.floor){
+                                     //delay to finish initalisation
+                                     setTimeout(function(){
+                                         throw new Error(_t("Virtual table is not belonged to this POS."));
+                                     }, 5000)
+                                 }
                              }
                          })
         },

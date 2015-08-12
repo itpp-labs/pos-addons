@@ -11,12 +11,12 @@ Usage
 * configure restaurant:
 
   * create floor
-  * open POS
+  * open restaurant POS
 
     * create tables
     * close POS
 
-* Open POS form ("Point of Sale/Configuration/Point of Sales")
+* Open restaurant POS (not a queue POS) in "Point of Sale/Configuration/Point of Sales"
 
   * set "Virtual Table" at "Multi-session" section
   * click "Save"
