@@ -261,6 +261,9 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {}
+            if (!this.order)
+                // ignore new orderline from splitbill tool
+                return;
             if (this.order.ms_check()){
                 this.ms_info['created'] = this.order.pos.ms_my_info();
             }
