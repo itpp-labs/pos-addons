@@ -120,8 +120,9 @@ openerp.pos_multi_session = function(instance){
                 this.set('selectedOrder', current_order);
             }
         },
-        ms_create_order: function(){
-            return new module.Order({}, {pos: this});
+        ms_create_order: function(options){
+            options = _.extend({pos: this}, options || {});
+            return new module.Order({}, options);
         },
         ms_do_sync_sequence_number: function(data){
             if (data.sequence_number < this.pos_session.sequence_number){
@@ -154,12 +155,14 @@ openerp.pos_multi_session = function(instance){
                     pos.multi_session.sync_sequence_number();
                     this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
                 }
-                order = this.ms_create_order()
+                order = this.ms_create_order({ms_info:data.ms_info})
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
+            } else {
+                order.ms_info = data.ms_info;
             }
             var not_found = order.orderlines.map(function(r){
                                 return r.uid;
@@ -203,7 +206,14 @@ openerp.pos_multi_session = function(instance){
     module.Order = module.Order.extend({
         initialize: function(attributes, options){
             var self = this;
+            options = options || {}
             OrderSuper.prototype.initialize.apply(this, arguments);
+            this.ms_info = {}
+            if (options.ms_info){
+                this.ms_info = options.ms_info;
+            } else if (this.ms_check()){
+                this.ms_info['created'] = this.pos.ms_my_info();
+            }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -250,6 +260,11 @@ openerp.pos_multi_session = function(instance){
         do_ms_remove_order: function(){
             this.pos.multi_session.remove_order({'uid': this.uid});
         },
+        export_as_JSON: function(){
+            var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
+            data.ms_info = this.ms_info;
+            return data;
+        },
         do_ms_update: function(){
             var data = this.export_as_JSON();
             this.pos.multi_session.update(data);
@@ -270,6 +285,7 @@ openerp.pos_multi_session = function(instance){
             this.bind('change', function(line){
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
+                    line.order.ms_info['changed'] = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;
                     order_lines.trigger('change', order_lines); // to rerender line
                     line.order.trigger('change:sync')
