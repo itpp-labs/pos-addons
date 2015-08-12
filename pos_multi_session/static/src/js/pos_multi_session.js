@@ -118,7 +118,7 @@ openerp.pos_multi_session = function(instance){
             }
         },
         ms_create_order: function(){
-            return new module.Order({pos: this});
+            return new module.Order({}, {pos: this});
         },
         ms_do_sync_sequence_number: function(data){
             if (data.sequence_number < this.pos_session.sequence_number){
@@ -158,7 +158,7 @@ openerp.pos_multi_session = function(instance){
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
             }
-            var not_found = order.get('orderLines').map(function(r){
+            var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
             _.each(data.lines, function(dline){
@@ -186,10 +186,10 @@ openerp.pos_multi_session = function(instance){
             })
 
             _.each(not_found, function(uid){
-                var line = order.get('orderLines').find(function(r){
+                var line = order.orderlines.find(function(r){
                                return uid == r.uid;
                            })
-                order.get('orderLines').remove(line);
+                order.orderlines.remove(line);
             })
 
         }
@@ -264,7 +264,7 @@ openerp.pos_multi_session = function(instance){
             this.bind('change', function(line){
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
-                    var order_lines = line.order.get('orderLines');
+                    var order_lines = line.order.orderlines;
                     order_lines.trigger('change', order_lines); // to rerender line
                     line.order.trigger('change:sync')
                 }
