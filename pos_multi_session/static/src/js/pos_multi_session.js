@@ -219,10 +219,6 @@ openerp.pos_multi_session = function(instance){
             this.bind('change:sync', function(){
                 self.ms_update();
             })
-            if (options && options.table){
-                this.table = options.table;
-                this.save_to_db();
-            }
         },
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
