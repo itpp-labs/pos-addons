@@ -140,7 +140,7 @@ function pos(instance, module){
             var ppModel = new instance.web.Model('product.product');
             return ppModel.call('split_lot_from_ui',
                 [records],
-                undefined,
+                {'context': {'location': self.config.stock_location_id[0]}},
                 {
                     shadow: true,
                     timeout: timeout
