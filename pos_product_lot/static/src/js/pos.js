@@ -124,6 +124,7 @@ function pos(instance, module){
             });
         },
         _save_to_server_split_lot: function (records, options) {
+            records = records.slice();
             if (!records || !records.length) {
                 var result = $.Deferred();
                 result.resolve();
