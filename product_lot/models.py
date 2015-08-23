@@ -33,7 +33,9 @@ class product_product(orm.Model):
         assert lot.lot_qty > 0, "Check quantity roducts in lot"
         stock_move_obj = self.pool.get('stock.move')
 
-        source_location_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'stock_location_stock')[1]
+        source_location_id = context and context.get('location')
+        if not source_location_id:
+            source_location_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'stock_location_stock')[1]
         destination_location_id = source_location_id
         middle_location_id = lot.property_stock_production.id
 

@@ -124,6 +124,7 @@ function pos(instance, module){
             });
         },
         _save_to_server_split_lot: function (records, options) {
+            records = records.slice();
             if (!records || !records.length) {
                 var result = $.Deferred();
                 result.resolve();
@@ -140,7 +141,7 @@ function pos(instance, module){
             var ppModel = new instance.web.Model('product.product');
             return ppModel.call('split_lot_from_ui',
                 [records],
-                undefined,
+                {'context': {'location': self.config.stock_location_id[0]}},
                 {
                     shadow: true,
                     timeout: timeout
