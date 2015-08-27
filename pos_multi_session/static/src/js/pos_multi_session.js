@@ -32,7 +32,7 @@ openerp.pos_multi_session = function(instance){
                 order.ms_remove_order();
             });
             this.get('orders').bind('add', function(order,_unused_,options){ 
-                if (!self.ms_syncing_in_progress){
+                if (!self.ms_syncing_in_progress && self.multi_session){
                     self.multi_session.sync_sequence_number();
                 }
             });
