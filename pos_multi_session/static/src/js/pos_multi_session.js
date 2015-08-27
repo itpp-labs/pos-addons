@@ -46,10 +46,11 @@ openerp.pos_multi_session = function(instance){
 
         },
         ms_my_info: function(){
+            var user = this.cashier || this.user;
             return {
                 'user': {
-                    'id': this.pos_session.user_id[0],
-                    'name': this.pos_session.user_id[1],
+                    'id': user.id,
+                    'name': user.name,
                 },
                 'pos': {
                     'id': this.config.id,
