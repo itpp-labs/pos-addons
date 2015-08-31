@@ -50,6 +50,11 @@ function tg_pos_packs(instance, module){
                 }
             }
 
+            var line = new module.Orderline({pos: this.pos, order: this, product: product});
+
+            if(options.quantity !== undefined){
+                line.set_quantity(options.quantity);
+            }
 
             if(!product.is_pack || options.is_pack_container)
                 return OrderSuper.prototype.addProduct.call(this, product, options)
@@ -67,7 +72,7 @@ function tg_pos_packs(instance, module){
             var grp_id = 0;
             var item_number = 0;
 
-            var loaded = self.pos.fetch('product.pack',['item_tmpl_id', 'group_id'],[['product_id','=', parseInt(pack_id)]])
+            var loaded = self.pos.fetch('product.pack',['item_tmpl_id', 'group_id', 'quantity'],[['product_id','=', parseInt(pack_id)]])
                 .then(function(groupe_tmpl){
 
                     for(var i = 0, len = groupe_tmpl.length; i < len; i++){
@@ -75,6 +80,7 @@ function tg_pos_packs(instance, module){
                         // // pack lines
                         if(groupe_tmpl[i].group_id != grp_id){
                             grp_id = groupe_tmpl[i].group_id;
+                            qty = groupe_tmpl[i].quantity;
                             var one_pack = new module.PackWidget(this, {});
                             one_pack.appendTo($('#packs-list'));
 
@@ -83,7 +89,8 @@ function tg_pos_packs(instance, module){
                             one_pack.$('.pack_item_select').attr('id', 'p_' + grp_id);
 
                             var sel_variant_id = 'v_' + grp_id;
-                                one_pack.$('.pack_product_select').attr('id', sel_variant_id);
+                            one_pack.$('.pack_product_select').attr('id', sel_variant_id);
+                            one_pack.$('.pack_product_select').attr('cantidad', qty);                               
 
                             one_pack.$('.pack_item_select').change(function(){
                                 var product_tmpl_id = this.value;
@@ -154,12 +161,13 @@ function tg_pos_packs(instance, module){
 
             for(var i = 1; i <= nb_items; i++){
                 var field = $('#v_' + i);
+                var pack_qty = field.attr('cantidad');
                 var product_id = parseInt(field.val());
                 var product = self.pos.db.get_product_by_id(product_id);
 
                 //add products to the order
                 if(product){
-                    selectedOrder.addProduct(product, {is_pack_item:1, 'pack_code': pack_code});
+                    selectedOrder.addProduct(product, {is_pack_item:1, 'pack_code': pack_code, 'quantity': pack_qty});
                 }
             };
 
