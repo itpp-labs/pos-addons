@@ -3,7 +3,7 @@
     <data>
         <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets_backend">
             <xpath expr="." position="inside">
-				<script type="text/javascript" src="/tg_pos_packs/static/src/js/pos.js"></script>
+                <script type="text/javascript" src="/tg_pos_packs/static/src/js/pos.js"></script>
             </xpath>
         </template>
 
@@ -31,7 +31,7 @@
                                           navy:group_id in (5, 10, 15, 20);">
                                 <field name="sequence" widget="handle"/>
                                 <field name="item_tmpl_id"/>
-                                <field name="quantity" invisible="1"/>
+                                <field name="quantity"/>
                                 <field name="group_id" string="Group number" help="Set a number for each item to regroup them"/>
                             </tree>
                         </field>
