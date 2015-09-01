@@ -13,8 +13,12 @@
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
         <xpath expr="//group[@string='Features']" position="inside">
-            <group>
+            <group string="Restrictions">
                 <field name="allow_payments"/>
+                <field name="allow_delete_order"/>
+                <field name="allow_discount"/>
+                <field name="allow_edit_price"/>
+                <field name="allow_delete_order_line"/>
             </group>
         </xpath>
         <xpath expr="//field[@name='journal_ids']" position="attributes">
