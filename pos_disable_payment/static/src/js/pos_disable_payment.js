@@ -9,7 +9,10 @@ openerp.pos_disable_payment = function(instance){
         },
         check_allow_delete_order: function(){
             if (!this.pos.config.allow_delete_order){
-                this.$('.deleteorder-button').toggle(this.pos.get_order().is_empty());
+                var order = this.pos.get_order()
+                if (order){
+                    this.$('.deleteorder-button').toggle(order.is_empty());
+                }
             }
         },
         loading_hide: function(){
