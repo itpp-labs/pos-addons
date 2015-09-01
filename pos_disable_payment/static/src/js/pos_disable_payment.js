@@ -11,6 +11,11 @@ openerp.pos_disable_payment = function(instance){
             if (!this.pos.config.allow_delete_order){
                 this.$('.deleteorder-button').toggle(this.pos.get_order().is_empty());
             }
+        },
+        loading_hide: function(){
+            this._super();
+            //extra checks on init
+            this.check_allow_delete_order();
         }
     })
     module.OrderSelectorWidget.include({
