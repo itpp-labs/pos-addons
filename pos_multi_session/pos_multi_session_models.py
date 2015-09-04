@@ -6,6 +6,7 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session', help='Set the same value for POSes where orders should be synced. Keep empty if this POS should not use syncing')
+    multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
 
 
 class pos_multi_session(models.Model):
