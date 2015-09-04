@@ -22,6 +22,7 @@
             <group string="Multi-session">
                 <group>
                     <field name="multi_session_id"/>
+                    <field name="multi_session_accept_incoming_orders"/>
                 </group>
             </group>
         </xpath>

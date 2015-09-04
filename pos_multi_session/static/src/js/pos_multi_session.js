@@ -135,6 +135,7 @@ openerp.pos_multi_session = function(instance){
             var pos = this;
             var sequence_number = data.sequence_number;
             if (!order){
+                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id)
                 if (sequence_number == this.pos_session.sequence_number){
                     //ok
                 } else if (sequence_number > this.pos_session.sequence_number){
@@ -143,7 +144,11 @@ openerp.pos_multi_session = function(instance){
                 } else if (sequence_number < this.pos_session.sequence_number){
                     // another pos has obsolete sequence_number
                     pos.multi_session.sync_sequence_number();
-                    this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
+                    if (create_new_order)
+                        this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
+                }
+                if (!create_new_order){
+                    return;
                 }
                 order = this.ms_create_order({ms_info:data.ms_info})
                 order.uid = data.uid;
