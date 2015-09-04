@@ -226,8 +226,8 @@ openerp.pos_multi_session = function(instance){
                 self.ms_update();
             })
         },
-        removeOrderline: function(line){
-            OrderSuper.prototype.removeOrderline.apply(this, arguments);
+        remove_orderline: function(line){
+            OrderSuper.prototype.remove_orderline.apply(this, arguments);
             line.order.trigger('change:sync');
         },
         add_product: function(){
