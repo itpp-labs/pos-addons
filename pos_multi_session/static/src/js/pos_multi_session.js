@@ -85,6 +85,7 @@ openerp.pos_multi_session = function(instance){
 
         ms_on_update: function(message){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
+            var error = false;
             try{
                 console.log('on_update', message)
                 var action = message.action;
@@ -101,11 +102,13 @@ openerp.pos_multi_session = function(instance){
                     this.ms_do_update(order, data);
                 }
             }catch(err){
+                error = err;
                 console.error(err);
             }
             this.ms_syncing_in_progress = false;
-            if (!action)
-                return;
+            if (error){
+                throw(error)
+            }
 
             if (action == 'sync_sequence_number'){
                 this.ms_do_sync_sequence_number(data);
@@ -373,7 +376,14 @@ openerp.pos_multi_session = function(instance){
             var message = notification[1];
 
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-                this.pos.ms_on_update(message)
+                try{
+                    this.pos.ms_on_update(message)
+                }catch(err){
+                    this.pos.pos_widget.screen_selector.show_popup('error',{
+                        message: _t('Error'),
+                        comment: err,
+                    })
+                }
             }
             this.pos.db.save('bus_last', this.bus.last)
         }
