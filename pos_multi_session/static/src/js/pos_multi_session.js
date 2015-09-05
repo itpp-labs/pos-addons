@@ -80,19 +80,23 @@ openerp.pos_multi_session = function(instance){
 
         ms_on_update: function(message){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
-            console.log('on_update', message)
-            var action = message.action;
-            var data = message.data || {}
-            var order = false;
-            if (data.uid){
-                order = this.get('orders').find(function(order){
-                    return order.uid == data.uid;
-                })
-            }
-            if (order && action == 'remove_order'){
-                order.destroy({'reason': 'abandon'})
-            } else if (action == 'update') {
-                this.ms_do_update(order, data);
+            try{
+                console.log('on_update', message)
+                var action = message.action;
+                var data = message.data || {}
+                var order = false;
+                if (data.uid){
+                    order = this.get('orders').find(function(order){
+                                return order.uid == data.uid;
+                            })
+                }
+                if (order && action == 'remove_order'){
+                    order.destroy({'reason': 'abandon'})
+                } else if (action == 'update') {
+                    this.ms_do_update(order, data);
+                }
+            }catch(err){
+                console.error(err);
             }
             this.ms_syncing_in_progress = false;
 
