@@ -91,7 +91,8 @@ openerp.pos_multi_session = function(instance){
                 console.error(err);
             }
             this.ms_syncing_in_progress = false;
-
+            if (!action)
+                return;
 
             if (action == 'sync_sequence_number'){
                 this.ms_do_sync_sequence_number(data);
