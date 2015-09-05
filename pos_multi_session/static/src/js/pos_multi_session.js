@@ -6,7 +6,12 @@ openerp.pos_multi_session = function(instance){
         rerender_orderline: function(order_line){
             if (order_line.node)
                 return this._super(order_line);
-        }
+        },
+        remove_orderline: function(order_line){
+            if (!this.pos.get_order())
+                return;
+            this._super(order_line)
+        },
     })
     module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
         finish_order: function() {
