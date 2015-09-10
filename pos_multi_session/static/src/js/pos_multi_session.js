@@ -214,7 +214,7 @@ openerp.pos_multi_session = function(instance){
             this.ms_info = {}
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
-            } else if (this.ms_check()){
+            } else if (this.pos.multi_session){
                 this.ms_info['created'] = this.pos.ms_my_info();
             }
             this.ms_replace_empty_order = is_first_order;
