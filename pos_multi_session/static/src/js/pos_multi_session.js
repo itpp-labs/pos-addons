@@ -212,7 +212,7 @@ openerp.pos_multi_session = function(instance){
             options = options || {}
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {}
-            if (options.ms_info){
+            if (_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
             } else if (this.ms_check()){
                 this.ms_info['created'] = this.pos.ms_my_info();
