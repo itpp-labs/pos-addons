@@ -1,10 +1,16 @@
 import openerp
 from openerp.http import request
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
 try:
     from openerp.addons.bus.bus import Controller as BusController
 except ImportError:
-    pass
+    _logger.error('pos_multi_session inconsisten with odoo version')
+    BusController = object
 
 class Controller(BusController):
     def _poll(self, dbname, channels, last, options):
