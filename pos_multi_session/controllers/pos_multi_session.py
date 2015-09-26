@@ -1,8 +1,12 @@
 import openerp
 from openerp.http import request
 
+try:
+    from openerp.addons.bus.bus import Controller as BusController
+except ImportError:
+    pass
 
-class Controller(openerp.addons.bus.bus.Controller):
+class Controller(BusController):
     def _poll(self, dbname, channels, last, options):
         if request.session.uid:
             channels.append((request.db, 'pos.multi_session', request.uid))
