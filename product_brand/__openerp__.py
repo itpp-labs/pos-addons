@@ -23,7 +23,7 @@
 {
     'name': 'Product Brand',
     'version': '1.1',
-    'author': 'byf.vn, Ivan Yelizariev',
+    'author': 'byf.vn, IT-Projects LLC, Ivan Yelizariev',
     'category': 'Sales Management',
     'depends': ['product'],
     'website' : 'https://yelizariev.github.io',

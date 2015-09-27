@@ -1,7 +1,7 @@
 {
     'name': "POS debranding",
     'version': '1.0.0',
-    'author': 'Ivan Yelizariev',
+    'author': 'IT-Projects LLC, Ivan Yelizariev',
     'category': 'Debranding',
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
