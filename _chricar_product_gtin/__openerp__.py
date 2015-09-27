@@ -1,6 +1,6 @@
 { "name"         : "Product GTIN EAN8 EAN13 UPC JPC Support (OBSOLETE)"
 , "version"      : "1.1"
-, "author"       : "Camptocamp, Ivan Yelizariev"
+, "author"       : "Camptocamp, IT-Projects LLC, Ivan Yelizariev"
 , "website"      : "http://www.camptocamp.com"
 , "category"     : "Generic Modules/Others"
 , "depends"      : ["product", "point_of_sale"]

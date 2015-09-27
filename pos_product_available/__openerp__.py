@@ -1,7 +1,7 @@
 {
     'name' : 'Available quantity of products in POS',
     'version' : '1.0.1',
-    'author' : 'Ivan Yelizariev',
+    'author' : 'IT-Projects LLC, Ivan Yelizariev',
     'category': 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'price': 9.00,

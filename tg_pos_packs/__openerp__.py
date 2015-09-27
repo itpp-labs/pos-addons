@@ -25,7 +25,7 @@
     'name': 'TG customizable product packs',
     'version': '1.0',
     'category': 'Point of sale',
-    'author': 'Thierry Godin, Ivan Yelizariev',
+    'author': 'Thierry Godin, IT-Projects LLC, Ivan Yelizariev',
     'website': 'https://yelizariev.github.io/',
     'summary': 'Create on demand packs of products for Point of sale',
     'description': """
