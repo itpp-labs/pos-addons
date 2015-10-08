@@ -40,7 +40,29 @@ function pos_product_available(instance, module){
                 })
             }
             return pushed;
-        }
+        },
+        push_and_invoice_order: function(order){
+            var self = this;
+            var invoiced = PosModelSuper.prototype.push_and_invoice_order.call(this, order);
+
+            if (order && order.get_client()){
+                if (order.get("orderLines")){
+                    order.get("orderLines").each(function(line){
+                        var product = line.get_product();
+                        product.qty_available -= line.get_quantity();
+                        self.refresh_qty_available(product);
+                    })
+                } else if (order.orderlines){
+                    order.orderlines.each(function(line){
+                        var product = line.get_product();
+                        product.qty_available -= line.get_quantity();
+                        self.refresh_qty_available(product);
+                    })
+                }
+            }
+
+            return invoiced;
+        },
     })
 }
 
