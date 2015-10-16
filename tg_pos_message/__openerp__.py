@@ -42,7 +42,7 @@ Messaging in  Point Of Sale :
     'qweb': [],
     'js': [],
     'css':[],
-    'installable': True,
+    'installable': False,
     'application': False,
     'auto_install': False,
 }

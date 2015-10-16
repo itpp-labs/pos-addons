@@ -66,7 +66,7 @@ Tested on odoo 8.0 33a8989d77f44b093214550b8f23cb386a990981
     'qweb': [
         'static/src/xml/pos.xml',
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
     'auto_install': False,
 }

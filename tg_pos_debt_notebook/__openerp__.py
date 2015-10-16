@@ -16,6 +16,6 @@
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
 }

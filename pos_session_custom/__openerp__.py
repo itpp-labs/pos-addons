@@ -18,6 +18,6 @@ Tested on Odoo 8.0 eed09ba4105ae8f47a37c5071217cea2ef2e153e
     'depends': ['base','point_of_sale'],
     'init_xml': [],
     'update_xml': [],
-    'installable': True,
+    'installable': False,
 
 }

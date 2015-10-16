@@ -9,5 +9,5 @@
         'templates.xml',
         ],
     'qweb': ['static/src/xml/*.xml'],
-    'installable': True
+    'installable': False
 }

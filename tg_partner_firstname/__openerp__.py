@@ -35,7 +35,7 @@
     'data': [
         'tg_partner_view.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
     'auto_install': False,
 }

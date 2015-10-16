@@ -68,5 +68,5 @@ will have been warned.
     ],
     "application": True,
     "active": False,
-    "installable": True,
+    'installable': False,
 }

@@ -8,6 +8,6 @@
     'data': [
         'views.xml',
         ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
 }
