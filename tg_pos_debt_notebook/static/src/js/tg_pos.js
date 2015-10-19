@@ -1,23 +1,14 @@
+/*global  */
 openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of_sale
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
-        load_server_data: function(){
-            var self = this;
-            var loaded = PosModelSuper.prototype.load_server_data.call(this);
-
-            loaded =
-                loaded.then(function(){
-                    return self.fetch('res.partner', ['debt']);
-                }).then(function(partners){
-                    $.each(partners, function(){
-                        $.extend(self.db.get_partner_by_id(this.id) || {}, this)
-                    });
-                return $.when();
-                })
-            return loaded;
+        initialize: function(session, attributes) {
+            var partner_model = _.find(this.models,function(model){ return model.model === 'res.partner'; });
+            partner_model.fields.push('debt');
+            return PosModelSuper.prototype.initialize.call(this, session, attributes);
         },
 
         push_order: function(order){
