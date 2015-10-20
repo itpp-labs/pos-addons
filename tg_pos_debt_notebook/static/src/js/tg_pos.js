@@ -1,4 +1,3 @@
-/*global  */
 openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of_sale
     var module = instance.point_of_sale;
     var _t = instance.web._t;
