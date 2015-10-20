@@ -5,4 +5,4 @@ Removes references to odoo.com:
 
 1. Deletes odoo logo
 
-Tested on Odoo 8.0 d023c079ed86468436f25da613bf486a4a17d625
+Tested on Odoo 9.0 04c6ee54d86013bc2995778f62074115c1bd9ed3
