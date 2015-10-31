@@ -3,11 +3,6 @@
 Changelog
 =========
 
-`1.0.3`
--------
-
-- Improve button.set-customer-pay-full-debt on PoS customer list
-
 `1.0.2`
 -------
 
