@@ -156,6 +156,8 @@ openerp.tg_pos_debt_notebook = function(instance){ //module is instance.point_of
                 }
                 if (this.new_client.debt > 0){
                     $button.toggleClass('oe_hidden',!this.has_client_changed());
+                }else{
+                	$button.addClass('oe_hidden');
                 }
             }
         },
