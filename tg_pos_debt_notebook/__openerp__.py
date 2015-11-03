@@ -2,6 +2,7 @@
     'name': 'Debt notebook for POS',
     'version': '1.0.2',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
+    'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
     'depends': ['pos_debt_notebook', 'point_of_sale'],

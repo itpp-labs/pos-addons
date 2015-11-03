@@ -2,6 +2,7 @@
     'name': "POS debranding",
     'version': '1.0.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
+    'license': 'LGPL-3',
     'category': 'Debranding',
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
