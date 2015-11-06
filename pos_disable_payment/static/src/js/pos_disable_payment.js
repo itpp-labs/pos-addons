@@ -1,8 +1,12 @@
-openerp.pos_disable_payment = function(instance){
-    var module = instance.point_of_sale;
-    var _t = instance.web._t;
+odoo.define('pos_disable_payment', function(require){
+"use strict";
 
-    module.PosWidget.include({
+    var chrome = require('point_of_sale.chrome')
+    var screens = require('point_of_sale.screens')
+    var core = require('web.core');
+    var _t = core._t;
+
+    chrome.Chrome.include({
         init: function(){
             this._super.apply(this, arguments);
             this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this)
@@ -21,31 +25,31 @@ openerp.pos_disable_payment = function(instance){
             this.check_allow_delete_order();
         }
     })
-    module.OrderSelectorWidget.include({
+    chrome.OrderSelectorWidget.include({
         renderElement: function(){
             this._super();
-            this.pos_widget.check_allow_delete_order();
+            this.chrome.check_allow_delete_order();
         }
     })
 
-    module.OrderWidget.include({
+    screens.OrderWidget.include({
         bind_order_events: function(){
             this._super();
             var order = this.pos.get('selectedOrder');
-            order.orderlines.bind('add remove', this.pos_widget.check_allow_delete_order, this.pos_widget)
+            order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome)
         }
     })
 
-    module.ActionpadWidget.include({
-        renderElement: function(){
+    screens.ProductScreenWidget.include({
+        start: function(){
             this._super();
            if (!this.pos.config.allow_payments){
-               this.$('.pay').hide()
+               this.actionpad.$('.pay').hide()
            }
-         }
+        }
     })
 
-    module.NumpadWidget.include({
+    screens.NumpadWidget.include({
         renderElement: function(){
             this._super();
             if (!this.pos.config.allow_discount){
@@ -57,7 +61,7 @@ openerp.pos_disable_payment = function(instance){
         }
     })
 
-    module.NumpadWidget.include({
+    screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
             if (!this.pos.config.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
@@ -65,4 +69,4 @@ openerp.pos_disable_payment = function(instance){
             return this._super();
         }
     })
-}
+})

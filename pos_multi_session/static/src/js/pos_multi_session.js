@@ -1,8 +1,16 @@
-openerp.pos_multi_session = function(instance){
-    var module = instance.point_of_sale;
-    var _t = instance.web._t;
+odoo.define('pos_multi_session', function(require){
+    var exports = {}
 
-    module.OrderWidget.include({
+    var session = require('web.session');
+    var Backbone = window.Backbone;
+    var core = require('web.core');
+    var screens = require('point_of_sale.screens')
+    var models = require('point_of_sale.models');
+    var bus = require('bus.bus');
+
+    var _t = core._t;
+
+    screens.OrderWidget.include({
         rerender_orderline: function(order_line){
             if (order_line.node)
                 return this._super(order_line);
@@ -13,7 +21,7 @@ openerp.pos_multi_session = function(instance){
             this._super(order_line)
         },
     })
-    module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
+    screens.ReceiptScreenWidget.extend({
         finish_order: function() {
             if (!this._locked) {
                 this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
@@ -26,15 +34,15 @@ openerp.pos_multi_session = function(instance){
          */
     })
 
-    var PosModelSuper = module.PosModel;
-    module.PosModel = module.PosModel.extend({
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.multi_session = false;
             this.ready = this.ready.then(function(){
                              if (self.config.multi_session_id){
-                                 self.multi_session = new module.MultiSession(self);
+                                 self.multi_session = new exports.MultiSession(self);
                                  self.multi_session.start();
                                  self.multi_session.request_sync_all();
                              }
@@ -136,7 +144,7 @@ openerp.pos_multi_session = function(instance){
         },
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
-            return new module.Order({}, options);
+            return new models.Order({}, options);
         },
         ms_do_sync_sequence_number: function(data){
             if (data.sequence_number < this.pos_session.sequence_number){
@@ -194,7 +202,7 @@ openerp.pos_multi_session = function(instance){
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
                 if (!line){
-                    line = new module.Orderline({}, {pos: pos, order: order, product: product});
+                    line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid
                 }
                 line.ms_info = dline.ms_info || {}
@@ -221,8 +229,8 @@ openerp.pos_multi_session = function(instance){
     })
 
     var is_first_order = true;
-    var OrderSuper = module.Order;
-    module.Order = module.Order.extend({
+    var OrderSuper = models.Order;
+    models.Order = models.Order.extend({
         initialize: function(attributes, options){
             var self = this;
             options = options || {}
@@ -285,8 +293,8 @@ openerp.pos_multi_session = function(instance){
             this.pos.multi_session.update(data);
         }
     })
-    var OrderlineSuper = module.Orderline;
-    module.Orderline = module.Orderline.extend({
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
         initialize: function(){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
@@ -321,7 +329,7 @@ openerp.pos_multi_session = function(instance){
         }
     })
 
-    module.MultiSession = Backbone.Model.extend({
+    exports.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
             this.pos = pos;
         },
@@ -329,7 +337,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             //var  done = new $.Deferred();
 
-            this.bus = instance.bus.bus;
+            this.bus = bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
@@ -360,7 +368,7 @@ openerp.pos_multi_session = function(instance){
             console.log('send', message)
            var self = this;
             var send_it = function() {
-                return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
+                return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
             var tries = 0;
             send_it().fail(function(error, e) {
@@ -379,13 +387,14 @@ openerp.pos_multi_session = function(instance){
                 try{
                     this.pos.ms_on_update(message)
                 }catch(err){
-                    this.pos.pos_widget.screen_selector.show_popup('error',{
-                        message: _t('Error'),
-                        comment: err,
+                    this.pos.chrome.gui.show_popup('error',{
+                        'title': _t('Error'),
+                        'body': err,
                     })
                 }
             }
             this.pos.db.save('bus_last', this.bus.last)
         }
     })
-}
+    return exports;
+})

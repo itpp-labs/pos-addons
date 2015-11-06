@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp><data>
 
-<!-- since saas-6:
-<template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets">
--->
-<template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets_backend">
+<template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
     <xpath expr="." position="inside">
         <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
-    </xpath>
-</template>
-
-<template id="index" name="pos_multi_session index" inherit_id="point_of_sale.index">
-    <xpath expr="//link[@id='pos-stylesheet']" position="after">
         <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
     </xpath>
 </template>
@@ -21,7 +13,7 @@
     <field name="model">pos.config</field>
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//group[@string='Features']" position="after">
+        <xpath expr="//group[@name='features']" position="after">
             <group string="Multi-session" name="multi_session">
                 <group>
                     <field name="multi_session_id"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp><data>
 
-<template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets_backend">
+<template id="assets_backend" name="pos_disable_payment assets" inherit_id="point_of_sale.assets">
     <xpath expr="." position="inside">
         <script type="text/javascript" src="/pos_disable_payment/static/src/js/pos_disable_payment.js"></script>
     </xpath>
@@ -12,7 +12,7 @@
     <field name="model">pos.config</field>
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//group[@string='Features']" position="inside">
+        <xpath expr="//group[@name='features']" position="inside">
             <group string="Restrictions">
                 <field name="allow_payments"/>
                 <field name="allow_delete_order"/>
