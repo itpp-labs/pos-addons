@@ -16,7 +16,6 @@ class Controller(BusController):
     def _poll(self, dbname, channels, last, options):
         if request.session.uid:
             channels.append((request.db, 'pos.multi_session', request.uid))
-        print 'channels', channels
         return super(Controller, self)._poll(dbname, channels, last, options)
 
 
