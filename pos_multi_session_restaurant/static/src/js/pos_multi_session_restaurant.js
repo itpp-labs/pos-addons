@@ -1,8 +1,21 @@
-openerp.pos_multi_session_restaurant = function(instance){
-    var module = instance.point_of_sale;
-    var _t = instance.web._t;
+odoo.define('pos_multi_session_restaurant', function(require){
+    var screens = require('point_of_sale.screens')
+    var models = require('point_of_sale.models');
+    var floors = require('pos_restaurant.floors');
+    var core = require('web.core');
+    var gui = require('point_of_sale.gui');
 
-    module.FloorScreenWidget.include({
+    var FloorScreenWidget;
+    console.log('gui', gui.Gui.prototype.screen_classes)
+    _.each(gui.Gui.prototype.screen_classes, function(){
+        if (this.name == 'floors'){
+            FloorScreenWidget = this.widget;
+            return false;
+        }
+    })
+    var _t = core._t;
+
+    FloorScreenWidget.include({
         start: function() {
             var self = this;
             this._super();
@@ -12,7 +25,7 @@ openerp.pos_multi_session_restaurant = function(instance){
         }
     })
 
-    module.OrderWidget.include({
+    screens.OrderWidget.include({
         update_summary: function(){
             var order = this.pos.get('selectedOrder');
             if (order){
@@ -21,8 +34,8 @@ openerp.pos_multi_session_restaurant = function(instance){
         }
     })
 
-    var PosModelSuper = module.PosModel;
-    module.PosModel = module.PosModel.extend({
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
@@ -72,4 +85,4 @@ openerp.pos_multi_session_restaurant = function(instance){
             }
         }
     })
-}
+})
