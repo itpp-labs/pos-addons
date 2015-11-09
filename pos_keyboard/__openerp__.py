@@ -2,6 +2,7 @@
 {
     'name': "Keyboard support in Point Of Sale",
     'author': "IT-Projects LLC, Ivan Yelizariev",
+    'license': 'GPL-3',
     "website" : "https://yelizariev.github.io",
     'category' : 'Point Of Sale',
     'version': '1.0.0',

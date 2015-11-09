@@ -2,6 +2,7 @@
     'name' : 'Custom pos ticket 2',
     'version' : '1.0.0',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
+    'license': 'GPL-3',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'description': """
