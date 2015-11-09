@@ -2,7 +2,7 @@
     'name': "Sync POS orders across multiple sessions",
     'version': '1.0.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
+    'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
     'depends': ['pos_disable_payment', 'bus'],
