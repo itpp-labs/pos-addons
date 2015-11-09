@@ -11,3 +11,4 @@ List of repositories:
 * https://github.com/yelizariev/mail-addons
 * https://github.com/yelizariev/website-addons
 * https://github.com/yelizariev/l10n-addons
+* https://github.com/yelizariev/odoo-saas-tools
