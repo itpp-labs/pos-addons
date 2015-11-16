@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<template id="assets" inherit_id="pos_restaurant.assets">
+			<data>
+				<xpath expr="//script[@src='/pos_restaurant/static/src/js/floors.js']" position="replace">
+					<script type="text/javascript" src="/to_pos_shared_floor/static/src/js/floors.js"></script>
+				</xpath>
+			</data>
+		</template>
+
+	</data>
+</openerp>
