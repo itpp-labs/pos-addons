@@ -7,7 +7,9 @@ odoo.define('pos_fiscal_current', function (require) {
             this._super();
             var order = this.pos.get_order();
             if (order.fiscal_position != undefined) {
-                this.el.querySelector('.summary .total .fiscal .value').textContent = order.fiscal_position.name;
+                if (this.el.querySelector('.summary .total .fiscal .value') != null) {
+                    this.el.querySelector('.summary .total .fiscal .value').textContent = order.fiscal_position.name;
+                }
             }
         }
     })
