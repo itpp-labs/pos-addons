@@ -8,7 +8,7 @@ odoo.define('pos_fiscal_floor', function (require) {
         update_summary: function () {
             this._super();
             var order = this.pos.get_order();
-            if (order.fiscal_position == undefined) {
+            if (!order.fiscal_position) {
                 var f_id = posmodel.table.floor.pos_default_fiscal[0];
                 var f_name = posmodel.table.floor.pos_default_fiscal[1];
                 obj = _.find(this.pos.fiscal_positions, function(obj) { return obj.id == f_id })
