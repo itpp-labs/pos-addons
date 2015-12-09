@@ -5,7 +5,7 @@
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale','base'],
     'data': [
         'views.xml',
         ],

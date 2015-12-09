@@ -4,7 +4,7 @@
     'author': 'Ivan Yelizariev',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
-    'depends': ['pos_restaurant', 'pos_multi_session'],
+    'depends': ['pos_restaurant', 'pos_multi_session','to_pos_shared_floor'],
     'data': [
         'views.xml',
         ],
