@@ -1,6 +1,6 @@
 {
     'name': "Disable payments in POS",
-    'version': '1.0.0',
+    'version': '1.1.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
