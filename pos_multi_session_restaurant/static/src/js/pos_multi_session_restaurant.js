@@ -10,20 +10,20 @@ odoo.define('pos_multi_session_restaurant', function(require){
     _.each(gui.Gui.prototype.screen_classes, function(){
         if (this.name == 'floors'){
             FloorScreenWidget = this.widget;
+            FloorScreenWidget.include({
+                start: function () {
+                    var self = this;
+                    this._super();
+                    this.pos.bind('change:orders-count-on-floor-screen', function () {
+                        self.renderElement();
+                    })
+                }
+            })
             return false;
         }
     })
     var _t = core._t;
 
-    FloorScreenWidget.include({
-        start: function() {
-            var self = this;
-            this._super();
-            this.pos.bind('change:orders-count-on-floor-screen', function(){
-                self.renderElement();
-            })
-        }
-    })
 
     screens.OrderWidget.include({
         update_summary: function(){
@@ -53,8 +53,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
                          })
         },
         ms_create_order: function(){
+            var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
-            if (this.ms_table){
+            if (options.data.table_id) {
+                order.table = self.tables_by_id[options.data.table_id];
+                order.save_to_db();
+            }
+            else if (this.ms_table){
                 order.table = this.ms_table;
                 order.save_to_db();
             }
