@@ -1,12 +1,13 @@
-odoo.define('pos_disable_payment', function (require) {
-    "use strict";
+odoo.define('pos_disable_payment', function(require){
+"use strict";
 
+    var chrome = require('point_of_sale.chrome')
+    var screens = require('point_of_sale.screens')
     var core = require('web.core');
-    var chrome = require('point_of_sale.chrome');
     var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');
-    var screens = require('point_of_sale.screens');
-    var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var models = require('point_of_sale.models');    
+    var PosBaseWidget = require('point_of_sale.BaseWidget');    
+    var _t = core._t;
 
     models.load_models({
         model:  'res.users',
@@ -18,11 +19,11 @@ odoo.define('pos_disable_payment', function (require) {
                     _.extend(user,users[i]);
                 }
             }
-        },
+        }
     });
 
-    // Пример добавления обаботчика события. Само событие чуть ниже bind('change:cashier' ...
-    // Пример расширения класса (раширяем метод set_cashier), который создается через extend.
+    // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
+    // Example extending of class (method set_cashier), than was created using extend.
     // /odoo9/addons/point_of_sale/static/src/js/models.js
     // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
@@ -34,12 +35,12 @@ odoo.define('pos_disable_payment', function (require) {
     });
 
     chrome.Chrome.include({
-        init: function () {
+        init: function(){
             this._super.apply(this, arguments);
-            this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this);
-            this.pos.bind('change:cashier', this.check_allow_delete_order, this);
+            this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this)
+            this.pos.bind('change:cashier', this.check_allow_delete_order, this)
         },
-        check_allow_delete_order: function () {
+        check_allow_delete_order: function(){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
@@ -50,28 +51,28 @@ odoo.define('pos_disable_payment', function (require) {
                 }
             }
         },
-        loading_hide: function () {
+        loading_hide: function(){
             this._super();
             //extra checks on init
             this.check_allow_delete_order();
         }
     })
-
     chrome.OrderSelectorWidget.include({
-        renderElement: function () {
+        renderElement: function(){
             this._super();
             this.chrome.check_allow_delete_order();
         }
     })
 
     screens.OrderWidget.include({
-        bind_order_events: function () {
+        bind_order_events: function(){
             this._super();
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome)
         }
     })
 
+    // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
         init: function () {
             var self = this;
@@ -103,7 +104,7 @@ odoo.define('pos_disable_payment', function (require) {
             this._super.apply(this, arguments);
             this.pos.bind('change:cashier', this.renderElement, this)
         },
-        renderElement: function () {
+        renderElement: function(){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_discount) {
@@ -116,13 +117,11 @@ odoo.define('pos_disable_payment', function (require) {
     })
 
     screens.NumpadWidget.include({
-        clickDeleteLastChar: function () {
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity') {
+        clickDeleteLastChar: function(){
+            if (!this.pos.config.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
             return this._super();
         }
     })
-
 })
