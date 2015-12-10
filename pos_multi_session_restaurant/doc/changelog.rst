@@ -3,7 +3,7 @@
 Changelog
 =========
 
-`2.0.0`
+`1.0.1`
 -------
 
 - Every tables sync according to its floor
