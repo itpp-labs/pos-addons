@@ -6,9 +6,9 @@ Changelog
 `2.0.0`
 -------
 
-- Every tables sync according to its floor
+- Restrictions sets in User.
 
 `1.0.0`
 -------
 
-- Work only with virtual table
+- Restriction sets in POS.
