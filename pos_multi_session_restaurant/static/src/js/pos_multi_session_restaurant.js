@@ -52,7 +52,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                              }
                          })
         },
-        ms_create_order: function(){
+        ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
             if (options.data.table_id) {
