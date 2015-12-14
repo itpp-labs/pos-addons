@@ -3,7 +3,7 @@ from openerp import api, models, fields, SUPERUSER_ID
 
 
 class pos_config(models.Model):
-    _inherit = 'pos.config'
+    _inherit = 'res.users'
 
     allow_payments = fields.Boolean('Allow payments', default=True)
     allow_delete_order = fields.Boolean('Allow remove non-empty order', default=True)

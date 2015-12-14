@@ -22,4 +22,4 @@ Usage
   * etc
 * start selling
 
-Tested on Odoo 8.0 46abcabd0ac1f993dd8763c72945b0546c42bcb5 (from https://github.com/odoo-dev/odoo/tree/8.0-pos-backports-rescue-fva )
+Tested on Odoo 9 22e94f5254a35fc20ca536ed1b5e6a6cf315e4c4
