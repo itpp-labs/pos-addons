@@ -10,6 +10,7 @@
 <record model="ir.ui.view" id="view_pos_config_form">
     <field name="name">pos.config.form.view.inherit</field>
     <field name="model">pos.config</field>
+    <field name="priority" eval="32"/>
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
         <xpath expr="//group[@string='Features']" position="inside">
