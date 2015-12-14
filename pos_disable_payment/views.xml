@@ -11,6 +11,7 @@
         <field name="name">res.users.form.view</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="priority" eval="32"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pos_security_pin']/.." position="after">
                     <group string="Access">
