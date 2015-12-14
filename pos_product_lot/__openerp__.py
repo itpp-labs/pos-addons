@@ -6,7 +6,7 @@
     'category' : 'Point Of Sale',
     'website' : 'https://twitter.com/yelizariev',
     'images': ['images/screenshot.png'],
-    'price': 6.00,
+    'price': 9.00,
     'currency': 'EUR',
     'depends' : ['product_lot', 'pos_product_available'],
     'data':[
