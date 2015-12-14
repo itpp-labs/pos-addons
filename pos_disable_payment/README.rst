@@ -4,6 +4,7 @@ Disable payments in POS
 The module allows disable payments in POS. For example, it could helpful to use POS only to get price of item by barcode
 
 Module allows directly in user settings:
+
 * disable remove non-empty order
 * disable discount button
 * disable edit price button
