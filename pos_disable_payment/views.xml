@@ -7,10 +7,11 @@
     </xpath>
 </template>
 
-<record id="res_users_form_view" model="ir.ui.view">
+<record id="res_users_form_view_disable" model="ir.ui.view">
         <field name="name">res.users.form.view</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form"/>
+        <!--FIle: /odoo9/addons/point_of_sale/res_users_view.xml-->
+        <field name="inherit_id" ref="point_of_sale.res_users_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pos_security_pin']/.." position="after">
                     <group string="Access">
