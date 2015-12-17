@@ -272,7 +272,7 @@ class sessionpos(osv.Model):
                     taxes_ids = [ tax for tax in line.product_id.taxes_id if tax.company_id.id == line.order_id.company_id.id ]
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
+                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner_id=line.order_id.partner_id or False)
                     cur = line.order_id.pricelist_id.currency_id
 
                     print 'taxes', taxes
@@ -306,7 +306,7 @@ class sessionpos(osv.Model):
                     taxes_ids = [ tax for tax in line.product_id.taxes_id if tax.company_id.id == line.order_id.company_id.id ]
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
+                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner_id=line.order_id.partner_id or False)
                     cur = line.order_id.pricelist_id.currency_id
 
                     res[session.id]['tax_base_total'] += taxes['total']
