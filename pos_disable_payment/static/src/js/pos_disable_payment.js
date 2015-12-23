@@ -21,11 +21,8 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     });
-
-    // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
-    // Example extending of class (method set_cashier), than was created using extend.
-    // /odoo9/addons/point_of_sale/static/src/js/models.js
-    // exports.PosModel = Backbone.Model.extend ...
+    // Bind and trigger wont work. Trigger breaks numpad. I dont know why.
+    // Decided duplicate some code and put in dircetly in set_cashier.
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
@@ -61,6 +58,7 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
+                // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (order.orderlines.length>0) {
                     if (!user.allow_delete_order) {
                         this.$('.deleteorder-button').hide();
