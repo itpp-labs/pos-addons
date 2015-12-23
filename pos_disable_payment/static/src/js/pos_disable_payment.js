@@ -21,30 +21,16 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     });
-    // Bind and trigger wont work. Trigger breaks numpad. I dont know why.
-    // Decided duplicate some code and put in dircetly in set_cashier.
+
+    // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
+    // Example extending of class (method set_cashier), than was created using extend.
+    // /odoo9/addons/point_of_sale/static/src/js/models.js
+    // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            //this.trigger('change:cashier');
-            this.chrome.check_allow_delete_order();
-            var user = this.cashier || this.user;
-            if (!user.allow_discount) {
-                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'hidden')
-            }else{
-                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'visible')
-            }
-            if (!user.allow_edit_price) {
-                this.chrome.$el.find("[data-mode='price']").css('visibility', 'hidden')
-            }else{
-                this.chrome.$el.find("[data-mode='price']").css('visibility', 'visible')
-            }
-            if (!user.allow_payments) {
-                this.chrome.$('.pay').hide()
-            }else{
-                this.chrome.$('.pay').show()
-            }
+            this.trigger('change:cashier',this);
         }
     });
 
@@ -52,12 +38,13 @@ odoo.define('pos_disable_payment', function(require){
         init: function(){
             this._super.apply(this, arguments);
             this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this)
+            this.pos.bind('change:cashier', this.check_allow_delete_order, this)
         },
         check_allow_delete_order: function(){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
-                // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
+                 // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (!user.allow_delete_order && order.orderlines.length > 0) {
                     this.$('.deleteorder-button').hide();
                 } else {
@@ -101,21 +88,41 @@ odoo.define('pos_disable_payment', function(require){
         },
         renderElement: function () {
             this._super();
+            this.pos.bind('change:cashier', this.checkPayAllowed, this)
         },
-    })
-
-    screens.NumpadWidget.include({
-        renderElement: function(){
-            this._super();
+        checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_discount) {
-                this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
-            }
-            if (!user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").css('visibility', 'hidden')
+            if (!user.allow_payments) {
+                this.actionpad.$('.pay').hide()
+            }else{
+                this.actionpad.$('.pay').show()
             }
         }
     })
+    screens.NumpadWidget.include({
+        init: function () {
+            this._super.apply(this, arguments);
+            this.pos.bind('change:cashier', this.check_access, this)
+        },
+        renderElement: function(){
+            this._super();
+            this.check_access()
+        },
+        check_access: function(){
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_discount) {
+                this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
+            }else{
+                this.$el.find("[data-mode='discount']").css('visibility', 'visible')
+            }
+            if (!user.allow_edit_price) {
+                this.$el.find("[data-mode='price']").css('visibility', 'hidden')
+            }else{
+                this.$el.find("[data-mode='price']").css('visibility', 'visible')
+            }
+        }
+    })
+
 
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
