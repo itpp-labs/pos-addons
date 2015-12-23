@@ -52,7 +52,6 @@ odoo.define('pos_disable_payment', function(require){
         init: function(){
             this._super.apply(this, arguments);
             this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this)
-            this.pos.bind('change:cashier', this.check_allow_delete_order, this)
         },
         check_allow_delete_order: function(){
             var user = this.pos.cashier || this.pos.user;
@@ -106,10 +105,6 @@ odoo.define('pos_disable_payment', function(require){
     })
 
     screens.NumpadWidget.include({
-        init: function () {
-            this._super.apply(this, arguments);
-            this.pos.bind('change:cashier', this.renderElement, this)
-        },
         renderElement: function(){
             this._super();
             var user = this.pos.cashier || this.pos.user;
