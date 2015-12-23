@@ -44,7 +44,8 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
-                if (!user.allow_delete_order) {
+                 // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
+                if (!user.allow_delete_order && order.orderlines.length > 0) {
                     this.$('.deleteorder-button').hide();
                 } else {
                     this.$('.deleteorder-button').show();
@@ -98,30 +99,38 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     })
-
     screens.NumpadWidget.include({
         init: function () {
             this._super.apply(this, arguments);
-            this.pos.bind('change:cashier', this.renderElement, this)
+            this.pos.bind('change:cashier', this.check_access, this)
         },
         renderElement: function(){
             this._super();
+            this.check_access()
+        },
+        check_access: function(){
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_discount) {
                 this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
+            }else{
+                this.$el.find("[data-mode='discount']").css('visibility', 'visible')
             }
             if (!user.allow_edit_price) {
                 this.$el.find("[data-mode='price']").css('visibility', 'hidden')
+            }else{
+                this.$el.find("[data-mode='price']").css('visibility', 'visible')
             }
         }
     })
 
+
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
-            if (!this.pos.config.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
-            return this._super();
+            return this._super()
         }
     })
 })
