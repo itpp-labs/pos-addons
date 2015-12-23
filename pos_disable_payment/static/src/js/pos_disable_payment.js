@@ -21,16 +21,30 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     });
-
-    // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
-    // Example extending of class (method set_cashier), than was created using extend.
-    // /odoo9/addons/point_of_sale/static/src/js/models.js
-    // exports.PosModel = Backbone.Model.extend ...
+    // Bind and trigger wont work. Trigger breaks numpad. I dont know why.
+    // Decided duplicate some code and put in dircetly in set_cashier.
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            this.trigger('change:cashier',this);
+            //this.trigger('change:cashier');
+            this.chrome.check_allow_delete_order();
+            var user = this.cashier || this.user;
+            if (!user.allow_discount) {
+                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'hidden')
+            }else{
+                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'visible')
+            }
+            if (!user.allow_edit_price) {
+                this.chrome.$el.find("[data-mode='price']").css('visibility', 'hidden')
+            }else{
+                this.chrome.$el.find("[data-mode='price']").css('visibility', 'visible')
+            }
+            if (!user.allow_payments) {
+                this.chrome.$('.pay').hide()
+            }else{
+                this.chrome.$('.pay').show()
+            }
         }
     });
 
@@ -44,7 +58,8 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
-                if (!user.allow_delete_order) {
+                // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
+                if (!user.allow_delete_order && order.orderlines.length > 0) {
                     this.$('.deleteorder-button').hide();
                 } else {
                     this.$('.deleteorder-button').show();
@@ -87,16 +102,7 @@ odoo.define('pos_disable_payment', function(require){
         },
         renderElement: function () {
             this._super();
-            this.pos.bind('change:cashier', this.checkPayAllowed, this)
         },
-        checkPayAllowed: function () {
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide()
-            }else{
-                this.actionpad.$('.pay').show()
-            }
-        }
     })
 
     screens.NumpadWidget.include({
@@ -118,10 +124,11 @@ odoo.define('pos_disable_payment', function(require){
 
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
-            if (!this.pos.config.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
-            return this._super();
+            return this._super()
         }
     })
 })
