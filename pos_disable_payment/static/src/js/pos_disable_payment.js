@@ -118,10 +118,11 @@ odoo.define('pos_disable_payment', function(require){
 
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
-            if (!this.pos.config.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
-            return this._super();
+            return this._super()
         }
     })
 })
