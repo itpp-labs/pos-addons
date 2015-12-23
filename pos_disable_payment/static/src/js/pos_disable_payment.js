@@ -30,7 +30,24 @@ odoo.define('pos_disable_payment', function(require){
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            this.trigger('change:cashier',this);
+            //this.trigger('change:cashier');
+            this.chrome.check_allow_delete_order();
+            var user = this.cashier || this.user;
+            if (!user.allow_discount) {
+                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'hidden')
+            }else{
+                this.chrome.$el.find("[data-mode='discount']").css('visibility', 'visible')
+            }
+            if (!user.allow_edit_price) {
+                this.chrome.$el.find("[data-mode='price']").css('visibility', 'hidden')
+            }else{
+                this.chrome.$el.find("[data-mode='price']").css('visibility', 'visible')
+            }
+            if (!user.allow_payments) {
+                this.chrome.$('.pay').hide()
+            }else{
+                this.chrome.$('.pay').show()
+            }
         }
     });
 
@@ -44,10 +61,12 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order()
             if (order) {
-                if (!user.allow_delete_order) {
-                    this.$('.deleteorder-button').hide();
-                } else {
-                    this.$('.deleteorder-button').show();
+                if (order.orderlines.length>0) {
+                    if (!user.allow_delete_order) {
+                        this.$('.deleteorder-button').hide();
+                    } else {
+                        this.$('.deleteorder-button').show();
+                    }
                 }
             }
         },
@@ -87,16 +106,7 @@ odoo.define('pos_disable_payment', function(require){
         },
         renderElement: function () {
             this._super();
-            this.pos.bind('change:cashier', this.checkPayAllowed, this)
         },
-        checkPayAllowed: function () {
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide()
-            }else{
-                this.actionpad.$('.pay').show()
-            }
-        }
     })
 
     screens.NumpadWidget.include({
