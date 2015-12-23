@@ -59,12 +59,10 @@ odoo.define('pos_disable_payment', function(require){
             var order = this.pos.get_order()
             if (order) {
                 // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
-                if (order.orderlines.length>0) {
-                    if (!user.allow_delete_order) {
-                        this.$('.deleteorder-button').hide();
-                    } else {
-                        this.$('.deleteorder-button').show();
-                    }
+                if (!user.allow_delete_order && order.orderlines.length > 0) {
+                    this.$('.deleteorder-button').hide();
+                } else {
+                    this.$('.deleteorder-button').show();
                 }
             }
         },
