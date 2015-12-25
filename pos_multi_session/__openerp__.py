@@ -7,6 +7,8 @@
     'category': 'Point Of Sale',
     'images': ['images/pos-multi-session.png'],
     'website': 'https://yelizariev.github.io',
+    'price': 30.00,
+    'currency': 'EUR',
     'depends': ['pos_disable_payment', 'bus'],
     'data': [
         'security/ir.model.access.csv',

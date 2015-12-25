@@ -2,7 +2,7 @@
   <div class="oe_row oe_spaced">
 	<div class="oe_span12">
 	  <h2 class="oe_slogan">Sync POS orders across multiple sessions</h2>
-	  <h3 class="oe_slogan">The module allows to use multiple POS for handling orders.<br> For example, order could be created in POS1, then new items will be added in POS2 and then order would be paid in POS3.</h3>
+	  <h3 class="oe_slogan">The module allows to use multiple POS for handling orders.<br> E.g., create order in POS1, expand it in POS2, get payment in POS3.</h3>
     </div>
   </div>
 </section>
@@ -12,11 +12,12 @@
 	<div class="oe_span12">
 	  <h2>Usage</h2>
 	  <p class="oe_mt32">
-		At the first, be sure that your odoo instance support longpolling, i.e. Instant Messaging works. Also, before using the module you need to install <b>python2.7-dev</b> and <b>gevent</b> packages:
+		<blockquote>At the first, before using the module be sure that your odoo instance support longpolling, i.e. Instant Messaging works. For this purpose you need to install <b>python2.7-dev</b> and <b>gevent</b> packages:
 		<p><i>sudo apt-get install python2.7-dev</i><br>
 		<i>pip install gevent</i></p>
 		After that <b>gevent</b> should be launched from the actual path where you downloaded Odoo by following command:
 		<p><i>python openerp-gevent -c ~/path/to/configuration_file</i></p>
+		</blockquote>
 	    Once all dependencies are set up, open "Point of Sale &rarr; Configuration &rarr; Point of Sales" and create or open some Point of Sale record.
 	  </p>
 	  <div class="oe_demo oe_picture oe_screenshot">
@@ -32,11 +33,6 @@
 		<img src="multi-session.png"/>
 	  </div>
 	</div>
-	<!--<div class="oe_span12">
-	  <p class="oe_mt32">
-	    Set the same Multi-session for other "Point of Sale", which should be synced.
-	  </p>
-	</div>-->  
   </div>
 </section>
 
