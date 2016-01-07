@@ -6,12 +6,12 @@ odoo.define('pos_disable_payment', function(require){
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');    
-    var PosBaseWidget = require('point_of_sale.BaseWidget');    
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
     var _t = core._t;
 
     models.load_models({
         model:  'res.users',
-        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_delete_order_line'],
+        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
                 var user = _.find(self.users, function(el){ return el.id == users[i].id; });
@@ -21,7 +21,6 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     });
-
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
     // Example extending of class (method set_cashier), than was created using extend.
     // /odoo9/addons/point_of_sale/static/src/js/models.js
@@ -127,6 +126,9 @@ odoo.define('pos_disable_payment', function(require){
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
             var user = this.pos.cashier || this.pos.user;
+            if(!user.allow_decrease_amount && this.state.get('mode') === 'quantity'){
+                return;
+            }
             if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
