@@ -2,9 +2,10 @@
 {
     'name': "Keyboard support in Point Of Sale",
     'author': "IT-Projects LLC, Ivan Yelizariev",
-    "website" : "https://yelizariev.github.io",
+    'summary': 'Module allows to use usual keyboard (not virtual one) in Point of Sale',
+    "website": "https://yelizariev.github.io",
     'images': ['images/keyboard.png'],
-    'category' : 'Point Of Sale',
+    'category': 'Point Of Sale',
     'version': '1.0.0',
     'depends': ['point_of_sale'],
     'data': [
