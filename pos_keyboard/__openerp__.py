@@ -3,7 +3,7 @@
     'name': "Keyboard support in Point Of Sale",
     'author': "Ivan Yelizariev",
     "website" : "https://yelizariev.github.io",
-    'images': ['images/main.png'],
+    'images': ['images/keyboard.png'],
     'category' : 'Point Of Sale',
     'version': '1.0.0',
     'depends': ['point_of_sale'],
