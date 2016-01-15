@@ -1,0 +1,98 @@
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+	<div class="oe_span12">
+	  <h2 class="oe_slogan">Sync POS orders across multiple sessions (restaurant extension)</h2>
+	  <h3 class="oe_slogan">E.g., create order for a table in restaurant POS1, expand it in POS2, get payment in POS3.</h3>
+    </div>
+  </div>
+</section>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+	<div class="oe_span12">
+	  <h2>Usage</h2>
+	  <p class="oe_mt32">
+		The module useful for canteens, which have a tables with waiters as well as usual queue.<br>
+		At the first, before using the module be sure that your odoo instance support longpolling, i.e. Instant Messaging works.<br>
+		<blockquote style="font-size:90%">In order to do it you need to install <b>python2.7-dev</b> and <b>gevent</b> packages:
+		<p align="center"><i>sudo apt-get install python2.7-dev</i></p>
+		<p align="center"><i>pip install gevent</i></p>
+		After that <b>gevent</b> should be launched from the actual path where you downloaded Odoo by following command:
+	  <p align="center"><i>python openerp-gevent -c ~/path/to/configuration_file</i></p></font>
+	  </blockquote>
+Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and create Floor record.
+</p>
+     <div class="oe_demo oe_picture oe_screenshot">
+	   <img src="create-floor.png"/>
+	 </div>
+</div>
+
+     <div class="oe_span12">
+      <p class="mt32">	
+	  Open "Point of Sale &rarr; Configuration &rarr; Point of Sales" and create or open some restaurant Point of Sale record (not a queue POS).	
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+	   <img src="create-pos.png"/>
+	 </div>
+	 </div>
+
+	 <div class="oe_span12">
+      <p class="mt32">	
+	  Set Multi-session value (create new one if need) and select floor in "Restaurant floors" field. Click the Save button to save your changes. Set the same Multi-session and floor for other "Point of Sale", which should be synced. 	
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+	   <img src="multi-session.png"/>
+	 </div>
+	  <div class="oe_demo oe_picture oe_screenshot">
+	   <img src="select-floor.png"/>
+	 </div>
+	 </div>	 
+</div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+	<div class="oe_span12">
+	  <p class="oe_mt32">
+	    Start POS session on all POSes:
+		<ul>
+		  <li>login as user1 on computer1 &rArr; start session on POS "Rest1"</li>
+		  <li>login as user2 on computer2 &rArr; start session on POS "Rest2"</li>
+		  <li>etc</li>
+		</ul>  
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="session1.png"/>
+	  </div>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="session2.png"/>
+	  </div>
+	</div>
+  </div>
+</section>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+	<div class="oe_span12">
+	  <p class="oe_mt32">
+		Next you need to create a tables in Rest1(user1) session. The created tables will be displayed in Rest2(user2) respectively. Tables are synced according to floors and table id.
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="create-table1.png"/>
+	  </div>
+	</div>
+
+	<div class="oe_span12">
+	  <p class="oe_mt32">
+		When you start to create order for Table1 (by clicking on the table) in Rest1(user1) session, you can see how items are displayed in the synced session Rest2(user2). Moreover, items added at the corresponding POS are marked as "added by Rest1", "added by Rest2" and etc.
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="order1.png"/>
+	  </div>
+	  <p class="oe_mt32">The synced Rest2(user2) session will be displayed as follows:</p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="order2.png"/>
+	  </div>
+	</div>
+  </div>
+</section>
