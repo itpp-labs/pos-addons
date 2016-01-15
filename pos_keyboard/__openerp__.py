@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Keyboard support in Point Of Sale",
-    'author': "Ivan Yelizariev",
+    'author': "IT-Projects LLC, Ivan Yelizariev",
     "website" : "https://yelizariev.github.io",
     'images': ['images/keyboard.png'],
     'category' : 'Point Of Sale',
