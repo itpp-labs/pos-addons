@@ -33,17 +33,6 @@ function pos_keyboard_widgets(instance, module){
         },
     });
 
-    module.NumpadWidget.include({
-        init: function(parent, options) {
-            this._super(parent, options);
-            this.modeButton = {
-                qty: 'quantity',
-                disc: 'discount',
-                price: 'price'
-            }
-        }
-    });
-
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(session, attributes) {
@@ -134,7 +123,11 @@ function pos_keyboard_widgets(instance, module){
                 if (statusHandler){
                     var is_number = false;
                     var type = self.type;
-                    var buttonMode = self.pos.pos_widget.numpad.modeButton;
+                    var buttonMode = {
+                        qty: 'quantity',
+                        disc: 'discount',
+                        price: 'price'
+                    };
                     var token = e.keyCode;
                     if ((token >= 96 && token <= 105 || token == 110) ||
                         (token >= 48 && token <= 57 || token == 190)) {
