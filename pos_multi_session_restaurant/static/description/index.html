@@ -13,14 +13,8 @@
 	  <h2>Usage</h2>
 	  <p class="oe_mt32">
 		The module useful for canteens, which have a tables with waiters as well as usual queue.<br>
-		At the first, before using the module be sure that your odoo instance support longpolling, i.e. Instant Messaging works.<br>
-		<blockquote style="font-size:90%">In order to do it you need to install <b>python2.7-dev</b> and <b>gevent</b> packages:
-		<p align="center"><i>sudo apt-get install python2.7-dev</i></p>
-		<p align="center"><i>pip install gevent</i></p>
-		After that <b>gevent</b> should be launched from the actual path where you downloaded Odoo by following command:
-	  <p align="center"><i>python openerp-gevent -c ~/path/to/configuration_file</i></p></font>
-	  </blockquote>
-Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and create Floor record.
+		<p style="margin-top: 1.5%; margin-bottom: 1.5%">Before using the module be sure that your odoo instance support longpolling, i.e. Instant Messaging works (the instructions for setting up can be found <b><a href="https://www.odoo.com/apps/modules/9.0/pos_multi_session/" target="_blank">here</a></b>).</p><br>
+		Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and create Floor record.
 </p>
      <div class="oe_demo oe_picture oe_screenshot">
 	   <img src="create-floor.png"/>
@@ -46,7 +40,17 @@ Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and cre
 	  <div class="oe_demo oe_picture oe_screenshot">
 	   <img src="select-floor.png"/>
 	 </div>
-	 </div>	 
+	 </div>
+
+	 <div class="oe_span12">
+       <p class="mt32">
+		 Also you can attach all orders from other POSes to a so-called "Virtual table". It is used for orders that had not been attached to any of tables. The corresponding field is located in "Multi-session" section.
+	   </p>
+	   <div class="oe_demo oe_picture oe_screenshot">
+		 <img src="virtual-table.png?1"/>
+	   </div>
+	 </div>
+	 
 </div>
 </section>
 
@@ -75,13 +79,22 @@ Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and cre
   <div class="oe_row oe_spaced">
 	<div class="oe_span12">
 	  <p class="oe_mt32">
-		Next you need to create a tables in Rest1(user1) session. The created tables will be displayed in Rest2(user2) respectively. Tables are synced according to floors and table id.
+		Next you need to create a tables in Rest1(user1) session. 
 	  </p>
 	  <div class="oe_demo oe_picture oe_screenshot">
 		<img src="create-table1.png"/>
 	  </div>
 	</div>
 
+	<div class="oe_span12">
+	  <p class="oe_mt32">
+		The created tables will be displayed in Rest2(user2) respectively. Tables are synced according to floors and table id.
+	  </p>
+	  <div class="oe_demo oe_picture oe_screenshot">
+		<img src="create-table2.png?1"/>
+	  </div>
+	</div>
+		
 	<div class="oe_span12">
 	  <p class="oe_mt32">
 		When you start to create order for Table1 (by clicking on the table) in Rest1(user1) session, you can see how items are displayed in the synced session Rest2(user2). Moreover, items added at the corresponding POS are marked as "added by Rest1", "added by Rest2" and etc.
