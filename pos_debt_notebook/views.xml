@@ -9,7 +9,7 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="account.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <field name="credit_limit" position="after">
+        <field name="credit" position="after">
             <field name="debt"/>
         </field>
     </field>

@@ -1,7 +1,8 @@
 {
     'name': 'Debt notebook for POS',
-    'version': '1.0.3',
+    'version': '1.0.2',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
+    'summary': 'Comfortable sales for your regular customersDebt payment method for POS',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
@@ -17,6 +18,6 @@
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
 }
