@@ -85,18 +85,6 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
             this._super(options);
         },
 
-        renderElement: function(){
-            var self = this;
-            this._super();
-
-            var debt = this.pos.cashregisters.filter(function(el) { return el.journal.debt});
-            var pay_full_debt = this.$('.pay-full-debt');
-            if (debt) {
-                pay_full_debt.removeClass('oe_hidden');
-                pay_full_debt.on('click', function(){self.pay_full_debt()});
-            }
-        },
-
         pay_full_debt: function(){
             var order = this.pos.get_order();
 
@@ -151,6 +139,22 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
         is_paid: function(){
             var currentOrder = this.pos.get_order();
             return (currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded());
+        },
+        customer_changed: function() {
+            var self = this;
+            var client = this.pos.get_client();
+            var debt = 0;
+            if (client) {debt = Math.round(client.debt * 100) / 100;}
+            this.$('.js_customer_name').text( client ? client.name + ' [Debt: ' + debt + ']' : _t('Customer') );
+
+
+            var pay_full_debt = this.$('.pay-full-debt');
+            pay_full_debt.on('click', function() {self.pay_full_debt();});
+            if (debt) {
+                pay_full_debt.removeClass('oe_hidden');
+            } else {
+                pay_full_debt.addClass('oe_hidden');
+            }
         }
     });
 
