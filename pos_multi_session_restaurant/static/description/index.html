@@ -14,29 +14,9 @@
 	  <p class="oe_mt32">
 		The module useful for canteens, which have a tables with waiters as well as usual queue.<br>
 		<p style="margin-top: 1.5%; margin-bottom: 1.5%">Before using the module be sure that your odoo instance support longpolling, i.e. Instant Messaging works (the instructions for setting up can be found <b><a href="https://www.odoo.com/apps/modules/9.0/pos_multi_session/" target="_blank">here</a></b>).</p><br>
-		Once all dependencies are set up, go to Point of Sale &rarr; Floor Plans and create Floor record.
-</p>
-     <div class="oe_demo oe_picture oe_screenshot">
-	   <img src="create-floor.png"/>
-	 </div>
-</div>
-
-     <div class="oe_span12">
-      <p class="mt32">	
-	  Open "Point of Sale &rarr; Configuration &rarr; Point of Sales" and create or open some restaurant Point of Sale record (not a queue POS).	
+		Once all dependencies are set up, go to "Point of Sale &rarr; Configuration &rarr; Point of Sales" and create or open some restaurant Point of Sale record (not a queue POS).<br>
+	  Set Multi-session value (create new one if need) and select floor in "Restaurant floors" field <font size="2%">(for more information about creating POS and setting Multi-session value follow the <b><a href="https://www.odoo.com/apps/modules/9.0/pos_multi_session/" target="_blank">link</a></b>. If a floor record has not yet been exist, you can create it in Point of Sale &rarr; Floor Plans)</font>. Click the "Save" button to save your changes. Set the same Multi-session and floor for other "Point of Sale", which should be synced. 	
 	  </p>
-	  <div class="oe_demo oe_picture oe_screenshot">
-	   <img src="create-pos.png"/>
-	 </div>
-	 </div>
-
-	 <div class="oe_span12">
-      <p class="mt32">	
-	  Set Multi-session value (create new one if need) and select floor in "Restaurant floors" field. Click the Save button to save your changes. Set the same Multi-session and floor for other "Point of Sale", which should be synced. 	
-	  </p>
-	  <div class="oe_demo oe_picture oe_screenshot">
-	   <img src="multi-session.png"/>
-	 </div>
 	  <div class="oe_demo oe_picture oe_screenshot">
 	   <img src="select-floor.png"/>
 	 </div>
@@ -44,13 +24,22 @@
 
 	 <div class="oe_span12">
        <p class="mt32">
-		 Also you can attach all orders from other POSes to a so-called "Virtual table". It is used for orders that had not been attached to any of tables. The corresponding field is located in "Multi-session" section.
+		 Also you can attach all orders from other POSes to a so-called "Default table". It is used for orders that had not been attached to any of tables. The corresponding field is located in "Multi-session" section. 
 	   </p>
 	   <div class="oe_demo oe_picture oe_screenshot">
-		 <img src="virtual-table.png?1"/>
+		 <img src="default-table.png"/>
 	   </div>
 	 </div>
-	 
+
+	 <div class="oe_span12">
+       <p class="mt32">
+		 It should be noted that default table must be attached to any floor (do not foget to select this floor in "Restaurant floor" field), otherwise you get the error message <font color="red">"Uncaught Error: Default table is not belonged to this POS"</font> after starting POS session. 
+	   </p>
+	    <div class="oe_demo oe_picture oe_screenshot">
+		  <img src="select-floor-deftable.png"/>
+		</div>
+	 </div>
+	   
 </div>
 </section>
 

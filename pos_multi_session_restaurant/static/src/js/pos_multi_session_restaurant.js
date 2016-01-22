@@ -46,7 +46,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                                  if (!self.ms_table.floor){
                                      //delay to finish initalisation
                                      setTimeout(function(){
-                                         throw new Error(_t("Virtual table is not belonged to this POS."));
+                                         throw new Error(_t("Default table is not belonged to this POS."));
                                      }, 5000)
                                  }
                              }
