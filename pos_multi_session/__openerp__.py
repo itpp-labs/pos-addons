@@ -1,6 +1,6 @@
 {
     'name': "Sync POS orders across multiple sessions",
-    'version': '1.0.1',
+    'version': '1.0.2',
     'summary': """Use multiple POS for handling orders""",
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
