@@ -366,7 +366,7 @@ odoo.define('pos_multi_session', function(require){
         },
         send: function(message){
             console.log('send', message)
-           var self = this;
+            var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
@@ -378,19 +378,24 @@ odoo.define('pos_multi_session', function(require){
                     return send_it();
             });
         },
-        on_notification: function(notification) {
+        on_notification: function (notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
+            if (notification.length > 1){
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
 
-            if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-                try{
-                    this.pos.ms_on_update(message)
-                }catch(err){
-                    this.pos.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
-                    })
+                if (Array.isArray(channel) && channel[1] === 'pos.multi_session') {
+                    try {
+                        this.pos.ms_on_update(message)
+                    } catch (err) {
+                        this.pos.chrome.gui.show_popup('error', {
+                            'title': _t('Error'),
+                            'body': err,
+                        })
+                    }
                 }
             }
             this.pos.db.save('bus_last', this.bus.last)
