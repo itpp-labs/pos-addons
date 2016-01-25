@@ -17,22 +17,6 @@
             <field name="prefix">DEBT/%(year)s/</field>
         </record>
 
-        <!--<record id="debt_journal" model="account.journal">
-            <field name="name">Debt Journal</field>
-            <field name="code">TDEBT</field>
-            <field name="type">cash</field>
-            <field name="debt" eval="True"/>
-            <field name="journal_user" eval="True"/>
-            <field name="sequence_id" ref="sequence_debt_journal"/>
-            <field name="default_debit_account_id" ref="debt_account"/>
-            <field name="default_credit_account_id" ref="debt_account"/>
-            <field name="user_id" ref="base.user_root"/>
-        </record>-->
-
-        <!--<record id="point_of_sale.pos_config_main" model="pos.config">
-            <field name="journal_ids" eval="[(4, ref('pos_debt_notebook.debt_journal'))]" />
-        </record>-->
-
         <record id="product_pay_debt" model="product.product">
             <field name="name">Pay Debt</field>
             <field name="default_code">POS-DEBT</field>
@@ -43,10 +27,6 @@
             <field name="uom_id" ref="product.product_uom_unit"/>
             <field name="description">This is a dummy product used when a customer pays his debt without ordering new products. This is a workaround to the fact that Odoo needs to have at least one product on the order to validate the transaction.</field>
         </record>
-
-        <!--<record id="point_of_sale.pos_config_main" model="pos.config">
-            <field name="debt_dummy_product_id" ref="product_pay_debt"/>
-        </record>-->
 
     </data>
 </openerp>
