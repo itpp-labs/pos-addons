@@ -366,7 +366,7 @@ odoo.define('pos_multi_session', function(require){
         },
         send: function(message){
             console.log('send', message)
-            var self = this;
+             var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
