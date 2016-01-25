@@ -380,7 +380,7 @@ odoo.define('pos_multi_session', function(require){
         },
         on_notification: function (notification) {
             var self = this;
-            if (notification.length > 1){
+            if (typeof notification[0][0] === 'string'){
                 notification = [notification]
             }
             for (var i = 0; i < notification.length; i++) {
