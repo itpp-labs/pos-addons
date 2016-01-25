@@ -38,9 +38,9 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
 
             var self = this;
             var journal = cashregister.journal;
-            if (journal.debt && ! this.get_client()){
+            if (journal.debt && !this.get_client()){
                 setTimeout(function(){
-                    self.gui.show_screen('clientlist');
+                    self.pos.gui.show_screen('clientlist');
                 }, 30);
             }
 

@@ -1,0 +1,3 @@
+-
+    !python {model: pos.config}: |
+        self.init_debt_journal(cr, uid, [])
