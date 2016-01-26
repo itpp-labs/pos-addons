@@ -380,21 +380,21 @@ odoo.define('pos_multi_session', function(require){
         },
         on_notification: function(notification) {
             var self = this;
-            if (typeof notification[0][0] === 'string'){
+            if (typeof notification[0][0] === 'string') {
                 notification = [notification]
             }
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
-               this.on_notification_do(channel,message);
+                this.on_notification_do(channel, message);
             }
         },
         on_notification_do: function (channel, message) {
-            if (Array.isArray(channel) && channel[1] === 'pos.multi_session') {
-                try {
+            if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
+                try{
                     this.pos.ms_on_update(message)
-                } catch (err) {
-                    this.pos.chrome.gui.show_popup('error', {
+                }catch(err){
+                    this.pos.chrome.gui.show_popup('error',{
                         'title': _t('Error'),
                         'body': err,
                     })
