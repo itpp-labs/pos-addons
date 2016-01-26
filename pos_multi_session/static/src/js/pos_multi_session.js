@@ -389,17 +389,17 @@ odoo.define('pos_multi_session', function(require){
                this.on_notification_do(channel,message);
             }
         },
-        on_notification_do: function(channel,message) {
-                if (Array.isArray(channel) && channel[1] === 'pos.multi_session') {
-                    try {
-                        this.pos.ms_on_update(message)
-                    } catch (err) {
-                        this.pos.chrome.gui.show_popup('error', {
-                            'title': _t('Error'),
-                            'body': err,
-                        })
-                    }
+        on_notification_do: function (channel, message) {
+            if (Array.isArray(channel) && channel[1] === 'pos.multi_session') {
+                try {
+                    this.pos.ms_on_update(message)
+                } catch (err) {
+                    this.pos.chrome.gui.show_popup('error', {
+                        'title': _t('Error'),
+                        'body': err,
+                    })
                 }
+            }
             this.pos.db.save('bus_last', this.bus.last)
         }
     })
