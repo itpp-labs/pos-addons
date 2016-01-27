@@ -1,6 +1,6 @@
 {
     'name': 'Debt notebook for POS',
-    'version': '1.0.2',
+    'version': '1.0.3',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'license': 'GPL-3',

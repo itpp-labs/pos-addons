@@ -9,7 +9,7 @@
     'version': '1.0.0',
     'depends': ['point_of_sale'],
     'data': [
-         'data.xml',
+        'data.xml',
     ],
     'installable': True,
     'auto_install': False,

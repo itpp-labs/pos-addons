@@ -23,6 +23,8 @@
     "name": 'Product barcode generator',
     "version": '1.0',
     "description": """
+    *This is a frozen version. The module is moved to another repository. Check out newest version here:* https://github.com/OCA/stock-logistics-barcode/tree/8.0/product_barcode_generator
+
     This module will add a function which leads to an automatic generation of EAN13 for products
     
     You will have to define the company default value (6 firsts number of EAN13) then the 6 next number the sequence.
