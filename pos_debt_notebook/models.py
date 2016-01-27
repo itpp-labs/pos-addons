@@ -11,8 +11,10 @@ class ResPartner(models.Model):
 
     @api.multi
     def _get_debt(self):
-        debt_account = self.env.ref('pos_debt_notebook.debt_account')
-        debt_journal = self.env.ref('pos_debt_notebook.debt_journal')
+        debt_account_name = 'debt_account_' + self.env.user.company_id.name
+        debt_account = self.env['ir.model.data'].search([('name', '=', debt_account_name)])
+        debt_journal = self.env['account.journal'].search([
+            ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
 
         self._cr.execute(
             """SELECT l.partner_id, SUM(l.debit - l.credit)
@@ -54,6 +56,7 @@ class AccountJournal(models.Model):
 
     debt = fields.Boolean(string='Debt Payment Method')
 
+
 class PosConfig(osv.osv):
     _inherit = 'pos.config'
 
@@ -71,35 +74,70 @@ class PosConfig(osv.osv):
     def init_debt_journal(self, cr, uid, ids, context=None):
         company_ids = self.pool['res.company'].search(cr, uid, [])
         for company in self.pool['res.company'].browse(cr, uid, company_ids):
-            if len(self.pool['account.account'].search(cr, uid, [('company_id', '=', company.id)])) <= 1:
-                raise osv.except_osv(_('Error!'), _('You have to configure chart of account for company: "%s"'
-                                                    % company.name))
-            if self.pool['account.journal'].search(cr, uid, [('company_id', '=', company.id), ('debt', '=', True)]):
-                break
+            if len(self.pool['account.account'].search(cr, uid, [('company_id', '=', company.id)])) == 0:
+                # You have to configure chart of account for company
+                continue
+
+            debt_journal_active = self.pool['account.journal'].search(cr, uid, [
+                ('company_id', '=', company.id), ('debt', '=', True)])
+            if debt_journal_active:
+                continue
             else:
-                new_journal = self.pool['account.journal'].create(cr, uid, {
-                    'name': 'Debt Journal',
-                    'code': 'TDEBT',
-                    'type': 'cash',
-                    'debt': True,
-                    'journal_user': True,
-                    'sequence_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'sequence_debt_journal')[1],
-                    'company_id': company.id,
-                    'default_debit_account_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'debt_account')[1],
-                    'default_credit_account_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'debt_account')[1],
-                })
-                self.pool['ir.model.data'].create(cr, uid, {
-                    'name': 'debt_journal_' + str(new_journal),
-                    'model': 'account.journal',
-                    'module': 'pos_debt_notebook',
-                    'res_id': int(new_journal),
-                    'noupdate': True,
-                })
+                debt_account = self.pool['account.account'].search(cr, uid, [
+                    ('name', '=', 'Debt'), ('code', '=', 'XDEBT'), ('company_id', '=', company.id)])
+                print 'debt_account', debt_account
+                if debt_account:
+                    debt_account = debt_account[0]
+                else:
+                    debt_account = self.pool['account.account'].create(cr, uid, {
+                        'name': 'Debt',
+                        'code': 'XDEBT',
+                        'type': 'liquidity',
+                        'user_type_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'account', 'data_account_type_current_assets')[1],
+                        'company_id': company.id
+                    })
+                    self.pool['ir.model.data'].create(cr, uid, {
+                        'name': 'debt_account_' + company.name,
+                        'model': 'account.account',
+                        'module': 'pos_debt_notebook',
+                        'res_id': debt_account,
+                        'noupdate': True,
+                    })
+
+                debt_journal_inactive = self.pool['account.journal'].search(cr, uid, [
+                    ('company_id', '=', company.id), ('debt', '=', False), ('code', '=', 'TDEBT')])
+                if debt_journal_inactive:
+                    new_journal = self.pool['account.journal'].browse(cr, uid, debt_journal_inactive[0])
+                    new_journal.write({
+                        'debt': True,
+                        'sequence_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'sequence_debt_journal')[1],
+                        'default_debit_account_id': debt_account,
+                        'default_credit_account_id': debt_account,
+                    })
+                    new_journal = new_journal.id
+                else:
+                    new_journal = self.pool['account.journal'].create(cr, uid, {
+                        'name': 'Debt Journal',
+                        'code': 'TDEBT',
+                        'type': 'cash',
+                        'debt': True,
+                        'journal_user': True,
+                        'sequence_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'sequence_debt_journal')[1],
+                        'company_id': company.id,
+                        'default_debit_account_id': debt_account,
+                        'default_credit_account_id': debt_account,
+                    })
+                    self.pool['ir.model.data'].create(cr, uid, {
+                        'name': 'debt_journal_' + str(new_journal),
+                        'model': 'account.journal',
+                        'module': 'pos_debt_notebook',
+                        'res_id': int(new_journal),
+                        'noupdate': True,
+                    })
+
                 config_ids = self.search(cr, uid, [('company_id', '=', company.id)])
                 for config in self.browse(cr, uid, config_ids):
                     config.write({
                         'journal_ids': [(4, new_journal)],
                         'debt_dummy_product_id': self.pool.get('ir.model.data').get_object_reference(cr, uid, 'pos_debt_notebook', 'product_pay_debt')[1],
                     })
-
-

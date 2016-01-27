@@ -20,4 +20,5 @@
     ],
     'installable': True,
     'auto_install': True,
+    'uninstall_hook': 'pre_uninstall',
 }
