@@ -11,12 +11,12 @@ class ResPartner(models.Model):
 
     @api.multi
     def _get_debt(self):
-        debt_account = self.env.ref('pos_debt_notebook.debt_account')
+        debt_account_name = 'debt_account_' + self.env.user.company_id.name
+        debt_account = self.env['ir.model.data'].search([('name', '=', debt_account_name)])
         debt_journal = self.env['account.journal'].search([
             ('company_id', '=', self.env.user.company_id.id),
             ('debt', '=', True)
         ])
-        print 'debt_j', debt_journal
 
         self._cr.execute(
             """SELECT l.partner_id, SUM(l.debit - l.credit)
@@ -76,14 +76,14 @@ class PosConfig(osv.osv):
     def init_debt_journal(self, cr, uid, ids, context=None):
         company_ids = self.pool['res.company'].search(cr, uid, [])
         for company in self.pool['res.company'].browse(cr, uid, company_ids):
-            if len(self.pool['account.account'].search(cr, uid, [('company_id', '=', company.id)])) <= 1:
-                raise osv.except_osv(_('Error!'), _('You have to configure chart of account for company: "%s"'
-                                                    % company.name))
+            if len(self.pool['account.account'].search(cr, uid, [('company_id', '=', company.id)])) == 0:
+                # You have to configure chart of account for company
+                continue
 
             debt_journal_active = self.pool['account.journal'].search(cr, uid, [
                 ('company_id', '=', company.id), ('debt', '=', True)])
             if debt_journal_active:
-                break
+                continue
             else:
                 debt_account = self.pool['account.account'].search(cr, uid, [
                     ('name', '=', 'Debt'), ('code', '=', 'XDEBT'), ('company_id', '=', company.id)])
@@ -98,7 +98,7 @@ class PosConfig(osv.osv):
                         'company_id': company.id
                     })
                     self.pool['ir.model.data'].create(cr, uid, {
-                        'name': 'debt_account',
+                        'name': 'debt_account_' + company.name,
                         'model': 'account.account',
                         'module': 'pos_debt_notebook',
                         'res_id': debt_account,
