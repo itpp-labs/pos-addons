@@ -10,6 +10,7 @@
     'data': [
         'data.xml',
         'views.xml',
+        'pre_install.yml',
         ],
     'installable': True,
 }
