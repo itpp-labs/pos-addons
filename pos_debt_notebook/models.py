@@ -54,7 +54,7 @@ class ResPartner(models.Model):
 
     debt = fields.Float(
         compute='_get_debt', string='Debt', readonly=True,
-        digits=dp.get_precision('Account'))
+        digits=dp.get_precision('Account'), help='This debt value for only current company')
 
 
 class AccountJournal(models.Model):
