@@ -4,7 +4,7 @@ from openerp import SUPERUSER_ID
 
 
 def init_debt_journal(cr, registry):
-    if registry['ir.model.data'].search([('name', '=', 'debt_account')]):
+    if registry['ir.model.data'].search(cr, SUPERUSER_ID, [('name', '=', 'debt_account')]):
         # Used account journal from old version module, don't supported multi-company mode
         return
 
