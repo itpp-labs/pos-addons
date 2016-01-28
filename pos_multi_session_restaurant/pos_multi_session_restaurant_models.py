@@ -5,3 +5,20 @@ from openerp import api, models, fields, SUPERUSER_ID
 class pos_config(models.Model):
     _inherit = 'pos.config'
 
+    def _check_same_floors(self, cr, uid, ids, context=None):
+        for rec in self.browse(cr, uid, ids, context=context):
+            pos_config_ids = self.pool['pos.config'].search(cr, uid, [
+                ('multi_session_id', '=', rec.multi_session_id.id),
+                ('id', '!=', rec.id)
+            ])
+            for pos_config_obj in [r for r in self.browse(cr, uid, pos_config_ids, context=context)]:
+                a = set(pos_config_obj.floor_ids.ids)
+                b = set(rec.floor_ids.ids)
+                diff = a.difference(b)
+                if diff:
+                    return False
+        return True
+
+    _constraints = [
+        (_check_same_floors, "Points of sale with same multi session must have same floors", ['multi_session_id', 'floor_ids']),
+    ]
