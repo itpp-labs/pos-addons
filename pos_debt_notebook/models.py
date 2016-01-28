@@ -14,13 +14,7 @@ class ResPartner(models.Model):
         debt_account_name = 'debt_account_' + self.env.user.company_id.name
         debt_account = self.env['ir.model.data'].search([('name', '=', debt_account_name)])
         debt_journal = self.env['account.journal'].search([
-<<<<<<< HEAD
             ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
-=======
-            ('company_id', '=', self.env.user.company_id.id),
-            ('debt', '=', True)
-        ])
->>>>>>> origin/feature
 
         self._cr.execute(
             """SELECT l.partner_id, SUM(l.debit - l.credit)
