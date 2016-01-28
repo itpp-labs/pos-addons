@@ -24,7 +24,7 @@ def init_debt_journal(cr, registry):
                     'name': 'Debt',
                     'code': 'XDEBT',
                     'type': 'liquidity',
-                    'user_type': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'account', 'data_account_type_asset')[1],
+                    'user_type_id': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'account', 'data_account_type_current_assets')[1],
                     'company_id': company.id
                 })
                 registry['ir.model.data'].create(cr, SUPERUSER_ID, {
