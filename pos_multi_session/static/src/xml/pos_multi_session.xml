@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="Orderline">
         <t t-jquery=".info-list" t-operation="after">
-            <div t-if="line.ms_info" class="ms_info">
+            <div t-if="line.ms_info and line.ms_info.created" class="ms_info">
                 added by <t t-esc="line.ms_info.created.pos.name"/>
                 <t t-if="line.ms_info.changed and line.ms_info.changed.pos.id != line.ms_info.created.pos.id">
                     , edited by <t t-esc="line.ms_info.changed.pos.name"/>
@@ -10,9 +10,9 @@
             </div>
         </t>
     </t>
-    <t t-extend="OrderButtonWidget">
+    <t t-extend="OrderSelectorWidget">
         <t t-jquery=".order-sequence" t-operation="append">
-            <span t-if="widget.order.ms_info and widget.order.ms_info.created" class="ms_info"><t t-esc="widget.order.ms_info.created.pos.name"/></span>
+            <span t-if="order.ms_info and order.ms_info.created" class="ms_info"><t t-esc="order.ms_info.created.pos.name"/></span>
         </t>
     </t>
 </templates>

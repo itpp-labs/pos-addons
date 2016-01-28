@@ -1,9 +1,9 @@
 {
     'name': "Sync POS orders across multiple sessions",
-    'version': '1.0.0',
+    'version': '1.0.2',
     'summary': """Use multiple POS for handling orders""",
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
+    'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'images': ['images/pos-multi-session.png'],
     'website': 'https://yelizariev.github.io',
@@ -16,6 +16,9 @@
         ],
     'qweb': [
         'static/src/xml/pos_multi_session.xml',
+    ],
+    'demo': [
+        'demo/demo.xml',
     ],
     'installable': True,
 }

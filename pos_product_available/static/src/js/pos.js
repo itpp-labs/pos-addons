@@ -1,27 +1,23 @@
-function pos_product_available(instance, module){
+odoo.define('pos_product_available.PosModel', function(require){
+"use strict";
 
-    var PosModelSuper = module.PosModel
-    module.PosModel = module.PosModel.extend({
-        load_server_data: function(){
-            var self = this;
-            var loaded = PosModelSuper.prototype.load_server_data.call(this);
 
-            loaded = loaded.then(function(){
-                return self.fetch(
-                    'product.product',
-                    ['qty_available'],
-                    [['sale_ok','=',true],['available_in_pos','=',true]],
-                    {'location': self.config.stock_location_id[0]}
-                );
+    var models = require('point_of_sale.models');
+    models.load_models({
+        model: 'product.product',
+        fields: ['qty_available'],
+        domain:[['sale_ok','=',true],['available_in_pos','=',true]],
+        context: function(self){ return {'location': self.config.stock_location_id[0]}},
+        loaded: function(self, products){
+            $.each(products, function(){
+                $.extend(self.db.get_product_by_id(this.id) || {}, this)
+            });
+        }
+    })
 
-            }).then(function(products){
-                $.each(products, function(){
-                    $.extend(self.db.get_product_by_id(this.id) || {}, this)
-                });
-                return $.when()
-            })
-            return loaded;
-        },
+    var PosModelSuper = models.PosModel;
+
+    models.PosModel = models.PosModel.extend({
         refresh_qty_available:function(product){
             var $elem = $("[data-product-id='"+product.id+"'] .qty-tag");
             $elem.html(product.qty_available)
@@ -33,7 +29,7 @@ function pos_product_available(instance, module){
             var self = this;
             var pushed = PosModelSuper.prototype.push_order.call(this, order);
             if (order){
-                order.get('orderLines').each(function(line){
+                order.orderlines.each(function(line){
                     var product = line.get_product();
                     product.qty_available -= line.get_quantity();
                     self.refresh_qty_available(product);
@@ -46,8 +42,8 @@ function pos_product_available(instance, module){
             var invoiced = PosModelSuper.prototype.push_and_invoice_order.call(this, order);
 
             if (order && order.get_client()){
-                if (order.get("orderLines")){
-                    order.get("orderLines").each(function(line){
+                if (order.orderlines){
+                    order.orderlines.each(function(line){
                         var product = line.get_product();
                         product.qty_available -= line.get_quantity();
                         self.refresh_qty_available(product);
@@ -64,16 +60,4 @@ function pos_product_available(instance, module){
             return invoiced;
         },
     })
-}
-
-(function(){
-    var _super = window.openerp.point_of_sale;
-    window.openerp.point_of_sale = function(instance){
-        _super(instance);
-        var module = instance.point_of_sale;
-
-        pos_product_available(instance, module);
-
-        $('<link rel="stylesheet" href="/pos_product_available/static/src/css/pos.css"/>').appendTo($("head"))
-    }
-})()
+})

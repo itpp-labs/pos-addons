@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="demo_multi_session" model="pos.multi_session">
+            <field name="name">multi session demo</field>
+        </record>
+        <record id="demo_multi_pos_config_one" model="pos.config">
+            <field name="name">POS one</field>
+            <field name="multi_session_id" ref="demo_multi_session"/>
+        </record>
+        <record id="demo_multi_pos_config_two" model="pos.config">
+            <field name="name">POS two</field>
+            <field name="multi_session_id" ref="demo_multi_session"/>
+        </record>
+        <record id="point_of_sale.pos_config_main" model="pos.config">
+            <field name="multi_session_id" ref="demo_multi_session"/>
+        </record>
+    </data>
+</openerp>

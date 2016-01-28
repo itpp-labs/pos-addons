@@ -2,7 +2,7 @@
     'name' : 'Custom Product barcode generator',
     'version' : '1.0.0',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
+    'license': 'LGPL-3',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'description': """
@@ -22,6 +22,6 @@ Steps to use module:
         'data.xml',
         'views.xml',
         ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

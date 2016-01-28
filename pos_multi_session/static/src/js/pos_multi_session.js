@@ -1,28 +1,48 @@
-openerp.pos_multi_session = function(instance){
-    var module = instance.point_of_sale;
-    var _t = instance.web._t;
+odoo.define('pos_multi_session', function(require){
+    var exports = {}
 
-    module.OrderWidget.include({
+    var session = require('web.session');
+    var Backbone = window.Backbone;
+    var core = require('web.core');
+    var screens = require('point_of_sale.screens')
+    var models = require('point_of_sale.models');
+    var bus = require('bus.bus');
+
+    var _t = core._t;
+
+    screens.OrderWidget.include({
         rerender_orderline: function(order_line){
             if (order_line.node)
                 return this._super(order_line);
-        }
+        },
+        remove_orderline: function(order_line){
+            if (!this.pos.get_order())
+                return;
+            this._super(order_line)
+        },
     })
-    module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
-        finishOrder: function() {
+    screens.ReceiptScreenWidget.extend({
+        finish_order: function() {
+            if (!this._locked) {
+                this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
+            }
+        },
+        /* since saas-6:
+        click_next: function() {
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
+         */
     })
 
-    var PosModelSuper = module.PosModel;
-    module.PosModel = module.PosModel.extend({
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.multi_session = false;
             this.ready = this.ready.then(function(){
                              if (self.config.multi_session_id){
-                                 self.multi_session = new module.MultiSession(self);
+                                 self.multi_session = new exports.MultiSession(self);
                                  self.multi_session.start();
                                  self.multi_session.request_sync_all();
                              }
@@ -39,10 +59,11 @@ openerp.pos_multi_session = function(instance){
 
         },
         ms_my_info: function(){
+            var user = this.cashier || this.user;
             return {
                 'user': {
-                    'id': this.pos_session.user_id[0],
-                    'name': this.pos_session.user_id[1],
+                    'id': user.id,
+                    'name': user.name,
                 },
                 'pos': {
                     'id': this.config.id,
@@ -102,12 +123,15 @@ openerp.pos_multi_session = function(instance){
             } else if (action == 'request_sync_all'){
                 //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
                 //this.multi_session.sync_sequence_number();
-                this.get('orders').each(function(r){
+                _.each(this.ms_orders_to_sync(), function(r){
                     if (!r.is_empty()){
                         r.ms_update();
                     }
                 })
             }
+        },
+        ms_orders_to_sync: function(){
+            return this.get('orders').models;
         },
         ms_on_add_order: function(current_order){
             if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
@@ -120,7 +144,7 @@ openerp.pos_multi_session = function(instance){
         },
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
-            return new module.Order(options);
+            return new models.Order({}, options);
         },
         ms_do_sync_sequence_number: function(data){
             if (data.sequence_number < this.pos_session.sequence_number){
@@ -158,7 +182,7 @@ openerp.pos_multi_session = function(instance){
                 if (!create_new_order){
                     return;
                 }
-                order = this.ms_create_order({ms_info:data.ms_info})
+                order = this.ms_create_order({ms_info:data.ms_info,data:data})
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
@@ -167,18 +191,18 @@ openerp.pos_multi_session = function(instance){
             } else {
                 order.ms_info = data.ms_info;
             }
-            var not_found = order.get('orderLines').map(function(r){
+            var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
             _.each(data.lines, function(dline){
                 dline = dline[2];
-                var line = order.get('orderLines').find(function(r){
+                var line = order.orderlines.find(function(r){
                     return dline.uid == r.uid
                 })
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
                 if (!line){
-                    line = new module.Orderline({}, {pos: pos, order: order, product: product});
+                    line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid
                 }
                 line.ms_info = dline.ms_info || {}
@@ -191,23 +215,23 @@ openerp.pos_multi_session = function(instance){
                 if(dline.discount !== undefined){
                     line.set_discount(dline.discount);
                 }
-                order.get('orderLines').add(line)
+                order.orderlines.add(line)
             })
 
             _.each(not_found, function(uid){
-                var line = order.get('orderLines').find(function(r){
+                var line = order.orderlines.find(function(r){
                                return uid == r.uid;
                            })
-                order.get('orderLines').remove(line);
+                order.orderlines.remove(line);
             })
 
         }
     })
 
     var is_first_order = true;
-    var OrderSuper = module.Order;
-    module.Order = module.Order.extend({
-        initialize: function(options){
+    var OrderSuper = models.Order;
+    models.Order = models.Order.extend({
+        initialize: function(attributes, options){
             var self = this;
             options = options || {}
             OrderSuper.prototype.initialize.apply(this, arguments);
@@ -223,12 +247,12 @@ openerp.pos_multi_session = function(instance){
                 self.ms_update();
             })
         },
-        removeOrderline: function(line){
-            OrderSuper.prototype.removeOrderline.apply(this, arguments);
+        remove_orderline: function(line){
+            OrderSuper.prototype.remove_orderline.apply(this, arguments);
             line.order.trigger('change:sync');
         },
-        addProduct: function(){
-            OrderSuper.prototype.addProduct.apply(this, arguments);
+        add_product: function(){
+            OrderSuper.prototype.add_product.apply(this, arguments);
             this.trigger('change:sync')
         },
         ms_check: function(){
@@ -269,12 +293,15 @@ openerp.pos_multi_session = function(instance){
             this.pos.multi_session.update(data);
         }
     })
-    var OrderlineSuper = module.Orderline;
-    module.Orderline = module.Orderline.extend({
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
         initialize: function(){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {}
+            if (!this.order)
+                // ignore new orderline from splitbill tool
+                return;
             if (this.order.ms_check()){
                 this.ms_info['created'] = this.order.pos.ms_my_info();
             }
@@ -282,12 +309,12 @@ openerp.pos_multi_session = function(instance){
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
                     line.order.ms_info['changed'] = line.order.pos.ms_my_info();
-                    var order_lines = line.order.get('orderLines');
+                    var order_lines = line.order.orderlines;
                     order_lines.trigger('change', order_lines); // to rerender line
                     line.order.trigger('change:sync')
                 }
             })
-            this.uid = this.order.generateUniqueId() + '-' + this.id;
+            this.uid = this.order.generate_unique_id() + '-' + this.id;
         },
         set_selected: function(){
             this.ms_changing_selected = true;
@@ -302,7 +329,7 @@ openerp.pos_multi_session = function(instance){
         }
     })
 
-    module.MultiSession = Backbone.Model.extend({
+    exports.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
             this.pos = pos;
         },
@@ -310,7 +337,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             //var  done = new $.Deferred();
 
-            this.bus = instance.bus.bus;
+            this.bus = bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
@@ -339,9 +366,9 @@ openerp.pos_multi_session = function(instance){
         },
         send: function(message){
             console.log('send', message)
-           var self = this;
+            var self = this;
             var send_it = function() {
-                return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
+                return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
             var tries = 0;
             send_it().fail(function(error, e) {
@@ -353,20 +380,28 @@ openerp.pos_multi_session = function(instance){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)
                 }catch(err){
-                    this.pos.pos_widget.screen_selector.show_popup('error',{
-                        message: _t('Error'),
-                        comment: err,
+                    this.pos.chrome.gui.show_popup('error',{
+                        'title': _t('Error'),
+                        'body': err,
                     })
                 }
             }
             this.pos.db.save('bus_last', this.bus.last)
         }
     })
-}
+    return exports;
+})

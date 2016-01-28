@@ -2,7 +2,7 @@
     'name' : 'Discount for total amount of pos order',
     'version' : '1.0.0',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
+    'license': 'LGPL-3',
     'category' : 'Point Of Sale',
     'website' : 'https://twitter.com/yelizariev',
     'price': 9.00,
@@ -11,6 +11,6 @@
     'data':[
         'data.xml',
         ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

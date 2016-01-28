@@ -2,7 +2,7 @@
     'name' : 'Custom pos ticket ',
     'version' : '1.0.0',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
+    'license': 'LGPL-3',
     'category' : 'Point Of Sale',
     'website' : 'https://yelizariev.github.io',
     'description': """
@@ -16,6 +16,6 @@
     'qweb': [
         'static/src/xml/pos.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

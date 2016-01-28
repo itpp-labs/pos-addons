@@ -33,7 +33,7 @@ Module adds brand field to product
     'data': [
         'product_view.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'images': ['images/product_uom.jpeg','images/product_pricelists.jpeg','images/products_categories.jpeg', 'images/products_form.jpeg'],
 }

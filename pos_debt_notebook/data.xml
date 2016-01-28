@@ -8,7 +8,7 @@
             <!-- The parent_id field will have to be manually set by the user,
             because it depends on his country-specific chart of account -->
             <field name="type">liquidity</field>
-            <field name="user_type" ref="account.data_account_type_asset"/>
+            <field name="user_type_id" ref="account.data_account_type_current_assets"/>
         </record>
 
         <record id="sequence_debt_journal" model="ir.sequence">

@@ -1,4 +1,4 @@
 Sync POS orders across multiple sessions
 ========================================
 
-Tested on Odoo 8.0 6682bde8a202794740b9756542b5b119db7606f3
+Tested on Odoo 9.0 994cb2cb79b8fb91ec83b273213044f15b61095e
