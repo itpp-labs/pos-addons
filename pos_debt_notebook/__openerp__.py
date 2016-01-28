@@ -13,4 +13,5 @@
         'pre_install.yml',
         ],
     'installable': True,
+    'post_init_hook': 'init_debt_journal',
 }
