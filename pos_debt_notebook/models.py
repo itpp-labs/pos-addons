@@ -11,8 +11,12 @@ class ResPartner(models.Model):
 
     @api.multi
     def _get_debt(self):
-        debt_account_name = 'debt_account_' + self.env.user.company_id.name
-        debt_account = self.env['ir.model.data'].search([('name', '=', debt_account_name)])
+        old_debt_account = self.env['ir.model.data'].search([('name', '=', 'debt_account')])
+        if old_debt_account:
+            debt_account = old_debt_account
+        else:
+            debt_account_name = 'debt_account_' + self.env.user.company_id.id
+            debt_account = self.env['ir.model.data'].search([('name', '=', debt_account_name)])
         debt_journal = self.env['account.journal'].search([
             ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
 
@@ -48,7 +52,7 @@ class ResPartner(models.Model):
 
     debt = fields.Float(
         compute='_get_debt', string='Debt', readonly=True,
-        digits=dp.get_precision('Account'))
+        digits=dp.get_precision('Account'), help='This debt value for only current company')
 
 
 class AccountJournal(models.Model):

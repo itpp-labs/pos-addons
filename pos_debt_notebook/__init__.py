@@ -4,6 +4,10 @@ from openerp import SUPERUSER_ID
 
 
 def init_debt_journal(cr, registry):
+    if registry['ir.model.data'].search([('name', '=', 'debt_account')]):
+        # Used account journal from old version module, don't supported multi-company mode
+        return
+
     company_ids = registry['res.company'].search(cr, SUPERUSER_ID, [])
     for company in registry['res.company'].browse(cr, SUPERUSER_ID, company_ids):
         if len(registry['account.account'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])) == 0:
@@ -28,7 +32,7 @@ def init_debt_journal(cr, registry):
                     'company_id': company.id
                 })
                 registry['ir.model.data'].create(cr, SUPERUSER_ID, {
-                    'name': 'debt_account_' + company.name,
+                    'name': 'debt_account_' + company.id,
                     'model': 'account.account',
                     'module': 'pos_debt_notebook',
                     'res_id': debt_account,
@@ -66,9 +70,9 @@ def init_debt_journal(cr, registry):
                     'noupdate': True,
                 })
 
-            config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])
-            for config in registry['pos.config'].browse(cr, SUPERUSER_ID, config_ids):
-                config.write({
-                    'journal_ids': [(4, new_journal)],
-                    'debt_dummy_product_id': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
-                })
+                config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])
+                for config in registry['pos.config'].browse(cr, SUPERUSER_ID, config_ids):
+                    config.write({
+                        'journal_ids': [(4, new_journal)],
+                        'debt_dummy_product_id': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
+                    })

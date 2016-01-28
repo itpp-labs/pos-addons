@@ -7,7 +7,7 @@ function pos_keyboard_widgets(instance, module){
             res = resSuper.done(function(e){
                 self.pos.keypad.connect();
                 self.pos.keypad.set_action_callback(function(data){
-                    self.keypad_action(data, self.pos.keypad.type);
+                     self.keypad_action(data, self.pos.keypad.type);
                 });
             });
             return res;
@@ -41,15 +41,15 @@ function pos_keyboard_widgets(instance, module){
           },
     });
 
-    // this module mimics a keypad-only cash register. Use connect() and
+    // this module mimics a keypad-only cash register. Use connect() and 
     // disconnect() to activate and deactivate it.
     module.Keypad = instance.web.Class.extend({
         init: function(attributes){
             this.pos = attributes.pos;
-            this.pos_widget = this.pos.pos_widget;
+            this.pos_widget = this.pos.pos_widget; 
             this.type = {
                  numchar: 'number, dot',
-                 bmode: 'qty, disc, price',
+                 bmode: 'qty, disc, price', 
                  sign: '+, -',
                  backspace: 'backspace'
             }
@@ -78,7 +78,7 @@ function pos_keyboard_widgets(instance, module){
         reset_action_callback: function(){
             this.action_callback = undefined;
         },
-
+        
         // starts catching keyboard events and tries to interpret keystrokes,
         // calling the callback when needed.
         connect: function(){
@@ -94,7 +94,7 @@ function pos_keyboard_widgets(instance, module){
             var KC_AMT_1 = 80;     // KeyCode: Price (Keypad 'p')
             var KC_DISC_1 = 68;    // KeyCode: Discount Percentage [0..100] (Keypad 'd')
 
-            var KC_BACKSPACE = 8;  // KeyCode: Backspace (Keypad 'backspace')
+            var KC_BACKSPACE = 8;  // KeyCode: Backspace (Keypad 'backspace')       
             var kc_lookup = {
                 48: '0', 49: '1', 50: '2',  51: '3', 52: '4',
                 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
@@ -135,26 +135,26 @@ function pos_keyboard_widgets(instance, module){
                             self.data.val = kc_lookup[token];
                             is_number = true;
                             ok = true;
-                    }
+                    } 
                     else if (token == KC_PLU || token == KC_PLU_1) {
                         self.data.type = type.sign;
                         ok = true;
-                    }
+                    } 
                     else if (token == KC_QTY || token == KC_QTY_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.qty;
                         ok = true;
-                    }
+                    } 
                     else if (token == KC_AMT || token == KC_AMT_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.price;
                         ok = true;
-                    }
+                    } 
                     else if (token == KC_DISC || token == KC_DISC_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.disc;
                         ok = true;
-                    }
+                    } 
                     else if (token == KC_BACKSPACE) {
                         self.data.type = type.backspace;
                         ok = true;
@@ -175,7 +175,7 @@ function pos_keyboard_widgets(instance, module){
             });
         },
 
-        // stops catching keyboard events
+        // stops catching keyboard events 
         disconnect: function(){
             $('body').off('keyup', '')
         }
