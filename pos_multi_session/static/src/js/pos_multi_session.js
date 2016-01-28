@@ -353,9 +353,16 @@ openerp.pos_multi_session = function(instance){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)
