@@ -32,7 +32,7 @@ def init_debt_journal(cr, registry):
                     'company_id': company.id
                 })
                 registry['ir.model.data'].create(cr, SUPERUSER_ID, {
-                    'name': 'debt_account_' + company.id,
+                    'name': 'debt_account_' + str(company.id),
                     'model': 'account.account',
                     'module': 'pos_debt_notebook',
                     'res_id': debt_account,
