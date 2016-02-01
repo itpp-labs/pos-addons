@@ -23,10 +23,14 @@
     </t>
 
     <t t-extend="PaymentScreenWidget">
-        <t t-jquery=".button.next" t-operation="after">
-            <span class="button pay-full-debt oe_hidden highlight">
-                Pay Full Debt
-            </span>
+        <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
+            <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+        </t>
+
+        <t t-jquery=".js_set_customer" t-operation="after">
+            <div class="button pay-full-debt oe_hidden">
+                <i class='fa fa-money' /> Pay Full Debt
+            </div>
         </t>
     </t>
 
