@@ -5,7 +5,7 @@
     'summary': 'Debt payment method for POS',
     'license': 'GPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://yelizariev.github.io',
+    'website': 'https://www.it-projects.info',
     'depends': ['point_of_sale', 'account'],
     'data': [
         'data.xml',
