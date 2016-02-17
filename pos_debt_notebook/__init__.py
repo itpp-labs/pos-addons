@@ -5,7 +5,7 @@ from openerp import SUPERUSER_ID
 
 def init_debt_journal(cr, registry):
     if registry['ir.model.data'].search(cr, SUPERUSER_ID, [('name', '=', 'debt_account')]):
-        # Used account journal from old version module, don't supported multi-company mode
+        # Use account journal from module version < 2.0.0, don't supported multi-company mode
         return
 
     company_ids = registry['res.company'].search(cr, SUPERUSER_ID, [])
@@ -35,7 +35,7 @@ def init_debt_journal(cr, registry):
                 'model': 'account.account',
                 'module': 'pos_debt_notebook',
                 'res_id': debt_account,
-                'noupdate': True,
+                'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
         debt_journal_inactive = registry['account.journal'].search(cr, SUPERUSER_ID, [
@@ -54,6 +54,13 @@ def init_debt_journal(cr, registry):
                 'padding': 3,
                 'prefix': 'DEBT ' + str(company.id),
             })
+            registry['ir.model.data'].create(cr, SUPERUSER_ID, {
+                'name': 'journal_sequence' + str(new_sequence),
+                'model': 'ir.sequence',
+                'module': 'pos_debt_notebook',
+                'res_id': new_sequence,
+                'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
+            })
             new_journal = registry['account.journal'].create(cr, SUPERUSER_ID, {
                 'name': 'Debt Journal',
                 'code': 'TDEBT',
@@ -70,7 +77,7 @@ def init_debt_journal(cr, registry):
                 'model': 'account.journal',
                 'module': 'pos_debt_notebook',
                 'res_id': int(new_journal),
-                'noupdate': True,
+                'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
         config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])
