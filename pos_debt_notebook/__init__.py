@@ -19,7 +19,7 @@ def init_debt_journal(cr, registry):
         if debt_journal_active:
             continue
         debt_account = registry['account.account'].search(cr, SUPERUSER_ID, [
-            ('name', '=', 'Debt'), ('code', '=', 'XDEBT'), ('company_id', '=', company.id)])
+            ('code', '=', 'XDEBT'), ('company_id', '=', company.id)])
         if debt_account:
             debt_account = debt_account[0]
         else:
@@ -28,7 +28,8 @@ def init_debt_journal(cr, registry):
                 'code': 'XDEBT',
                 'type': 'liquidity',
                 'user_type': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'account', 'data_account_type_asset')[1],
-                'company_id': company.id
+                'company_id': company.id,
+                'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
             registry['ir.model.data'].create(cr, SUPERUSER_ID, {
                 'name': 'debt_account_' + str(company.id),
