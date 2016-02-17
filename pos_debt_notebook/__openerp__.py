@@ -5,7 +5,7 @@
     'summary': 'Debt payment method for POS',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://www.it-projects.info',
+    'website': 'https://it-projects.info',
     'depends': ['point_of_sale', 'account'],
     'data': [
         'data.xml',
