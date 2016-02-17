@@ -8,7 +8,7 @@ function pos_keyboard_widgets(instance, module){
                 self.pos.keypad.connect();
                 self.pos.keypad.set_action_callback(function(data){
                      self.keypad_action(data, self.pos.keypad.type);
-                 });
+                });
             });
             return res;
         },
@@ -33,17 +33,6 @@ function pos_keyboard_widgets(instance, module){
         },
     });
 
-    module.NumpadWidget.include({
-        init: function(parent, options) {
-            this._super(parent, options);
-            this.modeButton = {
-                qty: 'quantity',
-                disc: 'discount',
-                price: 'price' 
-            } 
-        }
-    });
- 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(session, attributes) {
@@ -90,7 +79,7 @@ function pos_keyboard_widgets(instance, module){
             this.action_callback = undefined;
         },
         
-        // starts catching keyboard events and tries to interpret keystrokes, 
+        // starts catching keyboard events and tries to interpret keystrokes,
         // calling the callback when needed.
         connect: function(){
             var self = this;
@@ -105,7 +94,7 @@ function pos_keyboard_widgets(instance, module){
             var KC_AMT_1 = 80;     // KeyCode: Price (Keypad 'p')
             var KC_DISC_1 = 68;    // KeyCode: Discount Percentage [0..100] (Keypad 'd')
 
-            var KC_BACKSPACE = 8;  // KeyCode: Backspace (Keypad 'backspace')      
+            var KC_BACKSPACE = 8;  // KeyCode: Backspace (Keypad 'backspace')       
             var kc_lookup = {
                 48: '0', 49: '1', 50: '2',  51: '3', 52: '4',
                 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
@@ -117,7 +106,7 @@ function pos_keyboard_widgets(instance, module){
 
             //cancel return to the previous page when press backspace
             var rx = /INPUT|SELECT|TEXTAREA/i;
-            $(document).bind("keydown keypress", function(e){
+            $(document).on("keydown keypress", function(e){
                 if( e.which == 8 ){ // 8 == backspace
                     if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
                         e.preventDefault();
@@ -126,18 +115,25 @@ function pos_keyboard_widgets(instance, module){
             });
 
             //usb keyboard keyup event
-            $('body').delegate('','keyup', function (e){
+            var ok = false;
+            var timeStamp = 0;
+            $('body').on('keyup', '', function (e){
                 var statusHandler  =  !rx.test(e.target.tagName)  ||
                     e.target.disabled || e.target.readOnly;
                 if (statusHandler){
-                    var ok =false;
+                    var is_number = false;
                     var type = self.type;
-                    var buttonMode = self.pos.pos_widget.numpad.modeButton
-                    token = e.keyCode;                
-                    if ((token >= 96 && token <= 105 || token == 110) || 
+                    var buttonMode = {
+                        qty: 'quantity',
+                        disc: 'discount',
+                        price: 'price'
+                    };
+                    var token = e.keyCode;
+                    if ((token >= 96 && token <= 105 || token == 110) ||
                         (token >= 48 && token <= 57 || token == 190)) {
                             self.data.type = type.numchar;
                             self.data.val = kc_lookup[token];
+                            is_number = true;
                             ok = true;
                     } 
                     else if (token == KC_PLU || token == KC_PLU_1) {
@@ -146,7 +142,7 @@ function pos_keyboard_widgets(instance, module){
                     } 
                     else if (token == KC_QTY || token == KC_QTY_1) {
                         self.data.type = type.bmode;
-                        self.data.val = buttonMode.qty
+                        self.data.val = buttonMode.qty;
                         ok = true;
                     } 
                     else if (token == KC_AMT || token == KC_AMT_1) {
@@ -161,18 +157,28 @@ function pos_keyboard_widgets(instance, module){
                     } 
                     else if (token == KC_BACKSPACE) {
                         self.data.type = type.backspace;
-                        self.action_callback(self.data);
                         ok = true;
-                    } 
-                    if (ok) {self.action_callback(self.data);}
+                    }
+
+                    if (is_number) {
+                        if (timeStamp + 50 > new Date().getTime()) {
+                            ok = false;
+                        }
+                    }
+
+                    timeStamp = new Date().getTime();
+
+                    setTimeout(function(){
+                        if (ok) {self.action_callback(self.data);}
+                    }, 50);
                 }
             });
         },
 
         // stops catching keyboard events 
         disconnect: function(){
-            $('body').undelegate('', 'keyup')
-        },
+            $('body').off('keyup', '')
+        }
     });
 }
 
@@ -183,4 +189,4 @@ function pos_keyboard_widgets(instance, module){
         var module = instance.point_of_sale;
         pos_keyboard_widgets(instance, module);
     }
-})()
+})();
