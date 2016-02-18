@@ -90,12 +90,14 @@ class PosSession(osv.osv):
 
         if not has_journals:
             debt_journal = self.pool['account.journal'].search(cr, SUPERUSER_ID, [
-                ('code', '=', 'TDEBT'), ('company_id', '=', pos_config.company_id.id)])[0]
-            debt_journal_obj = self.pool['account.journal'].browse(cr, uid, debt_journal)
-            debt_journal_obj.write({'journal_user': True})
-            pos_config.write({
-                'journal_ids': [(4, debt_journal)],
-                'debt_dummy_product_id': self.pool('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
-            })
+                ('code', '=', 'TDEBT'), ('company_id', '=', pos_config.company_id.id)])
+            if debt_journal:
+                debt_journal = debt_journal[0]
+                debt_journal_obj = self.pool['account.journal'].browse(cr, uid, debt_journal)
+                debt_journal_obj.write({'journal_user': True})
+                pos_config.write({
+                    'journal_ids': [(4, debt_journal)],
+                    'debt_dummy_product_id': self.pool('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
+                })
 
         return res
