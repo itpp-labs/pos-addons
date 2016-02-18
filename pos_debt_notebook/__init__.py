@@ -70,7 +70,7 @@ def init_debt_journal(cr, registry):
                 'code': 'TDEBT',
                 'type': 'cash',
                 'debt': True,
-                'journal_user': True,
+                'journal_user': False,
                 'sequence_id': new_sequence,
                 'company_id': company.id,
                 'default_debit_account_id': debt_account,
@@ -88,6 +88,9 @@ def init_debt_journal(cr, registry):
         for config in registry['pos.config'].browse(cr, SUPERUSER_ID, config_ids):
             if not config.journal_ids:
                 continue
+            new_journal_obj = registry['account.journal'].browse(cr, SUPERUSER_ID, new_journal)
+            if not new_journal_obj.journal_user:
+                new_journal_obj.write({'journal_user': True})
             config.write({
                 'journal_ids': [(4, new_journal)],
                 'debt_dummy_product_id': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
