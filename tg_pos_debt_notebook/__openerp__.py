@@ -2,10 +2,10 @@
     'name': 'Debt notebook for POS',
     'version': '1.0.2',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'summary': 'Comfortable sales for your regular customersDebt payment method for POS',
+    'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://yelizariev.github.io',
+    'website': 'https://it-projects.info',
     'depends': ['pos_debt_notebook', 'point_of_sale'],
     'images': [
         'images/screenshot-2.png',
@@ -20,4 +20,5 @@
     ],
     'installable': True,
     'auto_install': True,
+    'uninstall_hook': 'pre_uninstall',
 }

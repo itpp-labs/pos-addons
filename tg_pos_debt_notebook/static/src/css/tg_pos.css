@@ -6,14 +6,8 @@
     color: green;
 }
 
-.screen .top-content .button.next {
-    right: auto;
-    left: 55%;
-}
-
-.button.pay-full-debt,
 .screen .top-content .button.set-customer-pay-full-debt {
-    right: 0px;
+    right: 25%;
     font-size: 15px;
 }
 
