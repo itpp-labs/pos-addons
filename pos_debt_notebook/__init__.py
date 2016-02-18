@@ -86,6 +86,8 @@ def init_debt_journal(cr, registry):
 
         config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])
         for config in registry['pos.config'].browse(cr, SUPERUSER_ID, config_ids):
+            if not config.journal_ids:
+                continue
             config.write({
                 'journal_ids': [(4, new_journal)],
                 'debt_dummy_product_id': registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
