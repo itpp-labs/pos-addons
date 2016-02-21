@@ -5,36 +5,44 @@ from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 from openerp.exceptions import UserError
+import logging
 
+
+_logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.multi
     def _get_debt(self):
-        debt_account = self.env['account.account'].search([
-            ('company_id', '=', self.env.user.company_id.id), ('code', '=', 'XDEBT')])
+        
         debt_journal = self.env['account.journal'].search([
             ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
-
-        self._cr.execute(
-            """SELECT l.partner_id, SUM(l.debit - l.credit)
-            FROM account_move_line l
-            WHERE l.account_id = %s AND l.partner_id IN %s
-            GROUP BY l.partner_id
-            """,
-            (debt_account.id, tuple(self.ids)))
+                
+        debt_account = []
+        for journal in debt_journal:            
+            debt_account.append(journal.default_debit_account_id.id)
+                            
 
         res = {}
         for partner in self:
             res[partner.id] = 0
-        for partner_id, val in self._cr.fetchall():
-            res[partner_id] += val
+        if len(debt_account) > 0:
+            self._cr.execute(
+            """SELECT l.partner_id, SUM(l.debit - l.credit)
+            FROM account_move_line l
+            WHERE l.account_id IN %s AND l.partner_id IN %s
+            GROUP BY l.partner_id
+            """,
+            (tuple(debt_account), tuple(self.ids)))
+
+            for partner_id, val in self._cr.fetchall():
+                res[partner_id] += val
 
         statements = self.env['account.bank.statement'].search(
-            [('journal_id', '=', debt_journal.id), ('state', '=', 'open')])
+            [('journal_id', 'in', [j.id for j in debt_journal]), ('state', '=', 'open')])
+            
         if statements:
-
             self._cr.execute(
                 """SELECT l.partner_id, SUM(l.amount)
                 FROM account_bank_statement_line l
