@@ -89,9 +89,8 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
 
         pay_full_debt: function(){
             var order = this.pos.get_order();
-
-            var debtjournal ;
-//            var debtjournal = false;
+            
+            var debtjournal = false;
             _.each(this.pos.cashregisters, function(cashregister) {
                 if (cashregister.journal.debt) {
                     debtjournal = cashregister;
@@ -184,7 +183,7 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
             var self = this;
             this.$('.button.set-customer-pay-full-debt').click(function(){
                 self.save_changes();
-                self.gui.back();
+//                self.gui.back();
                 if (self.new_client.debt <= 0) {
                     self.gui.show_popup('error',{
                         'title': _t('Error: No Debt'),
