@@ -6,6 +6,14 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     def _check_same_floors(self, cr, uid, ids, context=None):
+        # Проверяем чтобы у всех ПОС у которых одинаковые мультисесии был одинаковый набор этажей (floors). 
+        # Ранее было решено добавить такое ограничение.
+        # TODO
+        # У тебя здесь N*(N-1) операций.
+        # Можно проще делать:
+        # Сделать search в pos.config с аттрибутом groupby='multi_session_id'
+        # Потом в каждой группе взять один элемент и сравнить его с каждым. Если хоть одна разница есть, то return False.
+        # Тогда будет N + N операций
         for rec in self.browse(cr, uid, ids, context=context):
             pos_config_ids = self.pool['pos.config'].search(cr, uid, [
                 ('multi_session_id', '=', rec.multi_session_id.id),
