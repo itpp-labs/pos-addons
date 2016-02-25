@@ -201,19 +201,8 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             })
 
-        },
-        load_server_data: function(){
-            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
-            var self = this;
-            return res.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new exports.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         })
-        },
-    })
+        }
+    });
 
     var is_first_order = true;
     var OrderSuper = module.Order;
