@@ -7,16 +7,5 @@
     </xpath>
 </template>
 
-<record model="ir.ui.view" id="view_pos_config_form">
-    <field name="name">pos.config.form.view.inherit</field>
-    <field name="model">pos.config</field>
-    <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
-    <field name="priority" eval="32"/>
-    <field name="arch" type="xml">
-        <xpath expr="//group[@name='multi_session']/group" position="inside">
-            <field name="multi_session_table_id"/>
-        </xpath>
-    </field>
-</record>
 
 </data></openerp>
