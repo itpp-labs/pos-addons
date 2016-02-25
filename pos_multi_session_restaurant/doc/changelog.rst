@@ -3,6 +3,11 @@
 Changelog
 =========
 
+`1.1.0`
+-------
+
+- Removed virtual table. Added constraint of different floors in POS that has same multi session.
+
 `1.0.1`
 -------
 

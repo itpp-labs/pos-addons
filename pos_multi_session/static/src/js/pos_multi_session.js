@@ -225,7 +225,18 @@ odoo.define('pos_multi_session', function(require){
                 order.orderlines.remove(line);
             })
 
-        }
+        },
+        load_server_data: function(){
+            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
+            var self = this;
+            return res.then(function(){
+                             if (self.config.multi_session_id){
+                                 self.multi_session = new exports.MultiSession(self);
+                                 self.multi_session.start();
+                                 self.multi_session.request_sync_all();
+                             }
+                         })
+        },
     })
 
     var is_first_order = true;
@@ -366,7 +377,7 @@ odoo.define('pos_multi_session', function(require){
         },
         send: function(message){
             console.log('send', message)
-           var self = this;
+            var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
@@ -380,9 +391,16 @@ odoo.define('pos_multi_session', function(require){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)
