@@ -25,7 +25,7 @@
             <field name="city">Namur (Loyers)2</field>
             <field name="zip">5102</field>
         </record>
-        <record id="user_demo2" model="res.users">
+        <record id="base.user_demo2" model="res.users">
             <field name="partner_id" ref="partner_demo2"/>
             <field name="login">demo2</field>
             <field name="password">demo2</field>
