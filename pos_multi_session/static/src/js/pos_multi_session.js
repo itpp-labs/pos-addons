@@ -220,16 +220,16 @@ odoo.define('pos_multi_session', function(require){
             })
 
         },
-        load_server_data: function () {
+        load_server_data: function(){
             res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
             var self = this;
-            return res.then(function () {
-                if (self.config.multi_session_id) {
-                    self.multi_session = new module.MultiSession(self);
-                    self.multi_session.start();
-                    self.multi_session.request_sync_all();
-                }
-            })
+            return res.then(function(){
+                             if (self.config.multi_session_id){
+                                 self.multi_session = new exports.MultiSession(self);
+                                 self.multi_session.start();
+                                 self.multi_session.request_sync_all();
+                             }
+                         })
         },
     });
 
@@ -371,7 +371,7 @@ odoo.define('pos_multi_session', function(require){
         },
         send: function(message){
             console.log('send', message)
-           var self = this;
+            var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
