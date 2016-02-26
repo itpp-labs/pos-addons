@@ -103,10 +103,9 @@ openerp.pos_multi_session = function(instance){
             }
         },
         ms_on_add_order: function(current_order){
-            if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
-                //replace order
-                //current_order.destroy({'reason': 'abandon'})
-            }else{
+            if (this.config.multi_session_replace_empty_order && current_order && current_order.ms_replace_empty_order && current_order.is_empty()) {    //replace order
+                current_order.destroy({'reason': 'abandon'})
+            } else {
                 // keep current_order active
                 this.set('selectedOrder', current_order);
             }
