@@ -36,5 +36,9 @@
             <field name="ean13">0410100000006</field>
             <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
         </record>
+        <record id="base.user_demo" model="res.users">
+            <field name="ean13">0410100000006</field>
+            <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
+        </record>
     </data>
 </openerp>
