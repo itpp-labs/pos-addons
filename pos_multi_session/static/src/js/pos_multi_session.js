@@ -40,13 +40,6 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.multi_session = false;
-            this.ready = this.ready.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new exports.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         });
             this.ms_syncing_in_progress = false;
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
@@ -130,14 +123,15 @@ odoo.define('pos_multi_session', function(require){
                 })
             }
         },
-        ms_orders_to_sync: function(){
-            return this.get('orders').models;
-        },
-        ms_on_add_order: function(current_order){
-            if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
-                //replace order
+        ms_on_add_order: function (current_order) {
+            if (!current_order) {
+                return
+            }
+            is_empty = current_order.is_empty();
+            is_frozen = !current_order.ms_replace_empty_order;
+            if (this.config.multi_session_replace_empty_order && is_empty && !is_frozen) {
                 current_order.destroy({'reason': 'abandon'})
-            }else{
+            } else if (is_frozen || !is_empty || !this.config.multi_session_deactivate_empty_order) {
                 // keep current_order active
                 this.set('selectedOrder', current_order);
             }
@@ -225,8 +219,19 @@ odoo.define('pos_multi_session', function(require){
                 order.orderlines.remove(line);
             })
 
-        }
-    })
+        },
+        load_server_data: function () {
+            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
+            var self = this;
+            return res.then(function () {
+                if (self.config.multi_session_id) {
+                    self.multi_session = new module.MultiSession(self);
+                    self.multi_session.start();
+                    self.multi_session.request_sync_all();
+                }
+            })
+        },
+    });
 
     var is_first_order = true;
     var OrderSuper = models.Order;
@@ -380,9 +385,16 @@ odoo.define('pos_multi_session', function(require){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)

@@ -17,5 +17,8 @@
     'qweb': [
         'static/src/xml/pos_multi_session.xml',
     ],
+    'demo': [
+        'demo/demo.xml',
+    ],
     'installable': True,
 }
