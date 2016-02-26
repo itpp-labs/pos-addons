@@ -20,13 +20,6 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.multi_session = false;
-            this.ready = this.ready.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new module.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         });
             this.ms_syncing_in_progress = false;
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
@@ -201,7 +194,18 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             })
 
-        }
+        },
+        load_server_data: function () {
+            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
+            var self = this;
+            return res.then(function () {
+                if (self.config.multi_session_id) {
+                    self.multi_session = new module.MultiSession(self);
+                    self.multi_session.start();
+                    self.multi_session.request_sync_all();
+                }
+            })
+        },
     });
 
     var is_first_order = true;
