@@ -46,7 +46,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
-                order.save_to_db();
+                //order.save_to_db();
             }
             else if (this.ms_table){
                 order.table = this.ms_table;
