@@ -104,7 +104,7 @@ openerp.pos_multi_session = function(instance){
         },
         ms_on_add_order: function (current_order) {
             is_empty = current_order && current_order.is_empty()
-            if (this.config.multi_session_replace_empty_order && current_order.ms_replace_empty_order && is_empt) {
+            if (this.config.multi_session_replace_empty_order && current_order.ms_replace_empty_order && is_empty) {
                 current_order.destroy({'reason': 'abandon'})
             } else if (!is_empty || !this.config.multi_session_deactivate_empty_order) {
                 // keep current_order active
