@@ -123,6 +123,9 @@ odoo.define('pos_multi_session', function(require){
                 })
             }
         },
+        ms_orders_to_sync: function(){
+            return this.get('orders').models;
+        },
         ms_on_add_order: function (current_order) {
             if (!current_order) {
                 return
