@@ -25,6 +25,3 @@ class pos_multi_session(models.Model):
         self.env['bus.bus'].sendmany(notifications)
         return 1
 
-class pos_order(models.Model):
-    _inherit = 'pos.order'
-    host_order_uid = fields.Char()
