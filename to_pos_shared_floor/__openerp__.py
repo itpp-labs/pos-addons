@@ -37,5 +37,6 @@ Enable to share multiple floors to PoSes:
         'views/restaurant_view.xml',
         'views/templates.xml',         
     ],
+    'demo':['demo.xml'],
     'installable': True,
 }

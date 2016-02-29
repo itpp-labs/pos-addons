@@ -40,24 +40,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.ms_table = false;
-            this.ready = this.ready.then(function(){
-                             if (self.config.multi_session_table_id){
-                                 self.ms_table = self.tables_by_id[self.config.multi_session_table_id[0]]
-                                 if (!self.ms_table.floor){
-                                     //delay to finish initalisation
-                                     setTimeout(function(){
-                                         throw new Error(_t("Virtual table is not belonged to this POS."));
-                                     }, 5000)
-                                 }
-                             }
-                         })
         },
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
-                order.save_to_db();
+                //order.save_to_db();
             }
             else if (this.ms_table){
                 order.table = this.ms_table;
@@ -65,7 +54,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
-/*
         ms_orders_to_sync: function(){
             var self = this;
             if (!this.ms_table){
@@ -75,7 +63,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                        return r.table === self.ms_table;
                    })
         },
-*/
         ms_on_add_order: function(current_order){
             if (!current_order && this.ms_table){
                 // no current_order, because we on floor screen
