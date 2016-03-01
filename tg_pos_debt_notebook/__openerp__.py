@@ -5,7 +5,7 @@
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://www.it-projects.info',
+    'website': 'https://it-projects.info',
     'depends': ['pos_debt_notebook', 'point_of_sale'],
     'images': [
         'images/screenshot-2.png',
