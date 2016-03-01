@@ -165,6 +165,21 @@ openerp.pos_multi_session = function(instance){
                 order.ms_info = data.ms_info;
             }
             var not_found = order.get('orderLines').map(function(r){
+            if(data.partner_id!=false)
+            {
+                var client = order.pos.db.get_partner_by_id(data.partner_id);
+                if(!client)
+                {
+//                    var def  = new $.Deferred();
+//                    def =this.load_new_partners_by_id(data.partner_id)
+                    $.when(this.load_new_partners_by_id(data.partner_id))
+                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
+                             order.set_client(client);},function(){});
+                    //client = order.pos.db.get_partner_by_id(data.partner_id);
+                }
+                order.set_client(client);
+            }
+            var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
             _.each(data.lines, function(dline){
@@ -198,7 +213,26 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             })
 
+            })
         },
+        load_new_partners_by_id: function(partner_id){
+        var self = this;
+        var def  = new $.Deferred();
+        var client;
+        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+        new Model('res.partner')
+            .query(fields)
+            .filter([['id','=',partner_id]])
+            .all({'timeout':3000, 'shadow': true})
+            .then(function(partners){
+                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                    def.resolve();
+                } else {
+                    def.reject();
+                }
+            }, function(err,event){ event.preventDefault(); def.reject(); });
+        return def;
+    },
         load_server_data: function () {
             res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
             var self = this;
@@ -234,6 +268,10 @@ openerp.pos_multi_session = function(instance){
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
             line.order.trigger('change:sync');
+        },
+        set_client: function(client){
+            OrderSuper.prototype.set_client.apply(this,arguments);
+            this.trigger('change:sync');
         },
         addProduct: function(){
             OrderSuper.prototype.addProduct.apply(this, arguments);
