@@ -199,12 +199,10 @@ odoo.define('pos_multi_session', function(require){
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client)
                 {
-//                    var def  = new $.Deferred();
-//                    def =this.load_new_partners_by_id(data.partner_id)
+
                     $.when(this.load_new_partners_by_id(data.partner_id))
                                     .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
                              order.set_client(client);},function(){});
-                    //client = order.pos.db.get_partner_by_id(data.partner_id);
                 }
                 order.set_client(client);
             }
