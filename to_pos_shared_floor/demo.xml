@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="point_of_sale.pos_config_main" model="pos.config">
+            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
+        </record>
+    </data>
+</openerp>
+

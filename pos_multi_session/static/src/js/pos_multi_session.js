@@ -7,6 +7,7 @@ odoo.define('pos_multi_session', function(require){
     var screens = require('point_of_sale.screens')
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
+    var Model = require('web.DataModel');
 
     var _t = core._t;
 
@@ -113,6 +114,8 @@ odoo.define('pos_multi_session', function(require){
                 error = err;
                 console.error(err);
             }
+            
+            
             this.ms_syncing_in_progress = false;
             if (error){
                 throw(error)
@@ -191,6 +194,18 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 order.ms_info = data.ms_info;
             }
+            if(data.partner_id!=false)
+            {
+                var client = order.pos.db.get_partner_by_id(data.partner_id);
+                if(!client)
+                {
+
+                    $.when(this.load_new_partners_by_id(data.partner_id))
+                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
+                             order.set_client(client);},function(){});
+                }
+                order.set_client(client);
+            }
             var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
@@ -225,7 +240,36 @@ odoo.define('pos_multi_session', function(require){
                 order.orderlines.remove(line);
             })
 
-        }
+        },
+        load_new_partners_by_id: function(partner_id){
+        var self = this;
+        var def  = new $.Deferred();
+        var client;
+        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+        new Model('res.partner')
+            .query(fields)
+            .filter([['id','=',partner_id]])
+            .all({'timeout':3000, 'shadow': true})
+            .then(function(partners){
+                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                    def.resolve();
+                } else {
+                    def.reject();
+                }
+            }, function(err,event){ event.preventDefault(); def.reject(); });    
+        return def;
+    },
+        load_server_data: function(){
+            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
+            var self = this;
+            return res.then(function(){
+                             if (self.config.multi_session_id){
+                                 self.multi_session = new exports.MultiSession(self);
+                                 self.multi_session.start();
+                                 self.multi_session.request_sync_all();
+                             }
+                         })
+        },
     })
 
     var is_first_order = true;
@@ -250,6 +294,10 @@ odoo.define('pos_multi_session', function(require){
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
             line.order.trigger('change:sync');
+        },
+        set_client: function(client){
+            OrderSuper.prototype.set_client.apply(this,arguments);
+            this.trigger('change:sync');
         },
         add_product: function(){
             OrderSuper.prototype.add_product.apply(this, arguments);
@@ -366,7 +414,7 @@ odoo.define('pos_multi_session', function(require){
         },
         send: function(message){
             console.log('send', message)
-           var self = this;
+            var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
             };
@@ -380,9 +428,16 @@ odoo.define('pos_multi_session', function(require){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)
