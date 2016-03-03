@@ -3,17 +3,15 @@ odoo.define('pos_product_available.PosModel', function(require){
 
 
     var models = require('point_of_sale.models');
-    models.load_models({
-        model: 'product.product',
-        fields: ['qty_available'],
-        domain:[['sale_ok','=',true],['available_in_pos','=',true]],
-        context: function(self){ return {'location': self.config.stock_location_id[0]}},
-        loaded: function(self, products){
-            $.each(products, function(){
-                $.extend(self.db.get_product_by_id(this.id) || {}, this)
-            });
-        }
-    })
+    var _super_posmodel = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            var partner_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            partner_model.fields.push('qty_available');
+            
+            return _super_posmodel.initialize.call(this, session, attributes);
+        },
+    });
 
     var PosModelSuper = models.PosModel;
 
