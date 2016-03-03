@@ -1,42 +1,21 @@
-odoo.define('pos_multi_session', function(require){
-    var exports = {}
+openerp.pos_multi_session = function(instance){
+    var module = instance.point_of_sale;
+    var _t = instance.web._t;
 
-    var session = require('web.session');
-    var Backbone = window.Backbone;
-    var core = require('web.core');
-    var screens = require('point_of_sale.screens')
-    var models = require('point_of_sale.models');
-    var bus = require('bus.bus');
-    var Model = require('web.DataModel');
-
-    var _t = core._t;
-
-    screens.OrderWidget.include({
+    module.OrderWidget.include({
         rerender_orderline: function(order_line){
             if (order_line.node)
                 return this._super(order_line);
-        },
-        remove_orderline: function(order_line){
-            if (!this.pos.get_order())
-                return;
-            this._super(order_line)
-        },
+        }
     })
-    screens.ReceiptScreenWidget.extend({
-        finish_order: function() {
-            if (!this._locked) {
-                this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
-            }
-        },
-        /* since saas-6:
-        click_next: function() {
+    module.ReceiptScreenWidget = module.ReceiptScreenWidget.extend({
+        finishOrder: function() {
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
-         */
     })
 
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
+    var PosModelSuper = module.PosModel;
+    module.PosModel = module.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
@@ -53,11 +32,10 @@ odoo.define('pos_multi_session', function(require){
 
         },
         ms_my_info: function(){
-            var user = this.cashier || this.user;
             return {
                 'user': {
-                    'id': user.id,
-                    'name': user.name,
+                    'id': this.pos_session.user_id[0],
+                    'name': this.pos_session.user_id[1],
                 },
                 'pos': {
                     'id': this.config.id,
@@ -117,7 +95,7 @@ odoo.define('pos_multi_session', function(require){
             } else if (action == 'request_sync_all'){
                 //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
                 //this.multi_session.sync_sequence_number();
-                _.each(this.ms_orders_to_sync(), function(r){
+                this.get('orders').each(function(r){
                     if (!r.is_empty()){
                         r.ms_update();
                     }
@@ -186,19 +164,7 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 order.ms_info = data.ms_info;
             }
-            if(data.partner_id!=false)
-            {
-                var client = order.pos.db.get_partner_by_id(data.partner_id);
-                if(!client)
-                {
-
-                    $.when(this.load_new_partners_by_id(data.partner_id))
-                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
-                             order.set_client(client);},function(){});
-                }
-                order.set_client(client);
-            }
-            var not_found = order.orderlines.map(function(r){
+            var not_found = order.get('orderLines').map(function(r){
                                 return r.uid;
                             })
             _.each(data.lines, function(dline){
@@ -233,25 +199,6 @@ odoo.define('pos_multi_session', function(require){
             })
 
         },
-        load_new_partners_by_id: function(partner_id){
-        var self = this;
-        var def  = new $.Deferred();
-        var client;
-        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
-        new Model('res.partner')
-            .query(fields)
-            .filter([['id','=',partner_id]])
-            .all({'timeout':3000, 'shadow': true})
-            .then(function(partners){
-                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
-                    def.resolve();
-                } else {
-                    def.reject();
-                }
-            }, function(err,event){ event.preventDefault(); def.reject(); });
-        return def;
-    },
-        load_server_data: function(){
         load_server_data: function () {
             res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
             var self = this;
@@ -288,12 +235,8 @@ odoo.define('pos_multi_session', function(require){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
             line.order.trigger('change:sync');
         },
-        set_client: function(client){
-            OrderSuper.prototype.set_client.apply(this,arguments);
-            this.trigger('change:sync');
-        },
-        add_product: function(){
-            OrderSuper.prototype.add_product.apply(this, arguments);
+        addProduct: function(){
+            OrderSuper.prototype.addProduct.apply(this, arguments);
             this.trigger('change:sync')
         },
         ms_check: function(){
@@ -441,5 +384,4 @@ odoo.define('pos_multi_session', function(require){
             this.pos.db.save('bus_last', this.bus.last)
         }
     })
-    return exports;
-})
+}
