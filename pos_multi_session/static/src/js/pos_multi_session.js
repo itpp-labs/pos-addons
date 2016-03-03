@@ -206,6 +206,10 @@ odoo.define('pos_multi_session', function(require){
                 }
                 order.set_client(client);
             }
+            else
+            {
+                order.set_client(null);
+            }
             var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
