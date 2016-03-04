@@ -54,7 +54,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
-/*
         ms_orders_to_sync: function(){
             var self = this;
             if (!this.ms_table){
@@ -64,7 +63,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                        return r.table === self.ms_table;
                    })
         },
-*/
         ms_on_add_order: function(current_order){
             if (!current_order && this.ms_table){
                 // no current_order, because we on floor screen

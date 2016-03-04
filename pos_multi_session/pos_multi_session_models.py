@@ -24,3 +24,4 @@ class pos_multi_session(models.Model):
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
         self.env['bus.bus'].sendmany(notifications)
         return 1
+
