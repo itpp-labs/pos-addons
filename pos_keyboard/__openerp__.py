@@ -6,12 +6,8 @@
     "website": "https://it-projects.info",
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
-<<<<<<< HEAD
     'license': 'LGPL-3',
-    'version': '1.0.1',
-=======
     'version': '1.0.2',
->>>>>>> origin/pos_keyboard_v_8
     'depends': ['point_of_sale'],
     'data': [
          'data.xml',
