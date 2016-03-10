@@ -52,7 +52,7 @@ function pos_keyboard_widgets(instance, module){
                  bmode: 'qty, disc, price', 
                  sign: '+, -',
                  backspace: 'backspace'
-            };
+            }
             this.data = {
                 type: undefined,
                 val: undefined
