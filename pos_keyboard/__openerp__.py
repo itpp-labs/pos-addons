@@ -7,7 +7,7 @@
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
     'license': 'LGPL-3',
-    'version': '1.0.1',
+    'version': '1.0.2',
     'depends': ['point_of_sale'],
     'data': [
          'data.xml',

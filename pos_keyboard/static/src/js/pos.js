@@ -156,7 +156,12 @@ odoo.define('pos_keyboard.pos', function (require) {
                     else if (token == KC_BACKSPACE) {
                         self.data.type = type.backspace;
                         ok = true;
-                    }
+                    } 
+                    else {
+                        self.data.type = undefined;
+                        self.data.val = undefined;
+                        ok = false;
+                    } 
 
                     if (is_number) {
                         if (timeStamp + 50 > new Date().getTime()) {
