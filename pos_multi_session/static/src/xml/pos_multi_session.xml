@@ -3,9 +3,9 @@
     <t t-extend="Orderline">
         <t t-jquery=".info-list" t-operation="after">
             <div t-if="line.ms_info and line.ms_info.created" class="ms_info">
-                added by <t t-esc="line.ms_info.created.pos.name"/>
+                added by <t t-esc="line.ms_info.created.user.name"/>
                 <t t-if="line.ms_info.changed and line.ms_info.changed.pos.id != line.ms_info.created.pos.id">
-                    , edited by <t t-esc="line.ms_info.changed.pos.name"/>
+                    , edited by <t t-esc="line.ms_info.changed.user.name"/>
                 </t>
             </div>
         </t>
