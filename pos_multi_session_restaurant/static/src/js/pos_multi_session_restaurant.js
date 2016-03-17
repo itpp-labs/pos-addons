@@ -1,12 +1,12 @@
 odoo.define('pos_multi_session_restaurant', function(require){
-    var screens = require('point_of_sale.screens')
+    var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var floors = require('pos_restaurant.floors');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
 
     var FloorScreenWidget;
-    console.log('gui', gui.Gui.prototype.screen_classes)
+    console.log('gui', gui.Gui.prototype.screen_classes);
     _.each(gui.Gui.prototype.screen_classes, function(){
         if (this.name == 'floors'){
             FloorScreenWidget = this.widget;
@@ -21,7 +21,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             })
             return false;
         }
-    })
+    });
     var _t = core._t;
 
 
@@ -32,7 +32,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this._super();
             }
         }
-    })
+    });
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -43,9 +43,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         ms_create_order: function(options){
             var self = this;
-            var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
+            var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
+                order.customer_count = options.data.customer_count;
                 order.save_to_db();
             }
             else if (this.ms_table){
@@ -53,6 +54,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.save_to_db();
             }
             return order;
+        },
+        ms_do_update: function(order, data){
+           PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+            if (order) {
+                order.customer_count = data.customer_count;
+                this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
+            }
         },
         ms_orders_to_sync: function(){
             var self = this;
@@ -76,5 +84,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
             }
         }
-    })
-})
+    });
+
+    var OrderSuper = models.Order;
+    require('pos_restaurant.floors');
+    models.Order = models.Order.extend({
+        set_customer_count: function (count) {
+            OrderSuper.prototype.set_customer_count.apply(this, arguments);
+            this.ms_update();
+        },
+    });
+});
