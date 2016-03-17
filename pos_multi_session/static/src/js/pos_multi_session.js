@@ -165,6 +165,8 @@ openerp.pos_multi_session = function(instance){
                 order.ms_info = data.ms_info;
             }
             var not_found = order.get('orderLines').map(function(r){
+                return r.uid;
+            })
             if(data.partner_id!=false)
             {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
@@ -181,9 +183,7 @@ openerp.pos_multi_session = function(instance){
             {
                 order.set_client(null);
             }
-            var not_found = order.orderlines.map(function(r){
-                                return r.uid;
-                            })
+
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.get('orderLines').find(function(r){
@@ -215,7 +215,6 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             })
 
-            })
         },
         load_new_partners_by_id: function(partner_id){
         var self = this;
