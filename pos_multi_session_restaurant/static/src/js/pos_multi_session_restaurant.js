@@ -59,6 +59,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
             if (order) {
                 order.customer_count = data.customer_count;
+                order.set_customer_count(data.customer_count, true);
                 this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
             }
         },
@@ -87,11 +88,12 @@ odoo.define('pos_multi_session_restaurant', function(require){
     });
 
     var OrderSuper = models.Order;
-    require('pos_restaurant.floors');
     models.Order = models.Order.extend({
-        set_customer_count: function (count) {
+        set_customer_count: function (count, skip_ms_update) {
             OrderSuper.prototype.set_customer_count.apply(this, arguments);
-            this.ms_update();
+            if (!skip_ms_update) {
+                this.ms_update();
+            }
         },
     });
 });
