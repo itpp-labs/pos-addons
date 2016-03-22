@@ -309,11 +309,11 @@ odoo.define('pos_multi_session', function(require){
         },
         add_product: function(){
             OrderSuper.prototype.add_product.apply(this, arguments);
+            this.trigger('change:sync');
+        },
         set_client: function(client){
             OrderSuper.prototype.set_client.apply(this,arguments);
             this.trigger('change:sync');
-        },
-            this.trigger('change:sync')
         },
         ms_check: function(){
             if (! this.pos.multi_session )
