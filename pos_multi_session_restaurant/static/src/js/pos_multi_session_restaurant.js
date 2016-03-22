@@ -6,7 +6,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var gui = require('point_of_sale.gui');
 
     var FloorScreenWidget;
-    console.log('gui', gui.Gui.prototype.screen_classes);
+    //console.log('gui', gui.Gui.prototype.screen_classes);
     _.each(gui.Gui.prototype.screen_classes, function(){
         if (this.name == 'floors'){
             FloorScreenWidget = this.widget;
