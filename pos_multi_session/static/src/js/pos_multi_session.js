@@ -88,7 +88,7 @@ odoo.define('pos_multi_session', function(require){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             try{
-                console.log('on_update', message.action)
+                //console.log('on_update', message.action)
                 var action = message.action;
                 var data = message.data || {}
                 var order = false;
@@ -104,7 +104,7 @@ odoo.define('pos_multi_session', function(require){
                 }
             }catch(err){
                 error = err;
-                console.error(err);
+                //console.error(err);
             }
             this.ms_syncing_in_progress = false;
             if (error){
@@ -218,6 +218,12 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if(dline.discount !== undefined){
                     line.set_discount(dline.discount);
+                }
+                if(dline.mp_dirty !== undefined){
+                    line.set_dirty(dline.mp_dirty);
+                }
+                if(dline.mp_skip !== undefined){
+                    line.set_skip(dline.mp_skip);
                 }
                 order.orderlines.add(line)
             })
@@ -380,7 +386,7 @@ odoo.define('pos_multi_session', function(require){
             this.send({action: 'update', data: data})
         },
         send: function(message){
-            console.log('send:', message.action)
+            //console.log('send:', message.action)
             var self = this;
             var send_it = function() {
                 return session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
