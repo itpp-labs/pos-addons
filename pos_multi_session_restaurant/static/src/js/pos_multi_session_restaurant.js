@@ -58,7 +58,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         ms_do_update: function(order, data){
            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
             if (order) {
-                order.customer_count = data.customer_count;
                 order.set_customer_count(data.customer_count, true);
                 this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
             }
