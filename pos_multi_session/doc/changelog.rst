@@ -3,6 +3,10 @@
 Changelog
 =========
 
+`1.0.2`
+-------
+- FIX: Sync printed positions.
+
 `1.0.1`
 -------
 
