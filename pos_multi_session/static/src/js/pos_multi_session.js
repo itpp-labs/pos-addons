@@ -327,7 +327,7 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_info['created'] = this.order.pos.ms_my_info();
             }
             this.bind('change', function(line){
-                if (self.order.ms_check() && !line.ms_changing_selected){
+                if (self.order.ms_check() && !line.ms_changing_selected && !line.just_printed){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
                     line.order.ms_info['changed'] = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;

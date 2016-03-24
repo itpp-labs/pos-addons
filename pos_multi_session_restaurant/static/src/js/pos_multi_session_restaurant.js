@@ -1,15 +1,17 @@
 odoo.define('pos_multi_session_restaurant', function(require){
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
+    var multiprint = require('pos_restaurant.multiprint');
     var floors = require('pos_restaurant.floors');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
+    var chrome = require('point_of_sale.chrome');
 
     var FloorScreenWidget;
     //console.log('gui', gui.Gui.prototype.screen_classes);
-    _.each(gui.Gui.prototype.screen_classes, function(){
-        if (this.name == 'floors'){
-            FloorScreenWidget = this.widget;
+    _.each(gui.Gui.prototype.screen_classes, function(o){
+        if (o.name == 'floors'){
+            FloorScreenWidget = o.widget;
             FloorScreenWidget.include({
                 start: function () {
                     var self = this;
@@ -18,7 +20,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                         self.renderElement();
                     })
                 }
-            })
+            });
             return false;
         }
     });
@@ -72,13 +74,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
                    })
         },
         ms_on_add_order: function(current_order){
-            if (!current_order && this.ms_table){
+            if (!current_order){
                 // no current_order, because we on floor screen
                 _.each(this.get('orders').models, function(o){
                     if (o.table === this.ms_table && o.ms_replace_empty_order && o.is_empty()){
                         o.destroy({'reason': 'abandon'})
                     }
-                })
+                });
                 this.trigger('change:orders-count-on-floor-screen');
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
