@@ -88,13 +88,22 @@ odoo.define('pos_multi_session_restaurant', function(require){
         }
     });
 
-    var OrderSuper = models.Order;
+    var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         set_customer_count: function (count, skip_ms_update) {
-            OrderSuper.prototype.set_customer_count.apply(this, arguments);
+            _super_order.set_customer_count.apply(this, arguments);
             if (!skip_ms_update) {
                 this.ms_update();
             }
+        },
+        printChanges: function(){
+            _super_order.printChanges.apply(this, arguments);
+            this.just_printed = true;
+        },
+        export_as_JSON: function(){
+            var json = _super_order.export_as_JSON.apply(this,arguments);
+            json.just_printed = this.just_printed;
+            return json;
         },
     });
 });
