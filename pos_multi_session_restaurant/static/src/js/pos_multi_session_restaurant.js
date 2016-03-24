@@ -32,6 +32,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var order = this.pos.get('selectedOrder');
             if (order){
                 this._super();
+                var buttons = this.getParent().action_buttons;
+                if (order.just_printed) {
+                    buttons.submit_order.highlight(false);
+                }
             }
         }
     });
