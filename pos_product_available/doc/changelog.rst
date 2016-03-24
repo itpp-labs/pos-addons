@@ -3,6 +3,11 @@
 Changelog
 =========
 
+`1.0.3`
+-------
+
+- [FIX] compatibility with pos_cache module. Thanks to MindAndGo.
+
 `1.0.2`
 -------
 

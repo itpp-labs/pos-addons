@@ -18,4 +18,10 @@ Usage
 * Open restaurant POS (not a queue POS) in "Point of Sale/Configuration/Point of Sales"
   * set "Virtual Table" at "Multi-session" section
 
+
+Local run
+---------
+
+If you use dbfilter, don't forget to specify correct proxy on printers
+
 Tested on Odoo 9 22e94f5254a35fc20ca536ed1b5e6a6cf315e4c4
