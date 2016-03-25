@@ -96,6 +96,7 @@ odoo.define('pos_multi_session', function(require){
                     order = this.get('orders').find(function(order){
                                 return order.uid == data.uid;
                             })
+                    order.just_printed = data.just_printed;
                 }
                 if (order && action == 'remove_order'){
                     order.destroy({'reason': 'abandon'})
@@ -354,6 +355,7 @@ odoo.define('pos_multi_session', function(require){
         do_ms_update: function(){
             var data = this.export_as_JSON();
             this.pos.multi_session.update(data);
+            this.just_printed = false;
         }
     })
     var OrderlineSuper = models.Orderline;
@@ -369,6 +371,10 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_info['created'] = this.order.pos.ms_my_info();
             }
             this.bind('change', function(line){
+                if(this.order.just_printed){
+                    line.order.trigger('change:sync')
+                    return
+                }
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
                     line.order.ms_info['changed'] = line.order.pos.ms_my_info();
