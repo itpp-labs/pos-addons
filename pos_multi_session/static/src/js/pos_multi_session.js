@@ -96,6 +96,7 @@ odoo.define('pos_multi_session', function(require){
                     order = this.get('orders').find(function(order){
                                 return order.uid == data.uid;
                             })
+                    order.just_printed = data.just_printed;
                 }
                 if (order && action == 'remove_order'){
                     order.destroy({'reason': 'abandon'})
@@ -198,6 +199,23 @@ odoo.define('pos_multi_session', function(require){
             var not_found = order.orderlines.map(function(r){
                                 return r.uid;
                             })
+            if(data.partner_id!=false)
+            {
+                var client = order.pos.db.get_partner_by_id(data.partner_id);
+                if(!client)
+                {
+
+                    $.when(this.load_new_partners_by_id(data.partner_id))
+                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
+                             order.set_client(client);},function(){});
+                }
+                order.set_client(client);
+            }
+            else
+            {
+                order.set_client(null);
+            }
+
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
@@ -225,6 +243,9 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.mp_skip !== undefined){
                     line.set_skip(dline.mp_skip);
                 }
+                if(dline.note !== undefined){
+                    line.set_note(dline.note);
+                }
                 order.orderlines.add(line)
             })
 
@@ -236,7 +257,25 @@ odoo.define('pos_multi_session', function(require){
             })
 
         },
-        load_server_data: function(){
+        load_new_partners_by_id: function(partner_id){
+        var self = this;
+        var def  = new $.Deferred();
+        var client;
+        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+        new Model('res.partner')
+            .query(fields)
+            .filter([['id','=',partner_id]])
+            .all({'timeout':3000, 'shadow': true})
+            .then(function(partners){
+                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                    def.resolve();
+                } else {
+                    def.reject();
+                }
+            }, function(err,event){ event.preventDefault(); def.reject(); });
+        return def;
+    },
+        load_server_data: function () {
             res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
             var self = this;
             return res.then(function(){
@@ -274,7 +313,11 @@ odoo.define('pos_multi_session', function(require){
         },
         add_product: function(){
             OrderSuper.prototype.add_product.apply(this, arguments);
-            this.trigger('change:sync')
+            this.trigger('change:sync');
+        },
+        set_client: function(client){
+            OrderSuper.prototype.set_client.apply(this,arguments);
+            this.trigger('change:sync');
         },
         ms_check: function(){
             if (! this.pos.multi_session )
@@ -312,6 +355,7 @@ odoo.define('pos_multi_session', function(require){
         do_ms_update: function(){
             var data = this.export_as_JSON();
             this.pos.multi_session.update(data);
+            this.just_printed = false;
         }
     })
     var OrderlineSuper = models.Orderline;
@@ -327,6 +371,10 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_info['created'] = this.order.pos.ms_my_info();
             }
             this.bind('change', function(line){
+                if(this.order.just_printed){
+                    line.order.trigger('change:sync')
+                    return
+                }
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info['changed'] = line.order.pos.ms_my_info();
                     line.order.ms_info['changed'] = line.order.pos.ms_my_info();
