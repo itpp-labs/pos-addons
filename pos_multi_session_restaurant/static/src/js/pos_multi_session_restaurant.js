@@ -20,7 +20,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                         self.renderElement();
                     })
                 }
-            });
+            })
             return false;
         }
     });
@@ -33,10 +33,16 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (order){
                 this._super();
                 var buttons = this.getParent().action_buttons;
-                if (order.just_printed) {
+                if (this.all_lines_printed(order)) {
                     buttons.submit_order.highlight(false);
                 }
             }
+        },
+        all_lines_printed: function (order) {
+            not_printed_line = order.orderlines.find(function(lines){
+                                return lines.mp_dirty;
+                            });
+            return not_printed_line;
         }
     });
 
@@ -84,7 +90,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     if (o.table === this.ms_table && o.ms_replace_empty_order && o.is_empty()){
                         o.destroy({'reason': 'abandon'})
                     }
-                });
+                })
                 this.trigger('change:orders-count-on-floor-screen');
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
@@ -92,22 +98,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
         }
     });
 
-    var _super_order = models.Order.prototype;
+    var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         set_customer_count: function (count, skip_ms_update) {
-            _super_order.set_customer_count.apply(this, arguments);
+            OrderSuper.prototype.set_customer_count.apply(this, arguments);
             if (!skip_ms_update) {
                 this.ms_update();
             }
         },
         printChanges: function(){
-            _super_order.printChanges.apply(this, arguments);
+            OrderSuper.prototype.printChanges.apply(this, arguments);
             this.just_printed = true;
-        },
-        export_as_JSON: function(){
-            var json = _super_order.export_as_JSON.apply(this,arguments);
-            json.just_printed = this.just_printed;
-            return json;
         },
     });
 });
