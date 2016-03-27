@@ -1,27 +1,28 @@
 Sync POS orders across multiple sessions (restaurant extension)
 ===============================================================
-Tables syncing according to floors and table id.
 
-It's usefull for canteens, that have tables with waiters as well as usual queue.
+Syncs additional restaurant data:
 
-Usage
-=====
-
-* configure restaurant:
-
-  * create floor
-  * open restaurant POS
-
-    * create tables
-    * close POS
-
-* Open restaurant POS (not a queue POS) in "Point of Sale/Configuration/Point of Sales"
-  * set "Virtual Table" at "Multi-session" section
-
+* Table and floor
+* Guests number
+* Printer status (green "Order" button)
+* Notes
 
 Local run
 ---------
 
 If you use dbfilter, don't forget to specify correct proxy on printers
 
+Further information
+-------------------
+
 Tested on Odoo 9 22e94f5254a35fc20ca536ed1b5e6a6cf315e4c4
+
+Need our service?
+-----------------
+
+Contact us by `email <mailto:it@it-projects.info>`_ or fill out `request form <https://www.it-projects.info/page/website.contactus>`_:
+
+* it@it-projects.info
+* https://www.it-projects.info/page/website.contactus
+
