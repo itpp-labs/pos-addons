@@ -5,11 +5,11 @@ Changelog
 
 `1.0.3`
 -------
-- IMP: Sync notes. Sync guests.
+- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
 
 `1.0.2`
 -------
-- FIX: Sync printed positions.
+- FIX: For pos restaurant compatibility. Sync printed positions.
 
 `1.0.1`
 -------
