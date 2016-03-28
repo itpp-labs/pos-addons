@@ -3,9 +3,13 @@
 Changelog
 =========
 
+`1.0.3`
+-------
+- IMP: Sync printed positions.
+
 `1.0.2`
 -------
-- FIX: Sync printed positions.
+- IMP: Sync notes. Sync guests.
 
 `1.0.1`
 -------
