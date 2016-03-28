@@ -5,11 +5,11 @@ Changelog
 
 `1.0.3`
 -------
-- IMP: Sync printed positions.
+- IMP: Sync notes. Sync guests.
 
 `1.0.2`
 -------
-- IMP: Sync notes. Sync guests.
+- FIX: Sync printed positions.
 
 `1.0.1`
 -------
