@@ -33,6 +33,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (order){
                 this._super();
                 var buttons = this.getParent().action_buttons;
+                if(!buttons){return;}
                 if (this.all_lines_printed(order)) {
                     buttons.submit_order.highlight(false);
                 }
