@@ -3,6 +3,14 @@
 Changelog
 =========
 
+`1.1.2`
+-------
+- IMP: Sync printed positions.
+
+`1.1.1`
+-------
+- IMP: Sync notes. Sync guests.
+
 `1.1.0`
 -------
 
