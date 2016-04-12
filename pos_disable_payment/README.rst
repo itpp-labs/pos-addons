@@ -10,4 +10,6 @@ Module allows directly in user settings:
 * disable edit price button
 * disable remove order line
 
+It also allow to disable the payment per Point of Sale so that user won\'t be limited
+
 Tested on Odoo 9 22e94f5254a35fc20ca536ed1b5e6a6cf315e4c4

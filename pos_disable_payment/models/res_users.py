@@ -2,7 +2,7 @@
 from openerp import api, models, fields, SUPERUSER_ID
 
 
-class pos_config(models.Model):
+class ResUsers(models.Model):
     _inherit = 'res.users'
 
     allow_payments = fields.Boolean('Allow payments', default=True)

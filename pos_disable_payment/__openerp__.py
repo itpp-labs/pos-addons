@@ -7,7 +7,7 @@
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale','base'],
     'data': [
-        'views.xml',
+        'views/views.xml',
         ],
     'installable': True,
 }
