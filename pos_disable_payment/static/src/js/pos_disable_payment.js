@@ -122,13 +122,13 @@ odoo.define('pos_disable_payment', function (require) {
         },
         check_access: function () {
             var user = this.pos.cashier || this.pos.user;
-            var config = this.pos.config;
+            
             if (!user.allow_discount ) {
                 this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
             } else {
                 this.$el.find("[data-mode='discount']").css('visibility', 'visible')
             }
-            if (!user.allow_edit_price || !config.allow_edit_price ) {
+            if (!user.allow_edit_price ) {
                 this.$el.find("[data-mode='price']").css('visibility', 'hidden')
             } else {
                 this.$el.find("[data-mode='price']").css('visibility', 'visible')
