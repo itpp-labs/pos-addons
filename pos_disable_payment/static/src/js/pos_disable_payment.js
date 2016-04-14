@@ -29,7 +29,7 @@ odoo.define('pos_disable_payment', function (require) {
                 fields: ['allow_payments'],
                 loaded: function (self, configs) {
                     self.config = configs[0];                  
-                },
+                }
             });
 
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
@@ -122,6 +122,7 @@ odoo.define('pos_disable_payment', function (require) {
         },
         check_access: function () {
             var user = this.pos.cashier || this.pos.user;
+            var config = this.pos.config;
             if (!user.allow_discount ) {
                 this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
             } else {
