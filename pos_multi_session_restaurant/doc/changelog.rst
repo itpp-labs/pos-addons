@@ -3,6 +3,10 @@
 Changelog
 =========
 
+`1.1.3`
+-------
+- FIX: in some cases POS loading was stopped.
+
 `1.1.2`
 -------
 - IMP: Sync printed positions.
