@@ -2,7 +2,7 @@
  Multiple categories per product in POS
 ========================================
 
-This module to change the type of POS Categories field from many2one to many2many.
+This module deactivate POS Categories field with many2one type and create new Categories field with many2many type which will be used instead.
 
 Credits
 =======
