@@ -4,11 +4,6 @@
 
 This module to change the type of POS Categories field from many2one to many2many.
 
-Installation
-============
-
-All existing Pos Categories category will be reset.
-
 Credits
 =======
 
