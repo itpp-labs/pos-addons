@@ -1,8 +1,13 @@
-==================
-POS Category Multi
-==================
+========================================
+ Multiple categories per product in POS
+========================================
 
-This module allows you to change the type of POS Categories field from many2one to many2many. Wherein, all existing Pos Categories category will be reset. This field is used in product.product (Product Variants) and product.template (Products).
+This module to change the type of POS Categories field from many2one to many2many.
+
+Installation
+============
+
+All existing Pos Categories category will be reset.
 
 Credits
 =======

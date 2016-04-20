@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Category Multi""",
-    "summary": """It allows you to change the type of POS Categories field""",
+    "name": """Multiple categories per product in POS""",
+    "summary": """Specify as many categories for a product as you need""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
