@@ -4,6 +4,7 @@ from openerp import SUPERUSER_ID
 
 
 def init_debt_journal(cr, registry):
+    print 'run def init_debt_journal'
     if registry['ir.model.data'].search(cr, SUPERUSER_ID, [('name', '=', 'debt_account')]):
         # Use account journal from module version < 2.0.0, don't supported multi-company mode
         return
@@ -11,12 +12,14 @@ def init_debt_journal(cr, registry):
     company_ids = registry['res.company'].search(cr, SUPERUSER_ID, [])
     for company in registry['res.company'].browse(cr, SUPERUSER_ID, company_ids):
         if len(registry['account.account'].search(cr, SUPERUSER_ID, [('company_id', '=', company.id)])) == 0:
+            print 'You have to configure chart of account for company'
             # You have to configure chart of account for company
             continue
 
         debt_journal_active = registry['account.journal'].search(cr, SUPERUSER_ID, [
             ('company_id', '=', company.id), ('debt', '=', True)])
         if debt_journal_active:
+            print 'Your company have a active debt journal'
             continue
         debt_account = registry['account.account'].search(cr, SUPERUSER_ID, [
             ('code', '=', 'XDEBT'), ('company_id', '=', company.id)])

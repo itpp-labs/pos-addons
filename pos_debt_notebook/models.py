@@ -77,6 +77,7 @@ class PosSession(osv.osv):
     _inherit = 'pos.session'
 
     def create(self, cr, uid, values, context=None):
+        print 'run def create in the "pos.session" model'
         context = dict(context or {})
         config_id = values.get('config_id', False) or context.get('default_config_id', False)
         if not config_id:
