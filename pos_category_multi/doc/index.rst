@@ -16,4 +16,4 @@ Add some product into two difference categories. Then open first category and ch
 Uninstallation
 ==============
 
-When the module uninstallation pos_category_multi_ids field will be deleted. And pos_categ_id field will be activated.
+On the module uninstallation pos_category_multi_ids field will be deleted. And pos_categ_id field will be activated.

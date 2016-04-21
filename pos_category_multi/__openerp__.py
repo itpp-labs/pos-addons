@@ -12,7 +12,9 @@
     #"price": 9.00,
     #"currency": "EUR",
 
-    "depends": [],
+    "depends": [
+        'point_of_sale',
+    ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [],
     "demo": [],
