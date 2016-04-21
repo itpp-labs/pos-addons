@@ -15,33 +15,30 @@ class ResPartner(models.Model):
 
     @api.multi
     def _get_debt(self):
-        
         debt_journal = self.env['account.journal'].search([
             ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
-                
         debt_account = []
-        for journal in debt_journal:            
+        for journal in debt_journal:
             debt_account.append(journal.default_debit_account_id.id)
-                            
 
         res = {}
         for partner in self:
             res[partner.id] = 0
         if len(debt_account) > 0:
             self._cr.execute(
-            """SELECT l.partner_id, SUM(l.debit - l.credit)
-            FROM account_move_line l
-            WHERE l.account_id IN %s AND l.partner_id IN %s
-            GROUP BY l.partner_id
-            """,
-            (tuple(debt_account), tuple(self.ids)))
+                """SELECT l.partner_id, SUM(l.debit - l.credit)
+                FROM account_move_line l
+                WHERE l.account_id IN %s AND l.partner_id IN %s
+                GROUP BY l.partner_id
+                """,
+                (tuple(debt_account), tuple(self.ids)))
 
             for partner_id, val in self._cr.fetchall():
                 res[partner_id] += val
 
         statements = self.env['account.bank.statement'].search(
             [('journal_id', 'in', [j.id for j in debt_journal]), ('state', '=', 'open')])
-            
+
         if statements:
             self._cr.execute(
                 """SELECT l.partner_id, SUM(l.amount)
@@ -85,7 +82,6 @@ class PosSession(osv.osv):
     _inherit = 'pos.session'
 
     def create(self, cr, uid, values, context=None):
-        print 'run def create in the "pos.session" model'
         context = dict(context or {})
         config_id = values.get('config_id', False) or context.get('default_config_id', False)
         if not config_id:
