@@ -65,7 +65,7 @@
             <field name="currency_id" ref="base.USD"/>
         </record>
         <record id="transfer_account" model="account.account">
-            <field name="code">X1019</field>
+            <field name="code">Y1019</field>
             <field name="name">Internal Transfert Account - (test)</field>
             <field name="user_type_id" ref="account.data_account_type_current_assets"/>
             <field name="reconcile">1</field>
@@ -86,7 +86,7 @@
             <field name="user_type_id" ref="account.data_account_type_current_liabilities"/>
         </record>
         <record id="a_pay" model="account.account">
-            <field name="code">X1111</field>
+            <field name="code">Y1111</field>
             <field name="name">Creditors - (test)</field>
             <field eval="True" name="reconcile"/>
             <field name="user_type_id" ref="account.data_account_type_payable"/>
@@ -273,7 +273,7 @@
         </record>
 
         <record id="bank_account_usd" model="res.partner.bank">
-            <field name="acc_number">123456789</field>
+            <field name="acc_number">0123456789</field>
             <field name="acc_type">bank</field>
             <field name="bank_name">Bank US</field>
             <field name="partner_id" ref="base.main_partner"/>
