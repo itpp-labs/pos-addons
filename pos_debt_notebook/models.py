@@ -6,6 +6,7 @@ import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 from openerp.exceptions import UserError
 import logging
+from .init import init_debt_journal
 
 
 _logger = logging.getLogger(__name__)
@@ -61,6 +62,9 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
+
+    def init(self, cr):
+        init_debt_journal(cr, self.pool)
 
 
 class PosConfig(osv.osv):
