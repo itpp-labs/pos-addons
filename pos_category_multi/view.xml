@@ -7,7 +7,10 @@
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
                 <field name="pos_categ_id" position="replace">
-                    <field name="pos_category_ids" attrs="{'invisible': [('available_in_pos', '=', False)]}"/>
+                    <field name="pos_category_ids"
+                           widget="many2many_tags"
+                           attrs="{'invisible': [('available_in_pos', '=', False)]}"
+                           help="These categories are shared across all Product Variants"/>
                 </field>
             </field>
         </record>
