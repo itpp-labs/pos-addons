@@ -12,9 +12,14 @@
     #"price": 9.00,
     #"currency": "EUR",
 
-    "depends": [],
+    "depends": [
+        'point_of_sale',
+    ],
     "external_dependencies": {"python": [], "bin": []},
-    "data": [],
+    "data": [
+        'template.xml',
+        'view.xml',
+    ],
     "demo": [],
     "installable": True,
     "auto_install": False,
