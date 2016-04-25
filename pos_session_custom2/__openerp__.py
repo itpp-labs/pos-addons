@@ -7,7 +7,7 @@
     'website' : 'https://yelizariev.github.io',
     'description': """
 
-Tested on Odoo 8.0 258a4cac82ef3b7e6a086f691f3bf8140d37b51c
+Tested on Odoo 9.0
 """,
     'data':[
         'views/session_view.xml',
@@ -18,6 +18,6 @@ Tested on Odoo 8.0 258a4cac82ef3b7e6a086f691f3bf8140d37b51c
     'depends': ['base','point_of_sale'],
     'init_xml': [],
     'update_xml': [],
-    'installable': False,
+    'installable': True,
 
 }

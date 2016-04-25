@@ -1,12 +1,10 @@
 {
     'name' : 'Available quantity of products in POS',
-    'version' : '1.0.2',
+    'version' : '1.0.3',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website' : 'https://twitter.com/yelizariev',
-    'price': 9.00,
-    'currency': 'EUR',
     'depends' : ['point_of_sale', 'stock'],
     'data':[
         'data.xml',

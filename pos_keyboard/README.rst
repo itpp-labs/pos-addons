@@ -4,17 +4,21 @@ Module allows to use usual keyboard (not virtual one) in Point of Sale.
 
 Usage:
 ------
+Using keys below switch to mode you need. Qty mode is used by default.
+Then use number keys to enter quantity, price or discount.
+
 
 =========== ===================== =================
 Type        Numpad                Extra keys  
 =========== ===================== =================
 mode qty    ``/``                 ``q``
 ----------- --------------------- -----------------
-mode disk   ``-``                 ``d``
+mode disc   ``-``                 ``d``
 ----------- --------------------- -----------------
 mode price  ``*``                 ``p``
 ----------- --------------------- -----------------
 +/-         ``+``                 ``s``
 =========== ===================== =================
 
-Tested on Odoo 8.0 612b44648ee79c5f8bb10e16efdee3cc81abaa08
+
+Tested on Odoo 9.0 2ec9a9c99294761e56382bdcd766e90b8bc1bb38

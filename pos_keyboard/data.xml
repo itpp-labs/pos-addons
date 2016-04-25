@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <template id="assets_backend" name="debt pos assets" inherit_id="point_of_sale.assets_backend">
+
+        <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
-				<script type="text/javascript" src="/pos_keyboard/static/src/js/pos.js"></script>
+                <script type="text/javascript" src="/pos_keyboard/static/src/js/pos.js"></script>
             </xpath>
         </template>
+        
     </data>
 </openerp>

@@ -5,6 +5,7 @@
            <t t-esc="widget.cashregister.journal.name"/>
         </button>
     </t>
+
     <t t-extend="ClientDetails">
         <t t-jquery=".client-details-right" t-operation="append">
             <div class="client-detail">
@@ -13,24 +14,30 @@
             </div>
         </t>
     </t>
-    <t t-extend="OrderButtonWidget">
-        <t t-jquery=".fa" t-operation="after">
-            <t t-esc="(widget.order.get_client() ? '[Debt: ' + (Math.round(widget.order.get_client().debt * 100) / 100).toString() + ']': '')"/>
+
+    <t t-extend="ActionpadWidget">
+        <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
+            <br/>
+            <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
         </t>
     </t>
-    <t t-extend="Paymentline">
-        <t t-jquery=".paymentline-input" t-operation="append">
-            <t t-if="line.cashregister.journal.debt">
-                <span class="pay-full-debt">
-                    <button>Pay Full Debt</button>
-                </span>
-            </t>
+
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
+            <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+        </t>
+
+        <t t-jquery=".js_set_customer" t-operation="after">
+            <div class="button pay-full-debt oe_hidden">
+                <i class='fa fa-money' /> Pay Full Debt
+            </div>
         </t>
     </t>
+
     <t t-extend="ClientListScreenWidget">
         <t t-jquery=".button.next" t-operation="before">
             <span class="button set-customer-pay-full-debt oe_hidden highlight">
-                Select Customer and Pay Full Debt
+                Pay Full Debt
             </span>
         </t>
     </t>

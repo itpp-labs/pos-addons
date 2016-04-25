@@ -1,15 +1,17 @@
 odoo.define('pos_multi_session_restaurant', function(require){
-    var screens = require('point_of_sale.screens')
+    var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
+    var multiprint = require('pos_restaurant.multiprint');
     var floors = require('pos_restaurant.floors');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
+    var chrome = require('point_of_sale.chrome');
 
     var FloorScreenWidget;
-    console.log('gui', gui.Gui.prototype.screen_classes)
-    _.each(gui.Gui.prototype.screen_classes, function(){
-        if (this.name == 'floors'){
-            FloorScreenWidget = this.widget;
+    //console.log('gui', gui.Gui.prototype.screen_classes);
+    _.each(gui.Gui.prototype.screen_classes, function(o){
+        if (o.name == 'floors'){
+            FloorScreenWidget = o.widget;
             FloorScreenWidget.include({
                 start: function () {
                     var self = this;
@@ -21,7 +23,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             })
             return false;
         }
-    })
+    });
     var _t = core._t;
 
 
@@ -30,9 +32,19 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var order = this.pos.get('selectedOrder');
             if (order){
                 this._super();
+                var buttons = this.getParent().action_buttons;
+                if (buttons && buttons.submit_order && this.all_lines_printed(order)) {
+                    buttons.submit_order.highlight(false);
+                }
             }
+        },
+        all_lines_printed: function (order) {
+            not_printed_line = order.orderlines.find(function(lines){
+                                return lines.mp_dirty;
+                            });
+            return !not_printed_line;
         }
-    })
+    });
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -40,23 +52,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.ms_table = false;
-            this.ready = this.ready.then(function(){
-                             if (self.config.multi_session_table_id){
-                                 self.ms_table = self.tables_by_id[self.config.multi_session_table_id[0]]
-                                 if (!self.ms_table.floor){
-                                     //delay to finish initalisation
-                                     setTimeout(function(){
-                                         throw new Error(_t("Default table is not belonged to this POS."));
-                                     }, 5000)
-                                 }
-                             }
-                         })
         },
         ms_create_order: function(options){
             var self = this;
-            var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments)
+            var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
+                order.customer_count = options.data.customer_count;
                 order.save_to_db();
             }
             else if (this.ms_table){
@@ -65,7 +67,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
-/*
+        ms_do_update: function(order, data){
+           PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+            if (order) {
+                order.set_customer_count(data.customer_count, true);
+                this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
+            }
+        },
         ms_orders_to_sync: function(){
             var self = this;
             if (!this.ms_table){
@@ -75,9 +83,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
                        return r.table === self.ms_table;
                    })
         },
-*/
         ms_on_add_order: function(current_order){
-            if (!current_order && this.ms_table){
+            if (!current_order){
                 // no current_order, because we on floor screen
                 _.each(this.get('orders').models, function(o){
                     if (o.table === this.ms_table && o.ms_replace_empty_order && o.is_empty()){
@@ -89,5 +96,19 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
             }
         }
-    })
-})
+    });
+
+    var OrderSuper = models.Order;
+    models.Order = models.Order.extend({
+        set_customer_count: function (count, skip_ms_update) {
+            OrderSuper.prototype.set_customer_count.apply(this, arguments);
+            if (!skip_ms_update) {
+                this.ms_update();
+            }
+        },
+        printChanges: function(){
+            OrderSuper.prototype.printChanges.apply(this, arguments);
+            this.just_printed = true;
+        },
+    });
+});
