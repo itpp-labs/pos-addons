@@ -85,6 +85,7 @@ class PosConfig(osv.osv):
 class PosSession(osv.osv):
     _inherit = 'pos.session'
 
+    """
     def create(self, cr, uid, values, context=None):
         context = dict(context or {})
         config_id = values.get('config_id', False) or context.get('default_config_id', False)
@@ -110,3 +111,4 @@ class PosSession(osv.osv):
                 })
 
         return res
+    """
