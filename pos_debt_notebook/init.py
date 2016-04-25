@@ -2,7 +2,7 @@ from openerp import SUPERUSER_ID
 
 
 def init_debt_journal(cr, registry):
-    if not registry['pos.session'].search_count([]):
+    if not registry['pos.session'].search_count(cr, SUPERUSER_ID, []):
         pos_config_main = registry.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'point_of_sale', 'pos_config_main')[1]
         pos_config_obj = registry['pos.config']
         pos_session_obj = registry['pos.session']
