@@ -8,7 +8,7 @@
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale', 'account'],
     'demo': [
-        #'test/account_minimal_test.xml',
+        'demo.xml',
         ],
     'data': [
         'data.xml',

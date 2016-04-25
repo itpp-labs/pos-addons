@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="cash_demo" model="account.account">
+            <field name="code">Y1015</field>
+            <field name="name">Cash - (demo)</field>
+            <field name="user_type_id" ref="account.data_account_type_liquidity"/>
+        </record>
+
+        <record id="rsa_demo" model="account.account">
+            <field name="code">Y1113</field>
+            <field name="name">Reserve and Profit/Loss - (demo)</field>
+            <field name="user_type_id" ref="account.data_account_type_current_liabilities"/>
+        </record>
+
+        <record id="cash_journal" model="account.journal">
+            <field name="name">Cash - Demo</field>
+            <field name="code">DCSH</field>
+            <field name="type">cash</field>
+            <field name="profit_account_id" ref="rsa_demo" />
+            <field name="loss_account_id" ref="rsa_demo" />
+            <field name="default_debit_account_id" ref="cash"/>
+            <field name="default_credit_account_id" ref="cash"/>
+        </record>
+
+    </data>
+</openerp>
