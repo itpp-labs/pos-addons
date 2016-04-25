@@ -15,5 +15,5 @@
         'views.xml',
         ],
     'installable': True,
-    'post_init_hook': 'open_and_close_pos_session',
+    #'post_init_hook': 'open_and_close_pos_session',
 }
