@@ -8,12 +8,12 @@
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale', 'account'],
     'demo': [
-        'demo.xml',
+        #'demo.xml',
         ],
     'data': [
         'data.xml',
         'views.xml',
         ],
     'installable': True,
-    #'post_init_hook': 'init_debt_journal',
+    'post_init_hook': 'open_and_close_pos_session',
 }
