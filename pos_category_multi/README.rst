@@ -13,7 +13,7 @@ Contributors
 
 Sponsors
 --------
-* `Twanda AG  <http://www.twanda.ch>`_
+* `twanda AG  <http://www.twanda.ch>`_
 
 Further information
 ===================
