@@ -6,7 +6,6 @@ import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 from openerp.exceptions import UserError
 import logging
-from .init import init_debt_journal
 
 _logger = logging.getLogger(__name__)
 
