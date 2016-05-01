@@ -8,6 +8,8 @@
     'website': 'https://yelizariev.github.io',
     'images': ['images/pos_payment_access.png'],
     'depends': ['point_of_sale','base'],
+    "price": 40.00,
+    "currency": "EUR",    
     'data': [
         'views.xml',
         ],
