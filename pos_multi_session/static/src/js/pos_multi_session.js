@@ -349,6 +349,7 @@ odoo.define('pos_multi_session', function(require){
         export_as_JSON: function(){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
+            data.saved_resume = this.saved_resume;
             return data;
         },
         do_ms_update: function(){
