@@ -24,4 +24,4 @@ Local run
 
 If you use dbfilter, don't forget to specify correct proxy on printers
 
-Tested on Odoo 9 22e94f5254a35fc20ca536ed1b5e6a6cf315e4c4
+Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
