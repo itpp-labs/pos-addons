@@ -1,6 +1,6 @@
 {
     'name': "Sync POS orders across multiple sessions (restaurant extension)",
-    'version': '1.1.3',
+    'version': '1.1.4',
     'author': 'Ivan Yelizariev',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
