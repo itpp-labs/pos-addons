@@ -269,11 +269,11 @@ class sessionpos(osv.Model):
         for session in self.browse(cr,uid,ids,context=context):
             for order in session.order_ids:
                 for line in order.lines:
-                    taxes_ids = [ tax for tax in line.product_id.taxes_id if tax.company_id.id == line.order_id.company_id.id ]
+                    taxes_ids = [ tax.id for tax in line.product_id.taxes_id if tax.company_id.id == line.order_id.company_id.id ]
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner_id=line.order_id.partner_id.id or False)
                     cur = line.order_id.pricelist_id.currency_id
+                    taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, cur.id, line.qty, line.product_id.id, line.order_id.partner_id.id or False)
 
                     print 'taxes', taxes
                     for tax in taxes['taxes']:
@@ -281,7 +281,7 @@ class sessionpos(osv.Model):
                         if id not in res:
                             t = account_tax_obj.browse(cr, uid, id, context=context)
                             tax_rule = ''
-                            if t.type == 'percent':
+                            if t.amount_type == 'percent':
                                 tax_rule = str(100*t.amount) + '%'
                             else:
                                 tax_rule = str(t.amount)
@@ -290,7 +290,8 @@ class sessionpos(osv.Model):
                                        'tax': tax_rule,
                                        'total': 0,
                                    }
-                        res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
+                        #res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
+                        res[id]['base'] += cur.round(taxes['total_excluded'])
                         res[id]['total'] += tax['amount']
                         #cur_obj.round(cr, uid, cur, taxes['amount'])
 

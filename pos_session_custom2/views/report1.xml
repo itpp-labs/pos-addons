@@ -53,7 +53,8 @@
 
 					<tr t-foreach="o.statement_ids" t-as="i">
 						<td><h4><span t-field="i.journal_id"/></h4></td>
-                		<td class="text-right"><h4><span t-field="i.total_entry_encoding_custom"/></h4></td>
+                                                <td class="text-right"><h4><span t-field="i.total_entry_encoding_custom"
+                                                            t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></h4></td>
 				    </tr>
 					</tbody>
 					</table>
@@ -64,7 +65,8 @@
 					<tbody>
 						<tr>
 							<td>Total Payments Received:</td>
-							<td class="text-right"><span t-field="o.statements_total"/></td>
+                                                        <td class="text-right"><span t-field="o.statements_total"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -83,7 +85,8 @@
 						<tr t-foreach="o.summary_by_product()" t-as="i">
 							<td><span t-esc="i['product']"/></td>
 							<td class="text-right"><span t-esc="i['qty']"/></td>
-							<td class="text-right"><span t-esc="i['total']"/></td>
+                                                        <td class="text-right"><span t-esc="i['total']"
+                                                                t-esc-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -102,9 +105,11 @@
 						</tr>
 						<tr t-foreach="o.summary_by_tax()" t-as="i">
 							<td><span t-esc="i['name']"/></td>
-							<td><span t-esc="i['base']"/></td>
+                                                        <td><span t-esc="i['base']"
+                                                                t-esc-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 							<!-- <td><span t-esc="i['tax']"/></td> -->
-							<td class="text-right"><span t-esc="i['total']"/></td>
+                                                        <td class="text-right"><span t-esc="i['total']"
+                                                                t-esc-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -115,7 +120,8 @@
 					<tbody>
 						<tr>
 							<td>Untaxed sales:</td>
-							<td class="text-right"><span t-esc="o.untaxed_sales"/></td>
+                                                        <td class="text-right"><span t-esc="o.untaxed_sales"
+                                                                t-esc-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -130,19 +136,23 @@
 					<tbody>
 						<tr>
 							<td>Opening balance:</td>
-							<td class="text-right"><span t-field="o.cash_register_balance_start"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_balance_start"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 						<tr>
 							<td>+ Sales</td>
-							<td class="text-right"><span t-field="o.cash_register_total_entry_encoding_custom"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_total_entry_encoding_custom"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 						<tr>
 							<td>+ Cash put in </td>
-							<td class="text-right"><span t-field="o.cash_register_total_entry_encoding_put_in"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_total_entry_encoding_put_in"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 						<tr>
 							<td>- Cash take out </td>
-							<td class="text-right"><span t-field="o.cash_register_total_entry_encoding_take_out"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_total_entry_encoding_take_out"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -153,7 +163,8 @@
 					<tbody>
 						<tr>
 							<td>Theoretical Closing Balance:</td>
-							<td class="text-right"><span t-field="o.cash_register_balance_end"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_balance_end"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -164,7 +175,8 @@
 					<tbody>
 						<tr>
 							<td>Real Closing Balance:</td>
-							<td class="text-right"><span t-field="o.cash_register_balance_end_real"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_balance_end_real"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
@@ -175,7 +187,8 @@
 					<tbody>
 						<tr>
 							<td>Difference:</td>
-							<td class="text-right"><span t-field="o.cash_register_difference"/></td>
+                                                        <td class="text-right"><span t-field="o.cash_register_difference"
+                                                                t-field-options='{"widget": "monetary", "display_currency": "res_company.currency_id"}'/></td>
 						</tr>
 					</tbody>
 					</table>
