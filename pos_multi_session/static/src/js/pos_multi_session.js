@@ -185,6 +185,7 @@ odoo.define('pos_multi_session', function(require){
                     pos_session_id: this.pos_session.id,
                     statement_ids: false,
                     lines: false,
+                    multiprint_resume: data.multiprint_resume,
                 }
                 order = this.ms_create_order({ms_info:data.ms_info,data:data,json:json})
                 //order.uid = data.uid;
