@@ -2,10 +2,10 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="Orderline">
         <t t-jquery=".info-list" t-operation="after">
-            <div t-if="line.ms_info" class="ms_info">
-                added by <t t-esc="line.ms_info.created.pos.name"/>
+            <div t-if="line.ms_info and line.ms_info.created" class="ms_info">
+                added by <t t-esc="line.ms_info.created.user.name"/> (<t t-esc="line.ms_info.created.pos.name"/>)
                 <t t-if="line.ms_info.changed and line.ms_info.changed.pos.id != line.ms_info.created.pos.id">
-                    , edited by <t t-esc="line.ms_info.changed.pos.name"/>
+                    , edited by <t t-esc="line.ms_info.changed.user.name"/>  (<t t-esc="line.ms_info.changed.pos.name"/>)
                 </t>
             </div>
         </t>

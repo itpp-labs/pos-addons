@@ -20,13 +20,6 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments)
             this.multi_session = false;
-            this.ready = this.ready.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new module.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         });
             this.ms_syncing_in_progress = false;
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
@@ -109,11 +102,15 @@ openerp.pos_multi_session = function(instance){
                 })
             }
         },
-        ms_on_add_order: function(current_order){
-            if (current_order && current_order.ms_replace_empty_order && current_order.is_empty()){
-                //replace order
+        ms_on_add_order: function (current_order) {
+            if (!current_order) {
+                return
+            }
+            is_empty = current_order.is_empty();
+            is_frozen = !current_order.ms_replace_empty_order;
+            if (this.config.multi_session_replace_empty_order && is_empty && !is_frozen) {
                 current_order.destroy({'reason': 'abandon'})
-            }else{
+            } else if (is_frozen || !is_empty || !this.config.multi_session_deactivate_empty_order) {
                 // keep current_order active
                 this.set('selectedOrder', current_order);
             }
@@ -168,8 +165,25 @@ openerp.pos_multi_session = function(instance){
                 order.ms_info = data.ms_info;
             }
             var not_found = order.get('orderLines').map(function(r){
-                                return r.uid;
-                            })
+                return r.uid;
+            })
+            if(data.partner_id!=false)
+            {
+                var client = order.pos.db.get_partner_by_id(data.partner_id);
+                if(!client)
+                {
+
+                    $.when(this.load_new_partners_by_id(data.partner_id))
+                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
+                             order.set_client(client);},function(){});
+                }
+                order.set_client(client);
+            }
+            else
+            {
+                order.set_client(null);
+            }
+
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.get('orderLines').find(function(r){
@@ -201,8 +215,37 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             })
 
-        }
-    })
+        },
+        load_new_partners_by_id: function(partner_id){
+        var self = this;
+        var def  = new $.Deferred();
+        var client;
+        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+        new Model('res.partner')
+            .query(fields)
+            .filter([['id','=',partner_id]])
+            .all({'timeout':3000, 'shadow': true})
+            .then(function(partners){
+                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                    def.resolve();
+                } else {
+                    def.reject();
+                }
+            }, function(err,event){ event.preventDefault(); def.reject(); });
+        return def;
+    },
+        load_server_data: function () {
+            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
+            var self = this;
+            return res.then(function () {
+                if (self.config.multi_session_id) {
+                    self.multi_session = new module.MultiSession(self);
+                    self.multi_session.start();
+                    self.multi_session.request_sync_all();
+                }
+            })
+        },
+    });
 
     var is_first_order = true;
     var OrderSuper = module.Order;
@@ -226,6 +269,10 @@ openerp.pos_multi_session = function(instance){
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
             line.order.trigger('change:sync');
+        },
+        set_client: function(client){
+            OrderSuper.prototype.set_client.apply(this,arguments);
+            this.trigger('change:sync');
         },
         addProduct: function(){
             OrderSuper.prototype.addProduct.apply(this, arguments);
@@ -353,9 +400,16 @@ openerp.pos_multi_session = function(instance){
         },
         on_notification: function(notification) {
             var self = this;
-            var channel = notification[0];
-            var message = notification[1];
-
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification]
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+        },
+        on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
                 try{
                     this.pos.ms_on_update(message)
