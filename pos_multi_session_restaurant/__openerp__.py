@@ -1,5 +1,6 @@
 {
-    'name': "Sync POS orders across multiple sessions (restaurant extension)",
+    'name': "Sync restaurant orders",
+    'summary': 'Staff get order details immediately after waiter taps on tablet',
     'version': '1.1.4',
     'author': 'Ivan Yelizariev',
     'category': 'Point Of Sale',
