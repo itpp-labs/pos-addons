@@ -5,7 +5,7 @@
 Longpolling
 ===========
 
-Check following resources to activate longpolling:
+Check following resources about activating longpolling:
 
 * Official doc: https://www.odoo.com/documentation/8.0/setup/deploy.html#builtin-server
 * Non-official doc: https://odoo-development.readthedocs.io/en/latest/admin/longpolling.html
