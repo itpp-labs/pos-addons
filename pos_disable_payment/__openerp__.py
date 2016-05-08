@@ -6,8 +6,8 @@
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
+    'depends': ['point_of_sale'],
     'images': ['images/pos_payment_access.png'],
-    'depends': ['point_of_sale','base'],
     "price": 40.00,
     "currency": "EUR",    
     'data': [
