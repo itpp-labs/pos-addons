@@ -71,6 +71,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
             if (order) {
                 order.set_customer_count(data.customer_count, true);
+                order.saved_resume = data.multiprint_resume;
                 this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
             }
         },
