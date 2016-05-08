@@ -3,6 +3,10 @@
 Changelog
 =========
 
+`1.1.4`
+-------
+- FIX: Send to sync already printed order lines to not print it on remote POS.
+
 `1.1.3`
 -------
 - FIX: in some cases POS loading was stopped.

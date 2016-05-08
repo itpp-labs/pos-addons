@@ -3,6 +3,10 @@
 Changelog
 =========
 
+`1.0.4`
+-------
+- FIX: Print only not printed order lines (*Order* button).
+
 `1.0.3`
 -------
 - IMP: For pos restaurant compatibility. Sync notes. Sync guests.
