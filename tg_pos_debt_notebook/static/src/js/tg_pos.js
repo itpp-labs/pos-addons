@@ -13,6 +13,8 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
         initialize: function (session, attributes) {
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
             partner_model.fields.push('debt');
+            var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
+            journal_model.fields.push('debt');
             return _super_posmodel.initialize.call(this, session, attributes);
         },
         push_order: function(order, opts){
@@ -87,12 +89,14 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
 
         pay_full_debt: function(){
             var order = this.pos.get_order();
-
+            
             var debtjournal = false;
             _.each(this.pos.cashregisters, function(cashregister) {
                 if (cashregister.journal.debt) {
                     debtjournal = cashregister;
+                    
                 }
+
             });
 
             var paymentLines = order.get_paymentlines();
@@ -179,7 +183,7 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
             var self = this;
             this.$('.button.set-customer-pay-full-debt').click(function(){
                 self.save_changes();
-                self.gui.back();
+//                self.gui.back();
                 if (self.new_client.debt <= 0) {
                     self.gui.show_popup('error',{
                         'title': _t('Error: No Debt'),
