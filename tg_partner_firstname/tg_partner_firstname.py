@@ -69,5 +69,6 @@ class inherit_res_partner(osv.osv):
 
     _columns = {
         'firstname' : fields.char('Firstname', size=128),
+		'country': fields.many2one('res.country', 'country', select=True)
         }
 
