@@ -43,11 +43,13 @@
             <field name="model">product.variant.dimension.option</field>
             <field name="arch" type="xml">
                 <form string="Dimension Options">
-                    <field name="dimension_id" invisible="not context.get('dimension_option_main_view', False)" />
-                    <newline />
-                    <field name="sequence" />
-                    <field name="name" />
-                    <field name="code" />
+                    <group>
+                        <field name="dimension_id" invisible="not context.get('dimension_option_main_view', False)" />
+                        <newline />
+                        <field name="sequence" />
+                        <field name="name" />
+                        <field name="code" />
+                    </group>
                 </form>
             </field>
         </record>
@@ -97,15 +99,17 @@
             <field name="model">product.variant.dimension.value</field>
             <field name="arch" type="xml">
                 <form string="Dimension Values">
-                    <field name="product_tmpl_id" invisible="not context.get('dimension_value_main_view', False)" />
-                    <field name="active" />
-                    <field name="dimension_id" />
-                    <newline />
-                    <field name="option_id" />
-                    <field name="sequence" />
-                    <field name="cost_price_extra" />
-                    <field name="price_extra" />
-                    <field name="price_margin" />
+                    <group>
+                        <field name="product_tmpl_id" invisible="not context.get('dimension_value_main_view', False)" />
+                        <field name="active" />
+                        <field name="dimension_id" />
+                        <newline />
+                        <field name="option_id" />
+                        <field name="sequence" />
+                        <field name="cost_price_extra" />
+                        <field name="price_extra" />                   
+                        <field name="price_margin" />     
+                    </group>             
                 </form>
             </field>
         </record>
@@ -179,8 +183,6 @@
 
         <!-- PRODUCT TEMPLATE -->
 
-<!-- TODO remove useless view of product.template in the module product or fusion this view with the existing view in product, it's depend how the inheritage on this view will be managed by the other module-->
-
 <!--TODO add a wizard to add the option-->
 <!--<button name="add_some_option" string="Add " type="object" colspan="2"/>-->
 
@@ -204,8 +206,15 @@
                         <field name="is_multi_variants"/>
                     </group>
                 </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page string="Variants">
+            </field>
+        </record>
+        
+        <record id="product_variant_multi_product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.variant.multi.product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='variants']" position="inside">
                         <group colspan="1" col="4" attrs="{'invisible':[('is_multi_variants','=',False)]}">
                             <field name="dimension_type_ids" nolabel="1" colspan="4" />
                             <button name="add_all_option" string="Add All Options" type="object" colspan="2"/>
@@ -227,7 +236,6 @@
                                 <field name="variants" string="Dimension Values" />
                             </tree>
                         </field>
-                    </page>
                 </xpath>
             </field>
         </record>
@@ -246,14 +254,12 @@
         <!-- PRODUCT VARIANTS -->
 
         <!-- TODO remove useless view of product.product in the module product or move this correct view in product, it's depend how the heritage on this view will be managed by the other module -->
-
         <record id="product_search_form_view_variants" model="ir.ui.view">
             <field name="name">product.search.form.variants</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_search_form_view"/>
             <field name="arch" type="xml">
-                <field name="categ_id" position="after">
-                    <field name="product_tmpl_id"/>
+                <field name="product_tmpl_id" position="before">
                     <field name="variants"/>
                 </field>
             </field>
@@ -287,8 +293,7 @@
                             </page>
                             <page string="Prices">
                                 <group>
-                                    <field name="list_price" string="Template Sale Price" readonly="1"/>
-                                    <field name="price_margin" />
+                                    <field name="list_price" string="Template Sale Price" readonly="1"/>                                    
                                     <field name="price_extra" />
                                     <field name="cost_price_extra"/>
                                 </group>
@@ -355,12 +360,13 @@
                         <field name="cost_price_extra" groups="product.group_product_variant"/>
                     </group>
                 </field>
-                <group name="Weights" position="replace">
+                
+                <group name="group_lots_and_weight" position="replace">
                      <group colspan="4" col="6" name="Weights" groups="product.group_stock_packaging">
                         <group name="template_weights" string="Template Weights">
                             <field digits="(14, 3)" name="volume" attrs="{'readonly':[('type','=','service')]}"/>
                             <field name="weight" attrs="{'readonly':[('type','=','service')]}"/>
-                            <field name="weight_net" attrs="{'readonly':[('type','=','service')]}"/>
+                            <field name="weight" attrs="{'readonly':[('type','=','service')]}"/>
                         </group>
                         <group name="variant_weights" string="Variant Weights" attrs="{'invisible':[('is_multi_variants','=',False)]}">
                             <field digits="(14, 3)" name="additional_volume" attrs="{'readonly':[('type','=','service')]}"/>
@@ -374,6 +380,7 @@
                         </group>
                     </group>
                 </group>
+                
             </field>
         </record>
 

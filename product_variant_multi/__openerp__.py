@@ -21,7 +21,7 @@
 ##############################################################################
 {
     "name": "Product Variant Multi",
-    "version": "1.0",
+    "version": "2.0",
     "author": "OpenERP SA, Akretion",
     "category": "Sales Management",
     "license": "AGPL-3",
@@ -68,5 +68,5 @@ will have been warned.
     ],
     "application": True,
     "active": False,
-    'installable': False,
+    "installable": True,
 }
