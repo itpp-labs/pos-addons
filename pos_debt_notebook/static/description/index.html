@@ -4,18 +4,28 @@
             <h2 class="oe_slogan">Debt notebook (technical core)</h2>
             <h3 class="oe_slogan">Debt payment method for POS.</h3>
             <p>
-                It implements as follows. Addon create payment method
-                (Debt journal). When customer buy on credit, he give
+                It implements as follows. Addon creates payment method
+                (Debt journal). When customer buys on credit, he gives
                 "debt" to cashier, which can be considered as some
                 kind of money. This virtual money (debts) is accounted
-                just like usual money. But when customer pay debts,
+                just like usual money. But when customer pays debts,
                 this virtual money (debts) are moved from debt account
                 to cash (or bank) account
+                
+                It implements as follows. The addon creates a payment method (Debt journal).
+                When a customer buys on credit, he gives "debt" to a cashier, which can be considered as
+                some kind of money. This virtual money (debts) is accounted just like ordinary money.
+                But when the customer pays debts, this virtual money (debts) are moved from debt account
+                to cash (or bank) account.
+
+                So, positive amount of debts (debit) means that the customer have to pay. Negative amount of debts
+                (credit) means that the customer has overpaid his debts and can take instead some
+                product or take back that money.
             </p>
             <p>
                 So, positive amount of debts (debit) means that
                 customer have to pay. Negative amount of debts
-                (credit) means that customer overpay his debts and can
+                (credit) means that customer has overpaid his debts and can
                 take instead some product or take back that money.
             </p>
         </div>

@@ -2,16 +2,15 @@
 Debt notebook (technical core)
 ==============================
 
-The module adds
+Debt payment method for POS.
 
+The module creates a payment method (Debt journal). When a customer buys on credit, he gives
+"debt" to a cashier, which can be considered as some kind of money. This virtual money (debts) is accounted
+just like ordinary money. But when the customer pays debts, this virtual money (debts) are moved from debt account
+to cash (or bank) account.
 
-
-Menus are visible only for users who are in groups specified in the fields: "groups_id" and "extra_groups_id".
-
-It can be used to temporarily restrict access to menu for all users.
-E.g. in Project application only Project Users and Project Managers have access to Project menu. 
-Without this module you have to remove these access groups from all users, which means that user hierarchy is lost. 
-The module solve this issue.
+So, positive amount of debts (debit) means that the customer have to pay. Negative amount of debts
+(credit) means that the customer has overpaid his debts and can take instead some product or take back that money.
 
 Usage
 =====
@@ -32,4 +31,4 @@ Further information
 
 HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
 
-Tested on Odoo 9.0 2ec9a9c99294761e56382bdcd766e90b8bc1bb38
+Tested on Odoo 9.0 9cdc40e3edf2e497c4660c7bb8d544f750b3ef60

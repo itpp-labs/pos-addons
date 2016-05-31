@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Debt notebook for POS',
     'version': '1.0.2',
@@ -18,6 +19,10 @@
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
+
+    # "price": 20.00,
+    # "currency": "EUR",
+
     'installable': True,
     'auto_install': True,
     'uninstall_hook': 'pre_uninstall',
