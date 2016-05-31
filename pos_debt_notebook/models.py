@@ -3,8 +3,6 @@ from openerp import models, fields, api, SUPERUSER_ID
 from openerp.osv import osv
 from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
-from openerp.tools.translate import _
-from openerp.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -80,7 +78,6 @@ class PosConfig(osv.osv):
             ('company_id', '=', user.company_id.id),
             ('debt', '=', True),
         ])
-        print 'debt_journal_active', debt_journal_active
         if debt_journal_active:
             #  Check if the debt journal is created already for the company.
             return
@@ -89,9 +86,8 @@ class PosConfig(osv.osv):
         mod_obj = self.pool['ir.model.data']
         debt_account_old_version = account_obj.search(cr, SUPERUSER_ID, [
             ('code', '=', 'XDEBT'), ('company_id', '=', user.company_id.id)])
-        print 'debt_account_old_version', debt_account_old_version
         if debt_account_old_version:
-            debt_account = debt_account_old_version
+            debt_account = debt_account_old_version[0]
         else:
             debt_account = account_obj.create(cr, uid, {
                 'name': 'Debt',
@@ -108,14 +104,14 @@ class PosConfig(osv.osv):
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        debt_journal_inactive = journal_obj.search(cr, SUPERUSER_ID, [
+        debt_journal_inactive_id = journal_obj.search(cr, SUPERUSER_ID, [
             ('code', '=', 'TDEBT'),
             ('name', '=', 'Debt Journal'),
             ('company_id', '=', user.company_id.id),
             ('debt', '=', False),
         ])
-        print 'debt_journal_inactive', debt_journal_inactive
-        if debt_journal_inactive:
+        if debt_journal_inactive_id:
+            debt_journal_inactive = journal_obj.browse(cr, uid, debt_journal_inactive_id[0], context=context)
             debt_journal_inactive.write({
                 'debt': True,
                 'default_debit_account_id': debt_account,
@@ -154,7 +150,6 @@ class PosConfig(osv.osv):
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        print 'debt_journal', debt_journal
         config = self.browse(cr, uid, ids[0], context=context)
         config.write({
             'journal_ids': [(4, debt_journal)],
@@ -180,34 +175,6 @@ class PosConfig(osv.osv):
 
 class PosSession(osv.osv):
     _inherit = 'pos.session'
-
-    """
-    def create(self, cr, uid, values, context=None):
-        context = dict(context or {})
-        config_id = values.get('config_id', False) or context.get('default_config_id', False)
-        if not config_id:
-            raise UserError(_("You should assign a Point of Sale to your session."))
-
-        jobj = self.pool.get('pos.config')
-        pos_config = jobj.browse(cr, uid, config_id, context=context)
-        has_journals = pos_config.journal_ids
-
-        res = super(PosSession, self).create(cr, uid, values)
-
-        if not has_journals:
-            debt_journal = self.pool['account.journal'].search(cr, SUPERUSER_ID, [
-                ('code', '=', 'TDEBT'), ('company_id', '=', pos_config.company_id.id)])
-            if debt_journal:
-                debt_journal = debt_journal[0]
-                debt_journal_obj = self.pool['account.journal'].browse(cr, uid, debt_journal)
-                debt_journal_obj.write({'journal_user': True})
-                pos_config.write({
-                    'journal_ids': [(4, debt_journal)],
-                    'debt_dummy_product_id': self.pool('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
-                })
-
-        return res
-    """
 
 
 class AccountJournal(models.Model):
