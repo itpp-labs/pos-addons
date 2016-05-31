@@ -21,7 +21,7 @@
     ],
 
     # "price": 20.00,
-    # "currency": "EUR",
+    # "currency": "EUR", 
 
     'installable': True,
     'auto_install': True,
