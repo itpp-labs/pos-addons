@@ -6,7 +6,7 @@
     "website": "https://it-projects.info",
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
-    'version': '7.0.1.0.0',
+    'version': '1.0.2',
     'depends': ['point_of_sale'],
     'js': [
          'static/src/js/pos.js',
