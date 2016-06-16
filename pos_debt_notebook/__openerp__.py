@@ -14,6 +14,8 @@
 
     "external_dependencies": {"python": [], "bin": []},
     'depends': ['point_of_sale', 'account'],
+    "price": 200.00,
+    "currency": "EUR",
     'data': [
         'data.xml',
         'views.xml',

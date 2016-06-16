@@ -8,6 +8,8 @@
     'category': 'Point Of Sale',
     'website': 'https://it-projects.info',
     'depends': ['pos_debt_notebook', 'point_of_sale'],
+    "price": 80.00,
+    "currency": "EUR",
     'images': [
         'images/screenshot-2.png',
         'images/screenshot-3.png',
