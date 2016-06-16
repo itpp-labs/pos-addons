@@ -7,6 +7,8 @@
     'category': 'Point Of Sale',
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale', 'account'],
+    "price": 200.00,
+    "currency": "EUR",
     'data': [
         'data.xml',
         'views.xml',
