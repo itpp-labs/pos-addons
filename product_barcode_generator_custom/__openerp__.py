@@ -8,8 +8,8 @@
     'description': """
 Module introduce barcode sequences:
 
-* To weight EAN13: 21xxxxxNNDDDC
-* Internal EAN13: 240000xxxxxxC
+* To weight barcode: 21xxxxxNNDDDC
+* Internal barcode: 240000xxxxxxC
 
 Steps to use module:
 
@@ -22,6 +22,6 @@ Steps to use module:
         'data.xml',
         'views.xml',
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }

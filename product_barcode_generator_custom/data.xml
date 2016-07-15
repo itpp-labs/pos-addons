@@ -2,7 +2,7 @@
 <openerp>
     <data noupdate="1">
         <record id="seq_ean13_to_weight" model="ir.sequence">
-            <field name="name">To weight EAN13 (21...)</field>
+            <field name="name">To weight barcode (21...)</field>
             <field name="code">product.ean13.code</field>
             <field name="prefix">21</field>
             <field name="padding">5</field>
@@ -11,7 +11,7 @@
 			<field name="barcode_sequence" eval="True"/>
         </record>
         <record id="seq_ean13_internal" model="ir.sequence">
-            <field name="name">Internal EAN13 (240000...)</field>
+            <field name="name">Internal barcode (240000...)</field>
             <field name="code">product.ean13.code</field>
             <field name="prefix">240000</field>
             <field name="padding">5</field>

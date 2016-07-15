@@ -14,9 +14,8 @@ class product_product(osv.Model):
         seq_ean13_to_weight = product_ids.env.ref('product_barcode_generator_custom.seq_ean13_to_weight')
         seq_ean13_internal = product_ids.env.ref('product_barcode_generator_custom.seq_ean13_internal')
 
-
         for product in product_ids:
-            if product.ean13:
+            if product.barcode:
                 continue
             if product.to_weight:
                 sequence_id = seq_ean13_to_weight.id
@@ -28,6 +27,6 @@ class product_product(osv.Model):
                 continue
             self.write(cr, uid, [product.id], {
                 'ean_sequence_id':sequence_id,
-                'ean13': ean13,
+                'barcode': ean13,
             }, context=context)
         return True
