@@ -55,3 +55,80 @@ msgstr ""
 msgid "This is a dummy product used when a customer pays his debt without ordering new products. This is a workaround to the fact that Odoo needs to have at least one product on the order to validate the transaction."
 msgstr ""
 
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:165
+#, python-format
+msgid "Change Customer and Pay Full Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:11
+#, python-format
+msgid "Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:91
+#, python-format
+msgid "Empty Order"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:181
+#, python-format
+msgid "Error: No Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:25
+#, python-format
+msgid "Pay Full Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:32
+#, python-format
+msgid "Select Customer and Pay Full Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:163
+#, python-format
+msgid "Set Customer and Pay Full Debt"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:182
+#, python-format
+msgid "The selected customer has no debt."
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:92
+#, python-format
+msgid "There must be at least one product in your order before it can be validated. (Hint: you can use some dummy zero price product)"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:83
+#, python-format
+msgid "Unknown customer"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:84
+#, python-format
+msgid "You cannot use Debt payment. Select customer first."
+msgstr ""
+
