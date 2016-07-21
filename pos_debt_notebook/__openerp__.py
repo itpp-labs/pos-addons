@@ -1,18 +1,27 @@
 {
-    'name': 'Debt notebook (technical core)',
-    'version': '2.0.0',
+    'name': 'Debt notebook for POS',
+    'version': '3.0.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'summary': 'Debt payment method for POS',
+    'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'license': 'GPL-3',
     'category': 'Point Of Sale',
     'website': 'https://it-projects.info',
-    'depends': ['point_of_sale', 'account'],
-    "price": 200.00,
+    'depends': ['point_of_sale'],
+    "price": 280.00,
     "currency": "EUR",
-    'data': [
-        'data.xml',
-        'views.xml',
+    'images': [
+        'images/screenshot-2.png',
+        'images/screenshot-3.png',
+        'images/screenshot-1.png',
         ],
+    'data': [
+        'data/product.xml',
+        'views.xml',
+        'data.xml',
+        ],
+    'qweb': [
+        'static/src/xml/pos.xml',
+    ],
     'installable': True,
-    'post_init_hook': 'init_debt_journal',
+    'uninstall_hook': 'pre_uninstall',
 }

@@ -3,6 +3,11 @@
 Changelog
 =========
 
+`3.0.0`
+-------
+
+- Merge with the module "tg_pos_debt_notebook"
+
 `2.0.0`
 -------
 
