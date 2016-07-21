@@ -173,10 +173,6 @@ class PosConfig(osv.osv):
         return res
 
 
-class PosSession(osv.osv):
-    _inherit = 'pos.session'
-
-
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 

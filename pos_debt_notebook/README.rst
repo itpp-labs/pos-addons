@@ -1,19 +1,19 @@
-==============================
-Debt notebook (technical core)
-==============================
+=======================
+ Debt notebook for POS
+=======================
 
-Debt payment method for POS.
+The module allows to make sale on credit.
 
-The module creates a payment method (Debt journal). When a customer buys on credit, he gives
-"debt" to a cashier, which can be considered as some kind of money. This virtual money (debts) is accounted
-just like ordinary money. But when the customer pays debts, this virtual money (debts) are moved from debt account
-to cash (or bank) account.
+The module has the following behavior:
 
-So, positive amount of debts (debit) means that the customer have to pay. Negative amount of debts
-(credit) means that the customer has overpaid his debts and can take instead some product or take back that money.
-
-Usage
-=====
+* Debt data are still available after the module will be re-installed.
+* When new (first after install) POS session is opened, a debt payment method would added in a POS config.
+* Odoo tests are passed.
+* Multicompany mode support.
+* If the module was install and uninstall immediately (without created POS sessions) then it keeps no data.   
+* If a user deleted debt journal from POS config manually then after the module is upgraded 
+  POS config would not be changed. 
+* Upgrading from old versions is well.
 
 Credits
 =======
@@ -29,6 +29,12 @@ Sponsors
 Further information
 ===================
 
+Demo: http://runbot.it-projects.info/demo/pos-addons/9.0
+
 HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
+
+Usage instructions: `<doc/index.rst>`_
+
+Changelog: `<doc/changelog.rst>`_
 
 Tested on Odoo 9.0 9cdc40e3edf2e497c4660c7bb8d544f750b3ef60
