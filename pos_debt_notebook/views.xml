@@ -15,7 +15,7 @@
     </field>
 </record>
 
-<record id="view_tg_partner_tree" model="ir.ui.view">
+<record id="view_debt_partner_tree" model="ir.ui.view">
     <field name="name">res.partner.tree.debt</field>
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.view_partner_tree"/>

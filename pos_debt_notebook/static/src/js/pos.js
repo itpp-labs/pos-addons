@@ -1,4 +1,4 @@
-odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
+odoo.define('pos_debt_notebook.pos', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
@@ -126,15 +126,11 @@ odoo.define('tg_pos_debt_notebook.tg_pos', function (require) {
            so the cashier can click on it by accident !
            He should not, because he still has to select the payment method used
            to pay the debt.
-
         This problem is linked to the fact that the native is_paid() method
         returns with the following code:
-
         return (currentOrder.getTotalTaxIncluded() < 0.000001
                             || currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded());
-
         (cf odoo/addons/point_of_sale/static/src/js/screens.js line 1256)
-
         So is_paid() always returns True when
         "currentOrder.getTotalTaxIncluded() < 0.000001" which is the case
         in this scenario with a pos.order with the dummy product with price = 0
