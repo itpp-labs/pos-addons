@@ -13,8 +13,8 @@
         'views.xml',
         ],
 
-    # "price": 20.00,
-    # "currency": "EUR", 
+    "price": 50.00,
+    "currency": "EUR", 
 
     'installable': True,
 }
