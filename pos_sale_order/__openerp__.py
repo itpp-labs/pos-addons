@@ -3,7 +3,7 @@
     'version' : '1.1.0',
     'author' : 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
-    'category' : 'Sale',
+    'category' : 'Point of Sale',
     'website' : 'https://yelizariev.github.io',
     'depends' : ['point_of_sale'],
     'data':[
