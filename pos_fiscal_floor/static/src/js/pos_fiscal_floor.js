@@ -15,7 +15,8 @@ odoo.define('pos_fiscal_floor', function (require) {
                     return obj.id == f_id
                 })
                 order.fiscal_position = obj;
-                order.trigger('change');
+                if (order.fiscal_position)
+                    order.trigger('change');
             }
         }
     })
