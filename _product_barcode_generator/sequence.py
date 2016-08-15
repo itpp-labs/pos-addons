@@ -20,17 +20,17 @@
 #################################################################################
 
 from openerp.osv import fields, orm
-from openerp.tools.translate import _
+
 
 class ir_sequence(orm.Model):
     _inherit = 'ir.sequence'
-    
+
     _columns = {
         'barcode_sequence': fields.boolean('Barcode Sequence'),
     }
-    
+
     _defaults = {
         'barcode_sequence': False,
     }
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

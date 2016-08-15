@@ -16,7 +16,7 @@ Related links:
 Numerous modifications of the Point Of Sale :
 =============================================
 
-    - Customer pannel  
+    - Customer pannel
     - Editing / adding customers / link to sponsor
     - Intuitive browsing for customers (right pan) - by letter
     - Browse customer sales history : see its sales and all its products
@@ -40,12 +40,12 @@ Numerous modifications of the Point Of Sale :
     'qweb': [
         'static/src/xml/tg_pos.xml',
     ],
-    #'js': [
+    # 'js': [
     #    'static/src/js/tg_pos.js',
-    #],
-    #'css':[
+    # ],
+    # 'css':[
     #    'static/src/css/tg_pos.css',
-    #],
+    # ],
     'installable': True,
     'application': False,
     'auto_install': False,

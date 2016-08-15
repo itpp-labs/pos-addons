@@ -6,10 +6,10 @@
             <field name="model">pos.config</field>
             <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
             <field name="arch" type="xml">
-				<xpath expr="//field[@name='iface_electronic_scale']" position="after">
-					<field name="iface_auto_print"/>
-				</xpath>
-			</field>
-		</record>
-	</data>
+                <xpath expr="//field[@name='iface_electronic_scale']" position="after">
+                    <field name="iface_auto_print"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </openerp>

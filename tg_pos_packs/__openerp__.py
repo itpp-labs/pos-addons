@@ -51,7 +51,7 @@ When you select a pack, a new screen is displayed and you can select one templat
 
 Pack is added to caddie as well as its products, but thoses products prices are set to 0.00 as well as on receipt.
 
-This way, you can set a reduced price for the pack , even if the sumn of each products may be superior. (This is for what packs are made), 
+This way, you can set a reduced price for the pack , even if the sumn of each products may be superior. (This is for what packs are made),
 but also, you can build your pack on-demand, by making groups of templates .
 
 Tested on odoo 8.0 33a8989d77f44b093214550b8f23cb386a990981
