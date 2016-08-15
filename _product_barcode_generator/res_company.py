@@ -20,12 +20,12 @@
 #################################################################################
 
 from openerp.osv import fields, orm
-from openerp.tools.translate import _
+
 
 class res_company(orm.Model):
-    
+
     _inherit = 'res.company'
-            
+
     _columns = {
         'ean_sequence_id': fields.many2one('ir.sequence', 'Ean Sequence'),
     }

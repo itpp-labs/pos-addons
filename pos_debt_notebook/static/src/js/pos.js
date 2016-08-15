@@ -21,7 +21,7 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
                         return;
                     var amount = line.get_amount();
                     client.debt += amount;
-                })
+                });
             }
             return pushed;
         },
@@ -44,9 +44,9 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
             if(journal.type !== 'cash' || journal.debt){
                 var val;
                 if (journal.debt)
-                    val = -this.getChange() || 0
+                    val = -this.getChange() || 0;
                 else
-                    val = this.getDueLeft()
+                    val = this.getDueLeft();
                 newPaymentline.set_amount( val );
             }
             paymentLines.add(newPaymentline);
@@ -92,7 +92,7 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
             var self = this;
             if (line.cashregister.journal.debt){
                 el_node.querySelector('.pay-full-debt')
-                    .addEventListener('click', function(){self.pay_full_debt(line)});
+                    .addEventListener('click', function(){self.pay_full_debt(line);});
                 }
             return el_node;
         },
@@ -152,7 +152,7 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
                 if (this.new_client.debt > 0){
                     $button.toggleClass('oe_hidden',!this.has_client_changed());
                 }else{
-                	$button.addClass('oe_hidden');
+                    $button.addClass('oe_hidden');
                 }
             }
         },

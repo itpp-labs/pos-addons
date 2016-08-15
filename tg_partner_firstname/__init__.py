@@ -20,4 +20,4 @@
 #
 ##############################################################################
 
-import tg_partner_firstname
+from . import tg_partner_firstname

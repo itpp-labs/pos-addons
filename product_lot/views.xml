@@ -7,17 +7,17 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-				<xpath expr="//group[@name='status']" position="before">
-					<group name="product_lot" string="Product lot">
-						<field name="is_lot"/>
-						<field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_product_id"/>
-						<field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_qty"/>
-						<field attrs="{'invisible':[('is_lot','=',True)]}" name="lot_id"/>
-						<button  attrs="{'invisible':[('is_lot','=',False)]}" class="oe_inline" string="Split lot"  name="button_split_lot" type="object"/>
-					</group>
-				</xpath>
-			</field>
-		</record>
+                <xpath expr="//group[@name='status']" position="before">
+                    <group name="product_lot" string="Product lot">
+                        <field name="is_lot"/>
+                        <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_product_id"/>
+                        <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_qty"/>
+                        <field attrs="{'invisible':[('is_lot','=',True)]}" name="lot_id"/>
+                        <button  attrs="{'invisible':[('is_lot','=',False)]}" class="oe_inline" string="Split lot"  name="button_split_lot" type="object"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
 
     </data>
 </openerp>

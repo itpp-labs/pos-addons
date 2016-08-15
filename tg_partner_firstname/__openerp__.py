@@ -31,7 +31,7 @@
     - Set Name to Uppercase
     - Capitalize Firstname
     """,
-    'depends': ["base"], 
+    'depends': ["base"],
     'data': [
         'tg_partner_view.xml',
     ],

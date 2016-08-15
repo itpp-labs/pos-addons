@@ -2,7 +2,7 @@
 
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {
-  var classElements = new Array();
+  var classElements = [];
   if (node == null)
     node = document;
   if (tag == null)
@@ -30,7 +30,7 @@ function geByClass(searchClass, node, tag) {
 }
 
 function pos(instance, module){
-    var PosModelSuper = module.PosModel
+    var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         flush: function(){
             var old_flushed = PosModelSuper.prototype.flush.call(this);
@@ -51,7 +51,7 @@ function pos(instance, module){
                 });
             }).fail(function(){
                 flushed.reject();
-            })
+            });
             return flushed;
         },
         load_server_data: function(){
@@ -67,10 +67,10 @@ function pos(instance, module){
                 );
             }).then(function(products){
                 $.each(products, function(){
-                    $.extend(self.db.get_product_by_id(this.id) || {}, this)
-                })
-                return $.when()
-            })
+                    $.extend(self.db.get_product_by_id(this.id) || {}, this);
+                });
+                return $.when();
+            });
             return loaded;
         },
         scan_product: function(parsed_code){
@@ -88,7 +88,7 @@ function pos(instance, module){
 
             //added code
             if (product.lot_id){
-                var lot_product = this.db.get_product_by_id(product.lot_id[0])
+                var lot_product = this.db.get_product_by_id(product.lot_id[0]);
                 if (parsed_code.encoding === 'ean13' && lot_product.ean13 == parsed_code.base_code
                   || parsed_code.encoding === 'reference' && lot_product.default_code == parsed_code.code)
                     //lot with same code has priority
@@ -178,7 +178,7 @@ function pos(instance, module){
             return pushed;
 
         }
-    })
+    });
     module.PosDB.include({
         getTime: function(){
             return String(new Date().getTime());
@@ -193,7 +193,7 @@ function pos(instance, module){
 
             r.id = this.getUniqueTime();
 
-            records.push(r)
+            records.push(r);
 
             this.save('split_lot_records', records);
         },
@@ -227,20 +227,20 @@ function pos(instance, module){
                 self.pos.refresh_qty_available(lot_product);
                 self.pos.push_split_lot(lot_product, qty);
                 self.renderElement();
-            }
+            };
         },
         render_orderline: function(orderline){
             var el_node = this._super(orderline);
-            var button = geByClass('unpack-lot', el_node)
+            var button = geByClass('unpack-lot', el_node);
             if (button && button.length){
-                button = button[0]
+                button = button[0];
                 button.orderline = orderline;
-                button.addEventListener('click', this.unpack_lot_handler)
+                button.addEventListener('click', this.unpack_lot_handler);
             }
 
             return el_node;
         },
-    })
+    });
 
 }
 
@@ -251,7 +251,7 @@ window.openerp.point_of_sale = function(instance){
 
     pos(instance, module);
 
-    $('<link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css"/>').appendTo($("head"))
-}
+    $('<link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css"/>').appendTo($("head"));
+};
 
-})()
+})();

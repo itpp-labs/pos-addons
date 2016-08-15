@@ -8,21 +8,21 @@ function pos_discount_widgets(instance, module){
             var line_click_handler = this.line_click_handler;
             this.line_click_handler = function(event){
                 self.deselect_summary();
-                line_click_handler.call(this, event)
-            }
+                line_click_handler.call(this, event);
+            };
         },
         select_summary:function(){
             if (this.summary_selected)
                 return;
             this.deselect_summary();
             this.summary_selected = true;
-            $('.order .summary').addClass('selected')
+            $('.order .summary').addClass('selected');
             this.pos_widget.numpad.state.reset();
             this.pos_widget.numpad.state.changeMode('discount');
         },
         deselect_summary:function(){
             this.summary_selected = false;
-            $('.order .summary').removeClass('selected')
+            $('.order .summary').removeClass('selected');
         },
         set_value: function(val){
             if (!this.summary_selected)
@@ -31,8 +31,8 @@ function pos_discount_widgets(instance, module){
             if (mode=='discount'){
                 var order = this.pos.get('selectedOrder');
                 $.each(order.get('orderLines').models, function (k, line){
-                    line.set_discount(val)
-                })
+                    line.set_discount(val);
+                });
             }
         },
         renderElement:function(scrollbottom){
@@ -46,10 +46,10 @@ function pos_discount_widgets(instance, module){
                 self.pos.get('selectedOrder').deselectLine(this.orderline);
                 self.pos_widget.numpad.state.reset();
 
-                self.select_summary()
-            })
+                self.select_summary();
+            });
         }
-    })
+    });
 }
 
 (function(){
@@ -60,6 +60,6 @@ function pos_discount_widgets(instance, module){
 
         pos_discount_widgets(instance, module);
 
-        $('<link rel="stylesheet" href="/pos_discount_total/static/src/css/pos.css"/>').appendTo($("head"))
-    }
-})()
+        $('<link rel="stylesheet" href="/pos_discount_total/static/src/css/pos.css"/>').appendTo($("head"));
+    };
+})();

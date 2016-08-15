@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from openerp.osv import fields, orm
+
 
 class product_product(orm.Model):
     _inherit = 'product.product'
@@ -14,7 +16,7 @@ class product_product(orm.Model):
         # lot product fields
         'is_lot': fields.boolean('Lot of products'),
         'lot_qty': fields.integer('Quantity products in Lot'),
-        'lot_product_id': fields.many2one('product.product', 'Product in lot'), # In fact is one2one
+        'lot_product_id': fields.many2one('product.product', 'Product in lot'),  # In fact is one2one
 
         # normal product fields
         'lot_id': fields.function(_get_lot_id, type='many2one', relation='product.product', string='Used in Lot')

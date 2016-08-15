@@ -13,12 +13,12 @@ function pos_ticket_custom(instance, module){
             //'h12': moment().format('%I'),
             //'min': moment().format('%M'),
             //'sec': moment().format('%S'),
-        }
+        };
         var format = function(s, dict){
             s = s || '';
             $.each(dict, function(k, v){
-                s = s.replace('%('+k+')s', v)
-            })
+                s = s.replace('%('+k+')s', v);
+            });
             return s;
         };
         function pad(n, width, z) {
@@ -29,13 +29,13 @@ function pos_ticket_custom(instance, module){
         var num = seq.number_next_actual;
         seq.number_next_actual += seq.number_increment;
 
-        return format(seq.prefix, idict) + pad(num, seq.padding) + format(seq.suffix, idict)
+        return format(seq.prefix, idict) + pad(num, seq.padding) + format(seq.suffix, idict);
     }
 
     var round_di = instance.web.round_decimals;
-    var round_pr = instance.web.round_precision
+    var round_pr = instance.web.round_precision;
 
-    var PosModelSuper = module.PosModel
+    var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         load_server_data: function(){
             var self = this;
@@ -56,21 +56,21 @@ function pos_ticket_custom(instance, module){
             }).then(function(currencies){
                 self.currency = currencies[0];
 
-                return $.when()
-            })
+                return $.when();
+            });
             return loaded;
         },
         push_order: function(order){
             var currentOrder = this.get('selectedOrder');
 
-            var name_custom = sequence_next(this.config.pos_order_sequence)
+            var name_custom = sequence_next(this.config.pos_order_sequence);
 
             currentOrder.set({'name_custom': name_custom});
 
             var pushed = PosModelSuper.prototype.push_order.call(this, order);
             return pushed;
         }
-    })
+    });
 
 
     var ModuleOrderlineSuper = module.Orderline;
@@ -87,16 +87,16 @@ function pos_ticket_custom(instance, module){
             _.each(taxes_ids, function(el) {
                 var tax = _.detect(taxes, function(t) {return t.id === el;});
                 tax_name.push(tax.name);
-            })
+            });
 
-            res.tax_name = tax_name.join(',')
+            res.tax_name = tax_name.join(',');
 
             var currency_rounding = this.pos.currency.rounding;
             res.price_without_discount = round_pr(this.get_quantity() * this.get_unit_price(), currency_rounding);
 
             return res;
         }
-    })
+    });
 
 
     var ModuleOrderSuper = module.Order;
@@ -112,7 +112,7 @@ function pos_ticket_custom(instance, module){
                 client_data = {
                     address: address,
                     tax_id: ''
-                }
+                };
             }
             res.client_data = client_data;
 
@@ -161,7 +161,7 @@ function pos_ticket_custom(instance, module){
 
             return fulldetails;
         }
-    })
+    });
 }
 
 (function(){
@@ -173,5 +173,5 @@ function pos_ticket_custom(instance, module){
         pos_ticket_custom(instance, module);
 
         //$('<link rel="stylesheet" href="/pos_ticket_custom/static/src/css/pos.css"/>').appendTo($("head"))
-    }
-})()
+    };
+})();
