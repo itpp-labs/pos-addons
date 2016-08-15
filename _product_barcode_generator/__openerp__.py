@@ -26,7 +26,7 @@
     *This is a frozen version. The module is moved to another repository. Check out newest version here:* https://github.com/OCA/stock-logistics-barcode/tree/8.0/product_barcode_generator
 
     This module will add a function which leads to an automatic generation of EAN13 for products
-    
+
     You will have to define the company default value (6 firsts number of EAN13) then the 6 next number the sequence.
     The 13rd is the key of the EAN13, this will be automatically computed.
     """,
@@ -38,13 +38,13 @@
     ],
     "demo": [],
     "data": [
-       "data/ean_sequence.xml",
-       "res_company_view.xml",
-       "product_view.xml",
-       "sequence_view.xml",
+        "data/ean_sequence.xml",
+        "res_company_view.xml",
+        "product_view.xml",
+        "sequence_view.xml",
     ],
     "installable": True,
     "active": False,
-    "category" : "Stock Management",
+    "category": "Stock Management",
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

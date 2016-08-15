@@ -20,6 +20,6 @@
 #
 ##############################################################################
 
-import tg_pos_product_pack
+from . import tg_pos_product_pack
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

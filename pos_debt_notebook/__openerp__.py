@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Debt notebook for POS',
     'version': '3.0.0',
@@ -13,12 +14,12 @@
         'images/screenshot-2.png',
         'images/screenshot-3.png',
         'images/screenshot-1.png',
-        ],
+    ],
     'data': [
         'data/product.xml',
         'views.xml',
         'data.xml',
-        ],
+    ],
     'qweb': [
         'static/src/xml/pos.xml',
     ],

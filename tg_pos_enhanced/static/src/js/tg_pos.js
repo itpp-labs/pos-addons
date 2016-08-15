@@ -5,14 +5,14 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
     String.prototype.setCharAt = function(index,chr) {
         if(index > this.length-1) return str;
         return this.substr(0,index) + chr + this.substr(index+1);
-    }
+    };
 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize:function(session, attributes){
 
             PosModelSuper.prototype.initialize.call(this, session, attributes);
-            this.set({'pwd':null})
+            this.set({'pwd':null});
         },
         load_server_data: function(){
             var self = this;
@@ -105,7 +105,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                 }).then(function(packagings){
                     self.db.add_packagings(packagings);
 
-                    return self.fetch('pos.category', ['id','name','parent_id','child_id','image'])
+                    return self.fetch('pos.category', ['id','name','parent_id','child_id','image']);
                 }).then(function(categories){
                     self.db.add_categories(categories);
 
@@ -127,7 +127,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                 }).then(function(bankstatements){
                     var journals = [];
                     _.each(bankstatements,function(statement) {
-                        journals.push(statement.journal_id[0])
+                        journals.push(statement.journal_id[0]);
                     });
                     self.bankstatements = bankstatements;
                     return self.fetch('account.journal', undefined, [['id','in', journals]]);
@@ -135,7 +135,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                     self.journals = journals;
 
                     // associate the bank statements with their journals.
-                    var bankstatements = self.bankstatements
+                    var bankstatements = self.bankstatements;
                     for(var i = 0, ilen = bankstatements.length; i < ilen; i++){
                         for(var j = 0, jlen = journals.length; j < jlen; j++){
                             if(bankstatements[i].journal_id[0] === journals[j].id){
@@ -166,7 +166,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
                         var height = Math.floor(img.height * ratio);
                         var c = document.createElement('canvas');
                             c.width  = width;
-                            c.height = height
+                            c.height = height;
                         var ctx = c.getContext('2d');
                             ctx.drawImage(self.company_logo,0,0, width, height);
 
@@ -185,7 +185,7 @@ function tg_pos_enhanced_models(instance, module){ //module is instance.point_of
             return loaded;
         }
     });
-};
+}
 
 function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     var module = instance.point_of_sale;
@@ -304,7 +304,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             //$('#cache-header-cust').css('display', 'block');
             $('#cache-header-cust').removeClass('oe_hidden');
             //$('#cache-right-pan').css('display', 'block');
-            $('#cache-right-pan').removeClass('oe_hidden')
+            $('#cache-right-pan').removeClass('oe_hidden');
         };
 
     // get data from DB
@@ -398,16 +398,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 .then(function(clients){
                      for(var i = 0, len = clients.length; i < len; i++){
                         clients_list[i] = [];
-                        clients_list[i]['id'] = clients[i].id;
-                        clients_list[i]['montantCumule'] = clients[i].montantCumule;
-                        clients_list[i]['name'] = clients[i].name;
-                        clients_list[i]['firstname'] = (clients[i].firstname == false)? '' : clients[i].firstname;
-                        clients_list[i]['zip'] = clients[i].zip;
-                        clients_list[i]['phone'] = clients[i].phone;
-                        clients_list[i]['mobile'] = clients[i].mobile;
-                        clients_list[i]['email'] = clients[i].email;
-                        clients_list[i]['comment'] = clients[i].pos_comment;
-                     };
+                        clients_list[i].id = clients[i].id;
+                        clients_list[i].montantCumule = clients[i].montantCumule;
+                        clients_list[i].name = clients[i].name;
+                        clients_list[i].firstname = (clients[i].firstname == false)? '' : clients[i].firstname;
+                        clients_list[i].zip = clients[i].zip;
+                        clients_list[i].phone = clients[i].phone;
+                        clients_list[i].mobile = clients[i].mobile;
+                        clients_list[i].email = clients[i].email;
+                        clients_list[i].comment = clients[i].pos_comment;
+                     }
 
                     // remove customers lines
                     $('#client-list tr').remove();
@@ -582,7 +582,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                     });
                     $(this).removeClass().addClass('sel-letter');
 
-                    global_letter = $(this).text().trim()
+                    global_letter = $(this).text().trim();
                     self.get_clients(global_letter);
                 });
             }
@@ -749,7 +749,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             var monnaieArendre = paidTotal > sousTotalApayer ? parseFloat(paidTotal) - parseFloat(sousTotalApayer) : 0;
 
             var rounding = this.pos.currency.rounding;
-            var round_pr = instance.web.round_precision
+            var round_pr = instance.web.round_precision;
             remaining = round_pr(remaining, rounding);
 
             this.$('#payment-due-total').html(this.format_currency(totalDeDepart));
@@ -976,7 +976,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
         destroy: function(){
-            OrderSuper.prototype.destroy.call(this)
+            OrderSuper.prototype.destroy.call(this);
             //TODO remove it from here
             $('#cache_left_pane').css('display', 'none');
             $('#cache-header-cust').css('display', 'none');
@@ -996,7 +996,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             get_pos_messages();
         },
         initialize: function(attributes){
-            OrderSuper.prototype.initialize.call(this, attributes)
+            OrderSuper.prototype.initialize.call(this, attributes);
             this.set({
                  partner_id:     null,
                  partner_name:   null,
@@ -1014,7 +1014,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
         
         getDiscountBefore: function() {
-            return OrderSuper.prototype.getDiscountTotal.call(this)
+            return OrderSuper.prototype.getDiscountTotal.call(this);
         },
         getDiscountAfter: function() {
             return parseFloat($('#enter_special_discount').val());
@@ -1113,9 +1113,9 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
 
     module.Orderline = module.Orderline.extend({
         initialize: function(attr,options){
-            OrderlineSuper.prototype.initialize.call(this, attr, options)
+            OrderlineSuper.prototype.initialize.call(this, attr, options);
             this.is_return = false;
-        },
+        }
         // sets the quantity of the product. The quantity will be rounded according to the
         // product's unity of measure properties. Quantities greater than zero will not get
         // rounded to zero
@@ -1127,7 +1127,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             }else{
                 return this.quantityStr;
             }
-        },
+        },;
         get_product_tax: function(){
             var self = this;
             var product =  this.get_product();
@@ -1154,7 +1154,7 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
             else{
                     return '';
                 }
-        },
+        },;
         // when we add an new orderline we want to merge it with the last line to see reduce the number of items
         // in the orderline. This returns true if it makes sense to merge the two
         can_be_merged_with: function(orderline){
@@ -1166,16 +1166,16 @@ function tg_pos_enhanced(instance, module){ //module is instance.point_of_sale
                 return false;
             }
             return OrderlineSuper.prototype.can_be_merged_with.call(this, orderline);
-        },
+        },;
 
         get_unit_price: function(){
             var rounding = this.pos.currency.rounding;
             return round_pr(this.price,rounding);
-        },
+        },;
         get_display_price: function(){
             var rounding = this.pos.currency.rounding;
             return  round_pr(round_pr(this.get_unit_price() * this.get_quantity(),rounding) * (1- this.get_discount()/100.0),rounding);
-        },
+        },;
 
         get_all_prices: function(){
             var self = this;

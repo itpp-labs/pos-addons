@@ -3,9 +3,9 @@ function tg_pos_packs(instance, module){
     String.prototype.setCharAt = function(index,chr) {
         if(index > this.length-1) return str;
         return this.substr(0,index) + chr + this.substr(index+1);
-    }
+    };
 
-    var PosModelSuper = module.PosModel
+    var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         load_server_data: function(){
             var self = this;
@@ -21,38 +21,38 @@ function tg_pos_packs(instance, module){
 
             }).then(function(products){
                 $.each(products, function(){
-                    $.extend(self.db.get_product_by_id(this.id) || {}, this)
+                    $.extend(self.db.get_product_by_id(this.id) || {}, this);
                 });
-                return $.when()
-            })
+                return $.when();
+            });
             return loaded;
         },
-    })
+    });
 
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
         addProduct: function(product, options){
             // if is_pack = false, this is a real product
             // we send it to the order
-            options = options || {}
+            options = options || {};
             if (options.pack_code){
                 product = $.extend({'is_pack_item': options.is_pack_item,
                                     'is_pack_container': options.is_pack_container,
                                     'pack_code': options.pack_code
                                    },
-                                   JSON.parse(JSON.stringify(product)))
+                                   JSON.parse(JSON.stringify(product)));
                 if (options.is_pack_container){
-                    product.display_name = '■ ' + product.display_name
+                    product.display_name = '■ ' + product.display_name;
                 }
                 if (options.is_pack_item){
-                    product.display_name = '⁪├ ' + product.display_name
+                    product.display_name = '⁪├ ' + product.display_name;
                     product.price = 0;
                 }
             }
 
 
             if(!product.is_pack || options.is_pack_container)
-                return OrderSuper.prototype.addProduct.call(this, product, options)
+                return OrderSuper.prototype.addProduct.call(this, product, options);
             // this is a Pack !!
             this.show_screen_pack(product.display_name);
 
@@ -138,7 +138,7 @@ function tg_pos_packs(instance, module){
             var nb_items = $('#input_nb_items').val();
             var selectedOrder = this.pos.get('selectedOrder');
 
-            var pack_id = $('#pack_product_id').val()
+            var pack_id = $('#pack_product_id').val();
             var pack_product = null;
             var pack_code = 'pack-'+pack_id+'-'+new Date().getTime();
 
@@ -161,7 +161,7 @@ function tg_pos_packs(instance, module){
                 if(product){
                     selectedOrder.addProduct(product, {is_pack_item:1, 'pack_code': pack_code});
                 }
-            };
+            }
 
             self.hide_screen_pack();
         },
@@ -202,10 +202,10 @@ function tg_pos_packs(instance, module){
             if (!line || line.get_product().is_pack_item || line.is_pack_container){
                 //TODO don't allow return product
             }
-            return OrderSuper.prototype.selectLine.call(this, line)
+            return OrderSuper.prototype.selectLine.call(this, line);
         }
 
-    })
+    });
 
     var OrderlineSuper = module.Orderline;
     module.Orderline = module.Orderline.extend({
@@ -218,7 +218,7 @@ function tg_pos_packs(instance, module){
             var self = this;
             var product = this.get_product();
 
-            quantity = quantity || 'remove'
+            quantity = quantity || 'remove';
             if(quantity === 'remove'){
 
                 // when we remove a pack
@@ -261,7 +261,7 @@ function tg_pos_packs(instance, module){
         },
 
 
-    })
+    });
 
     module.PackScreenWidget = module.ScreenWidget.extend({
         template: 'PackScreenWidget',
@@ -292,7 +292,7 @@ function tg_pos_packs(instance, module){
                 self.close_sales_window();
             });
         },
-    })
+    });
 
     module.PosWidget.include({
         template: 'PosWidget',
@@ -304,7 +304,7 @@ function tg_pos_packs(instance, module){
 
 
         }
-    })
+    });
     module.PackWidget = module.ScreenWidget.extend({
         template: 'PackWidget',
 
@@ -324,6 +324,6 @@ function tg_pos_packs(instance, module){
 
         tg_pos_packs(instance, module);
 
-        $('<link rel="stylesheet" href="/tg_pos_packs/static/src/css/pos.css"/>').appendTo($("head"))
-    }
-})()
+        $('<link rel="stylesheet" href="/tg_pos_packs/static/src/css/pos.css"/>').appendTo($("head"));
+    };
+})();

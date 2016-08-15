@@ -1,6 +1,6 @@
 function pos_product_available(instance, module){
 
-    var PosModelSuper = module.PosModel
+    var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         load_server_data: function(){
             var self = this;
@@ -16,17 +16,17 @@ function pos_product_available(instance, module){
 
             }).then(function(products){
                 $.each(products, function(){
-                    $.extend(self.db.get_product_by_id(this.id) || {}, this)
+                    $.extend(self.db.get_product_by_id(this.id) || {}, this);
                 });
-                return $.when()
-            })
+                return $.when();
+            });
             return loaded;
         },
         refresh_qty_available:function(product){
             var $elem = $("[data-product-id='"+product.id+"'] .qty-tag");
-            $elem.html(product.qty_available)
+            $elem.html(product.qty_available);
             if (product.qty_available <= 0 && !$elem.hasClass('not-available')){
-                $elem.addClass('not-available')
+                $elem.addClass('not-available');
             }
         },
         push_order: function(order){
@@ -37,7 +37,7 @@ function pos_product_available(instance, module){
                     var product = line.get_product();
                     product.qty_available -= line.get_quantity();
                     self.refresh_qty_available(product);
-                })
+                });
             }
             return pushed;
         },
@@ -51,19 +51,19 @@ function pos_product_available(instance, module){
                         var product = line.get_product();
                         product.qty_available -= line.get_quantity();
                         self.refresh_qty_available(product);
-                    })
+                    });
                 } else if (order.orderlines){
                     order.orderlines.each(function(line){
                         var product = line.get_product();
                         product.qty_available -= line.get_quantity();
                         self.refresh_qty_available(product);
-                    })
+                    });
                 }
             }
 
             return invoiced;
         },
-    })
+    });
 }
 
 (function(){
@@ -74,6 +74,6 @@ function pos_product_available(instance, module){
 
         pos_product_available(instance, module);
 
-        $('<link rel="stylesheet" href="/pos_product_available/static/src/css/pos.css"/>').appendTo($("head"))
-    }
-})()
+        $('<link rel="stylesheet" href="/pos_product_available/static/src/css/pos.css"/>').appendTo($("head"));
+    };
+})();
