@@ -23,7 +23,8 @@
 import logging
 import time
 
-from openerp import netsvc, tools, pooler
+from openerp import netsvc
+from openerp import pooler
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
@@ -38,31 +39,32 @@ class pos_cashier(osv.Model):
     _order = 'cashier_name asc'
 
     _columns = {
-        'pos_config_id' : fields.many2one('pos.config', 'Point Of Sale', required=True),
+        'pos_config_id': fields.many2one('pos.config', 'Point Of Sale', required=True),
         'cashier_name': fields.char('Cashier', size=128, required=True),
         'active': fields.boolean('Active', help="If a cashier is not active, it will not be displayed in POS"),
     }
 
     _defaults = {
-        'cashier_name' : '',
-        'active' : True,
-        'pos_config_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).pos_config.id,
+        'cashier_name': '',
+        'active': True,
+        'pos_config_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid, c).pos_config.id,
     }
 
     _sql_constraints = [
         ('uniq_name', 'unique(cashier_name, pos_config_id)', "A cashier already exists with this name in this Point Of sale. Cashier's name must be unique!"),
     ]
 
-class inherit_res_partners(osv.Model):
-    _name='res.partner'   
-    _inherit='res.partner'
 
-    _columns={
+class inherit_res_partners(osv.Model):
+    _name = 'res.partner'
+    _inherit = 'res.partner'
+
+    _columns = {
         'montantCumule': fields.float('Cumulative', required=True),
         'pos_comment': fields.char('Comment in POS', size=50, help='Comment visible on POS receipt'),
     }
-    
-    _defaults={
+
+    _defaults = {
         'montantCumule': 0,
     }
 
@@ -77,35 +79,36 @@ class inherit_res_partners(osv.Model):
         client_id = int(cid)
 
         if client_id != 0:
-        
+
             self.write(cr, uid, client_id, {
-                    'name': name,
-                    'firstname': firstname,
-                    'zip': czip,
-                    'phone': cphone,
-                    'mobile': cmobile,
-                    'email': cemail,
-                    'pos_comment': ccomment,
-                }, context=context)
+                'name': name,
+                'firstname': firstname,
+                'zip': czip,
+                'phone': cphone,
+                'mobile': cmobile,
+                'email': cemail,
+                'pos_comment': ccomment,
+            }, context=context)
             idClient = client_id
-        
+
         # creation client
         else:
 
             idClient = self.create(cr, uid, {
-                'name':name,
-                'firstname':firstname,
-                'zip':czip,
-                'phone':cphone,
-                'mobile':cmobile,
-                'email':cemail,
+                'name': name,
+                'firstname': firstname,
+                'zip': czip,
+                'phone': cphone,
+                'mobile': cmobile,
+                'email': cemail,
                 'pos_comment': ccomment,
-                'company_id':False,
+                'company_id': False,
             }, context=context)
-        
-        return idClient   
+
+        return idClient
 
 inherit_res_partners()
+
 
 class inherit_pos_order(osv.Model):
     _name = 'pos.order'
@@ -118,8 +121,8 @@ class inherit_pos_order(osv.Model):
         for order in self.browse(cr, uid, ids, context=context):
             res[order.id] = {
                 'amount_paid': 0.0,
-                'amount_return':0.0,
-                'amount_tax':0.0,
+                'amount_return': 0.0,
+                'amount_tax': 0.0,
             }
             val1 = val2 = 0.0
             cur = order.pricelist_id.currency_id
@@ -127,10 +130,10 @@ class inherit_pos_order(osv.Model):
             for line in order.lines:
                 val1 += line.price_subtotal_incl
                 val2 += line.price_subtotal
-            res[order.id]['amount_tax'] = cur_obj.round(cr, uid, cur, val1-val2)
+            res[order.id]['amount_tax'] = cur_obj.round(cr, uid, cur, val1 - val2)
             res[order.id]['amount_total'] = cur_obj.round(cr, uid, cur, val1) - discount
             for payment in order.statement_ids:
-                res[order.id]['amount_paid'] +=  payment.amount
+                res[order.id]['amount_paid'] += payment.amount
                 res[order.id]['amount_return'] += res[order.id]['amount_total'] - res[order.id]['amount_paid']
         return res
 
@@ -145,7 +148,7 @@ class inherit_pos_order(osv.Model):
         'special_discount_object': fields.char('Special discount object', size=128),
     }
 
-    _defaults={
+    _defaults = {
         'discount': 0,
         'special_discount': 0,
     }
@@ -159,7 +162,7 @@ class inherit_pos_order(osv.Model):
                 'user_id': order['user_id'] or False,
                 'session_id': order['pos_session_id'],
                 'lines': order['lines'],
-                'pos_reference':order['name'],
+                'pos_reference': order['name'],
                 'partner_id': order['partner_id'] or False,
                 'discount': order['discount'] or 0,
                 'cashier_name': order['cashier_name'],
@@ -182,10 +185,10 @@ class inherit_pos_order(osv.Model):
                 cash_journal = session.cash_journal_id
                 cash_statement = False
                 if not cash_journal:
-                    cash_journal_ids = filter(lambda st: st.journal_id.type=='cash', session.statement_ids)
+                    cash_journal_ids = filter(lambda st: st.journal_id.type == 'cash', session.statement_ids)
                     if not len(cash_journal_ids):
-                        raise osv.except_osv( _('error!'),
-                            _("No cash statement found for this session. Unable to record returned cash."))
+                        raise osv.except_osv(_('error!'),
+                                             _("No cash statement found for this session. Unable to record returned cash."))
                     cash_journal = cash_journal_ids[0].journal_id
                 self.add_payment(cr, uid, order_id, {
                     'amount': -order['amount_return'],
@@ -194,14 +197,14 @@ class inherit_pos_order(osv.Model):
                     'journal': cash_journal.id,
                 }, context=context)
             order_ids.append(order_id)
-            
+
             wf_service = netsvc.LocalService("workflow")
             wf_service.trg_validate(uid, 'pos.order', order_id, 'paid', cr)
 
             partner_id = order['partner_id'] and int(order['partner_id']) or 0
-            
+
             if partner_id != 0:
-                amountPaid = order['amount_paid'] 
+                amountPaid = order['amount_paid']
                 obj_partner = self.pool.get('res.partner')
                 cumulative = obj_partner.read(cr, uid, [partner_id], ['montantCumule'])
                 amountCumulated = cumulative[0]['montantCumule']
@@ -214,7 +217,7 @@ class inherit_pos_order(osv.Model):
         infosPartner = []
         infosPartner.append(infos[0]['montantCumule'])
         return infosPartner
-        
+
     def test_session(self, cr, uid, context=None):
         return True
 
@@ -225,12 +228,12 @@ class inherit_pos_order(osv.Model):
         move_obj = self.pool.get('stock.move')
 
         for order in self.browse(cr, uid, ids, context=context):
-            if not order.state=='draft':
+            if not order.state == 'draft':
                 continue
             addr = order.partner_id and partner_obj.address_get(cr, uid, [order.partner_id.id], ['delivery']) or {}
             picking_id = picking_obj.create(cr, uid, {
                 'origin': order.name,
-                'partner_id': addr.get('delivery',False),
+                'partner_id': addr.get('delivery', False),
                 'type': 'out',
                 'company_id': order.company_id.id,
                 'move_type': 'direct',
@@ -265,7 +268,7 @@ class inherit_pos_order(osv.Model):
                     'location_id': location_id,
                     'location_dest_id': output_id,
                 }, context=context)
-                
+
                 if line.price_subtotal < 0:
                     location_id, output_id = output_id, location_id
 
@@ -273,7 +276,7 @@ class inherit_pos_order(osv.Model):
             wf_service.trg_validate(uid, 'stock.picking', picking_id, 'button_confirm', cr)
             picking_obj.force_assign(cr, uid, [picking_id], context)
         return True
-        
+
     def get_partner_orders(self, cr, uid, partner_id, context=None):
         if context is None:
             context = {}
@@ -285,7 +288,7 @@ class inherit_pos_order(osv.Model):
 
             for o_id in o_ids:
                 order = self.browse(cr, SUPERUSER_ID, o_id)
-                
+
                 res_o = {
                     'id': o_id,
                     'pos_reference': order.pos_reference,
@@ -296,23 +299,24 @@ class inherit_pos_order(osv.Model):
                     'discount': order.discount,
                     'amount_total': order.amount_total
                 }
-                
+
                 result.append(res_o)
         return result
 
 inherit_pos_order()
 
-class inherit_res_users(osv.Model):
-    _name='res.users'
-    _inherit='res.users'
 
-    _columns={
+class inherit_res_users(osv.Model):
+    _name = 'res.users'
+    _inherit = 'res.users'
+
+    _columns = {
         'pos_manager_pwd': fields.char('POS Manager Password', size=64, help='Pasword is required for some actions to be made by manager in POS'),
-    } 
+    }
 
 
 class pos_config(osv.Model):
     _inherit = 'pos.config'
     _columns = {
-        'iface_auto_print' : fields.boolean('Auto print', help="Auto print receipt")
-        }
+        'iface_auto_print': fields.boolean('Auto print', help="Auto print receipt")
+    }

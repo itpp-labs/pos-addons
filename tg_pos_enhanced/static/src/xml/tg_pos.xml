@@ -19,15 +19,15 @@
             <div id="cache_left_pane"></div>
             <!-- panneau affichage client sélectionné -->
             <header>
-            	<div id="header-customer">
+                <div id="header-customer">
                     <img src="/tg_pos_enhanced/static/src/img/disabled_client.png" title="Customer" id="img-sel_cus"/> :  
                     <span id="selected-customer-name">?</span> <span id="selected-vip"></span>
                     <div id="btns-customer">
                     </div>
                 </div>
-            	<div id="header-btns">
-	            	<!--<div class="shadow-top"></div>-->
-	            	<div id="client-btns">
+                <div id="header-btns">
+                    <!--<div class="shadow-top"></div>-->
+                    <div id="client-btns">
                         <li>
                             <img id="img_amountcumul" src="/tg_pos_enhanced/static/src/img/disabled_montant_cumule.png" title="Amount cumulated"/> : <span id="montantCumule"></span>
                         </li>      
@@ -36,7 +36,7 @@
                         <li><img id="btn-findcust" src="/tg_pos_enhanced/static/src/img/find_client.png" title="Find customer"/></li>
                         <li><img id="btn-addcust" src="/tg_pos_enhanced/static/src/img/add_client.png" title="Create customer"/></li>
                     </div>
-            	</div>
+                </div>
                 <div id="cache-header-cust"></div>
             </header>
             <div id="placeholder-CustFormWidget"></div>
@@ -102,7 +102,7 @@
                                         </td>
                                     </tr>
                                 </table>
-								<div class='payment-lines'></div>
+                                <div class='payment-lines'></div>
                                 <div class="footer">     
                                     <div class="infoline-soustotalapresremises">
                                         <span class='left-block pos-soustotalapresremises'>
@@ -606,7 +606,7 @@
                 </div>
             </t>
         </div>
-		</t>
+        </t>
     </t>
 
    <!--  Numpad -->
@@ -635,7 +635,7 @@
                 <button class="input-button numpad-backspace" >
                     <img src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
                 </button>
-				<br />
+                <br />
         </t>
     </t> 
 

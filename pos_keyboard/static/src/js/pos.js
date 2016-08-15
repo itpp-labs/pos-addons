@@ -52,11 +52,11 @@ function pos_keyboard_widgets(instance, module){
                  bmode: 'qty, disc, price', 
                  sign: '+, -',
                  backspace: 'backspace'
-            }
+            };
             this.data = {
                 type: undefined,
                 val: undefined
-            }
+            };
             this.action_callback = undefined;
         },
 
@@ -71,7 +71,7 @@ function pos_keyboard_widgets(instance, module){
         },
 
         set_action_callback: function(callback){
-            this.action_callback = callback
+            this.action_callback = callback;
         },
 
         //remove action callback
@@ -182,7 +182,7 @@ function pos_keyboard_widgets(instance, module){
 
         // stops catching keyboard events 
         disconnect: function(){
-            $('body').off('keyup', '')
+            $('body').off('keyup', '');
         }
     });
 }
@@ -193,5 +193,5 @@ function pos_keyboard_widgets(instance, module){
         _super(instance);
         var module = instance.point_of_sale;
         pos_keyboard_widgets(instance, module);
-    }
+    };
 })();

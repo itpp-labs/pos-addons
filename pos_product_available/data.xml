@@ -3,7 +3,7 @@
     <data>
         <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets_backend">
             <xpath expr="." position="inside">
-				<script type="text/javascript" src="/pos_product_available/static/src/js/pos.js"></script>
+                <script type="text/javascript" src="/pos_product_available/static/src/js/pos.js"></script>
             </xpath>
         </template>
     </data>

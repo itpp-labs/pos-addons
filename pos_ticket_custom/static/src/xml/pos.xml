@@ -2,18 +2,18 @@
 <templates id="template" xml:space="preserve">
     <t t-name="XmlReceipt">
         <receipt align='center' width='40' value-thousands-separator='' >
-			<div line-ratio="0.1">
-			<line>
-				<right>
-					<div><t t-esc='receipt.date.localestring' /></div>
-				</right>
-			</line>
-			<line>
-				<right>
-					<div><t t-esc='receipt.name_custom' /></div>
-				</right>
-			</line>
-			</div>
+            <div line-ratio="0.1">
+            <line>
+                <right>
+                    <div><t t-esc='receipt.date.localestring' /></div>
+                </right>
+            </line>
+            <line>
+                <right>
+                    <div><t t-esc='receipt.name_custom' /></div>
+                </right>
+            </line>
+            </div>
             <t t-if='receipt.company.logo'>
                 <img t-att-src='receipt.company.logo' />
                 <br/>
@@ -33,18 +33,18 @@
                 <div>Tel:<t t-esc='receipt.company.phone' /></div>
             </t>
 
-			<t t-if="receipt.client">
-				<div><t t-esc='receipt.client'/></div>
-			</t>
-			<t t-if="receipt.client_data.address">
-				<div><t t-esc='receipt.client_data.address'/></div>
-			</t>
-			<t t-if="receipt.client_data.tax_id">
-				<div><t t-esc='receipt.client_data.tax_id'/></div>
-			</t>
+            <t t-if="receipt.client">
+                <div><t t-esc='receipt.client'/></div>
+            </t>
+            <t t-if="receipt.client_data.address">
+                <div><t t-esc='receipt.client_data.address'/></div>
+            </t>
+            <t t-if="receipt.client_data.tax_id">
+                <div><t t-esc='receipt.client_data.tax_id'/></div>
+            </t>
 
             <div>--------------------------------</div>
-			<div><pre>    QUANTITY   UNIT   TOTAL</pre></div>
+            <div><pre>    QUANTITY   UNIT   TOTAL</pre></div>
             <div>--------------------------------</div>
 
             <div line-ratio='0.3'>
@@ -59,7 +59,7 @@
                             <value value-decimals='3' value-autoint='on'>
                                 <t t-esc='line.quantity' />
                             </value>
-							x
+                            x
                             <value value-decimals='2'>
                                 <t t-esc='line.price' />
                             </value>
@@ -74,10 +74,10 @@
             <t t-set='taxincluded' t-value='Math.abs(receipt.subtotal - receipt.total_with_tax) &lt;= 0.000001' />
 
             <t t-if='taxincluded'>
-				<div>--------------------------------</div>
-				<div>TAX INCLUDED</div>
-				<div>--------------------------------</div>
-			</t>
+                <div>--------------------------------</div>
+                <div>TAX INCLUDED</div>
+                <div>--------------------------------</div>
+            </t>
             <t t-if='!taxincluded'>
                 <line><right>--------</right></line>
                 <line><left>Subtotal</left><right> <value><t t-esc="receipt.subtotal" /></value></right></line>
@@ -106,19 +106,19 @@
             </line>
 
             <t t-if='taxincluded'>
-				<div line-ratio="0.3">
-				<div><right>SUBTOTAL TAX TOTAL</right></div>
+                <div line-ratio="0.3">
+                <div><right>SUBTOTAL TAX TOTAL</right></div>
                 <t t-foreach='receipt.tax_details_extra' t-as='tax'>
                     <line>
                         <left><t t-esc='tax.name' /></left>
                         <right>
-							<value><t t-esc='tax.base' /></value>
-							<value><t t-esc='tax.amount' /></value>
-							<value><t t-esc='tax.base + tax.amount' /></value>
-						</right>
+                            <value><t t-esc='tax.base' /></value>
+                            <value><t t-esc='tax.amount' /></value>
+                            <value><t t-esc='tax.base + tax.amount' /></value>
+                        </right>
                     </line>
                 </t>
-				</div>
+                </div>
             </t>
 
             <!-- Payment Lines -->

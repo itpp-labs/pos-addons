@@ -44,6 +44,7 @@ class product_pack(orm.Model):
         'group_id': 1,
     }
 
+
 class inherit_product(orm.Model):
     _name = "product.product"
     _inherit = "product.product"
@@ -60,11 +61,11 @@ class inherit_product(orm.Model):
         if context is None:
             context = {}
 
-        if value == True: 
-            product_obj =  self.pool.get('product.product')       
+        if value:
+            product_obj = self.pool.get('product.product')
             products = product_obj.browse(cr, uid, ids)
 
-            pos_cat_obj =  self.pool.get('pos.category')       
+            pos_cat_obj = self.pool.get('pos.category')
             pos_cat_id = pos_cat_obj.search(cr, uid, [('name', '=', 'Custom Packs'), ('is_pack', '=', True)], context=context)
 
             if pos_cat_id:
@@ -85,26 +86,25 @@ class inherit_product(orm.Model):
 
     def create(self, cr, uid, vals, context=None):
         if context is None:
-            context={} 
+            context = {}
 
         res = super(inherit_product, self).create(cr, uid, vals, context=context)
-        
-        product_obj =  self.pool.get('product.product')
+
+        product_obj = self.pool.get('product.product')
         product = product_obj.browse(cr, uid, res)
 
-        if product: 
-            tmpl_id = product.product_tmpl_id.id 
+        if product:
+            tmpl_id = product.product_tmpl_id.id
             tmpl_name = product.name_template
             prod_name = product.name
 
             _logger.info(tmpl_id)
 
             if tmpl_name != prod_name:
-                tmpl_obj =  self.pool.get('product.template')
+                tmpl_obj = self.pool.get('product.template')
                 tmpl_obj.write(cr, uid, tmpl_id, {'name': prod_name}, context=context)
 
         return res
-
 
 
 class inherit_product_category(orm.Model):
@@ -119,11 +119,12 @@ class inherit_product_category(orm.Model):
     }
 
     def init(self, cr):
-        #For the first installation we create a new category for Custom Packs
+        # For the first installation we create a new category for Custom Packs
         pack_ids = self.search(cr, 1, [('name', '=', 'Custom Packs'), ('is_pack', '=', True)], context=None)
         if not pack_ids:
             self.create(cr, 1, {'name': 'Custom Packs', 'parent_id': 2, 'is_pack': True})
         return True
+
 
 class inherit_product_public_category(orm.Model):
     _inherit = "pos.category"
@@ -136,7 +137,7 @@ class inherit_product_public_category(orm.Model):
     }
 
     def init(self, cr):
-        #For the first installation we create a new category for Custom Packs
+        # For the first installation we create a new category for Custom Packs
         pack_ids = self.search(cr, 1, [('name', '=', 'Custom Packs'), ('is_pack', '=', True)], context=None)
         if not pack_ids:
             self.create(cr, 1, {'name': 'Custom Packs', 'is_pack': True})

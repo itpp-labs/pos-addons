@@ -22,16 +22,17 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
+
 def isodd(x):
     return bool(x % 2)
 
-#class product_template(orm.Model):
+# class product_template(orm.Model):
 #    _inherit = 'product.template'
 #
 #    _columns = {
 #        'variants': fields.one2many('product.product', 'product_tmpl_id', 'Variants'),
 #    }
-#    
+#
 #    def generate_ean13(self, cr, uid, ids, context=None):
 #        if context is None: context = {}
 #        product_obj = self.pool.get('product.product')
@@ -41,22 +42,25 @@ def isodd(x):
 #            product_obj.generate_ean13(cr, uid, variant_ids, context=context)
 #        return True
 
+
 class product_category(orm.Model):
     _inherit = 'product.category'
-    
+
     _columns = {
         'ean_sequence_id': fields.many2one('ir.sequence', 'Ean Sequence'),
     }
-    
+
+
 class product_product(orm.Model):
     _inherit = 'product.product'
-    
+
     _columns = {
         'ean_sequence_id': fields.many2one('ir.sequence', 'Ean Sequence'),
     }
-    
+
     def _get_ean_next_code(self, cr, uid, product, context=None):
-        if context is None: context = {}
+        if context is None:
+            context = {}
         sequence_obj = self.pool.get('ir.sequence')
         ean = ''
         if product.ean_sequence_id:
@@ -71,12 +75,12 @@ class product_product(orm.Model):
             return None
         if len(ean) > 12:
             raise orm.except_orm(_("Configuration Error!"),
-                 _("There next sequence is upper than 12 characters. This can't work."
-                   "You will have to redefine the sequence or create a new one"))
+                                 _("There next sequence is upper than 12 characters. This can't work."
+                                   "You will have to redefine the sequence or create a new one"))
         else:
-            ean = (len(ean[0:6]) == 6 and ean[0:6] or ean[0:6].ljust(6,'0')) + ean[6:].rjust(6,'0')
+            ean = (len(ean[0:6]) == 6 and ean[0:6] or ean[0:6].ljust(6, '0')) + ean[6:].rjust(6, '0')
         return ean
-    
+
     def _get_ean_key(self, code):
         sum = 0
         for i in range(12):
@@ -86,19 +90,21 @@ class product_product(orm.Model):
                 sum += int(code[i])
         key = (10 - sum % 10) % 10
         return str(key)
-    
+
     def _generate_ean13_value(self, cr, uid, product, context=None):
         ean13 = False
-        if context is None: context = {}
+        if context is None:
+            context = {}
         ean = self._get_ean_next_code(cr, uid, product, context=context)
         if not ean:
             return None
         key = self._get_ean_key(ean)
         ean13 = ean + key
         return ean13
-    
+
     def generate_ean13(self, cr, uid, ids, context=None):
-        if context is None: context = {}
+        if context is None:
+            context = {}
         product_ids = self.browse(cr, uid, ids, context=context)
         for product in product_ids:
             if product.ean13:
@@ -107,13 +113,15 @@ class product_product(orm.Model):
             if not ean13:
                 continue
             self.write(cr, uid, [product.id], {
-                        'ean13': ean13
-                    }, context=context)
+                'ean13': ean13
+            }, context=context)
         return True
-    
+
     def copy(self, cr, uid, id, default=None, context=None):
-        if default is None: default = {}
-        if context is None: context = {}
+        if default is None:
+            default = {}
+        if context is None:
+            context = {}
         default['ean13'] = False
         return super(product_product, self).copy(cr, uid, id, default=default, context=context)
 

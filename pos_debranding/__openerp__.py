@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "POS debranding",
     'version': '1.0.0',
@@ -10,7 +11,7 @@
     'currency': 'EUR',
     'data': [
         'views.xml',
-        ],
+    ],
     'qweb': [
         'static/src/xml/pos_debranding.xml',
     ],

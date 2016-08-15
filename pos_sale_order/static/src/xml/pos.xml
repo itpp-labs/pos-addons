@@ -10,11 +10,11 @@
                 </div>
             </div>
         </t>
-	</t>
+    </t>
     <t t-name="WebsiteOrderWidget">
-		<div class="website_order oe_hidden">
-			<button></button>
-		</div>
-	</t>
+        <div class="website_order oe_hidden">
+            <button></button>
+        </div>
+    </t>
 
 </templates>

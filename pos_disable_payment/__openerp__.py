@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Disable payments in POS",
     'version': '1.0.0',
@@ -7,9 +8,9 @@
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
     "price": 40.00,
-    "currency": "EUR",    
+    "currency": "EUR",
     'data': [
         'views.xml',
-        ],
+    ],
     'installable': True,
 }

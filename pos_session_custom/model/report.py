@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from openerp.osv import osv
 
 
 class report(osv.AbstractModel):
     _name = 'report.pos_session_custom.report'
+
     def render_html(self, cr, uid, ids, data=None, context=None):
         report_obj = self.pool['report']
         report = report_obj._get_report_from_name(
