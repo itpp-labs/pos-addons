@@ -1,7 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_product_variant_dimension_type_user","Read access on product.variant.dimension.type for employees","model_product_variant_dimension_type","base.group_user",1,0,0,0
-"access_product_variant_dimension_value_user","Read access on product.variant.dimension.value for employees","model_product_variant_dimension_value","base.group_user",1,0,0,0
-"access_product_variant_dimension_option_user","Read access on product.variant.dimension.option for employees","model_product_variant_dimension_option","base.group_user",1,0,0,0
-"access_product_variant_dimension_type_sale_manager","Full rights on product.variant.dimension.type for sale manager","model_product_variant_dimension_type","base.group_sale_manager",1,1,1,1
-"access_product_variant_dimension_value_sale_manager","Full rights on product.variant.dimension.value for sale manager","model_product_variant_dimension_value","base.group_sale_manager",1,1,1,1
-"access_product_variant_dimension_option_sale_manager","Full rights on product.variant.dimension.option for sale manager","model_product_variant_dimension_option","base.group_sale_manager",1,1,1,1
