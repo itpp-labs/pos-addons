@@ -32,6 +32,7 @@ Module adds brand field to product
     """,
     'data': [
         'product_view.xml',
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'auto_install': False,
