@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 from openerp import api, models, fields, SUPERUSER_ID
 
 
@@ -6,7 +6,7 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     def _check_same_floors(self, cr, uid, ids, context=None):
-        # Проверяем чтобы у всех ПОС у которых одинаковые мультисесии был одинаковый набор этажей (floors). 
+        # Проверяем чтобы у всех ПОС у которых одинаковые мультисесии был одинаковый набор этажей (floors).
         # Ранее было решено добавить такое ограничение.
         # TODO
         # У тебя здесь N*(N-1) операций.

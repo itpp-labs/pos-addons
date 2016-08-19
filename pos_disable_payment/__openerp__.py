@@ -9,9 +9,9 @@
     'depends': ['point_of_sale'],
     'images': ['images/pos_payment_access.png'],
     "price": 40.00,
-    "currency": "EUR",    
+    "currency": "EUR",
     'data': [
         'views.xml',
-        ],
+    ],
     'installable': True,
 }

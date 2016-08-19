@@ -135,7 +135,7 @@ class product_variant_dimension_value(orm.Model):
                                            ondelete='cascade'),
         'dimension_sequence': fields.related('dimension_id', 'sequence', type='integer',
                                              relation='product.variant.dimension.type',
-                                             #used for ordering purposes in the "variants"
+                                             # used for ordering purposes in the "variants"
                                              string="Related Dimension Sequence",
                                              store={'product.variant.dimension.type':
                                                     (_get_values_from_types, ['sequence'], 10)}),
@@ -150,9 +150,9 @@ class product_variant_dimension_value(orm.Model):
     }
 
     _sql_constraints = [('opt_dim_tmpl_uniq',
-                        'UNIQUE(option_id, dimension_id, product_tmpl_id)',
-                        _("The combination option and dimension type "
-                          "already exists for this product template !")), ]
+                         'UNIQUE(option_id, dimension_id, product_tmpl_id)',
+                         _("The combination option and dimension type "
+                           "already exists for this product template !")), ]
 
     _order = "dimension_sequence, dimension_id, sequence, option_id"
 
@@ -217,12 +217,12 @@ class product_template(orm.Model):
         return True
 
     def add_all_option(self, cr, uid, ids, context=None):
-        #Reactive all unactive values
+        # Reactive all unactive values
         value_obj = self.pool.get('product.variant.dimension.value')
         for template in self.browse(cr, uid, ids, context=context):
             values_ids = value_obj.search(cr, uid, [['product_tmpl_id', '=', template.id],
                                                     '|', ['active', '=', False],
-                                                         ['active', '=', True]], context=context)
+                                                    ['active', '=', True]], context=context)
             value_obj.write(cr, uid, values_ids,
                             {'active': True},
                             context=context)
@@ -231,7 +231,7 @@ class product_template(orm.Model):
             vals = {'value_ids': []}
             for dim in template.dimension_type_ids:
                 for option in dim.option_ids:
-                    if not option.id in existing_option_ids:
+                    if option.id not in existing_option_ids:
                         vals['value_ids'] += [[0, 0, {'option_id': option.id}]]
             self.write(cr, uid, [template.id], vals, context=context)
         return True
@@ -330,7 +330,7 @@ class product_template(orm.Model):
                         created_product_ids.append(product_id)
                         if count % 50 == 0:
                             _logger.debug("product created : %s", count)
-                    except Exception, e:
+                    except Exception as e:
                         _logger.error("Error creating product variant: %s",
                                       e, exc_info=True)
                         _logger.debug("Values used to attempt creation of product variant: %s",
@@ -368,7 +368,7 @@ class product_product(orm.Model):
     _inherit = "product.product"
 
     def init(self, cr):
-        #For the first installation if you already have product in your database,
+        # For the first installation if you already have product in your database,
         # the name of the existing product will be empty, so we fill it
         cr.execute("update product_product set name=name_template where name is null;")
         return True
@@ -462,10 +462,9 @@ class product_product(orm.Model):
         inherit this function to hack the code generation'''
         product = self.browse(cr, uid, product_id, context=context)
         model = product.variant_model_name
-        r = map(lambda dim: [dim.dimension_id.sequence,
-                             self.parse(cr, uid, dim, model, context=context)],
-                product.dimension_value_ids)
-        r.sort()
+        r = sorted(map(lambda dim: [dim.dimension_id.sequence,
+                                    self.parse(cr, uid, dim, model, context=context)],
+                       product.dimension_value_ids))
         r = [x[1] for x in r]
         new_variant_name = (product.variant_model_name_separator or '').join(r)
         return new_variant_name
@@ -544,7 +543,7 @@ class product_product(orm.Model):
             context = {}
         result = super(product_product, self).price_get(cr, uid, ids, ptype, context=context)
         if ptype == 'list_price':
-            #TODO check if the price_margin on the dimension is very usefull,
+            # TODO check if the price_margin on the dimension is very usefull,
             # maybe we will remove it
             result = self.compute_dimension_extra_price(
                 cr, uid, ids, result,
@@ -604,14 +603,14 @@ class product_product(orm.Model):
                                      type='float',
                                      string='List Price',
                                      digits_compute=dp.get_precision('Sale Price')),
-        #the way the weight are implemented are not clean at all,
-        #we should redesign the module product form the addons
-        #in order to get something correclty.
-        #indeed some field of the template have to be overwrited
-        #like weight, name, weight_net, volume.
-        #in order to have a consitent api we should use the same field for getting the weight,
-        #now we have to use "weight" or "total_weight"
-        #not clean at all with external syncronization
+        # the way the weight are implemented are not clean at all,
+        # we should redesign the module product form the addons
+        # in order to get something correclty.
+        # indeed some field of the template have to be overwrited
+        # like weight, name, weight_net, volume.
+        # in order to have a consitent api we should use the same field for getting the weight,
+        # now we have to use "weight" or "total_weight"
+        # not clean at all with external syncronization
         'total_weight': fields.function(_product_compute_weight_volume,
                                         method=True,
                                         type='float',
@@ -624,12 +623,12 @@ class product_product(orm.Model):
                                             string='Total Net Weight',
                                             help="The net weight in Kg.",
                                             multi='weight_volume'),
-        'total_volume':  fields.function(_product_compute_weight_volume,
-                                         method=True,
-                                         type='float',
-                                         string='Total Volume',
-                                         help="The volume in m3.",
-                                         multi='weight_volume'),
+        'total_volume': fields.function(_product_compute_weight_volume,
+                                        method=True,
+                                        type='float',
+                                        string='Total Volume',
+                                        help="The volume in m3.",
+                                        multi='weight_volume'),
         'additional_weight': fields.float('Additional Gross weight',
                                           help="The additional gross weight in Kg."),
         'additional_weight_net': fields.float('Additional Net weight',

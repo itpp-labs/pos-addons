@@ -30,8 +30,8 @@ _logger = logging.getLogger(__name__)
 
 
 class inherit_res_partner(osv.osv):
-    _name='res.partner'
-    _inherit='res.partner'
+    _name = 'res.partner'
+    _inherit = 'res.partner'
 
     def write(self, cr, uid, ids, vals, context=None):
         v_name = None
@@ -46,8 +46,8 @@ class inherit_res_partner(osv.osv):
             # firstname capitalized
             v_firstname = vals['firstname'].strip()
             vals['firstname'] = v_firstname.title()
-            
-        result = super(inherit_res_partner,self).write(cr, uid, ids, vals, context=context)
+
+        result = super(inherit_res_partner, self).write(cr, uid, ids, vals, context=context)
         return result
 
     def create(self, cr, uid, vals, context=None):
@@ -64,10 +64,9 @@ class inherit_res_partner(osv.osv):
             v_firstname = vals['firstname'].strip()
             vals['firstname'] = v_firstname.title()
 
-        result = super(inherit_res_partner,self).create(cr, uid, vals, context=context)
+        result = super(inherit_res_partner, self).create(cr, uid, vals, context=context)
         return result
 
     _columns = {
-        'firstname' : fields.char('Firstname', size=128),
-        }
-
+        'firstname': fields.char('Firstname', size=128),
+    }

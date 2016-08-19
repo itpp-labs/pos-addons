@@ -13,7 +13,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views.xml',
-        ],
+    ],
     'qweb': [
         'static/src/xml/pos_multi_session.xml',
     ],

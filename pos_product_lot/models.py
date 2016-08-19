@@ -1,5 +1,6 @@
 from openerp.osv import fields, orm
 
+
 class product_product(orm.Model):
     _inherit = 'product.product'
 

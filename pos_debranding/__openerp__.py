@@ -10,7 +10,7 @@
     'currency': 'EUR',
     'data': [
         'views.xml',
-        ],
+    ],
     'qweb': [
         'static/src/xml/pos_debranding.xml',
     ],

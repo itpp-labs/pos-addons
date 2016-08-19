@@ -26,7 +26,7 @@
     'author': 'byf.vn, IT-Projects LLC, Ivan Yelizariev',
     'category': 'Sales Management',
     'depends': ['product'],
-    'website' : 'https://yelizariev.github.io',
+    'website': 'https://yelizariev.github.io',
     'description': """
 Module adds brand field to product
     """,
@@ -35,6 +35,6 @@ Module adds brand field to product
     ],
     'installable': False,
     'auto_install': False,
-    'images': ['images/product_uom.jpeg','images/product_pricelists.jpeg','images/products_categories.jpeg', 'images/products_form.jpeg'],
+    'images': ['images/product_uom.jpeg', 'images/product_pricelists.jpeg', 'images/products_categories.jpeg', 'images/products_form.jpeg'],
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

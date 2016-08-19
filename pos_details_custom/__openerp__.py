@@ -8,6 +8,6 @@
     'depends': ['point_of_sale'],
     'data': [
         'views.xml',
-        ],
+    ],
     'installable': False,
 }

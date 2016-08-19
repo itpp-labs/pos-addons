@@ -7,10 +7,10 @@
     'website': 'https://yelizariev.github.io',
     'price': 140.00,
     'currency': 'EUR',
-    'depends': ['pos_restaurant', 'pos_multi_session','to_pos_shared_floor'],
+    'depends': ['pos_restaurant', 'pos_multi_session', 'to_pos_shared_floor'],
     'data': [
         'views.xml',
-        ],
+    ],
     'demo': [
         'demo/demo.xml',
     ],
