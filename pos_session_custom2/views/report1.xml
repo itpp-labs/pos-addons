@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<template id="line">
-			<p>---------------------------------------------------</p>
-			
-		</template>
-		<template id="dline">
-			<p>===============================</p>
-		</template>
-		<template id="report">
-			<t t-call="report.html_container">
-			    <t t-foreach="docs" t-as="o">
-				<t t-call="pos_session_custom2.external_layout_pos">
-				    <div class="page">
+    <data>
+        <template id="line">
+            <p>---------------------------------------------------</p>
+            
+        </template>
+        <template id="dline">
+            <p>===============================</p>
+        </template>
+        <template id="report">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                <t t-call="pos_session_custom2.external_layout_pos">
+                    <div class="page">
 
 <style type="text/css">
-	table{
-	width:100%;
-	}
+    table{
+    width:100%;
+    }
 </style>
 
 

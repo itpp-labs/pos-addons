@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Sync POS orders across multiple sessions",
     'version': '1.0.4',
@@ -13,7 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views.xml',
-        ],
+    ],
     'qweb': [
         'static/src/xml/pos_multi_session.xml',
     ],

@@ -3,30 +3,30 @@
     <t t-name="PosTicket">
         <div class="pos-sale-ticket">
             <div class="pos-center-align">
-				<t t-esc="new Date().toString(Date.CultureInfo.formatPatterns.shortDate + ' ' + Date.CultureInfo.formatPatterns.longTime)"/> <t t-esc="order.get('name')"/>
-				<br />
-				<b>Charlotter's Web Papercraft</b>
-				<br />
-				1285 South Road
-				<br />
-				ST Mary's SA 5042
-				<br />
-				<t t-esc="widget.pos.company.vat"/>
-				<br />
-				<br />
-				<b><t t-esc="widget.pos.company.phone"/></b>
-				<br />
-				<span>charlotteswebpapercraft.com.au</span>
-				<span>sales@charlotteswebpapercraft.com.au</span>
-				<br />
-				<t t-if="widget.pos.config.receipt_header">
-					<br />
-					<div style='text-align:center'>
-						<t t-esc="widget.pos.config.receipt_header" />
-					</div>
-				</t>
-				<br />
-			</div>
+                <t t-esc="new Date().toString(Date.CultureInfo.formatPatterns.shortDate + ' ' + Date.CultureInfo.formatPatterns.longTime)"/> <t t-esc="order.get('name')"/>
+                <br />
+                <b>Charlotter's Web Papercraft</b>
+                <br />
+                1285 South Road
+                <br />
+                ST Mary's SA 5042
+                <br />
+                <t t-esc="widget.pos.company.vat"/>
+                <br />
+                <br />
+                <b><t t-esc="widget.pos.company.phone"/></b>
+                <br />
+                <span>charlotteswebpapercraft.com.au</span>
+                <span>sales@charlotteswebpapercraft.com.au</span>
+                <br />
+                <t t-if="widget.pos.config.receipt_header">
+                    <br />
+                    <div style='text-align:center'>
+                        <t t-esc="widget.pos.config.receipt_header" />
+                    </div>
+                </t>
+                <br />
+            </div>
             <table>
                 <colgroup>
                     <col width='50%' />

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv,fields
-from openerp import SUPERUSER_ID
+from openerp.osv import osv
+
+
 
 class product_product(osv.Model):
     _inherit = 'product.product'
 
     def generate_ean13(self, cr, uid, ids, context=None):
-        if context is None: context = {}
+        if context is None:
+            context = {}
         generate_context = context.copy()
 
         product_ids = self.browse(cr, uid, ids, context=context)
@@ -21,12 +23,12 @@ class product_product(osv.Model):
                 sequence_id = seq_ean13_to_weight.id
             else:
                 sequence_id = seq_ean13_internal.id
-            generate_context.update({'sequence_id':sequence_id})
+            generate_context.update({'sequence_id': sequence_id})
             ean13 = self._generate_ean13_value(cr, uid, product, context=generate_context)
             if not ean13:
                 continue
             self.write(cr, uid, [product.id], {
-                'ean_sequence_id':sequence_id,
+                'ean_sequence_id': sequence_id,
                 'barcode': ean13,
             }, context=context)
         return True

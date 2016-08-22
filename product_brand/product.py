@@ -19,29 +19,25 @@
 #
 ##############################################################################
 
-import math
-import re
 
 
-from openerp import tools
 from openerp.osv import osv, fields
-from openerp.tools.translate import _
-
-import openerp.addons.decimal_precision as dp
 
 
-class product_template(osv.osv):    
+
+class product_template(osv.osv):
     _inherit = "product.template"
     _columns = {
-        'branch_id': fields.many2one('product.branch','Product Branch'),
+        'branch_id': fields.many2one('product.branch', 'Product Branch'),
     }
+
 
 class product_branch(osv.osv):
     _name = 'product.branch'
     _columns = {
-        'name': fields.char('Brand Name',size=250),
+        'name': fields.char('Brand Name', size=250),
         'description': fields.text('Description'),
-        'product_ids': fields.one2many('product.template','branch_id','Products'),
+        'product_ids': fields.one2many('product.template', 'branch_id', 'Products'),
     }
 
 

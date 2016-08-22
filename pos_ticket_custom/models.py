@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv,fields
-from openerp import SUPERUSER_ID
+from openerp.osv import osv, fields
+
+
 
 class pos_config(osv.Model):
     _inherit = 'pos.config'
@@ -9,6 +10,7 @@ class pos_config(osv.Model):
         'pos_order_sequence_prefix': fields.char('Pos order sequence prefix'),
         'pos_order_sequence_id': fields.many2one('ir.sequence', 'Pos order sequence'),
     }
+
     def _update_pos_order_sequence_id(self, cr, uid, values):
         prefix = values.get('pos_order_sequence_prefix')
 
@@ -20,14 +22,14 @@ class pos_config(osv.Model):
         seq_id = values.get('pos_order_sequence_id')
         if not seq_id:
             seq_id = self.pool.get('ir.sequence').create(cr, uid, {
-                'name':'Pos order sequence',
-                'padding':5,
-                'code':'pos.order.custom',
+                'name': 'Pos order sequence',
+                'padding': 5,
+                'code': 'pos.order.custom',
                 'prefix': seq_prefix,
                 'auto_reset': True,
                 'reset_period': 'month',
-                })
-            values.update({'pos_order_sequence_id':seq_id})
+            })
+            values.update({'pos_order_sequence_id': seq_id})
         else:
             self.pool.get('ir.sequence').write(cr, uid, [seq_id], {
                 'prefix': seq_prefix
@@ -41,11 +43,10 @@ class pos_config(osv.Model):
     def write(self, cr, uid, ids, vals, context=None):
         for conf in self.browse(cr, uid, ids, context):
             values = vals.copy()
-            values.update({'pos_order_sequence_id':conf.pos_order_sequence_id.id})
+            values.update({'pos_order_sequence_id': conf.pos_order_sequence_id.id})
             self._update_pos_order_sequence_id(cr, uid, values)
             super(pos_config, self).write(cr, uid, [conf.id], values, context=context)
         return True
-        
 
 
 class pos_order(osv.Model):
@@ -57,6 +58,5 @@ class pos_order(osv.Model):
         seq = order.session_id.config_id.pos_order_sequence_id
         if seq:
             name = self.pool.get('ir.sequence').next_by_id(cr, uid, seq.id, context)
-        self.write(cr, uid, [res_id], {'name':name}, context)
+        self.write(cr, uid, [res_id], {'name': name}, context)
         return res_id
-

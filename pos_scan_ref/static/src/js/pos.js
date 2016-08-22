@@ -27,8 +27,8 @@ function pos(instance, module){
             }
 
             if(parse_result.type in {'product':'', 'weight':'', 'price':'', 'discount':''}){    //ean is associated to a product
-                if(this.action_callback['product']){
-                    this.action_callback['product'](parse_result);
+                if(this.action_callback.product){
+                    this.action_callback.product(parse_result);
                 }
             }else{
                 if(this.action_callback[parse_result.type]){
@@ -36,7 +36,7 @@ function pos(instance, module){
                 }
             }
         }
-    })
+    });
 }
 
 var _super = window.openerp.point_of_sale;
@@ -47,6 +47,6 @@ window.openerp.point_of_sale = function(instance){
     pos(instance, module);
 
     //$('<link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css"/>').appendTo($("head"))
-}
+};
 
-})()
+})();

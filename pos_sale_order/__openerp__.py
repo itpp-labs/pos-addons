@@ -1,14 +1,15 @@
+# -*- coding: utf-8 -*-
 {
-    'name' : 'Sale orders in POS',
-    'version' : '1.1.0',
-    'author' : 'IT-Projects LLC, Ivan Yelizariev',
+    'name': 'Sale orders in POS',
+    'version': '1.1.0',
+    'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
-    'category' : 'Point of Sale',
-    'website' : 'https://yelizariev.github.io',
-    'depends' : ['point_of_sale'],
-    'data':[
+    'category': 'Point of Sale',
+    'website': 'https://yelizariev.github.io',
+    'depends': ['point_of_sale'],
+    'data': [
         'templates.xml',
-        ],
+    ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': False
 }

@@ -78,7 +78,7 @@ odoo.define('pos_keyboard.pos', function (require) {
         },
 
         set_action_callback: function(callback){
-            this.action_callback = callback
+            this.action_callback = callback;
         },
 
         //remove action callback
@@ -180,7 +180,7 @@ odoo.define('pos_keyboard.pos', function (require) {
 
         // stops catching keyboard events 
         disconnect: function(){
-            $('body').off('keyup', '')
+            $('body').off('keyup', '');
         }
     });
     

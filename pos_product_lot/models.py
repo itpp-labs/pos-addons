@@ -1,4 +1,7 @@
-from openerp.osv import fields, orm
+# -*- coding: utf-8 -*-
+from openerp.osv import orm
+
+
 
 class product_product(orm.Model):
     _inherit = 'product.product'

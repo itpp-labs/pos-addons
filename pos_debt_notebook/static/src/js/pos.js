@@ -28,7 +28,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         return;
                     var amount = line.get_amount();
                     client.debt += amount;
-                })
+                });
             }
             return pushed;
         }
@@ -169,7 +169,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 if (this.new_client.debt > 0){
                     $button.toggleClass('oe_hidden',!this.has_client_changed());
                 }else{
-                	$button.addClass('oe_hidden');
+                    $button.addClass('oe_hidden');
                 }
             }
         },

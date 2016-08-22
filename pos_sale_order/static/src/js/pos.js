@@ -9,7 +9,7 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
             this.order_name = false;
         },
         find_sale_order: function(name_like){
-            return new instance.web.Model('sale.order').query(['partner_id', 'amount_total']).filter([['name','=like',name_like]]).all()
+            return new instance.web.Model('sale.order').query(['partner_id', 'amount_total']).filter([['name','=like',name_like]]).all();
         },
         load_sale_order_lines: function(id){
             return new instance.web.Model('sale.order.line').query(['product_id', 'product_uom_qty','discount']).filter([['order_id','=',id]]).all();
@@ -23,13 +23,13 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
                     var product = self.pos.db.get_product_by_id(item.product_id[0]);
                     var options = {
                         'quantity':item.product_uom_qty
-                    }
+                    };
                     order.addProduct(product, options);
                     if (item.discount)
                         order.getSelectedLine().set_discount(item.discount);
                 });
                 self.hide();
-            })
+            });
         },
         start:function(){
             this._super();
@@ -42,14 +42,14 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
                         //TODO show orders list
                         //return;
                     }
-                    var sale_order = orders[0]
+                    var sale_order = orders[0];
                     if (! sale_order){
                         // TODO show message
                         return;
                     }
-                    self.apply_sale_order(sale_order.id)
-                })
-            })
+                    self.apply_sale_order(sale_order.id);
+                });
+            });
         },
         set_value:function(val){
             var order = this.pos.get('selectedOrder');
@@ -78,7 +78,7 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
                 //this.numpad_state.unbind('change:mode',this.set_mode_back_to_payment);
             }
         },
-    })
+    });
 
     module.PosWidget.include({
         template: 'PosWidget',
@@ -86,9 +86,9 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
             this._super();
 
             this.website_order = new module.WebsiteOrderWidget(this);
-            this.website_order.replace('.placeholder-WebsiteOrderWidget')
+            this.website_order.replace('.placeholder-WebsiteOrderWidget');
         }
-    })
+    });
 }
 
 (function(){
@@ -97,7 +97,7 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
         _super(instance);
         var module = instance.point_of_sale;
         pos_website_sale(instance, module);
-    }
-})()
+    };
+})();
 
-$('<link rel="stylesheet" href="/pos_sale_order/static/src/css/pos.css"></link>').appendTo($("head"))
+$('<link rel="stylesheet" href="/pos_sale_order/static/src/css/pos.css"></link>').appendTo($("head"));

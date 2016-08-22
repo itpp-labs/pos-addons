@@ -18,9 +18,9 @@ odoo.define('pos_product_available.PosModel', function(require){
     models.PosModel = models.PosModel.extend({
         refresh_qty_available:function(product){
             var $elem = $("[data-product-id='"+product.id+"'] .qty-tag");
-            $elem.html(product.qty_available)
+            $elem.html(product.qty_available);
             if (product.qty_available <= 0 && !$elem.hasClass('not-available')){
-                $elem.addClass('not-available')
+                $elem.addClass('not-available');
             }
         },
         push_order: function(order){
@@ -31,7 +31,7 @@ odoo.define('pos_product_available.PosModel', function(require){
                     var product = line.get_product();
                     product.qty_available -= line.get_quantity();
                     self.refresh_qty_available(product);
-                })
+                });
             }
             return pushed;
         },
@@ -45,13 +45,13 @@ odoo.define('pos_product_available.PosModel', function(require){
                         var product = line.get_product();
                         product.qty_available -= line.get_quantity();
                         self.refresh_qty_available(product);
-                    })
+                    });
                 } else if (order.orderlines){
                     order.orderlines.each(function(line){
                         var product = line.get_product();
                         product.qty_available -= line.get_quantity();
                         self.refresh_qty_available(product);
-                    })
+                    });
                 }
             }
 

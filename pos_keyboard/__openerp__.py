@@ -12,7 +12,7 @@
     "price": 100.00,
     "currency": "EUR",
     'data': [
-         'data.xml',
+        'data.xml',
     ],
     'installable': True,
     'auto_install': False,

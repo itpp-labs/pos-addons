@@ -7,6 +7,6 @@
     'depends': ['pos_disable_payment', 'bus'],
     'data': [
         'views.xml',
-        ],
+    ],
     'installable': False,
 }

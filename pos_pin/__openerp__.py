@@ -10,10 +10,10 @@
     'depends': ['point_of_sale'],
     'data': [
         'data.xml',
-        ],
+    ],
 
     "price": 20.00,
-    "currency": "EUR", 
+    "currency": "EUR",
 
     'installable': True,
 }

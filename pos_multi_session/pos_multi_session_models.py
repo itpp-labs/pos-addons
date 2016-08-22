@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*- 
-from openerp import api, models, fields, SUPERUSER_ID
+# -*- coding: utf-8 -*-
+from openerp import api
+from openerp import fields
+from openerp import models
 
 
 class pos_config(models.Model):
@@ -10,6 +12,7 @@ class pos_config(models.Model):
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
 
+
 class pos_multi_session(models.Model):
     _name = 'pos.multi_session'
 
@@ -19,9 +22,8 @@ class pos_multi_session(models.Model):
     @api.one
     def broadcast(self, message):
         notifications = []
-        for ps in self.env['pos.session'].search([('state', '!=', 'closed'),('config_id.multi_session_id', '=', self.id)]):
+        for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
             if ps.user_id.id != self.env.user.id:
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
         self.env['bus.bus'].sendmany(notifications)
         return 1
-
