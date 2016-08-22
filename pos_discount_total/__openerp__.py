@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Discount for total amount of pos order',
     'version': '1.0.0',

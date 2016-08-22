@@ -21,10 +21,7 @@
 ##############################################################################
 
 import logging
-import openerp
-from openerp import netsvc, tools, pooler
 from openerp.osv import fields, osv
-from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 

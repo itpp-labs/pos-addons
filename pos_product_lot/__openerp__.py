@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Product lot in POS',
     'version': '1.0.1',

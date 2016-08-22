@@ -1,4 +1,4 @@
-from openerp import api, models, fields, SUPERUSER_ID
+# -*- coding: utf-8 -*-
 from openerp.osv import osv
 from openerp.addons.point_of_sale.report.pos_details import pos_details
 

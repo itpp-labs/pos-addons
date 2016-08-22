@@ -194,7 +194,7 @@ class sessionpos(osv.Model):
                                        }
                         res[id]['base'] += price * line.qty
                         res[id]['total'] += tax['amount']
-                        #cur_obj.round(cr, uid, cur, taxes['amount'])
+                        # cur_obj.round(cr, uid, cur, taxes['amount'])
 
         return res.values()
 

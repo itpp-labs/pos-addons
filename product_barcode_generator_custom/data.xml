@@ -8,7 +8,7 @@
             <field name="padding">5</field>
             <field name="suffix">00000</field>
             <field name="number_next">1</field>
-			<field name="barcode_sequence" eval="True"/>
+            <field name="barcode_sequence" eval="True"/>
         </record>
         <record id="seq_ean13_internal" model="ir.sequence">
             <field name="name">Internal barcode (240000...)</field>
@@ -17,7 +17,7 @@
             <field name="padding">5</field>
             <field name="suffix"></field>
             <field name="number_next">1</field>
-			<field name="barcode_sequence" eval="True"/>
+            <field name="barcode_sequence" eval="True"/>
         </record>
     </data>
 </openerp>

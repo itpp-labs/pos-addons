@@ -1236,7 +1236,7 @@
             // if we didn't get a weekday name, mark the date as invalid
             if (a != null) {
                 config._w = config._w || {};
-                config._w['d'] = a;
+                config._w.d = a;
             } else {
                 config._pf.invalidWeekday = input;
             }

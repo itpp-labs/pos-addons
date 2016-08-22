@@ -70,7 +70,7 @@ odoo.define('pos_disable_payment', function(require){
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome)
         }
-    })
+    });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
@@ -120,7 +120,7 @@ odoo.define('pos_disable_payment', function(require){
                 this.$el.find("[data-mode='price']").css('visibility', 'visible')
             }
         }
-    })
+    });
 
 
     screens.NumpadWidget.include({

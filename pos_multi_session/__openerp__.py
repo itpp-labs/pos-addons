@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Sync POS orders across multiple sessions",
     'version': '1.0.4',

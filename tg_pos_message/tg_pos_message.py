@@ -23,7 +23,6 @@
 import logging
 import time
 from datetime import datetime, timedelta
-from openerp import netsvc, tools, pooler
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 

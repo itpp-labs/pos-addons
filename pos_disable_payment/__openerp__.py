@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Disable payments in POS",
     'summary': "Control access to the POS payments",

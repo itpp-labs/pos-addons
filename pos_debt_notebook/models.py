@@ -3,9 +3,6 @@ from openerp import models, fields, api, SUPERUSER_ID
 from openerp.osv import osv
 from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):

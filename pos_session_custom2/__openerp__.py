@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Custom pos session report (2)',
     'version': '1.0.0',

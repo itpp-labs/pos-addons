@@ -19,15 +19,10 @@
 #
 ##############################################################################
 
-import math
-import re
 
 
-from openerp import tools
 from openerp.osv import osv, fields
-from openerp.tools.translate import _
 
-import openerp.addons.decimal_precision as dp
 
 
 class product_template(osv.osv):

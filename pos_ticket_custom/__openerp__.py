@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Custom pos ticket ',
     'version': '1.0.0',
