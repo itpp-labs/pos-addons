@@ -11,12 +11,14 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # admin fills order
             {"session": "admin",
              "code": """
                  mstest.fill_order();
                  share.order = mstest.save_order();
              """,
              },
+            # demo syncs order
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
@@ -24,6 +26,9 @@ class TestSync(TestCommon):
                  })
              """,
              },
+            # TODO: admin close order (make a payment)
+            # TODO: demo syncs order
+            # ok
             {"session": "demo",
              "code": "console.log('ok');",
              },
