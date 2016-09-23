@@ -94,16 +94,15 @@ openerp.pos_multi_session = function(instance){
 
             if (action == 'sync_sequence_number'){
                 this.ms_do_sync_sequence_number(data);
+            } else if (action == 'request_sync_all'){
+                //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
+                //this.multi_session.sync_sequence_number();
+                this.get('orders').each(function(r){
+                    if (!r.is_empty()){
+                        r.ms_update();
+                    }
+                });
             }
-            //else if (action == 'request_sync_all'){
-            //    //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
-            //    //this.multi_session.sync_sequence_number();
-            //    this.get('orders').each(function(r){
-            //        if (!r.is_empty()){
-            //            r.ms_update();
-            //        }
-            //    });
-            //}
         },
         ms_on_add_order: function (current_order) {
             if (!current_order) {
@@ -368,7 +367,6 @@ openerp.pos_multi_session = function(instance){
             //return done;
         },
         request_sync_all: function(){
-            var self = this;
             this.send({'action': 'request_sync_all'});
         },
         sync_sequence_number: function(){
@@ -389,7 +387,6 @@ openerp.pos_multi_session = function(instance){
             this.send({action: 'update', data: data});
         },
         send: function(message){
-            console.log("send", message.action);
             if (this.pos.debug){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }

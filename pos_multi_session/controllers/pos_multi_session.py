@@ -18,15 +18,8 @@ class Controller(bus_controller):
 
     @openerp.http.route('/pos_multi_session/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message):
-        if message['action'] == 'update':
-            request.env["pos.multi_session"].browse(int(multi_session_id)).set_order(message)
-        elif message['action'] == 'request_sync_all':
-            request.env["pos.multi_session"].browse(int(multi_session_id)).get_order()
-        elif message['action'] == 'remove_order':
-            request.env["pos.multi_session"].browse(int(multi_session_id)).remove_order(message)
-        else:
-            res = request.env["pos.multi_session"].browse(int(multi_session_id)).broadcast(message)
-            return res
+        res = request.env["pos.multi_session"].browse(int(multi_session_id)).broadcast(message)
+        return res
 
     @openerp.http.route('/pos_multi_session/test/gc', type="json", auth="user")
     def pos_multi_session_test_gc(self):
