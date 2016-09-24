@@ -142,6 +142,11 @@ openerp.pos_multi_session = function(instance){
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
+            console.log(data)
+
+            console.log(sequence_number);
+            console.log(this.pos_session.sequence_number)
+
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
                 if (sequence_number == this.pos_session.sequence_number){
@@ -388,6 +393,8 @@ openerp.pos_multi_session = function(instance){
             this.send({action: 'update', data: data});
         },
         send: function(message){
+            console.log(message['action']);
+
             if (this.pos.debug){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }

@@ -17,8 +17,6 @@ Update python library::
 
     pip2 install -U requests
     pip2 install 'requests[security]'
-    pip2 install pyTelegramBotAPI
-
 
 To run tests, you need to run odoo server and then execute::
 
@@ -37,4 +35,4 @@ Odoo server
 * run it with ``--test-enable``
 * use database with demo data
 * use ``--db-filter`` it equal to database name
-* not use ``--workers``
+* use ``--workers=0``
