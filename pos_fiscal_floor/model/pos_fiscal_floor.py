@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from openerp.osv import fields, osv
-from openerp import models
+from openerp import fields, models
 
 
-class restaurant_floor(osv.Model):
+class restaurant_floor(models.Model):
     _inherit = 'restaurant.floor'
-    _columns = {'pos_default_fiscal': fields.many2one('account.fiscal.position', 'Fiscal Position')}
+    pos_default_fiscal = fields.Many2one('account.fiscal.position', 'Fiscal Position')

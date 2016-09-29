@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from openerp.osv import fields, osv
+from openerp import fields, models
 
 
-class sessionpos(osv.Model):
+class sessionpos(models.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
@@ -226,23 +226,23 @@ class sessionpos(osv.Model):
         return res
 
     _inherit = 'pos.session'
-    _columns = {
-        'validate': fields.boolean(string="Validation", help="validation"),
-        'difference': fields.function(_fun_difference, string="Difference"),
-        'difference2': fields.float('difference2'),
-        'venta_bruta': fields.function(_calc_vb, 'Venta bruta', help='Gross sales'),
-        'isv': fields.function(_calc_isv, 'ISV'),
-        'subtotal': fields.function(_calc_subtotal, 'subtotal'),
-        'nro_facturas': fields.function(_calc_no_facturas, 'nro facturas', type="char"),
-        'discount': fields.function(_calc_discount, 'discount'),
-        'tax_base_total': fields.function(_calc_tax, 'Total Sales without taxes', multi='tax'),
-        'untaxed_sales': fields.function(_calc_sales, 'Untaxed sales', multi='sales'),
-        'money_incoming': fields.function(_calc_money_incoming, 'money incoming', type="char"),
-        'money_outgoing': fields.function(_calc_money_outgoing, 'money outgoing', type="char"),
-        'statements_total': fields.function(_calc_statements_total, 'Total Payments Received'),
-        'tickets_num': fields.function(_calc_tickets, 'Number of Tickets', type='integer', multi='tickets'),
-        'ticket_first_id': fields.function(_calc_tickets, 'First Ticket', type='many2one', obj='pos.order', multi='tickets'),
-        'ticket_last_id': fields.function(_calc_tickets, 'Last Ticket', type='many2one', obj='pos.order', multi='tickets'),
-        'money_close': fields.float('money Close'),
-        'money_reported': fields.float('money Reported'),
-    }
+
+    validate = fields.Boolean(string="Validation", help="validation")
+    difference = fields.Function(_fun_difference, string="Difference")
+    difference2 = fields.Float('difference2')
+    venta_bruta = fields.Function(_calc_vb, string='Venta bruta', help='Gross sales')
+    isv = fields.Function(_calc_isv, string='ISV')
+    subtotal = fields.Function(_calc_subtotal, string='subtotal')
+    nro_facturas = fields.Char(compute="_calc_no_facturas", string='nro facturas', )
+    discount = fields.Function(_calc_discount, string='discount')
+    tax_base_total = fields.Function(_calc_tax, string='Total Sales without taxes',)
+    untaxed_sales = fields.Function(_calc_sales, string='Untaxed sales',)
+    money_incoming = fields.Char(compute="_calc_money_incoming", string='money incoming', )
+    money_outgoing = fields.Char(compute="_calc_money_outgoing", string='money outgoing', )
+    statements_total = fields.Function(_calc_statements_total, string='Total Payments Received')
+    tickets_num = fields.Integer(compute="_calc_tickets", string='Number of Tickets',)
+    ticket_first_id = fields.Many2one('pos.order', compute="_calc_tickets", string='First Ticket',)
+    ticket_last_id = fields.Many2one('pos.order', compute="_calc_tickets", string='Last Ticket',)
+    money_close = fields.Float('money Close')
+    money_reported = fields.Float('money Reported')
+

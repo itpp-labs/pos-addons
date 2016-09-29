@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv
+from openerp import models
 from openerp.addons.point_of_sale.report.pos_details import pos_details
 
 
@@ -23,6 +23,6 @@ class pos_details_custom(pos_details):
         })
 
 
-class report_pos_details(osv.AbstractModel):
+class report_pos_details(models.AbstractModel):
     _inherit = 'report.point_of_sale.report_detailsofsales'
     _wrapped_report_class = pos_details_custom

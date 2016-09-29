@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv
+from openerp import models
 
 
-class report(osv.AbstractModel):
+class report(models.AbstractModel):
     _name = 'report.pos_session_custom2.report'
 
     def render_html(self, cr, uid, ids, data=None, context=None):

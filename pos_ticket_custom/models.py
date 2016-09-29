@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv, fields
+from openerp import models, fields
 
 
 
-class pos_config(osv.Model):
+class pos_config(models.Model):
     _inherit = 'pos.config'
 
-    _columns = {
-        'pos_order_sequence_prefix': fields.char('Pos order sequence prefix'),
-        'pos_order_sequence_id': fields.many2one('ir.sequence', 'Pos order sequence'),
-    }
+
+    pos_order_sequence_prefix = fields.Char('Pos order sequence prefix')
+    pos_order_sequence_id = fields.Many2one('ir.sequence', 'Pos order sequence')
+
 
     def _update_pos_order_sequence_id(self, cr, uid, values):
         prefix = values.get('pos_order_sequence_prefix')
@@ -49,7 +49,7 @@ class pos_config(osv.Model):
         return True
 
 
-class pos_order(osv.Model):
+class pos_order(models.Model):
     _inherit = 'pos.order'
 
     def create(self, cr, uid, values, context=None):

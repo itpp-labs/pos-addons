@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp.osv import fields, osv
+from openerp import fields, models
 from openerp.addons.point_of_sale.wizard.pos_box import PosBox
 
 
@@ -22,20 +22,20 @@ class PosBoxOut(PosBox):
         return values
 
 
-class account_bank_statement_line(osv.osv):
+class account_bank_statement_line(models.Model):
     _inherit = "account.bank.statement.line"
 
-    _columns = {
-        'is_cash_in': fields.boolean('Cash In'),
-        'is_cash_out': fields.boolean('Cash Out'),
-    }
+
+    is_cash_in = fields.Boolean('Cash In')
+    is_cash_out = fields.Boolean('Cash Out')
+
     _defaults = {
         'is_cash_in': False,
         'is_cash_out': False,
     }
 
 
-class account_cash_statement(osv.osv):
+class account_cash_statement(models.Model):
 
     _inherit = 'account.bank.statement'
 
@@ -81,29 +81,29 @@ class account_cash_statement(osv.osv):
             res[statement.id] = sum((line.amount for line in statement.line_ids if line.is_cash_out), 0.0)
         return res
 
-    _columns = {
-        'total_entry_encoding_custom': fields.function(_get_sum_entry_encoding_custom, string="Total Transactions",
+
+    total_entry_encoding_custom = fields.Float(compute=_get_sum_entry_encoding_custom, string="Total Transactions",
                                                        store={
                                                            'account.bank.statement': (lambda self, cr, uid, ids, context=None: ids, ['line_ids', 'move_line_ids'], 10),
                                                            'account.bank.statement.line': (_get_statement_from_line, ['amount'], 10),
                                                        },
-                                                       help="Total of cash transaction lines."),
-        'total_entry_encoding_put_in': fields.function(_get_sum_entry_encoding_put_in, string="Cash put in",
+                                                       help="Total of cash transaction lines.")
+    total_entry_encoding_put_in = fields.Float(compute=_get_sum_entry_encoding_put_in, string="Cash put in",
                                                        store={
                                                            'account.bank.statement': (lambda self, cr, uid, ids, context=None: ids, ['line_ids', 'move_line_ids'], 10),
                                                            'account.bank.statement.line': (_get_statement_from_line, ['amount'], 10),
                                                        },
-                                                       help="Total of cash transaction lines."),
-        'total_entry_encoding_take_out': fields.function(_get_sum_entry_encoding_take_out, string="Cash take out",
+                                                       help="Total of cash transaction lines.")
+    total_entry_encoding_take_out = fields.Float(compute=_get_sum_entry_encoding_take_out, string="Cash take out",
                                                          store={
                                                              'account.bank.statement': (lambda self, cr, uid, ids, context=None: ids, ['line_ids', 'move_line_ids'], 10),
                                                              'account.bank.statement.line': (_get_statement_from_line, ['amount'], 10),
                                                          },
-                                                         help="Total of cash transaction lines."),
-    }
+                                                         help="Total of cash transaction lines.")
 
 
-class sessionpos(osv.Model):
+
+class sessionpos(models.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
@@ -328,37 +328,37 @@ class sessionpos(osv.Model):
         return res
 
     _inherit = 'pos.session'
-    _columns = {
-        'cash_register_total_entry_encoding_custom': fields.related('cash_register_id', 'total_entry_encoding_custom',
+
+    cash_register_total_entry_encoding_custom = fields.Float(related='cash_register_id.total_entry_encoding_custom',
                                                                     string='Total Sales',
                                                                     readonly=True,
-                                                                    ),
-        'cash_register_total_entry_encoding_put_in': fields.related('cash_register_id', 'total_entry_encoding_put_in',
+                                                                    )
+    cash_register_total_entry_encoding_put_in = fields.Float(related='cash_register_id.total_entry_encoding_put_in',
                                                                     string='Cash put in',
                                                                     readonly=True,
-                                                                    ),
-        'cash_register_total_entry_encoding_take_out': fields.related('cash_register_id', 'total_entry_encoding_take_out',
+                                                                    )
+    cash_register_total_entry_encoding_take_out = fields.Float(related='cash_register_id.total_entry_encoding_take_out',
                                                                       string='Cash take out',
                                                                       readonly=True,
-                                                                      ),
+                                                                      )
 
 
-        #'validate':fields.boolean(string="Validation",help="validation"),
-        #'difference':fields.function(_fun_difference,string="Difference"),
-        #'difference2':fields.float('difference2'),
-        #'venta_bruta':fields.function(_calc_vb,'Venta bruta', help='Gross sales'),
-        #'isv':fields.function(_calc_isv,'ISV'),
-        #'subtotal':fields.function(_calc_subtotal,'subtotal'),
-        #'nro_facturas':fields.function(_calc_no_facturas,'nro facturas',type="char"),
-        #'discount':fields.function(_calc_discount,'discount'),
-        #'tax_base_total':fields.function(_calc_tax,'Total Sales without taxes', multi='tax'),
-        'untaxed_sales': fields.function(_calc_sales, 'Untaxed sales', multi='sales'),
-        #'money_incoming':fields.function(_calc_money_incoming,'money incoming',type="char"),
-        #'money_outgoing':fields.function(_calc_money_outgoing,'money outgoing',type="char"),
-        'statements_total': fields.function(_calc_statements_total, 'Total Payments Received'),
-        'tickets_num': fields.function(_calc_tickets, 'Number of Tickets', type='integer', multi='tickets'),
-        'ticket_first_id': fields.function(_calc_tickets, 'First Ticket', type='many2one', obj='pos.order', multi='tickets'),
-        'ticket_last_id': fields.function(_calc_tickets, 'Last Ticket', type='many2one', obj='pos.order', multi='tickets'),
-        #'money_close':fields.float('money Close'),
-        #'money_reported':fields.float('money Reported'),
-    }
+        #'validate':fields.Boolean(string="Validation",help="validation"),
+        #'difference':fields.Function(_fun_difference,string="Difference"),
+        #'difference2':fields.Float('difference2'),
+        #'venta_bruta':fields.Function(_calc_vb,'Venta bruta', help='Gross sales'),
+        #'isv':fields.Function(_calc_isv,'ISV'),
+        #'subtotal':fields.Function(_calc_subtotal,'subtotal'),
+        #'nro_facturas':fields.Char(compute="_calc_no_facturas",'nro facturas',),
+        #'discount':fields.Function(_calc_discount,'discount'),
+        #'tax_base_total':fields.Function(_calc_tax,'Total Sales without taxes',),
+    untaxed_sales = fields.Float(compute=_calc_sales, string='Untaxed sales',)
+        #'money_incoming':fields.Char(compute="_calc_money_incoming",'money incoming',),
+        #'money_outgoing':fields.Char(compute="_calc_money_outgoing",'money outgoing',),
+    statements_total = fields.Float(compute=_calc_statements_total, string='Total Payments Received')
+    tickets_num = fields.Integer(compute="_calc_tickets", string='Number of Tickets',)
+    ticket_first_id = fields.Many2one('pos.order', compute="_calc_tickets", string='First Ticket',)
+    ticket_last_id = fields.Many2one('pos.order', compute="_calc_tickets", string='Last Ticket',)
+        #'money_close':fields.Float('money Close'),
+        #'money_reported':fields.Float('money Reported'),
+
