@@ -23,25 +23,25 @@
 import logging
 import time
 from datetime import datetime, timedelta
-from openerp.osv import fields, osv
+from openerp import fields, models
 from openerp.tools.translate import _
 
 
 _logger = logging.getLogger(__name__)
 
 
-class pos_message(osv.Model):
+class pos_message(models.Model):
     _name = 'pos.message'
 
-    _columns = {
-        'pos_ids': fields.many2many('pos.config',
+
+    pos_ids = fields.Many2many('pos.config'
                                     'pos_message_config_rel',
                                     'message_id',
                                     'config_id',
                                     'Point of Sale'),
-        'title': fields.char('Title', size=128, required=True),
-        'active': fields.boolean('Active'),
-        'message_type': fields.selection([
+    title = fields.Char('Title', size=128, required=True)
+    active = fields.Boolean('Active')
+    message_type = fields.Selection([
             (1, 'Information'),
             (2, 'Question'),
             (3, 'Alert'),
@@ -49,25 +49,25 @@ class pos_message(osv.Model):
             (5, 'Other')
         ],
             'Type',
-            help="Select the type of the message to be displayed on POS"),
-        'message': fields.text('Message', required=True),
-        'start_at': fields.date('Starting Date', required=True),
-        'stop_at': fields.date('Ending Date', required=True),
-        'frequency': fields.selection([
+            help="Select the type of the message to be displayed on POS")
+    message = fields.Text('Message', required=True)
+    start_at = fields.Date('Starting Date', required=True)
+    stop_at = fields.Date('Ending Date', required=True)
+    frequency = fields.Selection([
             (1, 'Once'),
             (2, 'Every X hours'),
         ],
             'Frequency',
-            help="Set the frequency of occurrence of the message"),
-        'interval': fields.selection([
+            help="Set the frequency of occurrence of the message")
+    interval = fields.Selection([
             (1, '1'),
             (2, '2'),
             (3, '3'),
             (4, '4'),
         ],
             'Interval',
-            help="Display message each x hours"),
-    }
+            help="Display message each x hours")
+
 
     _defaults = {
         'message_type': 1,
@@ -161,15 +161,15 @@ class pos_message(osv.Model):
         return res
 
 
-class pos_message_read(osv.Model):
+class pos_message_read(models.Model):
     _name = 'pos.message.read'
     _order = 'pos_id, date_read desc'
 
-    _columns = {
-        'message_id': fields.integer('Message id'),
-        'pos_id': fields.integer('POS id'),
-        'date_read': fields.datetime('Date read'),
-    }
+
+    message_id = fields.Integer('Message id')
+    pos_id = fields.Integer('POS id')
+    date_read = fields.Datetime('Date read')
+
 
     def write_pos_message_read(self, cr, uid, mid, posid, context=None):
         if context is None:
@@ -180,13 +180,13 @@ class pos_message_read(osv.Model):
         return read_id
 
 
-class inherit_pos_config(osv.Model):
+class inherit_pos_config(models.Model):
     _name = 'pos.config'
     _inherit = 'pos.config'
 
-    _columns = {
-        'message_ids': fields.many2many('pos.message',
+
+    message_ids = fields.Many2many('pos.message'
                                         'pos_message_config_rel', 'config_id',
                                         'message_id',
                                         'Messages'),
-    }
+

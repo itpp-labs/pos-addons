@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import fields, orm
+from openerp import fields
 
 
 class product_product(orm.Model):
@@ -12,15 +12,15 @@ class product_product(orm.Model):
             res[id] = lot_id and lot_id[0] or None
         return res
 
-    _columns = {
+
         # lot product fields
-        'is_lot': fields.boolean('Lot of products'),
-        'lot_qty': fields.integer('Quantity products in Lot'),
-        'lot_product_id': fields.many2one('product.product', 'Product in lot'),  # In fact is one2one
+    is_lot = fields.Boolean('Lot of products')
+    lot_qty = fields.Integer('Quantity products in Lot')
+    lot_product_id = fields.Many2one('product.product', 'Product in lot')  # In fact is one2one
 
         # normal product fields
-        'lot_id': fields.function(_get_lot_id, type='many2one', relation='product.product', string='Used in Lot')
-    }
+    lot_id = fields.Many2one(compute="_get_lot_id", relation='product.product', string='Used in Lot')
+
     _defaults = {
         'is_lot': False
     }

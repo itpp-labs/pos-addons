@@ -21,12 +21,12 @@
 ##############################################################################
 
 import logging
-from openerp.osv import fields, osv
+from openerp import fields, models
 
 _logger = logging.getLogger(__name__)
 
 
-class inherit_res_partner(osv.osv):
+class inherit_res_partner(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
 
@@ -64,6 +64,6 @@ class inherit_res_partner(osv.osv):
         result = super(inherit_res_partner, self).create(cr, uid, vals, context=context)
         return result
 
-    _columns = {
-        'firstname': fields.char('Firstname', size=128),
-    }
+
+        'firstname': fields.Char('Firstname', size=128),
+

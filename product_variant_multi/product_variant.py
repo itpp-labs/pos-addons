@@ -24,7 +24,7 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv, orm
+from openerp import fields, models
 import openerp.addons.decimal_precision as dp
 # Lib to eval python code with security
 from openerp.tools.safe_eval import safe_eval
@@ -38,22 +38,22 @@ class product_variant_dimension_type(orm.Model):
     _name = "product.variant.dimension.type"
     _description = "Dimension Type"
 
-    _columns = {
-        'description': fields.char('Description', size=64, translate=True),
-        'name': fields.char('Dimension Type Name', size=64, required=True),
-        'sequence': fields.integer('Sequence', help=("The product 'variants' code will "
+
+    description = fields.Char('Description', size=64, translate=True)
+    name = fields.Char('Dimension Type Name', size=64, required=True)
+        'sequence': fields.Integer('Sequence', help=("The product 'variants' code will "
                                                      "use this to order the dimension values")),
-        'option_ids': fields.one2many('product.variant.dimension.option', 'dimension_id',
+    option_ids = fields.One2many('product.variant.dimension.option', 'dimension_id'
                                       'Dimension Options'),
-        'product_tmpl_id': fields.many2many('product.template', 'product_template_dimension_rel',
+    product_tmpl_id = fields.Many2many('product.template', 'product_template_dimension_rel'
                                             'dimension_id', 'template_id', 'Product Template'),
-        'allow_custom_value': fields.boolean('Allow Custom Value',
+    allow_custom_value = fields.Boolean('Allow Custom Value'
                                              help=("If true, custom values can be entered "
                                                    "in the product configurator")),
-        'mandatory_dimension': fields.boolean('Mandatory Dimension',
+    mandatory_dimension = fields.Boolean('Mandatory Dimension'
                                               help=("If false, variant products will be created "
                                                     "with and without this dimension")),
-    }
+
 
     _defaults = {
         'mandatory_dimension': 1,
@@ -76,13 +76,13 @@ class product_variant_dimension_option(orm.Model):
         dimvalue_obj = self.pool.get('product.variant.dimension.value')
         return dimvalue_obj.search(cr, uid, [('dimension_id', 'in', ids)], context=context)
 
-    _columns = {
-        'name': fields.char('Dimension Option Name', size=64, required=True),
-        'code': fields.char('Code', size=64),
-        'sequence': fields.integer('Sequence'),
-        'dimension_id': fields.many2one('product.variant.dimension.type',
+
+    name = fields.Char('Dimension Option Name', size=64, required=True)
+    code = fields.Char('Code', size=64)
+    sequence = fields.Integer('Sequence')
+    dimension_id = fields.Many2one('product.variant.dimension.type'
                                         'Dimension Type', ondelete='cascade'),
-    }
+
 
     _order = "dimension_id, sequence, name"
 
@@ -96,7 +96,7 @@ class product_variant_dimension_value(orm.Model):
             if value.product_ids:
                 product_names = [product.name for product in value.product_ids]
                 product_list = '\n    - ' + '\n    - '.join(product_names)
-                raise osv.except_osv(_('Dimension value can not be removed'),
+                raise UserError(_('Dimension value can not be removed'),
                                      _("The value %s is used by the products : %s \n "
                                        "Please remove these products before removing the value.")
                                      % (value.option_id.name, product_list))
@@ -110,19 +110,19 @@ class product_variant_dimension_value(orm.Model):
         dimvalue_obj = self.pool.get('product.variant.dimension.value')
         return dimvalue_obj.search(cr, uid, [('option_id', 'in', ids)], context=context)
 
-    _columns = {
-        'option_id': fields.many2one('product.variant.dimension.option', 'Option', required=True),
-        'name': fields.related('option_id', 'name', type='char',
+
+    option_id = fields.Many2one('product.variant.dimension.option', 'Option', required=True)
+    name = fields.Related('option_id', 'name', type='char'
                                relation='product.variant.dimension.option',
                                string="Dimension Value", readonly=True),
-        'sequence': fields.integer('Sequence'),
-        'price_extra': fields.float('Sale Price Extra',
+    sequence = fields.Integer('Sequence')
+    price_extra = fields.Float('Sale Price Extra'
                                     digits_compute=dp.get_precision('Sale Price')),
-        'price_margin': fields.float('Sale Price Margin',
+    price_margin = fields.Float('Sale Price Margin'
                                      digits_compute=dp.get_precision('Sale Price')),
-        'cost_price_extra': fields.float('Cost Price Extra',
+    cost_price_extra = fields.Float('Cost Price Extra'
                                          digits_compute=dp.get_precision('Purchase Price')),
-        'dimension_id': fields.related('option_id', 'dimension_id', type="many2one",
+    dimension_id = fields.Related('option_id', 'dimension_id', type="many2one"
                                        relation="product.variant.dimension.type",
                                        string="Dimension Type",
                                        readonly=True,
@@ -131,19 +131,19 @@ class product_variant_dimension_value(orm.Model):
                                                   ids, ['option_id'], 10),
                                               'product.variant.dimension.option':
                                               (_get_values_from_options, ['dimension_id'], 20)}),
-        'product_tmpl_id': fields.many2one('product.template', 'Product Template',
+    product_tmpl_id = fields.Many2one('product.template', 'Product Template'
                                            ondelete='cascade'),
-        'dimension_sequence': fields.related('dimension_id', 'sequence', type='integer',
+    dimension_sequence = fields.Related('dimension_id', 'sequence', type='integer'
                                              relation='product.variant.dimension.type',
                                              # used for ordering purposes in the "variants"
                                              string="Related Dimension Sequence",
                                              store={'product.variant.dimension.type':
                                                     (_get_values_from_types, ['sequence'], 10)}),
-        'product_ids': fields.many2many('product.product', 'product_product_dimension_rel',
+    product_ids = fields.Many2many('product.product', 'product_product_dimension_rel'
                                         'dimension_id', 'product_id', 'Variant', readonly=True),
-        'active': fields.boolean('Active', help=("If false, this value will not be "
+        'active': fields.Boolean('Active', help=("If false, this value will not be "
                                                  "used anymore to generate variants.")),
-    }
+
 
     _defaults = {
         'active': True,
@@ -162,37 +162,37 @@ class product_template(orm.Model):
 
     _order = "name"
 
-    _columns = {
-        'name': fields.char('Name', size=128, translate=True, select=True, required=False),
-        'dimension_type_ids': fields.many2many('product.variant.dimension.type',
+
+    name = fields.Char('Name', size=128, translate=True, select=True, required=False)
+    dimension_type_ids = fields.Many2many('product.variant.dimension.type'
                                                'product_template_dimension_rel',
                                                'template_id', 'dimension_id', 'Dimension Types'),
-        'value_ids': fields.one2many('product.variant.dimension.value',
+    value_ids = fields.One2many('product.variant.dimension.value'
                                      'product_tmpl_id',
                                      'Dimension Values'),
-        'variant_ids': fields.one2many('product.product', 'product_tmpl_id', 'Variants'),
-        'variant_model_name': fields.char('Variant Model Name', size=64, required=True,
+    variant_ids = fields.One2many('product.product', 'product_tmpl_id', 'Variants')
+    variant_model_name = fields.Char('Variant Model Name', size=64, required=True
                                           help=('[_o.dimension_id.name_] will be replaced with the'
                                                 ' name of the dimension and [_o.option_id.code_] '
                                                 'by the code of the option. Example of Variant '
                                                 'Model Name : "[_o.dimension_id.name_] - '
                                                 '[_o.option_id.code_]"')),
-        'variant_model_name_separator': fields.char('Variant Model Name Separator', size=64,
+    variant_model_name_separator = fields.Char('Variant Model Name Separator', size=64
                                                     help=('Add a separator between the elements '
                                                           'of the variant name')),
-        'code_generator': fields.char('Code Generator', size=256,
+    code_generator = fields.Char('Code Generator', size=256
                                       help=('enter the model for the product code, all parameter'
                                             ' between [_o.my_field_] will be replace by the '
                                             'product field. Example product_code model : '
                                             'prefix_[_o.variants_]_suffixe ==> result : '
                                             'prefix_2S2T_suffix')),
-        'is_multi_variants': fields.boolean('Is Multi Variants'),
-        'variant_track_production': fields.boolean('Track Production Lots on variants ?'),
-        'variant_track_incoming': fields.boolean('Track Incoming Lots on variants ?'),
-        'variant_track_outgoing': fields.boolean('Track Outgoing Lots on variants ?'),
-        'do_not_update_variant': fields.boolean("Don't Update Variant"),
-        'do_not_generate_new_variant': fields.boolean("Don't Generate New Variant"),
-    }
+    is_multi_variants = fields.Boolean('Is Multi Variants')
+    variant_track_production = fields.Boolean('Track Production Lots on variants ?')
+    variant_track_incoming = fields.Boolean('Track Incoming Lots on variants ?')
+    variant_track_outgoing = fields.Boolean('Track Outgoing Lots on variants ?')
+    do_not_update_variant = fields.Boolean("Don't Update Variant")
+    do_not_generate_new_variant = fields.Boolean("Don't Generate New Variant")
+
 
     _defaults = {
         'variant_model_name': '[_o.dimension_id.name_] - [_o.option_id.name_]',
@@ -212,7 +212,7 @@ class product_template(orm.Model):
                 if template.variant_ids == []:
                     super(product_template, self).unlink(cr, uid, [template.id], context)
                 else:
-                    raise osv.except_osv(_("Cannot delete template"),
+                    raise UserError(_("Cannot delete template"),
                                          _("This template has existing corresponding products..."))
         return True
 
@@ -420,7 +420,7 @@ class product_product(orm.Model):
                                     or ''
                                     ) + sub_val[1]
                 except AttributeError:
-                    raise osv.except_osv(_('Bad expression'),
+                    raise UserError(_('Bad expression'),
                                          _("One of your expressions contains "
                                            "a non existing attribute: %s"
                                            ) % sub_val[0])
@@ -587,18 +587,18 @@ class product_product(orm.Model):
             p['total_volume'] = product.volume + product.additional_volume
         return result
 
-    _columns = {
-        'name': fields.char('Name', size=128, translate=True, select=True),
-        'variants': fields.char('Variants', size=128),
-        'dimension_value_ids': fields.many2many(
+
+    name = fields.Char('Name', size=128, translate=True, select=True)
+    variants = fields.Char('Variants', size=128)
+        'dimension_value_ids': fields.Many2many(
             'product.variant.dimension.value',
             'product_product_dimension_rel',
             'product_id', 'dimension_id',
             'Dimensions',
             domain="[('product_tmpl_id','=',product_tmpl_id)]"),
-        'cost_price_extra': fields.float('Purchase Extra Cost',
+    cost_price_extra = fields.Float('Purchase Extra Cost'
                                          digits_compute=dp.get_precision('Purchase Price')),
-        'lst_price': fields.function(_product_lst_price,
+    lst_price = fields.Function(_product_lst_price
                                      method=True,
                                      type='float',
                                      string='List Price',
@@ -611,31 +611,31 @@ class product_product(orm.Model):
         # in order to have a consitent api we should use the same field for getting the weight,
         # now we have to use "weight" or "total_weight"
         # not clean at all with external syncronization
-        'total_weight': fields.function(_product_compute_weight_volume,
+    total_weight = fields.Function(_product_compute_weight_volume
                                         method=True,
                                         type='float',
                                         string='Total Gross Weight',
                                         help="The gross weight in Kg.",
                                         multi='weight_volume'),
-        'total_weight_net': fields.function(_product_compute_weight_volume,
+    total_weight_net = fields.Function(_product_compute_weight_volume
                                             method=True,
                                             type='float',
                                             string='Total Net Weight',
                                             help="The net weight in Kg.",
                                             multi='weight_volume'),
-        'total_volume': fields.function(_product_compute_weight_volume,
+    total_volume = fields.Function(_product_compute_weight_volume
                                         method=True,
                                         type='float',
                                         string='Total Volume',
                                         help="The volume in m3.",
                                         multi='weight_volume'),
-        'additional_weight': fields.float('Additional Gross weight',
+    additional_weight = fields.Float('Additional Gross weight'
                                           help="The additional gross weight in Kg."),
-        'additional_weight_net': fields.float('Additional Net weight',
+    additional_weight_net = fields.Float('Additional Net weight'
                                               help="The additional net weight in Kg."),
-        'additional_volume': fields.float('Additional Volume',
+    additional_volume = fields.Float('Additional Volume'
                                           help="The additional volume in Kg."),
-    }
+
 
     _constraints = [
         (_check_dimension_values, 'Error msg in raise', ['dimension_value_ids']),

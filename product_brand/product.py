@@ -21,24 +21,24 @@
 
 
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
 
 
-class product_template(osv.osv):
+class product_template(models.Model):
     _inherit = "product.template"
-    _columns = {
-        'branch_id': fields.many2one('product.branch', 'Product Branch'),
-    }
+
+    branch_id = fields.Many2one('product.branch', 'Product Branch')
 
 
-class product_branch(osv.osv):
+
+class product_branch(models.Model):
     _name = 'product.branch'
-    _columns = {
-        'name': fields.char('Brand Name', size=250),
-        'description': fields.text('Description'),
-        'product_ids': fields.one2many('product.template', 'branch_id', 'Products'),
-    }
+
+    name = fields.Char('Brand Name', size=250),
+    description = fields.Text('Description'),
+    product_ids = fields.One2many('product.template', 'branch_id', 'Products'),
+
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

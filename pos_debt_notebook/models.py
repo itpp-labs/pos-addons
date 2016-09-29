@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, SUPERUSER_ID
-from openerp.osv import osv
-from openerp.osv import fields as old_fields
+from openerp import models
 import openerp.addons.decimal_precision as dp
 
 
@@ -52,11 +51,10 @@ class ResPartner(models.Model):
         digits=dp.get_precision('Account'), help='This debt value for only current company')
 
 
-class PosConfig(osv.osv):
+class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    _columns = {
-        'debt_dummy_product_id': old_fields.many2one(
+    debt_dummy_product_id = fields.Many2one(
             'product.product',
             string='Dummy Product for Debt',
             domain=[('available_in_pos', '=', True)],
@@ -64,7 +62,6 @@ class PosConfig(osv.osv):
                  "without ordering new products. This is a workaround to the fact "
                  "that Odoo needs to have at least one product on the order to "
                  "validate the transaction.")
-    }
 
     def init_debt_journal(self, cr, uid, ids, context=None):
         journal_obj = self.pool['account.journal']

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import osv
+from openerp import models
 
 
 
-class product_product(osv.Model):
+class product_product(models.Model):
     _inherit = 'product.product'
 
     def generate_ean13(self, cr, uid, ids, context=None):

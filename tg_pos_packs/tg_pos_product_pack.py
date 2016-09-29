@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import fields
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -31,13 +31,13 @@ class product_pack(orm.Model):
     _description = "Product packs"
 
     _order = 'group_id, sequence'
-    _columns = {
-        'product_id': fields.many2one('product.product', 'Product', required=True),
-        'item_tmpl_id': fields.many2one('product.template', 'Item', required=True),
-        'group_id': fields.integer('Group number', help='Set a number to group items'),
-        'quantity': fields.float('Quantity'),
-        'sequence': fields.integer('Sequence'),
-    }
+
+    product_id = fields.Many2one('product.product', 'Product', required=True)
+    item_tmpl_id = fields.Many2one('product.template', 'Item', required=True)
+    group_id = fields.Integer('Group number', help='Set a number to group items')
+    quantity = fields.Float('Quantity')
+    sequence = fields.Integer('Sequence')
+
     _defaults = {
         'quantity': 1,
         'sequence': 1,
@@ -49,10 +49,10 @@ class inherit_product(orm.Model):
     _name = "product.product"
     _inherit = "product.product"
 
-    _columns = {
-        'is_pack': fields.boolean('Custom Pack'),
-        'pack_ids': fields.one2many('product.pack', 'product_id', 'Items in the pack'),
-    }
+
+    is_pack = fields.Boolean('Custom Pack')
+    pack_ids = fields.One2many('product.pack', 'product_id', 'Items in the pack')
+
     _defaults = {
         'is_pack': False,
     }
@@ -111,9 +111,9 @@ class inherit_product_category(orm.Model):
     _name = "product.category"
     _inherit = "product.category"
 
-    _columns = {
-        'is_pack': fields.boolean('Custom Pack Category'),
-    }
+
+    is_pack = fields.Boolean('Custom Pack Category')
+
     _defaults = {
         'is_pack': False,
     }
@@ -129,9 +129,9 @@ class inherit_product_category(orm.Model):
 class inherit_product_public_category(orm.Model):
     _inherit = "pos.category"
 
-    _columns = {
-        'is_pack': fields.boolean('Custom Pack Category'),
-    }
+
+    is_pack = fields.Boolean('Custom Pack Category')
+
     _defaults = {
         'is_pack': False,
     }
