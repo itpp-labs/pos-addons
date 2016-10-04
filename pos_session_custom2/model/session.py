@@ -116,7 +116,7 @@ class Sessionpos(osv.Model):
                 flag = False
                 for producto in order.lines:
                     if producto.product_id.expense_pdt:
-                        print producto.product_id.name
+                        # print producto.product_id.name
                         flag = True
                 if flag:
                     totali -= (order.amount_total * 2)
@@ -278,7 +278,7 @@ class Sessionpos(osv.Model):
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
                     cur = line.order_id.pricelist_id.currency_id
 
-                    print 'taxes', taxes
+                    # print 'taxes', taxes
                     for tax in taxes['taxes']:
                         id = tax['id']
                         if id not in res:

@@ -16,7 +16,7 @@ class Sessionpos(osv.Model):
                 flag = False
                 for producto in order.lines:
                     if producto.product_id.expense_pdt:
-                        print producto.product_id.name
+                        # print producto.product_id.name
                         flag = True
                 if flag:
                     totali -= (order.amount_total * 2)
