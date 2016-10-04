@@ -23,14 +23,14 @@
 from openerp.osv import osv, fields
 
 
-class product_template(osv.osv):
+class ProductTemplate(osv.osv):
     _inherit = "product.template"
     _columns = {
         'branch_id': fields.many2one('product.branch', 'Product Branch'),
     }
 
 
-class product_branch(osv.osv):
+class ProductBranch(osv.osv):
     _name = 'product.branch'
     _columns = {
         'name': fields.char('Brand Name', size=250),

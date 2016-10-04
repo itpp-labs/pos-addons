@@ -73,7 +73,7 @@ class PosConfig(osv.osv):
     }
 
 
-class pos_session_opening(osv.osv_memory):
+class PosSessionOpening(osv.osv_memory):
     _inherit = 'pos.session.opening'
 
     def init_debt_journal(self, cr, uid, ids, context=None):
@@ -178,6 +178,6 @@ class pos_session_opening(osv.osv_memory):
         return
 
     def open_session_cb(self, cr, uid, ids, context=None):
-        res = super(pos_session_opening, self).open_session_cb(cr, uid, ids, context)
+        res = super(PosSessionOpening, self).open_session_cb(cr, uid, ids, context)
         self.init_debt_journal(cr, uid, ids, context=context)
         return res

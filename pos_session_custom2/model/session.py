@@ -22,7 +22,7 @@ class PosBoxOut(PosBox):
         return values
 
 
-class account_bank_statement_line(osv.osv):
+class AccountBankStatementLine(osv.osv):
     _inherit = "account.bank.statement.line"
 
     _columns = {
@@ -35,7 +35,7 @@ class account_bank_statement_line(osv.osv):
     }
 
 
-class account_cash_statement(osv.osv):
+class AccountCashStatement(osv.osv):
 
     _inherit = 'account.bank.statement'
 
@@ -103,7 +103,7 @@ class account_cash_statement(osv.osv):
     }
 
 
-class sessionpos(osv.Model):
+class Sessionpos(osv.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}

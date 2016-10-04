@@ -3,7 +3,7 @@
 from openerp.osv import fields, osv
 
 
-class sessionpos(osv.Model):
+class Sessionpos(osv.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
