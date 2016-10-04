@@ -57,7 +57,7 @@ class ExternalTestCase(unittest2.TestCase):
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(MAIN_URL))
         return common.authenticate(DATABASE, login, password, {})
 
-    def execute_kw(self, model, method, rpc_args=[], rpc_kwargs=[], uid=None, password=None):
+    def execute_kw(self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None):
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         res = self.xmlrpc_models.execute_kw(
