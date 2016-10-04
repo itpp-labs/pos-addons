@@ -267,7 +267,6 @@ class Sessionpos(osv.Model):
     def summary_by_tax(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}  # tax_id -> data
         for session in self.browse(cr, uid, ids, context=context):
             for order in session.order_ids:
@@ -301,7 +300,6 @@ class Sessionpos(osv.Model):
 
     def _calc_tax(self, cr, uid, ids, name, args, context=None):
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}
         for session in self.browse(cr, uid, ids, context=context):
             res[session.id] = {'tax_base_total': 0}
@@ -311,7 +309,6 @@ class Sessionpos(osv.Model):
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
-                    cur = line.order_id.pricelist_id.currency_id
 
                     res[session.id]['tax_base_total'] += taxes['total']
         return res
