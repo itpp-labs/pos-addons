@@ -439,15 +439,15 @@ class product_product(orm.Model):
                                                           context=context)
             current_values = {
                 'default_code': product.default_code,
-                #'track_production': product.track_production,
-                #'track_outgoing': product.track_outgoing,
-                #'track_incoming': product.track_incoming,
+                # 'track_production': product.track_production,
+                # 'track_outgoing': product.track_outgoing,
+                # 'track_incoming': product.track_incoming,
             }
             new_values = {
                 'default_code': new_default_code,
-                #'track_production': product.product_tmpl_id.variant_track_production,
-                #'track_outgoing': product.product_tmpl_id.variant_track_outgoing,
-                #'track_incoming': product.product_tmpl_id.variant_track_incoming,
+                # 'track_production': product.product_tmpl_id.variant_track_production,
+                # 'track_outgoing': product.product_tmpl_id.variant_track_outgoing,
+                # 'track_incoming': product.product_tmpl_id.variant_track_incoming,
             }
             if new_values != current_values:
                 self.write(cr, uid, [product.id], new_values, context=context)
