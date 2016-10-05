@@ -158,7 +158,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         }
     });
 
-    gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'clientlist'})[0].widget.include({
+    gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'clientlist';})[0].widget.include({
         toggle_save_button: function(){
             this._super();
             var $button = this.$('.button.set-customer-pay-full-debt');

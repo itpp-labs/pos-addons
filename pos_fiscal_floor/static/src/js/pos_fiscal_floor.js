@@ -12,14 +12,14 @@ odoo.define('pos_fiscal_floor', function (require) {
                 var f_id = posmodel.table.floor.pos_default_fiscal[0];
                 var f_name = posmodel.table.floor.pos_default_fiscal[1];
                 obj = _.find(this.pos.fiscal_positions, function (obj) {
-                    return obj.id == f_id
-                })
+                    return obj.id == f_id;
+                });
                 order.fiscal_position = obj;
                 if (order.fiscal_position)
                     order.trigger('change');
             }
         }
-    })
+    });
 
 
     models.load_models({
@@ -62,4 +62,4 @@ odoo.define('pos_fiscal_floor', function (require) {
         },
     });
 
-})
+});
