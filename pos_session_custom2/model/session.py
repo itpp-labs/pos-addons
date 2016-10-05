@@ -310,7 +310,6 @@ class Sessionpos(osv.Model):
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner_id=line.order_id.partner_id.id or False)
-                    cur = line.order_id.pricelist_id.currency_id
 
                     res[session.id]['tax_base_total'] += taxes['total']
         return res
