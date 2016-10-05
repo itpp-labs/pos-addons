@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import api, models, fields, SUPERUSER_ID
+from openerp import models
 
 
 class pos_config(models.Model):

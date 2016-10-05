@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from openerp.osv import fields, osv
-from openerp import models
 
 
 class restaurant_floor(osv.Model):
