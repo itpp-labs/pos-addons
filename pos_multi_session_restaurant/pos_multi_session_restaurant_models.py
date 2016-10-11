@@ -5,7 +5,8 @@ from openerp import api, models, fields, SUPERUSER_ID
 class pos_config(models.Model):
     _inherit = 'pos.config'
 
-    def _check_same_floors(self, cr, uid, ids, context=None):
+    @api.multi
+    def _check_same_floors(self):
         # Проверяем чтобы у всех ПОС у которых одинаковые мультисесии был одинаковый набор этажей (floors).
         # Ранее было решено добавить такое ограничение.
         # TODO
@@ -14,12 +15,12 @@ class pos_config(models.Model):
         # Сделать search в pos.config с аттрибутом groupby='multi_session_id'
         # Потом в каждой группе взять один элемент и сравнить его с каждым. Если хоть одна разница есть, то return False.
         # Тогда будет N + N операций
-        for rec in self.browse(cr, uid, ids, context=context):
-            pos_config_ids = self.pool['pos.config'].search(cr, uid, [
+        for rec in self:
+            pos_configs = self.env['pos.config'].search([
                 ('multi_session_id', '=', rec.multi_session_id.id),
                 ('id', '!=', rec.id)
             ])
-            for pos_config_obj in [r for r in self.browse(cr, uid, pos_config_ids, context=context)]:
+            for pos_config_obj in pos_configs:
                 a = set(pos_config_obj.floor_ids.ids)
                 b = set(rec.floor_ids.ids)
                 diff = a.difference(b)

@@ -26,3 +26,9 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     floor_ids = fields.Many2many('restaurant.floor', 'pos_config_floor_rel', 'pos_config_id', 'floor_id', string="Restaurant Floors", help='The restaurant floors served by this point of sale')
+
+
+class RestaurantFloor(models.Model):
+    _inherit = 'restaurant.floor'
+
+    pos_config_ids = fields.Many2many('restaurant.floor', 'pos_config_floor_rel', 'floor_id', 'pos_config_id', string="POS configs")
