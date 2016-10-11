@@ -3,7 +3,7 @@ from openerp import fields
 from openerp import models
 
 
-class pos_config(models.Model):
+class PosConfig(models.Model):
     _inherit = 'res.users'
 
     allow_payments = fields.Boolean('Allow payments', default=True)
