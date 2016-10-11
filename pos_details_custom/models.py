@@ -3,7 +3,7 @@ from openerp.osv import osv
 from openerp.addons.point_of_sale.report.pos_details import pos_details
 
 
-class pos_details_custom(pos_details):
+class PosDetailsCustom(pos_details):
 
     def _pos_sales_details_custom(self, form):
         user_obj = self.pool.get('res.users')
@@ -17,12 +17,12 @@ class pos_details_custom(pos_details):
         return res
 
     def __init__(self, cr, uid, name, context):
-        super(pos_details_custom, self).__init__(cr, uid, name, context=context)
+        super(PosDetailsCustom, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'pos_sales_details_custom': self._pos_sales_details_custom,
         })
 
 
-class report_pos_details(osv.AbstractModel):
+class ReportPosDetails(osv.AbstractModel):
     _inherit = 'report.point_of_sale.report_detailsofsales'
-    _wrapped_report_class = pos_details_custom
+    _wrapped_report_class = PosDetailsCustom

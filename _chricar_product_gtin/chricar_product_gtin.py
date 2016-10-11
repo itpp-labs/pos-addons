@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+#
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2011 Tiny SPRL (<http://tiny.be>).
@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 from openerp.osv import fields, osv
 import math
 
@@ -94,7 +94,7 @@ def convert_UPCE_to_UPCA(upce_value):
 
 
 # need to replace the check_ean13_key function
-class product_product(osv.osv):
+class ProductProduct(osv.osv):
     _inherit = "product.product"
 
     def _check_ean_key(self, cr, uid, ids, context=None):
@@ -108,10 +108,10 @@ class product_product(osv.osv):
 
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
 
-product_product()
+ProductProduct()
 
 
-class product_template(osv.osv):
+class ProductTemplate(osv.osv):
     _inherit = "product.template"
 
     def _check_ean_key(self, cr, uid, ids, context=None):
@@ -124,10 +124,10 @@ class product_template(osv.osv):
 
     }
 
-product_template()
+ProductTemplate()
 
 
-class product_packaging(osv.osv):
+class ProductPackaging(osv.osv):
     _inherit = "product.packaging"
 
     def _check_ean_key(self, cr, uid, ids, context=None):
@@ -140,10 +140,10 @@ class product_packaging(osv.osv):
     }
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean'])]
 
-product_packaging()
+ProductPackaging()
 
 
-class res_partner(osv.osv):
+class ResPartner(osv.osv):
     _inherit = "res.partner"
 
     def _check_ean_key(self, cr, uid, ids, context=None):
@@ -157,7 +157,7 @@ class res_partner(osv.osv):
 
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
 
-res_partner()
+ResPartner()
 
 # class wiz_ean13_check(wizard.interface):
 # wiz_ean13_check()

@@ -9,6 +9,7 @@ from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
 
+
 class Controller(bus_controller):
 
     def _poll(self, dbname, channels, last, options):
