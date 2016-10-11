@@ -44,7 +44,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                 var product = products[i];
                 var search_string = this._product_search_string(product);
                 var categ_ids = product.pos_category_ids;
-                if (categ_ids.length == 0) { categ_ids = [this.root_category_id] }
+                if (categ_ids.length == 0) { categ_ids = [this.root_category_id]; }
                 for (var n = 0; n < categ_ids.length; n++){
                     var categ_id = categ_ids[n];
                     // product.product_tmpl_id = product.product_tmpl_id[0];
