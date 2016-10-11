@@ -22,7 +22,7 @@ class PosBoxOut(PosBox):
         return values
 
 
-class account_bank_statement_line(osv.osv):
+class AccountBankStatementLine(osv.osv):
     _inherit = "account.bank.statement.line"
 
     _columns = {
@@ -35,7 +35,7 @@ class account_bank_statement_line(osv.osv):
     }
 
 
-class account_cash_statement(osv.osv):
+class AccountCashStatement(osv.osv):
 
     _inherit = 'account.bank.statement'
 
@@ -103,7 +103,7 @@ class account_cash_statement(osv.osv):
     }
 
 
-class sessionpos(osv.Model):
+class Sessionpos(osv.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
@@ -116,7 +116,7 @@ class sessionpos(osv.Model):
                 flag = False
                 for producto in order.lines:
                     if producto.product_id.expense_pdt:
-                        print producto.product_id.name
+                        # print producto.product_id.name
                         flag = True
                 if flag:
                     totali -= (order.amount_total * 2)
@@ -267,7 +267,6 @@ class sessionpos(osv.Model):
     def summary_by_tax(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}  # tax_id -> data
         for session in self.browse(cr, uid, ids, context=context):
             for order in session.order_ids:
@@ -278,7 +277,7 @@ class sessionpos(osv.Model):
                     cur = line.order_id.pricelist_id.currency_id
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, cur.id, line.qty, line.product_id.id, line.order_id.partner_id.id or False)
 
-                    print 'taxes', taxes
+                    # print 'taxes', taxes
                     for tax in taxes['taxes']:
                         id = tax['id']
                         if id not in res:
@@ -302,7 +301,6 @@ class sessionpos(osv.Model):
 
     def _calc_tax(self, cr, uid, ids, name, args, context=None):
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}
         for session in self.browse(cr, uid, ids, context=context):
             res[session.id] = {'tax_base_total': 0}

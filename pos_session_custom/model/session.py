@@ -3,7 +3,7 @@
 from openerp.osv import fields, osv
 
 
-class sessionpos(osv.Model):
+class Sessionpos(osv.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
@@ -16,7 +16,7 @@ class sessionpos(osv.Model):
                 flag = False
                 for producto in order.lines:
                     if producto.product_id.expense_pdt:
-                        print producto.product_id.name
+                        # print producto.product_id.name
                         flag = True
                 if flag:
                     totali -= (order.amount_total * 2)
@@ -167,7 +167,6 @@ class sessionpos(osv.Model):
     def summary_by_tax(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}  # tax_id -> data
         for session in self.browse(cr, uid, ids, context=context):
             for order in session.order_ids:
@@ -176,7 +175,6 @@ class sessionpos(osv.Model):
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
-                    cur = line.order_id.pricelist_id.currency_id
 
                     for tax in taxes['taxes']:
                         id = tax['tax_code_id']
@@ -200,7 +198,6 @@ class sessionpos(osv.Model):
 
     def _calc_tax(self, cr, uid, ids, name, args, context=None):
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}
         for session in self.browse(cr, uid, ids, context=context):
             res[session.id] = {'tax_base_total': 0}
@@ -210,7 +207,6 @@ class sessionpos(osv.Model):
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
-                    cur = line.order_id.pricelist_id.currency_id
 
                     res[session.id]['tax_base_total'] += taxes['total']
         return res

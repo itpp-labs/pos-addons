@@ -12,7 +12,6 @@
         <record model="ir.ui.view" id="view_tg_partner_form">
             <field name="model">res.partner</field>
             <field name="name">view.tg.partner.form</field>
-            <field name="view_type">form</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
@@ -30,7 +29,6 @@
         <record model="ir.ui.view" id="view_tg_partner_tree">
             <field name="model">res.partner</field>
             <field name="name">view.tg.partner.tree</field>
-            <field name="view_type">tree</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
                 <field name="display_name" position="after">

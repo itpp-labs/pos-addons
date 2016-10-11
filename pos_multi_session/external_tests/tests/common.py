@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from ..common import ExternalTestCase
@@ -40,6 +41,6 @@ class TestCommon(ExternalTestCase):
 
     def close_pos_session(self, uid, password):
 
-        ids = self.execute_kw('pos.session', 'search', [[('state','<>','closed'), ('user_id','=',uid)]], uid=uid, password=password)
+        ids = self.execute_kw('pos.session', 'search', [[('state', '<>', 'closed'), ('user_id', '=', uid)]], uid=uid, password=password)
         if ids:
             self.exec_workflow('pos.session', 'close', ids[0], uid=uid, password=password)
