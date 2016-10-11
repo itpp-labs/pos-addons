@@ -33,6 +33,7 @@ MAIN_URL = 'http://localhost:%s' % PORT
 
 
 class ExternalTestCase(unittest2.TestCase):
+
     '''Runs external tests.
 
        It means that we use xmlrpc instead of usual registry and transactions are not rollbacked.
@@ -56,7 +57,7 @@ class ExternalTestCase(unittest2.TestCase):
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(MAIN_URL))
         return common.authenticate(DATABASE, login, password, {})
 
-    def execute_kw(self, model, method, rpc_args=[], rpc_kwargs=[], uid=None, password=None):
+    def execute_kw(self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None):
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         res = self.xmlrpc_models.execute_kw(
@@ -114,7 +115,7 @@ class ExternalTestCase(unittest2.TestCase):
     def phantom_run(self, cmd, timeout):
         _logger.info('phantom_run executing %s', ' '.join(cmd))
 
-        ls_glob = os.path.expanduser('~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*'%PORT)
+        ls_glob = os.path.expanduser('~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*' % PORT)
         for i in glob.glob(ls_glob):
             _logger.info('phantomjs unlink localstorage %s', i)
             os.unlink(i)
@@ -150,12 +151,12 @@ class ExternalTestCase(unittest2.TestCase):
         while True:
             # timeout
             self.assertLess(datetime.now() - t0, td,
-                "PhantomJS tests should take less than %s seconds" % timeout)
+                            "PhantomJS tests should take less than %s seconds" % timeout)
 
             # read a byte
             try:
                 ready, _, _ = select.select([phantom.stdout], [], [], 0.5)
-            except select.error, e:
+            except select.error as e:
                 # In Python 2, select.error has no relation to IOError or
                 # OSError, and no errno/strerror/filename, only a pair of
                 # unnamed arguments (matching errno and strerror)
@@ -185,6 +186,6 @@ class ExternalTestCase(unittest2.TestCase):
                     # when error occurs the execution stack may be sent as as JSON
                     try:
                         line_ = json.loads(line_)
-                    except ValueError: 
+                    except ValueError:
                         pass
                     self.fail(line_ or "phantomjs test failed")

@@ -2,8 +2,7 @@
 from openerp.osv import orm
 
 
-
-class product_product(orm.Model):
+class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     def split_lot_from_ui(self, cr, uid, records, context=None):

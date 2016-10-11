@@ -2,8 +2,7 @@
 from openerp.osv import osv
 
 
-
-class product_product(osv.Model):
+class ProductProduct(osv.Model):
     _inherit = 'product.product'
 
     def generate_ean13(self, cr, uid, ids, context=None):

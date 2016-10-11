@@ -2,8 +2,7 @@
 from openerp.osv import osv, fields
 
 
-
-class pos_config(osv.Model):
+class PosConfig(osv.Model):
     _inherit = 'pos.config'
 
     _columns = {
@@ -38,22 +37,22 @@ class pos_config(osv.Model):
 
     def create(self, cr, uid, values, context=None):
         self._update_pos_order_sequence_id(cr, uid, values)
-        return super(pos_config, self).create(cr, uid, values, context=context)
+        return super(PosConfig, self).create(cr, uid, values, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         for conf in self.browse(cr, uid, ids, context):
             values = vals.copy()
             values.update({'pos_order_sequence_id': conf.pos_order_sequence_id.id})
             self._update_pos_order_sequence_id(cr, uid, values)
-            super(pos_config, self).write(cr, uid, [conf.id], values, context=context)
+            super(PosConfig, self).write(cr, uid, [conf.id], values, context=context)
         return True
 
 
-class pos_order(osv.Model):
+class PosOrder(osv.Model):
     _inherit = 'pos.order'
 
     def create(self, cr, uid, values, context=None):
-        res_id = super(pos_order, self).create(cr, uid, values, context=context)
+        res_id = super(PosOrder, self).create(cr, uid, values, context=context)
         order = self.browse(cr, uid, res_id, context)
         seq = order.session_id.config_id.pos_order_sequence_id
         if seq:
