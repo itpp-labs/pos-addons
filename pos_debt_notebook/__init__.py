@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 from . import models
+
 from openerp import SUPERUSER_ID
-from openerp import models
+from openerp import api
 from openerp.tools.translate import _
+from odoo.exceptions import UserError
 
 
 def pre_uninstall(cr, registry):
-    if registry['pos.session'].search(cr, SUPERUSER_ID, [('state', '=', 'opened')]):
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    if env['pos.session'].search([('state', '=', 'opened')]):
         raise UserError(_('Error!'), _('You have open session of Point of Sale. Please close them first.'))
 
-    config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [])
-    debt_journals = registry['account.journal'].search(cr, SUPERUSER_ID, [('debt', '=', True)])
-    for journal in registry['account.journal'].browse(cr, SUPERUSER_ID, debt_journals):
-        for config in registry['pos.config'].browse(cr, SUPERUSER_ID, config_ids):
-            config.write({
-                'journal_ids': [(3, journal.id)]
-            })
+    debt_journals = env['account.journal'].search([('debt', '=', True)])
+    value = []
+    for journal in debt_journals:
+        value.append((3, journal.id))
+
+    for config in env['pos.config'].search([]):
+        config.write({
+            'journal_ids': value,
+        })
