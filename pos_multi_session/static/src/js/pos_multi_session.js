@@ -1,10 +1,10 @@
 odoo.define('pos_multi_session', function(require){
-    var exports = {}
+    var exports = {};
 
     var session = require('web.session');
     var Backbone = window.Backbone;
     var core = require('web.core');
-    var screens = require('point_of_sale.screens')
+    var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
 
@@ -18,9 +18,9 @@ odoo.define('pos_multi_session', function(require){
         remove_orderline: function(order_line){
             if (!this.pos.get_order())
                 return;
-            this._super(order_line)
+            this._super(order_line);
         },
-    })
+    });
     screens.ReceiptScreenWidget.extend({
         finish_order: function() {
             if (!this._locked) {
@@ -32,7 +32,7 @@ odoo.define('pos_multi_session', function(require){
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
          */
-    })
+    });
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -188,8 +188,8 @@ odoo.define('pos_multi_session', function(require){
                     statement_ids: false,
                     lines: false,
                     multiprint_resume: data.multiprint_resume,
-                }
-                order = this.ms_create_order({ms_info:data.ms_info,data:data,json:json})
+                };
+                order = this.ms_create_order({ms_info:data.ms_info,data:data,json:json});
                 //order.uid = data.uid;
                 //order.sequence_number = data.sequence_number
                 var current_order = this.get_order();
@@ -200,7 +200,7 @@ odoo.define('pos_multi_session', function(require){
             }
             var not_found = order.orderlines.map(function(r){
                                 return r.uid;
-                            })
+                            });
             if(data.partner_id!=false)
             {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
@@ -221,13 +221,13 @@ odoo.define('pos_multi_session', function(require){
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
-                    return dline.uid == r.uid
-                })
+                    return dline.uid == r.uid;
+                });
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
-                    line.uid = dline.uid
+                    line.uid = dline.uid;
                 }
                 line.ms_info = dline.ms_info || {};
                 if(dline.qty !== undefined){
@@ -248,15 +248,15 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
                 }
-                order.orderlines.add(line)
-            })
+                order.orderlines.add(line);
+            });
 
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
                                return uid == r.uid;
-                           })
+                           });
                 order.orderlines.remove(line);
-            })
+            });
 
         },
         load_new_partners_by_id: function(partner_id){
@@ -286,7 +286,7 @@ odoo.define('pos_multi_session', function(require){
                                  self.multi_session.start();
                                  self.multi_session.request_sync_all();
                              }
-                         })
+                         });
         },
     });
 
@@ -359,13 +359,13 @@ odoo.define('pos_multi_session', function(require){
             this.pos.multi_session.update(data);
             this.just_printed = false;
         }
-    })
+    });
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
         initialize: function(){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
-            this.ms_info = {}
+            this.ms_info = {};
             if (!this.order)
                 // ignore new orderline from splitbill tool
                 return;
@@ -374,17 +374,17 @@ odoo.define('pos_multi_session', function(require){
             }
             this.bind('change', function(line){
                 if(this.order.just_printed){
-                    line.order.trigger('change:sync')
-                    return
+                    line.order.trigger('change:sync');
+                    return;
                 }
                 if (self.order.ms_check() && !line.ms_changing_selected){
-                    line.ms_info['changed'] = line.order.pos.ms_my_info();
-                    line.order.ms_info['changed'] = line.order.pos.ms_my_info();
+                    line.ms_info.changed = line.order.pos.ms_my_info();
+                    line.order.ms_info.changed = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;
                     order_lines.trigger('change', order_lines); // to rerender line
                     line.order.trigger('change:sync');
                 }
-            })
+            });
             this.uid = this.order.generate_unique_id() + '-' + this.id;
         },
         set_selected: function(){
@@ -470,11 +470,11 @@ odoo.define('pos_multi_session', function(require){
                     this.pos.chrome.gui.show_popup('error',{
                         'title': _t('Error'),
                         'body': err,
-                    })
+                    });
                 }
             }
             this.pos.db.save('bus_last', this.bus.last);
         }
-    })
+    });
     return exports;
-})
+});

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Disable orders restoring",
     'version': '1.0.0',

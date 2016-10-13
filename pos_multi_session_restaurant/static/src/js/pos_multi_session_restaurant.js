@@ -18,9 +18,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     this._super();
                     this.pos.bind('change:orders-count-on-floor-screen', function () {
                         self.renderElement();
-                    })
+                    });
                 }
-            })
+            });
             return false;
         }
     });
@@ -50,7 +50,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
-            PosModelSuper.prototype.initialize.apply(this, arguments)
+            PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ms_table = false;
         },
         ms_create_order: function(options){
@@ -72,29 +72,29 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
-                this.gui.screen_instances['products'].action_buttons['guests'].renderElement();
+                this.gui.screen_instances.products.action_buttons.guests.renderElement();
             }
         },
         ms_orders_to_sync: function(){
             var self = this;
             if (!this.ms_table){
-                return PosModelSuper.prototype.ms_orders_to_sync.apply(this, arguments)
+                return PosModelSuper.prototype.ms_orders_to_sync.apply(this, arguments);
             }
             return this.get('orders').filter(function(r){
                        return r.table === self.ms_table;
-                   })
+                   });
         },
         ms_on_add_order: function(current_order){
             if (!current_order){
                 // no current_order, because we on floor screen
                 _.each(this.get('orders').models, function(o){
                     if (o.table === this.ms_table && o.ms_replace_empty_order && o.is_empty()){
-                        o.destroy({'reason': 'abandon'})
+                        o.destroy({'reason': 'abandon'});
                     }
-                })
+                });
                 this.trigger('change:orders-count-on-floor-screen');
             }else{
-                PosModelSuper.prototype.ms_on_add_order.apply(this, arguments)
+                PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
             }
         }
     });

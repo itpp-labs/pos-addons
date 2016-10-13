@@ -1,8 +1,8 @@
 odoo.define('pos_disable_payment', function(require){
 "use strict";
 
-    var chrome = require('point_of_sale.chrome')
-    var screens = require('point_of_sale.screens')
+    var chrome = require('point_of_sale.chrome');
+    var screens = require('point_of_sale.screens');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');    
@@ -36,12 +36,12 @@ odoo.define('pos_disable_payment', function(require){
     chrome.Chrome.include({
         init: function(){
             this._super.apply(this, arguments);
-            this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this)
-            this.pos.bind('change:cashier', this.check_allow_delete_order, this)
+            this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this);
+            this.pos.bind('change:cashier', this.check_allow_delete_order, this);
         },
         check_allow_delete_order: function(){
             var user = this.pos.cashier || this.pos.user;
-            var order = this.pos.get_order()
+            var order = this.pos.get_order();
             if (order) {
                  // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (!user.allow_delete_order && order.orderlines.length > 0) {
@@ -56,19 +56,19 @@ odoo.define('pos_disable_payment', function(require){
             //extra checks on init
             this.check_allow_delete_order();
         }
-    })
+    });
     chrome.OrderSelectorWidget.include({
         renderElement: function(){
             this._super();
             this.chrome.check_allow_delete_order();
         }
-    })
+    });
 
     screens.OrderWidget.include({
         bind_order_events: function(){
             this._super();
             var order = this.pos.get('selectedOrder');
-            order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome)
+            order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
         }
     });
 
@@ -82,42 +82,42 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide()
+                this.actionpad.$('.pay').hide();
             }
         },
         renderElement: function () {
             this._super();
-            this.pos.bind('change:cashier', this.checkPayAllowed, this)
+            this.pos.bind('change:cashier', this.checkPayAllowed, this);
         },
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide()
+                this.actionpad.$('.pay').hide();
             }else{
-                this.actionpad.$('.pay').show()
+                this.actionpad.$('.pay').show();
             }
         }
-    })
+    });
     screens.NumpadWidget.include({
         init: function () {
             this._super.apply(this, arguments);
-            this.pos.bind('change:cashier', this.check_access, this)
+            this.pos.bind('change:cashier', this.check_access, this);
         },
         renderElement: function(){
             this._super();
-            this.check_access()
+            this.check_access();
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_discount) {
-                this.$el.find("[data-mode='discount']").css('visibility', 'hidden')
+                this.$el.find("[data-mode='discount']").css('visibility', 'hidden');
             }else{
-                this.$el.find("[data-mode='discount']").css('visibility', 'visible')
+                this.$el.find("[data-mode='discount']").css('visibility', 'visible');
             }
             if (!user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").css('visibility', 'hidden')
+                this.$el.find("[data-mode='price']").css('visibility', 'hidden');
             }else{
-                this.$el.find("[data-mode='price']").css('visibility', 'visible')
+                this.$el.find("[data-mode='price']").css('visibility', 'visible');
             }
         }
     });
@@ -132,7 +132,7 @@ odoo.define('pos_disable_payment', function(require){
             if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
                 return;
             }
-            return this._super()
+            return this._super();
         }
-    })
-})
+    });
+});

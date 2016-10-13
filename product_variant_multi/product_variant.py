@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-##############################################################################
+#
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
@@ -22,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 
 from openerp.osv import fields, osv, orm
 import openerp.addons.decimal_precision as dp
@@ -34,7 +34,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class product_variant_dimension_type(orm.Model):
+class ProductVariantDimensionType(orm.Model):
     _name = "product.variant.dimension.type"
     _description = "Dimension Type"
 
@@ -64,11 +64,11 @@ class product_variant_dimension_type(orm.Model):
     def name_search(self, cr, uid, name='', args=None, operator='ilike', context=None, limit=None):
         if not context.get('product_tmpl_id', False):
             args = None
-        return super(product_variant_dimension_type,
+        return super(ProductVariantDimensionType,
                      self).name_search(cr, uid, '', args, 'ilike', None, None)
 
 
-class product_variant_dimension_option(orm.Model):
+class ProductVariantDimensionOption(orm.Model):
     _name = "product.variant.dimension.option"
     _description = "Dimension Option"
 
@@ -87,7 +87,7 @@ class product_variant_dimension_option(orm.Model):
     _order = "dimension_id, sequence, name"
 
 
-class product_variant_dimension_value(orm.Model):
+class ProductVariantDimensionValue(orm.Model):
     _name = "product.variant.dimension.value"
     _description = "Dimension Value"
 
@@ -100,7 +100,7 @@ class product_variant_dimension_value(orm.Model):
                                      _("The value %s is used by the products : %s \n "
                                        "Please remove these products before removing the value.")
                                      % (value.option_id.name, product_list))
-        return super(product_variant_dimension_value, self).unlink(cr, uid, ids, context)
+        return super(ProductVariantDimensionValue, self).unlink(cr, uid, ids, context)
 
     def _get_values_from_types(self, cr, uid, ids, context=None):
         dimvalue_obj = self.pool.get('product.variant.dimension.value')
@@ -157,7 +157,7 @@ class product_variant_dimension_value(orm.Model):
     _order = "dimension_sequence, dimension_id, sequence, option_id"
 
 
-class product_template(orm.Model):
+class ProductTemplate(orm.Model):
     _inherit = "product.template"
 
     _order = "name"
@@ -206,11 +206,11 @@ class product_template(orm.Model):
         if context and context.get('unlink_from_product_product', False):
             for template in self.browse(cr, uid, ids, context):
                 if not template.is_multi_variants:
-                    super(product_template, self).unlink(cr, uid, [template.id], context)
+                    super(ProductTemplate, self).unlink(cr, uid, [template.id], context)
         else:
             for template in self.browse(cr, uid, ids, context):
                 if template.variant_ids == []:
-                    super(product_template, self).unlink(cr, uid, [template.id], context)
+                    super(ProductTemplate, self).unlink(cr, uid, [template.id], context)
                 else:
                     raise osv.except_osv(_("Cannot delete template"),
                                          _("This template has existing corresponding products..."))
@@ -245,7 +245,7 @@ class product_template(orm.Model):
             default = {}
         default = default.copy()
         default.update({'variant_ids': False, })
-        new_id = super(product_template, self).copy(cr, uid, id, default, context)
+        new_id = super(ProductTemplate, self).copy(cr, uid, id, default, context)
 
         val_obj = self.pool.get('product.variant.dimension.value')
         template = self.read(cr, uid, new_id, ['value_ids'], context=context)
@@ -265,8 +265,8 @@ class product_template(orm.Model):
         if old_id in seen_map.setdefault(self._name, []):
             return
         seen_map[self._name].append(old_id)
-        return super(product_template, self).copy_translations(cr, uid, old_id, new_id,
-                                                               context=context)
+        return super(ProductTemplate, self).copy_translations(cr, uid, old_id, new_id,
+                                                              context=context)
 
     def _create_variant_list(self, cr, ids, uid, vals, context=None):
 
@@ -364,7 +364,7 @@ class product_template(orm.Model):
         return True
 
 
-class product_product(orm.Model):
+class ProductProduct(orm.Model):
     _inherit = "product.product"
 
     def init(self, cr):
@@ -377,7 +377,7 @@ class product_product(orm.Model):
         if not context:
             context = {}
         context['unlink_from_product_product'] = True
-        return super(product_product, self).unlink(cr, uid, ids, context)
+        return super(ProductProduct, self).unlink(cr, uid, ids, context)
 
     def build_product_name(self, cr, uid, ids, context=None):
         return self.build_product_field(cr, uid, ids, 'name', context=None)
@@ -439,15 +439,15 @@ class product_product(orm.Model):
                                                           context=context)
             current_values = {
                 'default_code': product.default_code,
-                #'track_production': product.track_production,
-                #'track_outgoing': product.track_outgoing,
-                #'track_incoming': product.track_incoming,
+                # 'track_production': product.track_production,
+                # 'track_outgoing': product.track_outgoing,
+                # 'track_incoming': product.track_incoming,
             }
             new_values = {
                 'default_code': new_default_code,
-                #'track_production': product.product_tmpl_id.variant_track_production,
-                #'track_outgoing': product.product_tmpl_id.variant_track_outgoing,
-                #'track_incoming': product.product_tmpl_id.variant_track_incoming,
+                # 'track_production': product.product_tmpl_id.variant_track_production,
+                # 'track_outgoing': product.product_tmpl_id.variant_track_outgoing,
+                # 'track_incoming': product.product_tmpl_id.variant_track_incoming,
             }
             if new_values != current_values:
                 self.write(cr, uid, [product.id], new_values, context=context)
@@ -541,7 +541,7 @@ class product_product(orm.Model):
     def price_get(self, cr, uid, ids, ptype='list_price', context=None):
         if context is None:
             context = {}
-        result = super(product_product, self).price_get(cr, uid, ids, ptype, context=context)
+        result = super(ProductProduct, self).price_get(cr, uid, ids, ptype, context=context)
         if ptype == 'list_price':
             # TODO check if the price_margin on the dimension is very usefull,
             # maybe we will remove it
@@ -562,8 +562,8 @@ class product_product(orm.Model):
     def _product_lst_price(self, cr, uid, ids, name, arg, context=None):
         if context is None:
             context = {}
-        result = super(product_product, self)._product_lst_price(cr, uid, ids, name, arg,
-                                                                 context=context)
+        result = super(ProductProduct, self)._product_lst_price(cr, uid, ids, name, arg,
+                                                                context=context)
         result = self.compute_dimension_extra_price(cr, uid, ids, result,
                                                     product_price_extra='price_extra',
                                                     dim_price_margin='price_margin',
@@ -576,7 +576,7 @@ class product_product(orm.Model):
             default = {}
         default = default.copy()
         default.update({'variant_ids': False})
-        return super(product_product, self).copy(cr, uid, id, default, context)
+        return super(ProductProduct, self).copy(cr, uid, id, default, context)
 
     def _product_compute_weight_volume(self, cr, uid, ids, fields, arg, context=None):
         result = {}

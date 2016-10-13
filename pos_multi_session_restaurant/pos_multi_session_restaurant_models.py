@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from openerp import api, models, fields, SUPERUSER_ID
+from openerp import models
 
 
-class pos_config(models.Model):
+class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     def _check_same_floors(self, cr, uid, ids, context=None):

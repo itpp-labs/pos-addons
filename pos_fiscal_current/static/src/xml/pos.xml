@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="OrderWidget" >
         <t t-jquery=".order-container .summary.clearfix .subentry:first" t-operation="after">
-	     <div class='fiscal'>Fiscal: <span class="value"></span></div>
+         <div class='fiscal'>Fiscal: <span class="value"></span></div>
         </t>
     </t>
 </templates>

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+#
 #
 #    @package to_pos_shared_floor TO POS Shared Floor for Odoo 9.0
-#    @copyright Copyright (C) 2015 T.V.T Marine Automation (aka TVTMA). All rights reserved.#
+# @copyright Copyright (C) 2015 T.V.T Marine Automation (aka TVTMA). All rights reserved.#
 #    @license http://www.gnu.org/licenses GNU Affero General Public License version 3 or later; see LICENSE.txt
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,11 +18,11 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 from openerp import fields, models
 
 
-class pos_config(models.Model):
+class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     floor_ids = fields.Many2many('restaurant.floor', 'pos_config_floor_rel', 'pos_config_id', 'floor_id', string="Restaurant Floors", help='The restaurant floors served by this point of sale')
