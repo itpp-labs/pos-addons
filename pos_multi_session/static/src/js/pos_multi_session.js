@@ -66,6 +66,7 @@ openerp.pos_multi_session = function(instance){
         ms_on_update: function(message){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
+            var self = this;
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -81,6 +82,14 @@ openerp.pos_multi_session = function(instance){
                 if (order && action == 'remove_order'){
                     order.destroy({'reason': 'abandon'});
                 } else if (action == 'update') {
+                    if (this.order_number + 1 < data.order_number) {
+                        self.multi_session.request_sync_all();
+                    } else {
+                        this.order_number = data.order_number;
+                        this.ms_do_update(order, data);
+                    }
+                } else if (action == 'request_sync_all'){
+                    this.order_number = data.order_number;
                     this.ms_do_update(order, data);
                 }
             }catch(err){
@@ -95,15 +104,6 @@ openerp.pos_multi_session = function(instance){
             if (action == 'sync_sequence_number'){
                 this.ms_do_sync_sequence_number(data);
             }
-            //else if (action == 'request_sync_all'){
-            //    //don't executing sync_sequence_number, because new POS sync sequence_number on start, because new order is created automatically
-            //    //this.multi_session.sync_sequence_number();
-            //    this.get('orders').each(function(r){
-            //        if (!r.is_empty()){
-            //            r.ms_update();
-            //        }
-            //    });
-            //}
         },
         ms_on_add_order: function (current_order) {
             if (!current_order) {
@@ -142,11 +142,6 @@ openerp.pos_multi_session = function(instance){
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
-            console.log(data)
-
-            console.log(sequence_number);
-            console.log(this.pos_session.sequence_number)
-
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
                 if (sequence_number == this.pos_session.sequence_number){
@@ -249,7 +244,7 @@ openerp.pos_multi_session = function(instance){
                 if (self.config.multi_session_id) {
                     self.multi_session = new module.MultiSession(self);
                     self.multi_session.start();
-                    self.multi_session.request_sync_all();
+                    //self.multi_session.connection_server();
                 }
             });
         },
@@ -273,6 +268,7 @@ openerp.pos_multi_session = function(instance){
             this.bind('change:sync', function(){
                 self.ms_update();
             });
+            console.log("online?", window.onLine);
         },
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
@@ -306,6 +302,7 @@ openerp.pos_multi_session = function(instance){
                     self.do_ms_update();
                 }, 300);
         },
+
         ms_remove_order: function(){
             if (!this.ms_check())
                 return;
@@ -372,8 +369,16 @@ openerp.pos_multi_session = function(instance){
 
             //return done;
         },
+        //connection_server: function() {
+        //    console.log("status server");
+        //    console.log(window.online);
+        //    this.request_sync_all();
+        //},
         request_sync_all: function(){
-            this.send({'action': 'request_sync_all'});
+            var data = {
+                'pos_id': this.pos.config.id,
+            };
+            this.send({'action': 'request_sync_all', data: data});
         },
         sync_sequence_number: function(){
             var orders = {};
@@ -390,11 +395,10 @@ openerp.pos_multi_session = function(instance){
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
+            data.pos_id = this.pos.config.id;
             this.send({action: 'update', data: data});
         },
         send: function(message){
-            console.log(message['action']);
-
             if (this.pos.debug){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }

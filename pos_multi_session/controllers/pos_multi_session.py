@@ -19,11 +19,11 @@ class Controller(bus_controller):
     @openerp.http.route('/pos_multi_session/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message):
         res = request.env["pos.multi_session"].browse(int(multi_session_id)).on_update_message(message)
-        # HOW ref number whe add new product in current order
-        # and when a new order
-        # if numbers not equals then call a get orders function
-
         return res
+
+    @openerp.http.route('/pos_multi_session/connection', type='http', auth="public")
+    def connection(self, **kwargs):
+        return "1"
 
     @openerp.http.route('/pos_multi_session/test/gc', type="json", auth="user")
     def pos_multi_session_test_gc(self):
