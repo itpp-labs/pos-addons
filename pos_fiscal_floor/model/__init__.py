@@ -1,1 +1,1 @@
-import pos_fiscal_floor
+from . import pos_fiscal_floor
