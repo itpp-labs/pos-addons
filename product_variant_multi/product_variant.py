@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-##############################################################################
+#
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
@@ -22,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 
 from openerp.osv import fields, osv, orm
 import openerp.addons.decimal_precision as dp
@@ -266,7 +266,7 @@ class ProductTemplate(orm.Model):
             return
         seen_map[self._name].append(old_id)
         return super(ProductTemplate, self).copy_translations(cr, uid, old_id, new_id,
-                                                               context=context)
+                                                              context=context)
 
     def _create_variant_list(self, cr, ids, uid, vals, context=None):
 
@@ -563,7 +563,7 @@ class ProductProduct(orm.Model):
         if context is None:
             context = {}
         result = super(ProductProduct, self)._product_lst_price(cr, uid, ids, name, arg,
-                                                                 context=context)
+                                                                context=context)
         result = self.compute_dimension_extra_price(cr, uid, ids, result,
                                                     product_price_extra='price_extra',
                                                     dim_price_margin='price_margin',

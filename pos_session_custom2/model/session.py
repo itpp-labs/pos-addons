@@ -292,7 +292,7 @@ class Sessionpos(osv.Model):
                                        'tax': tax_rule,
                                        'total': 0,
                                        }
-                        #res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
+                        # res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
                         res[id]['base'] += cur.round(taxes['total_excluded'])
                         res[id]['total'] += tax['amount']
                         # cur_obj.round(cr, uid, cur, taxes['amount'])
