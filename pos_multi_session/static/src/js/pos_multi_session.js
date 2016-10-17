@@ -21,6 +21,12 @@ openerp.pos_multi_session = function(instance){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
+            window.offLineHandler = function(){
+                self.ClientOffLine();
+            };
+            window.onLineHandler = function(){
+                self.ClientOnLine();
+            };
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
             });
@@ -30,6 +36,25 @@ openerp.pos_multi_session = function(instance){
                 }
             });
 
+        },
+        ClientOffLine: function(){
+            console.log("offline");
+            this.multi_session.onLine = false;
+                new instance.web.Dialog(this, {
+                    title: _t("Warning"),
+                    size: 'medium',
+                }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
+        },
+        ClientOnLine: function(){
+            var self = this;
+            console.log("online");
+            this.multi_session.onLine = true;
+            if(self.multi_session.OfflineData) {
+                self.multi_session.OfflineData.forEach(function(message) {
+                  self.multi_session.send(message);
+                });
+                self.multi_session.OfflineData = []
+            }
         },
         ms_my_info: function(){
             return {
@@ -244,7 +269,7 @@ openerp.pos_multi_session = function(instance){
                 if (self.config.multi_session_id) {
                     self.multi_session = new module.MultiSession(self);
                     self.multi_session.start();
-                    //self.multi_session.connection_server();
+                    self.multi_session.request_sync_all();
                 }
             });
         },
@@ -268,7 +293,6 @@ openerp.pos_multi_session = function(instance){
             this.bind('change:sync', function(){
                 self.ms_update();
             });
-            console.log("online?", window.onLine);
         },
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
@@ -302,7 +326,6 @@ openerp.pos_multi_session = function(instance){
                     self.do_ms_update();
                 }, 300);
         },
-
         ms_remove_order: function(){
             if (!this.ms_check())
                 return;
@@ -357,6 +380,8 @@ openerp.pos_multi_session = function(instance){
     module.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
             this.pos = pos;
+            this.OfflineData = [];
+            this.onLine = true;
         },
         start: function(){
             var self = this;
@@ -369,11 +394,6 @@ openerp.pos_multi_session = function(instance){
 
             //return done;
         },
-        //connection_server: function() {
-        //    console.log("status server");
-        //    console.log(window.online);
-        //    this.request_sync_all();
-        //},
         request_sync_all: function(){
             var data = {
                 'pos_id': this.pos.config.id,
@@ -403,16 +423,26 @@ openerp.pos_multi_session = function(instance){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }
            var self = this;
-            var send_it = function() {
-                return openerp.session.rpc("/pos_multi_session/update", {multi_session_id: self.pos.config.multi_session_id[0], message: message});
-            };
-            var tries = 0;
-            send_it().fail(function(error, e) {
-                e.preventDefault();
-                tries += 1;
-                if (tries < 3)
-                    return send_it();
-            });
+            if (this.onLine) {
+                var send_it = function () {
+                    return openerp.session.rpc("/pos_multi_session/update", {
+                        multi_session_id: self.pos.config.multi_session_id[0],
+                        message: message
+                    });
+                };
+                var tries = 0;
+                send_it().fail(function (error, e) {
+                    e.preventDefault();
+                    tries += 1;
+                    if (tries < 3)
+                        return send_it();
+                });
+            } else {
+                self.offline_message(message);
+            }
+        },
+        offline_message: function(message){
+            this.OfflineData.push(message);
         },
         on_notification: function(notification) {
             var self = this;
