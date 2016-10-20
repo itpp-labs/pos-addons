@@ -10,12 +10,7 @@ window.mstest = {
     },
     gc: function(){
         url = '/pos_multi_session/test/gc'
-        $.ajax(url, {
-            dataType: 'json',
-            type: 'POST',
-            data: '{}',
-            contentType: 'application/json'
-        }).done(function(res){
+        $.ajax(url).done(function(res){
             if (res.error){
                 console.log('error', 'error on GC');
             }
@@ -23,12 +18,29 @@ window.mstest = {
             console.log('error', 'cannot call GC');
         })
     },
+    remove_all_orders: function() {
+        var orders = $(".select-order").length;
+        while (orders > 1) {
+            this.remove_current_order();
+            orders = $(".select-order").length;
+        }
+        if (orders == 1) {
+            this.remove_current_order();
+        }
+    },
+    remove_current_order: function() {
+        $('.deleteorder-button').click();
+        $('.confirm').click();
+    },
     fill_order: function(){
         this._rand($('.product')).click()
-        this._rand($('.product')).click()
+    },
+    new_order: function(){
+        $(".neworder-button").click();
+        $(".modal-dialog button").click();
     },
     save_order: function(){
-        lines = []
+        lines = [];
         $('.orderline').each(function(){
             lines.push({
                 'name': $.trim($(this).find('.product-name').text()),
@@ -40,16 +52,20 @@ window.mstest = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
         }
-        //console.log('save_order', JSON.stringify(order))
+        console.log('save_order', JSON.stringify(order));
         return order;
     },
     find_order: function(order){
         $('.order-sequence').each(function(){
-            if ($.trim($(this).text()) == order.order_num){
+            var order_num = $.trim($(this).html()).split("\n");
+            if (order_num[0] == order.order_num){
                 $(this).click();
                 return false;
             }
         });
+        console.log("____________________");
+        console.log(JSON.stringify(order));
+        console.log("____________________");
         found = this.save_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
             console.log('Expected Order', JSON.stringify(order))

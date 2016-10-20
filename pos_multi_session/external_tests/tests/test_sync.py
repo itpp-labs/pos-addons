@@ -41,6 +41,20 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # admin orders remove
+            {"session": "admin",
+             "code": """
+                 mstest.remove_all_orders();
+             """,
+             },
+            # demo orders remove
+            {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                    mstest.remove_all_orders();
+                 })
+             """,
+             },
             # admin creates order
             {"session": "admin",
              "code": """
@@ -65,26 +79,43 @@ class TestSync(TestCommon):
              "code": """
                  mstest.fill_order();
                  mstest.wait(function(){
-                     mstest.fill_order();
-                 })
+                    mstest.fill_order();
+                 }, 3000)
+                 share.order = mstest.save_order();
              """,
              },
             # GC
             {"session": "admin",
              "code": """
-                 share.order = mstest.save_order();
                  mstest.wait(function(){
                      mstest.gc();
                  }, 2000);
              """,
              },
+            # demo creates new order
+            {"session": "demo",
+             "code": """
+                mstest.new_order();
+             """,
+             },
             # demo is on
             {"session": "demo",
              "extra": "connection_on",
+             },
+
+            # admin updates order
+            {"session": "admin",
              "code": """
-                 mstest.wait(function(){
-                     mstest.find_order(share.order);
-                 }, 3000)
+                mstest.wait(function(){
+                    mstest.fill_order();
+                    share.order = mstest.save_order();
+                 }, 6000)
+             """,
+             },
+            # check sync on demo
+            {"session": "demo",
+             "code": """
+                mstest.find_order(share.order);
              """,
              },
             # ok

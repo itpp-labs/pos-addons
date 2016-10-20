@@ -21,12 +21,6 @@ openerp.pos_multi_session = function(instance){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            window.offLineHandler = function(){
-                self.ClientOffLine();
-            };
-            window.onLineHandler = function(){
-                self.ClientOnLine();
-            };
             this.get('orders').bind('remove', function(order,_unused_,options){ 
                 order.ms_remove_order();
             });
@@ -36,25 +30,6 @@ openerp.pos_multi_session = function(instance){
                 }
             });
 
-        },
-        ClientOffLine: function(){
-            console.log("offline");
-            this.multi_session.onLine = false;
-                new instance.web.Dialog(this, {
-                    title: _t("Warning"),
-                    size: 'medium',
-                }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
-        },
-        ClientOnLine: function(){
-            var self = this;
-            console.log("online");
-            this.multi_session.onLine = true;
-            if(self.multi_session.OfflineData) {
-                self.multi_session.OfflineData.forEach(function(message) {
-                  self.multi_session.send(message);
-                });
-                self.multi_session.OfflineData = []
-            }
         },
         ms_my_info: function(){
             return {
@@ -89,6 +64,9 @@ openerp.pos_multi_session = function(instance){
         },
 
         ms_on_update: function(message){
+            console.log("пришло сообщение для: ", this.pos_session.user_id[1]);
+            console.log("вот это сообщение: ", JSON.stringify(message));
+
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
@@ -101,22 +79,32 @@ openerp.pos_multi_session = function(instance){
                 var order = false;
                 if (data.uid){
                     order = this.get('orders').find(function(order){
-                                return order.uid == data.uid;
-                            });
+                        return order.uid == data.uid;
+                    });
                 }
-                if (order && action == 'remove_order'){
-                    order.destroy({'reason': 'abandon'});
-                } else if (action == 'update') {
-                    if (this.order_number + 1 < data.order_number) {
+                if (message.action != 'request_sync_all') {
+                    console.log("номер сообщения", data.message_ID);
+                    console.log("текущий номер", self.message_ID);
+
+                    if (self.message_ID + 1 < data.message_ID) {
+                        console.log("номера сообщений не совпадают, синхронизируем");
                         self.multi_session.request_sync_all();
                     } else {
-                        this.order_number = data.order_number;
+                        console.log("с номерами сообщений все в порядке");
+                        self.message_ID = data.message_ID;
+                    }
+                    if (order && action == 'remove_order'){
+                        order.destroy({'reason': 'abandon'});
+                    } else if (action == 'update') {
+                        console.log("пришло сообщение с сервера на update");
                         this.ms_do_update(order, data);
                     }
                 } else if (action == 'request_sync_all'){
-                    this.order_number = data.order_number;
+                    console.log("пришло сообщение с сервера на sync_all");
+                    this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 }
+
             }catch(err){
                 error = err;
                 console.error(err);
@@ -167,6 +155,7 @@ openerp.pos_multi_session = function(instance){
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
+            console.log("Обновляем заказ=================");
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
                 if (sequence_number == this.pos_session.sequence_number){
@@ -380,8 +369,7 @@ openerp.pos_multi_session = function(instance){
     module.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
             this.pos = pos;
-            this.OfflineData = [];
-            this.onLine = true;
+            this.request_sync = true;
         },
         start: function(){
             var self = this;
@@ -396,7 +384,6 @@ openerp.pos_multi_session = function(instance){
         },
         request_sync_all: function(){
             var data = {
-                'pos_id': this.pos.config.id,
             };
             this.send({'action': 'request_sync_all', data: data});
         },
@@ -415,34 +402,56 @@ openerp.pos_multi_session = function(instance){
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-            data.pos_id = this.pos.config.id;
             this.send({action: 'update', data: data});
         },
         send: function(message){
             if (this.pos.debug){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }
-           var self = this;
-            if (this.onLine) {
-                var send_it = function () {
-                    return openerp.session.rpc("/pos_multi_session/update", {
-                        multi_session_id: self.pos.config.multi_session_id[0],
-                        message: message
-                    });
-                };
-                var tries = 0;
-                send_it().fail(function (error, e) {
-                    e.preventDefault();
-                    tries += 1;
-                    if (tries < 3)
-                        return send_it();
+            var self = this;
+            var data = message.data;
+            data.pos_id = this.pos.config.id;
+            message.data = data;
+            var send_it = function () {
+                return openerp.session.rpc("/pos_multi_session/update", {
+                    multi_session_id: self.pos.config.multi_session_id[0],
+                    message: message
                 });
-            } else {
-                self.offline_message(message);
-            }
+            };
+            send_it().fail(function (error, e) {
+                console.log("Ошибка запроса. Нет соединения с сервером.");
+                e.preventDefault();
+                if (self.request_sync) {
+                    console.log("отображаем сообщение об отсутсвии соединения с сервером");
+                    self.offline_message(message);
+                }
+            }).done(function(res){
+                console.log("сообщенеие отправлено успешно");
+                if (self.offline_sync_all) {
+                    console.log("Удаляем вызов синхронизации");
+                    clearInterval(self.offline_sync_all);
+                    self.offline_sync_all = false;
+                    self.request_sync_all();
+                }
+                self.request_sync = true;
+                if (res.length) {
+                    res.forEach(function(item) {
+                        if (item.action == 'request_sync_all') self.pos.ms_on_update(item);
+                    });
+                }
+            });
         },
         offline_message: function(message){
-            this.OfflineData.push(message);
+            var self = this;
+            console.log("offline");
+            self.request_sync = false;
+            new instance.web.Dialog(this, {
+                title: _t("Warning"),
+                size: 'medium',
+            }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
+            self.offline_sync_all = setInterval(function(){
+                self.request_sync_all();
+            }, 5000)
         },
         on_notification: function(notification) {
             var self = this;

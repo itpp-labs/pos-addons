@@ -220,7 +220,7 @@ function PhantomTest() {
                     } else {
                         console.log('loaded', url, status);
                         // clear localstorage leftovers
-                        currentPage.evaluate(function () { localStorage.clear() });
+                        currentPage.evaluate(function () {localStorage.clear() });
                         // process ready
                         waitForReady(page, ready, onPageReady, session.timeout);
                     }
