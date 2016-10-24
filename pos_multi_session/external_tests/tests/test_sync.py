@@ -80,8 +80,8 @@ class TestSync(TestCommon):
                  mstest.fill_order();
                  mstest.wait(function(){
                     mstest.fill_order();
+                    share.order = mstest.save_order();
                  }, 3000)
-                 share.order = mstest.save_order();
              """,
              },
             # GC

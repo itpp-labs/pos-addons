@@ -23,21 +23,20 @@ class pos_multi_session(models.Model):
     order_ID = fields.Integer(string="Order number", default=1)
     order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id')
 
-    @api.one
+    @api.multi
     def on_update_message(self, message):
-        pos_id = message['data']['pos_id']
-        if message['action'] == 'update':
-            res = self.set_order(message)
-        elif message['action'] == 'request_sync_all':
-            res = self.get_orders(message)
-            print type(res)
-            print res
-        elif message['action'] == 'remove_order':
-            res = self.remove_order(message)
-        else:
-            res = self.get_message_ID(message)
-            # res = self.broadcast(message)
-        return res
+        for r in self:
+            pos_id = message['data']['pos_id']
+            if message['action'] == 'update':
+                res = r.set_order(message)
+            elif message['action'] == 'request_sync_all':
+                res = r.get_orders(message)
+            elif message['action'] == 'remove_order':
+                res = r.remove_order(message)
+            else:
+                res = r.get_message_ID(message)
+                # res = self.broadcast(message)
+            return res
 
     @api.one
     def set_order(self, message):
@@ -58,19 +57,20 @@ class pos_multi_session(models.Model):
         self.get_message_ID(message)
         return 1
 
-    @api.one
+    @api.multi
     def get_orders(self, message):
-        pos_id = message['data']['pos_id']
-        pos = self.env['pos.config'].search([('multi_session_id', '=', self.id),
-                                                                    ("id", "=", pos_id)])
-        order_obj = self.order_ids
-        message = []
-        for e in order_obj:
-            msg = json.loads(e.order)
-            msg['data']['message_ID'] = pos.multi_session_message_ID
-            msg['action'] = 'request_sync_all'
-            message.append(msg)
-        return message
+        for r in self:
+            pos_id = message['data']['pos_id']
+            pos = r.env['pos.config'].search([('multi_session_id', '=', r.id),
+                                                                        ("id", "=", pos_id)])
+            order_obj = r.order_ids
+            message = []
+            for e in order_obj:
+                msg = json.loads(e.order)
+                msg['data']['message_ID'] = pos.multi_session_message_ID
+                msg['action'] = 'request_sync_all'
+                message.append(msg)
+            return message
 
     @api.one
     def remove_order(self, message):
@@ -109,11 +109,6 @@ class pos_multi_session(models.Model):
             if ps.user_id.id != self.env.user.id:
                 message_ID = self.env['pos.config'].search([('id', '=', ps.config_id.id)]).multi_session_message_ID
                 message['data']['message_ID'] = message_ID
-                print "============================"
-                print message_ID
-                print message['data']['message_ID']
-                print ps.user_id.name
-                print "============================"
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
         self.env['bus.bus'].sendmany(notifications)
         return 1
