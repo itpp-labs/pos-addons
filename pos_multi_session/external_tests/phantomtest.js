@@ -32,7 +32,7 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 
 var system = require('system');
 function waitFor (condition, callback, timeout, timeoutMessageCallback) {
-    timeout = timeout || 10000;
+    timeout = timeout || 20000;
     var start = new Date();
 
     var prev_result=-1;
@@ -266,7 +266,9 @@ function PhantomTest() {
                 console.log('connection is off for', sname)
                 page.onResourceRequested = blockConnection;
             } else if (extra == 'connection_on'){
-                page.onResourceRequested = null;
+                setTimeout(function(){
+                    page.onResourceRequested = null;
+                }, 6000);
             }
             share = page.evaluate(function (code, tools, share) {
                 eval(code);

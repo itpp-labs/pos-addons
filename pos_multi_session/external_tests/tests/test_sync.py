@@ -102,20 +102,19 @@ class TestSync(TestCommon):
             {"session": "demo",
              "extra": "connection_on",
              },
-
-            # admin updates order
+            # admin update order
             {"session": "admin",
              "code": """
-                mstest.wait(function(){
-                    mstest.fill_order();
-                    share.order = mstest.save_order();
-                 }, 6000)
+                 mstest.fill_order();
+                 share.order = mstest.save_order();
              """,
              },
             # check sync on demo
             {"session": "demo",
              "code": """
+             mstest.wait(function(){
                 mstest.find_order(share.order);
+            }, 15000)
              """,
              },
             # ok

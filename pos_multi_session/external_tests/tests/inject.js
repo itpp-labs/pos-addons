@@ -36,7 +36,7 @@ window.mstest = {
         this._rand($('.product')).click()
     },
     new_order: function(){
-        this.fill_order();
+        $(".neworder-button").click();
         $(".modal-dialog button").click();
     },
     save_order: function(){
@@ -52,7 +52,7 @@ window.mstest = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
         }
-        console.log('save_order', JSON.stringify(order));
+        console.log(JSON.stringify(order));
         return order;
     },
     find_order: function(order){
@@ -63,9 +63,6 @@ window.mstest = {
                 return false;
             }
         });
-        console.log("____________________");
-        console.log(JSON.stringify(order));
-        console.log("____________________");
         found = this.save_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
             console.log('Expected Order', JSON.stringify(order))

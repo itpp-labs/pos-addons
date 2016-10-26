@@ -120,3 +120,17 @@ class pos_multi_session_order(models.Model):
     order = fields.Text('Order JSON format')
     order_uid = fields.Char()
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
+
+
+class pos_session(models.Model):
+    _inherit = 'pos.session'
+
+    @api.multi
+    def wkf_action_closing_control(self):
+        self.config_id.write({'multi_session_message_ID': 1})
+        active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
+        if len(active_sessions) == 1 and active_sessions.user_id.id == self.user_id.id:
+            # current user is closed last session
+            self.config_id.multi_session_id.write({'order_ID': 1})
+        return super(pos_session, self).wkf_action_closing_control()
+

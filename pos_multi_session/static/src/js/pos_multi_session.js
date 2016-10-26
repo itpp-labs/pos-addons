@@ -23,8 +23,6 @@ openerp.pos_multi_session = function(instance){
         }
     });
 
-
-
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(){
@@ -32,13 +30,13 @@ openerp.pos_multi_session = function(instance){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            this.get('orders').bind('remove', function(order,_unused_,options){
+            this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
                     if (order.ms_info.created.pos.id != self.config.id) {
                         self.multi_session.offline_warning();
                         return false;
                     }
-                    if (_unused_.order_in_server || order.order_in_server ) {
+                    if (collection.order_in_server || order.order_in_server ) {
                         self.multi_session.offline_warning();
                         return false;
                     }
@@ -83,14 +81,11 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        //removes the current order
-        //delete_current_order: function(){
-        //    this.get('selectedOrder').destroy({'reason':'abandon'});
-        //},
         ms_on_update: function(message){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
+            console.log("пришло сообщение для ",  this.pos_session.user_id[1]);
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
