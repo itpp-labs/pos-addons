@@ -266,9 +266,7 @@ function PhantomTest() {
                 console.log('connection is off for', sname);
                 page.onResourceRequested = blockConnection;
             } else if (extra == 'connection_on'){
-                setTimeout(function(){
-                    page.onResourceRequested = null;
-                }, 6000);
+                page.onResourceRequested = null;
             }
             share = page.evaluate(function (code, tools, share) {
                 eval(code);

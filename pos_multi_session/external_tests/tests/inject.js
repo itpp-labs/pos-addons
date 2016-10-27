@@ -33,7 +33,8 @@ window.mstest = {
         $('.confirm').click();
     },
     fill_order: function(){
-        this._rand($('.product')).click()
+        this._rand($('.product')).click();
+        this._rand($('.product')).click();
     },
     new_order: function(){
         $(".neworder-button").click();
@@ -52,7 +53,7 @@ window.mstest = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
         };
-        console.log(JSON.stringify(order));
+        console.log('save_order', JSON.stringify(order));
         return order;
     },
     find_order: function(order){

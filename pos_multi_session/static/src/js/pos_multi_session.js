@@ -32,11 +32,7 @@ openerp.pos_multi_session = function(instance){
             this.ms_syncing_in_progress = false;
             this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
-                    if (order.ms_info.created.pos.id != self.config.id) {
-                        self.multi_session.offline_warning();
-                        return false;
-                    }
-                    if (collection.order_in_server || order.order_in_server ) {
+                    if (order.order_on_server ) {
                         self.multi_session.offline_warning();
                         return false;
                     }
@@ -98,18 +94,16 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (message.action != 'request_sync_all') {
-                    if (self.message_ID + 1 < data.message_ID) {
+                if (message.action != 'sync_all') {
+                    if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
-                    } else {
+                    else
                         self.message_ID = data.message_ID;
-                    }
-                    if (order && action == 'remove_order'){
+                    if (order && action == 'remove_order')
                         order.destroy({'reason': 'abandon'});
-                    } else if (action == 'update') {
+                    else if (action == 'update_order')
                         this.ms_do_update(order, data);
-                    }
-                } else if (action == 'request_sync_all'){
+                } else if (action == 'sync_all'){
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 }
@@ -239,7 +233,7 @@ openerp.pos_multi_session = function(instance){
                            });
                 order.get('orderLines').remove(line);
             });
-            order.order_in_server = true;
+            order.order_on_server = true;
         },
         load_new_partners_by_id: function(partner_id){
         var self = this;
@@ -301,7 +295,6 @@ openerp.pos_multi_session = function(instance){
         },
         addProduct: function(){
             OrderSuper.prototype.addProduct.apply(this, arguments);
-            console.log(arguments);
             this.trigger('change:sync');
         },
         ms_check: function(){
@@ -338,8 +331,15 @@ openerp.pos_multi_session = function(instance){
             return data;
         },
         do_ms_update: function(){
+            var self = this;
             var data = this.export_as_JSON();
-            this.pos.multi_session.update(data);
+            this.pos.multi_session.update(data).fail(function(error){
+                if (error == 'offline') {
+                    self.order_on_server = false;
+                }
+            }).done(function(){
+                self.order_on_server = true;
+            });
         }
     });
     var OrderlineSuper = module.Orderline;
@@ -378,7 +378,7 @@ openerp.pos_multi_session = function(instance){
     module.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
             this.pos = pos;
-            this.request_sync = true;
+            this.show_warning_message = true;
             this.client_online = true;
         },
         start: function(){
@@ -395,7 +395,7 @@ openerp.pos_multi_session = function(instance){
         request_sync_all: function(){
             var data = {
             };
-            this.send({'action': 'request_sync_all', data: data});
+            this.send({'action': 'sync_all', data: data});
         },
         sync_sequence_number: function(){
             var orders = {};
@@ -412,17 +412,15 @@ openerp.pos_multi_session = function(instance){
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-            this.send({action: 'update', data: data});
+            return this.send({action: 'update_order', data: data});
         },
         send: function(message){
             if (this.pos.debug){
                 console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
             }
             var self = this;
-            var data = message.data;
-            data.pos_id = this.pos.config.id;
-            message.data = data;
-            console.log(message.data);
+            var connection_status = new $.Deferred();
+            message.data.pos_id = this.pos.config.id;
             var send_it = function () {
                 return openerp.session.rpc("/pos_multi_session/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
@@ -433,59 +431,55 @@ openerp.pos_multi_session = function(instance){
                 console.log("Ошибка запроса. Нет соединения с сервером.");
                 self.client_online = false;
                 e.preventDefault();
-                var orders;
-                if (message.action == 'update'){
-                    orders = self.pos.get('orders');
-                    orders.order_in_server = false;
-                }
-                if (self.request_sync) {
+                connection_status.reject('offline');
+                if (self.show_warning_message) {
                     console.log("отображаем сообщение об отсутсвии соединения с сервером");
                     self.offline_warning();
-                    self.offline_sync();
+                    self.start_offline_sync_timer();
                 }
             }).done(function(res){
                 console.log("сообщенеие отправлено успешно");
-                if (message.action == 'update'){
-                    orders = self.pos.get('orders');
-                    orders.order_in_server = true;
-                }
                 self.client_online = true;
-                if (self.offline_sync_all) {
+                if (self.offline_sync_all_timer) {
                     console.log("Удаляем вызов синхронизации");
-                    clearInterval(self.offline_sync_all);
-                    self.offline_sync_all = false;
-                    self.sync_offline_orders();
+                    clearInterval(self.offline_sync_all_timer);
+                    self.offline_sync_all_timer = false;
+                    self.send_offline_orders();
                 }
-                self.request_sync = true;
-                if (res) {
+                connection_status.resolve();
+                self.show_warning_message = true;
+                if (Array.isArray(res)) {
                     res.forEach(function(item) {
-                        if (item.action == 'request_sync_all') self.pos.ms_on_update(item);
+                        if (item.action == 'sync_all') self.pos.ms_on_update(item);
                     });
                 }
             });
+            return connection_status
         },
         offline_warning: function(){
             var self = this;
             console.log("offline");
-            self.request_sync = false;
+            self.show_warning_message = false;
             new instance.web.Dialog(this, {
                 title: _t("Warning"),
                 size: 'medium',
             }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
         },
-        sync_offline_orders: function() {
+        send_offline_orders: function() {
             var self = this;
+            // получить все заказы от сервера если имеются
+            // сравнить номера и если надо изменить
+            // отправить исправленные заказы на сервер,
             var orders = this.pos.get("orders");
             orders.each(function(item) {
-                if (!item.order_in_server) {
+                if (item.order_on_server == false) {
                     item.ms_update();
                 }
             });
-        //сравнить номера
         },
-        offline_sync: function(){
+        start_offline_sync_timer: function(){
             var self = this;
-            self.offline_sync_all = setInterval(function(){
+            self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
             }, 5000)
         },

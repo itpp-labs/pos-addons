@@ -41,13 +41,13 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
-            # admin orders remove
+            # admin removes orders
             {"session": "admin",
              "code": """
                  mstest.remove_all_orders();
              """,
              },
-            # demo orders remove
+            # demo removes orders
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
@@ -80,7 +80,8 @@ class TestSync(TestCommon):
                  mstest.fill_order();
                  mstest.wait(function(){
                     mstest.fill_order();
-                    share.order = mstest.save_order();
+                    // print current state of the order
+                    mstest.save_order();
                  }, 3000)
              """,
              },
@@ -96,13 +97,16 @@ class TestSync(TestCommon):
             {"session": "demo",
              "code": """
                 mstest.new_order();
+                mstest.wait(function(){
+                    mstest.new_order();
+                }, 6000);
              """,
              },
             # demo is on
             {"session": "demo",
              "extra": "connection_on",
              },
-            # admin update order
+            # admin updates order
             {"session": "admin",
              "code": """
                  mstest.fill_order();
