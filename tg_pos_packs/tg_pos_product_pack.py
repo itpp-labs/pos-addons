@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+#
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 - Thierry Godin. All Rights Reserved
@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 
 from openerp.osv import orm, fields
 import logging
@@ -26,7 +26,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class product_pack(orm.Model):
+class ProductPack(orm.Model):
     _name = "product.pack"
     _description = "Product packs"
 
@@ -45,7 +45,7 @@ class product_pack(orm.Model):
     }
 
 
-class inherit_product(orm.Model):
+class InheritProduct(orm.Model):
     _name = "product.product"
     _inherit = "product.product"
 
@@ -88,7 +88,7 @@ class inherit_product(orm.Model):
         if context is None:
             context = {}
 
-        res = super(inherit_product, self).create(cr, uid, vals, context=context)
+        res = super(InheritProduct, self).create(cr, uid, vals, context=context)
 
         product_obj = self.pool.get('product.product')
         product = product_obj.browse(cr, uid, res)
@@ -107,7 +107,7 @@ class inherit_product(orm.Model):
         return res
 
 
-class inherit_product_category(orm.Model):
+class InheritProductCategory(orm.Model):
     _name = "product.category"
     _inherit = "product.category"
 
@@ -126,7 +126,7 @@ class inherit_product_category(orm.Model):
         return True
 
 
-class inherit_product_public_category(orm.Model):
+class InheritProductPublicCategory(orm.Model):
     _inherit = "pos.category"
 
     _columns = {

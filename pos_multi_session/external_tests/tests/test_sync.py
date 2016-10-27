@@ -122,5 +122,3 @@ class TestSync(TestCommon):
              "code": "console.log('ok');",
              },
         ], 120)
-
-

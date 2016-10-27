@@ -1,12 +1,12 @@
 function testInject(){
     console.log('code is injected!');
-    return 1
+    return 1;
 }
 
 window.mstest = {
     is_wait: false,
     _rand: function($list){
-        return $list.eq(Math.floor(Math.random() * $list.length))
+        return $list.eq(Math.floor(Math.random() * $list.length));
     },
     gc: function(){
         url = '/pos_multi_session/test/gc'
@@ -16,7 +16,7 @@ window.mstest = {
             }
         }).fail(function(){
             console.log('error', 'cannot call GC');
-        })
+        });
     },
     remove_all_orders: function() {
         var orders = $(".select-order").length;
@@ -46,12 +46,12 @@ window.mstest = {
                 'name': $.trim($(this).find('.product-name').text()),
                 'price': $.trim($(this).find('.price').text()),
                 'qty': $.trim($(this).find('.info em').text()),
-            })
-        })
+            });
+        });
         order = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
-        }
+        };
         console.log(JSON.stringify(order));
         return order;
     },
@@ -65,18 +65,18 @@ window.mstest = {
         });
         found = this.save_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
-            console.log('Expected Order', JSON.stringify(order))
-            console.log('Found Order', JSON.stringify(found))
-            console.log('error', 'Synced orders are mismatched')
+            console.log('Expected Order', JSON.stringify(order));
+            console.log('Found Order', JSON.stringify(found));
+            console.log('error', 'Synced orders are mismatched');
         }
-        return found
+        return found;
     },
     wait: function(callback, timeout){
-        mstest.is_wait = true
+        mstest.is_wait = true;
         setTimeout(function(){
             mstest.is_wait = false;
             callback();
         }, timeout || 1000);
     },
 
-}
+};

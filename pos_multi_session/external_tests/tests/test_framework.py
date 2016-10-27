@@ -3,6 +3,7 @@ from .common import TestCommon
 
 
 class TestSync(TestCommon):
+
     def test_10_sessions(self):
         """Check framework"""
         self.phantom_js_multi({
