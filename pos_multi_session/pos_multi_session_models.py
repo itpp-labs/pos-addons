@@ -76,7 +76,7 @@ class PosMultiSession(models.Model):
     @api.one
     def get_message_ID(self, message):
         pos_id = message['data']['pos_id']
-        for r in self.env['pos.config'].search([('id', '!=', pos_id),('multi_session_id', '=', self.id)]):
+        for r in self.env['pos.config'].search([('id', '!=', pos_id), ('multi_session_id', '=', self.id)]):
             if r.multi_session_message_ID:
                 r.write({
                     'multi_session_message_ID': r.multi_session_message_ID + 1
@@ -97,7 +97,7 @@ class PosMultiSession(models.Model):
         return 1
 
 
-class pos_multi_session_order(models.Model):
+class PosMultiSessionOrder(models.Model):
     _name = 'pos.multi_session.order'
 
     order = fields.Text('Order JSON format')
@@ -105,15 +105,14 @@ class pos_multi_session_order(models.Model):
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
 
 
-class pos_session(models.Model):
+class PosSession(models.Model):
     _inherit = 'pos.session'
 
     @api.multi
     def wkf_action_closing_control(self):
         self.config_id.write({'multi_session_message_ID': 1})
-        res = super(pos_session, self).wkf_action_closing_control()
+        res = super(PosSession, self).wkf_action_closing_control()
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
         if len(active_sessions) == 0:
             self.config_id.multi_session_id.write({'order_ID': 1})
         return res
-

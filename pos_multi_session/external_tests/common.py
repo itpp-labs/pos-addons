@@ -114,7 +114,7 @@ class ExternalTestCase(unittest2.TestCase):
     def phantom_run(self, cmd, timeout):
         _logger.info('phantom_run executing %s', ' '.join(cmd))
 
-        ls_glob = os.path.expanduser('~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*'%PORT)
+        ls_glob = os.path.expanduser('~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*' % PORT)
         for i in glob.glob(ls_glob):
             _logger.info('phantomjs unlink localstorage %s', i)
             os.unlink(i)
@@ -149,8 +149,7 @@ class ExternalTestCase(unittest2.TestCase):
         buf = bytearray()
         while True:
             # timeout
-            self.assertLess(datetime.now() - t0, td,
-                "PhantomJS tests should take less than %s seconds" % timeout)
+            self.assertLess(datetime.now() - t0, td, "PhantomJS tests should take less than %s seconds" % timeout)
 
             # read a byte
             try:

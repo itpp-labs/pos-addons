@@ -63,7 +63,7 @@ function waitForReady (page, ready, callback, timeout){
             } catch(ex) {
             }
             return r;
-        }, ready)
+        }, ready);
     }, callback, timeout);
 }
 
@@ -74,12 +74,12 @@ function timeoutMessage (){
 }
 
 function blockConnection (requestData, networkRequest){
-    console.log('block request', requestData.url)
+    console.log('block request', requestData.url);
     networkRequest.abort();
 }
 
-var tools = {'timeoutMessage': timeoutMessage}
-var share = {}
+var tools = {'timeoutMessage': timeoutMessage};
+var share = {};
 
 function PhantomTest() {
     var self = this;
@@ -91,7 +91,7 @@ function PhantomTest() {
     // ----------------------------------------------------
     // configure phantom and page
     // ----------------------------------------------------
-    this.pages = {} // sname -> page
+    this.pages = {}; // sname -> page
 
     for (var sname in self.options.sessions){ 
         session = self.options.sessions[sname];
@@ -178,7 +178,7 @@ function PhantomTest() {
             };
 
 
-        })()
+        })();
 
     }// for (var sname in self.options.sessions){ 
 
@@ -193,9 +193,9 @@ function PhantomTest() {
         onPageReady = function() {
             pages_count--;
             console.log('onPageReady', pages_count);
-            if (pages_count == 0){
+            if (pages_count === 0){
                 pagesLoaded = true;
-                self.runCommands()
+                self.runCommands();
             }
         };
 
@@ -220,18 +220,18 @@ function PhantomTest() {
                     } else {
                         console.log('loaded', url, status);
                         // clear localstorage leftovers
-                        currentPage.evaluate(function () {localStorage.clear() });
+                        currentPage.evaluate(function () {localStorage.clear(); });
                         // process ready
                         waitForReady(page, ready, onPageReady, session.timeout);
                     }
                 });
-            })()
+            })();
         }//for (var sname in self.pages){
 
     };
 
     this.runCommands = function() {
-        console.log('runCommands', self.options.commands)
+        console.log('runCommands', self.options.commands);
         var i = -1;
         var timer = null;
         function nextCommand(){
@@ -243,7 +243,7 @@ function PhantomTest() {
                 return;
             }
             command = self.options.commands[i];
-            sname = command.session
+            sname = command.session;
             page = self.pages[sname];
             extra = command.extra;
             code = command.code || 'true';
@@ -260,19 +260,19 @@ function PhantomTest() {
                         console.log('error', message);
                     }, tools);
                     phantom.exit(1);
-                }, command.timeout || 60333)
-            })()
+                }, command.timeout || 60333);
+            })();
             if (extra == 'connection_off'){
-                console.log('connection is off for', sname)
+                console.log('connection is off for', sname);
                 page.onResourceRequested = blockConnection;
             } else if (extra == 'connection_on'){
                 page.onResourceRequested = null;
             }
             share = page.evaluate(function (code, tools, share) {
                 eval(code);
-                return share
+                return share;
             }, code, tools, share);
-            waitForReady(page, ready, nextCommand)
+            waitForReady(page, ready, nextCommand);
         }
         nextCommand();
     };

@@ -68,7 +68,7 @@ openerp.pos_multi_session = function(instance){
                     this.get('selectedOrder').ms_replace_empty_order = true;
                     return;
                 } else if (this.ms_syncing_in_progress){
-                    if (this.get('orders').size() == 0){
+                    if (this.get('orders').size() === 0){
                         this.add_new_order();
                     }
                     return;
@@ -81,12 +81,14 @@ openerp.pos_multi_session = function(instance){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
+            var data = '';
+            var action = '';
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
                 }
-                var action = message.action;
-                var data = message.data || {};
+                action = message.action;
+                data = message.data || {};
                 var order = false;
                 if (data.uid){
                     order = this.get('orders').find(function(order){
@@ -185,7 +187,7 @@ openerp.pos_multi_session = function(instance){
             var not_found = order.get('orderLines').map(function(r){
                 return r.uid;
             });
-            if(data.partner_id!=false)
+            if(data.partner_id !== false)
             {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client)
@@ -449,7 +451,7 @@ openerp.pos_multi_session = function(instance){
                     });
                 }
             });
-            return connection_status
+            return connection_status;
         },
         offline_warning: function(){
             var self = this;
@@ -464,7 +466,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
-                if (item.order_on_server == false) {
+                if (item.order_on_server === false) {
                     item.ms_update();
                 }
             });
@@ -473,7 +475,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
-            }, 5000)
+            }, 5000);
         },
         on_notification: function(notification) {
             var self = this;
