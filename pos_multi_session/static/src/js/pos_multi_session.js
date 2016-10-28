@@ -81,7 +81,6 @@ openerp.pos_multi_session = function(instance){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
-            console.log("пришло сообщение для ",  this.pos_session.user_id[1]);
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -428,20 +427,16 @@ openerp.pos_multi_session = function(instance){
                 });
             };
             send_it().fail(function (error, e) {
-                console.log("Ошибка запроса. Нет соединения с сервером.");
                 self.client_online = false;
                 e.preventDefault();
                 connection_status.reject('offline');
                 if (self.show_warning_message) {
-                    console.log("отображаем сообщение об отсутсвии соединения с сервером");
                     self.offline_warning();
                     self.start_offline_sync_timer();
                 }
             }).done(function(res){
-                console.log("сообщенеие отправлено успешно");
                 self.client_online = true;
                 if (self.offline_sync_all_timer) {
-                    console.log("Удаляем вызов синхронизации");
                     clearInterval(self.offline_sync_all_timer);
                     self.offline_sync_all_timer = false;
                     self.send_offline_orders();
@@ -467,9 +462,6 @@ openerp.pos_multi_session = function(instance){
         },
         send_offline_orders: function() {
             var self = this;
-            // получить все заказы от сервера если имеются
-            // сравнить номера и если надо изменить
-            // отправить исправленные заказы на сервер,
             var orders = this.pos.get("orders");
             orders.each(function(item) {
                 if (item.order_on_server == false) {

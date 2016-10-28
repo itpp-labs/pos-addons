@@ -118,7 +118,7 @@ class TestSync(TestCommon):
              "code": """
              mstest.wait(function(){
                 mstest.find_order(share.order);
-            }, 15000)
+            }, 9000)
              """,
              },
             # ok
