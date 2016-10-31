@@ -82,10 +82,9 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         pos_id = message['data']['pos_id']
         for r in self.env['pos.config'].search([('id', '!=', pos_id), ('multi_session_id', '=', self.id)]):
-            if r.multi_session_message_ID:
-                r.write({
-                    'multi_session_message_ID': r.multi_session_message_ID + 1
-                })
+            r.write({
+                'multi_session_message_ID': r.multi_session_message_ID + 1
+            })
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
             if ps.user_id.id != self.env.user.id:
