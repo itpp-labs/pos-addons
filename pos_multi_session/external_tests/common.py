@@ -33,7 +33,6 @@ MAIN_URL = 'http://localhost:%s' % PORT
 
 
 class ExternalTestCase(unittest2.TestCase):
-
     '''Runs external tests.
 
        It means that we use xmlrpc instead of usual registry and transactions are not rollbacked.
@@ -58,6 +57,8 @@ class ExternalTestCase(unittest2.TestCase):
         return common.authenticate(DATABASE, login, password, {})
 
     def execute_kw(self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None):
+        rpc_args = rpc_args or []
+        rpc_kwargs = rpc_kwargs or []
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         res = self.xmlrpc_models.execute_kw(
@@ -150,13 +151,12 @@ class ExternalTestCase(unittest2.TestCase):
         buf = bytearray()
         while True:
             # timeout
-            self.assertLess(datetime.now() - t0, td,
-                            "PhantomJS tests should take less than %s seconds" % timeout)
+            self.assertLess(datetime.now() - t0, td, "PhantomJS tests should take less than %s seconds" % timeout)
 
             # read a byte
             try:
                 ready, _, _ = select.select([phantom.stdout], [], [], 0.5)
-            except select.error as e:
+            except select.error, e:
                 # In Python 2, select.error has no relation to IOError or
                 # OSError, and no errno/strerror/filename, only a pair of
                 # unnamed arguments (matching errno and strerror)
