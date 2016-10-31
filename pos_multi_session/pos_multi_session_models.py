@@ -33,10 +33,12 @@ class PosMultiSession(models.Model):
         elif message['action'] == 'remove_order':
             res = self.remove_order(message)
         else:
-            res = self.get_message_ID(message)
+            res = self.broadcast_message(message)
         return res
 
+    @api.multi
     def set_order(self, message):
+        self.ensure_one()
         msg_data = message['data']
         order_uid = msg_data['uid']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
@@ -50,7 +52,7 @@ class PosMultiSession(models.Model):
                 'order_uid': order_uid,
                 'multi_session_id': self.id,
             })
-        self.get_message_ID(message)
+        self.broadcast_message(message)
         return 1
 
     @api.multi
@@ -66,26 +68,23 @@ class PosMultiSession(models.Model):
             message.append(msg)
         return message
 
+    @api.multi
     def remove_order(self, message):
+        self.ensure_one()
         msg_data = message['data']
         order_uid = msg_data['uid']
         self.order_ids.search([('order_uid', '=', order_uid)]).unlink()
-        self.get_message_ID(message)
+        self.broadcast_message(message)
         return 1
 
-    @api.one
-    def get_message_ID(self, message):
+    @api.multi
+    def broadcast_message(self, message):
+        self.ensure_one()
         pos_id = message['data']['pos_id']
         for r in self.env['pos.config'].search([('id', '!=', pos_id), ('multi_session_id', '=', self.id)]):
             if r.multi_session_message_ID:
                 r.write({
                     'multi_session_message_ID': r.multi_session_message_ID + 1
-                })
-            else:
-                r.create({
-                    'pos_config_id': r.id,
-                    'multi_session_id': self.id,
-                    'multi_session_message_ID': 1
                 })
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):

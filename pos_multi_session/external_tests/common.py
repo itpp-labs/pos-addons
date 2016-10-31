@@ -56,7 +56,9 @@ class ExternalTestCase(unittest2.TestCase):
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(MAIN_URL))
         return common.authenticate(DATABASE, login, password, {})
 
-    def execute_kw(self, model, method, rpc_args=[], rpc_kwargs=[], uid=None, password=None):
+    def execute_kw(self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None):
+        rpc_args = rpc_args or []
+        rpc_kwargs = rpc_kwargs or []
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         res = self.xmlrpc_models.execute_kw(
@@ -184,6 +186,6 @@ class ExternalTestCase(unittest2.TestCase):
                     # when error occurs the execution stack may be sent as as JSON
                     try:
                         line_ = json.loads(line_)
-                    except ValueError: 
+                    except ValueError:
                         pass
                     self.fail(line_ or "phantomjs test failed")
