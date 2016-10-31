@@ -40,7 +40,7 @@ window.mstest = {
         $(".neworder-button").click();
         $(".modal-dialog button").click();
     },
-    save_order: function(){
+    get_order: function(){
         lines = [];
         $('.orderline').each(function(){
             lines.push({
@@ -53,8 +53,11 @@ window.mstest = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
         };
-        console.log('save_order', JSON.stringify(order));
         return order;
+    },
+    print_order: function(){
+        order = this.get_order();
+        console.log('Order', JSON.stringify(order));
     },
     find_order: function(order){
         $('.order-sequence').each(function(){
@@ -64,7 +67,7 @@ window.mstest = {
                 return false;
             }
         });
-        found = this.save_order();
+        found = this.get_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
             console.log('Expected Order', JSON.stringify(order));
             console.log('Found Order', JSON.stringify(found));
@@ -72,11 +75,32 @@ window.mstest = {
         }
         return found;
     },
+    check_inclusion: function(small, big){
+        // check that order "big" includes order "small"
+        included = true;
+        if (small.order_num != big.order_num){
+            console.log('error', 'Order nums are mismatched', small.order_num, big.order_num);
+        }
+        _.each(small.lines, function(small_line){
+            big_line = _.find(big.lines, function(line){
+                return line.name == small_line.name;
+            });
+            if (!big_line)
+                included = false;
+            else if (parseInt(big_line.qty) < parseInt(small_line.qty))
+                included = false;
+        });
+        if (!included){
+            console.log('Small Order', JSON.stringify(small));
+            console.log('Big Order', JSON.stringify(big));
+            console.log('error', 'Order lines are lost');
+        }
+    },
     wait: function(callback, timeout){
         mstest.is_wait = true;
         setTimeout(function(){
-            mstest.is_wait = false;
             callback();
+            mstest.is_wait = false;
         }, timeout || 1000);
     },
 
