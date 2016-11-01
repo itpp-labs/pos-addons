@@ -20,7 +20,11 @@ class Controller(bus_controller):
 
     @openerp.http.route('/pos_multi_session/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message):
-        res = request.env["pos.multi_session"].browse(int(multi_session_id)).on_update_message(message)
+        phantomtest = request.httprequest.headers.get('phantomtest')
+        res = request.env["pos.multi_session"]\
+                     .with_context(phantomtest=phantomtest)\
+                     .browse(int(multi_session_id))\
+                     .on_update_message(message)
         return res
 
     @openerp.http.route('/pos_multi_session/test/gc', type="http", auth="user")

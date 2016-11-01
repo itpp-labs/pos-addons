@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
+import logging
+import json
+import time
+
 from openerp import api
 from openerp import fields
 from openerp import models
-import json
+
+_logger = logging.getLogger(__name__)
 
 
 class PosConfig(models.Model):
@@ -91,6 +96,13 @@ class PosMultiSession(models.Model):
                 message_ID = self.env['pos.config'].search([('id', '=', ps.config_id.id)]).multi_session_message_ID
                 message['data']['message_ID'] = message_ID
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
+
+        if self.env.context.get('phantomtest') == 'slowConnection':
+            _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
+            # commit to update values on DB
+            self.env.cr.commit()
+            time.sleep(3)
+
         self.env['bus.bus'].sendmany(notifications)
         return 1
 
