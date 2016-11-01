@@ -273,7 +273,7 @@ function PhantomTest() {
                 console.log('Connection is reset for', sname);
                 page.onResourceRequested = null;
             } else if (extra == 'connection_slow'){
-                console.log('Request will be marked as slowConnection slowed for', sname);
+                console.log('Request will be marked as slowConnection for', sname);
                 page.onResourceRequested = slowConnection;
             }
             share = page.evaluate(function (code, tools, share) {
