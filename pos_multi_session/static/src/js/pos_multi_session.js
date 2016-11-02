@@ -156,6 +156,7 @@ openerp.pos_multi_session = function(instance){
             })
              */
         },
+
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
@@ -175,7 +176,7 @@ openerp.pos_multi_session = function(instance){
                 if (!create_new_order){
                     return;
                 }
-                order = this.ms_create_order({ms_info:data.ms_info});
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID});
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number;
                 var current_order = this.get_order();
@@ -183,6 +184,7 @@ openerp.pos_multi_session = function(instance){
                 this.ms_on_add_order(current_order);
             } else {
                 order.ms_info = data.ms_info;
+                order.revision_ID = data.revision_ID;
             }
             var not_found = order.get('orderLines').map(function(r){
                 return r.uid;
@@ -216,6 +218,7 @@ openerp.pos_multi_session = function(instance){
                     line.uid = dline.uid;
                 }
                 line.ms_info = dline.ms_info || {};
+                line.revision_ID = dline.revision_ID || {};
                 if(dline.qty !== undefined){
                     line.set_quantity(dline.qty);
                 }
@@ -275,11 +278,14 @@ openerp.pos_multi_session = function(instance){
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
+            this.revision_ID = 1;
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
+                this.revision_ID = options.revision_ID;
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
+
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -329,6 +335,7 @@ openerp.pos_multi_session = function(instance){
         export_as_JSON: function(){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
+            data.revision_ID = this.revision_ID;
             return data;
         },
         do_ms_update: function(){
@@ -338,8 +345,11 @@ openerp.pos_multi_session = function(instance){
                 if (error == 'offline') {
                     self.order_on_server = false;
                 }
-            }).done(function(){
+            }).done(function(id){
                 self.order_on_server = true;
+                if (id > self.revision_ID) {
+                    self.revision_ID = id;
+                }
             });
         }
     });
@@ -349,6 +359,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
+            this.revision_ID = 1;
             if (this.order.ms_check()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
@@ -372,6 +383,7 @@ openerp.pos_multi_session = function(instance){
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
             data.uid = this.uid;
             data.ms_info = this.ms_info;
+            data.revision_ID = this.revision_ID;
             return data;
         }
     });
@@ -443,12 +455,14 @@ openerp.pos_multi_session = function(instance){
                     self.offline_sync_all_timer = false;
                     self.send_offline_orders();
                 }
-                connection_status.resolve();
                 self.show_warning_message = true;
                 if (Array.isArray(res)) {
                     res.forEach(function(item) {
                         if (item.action == 'sync_all') self.pos.ms_on_update(item);
                     });
+                }
+                if (res.action == "update_revision_ID") {
+                    connection_status.resolve(res.revision_ID);
                 }
             });
             return connection_status;

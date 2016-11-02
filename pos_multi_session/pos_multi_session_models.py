@@ -42,23 +42,39 @@ class PosMultiSession(models.Model):
         return res
 
     @api.multi
+    def order_number_check(self, message):
+        self.ensure_one()
+        order_uid = message['data']['uid']
+        client_revision_ID = message['data']['revision_ID']
+        server_revision_ID = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)]).revision_ID
+        if client_revision_ID is not server_revision_ID:
+            print "The client is not updated"
+            return False
+
+    @api.multi
     def set_order(self, message):
         self.ensure_one()
+        self.order_number_check(message)
         msg_data = message['data']
         order_uid = msg_data['uid']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
         if order:  # order already exists
             order.write({
                 'order': json.dumps(message),
+                'revision_ID': order.revision_ID + 1,
             })
         else:
-            order.create({
+            res = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
                 'multi_session_id': self.id,
             })
+        revision_ID = order.revision_ID
+        if not revision_ID:
+            revision_ID = res.revision_ID
+        message['data']['revision_ID'] = revision_ID
         self.broadcast_message(message)
-        return 1
+        return {'action': 'update_revision_ID', 'revision_ID': revision_ID}
 
     @api.multi
     def get_sync_all(self, message):
@@ -69,6 +85,7 @@ class PosMultiSession(models.Model):
         for order in self.order_ids:
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
+            msg['data']['revision_ID'] = order.revision_ID
             msg['action'] = 'sync_all'
             message.append(msg)
         return message
@@ -78,7 +95,9 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         msg_data = message['data']
         order_uid = msg_data['uid']
-        self.order_ids.search([('order_uid', '=', order_uid)]).unlink()
+        order = self.order_ids.search([('order_uid', '=', order_uid)])
+        message['data']['revision_ID'] = order.revision_ID
+        order.unlink()
         self.broadcast_message(message)
         return 1
 
@@ -112,6 +131,7 @@ class PosMultiSessionOrder(models.Model):
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char()
+    revision_ID = fields.Integer(default=1, string="Last sent order number")
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
 
 
