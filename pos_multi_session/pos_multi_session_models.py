@@ -6,6 +6,9 @@ import time
 from openerp import api
 from openerp import fields
 from openerp import models
+from openerp.osv import osv
+from openerp.tools.translate import _
+from openerp.exceptions import Warning as UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -42,36 +45,39 @@ class PosMultiSession(models.Model):
         return res
 
     @api.multi
-    def order_number_check(self, message):
+    def check_order_revision(self, message, order):
         self.ensure_one()
-        order_uid = message['data']['uid']
         client_revision_ID = message['data']['revision_ID']
-        server_revision_ID = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)]).revision_ID
+        server_revision_ID = order.revision_ID
+        if not server_revision_ID:
+            server_revision_ID = 1
         if client_revision_ID is not server_revision_ID:
-            print "The client is not updated"
+            # _logger.info('The client is not updated')
+            # raise UserError(_('Error of synchronization!'), _('The conflict during of synchronization, repeat your operation'))
             return False
+        else:
+            return True
 
     @api.multi
     def set_order(self, message):
         self.ensure_one()
-        self.order_number_check(message)
-        msg_data = message['data']
-        order_uid = msg_data['uid']
+        order_uid = message['data']['uid']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
+        revision = self.check_order_revision(message, order)
+        if not revision:
+            return {'action': 'revision_error'}
         if order:  # order already exists
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
             })
         else:
-            res = order.create({
+            order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
                 'multi_session_id': self.id,
             })
         revision_ID = order.revision_ID
-        if not revision_ID:
-            revision_ID = res.revision_ID
         message['data']['revision_ID'] = revision_ID
         self.broadcast_message(message)
         return {'action': 'update_revision_ID', 'revision_ID': revision_ID}
@@ -93,10 +99,9 @@ class PosMultiSession(models.Model):
     @api.multi
     def remove_order(self, message):
         self.ensure_one()
-        msg_data = message['data']
-        order_uid = msg_data['uid']
+        order_uid = message['data']['uid']
         order = self.order_ids.search([('order_uid', '=', order_uid)])
-        message['data']['revision_ID'] = order.revision_ID
+        # self.check_order_revision(message, order)
         order.unlink()
         self.broadcast_message(message)
         return 1
@@ -131,7 +136,7 @@ class PosMultiSessionOrder(models.Model):
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char()
-    revision_ID = fields.Integer(default=1, string="Last sent order number")
+    revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
 
 

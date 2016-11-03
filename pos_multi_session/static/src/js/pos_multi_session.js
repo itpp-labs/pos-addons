@@ -4,7 +4,7 @@ openerp.pos_multi_session = function(instance){
 
     module.OrderWidget.include({
         rerender_orderline: function(order_line){
-            if (order_line.node) {
+            if (order_line.node && order_line.node.parentNode) {
                 return this._super(order_line);
             }
         },
@@ -33,7 +33,8 @@ openerp.pos_multi_session = function(instance){
             this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
                     if (order.order_on_server ) {
-                        self.multi_session.offline_warning();
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.")
+                        self.multi_session.warning(warning_message);
                         return false;
                     }
                 }
@@ -218,7 +219,6 @@ openerp.pos_multi_session = function(instance){
                     line.uid = dline.uid;
                 }
                 line.ms_info = dline.ms_info || {};
-                line.revision_ID = dline.revision_ID || {};
                 if(dline.qty !== undefined){
                     line.set_quantity(dline.qty);
                 }
@@ -278,10 +278,9 @@ openerp.pos_multi_session = function(instance){
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            this.revision_ID = 1;
+            this.revision_ID = options.revision_ID || 1;
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
-                this.revision_ID = options.revision_ID;
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
@@ -345,10 +344,10 @@ openerp.pos_multi_session = function(instance){
                 if (error == 'offline') {
                     self.order_on_server = false;
                 }
-            }).done(function(id){
+            }).done(function(server_revision_ID){
                 self.order_on_server = true;
-                if (id > self.revision_ID) {
-                    self.revision_ID = id;
+                if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                    self.revision_ID = server_revision_ID;
                 }
             });
         }
@@ -359,7 +358,6 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            this.revision_ID = 1;
             if (this.order.ms_check()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
@@ -383,7 +381,6 @@ openerp.pos_multi_session = function(instance){
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
             data.uid = this.uid;
             data.ms_info = this.ms_info;
-            data.revision_ID = this.revision_ID;
             return data;
         }
     });
@@ -441,12 +438,18 @@ openerp.pos_multi_session = function(instance){
                 });
             };
             send_it().fail(function (error, e) {
-                self.client_online = false;
-                e.preventDefault();
-                connection_status.reject('offline');
-                if (self.show_warning_message) {
-                    self.offline_warning();
-                    self.start_offline_sync_timer();
+                if(error.message === 'XmlHttpRequestError ') {
+                    self.client_online = false;
+                    e.preventDefault();
+                    connection_status.reject('offline');
+                    if (self.show_warning_message) {
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.")
+                        self.warning(warning_message);
+                        self.start_offline_sync_timer();
+                        self.show_warning_message = false;
+                    }
+                } else {
+                    self.request_sync_all();
                 }
             }).done(function(res){
                 self.client_online = true;
@@ -455,26 +458,31 @@ openerp.pos_multi_session = function(instance){
                     self.offline_sync_all_timer = false;
                     self.send_offline_orders();
                 }
+                if (res.action == "update_revision_ID") {
+                    connection_status.resolve(res.revision_ID);
+                }
+                connection_status.resolve();
+                if (res.action == "revision_error") {
+                    var warning_message = _t('The conflict during of synchronization, repeat your operation');
+                    self.warning(warning_message);
+                    self.request_sync_all();
+                }
+
                 self.show_warning_message = true;
                 if (Array.isArray(res)) {
                     res.forEach(function(item) {
                         if (item.action == 'sync_all') self.pos.ms_on_update(item);
                     });
                 }
-                if (res.action == "update_revision_ID") {
-                    connection_status.resolve(res.revision_ID);
-                }
             });
             return connection_status;
         },
-        offline_warning: function(){
+        warning: function(warning_message){
             var self = this;
-            console.log("offline");
-            self.show_warning_message = false;
             new instance.web.Dialog(this, {
                 title: _t("Warning"),
                 size: 'medium',
-            }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
+            }, $("<div />").text(warning_message)).open();
         },
         send_offline_orders: function() {
             var self = this;
