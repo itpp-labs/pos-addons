@@ -329,7 +329,7 @@ openerp.pos_multi_session = function(instance){
             this.do_ms_remove_order();
         },
         do_ms_remove_order: function(){
-            this.pos.multi_session.remove_order({'uid': this.uid});
+            this.pos.multi_session.remove_order({'uid': this.uid, 'revision_ID': this.revision_ID});
         },
         export_as_JSON: function(){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
@@ -403,8 +403,7 @@ openerp.pos_multi_session = function(instance){
             //return done;
         },
         request_sync_all: function(){
-            var data = {
-            };
+            var data = {};
             this.send({'action': 'sync_all', data: data});
         },
         sync_sequence_number: function(){

@@ -52,8 +52,6 @@ class PosMultiSession(models.Model):
         if not server_revision_ID:
             server_revision_ID = 1
         if client_revision_ID is not server_revision_ID:
-            # _logger.info('The client is not updated')
-            # raise UserError(_('Error of synchronization!'), _('The conflict during of synchronization, repeat your operation'))
             return False
         else:
             return True
@@ -101,7 +99,9 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         order_uid = message['data']['uid']
         order = self.order_ids.search([('order_uid', '=', order_uid)])
-        # self.check_order_revision(message, order)
+        revision = self.check_order_revision(message, order)
+        if not revision:
+            return {'action': 'revision_error'}
         order.unlink()
         self.broadcast_message(message)
         return 1
