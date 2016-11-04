@@ -6,9 +6,6 @@ import time
 from openerp import api
 from openerp import fields
 from openerp import models
-from openerp.osv import osv
-from openerp.tools.translate import _
-from openerp.exceptions import Warning as UserError
 
 _logger = logging.getLogger(__name__)
 

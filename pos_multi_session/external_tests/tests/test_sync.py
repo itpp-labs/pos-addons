@@ -220,6 +220,7 @@ class TestSync(TestCommon):
                  mstest.print_order();
                  synced_order = mstest.get_order();
                  // mstest.check_inclusion(share.demo_order, synced_order);
+                 // this test is currently not supported: request from demo is ignored and hist state is rollbacked
              """,
              },
             # demo is on

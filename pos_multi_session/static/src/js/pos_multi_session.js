@@ -1,4 +1,5 @@
 openerp.pos_multi_session = function(instance){
+
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
@@ -33,7 +34,7 @@ openerp.pos_multi_session = function(instance){
             this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
                     if (order.order_on_server ) {
-                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.")
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
                         self.multi_session.warning(warning_message);
                         return false;
                     }
@@ -442,7 +443,7 @@ openerp.pos_multi_session = function(instance){
                     e.preventDefault();
                     connection_status.reject('offline');
                     if (self.show_warning_message) {
-                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.")
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
                         self.warning(warning_message);
                         self.start_offline_sync_timer();
                         self.show_warning_message = false;
@@ -462,7 +463,7 @@ openerp.pos_multi_session = function(instance){
                 }
                 connection_status.resolve();
                 if (res.action == "revision_error") {
-                    var warning_message = _t('The conflict during of synchronization, repeat your operation');
+                    var warning_message = _t('There is a conflict during synchronization, try your action again');
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
