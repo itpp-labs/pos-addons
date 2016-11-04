@@ -42,23 +42,40 @@ class PosMultiSession(models.Model):
         return res
 
     @api.multi
+    def check_order_revision(self, message, order):
+        self.ensure_one()
+        client_revision_ID = message['data']['revision_ID']
+        server_revision_ID = order.revision_ID
+        if not server_revision_ID:
+            server_revision_ID = 1
+        if client_revision_ID is not server_revision_ID:
+            return False
+        else:
+            return True
+
+    @api.multi
     def set_order(self, message):
         self.ensure_one()
-        msg_data = message['data']
-        order_uid = msg_data['uid']
+        order_uid = message['data']['uid']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
+        revision = self.check_order_revision(message, order)
+        if not revision:
+            return {'action': 'revision_error'}
         if order:  # order already exists
             order.write({
                 'order': json.dumps(message),
+                'revision_ID': order.revision_ID + 1,
             })
         else:
-            order.create({
+            order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
                 'multi_session_id': self.id,
             })
+        revision_ID = order.revision_ID
+        message['data']['revision_ID'] = revision_ID
         self.broadcast_message(message)
-        return 1
+        return {'action': 'update_revision_ID', 'revision_ID': revision_ID}
 
     @api.multi
     def get_sync_all(self, message):
@@ -69,6 +86,7 @@ class PosMultiSession(models.Model):
         for order in self.order_ids:
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
+            msg['data']['revision_ID'] = order.revision_ID
             msg['action'] = 'sync_all'
             message.append(msg)
         return message
@@ -76,9 +94,12 @@ class PosMultiSession(models.Model):
     @api.multi
     def remove_order(self, message):
         self.ensure_one()
-        msg_data = message['data']
-        order_uid = msg_data['uid']
-        self.order_ids.search([('order_uid', '=', order_uid)]).unlink()
+        order_uid = message['data']['uid']
+        order = self.order_ids.search([('order_uid', '=', order_uid)])
+        revision = self.check_order_revision(message, order)
+        if not revision:
+            return {'action': 'revision_error'}
+        order.unlink()
         self.broadcast_message(message)
         return 1
 
@@ -112,6 +133,7 @@ class PosMultiSessionOrder(models.Model):
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char()
+    revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
 
 

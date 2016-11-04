@@ -1,10 +1,11 @@
 openerp.pos_multi_session = function(instance){
+
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
     module.OrderWidget.include({
         rerender_orderline: function(order_line){
-            if (order_line.node) {
+            if (order_line.node && order_line.node.parentNode) {
                 return this._super(order_line);
             }
         },
@@ -33,7 +34,8 @@ openerp.pos_multi_session = function(instance){
             this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
                     if (order.order_on_server ) {
-                        self.multi_session.offline_warning();
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
+                        self.multi_session.warning(warning_message);
                         return false;
                     }
                 }
@@ -156,6 +158,7 @@ openerp.pos_multi_session = function(instance){
             })
              */
         },
+
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
@@ -175,7 +178,7 @@ openerp.pos_multi_session = function(instance){
                 if (!create_new_order){
                     return;
                 }
-                order = this.ms_create_order({ms_info:data.ms_info});
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID});
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number;
                 var current_order = this.get_order();
@@ -183,6 +186,7 @@ openerp.pos_multi_session = function(instance){
                 this.ms_on_add_order(current_order);
             } else {
                 order.ms_info = data.ms_info;
+                order.revision_ID = data.revision_ID;
             }
             var not_found = order.get('orderLines').map(function(r){
                 return r.uid;
@@ -275,11 +279,13 @@ openerp.pos_multi_session = function(instance){
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
+            this.revision_ID = options.revision_ID || 1;
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
+
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -324,11 +330,12 @@ openerp.pos_multi_session = function(instance){
             this.do_ms_remove_order();
         },
         do_ms_remove_order: function(){
-            this.pos.multi_session.remove_order({'uid': this.uid});
+            this.pos.multi_session.remove_order({'uid': this.uid, 'revision_ID': this.revision_ID});
         },
         export_as_JSON: function(){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
+            data.revision_ID = this.revision_ID;
             return data;
         },
         do_ms_update: function(){
@@ -338,8 +345,11 @@ openerp.pos_multi_session = function(instance){
                 if (error == 'offline') {
                     self.order_on_server = false;
                 }
-            }).done(function(){
+            }).done(function(server_revision_ID){
                 self.order_on_server = true;
+                if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                    self.revision_ID = server_revision_ID;
+                }
             });
         }
     });
@@ -394,8 +404,7 @@ openerp.pos_multi_session = function(instance){
             //return done;
         },
         request_sync_all: function(){
-            var data = {
-            };
+            var data = {};
             this.send({'action': 'sync_all', data: data});
         },
         sync_sequence_number: function(){
@@ -429,12 +438,18 @@ openerp.pos_multi_session = function(instance){
                 });
             };
             send_it().fail(function (error, e) {
-                self.client_online = false;
-                e.preventDefault();
-                connection_status.reject('offline');
-                if (self.show_warning_message) {
-                    self.offline_warning();
-                    self.start_offline_sync_timer();
+                if(error.message === 'XmlHttpRequestError ') {
+                    self.client_online = false;
+                    e.preventDefault();
+                    connection_status.reject('offline');
+                    if (self.show_warning_message) {
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
+                        self.warning(warning_message);
+                        self.start_offline_sync_timer();
+                        self.show_warning_message = false;
+                    }
+                } else {
+                    self.request_sync_all();
                 }
             }).done(function(res){
                 self.client_online = true;
@@ -443,7 +458,16 @@ openerp.pos_multi_session = function(instance){
                     self.offline_sync_all_timer = false;
                     self.send_offline_orders();
                 }
+                if (res.action == "update_revision_ID") {
+                    connection_status.resolve(res.revision_ID);
+                }
                 connection_status.resolve();
+                if (res.action == "revision_error") {
+                    var warning_message = _t('There is a conflict during synchronization, try your action again');
+                    self.warning(warning_message);
+                    self.request_sync_all();
+                }
+
                 self.show_warning_message = true;
                 if (Array.isArray(res)) {
                     res.forEach(function(item) {
@@ -453,14 +477,12 @@ openerp.pos_multi_session = function(instance){
             });
             return connection_status;
         },
-        offline_warning: function(){
+        warning: function(warning_message){
             var self = this;
-            console.log("offline");
-            self.show_warning_message = false;
             new instance.web.Dialog(this, {
                 title: _t("Warning"),
                 size: 'medium',
-            }, $("<div />").text(_t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders."))).open();
+            }, $("<div />").text(warning_message)).open();
         },
         send_offline_orders: function() {
             var self = this;
