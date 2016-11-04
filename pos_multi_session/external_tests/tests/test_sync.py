@@ -219,8 +219,8 @@ class TestSync(TestCommon):
              "code": """
                  mstest.print_order();
                  synced_order = mstest.get_order();
+                 /* this test is currently not supported: request from demo is ignored and his state is rollbacked */
                  // mstest.check_inclusion(share.demo_order, synced_order);
-                 // this test is currently not supported: request from demo is ignored and hist state is rollbacked
              """,
              },
             # demo is on
