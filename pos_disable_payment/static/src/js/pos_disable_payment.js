@@ -98,6 +98,28 @@ odoo.define('pos_disable_payment', function(require){
             }
         }
     });
+    screens.ScreenWidget.include({
+        renderElement: function () {
+            this._super();
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_payments) {
+                $('.pay').hide();
+            }else{
+                $('.pay').show();
+            }
+        }
+    });
+    screens.ActionpadWidget.include({
+        renderElement: function () {
+            this._super();
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_payments) {
+                $('.pay').hide();
+            }else{
+                $('.pay').show();
+            }
+        }
+    });
     screens.NumpadWidget.include({
         init: function () {
             this._super.apply(this, arguments);
