@@ -369,20 +369,20 @@ openerp.pos_multi_session = function(instance){
                     self.order_on_server = false;
                 }
             }).done(function(res){
+                self.order_on_server = true;
                 if (res) {
                     var server_revision_ID = res.revision_ID;
                     var order_ID = res.order_ID;
-                }
-                self.order_on_server = true;
-                if (self.sequence_number != order_ID) {
-                    self.sequence_number = order_ID;
-                    // sequence number replace
-                    self.pos.pos_session.order_ID = order_ID;
-                    // rerender order
-                    self.trigger('change');
-                }
-                if (server_revision_ID && server_revision_ID > self.revision_ID) {
-                    self.revision_ID = server_revision_ID;
+                    if (self.sequence_number != order_ID) {
+                        self.sequence_number = order_ID;
+                        // sequence number replace
+                        self.pos.pos_session.order_ID = order_ID;
+                        // rerender order
+                        self.trigger('change');
+                    }
+                    if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                        self.revision_ID = server_revision_ID;
+                    }
                 }
             });
         }
@@ -425,7 +425,7 @@ openerp.pos_multi_session = function(instance){
             this.pos = pos;
             this.show_warning_message = true;
             this.client_online = true;
-            this.order_ID;
+            this.order_ID = null;
         },
         start: function(){
             var self = this;

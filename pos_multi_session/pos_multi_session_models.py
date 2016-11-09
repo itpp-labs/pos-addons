@@ -68,7 +68,7 @@ class PosMultiSession(models.Model):
                 'revision_ID': order.revision_ID + 1,
             })
         else:
-            if self.order_ID +1 != sequence_number:
+            if self.order_ID + 1 != sequence_number:
                 sequence_number = self.order_ID + 1
                 message['data']['sequence_number'] = sequence_number
             order = order.create({
