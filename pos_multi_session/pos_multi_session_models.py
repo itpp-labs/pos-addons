@@ -68,7 +68,7 @@ class PosMultiSession(models.Model):
                 'revision_ID': order.revision_ID + 1,
             })
         else:
-            if self.order_ID >= sequence_number:
+            if self.order_ID +1 != sequence_number:
                 sequence_number = self.order_ID + 1
                 message['data']['sequence_number'] = sequence_number
             order = order.create({
@@ -95,7 +95,7 @@ class PosMultiSession(models.Model):
             msg['action'] = 'sync_all'
             message.append(msg)
         if not message:
-            order_ID = self.env["pos.multi_session"].search([('id', '=', self.id)]).order_ID
+            order_ID = self.order_ID
             message = {'action': 'sync_order_id', 'order_ID': order_ID}
         return message
 

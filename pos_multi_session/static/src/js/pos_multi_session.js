@@ -315,21 +315,11 @@ openerp.pos_multi_session = function(instance){
         set_client: function(client){
             OrderSuper.prototype.set_client.apply(this,arguments);
             this.trigger('change:sync');
-            this.update_sequence_number();
         },
         addProduct: function(){
             var self = this;
             OrderSuper.prototype.addProduct.apply(this, arguments);
             this.trigger('change:sync');
-            this.update_sequence_number();
-        },
-        update_sequence_number: function() {
-            if (this.new_order) {
-                this.new_order = false;
-                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
-                this.sequence_number = this.pos.pos_session.order_ID;
-                this.trigger('change:update_new_order');
-            }
         },
         ms_check: function(){
             if (! this.pos.multi_session )
@@ -340,6 +330,12 @@ openerp.pos_multi_session = function(instance){
         },
         ms_update: function(){
             var self = this;
+            if (this.new_order) {
+                this.new_order = false;
+                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
+                this.sequence_number = this.pos.pos_session.order_ID;
+                this.trigger('change:update_new_order');
+            }
             if (!this.ms_check())
                 return;
             if (this.ms_update_timeout)
@@ -372,7 +368,11 @@ openerp.pos_multi_session = function(instance){
                 if (error == 'offline') {
                     self.order_on_server = false;
                 }
-            }).done(function(server_revision_ID, order_ID){
+            }).done(function(res){
+                if (res) {
+                    var server_revision_ID = res.revision_ID;
+                    var order_ID = res.order_ID;
+                }
                 self.order_on_server = true;
                 if (self.sequence_number != order_ID) {
                     self.sequence_number = order_ID;
@@ -499,7 +499,7 @@ openerp.pos_multi_session = function(instance){
                     self.send_offline_orders();
                 }
                 if (res.action == "update_revision_ID") {
-                    connection_status.resolve(res.revision_ID, res.order_ID);
+                    connection_status.resolve(res);
                 }
                 connection_status.resolve();
                 if (res.action == "revision_error") {

@@ -17,7 +17,7 @@ class TestSync(TestCommon):
                  console.log('test_10_new_order');
                  mstest.remove_all_orders();
             """,
-            },
+             },
             # demo removes orders
             {"session": "demo",
              "code": """
@@ -25,7 +25,7 @@ class TestSync(TestCommon):
                      mstest.remove_all_orders();
                  })
             """,
-            },
+             },
             # admin fills order
             {"session": "admin",
              "code": """
@@ -186,7 +186,7 @@ class TestSync(TestCommon):
                  })
              """,
              },
-             # admin get order
+            # admin get order
             {"session": "admin",
              "code": """
                  share.admin_order = mstest.get_order();
