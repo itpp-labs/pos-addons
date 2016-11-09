@@ -381,6 +381,9 @@ openerp.pos_multi_session = function(instance){
                     // rerender order
                     self.trigger('change');
                 }
+                if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                    self.revision_ID = server_revision_ID;
+                }
             });
         }
     });
