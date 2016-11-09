@@ -14,7 +14,7 @@ class TestSync(TestCommon):
             # admin removes orders
             {"session": "admin",
              "code": """
-                 console.log('test_20_offline');
+                 console.log('test_10_new_order');
                  mstest.remove_all_orders();
             """,
             },
@@ -29,7 +29,6 @@ class TestSync(TestCommon):
             # admin fills order
             {"session": "admin",
              "code": """
-                 console.log('test_10_new_order');
                  mstest.fill_order();
                  mstest.wait(function(){
                  })
