@@ -301,6 +301,7 @@ openerp.pos_multi_session = function(instance){
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
+
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -379,9 +380,6 @@ openerp.pos_multi_session = function(instance){
                     self.pos.pos_session.order_ID = order_ID;
                     // rerender order
                     self.trigger('change');
-                }
-                if (server_revision_ID && server_revision_ID > self.revision_ID) {
-                    self.revision_ID = server_revision_ID;
                 }
             });
         }

@@ -71,7 +71,6 @@ class PosMultiSession(models.Model):
             if self.order_ID >= sequence_number:
                 sequence_number = self.order_ID + 1
                 message['data']['sequence_number'] = sequence_number
-
             order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
