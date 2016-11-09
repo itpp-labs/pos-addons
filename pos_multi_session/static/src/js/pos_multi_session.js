@@ -128,11 +128,10 @@ openerp.pos_multi_session = function(instance){
             if (!current_order) {
                 return;
             }
-            is_empty = current_order.is_empty();
             is_frozen = !current_order.ms_replace_empty_order;
-            if (this.config.multi_session_replace_empty_order && is_empty && !is_frozen) {
+            if (this.config.multi_session_replace_empty_order && current_order.new_order && !is_frozen) {
                 current_order.destroy({'reason': 'abandon'});
-            } else if (is_frozen || !is_empty || !this.config.multi_session_deactivate_empty_order) {
+            } else if (is_frozen || !current_order.new_order || !this.config.multi_session_deactivate_empty_order) {
                 // keep current_order active
                 this.set('selectedOrder', current_order);
             }
@@ -162,6 +161,7 @@ openerp.pos_multi_session = function(instance){
         ms_do_update: function(order, data){
             var pos = this;
             var sequence_number = data.sequence_number;
+            this.pos_session.order_ID = data.sequence_number;
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
                 if (sequence_number == this.pos_session.sequence_number){
@@ -181,6 +181,7 @@ openerp.pos_multi_session = function(instance){
                 order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID});
                 order.uid = data.uid;
                 order.sequence_number = data.sequence_number;
+                order.new_order = false;
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -239,6 +240,7 @@ openerp.pos_multi_session = function(instance){
                 order.get('orderLines').remove(line);
             });
             order.order_on_server = true;
+            order.new_order = false;
         },
         load_new_partners_by_id: function(partner_id){
         var self = this;
@@ -271,11 +273,25 @@ openerp.pos_multi_session = function(instance){
         },
     });
 
+    module.OrderButtonWidget = module.OrderButtonWidget.extend({
+        init: function(parent,options) {
+            this._super(parent,options);
+            this.order = options.order;
+            this.order.bind('change:update_new_order', this.renderElement,this );
+        },
+        destroy: function(){
+            this.pos.unbind('change:update_new_order', this.renderElement, this);
+            this._super();
+        },
+    });
+
     var is_first_order = true;
     var OrderSuper = module.Order;
     module.Order = module.Order.extend({
         initialize: function(options){
             var self = this;
+            this.new_order = true;
+            // this.sequence_number = 0;
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
@@ -301,6 +317,7 @@ openerp.pos_multi_session = function(instance){
             this.trigger('change:sync');
         },
         addProduct: function(){
+            var self = this;
             OrderSuper.prototype.addProduct.apply(this, arguments);
             this.trigger('change:sync');
         },
@@ -313,6 +330,12 @@ openerp.pos_multi_session = function(instance){
         },
         ms_update: function(){
             var self = this;
+            if (this.new_order) {
+                this.new_order = false;
+                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
+                this.sequence_number = this.pos.pos_session.order_ID;
+                this.trigger('change:update_new_order');
+            }
             if (!this.ms_check())
                 return;
             if (this.ms_update_timeout)
@@ -345,10 +368,21 @@ openerp.pos_multi_session = function(instance){
                 if (error == 'offline') {
                     self.order_on_server = false;
                 }
-            }).done(function(server_revision_ID){
+            }).done(function(res){
                 self.order_on_server = true;
-                if (server_revision_ID && server_revision_ID > self.revision_ID) {
-                    self.revision_ID = server_revision_ID;
+                if (res) {
+                    var server_revision_ID = res.revision_ID;
+                    var order_ID = res.order_ID;
+                    if (self.sequence_number != order_ID) {
+                        self.sequence_number = order_ID;
+                        // sequence number replace
+                        self.pos.pos_session.order_ID = order_ID;
+                        // rerender order
+                        self.trigger('change');
+                    }
+                    if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                        self.revision_ID = server_revision_ID;
+                    }
                 }
             });
         }
@@ -391,6 +425,7 @@ openerp.pos_multi_session = function(instance){
             this.pos = pos;
             this.show_warning_message = true;
             this.client_online = true;
+            this.order_ID = null;
         },
         start: function(){
             var self = this;
@@ -452,6 +487,11 @@ openerp.pos_multi_session = function(instance){
                     self.request_sync_all();
                 }
             }).done(function(res){
+                if (res.action == 'sync_order_id') {
+                    self.pos.pos_session.order_ID = res.order_ID;
+                    self.pos.pos_session.sequence_number = res.order_ID;
+                }
+
                 self.client_online = true;
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
@@ -459,7 +499,7 @@ openerp.pos_multi_session = function(instance){
                     self.send_offline_orders();
                 }
                 if (res.action == "update_revision_ID") {
-                    connection_status.resolve(res.revision_ID);
+                    connection_status.resolve(res);
                 }
                 connection_status.resolve();
                 if (res.action == "revision_error") {
