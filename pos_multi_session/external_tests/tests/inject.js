@@ -51,7 +51,7 @@ window.mstest = {
         });
         order = {
             "lines": lines,
-            "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
+            "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text().split("\n")[3])
         };
         return order;
     },
@@ -62,7 +62,7 @@ window.mstest = {
     find_order: function(order){
         $('.order-sequence').each(function(){
             var order_num = $.trim($(this).html()).split("\n");
-            if (order_num[0] == order.order_num){
+            if (parseInt(order_num[2]) == order.order_num){
                 $(this).click();
                 return false;
             }
