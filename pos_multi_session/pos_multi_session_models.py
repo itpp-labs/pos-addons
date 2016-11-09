@@ -25,7 +25,7 @@ class PosMultiSession(models.Model):
 
     name = fields.Char('Name')
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
-    order_ID = fields.Integer(string="Order number", default=1, help="Current Order Number shared across all POS in Multi Session")
+    order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
     order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id')
 
     @api.multi
@@ -57,6 +57,7 @@ class PosMultiSession(models.Model):
     def set_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
+        sequence_number = message['data']['sequence_number']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
         if not revision:
@@ -67,15 +68,20 @@ class PosMultiSession(models.Model):
                 'revision_ID': order.revision_ID + 1,
             })
         else:
+            if self.order_ID >= sequence_number:
+                sequence_number = self.order_ID + 1
+                message['data']['sequence_number'] = sequence_number
+
             order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
                 'multi_session_id': self.id,
             })
+            self.write({'order_ID': sequence_number})
         revision_ID = order.revision_ID
         message['data']['revision_ID'] = revision_ID
         self.broadcast_message(message)
-        return {'action': 'update_revision_ID', 'revision_ID': revision_ID}
+        return {'action': 'update_revision_ID', 'revision_ID': revision_ID, 'order_ID': sequence_number}
 
     @api.multi
     def get_sync_all(self, message):
@@ -89,6 +95,9 @@ class PosMultiSession(models.Model):
             msg['data']['revision_ID'] = order.revision_ID
             msg['action'] = 'sync_all'
             message.append(msg)
+        if not message:
+            order_ID = self.env["pos.multi_session"].search([('id', '=', self.id)]).order_ID
+            message = {'action': 'sync_order_id', 'order_ID': order_ID}
         return message
 
     @api.multi
@@ -141,10 +150,10 @@ class PosSession(models.Model):
     _inherit = 'pos.session'
 
     @api.multi
-    def wkf_action_closing_control(self):
+    def wkf_action_close(self):
         self.config_id.write({'multi_session_message_ID': 1})
-        res = super(PosSession, self).wkf_action_closing_control()
+        res = super(PosSession, self).wkf_action_close()
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
         if len(active_sessions) == 0:
-            self.config_id.multi_session_id.write({'order_ID': 1})
+            self.config_id.multi_session_id.sudo().write({'order_ID': 0})
         return res

@@ -11,20 +11,40 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # admin removes orders
+            {"session": "admin",
+             "code": """
+                 console.log('test_20_offline');
+                 mstest.remove_all_orders();
+            """,
+            },
+            # demo removes orders
+            {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.remove_all_orders();
+                 })
+            """,
+            },
             # admin fills order
             {"session": "admin",
              "code": """
                  console.log('test_10_new_order');
                  mstest.fill_order();
-                 share.order = mstest.get_order();
+                 mstest.wait(function(){
+                 })
              """,
+             },
+            # admin get order
+            {"session": "admin",
+             "code": """
+                  share.order = mstest.get_order();
+              """,
              },
             # demo syncs order
             {"session": "demo",
              "code": """
-                 mstest.wait(function(){
-                     mstest.find_order(share.order);
-                 })
+                  mstest.find_order(share.order);
              """,
              },
             # TODO: admin close order (make a payment)
@@ -57,12 +77,19 @@ class TestSync(TestCommon):
                  })
              """,
              },
-            # admin creates order
+            # admin fills order
             {"session": "admin",
              "code": """
                  mstest.fill_order();
-                 share.order = mstest.get_order();
+                 mstest.wait(function(){
+                 })
              """,
+             },
+            # admin get order
+            {"session": "admin",
+             "code": """
+                  share.order = mstest.get_order();
+              """,
              },
             # demo syncs order
             {"session": "demo",
@@ -156,6 +183,13 @@ class TestSync(TestCommon):
              "code": """
                  mstest.fill_order();
                  mstest.print_order();
+                 mstest.wait(function(){
+                 })
+             """,
+             },
+             # admin get order
+            {"session": "admin",
+             "code": """
                  share.admin_order = mstest.get_order();
              """,
              },
