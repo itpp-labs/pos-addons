@@ -306,8 +306,6 @@ openerp.pos_multi_session = function(instance){
             this.bind('change:sync', function(){
                 self.ms_update();
             });
-            console.log(this);
-            console.log(options);
         },
         removeOrderline: function(line){
             OrderSuper.prototype.removeOrderline.apply(this, arguments);
