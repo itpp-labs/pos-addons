@@ -59,7 +59,7 @@ window.mstest = {
         order = this.get_order();
         console.log('Order', JSON.stringify(order));
     },
-    find_order: function(order){
+    switch_to_order: function(order){
         $('.order-sequence').each(function(){
             var order_num = $.trim($(this).html()).split("\n");
             if (parseInt(order_num[2]) == order.order_num){
@@ -67,6 +67,9 @@ window.mstest = {
                 return false;
             }
         });
+    },
+    find_order: function(order){
+        this.switch_to_order(order);
         found = this.get_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
             console.log('Expected Order', JSON.stringify(order));
@@ -74,6 +77,11 @@ window.mstest = {
             console.log('error', 'Synced orders are mismatched');
         }
         return found;
+    },
+    order_exists: function(order){
+        this.switch_to_order(order);
+        found = this.get_order();
+        return order.order_num == found.order_num;
     },
     check_inclusion: function(small, big){
         // check that order "big" includes order "small"
