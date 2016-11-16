@@ -34,7 +34,8 @@ class TestSync(TestCommon):
                  })
              """,
              },
-            # admin get order
+
+            # admin gets order
             {"session": "admin",
              "code": """
                   share.order = mstest.get_order();
@@ -54,8 +55,8 @@ class TestSync(TestCommon):
              },
         ], 120)
 
-    def test_20_offline(self):
-        """One POS is offline some time"""
+    def test_20_offline_update_order(self):
+        """One POS is offline, while another update order"""
         self.phantom_js_multi({
             # use default settings for sessions (see ./common.py)
             "admin": {},
@@ -84,7 +85,8 @@ class TestSync(TestCommon):
                  })
              """,
              },
-            # admin get order
+
+            # admin gets order
             {"session": "admin",
              "code": """
                   share.order = mstest.get_order();
@@ -155,6 +157,112 @@ class TestSync(TestCommon):
              },
         ], 120)
 
+    def test_21_offline_remove_order(self):
+        """One POS is offline, while another remove order"""
+        self.phantom_js_multi({
+            # use default settings for sessions (see ./common.py)
+            "admin": {},
+            "demo": {}
+        }, [
+            # admin removes orders
+            {"session": "admin",
+             "code": """
+                 console.log('test_20_offline');
+                 mstest.remove_all_orders();
+             """,
+             },
+            # demo removes orders
+            {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                    mstest.remove_all_orders();
+                 })
+             """,
+             },
+            # admin fills order
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+                 mstest.wait(function(){
+                 })
+             """,
+             },
+            # admin gets order
+            {"session": "admin",
+             "code": """
+                  share.order = mstest.get_order();
+              """,
+             },
+            # demo syncs order
+            {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.find_order(share.order);
+                 })
+             """,
+             },
+            # demo is off
+            {"session": "demo",
+             "extra": "connection_off",
+             },
+            # admin removes order
+            #
+            # we fill order before removing,
+            # because framework doesn't switch connnection off immediately
+            # and we need to send some data to the last working polling
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+                 mstest.wait(function(){
+                    mstest.remove_current_order()
+                 }, 3000)
+             """,
+             },
+            # GC
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.gc();
+                 }, 2000);
+             """,
+             },
+            # demo creates new order (to start reconnection process)
+            {"session": "demo",
+             "code": """
+                mstest.new_order();
+                mstest.wait(function(){
+                    mstest.new_order();
+                }, 6000);
+             """,
+             },
+            # demo is on
+            {"session": "demo",
+             "extra": "connection_on",
+             },
+            # admin updates another order
+            # (probably this is not necessary step)
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+             """,
+             },
+            # check sync on demo
+            {"session": "demo",
+             "code": """
+             mstest.wait(function(){
+                 if (mstest.order_exists(share.order)){
+                     console.log('error', 'removed order still exists', share.order.order_num)
+                 }
+            }, 15000)
+             """,
+             "timeout": 25000,
+             },
+            # ok
+            {"session": "demo",
+             "code": "console.log('ok');",
+             },
+        ], 120)
+
     def test_30_slow(self):
         """Two POSes update the same order simultinously"""
         self.phantom_js_multi({
@@ -186,7 +294,8 @@ class TestSync(TestCommon):
                  })
              """,
              },
-            # admin get order
+
+            # admin gets order
             {"session": "admin",
              "code": """
                  share.admin_order = mstest.get_order();
