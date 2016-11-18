@@ -34,6 +34,7 @@ class TestSync(TestCommon):
                  })
              """,
              },
+
             # admin gets order
             {"session": "admin",
              "code": """
@@ -84,6 +85,7 @@ class TestSync(TestCommon):
                  })
              """,
              },
+
             # admin gets order
             {"session": "admin",
              "code": """
@@ -292,6 +294,7 @@ class TestSync(TestCommon):
                  })
              """,
              },
+
             # admin gets order
             {"session": "admin",
              "code": """
