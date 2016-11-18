@@ -70,8 +70,10 @@ openerp.pos_multi_session = function(instance){
                     this.get('selectedOrder').ms_replace_empty_order = true;
                     return;
                 } else if (this.ms_syncing_in_progress){
-                    if (this.get('orders').size() === 0){
+                    if (this.get('orders').size() === 0) {
                         this.add_new_order();
+                    } else {
+                        return this.set({'selectedOrder': this.get('orders').at(index) || this.get('orders').first()});
                     }
                     return;
                 }
@@ -366,7 +368,11 @@ openerp.pos_multi_session = function(instance){
             var data = this.export_as_JSON();
             this.pos.multi_session.update(data).fail(function(error){
                 if (error == 'offline') {
-                    self.order_on_server = false;
+                    if (self.order_on_server) {
+                        self.order_on_server = true;
+                    } else {
+                        self.order_on_server = false;
+                    }
                 }
             }).done(function(res){
                 self.order_on_server = true;
@@ -487,17 +493,8 @@ openerp.pos_multi_session = function(instance){
                     self.request_sync_all();
                 }
             }).done(function(res){
-                if (res.action == 'sync_order_id') {
-                    self.pos.pos_session.order_ID = res.order_ID;
-                    self.pos.pos_session.sequence_number = res.order_ID;
-                }
-
+                var server_orders_uid = [];
                 self.client_online = true;
-                if (self.offline_sync_all_timer) {
-                    clearInterval(self.offline_sync_all_timer);
-                    self.offline_sync_all_timer = false;
-                    self.send_offline_orders();
-                }
                 if (res.action == "update_revision_ID") {
                     connection_status.resolve(res);
                 }
@@ -507,15 +504,49 @@ openerp.pos_multi_session = function(instance){
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
-
-                self.show_warning_message = true;
-                if (Array.isArray(res)) {
-                    res.forEach(function(item) {
-                        if (item.action == 'sync_all') self.pos.ms_on_update(item);
-                    });
+                if (res.action == 'sync_order_id') {
+                    self.pos.pos_session.order_ID = res.order_ID;
+                    self.pos.pos_session.sequence_number = res.order_ID;
+                    self.destroy_removed_orders(server_orders_uid);
                 }
+                if (Array.isArray(res)) {
+                    // load usually means, that you download orders from servers
+                    res.forEach(function(item) {
+                        if (item.action == 'sync_all')  {
+                            self.pos.ms_on_update(item);
+                            server_orders_uid.push(item.data.uid);
+                        }
+                    });
+                    self.destroy_removed_orders(server_orders_uid);
+                }
+                if (self.offline_sync_all_timer) {
+                    clearInterval(self.offline_sync_all_timer);
+                    self.offline_sync_all_timer = false;
+                }
+                self.show_warning_message = true;
             });
             return connection_status;
+        },
+        destroy_removed_orders: function(server_orders_uid) {
+            var self = this;
+            // find all client orders whose order_on_server is True
+            var orders = self.pos.get('orders').filter(
+                function(r){
+                    return (r.order_on_server === true);
+                }
+            );
+            /* if found by the order from the client is not on the
+            list server orders then is means the order was deleted */
+            orders.forEach(function(item) {
+                var remove_order = server_orders_uid.indexOf(item.uid);
+                if (remove_order === -1) {
+                    var order = self.pos.get('orders').find(function (order) {
+                        return order.uid == item.uid;
+                    });
+                    order.destroy({'reason': 'abandon'});
+                }
+            });
+            self.send_offline_orders();
         },
         warning: function(warning_message){
             var self = this;
