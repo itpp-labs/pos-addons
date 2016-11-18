@@ -72,9 +72,8 @@ openerp.pos_multi_session = function(instance){
                 } else if (this.ms_syncing_in_progress){
                     if (this.get('orders').size() === 0) {
                         this.add_new_order();
-                    }
-                    if (this.get('orders').size() > 0){
-                        return this.set({'selectedOrder' : this.get('orders').at(index) || this.get('orders').first()});
+                    } else {
+                        return this.set({'selectedOrder': this.get('orders').at(index) || this.get('orders').first()});
                     }
                     return;
                 }
@@ -508,17 +507,17 @@ openerp.pos_multi_session = function(instance){
                 if (res.action == 'sync_order_id') {
                     self.pos.pos_session.order_ID = res.order_ID;
                     self.pos.pos_session.sequence_number = res.order_ID;
-                    self.destroy_remove_orders(server_orders_uid);
+                    self.destroy_removed_orders(server_orders_uid);
                 }
                 if (Array.isArray(res)) {
-                    // load all orders
+                    // load usually means, that you download orders from servers
                     res.forEach(function(item) {
                         if (item.action == 'sync_all')  {
                             self.pos.ms_on_update(item);
                             server_orders_uid.push(item.data.uid);
                         }
                     });
-                    self.destroy_remove_orders(server_orders_uid);
+                    self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
@@ -528,9 +527,9 @@ openerp.pos_multi_session = function(instance){
             });
             return connection_status;
         },
-        destroy_remove_orders: function(server_orders_uid) {
+        destroy_removed_orders: function(server_orders_uid) {
             var self = this;
-            // find all the client orders whose order_on_server is True
+            // find all client orders whose order_on_server is True
             var orders = self.pos.get('orders').filter(
                 function(r){
                     return (r.order_on_server === true);
