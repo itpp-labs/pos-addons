@@ -87,7 +87,6 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             var data = '';
             var action = '';
-            var sync_all = sync_all || false;
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -100,7 +99,7 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (action == 'sync_all' || sync_all) {
+                if (sync_all) {
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
