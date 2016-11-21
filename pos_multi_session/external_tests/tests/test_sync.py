@@ -125,6 +125,7 @@ class TestSync(TestCommon):
             # demo creates new order
             {"session": "demo",
              "code": """
+                mstest.new_order();
                 mstest.fill_order();
                 mstest.wait(function(){
                     mstest.fill_order();

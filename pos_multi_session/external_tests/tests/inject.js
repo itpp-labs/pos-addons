@@ -32,11 +32,14 @@ window.mstest = {
         $('.deleteorder-button').click();
         $('.confirm').click();
     },
+    add_random_product: function(){
+        this._rand($('.product')).click();
+        // close popup with error if any
+        $(".modal-dialog button").click();
+    },
     fill_order: function(){
-        this._rand($('.product')).click();
-        $(".modal-dialog button").click();
-        this._rand($('.product')).click();
-        $(".modal-dialog button").click();
+        this.add_random_product();
+        this.add_random_product();
     },
     new_order: function(){
         $(".neworder-button").click();
