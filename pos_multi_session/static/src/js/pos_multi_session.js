@@ -100,7 +100,10 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (message.action != 'sync_all' && !sync_all) {
+                if (action == 'sync_all' || sync_all) {
+                    this.message_ID = data.message_ID;
+                    this.ms_do_update(order, data);
+                } else {
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -109,11 +112,7 @@ openerp.pos_multi_session = function(instance){
                         order.destroy({'reason': 'abandon'});
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
-                } else if (action == 'sync_all' || sync_all){
-                    this.message_ID = data.message_ID;
-                    this.ms_do_update(order, data);
                 }
-
             }catch(err){
                 error = err;
                 console.error(err);
