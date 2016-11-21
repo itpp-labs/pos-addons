@@ -38,6 +38,9 @@ window.mstest = {
         this._rand($('.product')).click();
         $(".modal-dialog button").click();
     },
+    new_order: function(){
+        $(".neworder-button").click();
+    },
     get_order: function(){
         lines = [];
         $('.orderline').each(function(){
