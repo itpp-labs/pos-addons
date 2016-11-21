@@ -34,6 +34,9 @@ window.mstest = {
     },
     add_random_product: function(){
         this._rand($('.product')).click();
+        this.close_popup();
+    },
+    close_popup: function(){
         // close popup with error if any
         $(".modal-dialog button").click();
     },
@@ -42,6 +45,7 @@ window.mstest = {
         this.add_random_product();
     },
     new_order: function(){
+        this.close_popup();
         $(".neworder-button").click();
     },
     get_order: function(){
