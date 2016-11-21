@@ -41,12 +41,6 @@ openerp.pos_multi_session = function(instance){
                 }
                 order.ms_remove_order();
             });
-            this.get('orders').bind('add', function(order,_unused_,options){ 
-                if (!self.ms_syncing_in_progress && self.multi_session){
-                    self.multi_session.sync_sequence_number();
-                }
-            });
-
         },
         ms_my_info: function(){
             return {
@@ -120,10 +114,6 @@ openerp.pos_multi_session = function(instance){
             if (error){
                 throw(error);
             }
-
-            if (action == 'sync_sequence_number'){
-                this.ms_do_sync_sequence_number(data);
-            }
         },
         ms_on_add_order: function (current_order) {
             if (!current_order) {
@@ -141,41 +131,11 @@ openerp.pos_multi_session = function(instance){
             options = _.extend({pos: this}, options || {});
             return new module.Order(options);
         },
-        ms_do_sync_sequence_number: function(data){
-            if (data.sequence_number < this.pos_session.sequence_number){
-                // another pos has obsolete sequence_number
-                this.multi_session.sync_sequence_number(this.pos_session.sequence_number);
-            } else {
-                // update sequence_number (value for next number)
-                this.pos_session.sequence_number = data.sequence_number;
-            }
-            /*
-            this.get('orders').each(function(r){
-                var sn = data[r.uid];
-                if (sn != r.sequence_number){
-                    r.sequence_number = sn;
-                }
-            })
-             */
-        },
-
         ms_do_update: function(order, data){
             var pos = this;
-            var sequence_number = data.sequence_number;
             this.pos_session.order_ID = data.sequence_number;
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
-                if (sequence_number == this.pos_session.sequence_number){
-                    //ok
-                } else if (sequence_number > this.pos_session.sequence_number){
-                    // this pos has obsolete sequence_number
-                    this.pos_session.sequence_number = sequence_number;
-                } else if (sequence_number < this.pos_session.sequence_number){
-                    // another pos has obsolete sequence_number
-                    pos.multi_session.sync_sequence_number();
-                    if (create_new_order)
-                        this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
-                }
                 if (!create_new_order){
                     return;
                 }
@@ -292,7 +252,6 @@ openerp.pos_multi_session = function(instance){
         initialize: function(options){
             var self = this;
             this.new_order = true;
-            // this.sequence_number = 0;
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
@@ -434,29 +393,16 @@ openerp.pos_multi_session = function(instance){
         },
         start: function(){
             var self = this;
-            //var  done = new $.Deferred();
 
             this.bus = instance.bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
 
-            //return done;
         },
         request_sync_all: function(){
             var data = {};
             this.send({'action': 'sync_all', data: data});
-        },
-        sync_sequence_number: function(){
-            var orders = {};
-            this.pos.get('orders').each(function(r){
-                orders[r.uid] = r.sequence_number;
-            });
-            var data = {
-                'sequence_number': this.pos.pos_session.sequence_number,
-                //'orders': orders,
-            };
-            this.send({action: 'sync_sequence_number', data: data});
         },
         remove_order: function(data){
             this.send({action: 'remove_order', data: data});
