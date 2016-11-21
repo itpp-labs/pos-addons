@@ -87,16 +87,16 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         pos_id = message['data']['pos_id']
         pos = self.env['pos.config'].search([('multi_session_id', '=', self.id), ("id", "=", pos_id)])
-        message = []
+        data = []
         for order in self.order_ids:
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
             msg['data']['revision_ID'] = order.revision_ID
             msg['action'] = 'sync_all'
-            message.append(msg)
-        if not message:
-            order_ID = self.order_ID
-            message = {'action': 'sync_order_id', 'order_ID': order_ID}
+            data.append(msg)
+        if not data:
+            data = {'order_ID': self.order_ID}
+        message = {'action': 'sync_all', 'data': data}
         return message
 
     @api.multi
