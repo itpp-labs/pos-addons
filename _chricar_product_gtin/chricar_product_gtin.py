@@ -108,6 +108,7 @@ class ProductProduct(osv.osv):
 
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
 
+
 ProductProduct()
 
 
@@ -123,6 +124,7 @@ class ProductTemplate(osv.osv):
         'ean13': fields.related('product_variant_ids', 'ean13', type='char', string='Barcode'),
 
     }
+
 
 ProductTemplate()
 
@@ -140,6 +142,7 @@ class ProductPackaging(osv.osv):
     }
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean'])]
 
+
 ProductPackaging()
 
 
@@ -156,6 +159,7 @@ class ResPartner(osv.osv):
     }
 
     _constraints = [(_check_ean_key, 'Error: Invalid barcode', ['ean13'])]
+
 
 ResPartner()
 
