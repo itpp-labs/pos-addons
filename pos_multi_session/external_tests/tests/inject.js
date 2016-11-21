@@ -37,7 +37,7 @@ window.mstest = {
         this._rand($('.product')).click();
     },
     new_order: function(){
-        $(".neworder-button").click();
+        this._rand($('.product')).click();
         $(".modal-dialog button").click();
     },
     get_order: function(){
