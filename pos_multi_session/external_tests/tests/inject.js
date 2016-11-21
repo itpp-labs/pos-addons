@@ -34,11 +34,12 @@ window.mstest = {
     },
     fill_order: function(){
         this._rand($('.product')).click();
+        $(".modal-dialog button").click();
         this._rand($('.product')).click();
+        $(".modal-dialog button").click();
     },
     new_order: function(){
         $(".neworder-button").click();
-        $(".modal-dialog button").click();
     },
     get_order: function(){
         lines = [];

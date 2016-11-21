@@ -125,9 +125,9 @@ class TestSync(TestCommon):
             # demo creates new order
             {"session": "demo",
              "code": """
-                mstest.new_order();
+                mstest.fill_order();
                 mstest.wait(function(){
-                    mstest.new_order();
+                    mstest.fill_order();
                 }, 6000);
              """,
              },
@@ -230,8 +230,9 @@ class TestSync(TestCommon):
             {"session": "demo",
              "code": """
                 mstest.new_order();
+                mstest.fill_order();
                 mstest.wait(function(){
-                    mstest.new_order();
+                    mstest.fill_order();
                 }, 6000);
              """,
              },
