@@ -81,12 +81,13 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        ms_on_update: function(message){
+        ms_on_update: function(message, sync_all){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
             var data = '';
             var action = '';
+            var sync_all = sync_all || false;
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -99,7 +100,7 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (message.action != 'sync_all') {
+                if (message.action != 'sync_all' && !sync_all) {
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -108,7 +109,7 @@ openerp.pos_multi_session = function(instance){
                         order.destroy({'reason': 'abandon'});
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
-                } else if (action == 'sync_all'){
+                } else if (action == 'sync_all' || sync_all){
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 }
@@ -505,15 +506,12 @@ openerp.pos_multi_session = function(instance){
                     self.request_sync_all();
                 }
                 if (res.action == 'sync_all') {
-                    if (res.data.order_ID) {
-                        self.pos.pos_session.order_ID = res.data.order_ID;
-                        self.pos.pos_session.sequence_number = res.data.order_ID;
-                    } else {
-                        res.data.forEach(function (item) {
-                            self.pos.ms_on_update(item);
-                            server_orders_uid.push(item.data.uid);
-                        });
-                    }
+                    res.orders.forEach(function (item) {
+                        self.pos.ms_on_update(item, true);
+                        server_orders_uid.push(item.data.uid);
+                    });
+                    self.pos.pos_session.order_ID = res.order_ID;
+                    self.pos.pos_session.sequence_number = res.order_ID;
                     self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {

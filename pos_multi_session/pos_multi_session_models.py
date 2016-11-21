@@ -92,11 +92,8 @@ class PosMultiSession(models.Model):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
             msg['data']['revision_ID'] = order.revision_ID
-            msg['action'] = 'sync_all'
             data.append(msg)
-        if not data:
-            data = {'order_ID': self.order_ID}
-        message = {'action': 'sync_all', 'data': data}
+        message = {'action': 'sync_all', 'orders': data, 'order_ID': self.order_ID}
         return message
 
     @api.multi
