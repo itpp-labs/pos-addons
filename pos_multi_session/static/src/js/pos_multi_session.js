@@ -41,12 +41,6 @@ openerp.pos_multi_session = function(instance){
                 }
                 order.ms_remove_order();
             });
-            this.get('orders').bind('add', function(order,_unused_,options){ 
-                if (!self.ms_syncing_in_progress && self.multi_session){
-                    self.multi_session.sync_sequence_number();
-                }
-            });
-
         },
         ms_my_info: function(){
             return {
@@ -81,7 +75,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        ms_on_update: function(message){
+        ms_on_update: function(message, sync_all){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
@@ -99,7 +93,10 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (message.action != 'sync_all') {
+                if (sync_all) {
+                    this.message_ID = data.message_ID;
+                    this.ms_do_update(order, data);
+                } else {
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -108,11 +105,7 @@ openerp.pos_multi_session = function(instance){
                         order.destroy({'reason': 'abandon'});
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
-                } else if (action == 'sync_all'){
-                    this.message_ID = data.message_ID;
-                    this.ms_do_update(order, data);
                 }
-
             }catch(err){
                 error = err;
                 console.error(err);
@@ -120,10 +113,6 @@ openerp.pos_multi_session = function(instance){
             this.ms_syncing_in_progress = false;
             if (error){
                 throw(error);
-            }
-
-            if (action == 'sync_sequence_number'){
-                this.ms_do_sync_sequence_number(data);
             }
         },
         ms_on_add_order: function (current_order) {
@@ -142,41 +131,11 @@ openerp.pos_multi_session = function(instance){
             options = _.extend({pos: this}, options || {});
             return new module.Order(options);
         },
-        ms_do_sync_sequence_number: function(data){
-            if (data.sequence_number < this.pos_session.sequence_number){
-                // another pos has obsolete sequence_number
-                this.multi_session.sync_sequence_number(this.pos_session.sequence_number);
-            } else {
-                // update sequence_number (value for next number)
-                this.pos_session.sequence_number = data.sequence_number;
-            }
-            /*
-            this.get('orders').each(function(r){
-                var sn = data[r.uid];
-                if (sn != r.sequence_number){
-                    r.sequence_number = sn;
-                }
-            })
-             */
-        },
-
         ms_do_update: function(order, data){
             var pos = this;
-            var sequence_number = data.sequence_number;
             this.pos_session.order_ID = data.sequence_number;
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
-                if (sequence_number == this.pos_session.sequence_number){
-                    //ok
-                } else if (sequence_number > this.pos_session.sequence_number){
-                    // this pos has obsolete sequence_number
-                    this.pos_session.sequence_number = sequence_number;
-                } else if (sequence_number < this.pos_session.sequence_number){
-                    // another pos has obsolete sequence_number
-                    pos.multi_session.sync_sequence_number();
-                    if (create_new_order)
-                        this.pos_session.sequence_number--; // decrease temporarily, because it is increased right after creating new order
-                }
                 if (!create_new_order){
                     return;
                 }
@@ -293,7 +252,6 @@ openerp.pos_multi_session = function(instance){
         initialize: function(options){
             var self = this;
             this.new_order = true;
-            // this.sequence_number = 0;
             options = options || {};
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
@@ -435,29 +393,16 @@ openerp.pos_multi_session = function(instance){
         },
         start: function(){
             var self = this;
-            //var  done = new $.Deferred();
 
             this.bus = instance.bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
 
-            //return done;
         },
         request_sync_all: function(){
             var data = {};
             this.send({'action': 'sync_all', data: data});
-        },
-        sync_sequence_number: function(){
-            var orders = {};
-            this.pos.get('orders').each(function(r){
-                orders[r.uid] = r.sequence_number;
-            });
-            var data = {
-                'sequence_number': this.pos.pos_session.sequence_number,
-                //'orders': orders,
-            };
-            this.send({action: 'sync_sequence_number', data: data});
         },
         remove_order: function(data){
             this.send({action: 'remove_order', data: data});
@@ -504,19 +449,13 @@ openerp.pos_multi_session = function(instance){
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
-                if (res.action == 'sync_order_id') {
+                if (res.action == 'sync_all') {
+                    res.orders.forEach(function (item) {
+                        self.pos.ms_on_update(item, true);
+                        server_orders_uid.push(item.data.uid);
+                    });
                     self.pos.pos_session.order_ID = res.order_ID;
                     self.pos.pos_session.sequence_number = res.order_ID;
-                    self.destroy_removed_orders(server_orders_uid);
-                }
-                if (Array.isArray(res)) {
-                    // load usually means, that you download orders from servers
-                    res.forEach(function(item) {
-                        if (item.action == 'sync_all')  {
-                            self.pos.ms_on_update(item);
-                            server_orders_uid.push(item.data.uid);
-                        }
-                    });
                     self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {
