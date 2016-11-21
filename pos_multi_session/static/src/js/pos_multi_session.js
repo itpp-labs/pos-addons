@@ -81,7 +81,7 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        ms_on_update: function(message){
+        ms_on_update: function(message, sync_all){
             this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
             var error = false;
             var self = this;
@@ -99,7 +99,10 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                if (message.action != 'sync_all') {
+                if (sync_all) {
+                    this.message_ID = data.message_ID;
+                    this.ms_do_update(order, data);
+                } else {
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -108,11 +111,7 @@ openerp.pos_multi_session = function(instance){
                         order.destroy({'reason': 'abandon'});
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
-                } else if (action == 'sync_all'){
-                    this.message_ID = data.message_ID;
-                    this.ms_do_update(order, data);
                 }
-
             }catch(err){
                 error = err;
                 console.error(err);
@@ -504,19 +503,13 @@ openerp.pos_multi_session = function(instance){
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
-                if (res.action == 'sync_order_id') {
+                if (res.action == 'sync_all') {
+                    res.orders.forEach(function (item) {
+                        self.pos.ms_on_update(item, true);
+                        server_orders_uid.push(item.data.uid);
+                    });
                     self.pos.pos_session.order_ID = res.order_ID;
                     self.pos.pos_session.sequence_number = res.order_ID;
-                    self.destroy_removed_orders(server_orders_uid);
-                }
-                if (Array.isArray(res)) {
-                    // load usually means, that you download orders from servers
-                    res.forEach(function(item) {
-                        if (item.action == 'sync_all')  {
-                            self.pos.ms_on_update(item);
-                            server_orders_uid.push(item.data.uid);
-                        }
-                    });
                     self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {
