@@ -18,10 +18,10 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 * ``commands`` is a list of commands::
 
   [{"session": "session1",
-    "extra": "connection_on" | "connection_off"
+    "extra": "connection_on" | "connection_off" | "connection_slow"
     "code": "console.log('ok')",
     "ready": false, # wait before calling next command
-    "timeout": 60, # code execution timeout
+    "timeout": 60000, # code execution timeout
   }]
 
 * code:
@@ -74,8 +74,12 @@ function timeoutMessage (){
 }
 
 function blockConnection (requestData, networkRequest){
-    console.log('block request', requestData.url);
+    console.log('Blocked request:', requestData.url);
     networkRequest.abort();
+}
+function slowConnection (requestData, networkRequest){
+    console.log('Request marked as slowConnection:', requestData.url);
+    networkRequest.setHeader('phantomtest', 'slowConnection');
 }
 
 var tools = {'timeoutMessage': timeoutMessage};
@@ -193,7 +197,7 @@ function PhantomTest() {
         onPageReady = function() {
             pages_count--;
             console.log('onPageReady', pages_count);
-            if (pages_count == 0){
+            if (pages_count === 0){
                 pagesLoaded = true;
                 self.runCommands();
             }
@@ -220,7 +224,7 @@ function PhantomTest() {
                     } else {
                         console.log('loaded', url, status);
                         // clear localstorage leftovers
-                        currentPage.evaluate(function () { localStorage.clear(); });
+                        currentPage.evaluate(function () {localStorage.clear(); });
                         // process ready
                         waitForReady(page, ready, onPageReady, session.timeout);
                     }
@@ -231,7 +235,7 @@ function PhantomTest() {
     };
 
     this.runCommands = function() {
-        console.log('runCommands', self.options.commands);
+        console.log('runCommands', JSON.stringify(self.options.commands));
         var i = -1;
         var timer = null;
         function nextCommand(){
@@ -263,16 +267,20 @@ function PhantomTest() {
                 }, command.timeout || 60333);
             })();
             if (extra == 'connection_off'){
-                console.log('connection is off for', sname);
+                console.log('Connection is off for', sname);
                 page.onResourceRequested = blockConnection;
             } else if (extra == 'connection_on'){
+                console.log('Connection is reset for', sname);
                 page.onResourceRequested = null;
+            } else if (extra == 'connection_slow'){
+                console.log('Request will be marked as slowConnection for', sname);
+                page.onResourceRequested = slowConnection;
             }
             share = page.evaluate(function (code, tools, share) {
                 eval(code);
                 return share;
             }, code, tools, share);
-            waitForReady(page, ready, nextCommand);
+            waitForReady(page, ready, nextCommand, command.timeout);
         }
         nextCommand();
     };
