@@ -119,8 +119,9 @@ class TestSync(TestCommon):
              "code": """
                  mstest.wait(function(){
                      mstest.gc();
-                 }, 2000);
+                 }, 20000);
              """,
+             "timeout": 25000,
              },
             # demo creates new order
             {"session": "demo",
@@ -128,9 +129,11 @@ class TestSync(TestCommon):
                 mstest.new_order();
                 mstest.fill_order();
                 mstest.wait(function(){
+                    mstest.close_popup();
                     mstest.fill_order();
-                }, 6000);
+                }, 15000);
              """,
+             "timeout": 20000,
              },
             # demo is on
             {"session": "demo",
@@ -148,7 +151,7 @@ class TestSync(TestCommon):
              "code": """
              mstest.wait(function(){
                 mstest.find_order(share.order);
-            }, 15000)
+            }, 20000)
              """,
              "timeout": 25000,
              },
