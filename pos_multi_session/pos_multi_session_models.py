@@ -113,7 +113,6 @@ class PosMultiSession(models.Model):
     @api.multi
     def broadcast_message(self, message):
         self.ensure_one()
-        pos_id = message['data']['pos_id']
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
             if ps.user_id.id != self.env.user.id:
