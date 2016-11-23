@@ -7,6 +7,7 @@ odoo.define('pos_multi_session', function(require){
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
+    var chrome = require('point_of_sale.chrome')
 
     var _t = core._t;
 
@@ -267,7 +268,7 @@ odoo.define('pos_multi_session', function(require){
         },
     });
 
-    module.OrderButtonWidget = module.OrderButtonWidget.extend({
+    chrome.OrderSelectorWidget = chrome.OrderSelectorWidget.extend({
         init: function(parent,options) {
             this._super(parent,options);
             this.order = options.order;

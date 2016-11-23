@@ -3,6 +3,9 @@ import os
 
 from ..common import ExternalTestCase
 
+SUPER_UID = 1
+SUPER_PASSWORD = 'admin'
+
 
 class TestCommon(ExternalTestCase):
 
@@ -33,14 +36,14 @@ class TestCommon(ExternalTestCase):
         self.close_pos_session(uid, password)
 
         # new session
-        config_id = self.xmlid_to_id(config_xmlid, uid=uid, password=password)
+        config_id = self.xmlid_to_id(config_xmlid, uid=SUPER_UID, password=SUPER_PASSWORD)
         self.execute_kw('pos.session', 'create', [{
             'user_id': uid,
             'config_id': config_id,
-        }], uid=uid, password=password)
+        }], uid=SUPER_UID, password=SUPER_PASSWORD)
 
     def close_pos_session(self, uid, password):
 
-        ids = self.execute_kw('pos.session', 'search', [[('state', '<>', 'closed'), ('user_id', '=', uid)]], uid=uid, password=password)
+        ids = self.execute_kw('pos.session', 'search', [[('state', '<>', 'closed'), ('user_id', '=', uid)]], uid=SUPER_UID, password=SUPER_PASSWORD)
         if ids:
-            self.exec_workflow('pos.session', 'close', ids[0], uid=uid, password=password)
+            self.exec_workflow('pos.session', 'close', ids[0], uid=SUPER_UID, password=SUPER_PASSWORD)
