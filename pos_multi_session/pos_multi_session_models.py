@@ -26,7 +26,6 @@ class PosMultiSession(models.Model):
     name = fields.Char('Name')
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
-    order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id')
 
     @api.multi
     def on_update_message(self, message):
@@ -88,7 +87,7 @@ class PosMultiSession(models.Model):
         pos_id = message['data']['pos_id']
         pos = self.env['pos.config'].search([('multi_session_id', '=', self.id), ("id", "=", pos_id)])
         data = []
-        for order in self.order_ids:
+        for order in self.env['pos.multi_session.order'].search([('multi_session_id', '=', self.id), ('state', '=', 'draft')]):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
             msg['data']['revision_ID'] = order.revision_ID
@@ -100,26 +99,26 @@ class PosMultiSession(models.Model):
     def remove_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
-        order = self.order_ids.search([('order_uid', '=', order_uid)])
-        revision = self.check_order_revision(message, order)
-        if not revision:
-            return {'action': 'revision_error'}
-        order.unlink()
+
+        order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
+        if order.state is not 'deleted':
+            revision = self.check_order_revision(message, order)
+            if not revision:
+                return {'action': 'revision_error'}
+        if order:
+            order.state = 'deleted'
         self.broadcast_message(message)
         return 1
 
     @api.multi
     def broadcast_message(self, message):
         self.ensure_one()
-        pos_id = message['data']['pos_id']
-        for r in self.env['pos.config'].search([('id', '!=', pos_id), ('multi_session_id', '=', self.id)]):
-            r.write({
-                'multi_session_message_ID': r.multi_session_message_ID + 1
-            })
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
             if ps.user_id.id != self.env.user.id:
-                message_ID = self.env['pos.config'].search([('id', '=', ps.config_id.id)]).multi_session_message_ID
+                message_ID = ps.config_id.multi_session_message_ID
+                message_ID += 1
+                ps.config_id.multi_session_message_ID = message_ID
                 message['data']['message_ID'] = message_ID
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
 
@@ -128,7 +127,6 @@ class PosMultiSession(models.Model):
             # commit to update values on DB
             self.env.cr.commit()
             time.sleep(3)
-
         self.env['bus.bus'].sendmany(notifications)
         return 1
 
@@ -137,9 +135,10 @@ class PosMultiSessionOrder(models.Model):
     _name = 'pos.multi_session.order'
 
     order = fields.Text('Order JSON format')
-    order_uid = fields.Char()
+    order_uid = fields.Char(index=True)
+    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
-    multi_session_id = fields.Many2one('pos.multi_session', 'Multi session')
+    multi_session_id = fields.Many2one('pos.multi_session', 'Multi session', index=True)
 
 
 class PosSession(models.Model):
