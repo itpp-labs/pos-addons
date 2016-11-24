@@ -5,6 +5,7 @@ odoo.define('pos_multi_session', function(require){
     var Backbone = window.Backbone;
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
+
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome')
@@ -166,8 +167,7 @@ odoo.define('pos_multi_session', function(require){
                     lines: false,
                     multiprint_resume: data.multiprint_resume,
                 };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
-                order.new_order = false;
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json, new_order:false});
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -268,14 +268,13 @@ odoo.define('pos_multi_session', function(require){
         },
     });
 
-    chrome.OrderSelectorWidget = chrome.OrderSelectorWidget.extend({
+    chrome.OrderSelectorWidget.include({
         init: function(parent,options) {
             this._super(parent,options);
-            this.order = options.order;
-            this.order.bind('change:update_new_order', this.renderElement,this );
+            this.pos.get('orders').bind('change:update_new_order', this.renderElement,this );
         },
         destroy: function(){
-            this.pos.unbind('change:update_new_order', this.renderElement, this);
+            this.pos.get('orders').unbind('change:update_new_order', this.renderElement, this);
             this._super();
         },
     });
@@ -285,8 +284,10 @@ odoo.define('pos_multi_session', function(require){
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
             var self = this;
-            this.new_order = true;
             options = options || {};
+            this.new_order = true;
+            if ('new_order' in options)
+                this.new_order = options.new_order;
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
