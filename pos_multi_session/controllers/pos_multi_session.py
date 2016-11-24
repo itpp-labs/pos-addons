@@ -38,7 +38,7 @@ class Controller(BusController):
     def pos_multi_session_test_gc(self):
         if not openerp.tools.config['test_enable']:
             _logger.warning('Run odoo with --test-enable to use test GC')
-            return
+            return 'Run odoo with --test-enable to use test GC'
 
         timeout_ago = datetime.datetime.utcnow()
         domain = [('create_date', '<=', timeout_ago.strftime(DEFAULT_SERVER_DATETIME_FORMAT))]

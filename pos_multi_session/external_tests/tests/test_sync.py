@@ -11,6 +11,14 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # initialisation
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 30000)
+             """,
+             "timeout": 35000,
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
@@ -26,19 +34,12 @@ class TestSync(TestCommon):
                  })
             """,
              },
-            # wait for removing
-            {"session": "admin",
-             "code": """
-                 mstest.wait(function(){
-                 }, 5000)
-             """,
-             },
             # admin fills order
             {"session": "admin",
              "code": """
                  mstest.fill_order();
                  mstest.wait(function(){
-                 })
+                 }, 3000)
              """,
              },
 
@@ -69,6 +70,14 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # initialisation
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 30000)
+             """,
+             "timeout": 35000,
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
@@ -82,13 +91,6 @@ class TestSync(TestCommon):
                  mstest.wait(function(){
                     mstest.remove_all_orders();
                  })
-             """,
-             },
-            # wait for removing
-            {"session": "admin",
-             "code": """
-                 mstest.wait(function(){
-                 }, 5000)
              """,
              },
             # admin fills order
@@ -173,7 +175,7 @@ class TestSync(TestCommon):
             {"session": "demo",
              "code": "console.log('ok');",
              },
-        ], 120)
+        ], 240)
 
     def test_21_offline_remove_order(self):
         """One POS is offline, while another remove order"""
@@ -182,6 +184,14 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # initialisation
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 30000)
+             """,
+             "timeout": 35000,
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
@@ -195,13 +205,6 @@ class TestSync(TestCommon):
                  mstest.wait(function(){
                     mstest.remove_all_orders();
                  })
-             """,
-             },
-            # wait for removing
-            {"session": "admin",
-             "code": """
-                 mstest.wait(function(){
-                 }, 5000)
              """,
              },
             # admin fills order
@@ -296,6 +299,14 @@ class TestSync(TestCommon):
             "admin": {},
             "demo": {}
         }, [
+            # initialisation
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 30000)
+             """,
+             "timeout": 35000,
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
@@ -309,13 +320,6 @@ class TestSync(TestCommon):
                  mstest.wait(function(){
                     mstest.remove_all_orders();
                  })
-             """,
-             },
-            # wait for removing
-            {"session": "admin",
-             "code": """
-                 mstest.wait(function(){
-                 }, 5000)
              """,
              },
             # admin creates order

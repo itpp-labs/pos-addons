@@ -11,7 +11,7 @@ window.mstest = {
     gc: function(){
         url = '/pos_multi_session/test/gc';
         $.ajax(url).done(function(res){
-            if (res.error){
+            if (res && res.error){
                 console.log('error', 'error on GC');
             }
         }).fail(function(){
