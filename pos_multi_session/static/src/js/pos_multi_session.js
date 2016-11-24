@@ -8,9 +8,12 @@ odoo.define('pos_multi_session', function(require){
 
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
-    var chrome = require('point_of_sale.chrome')
+    var chrome = require('point_of_sale.chrome');
 
     var _t = core._t;
+
+    // prevent bus to be started by chat_manager.js
+    bus.bus.activated = true; // fake value to ignore start_polling call
 
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
@@ -57,6 +60,17 @@ odoo.define('pos_multi_session', function(require){
                 }
                 order.ms_remove_order();
             });
+            this.ready.then(function () {
+                self.init_multi_session();
+            })
+
+        },
+        init_multi_session: function(){
+            if (this.config.multi_session_id){
+                this.multi_session = new exports.MultiSession(this);
+                this.multi_session.start();
+                this.multi_session.request_sync_all();
+            }
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -255,17 +269,6 @@ odoo.define('pos_multi_session', function(require){
             }, function(err,event){ event.preventDefault(); def.reject(); });
         return def;
     },
-        load_server_data: function () {
-            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
-            var self = this;
-            return res.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new exports.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         });
-        },
     });
 
     chrome.OrderSelectorWidget.include({
@@ -439,6 +442,7 @@ odoo.define('pos_multi_session', function(require){
             this.bus = bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
+            this.bus.stop_polling();
             this.bus.start_polling();
 
         },
@@ -530,11 +534,10 @@ odoo.define('pos_multi_session', function(require){
             self.send_offline_orders();
         },
         warning: function(warning_message){
-            var self = this;
-            new instance.web.Dialog(this, {
-                title: _t("Warning"),
-                size: 'medium',
-            }, $("<div />").text(warning_message)).open();
+            this.pos.chrome.gui.show_popup('error',{
+                'title': _t('Warning'),
+                'body': warning_message,
+            });
         },
         send_offline_orders: function() {
             var self = this;
