@@ -26,6 +26,13 @@ class TestSync(TestCommon):
                  })
             """,
              },
+            # wait for removing
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 5000)
+             """,
+             },
             # admin fills order
             {"session": "admin",
              "code": """
@@ -75,6 +82,13 @@ class TestSync(TestCommon):
                  mstest.wait(function(){
                     mstest.remove_all_orders();
                  })
+             """,
+             },
+            # wait for removing
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 5000)
              """,
              },
             # admin fills order
@@ -183,6 +197,13 @@ class TestSync(TestCommon):
                  })
              """,
              },
+            # wait for removing
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 5000)
+             """,
+             },
             # admin fills order
             {"session": "admin",
              "code": """
@@ -288,6 +309,13 @@ class TestSync(TestCommon):
                  mstest.wait(function(){
                     mstest.remove_all_orders();
                  })
+             """,
+             },
+            # wait for removing
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                 }, 5000)
              """,
              },
             # admin creates order
