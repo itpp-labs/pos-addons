@@ -5,10 +5,11 @@ odoo.define('pos_multi_session', function(require){
     var Backbone = window.Backbone;
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
+    var gui     = require('point_of_sale.gui');
 
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
-    var chrome = require('point_of_sale.chrome')
+    var chrome = require('point_of_sale.chrome');
 
     var _t = core._t;
 
@@ -98,6 +99,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             var data = '';
             var action = '';
+            console.log("-------ПОЛЬЗОВАТЕЛЬ ПОЛУЧИЛ СООБЩЕНИЕ----------");
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -118,8 +120,10 @@ odoo.define('pos_multi_session', function(require){
                         self.multi_session.request_sync_all();
                     else
                         self.message_ID = data.message_ID;
-                    if (order && action == 'remove_order')
+                    if (order && action == 'remove_order') {
+                        console.log("REMOVE ORDER");
                         order.destroy({'reason': 'abandon'});
+                    }
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
                 }
@@ -166,8 +170,10 @@ odoo.define('pos_multi_session', function(require){
                     statement_ids: false,
                     lines: false,
                     multiprint_resume: data.multiprint_resume,
+                    new_order: false,
+                    order_on_server: true,
                 };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json, new_order:false});
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -285,10 +291,15 @@ odoo.define('pos_multi_session', function(require){
         initialize: function(attributes, options){
             var self = this;
             options = options || {};
-            this.new_order = true;
-            if ('new_order' in options)
-                this.new_order = options.new_order;
+
+            if (!options.json || !('new_order' in options)) {
+                this.new_order = true;
+            }
+
             OrderSuper.prototype.initialize.apply(this, arguments);
+            console.log(this.new_order);
+            console.log(attributes);
+            console.log(options);
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
             if (!_.isEmpty(options.ms_info)){
@@ -308,12 +319,12 @@ odoo.define('pos_multi_session', function(require){
             line.order.trigger('change:sync');
         },
         add_product: function(){
-            OrderSuper.prototype.add_product.apply(this, arguments);
             this.trigger('change:sync');
+            OrderSuper.prototype.add_product.apply(this, arguments);
         },
         set_client: function(client){
-            OrderSuper.prototype.set_client.apply(this,arguments);
             this.trigger('change:sync');
+            OrderSuper.prototype.set_client.apply(this,arguments);
         },
         ms_check: function(){
             if (! this.pos.multi_session )
@@ -324,12 +335,17 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_update: function(){
             var self = this;
+            console.log('ms_update sequence number', this.new_order);
+            console.log('old number', this.sequence_number);
             if (this.new_order) {
                 this.new_order = false;
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.sequence_number = this.pos.pos_session.order_ID;
                 this.trigger('change:update_new_order');
             }
+            console.log('new number', this.sequence_number);
+            console.log(this);
+            console.log(this.new_order);
             if (!this.ms_check())
                 return;
             if (this.ms_update_timeout)
@@ -353,7 +369,16 @@ odoo.define('pos_multi_session', function(require){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
             data.revision_ID = this.revision_ID;
+            console.log("export_as_JSON");
+            console.log(this.new_order);
+            data.new_order = this.new_order;
+            data.order_on_server = this.order_on_server;
             return data;
+        },
+        init_from_JSON: function(json) {
+            this.new_order = json.new_order;
+            this.order_on_server = json.order_on_server;
+            OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
             var self = this;
@@ -438,6 +463,7 @@ odoo.define('pos_multi_session', function(require){
 
             this.bus = bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
+            console.log("BUS LAST", this.bus.last);
             this.bus.on("notification", this, this.on_notification);
             this.bus.start_polling();
 
@@ -531,10 +557,10 @@ odoo.define('pos_multi_session', function(require){
         },
         warning: function(warning_message){
             var self = this;
-            new instance.web.Dialog(this, {
-                title: _t("Warning"),
-                size: 'medium',
-            }, $("<div />").text(warning_message)).open();
+                    this.pos.chrome.gui.show_popup('error',{
+                        'title': _t('Warning'),
+                        'body': warning_message,
+                    });
         },
         send_offline_orders: function() {
             var self = this;

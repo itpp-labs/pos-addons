@@ -38,13 +38,18 @@ class TestSync(TestCommon):
             # admin gets order
             {"session": "admin",
              "code": """
+                    console.log("ADMIN GET ORDER");
                   share.order = mstest.get_order();
               """,
              },
+
             # demo syncs order
             {"session": "demo",
              "code": """
-                  mstest.find_order(share.order);
+                  console.log("DEMO GET ORDER");
+                  mstest.wait(function(){
+                    mstest.find_order(share.order);
+                  }, 5000);
              """,
              },
             # TODO: admin close order (make a payment)

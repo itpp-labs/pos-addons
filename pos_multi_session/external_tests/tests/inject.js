@@ -38,7 +38,7 @@ window.mstest = {
     },
     close_popup: function(){
         // close popup with error if any
-        $(".modal-dialog button:visible").click();
+        $(".modal-dialog button.cancel").click();
     },
     fill_order: function(){
         this.add_random_product();
@@ -50,7 +50,11 @@ window.mstest = {
     },
     get_order: function(){
         lines = [];
+        console.log("============================ get order");
+        console.log($('.order-selector').html());
+
         $('.orderline').each(function(){
+            console.log(6);
             lines.push({
                 'name': $.trim($(this).find('.product-name').text()),
                 'price': $.trim($(this).find('.price').text()),
@@ -61,6 +65,9 @@ window.mstest = {
             "lines": lines,
             "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text().split("\n")[3])
         };
+
+        console.log("===========================", JSON.stringify(order));
+
         return order;
     },
     print_order: function(){
