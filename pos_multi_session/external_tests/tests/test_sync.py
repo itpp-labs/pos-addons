@@ -49,6 +49,13 @@ class TestSync(TestCommon):
                   share.order = mstest.get_order();
               """,
              },
+            # extra time for demo 
+            {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                 }, 5000)
+            """,
+             },
             # demo syncs order
             {"session": "demo",
              "code": """
@@ -98,7 +105,7 @@ class TestSync(TestCommon):
              "code": """
                  mstest.fill_order();
                  mstest.wait(function(){
-                 })
+                 }, 5000)
              """,
              },
 
@@ -113,7 +120,7 @@ class TestSync(TestCommon):
              "code": """
                  mstest.wait(function(){
                      mstest.find_order(share.order);
-                 })
+                 }, 5000)
              """,
              },
             # demo is off
