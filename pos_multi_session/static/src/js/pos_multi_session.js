@@ -561,6 +561,7 @@ odoo.define('pos_multi_session', function(require){
                 var message = notification[i][1];
                 this.on_notification_do(channel, message);
             }
+            this.pos.db.save('bus_last', this.bus.last);
         },
         on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
@@ -573,7 +574,6 @@ odoo.define('pos_multi_session', function(require){
                     });
                 }
             }
-            this.pos.db.save('bus_last', this.bus.last);
         }
     });
     return exports;
