@@ -38,7 +38,7 @@ window.mstest = {
     },
     close_popup: function(){
         // close popup with error if any
-        $(".modal-dialog button:visible").click();
+        $(".modal-dialog button.cancel:visible").click();
     },
     fill_order: function(){
         this.add_random_product();
