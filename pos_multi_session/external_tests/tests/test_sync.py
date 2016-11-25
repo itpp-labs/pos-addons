@@ -46,7 +46,6 @@ class TestSync(TestCommon):
             # admin gets order
             {"session": "admin",
              "code": """
-                    console.log("ADMIN GET ORDER");
                   share.order = mstest.get_order();
               """,
              },
@@ -54,13 +53,13 @@ class TestSync(TestCommon):
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
-                 }, 5000)
+                 }, 50000)
             """,
+             "timeout": 55000,
              },
             # demo syncs order
             {"session": "demo",
              "code": """
-                  console.log("DEMO GET ORDER");
                   mstest.wait(function(){
                     mstest.find_order(share.order);
                   }, 5000);

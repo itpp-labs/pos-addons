@@ -121,9 +121,6 @@ class PosMultiSession(models.Model):
                 ps.config_id.multi_session_message_ID = message_ID
                 message['data']['message_ID'] = message_ID
                 notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
-                print "=========================="
-                print ps.user_id.id
-                print "=========================="
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)

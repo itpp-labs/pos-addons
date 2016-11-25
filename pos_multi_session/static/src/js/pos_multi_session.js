@@ -113,7 +113,6 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             var data = '';
             var action = '';
-            console.log("-------ПОЛЬЗОВАТЕЛЬ ПОЛУЧИЛ СООБЩЕНИЕ----------");
             try{
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
@@ -135,7 +134,6 @@ odoo.define('pos_multi_session', function(require){
                     else
                         self.message_ID = data.message_ID;
                     if (order && action == 'remove_order') {
-                        console.log("REMOVE ORDER");
                         order.destroy({'reason': 'abandon'});
                     }
                     else if (action == 'update_order')
@@ -300,9 +298,6 @@ odoo.define('pos_multi_session', function(require){
             }
 
             OrderSuper.prototype.initialize.apply(this, arguments);
-            console.log(this.new_order);
-            console.log(attributes);
-            console.log(options);
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
             if (!_.isEmpty(options.ms_info)){
@@ -338,17 +333,12 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_update: function(){
             var self = this;
-            console.log('ms_update sequence number', this.new_order);
-            console.log('old number', this.sequence_number);
             if (this.new_order) {
                 this.new_order = false;
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.sequence_number = this.pos.pos_session.order_ID;
                 this.trigger('change:update_new_order');
             }
-            console.log('new number', this.sequence_number);
-            console.log(this);
-            console.log(this.new_order);
             if (!this.ms_check())
                 return;
             if (this.ms_update_timeout)
@@ -372,8 +362,6 @@ odoo.define('pos_multi_session', function(require){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
             data.revision_ID = this.revision_ID;
-            console.log("export_as_JSON");
-            console.log(this.new_order);
             data.new_order = this.new_order;
             data.order_on_server = this.order_on_server;
             return data;
@@ -466,7 +454,6 @@ odoo.define('pos_multi_session', function(require){
 
             this.bus = bus.bus;
             this.bus.last = this.pos.db.load('bus_last', 0);
-            console.log("BUS LAST", this.bus.last);
             this.bus.on("notification", this, this.on_notification);
             this.bus.stop_polling();
             this.bus.start_polling();
