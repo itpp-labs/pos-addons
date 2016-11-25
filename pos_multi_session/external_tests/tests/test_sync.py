@@ -49,7 +49,7 @@ class TestSync(TestCommon):
                   share.order = mstest.get_order();
               """,
              },
-            # extra time for demo 
+            # extra time for demo
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
