@@ -53,16 +53,13 @@ class TestSync(TestCommon):
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
-                 }, 50000)
+                 }, 5000)
             """,
-             "timeout": 55000,
              },
             # demo syncs order
             {"session": "demo",
              "code": """
-                  mstest.wait(function(){
-                    mstest.find_order(share.order);
-                  }, 5000);
+                mstest.find_order(share.order);
              """,
              },
             # TODO: admin close order (make a payment)

@@ -5,8 +5,6 @@ odoo.define('pos_multi_session', function(require){
     var Backbone = window.Backbone;
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
-    var gui     = require('point_of_sale.gui');
-
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
@@ -293,7 +291,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             options = options || {};
 
-            if (!options.json || !('new_order' in options)) {
+            if (!options.json || !('new_order' in options.json)) {
                 this.new_order = true;
             }
 
@@ -321,6 +319,12 @@ odoo.define('pos_multi_session', function(require){
             OrderSuper.prototype.add_product.apply(this, arguments);
         },
         set_client: function(client){
+             /*  trigger event before calling add_product,
+                 because event handler ms_update updates some values of the order (e.g. new_name),
+                 while add_product saves order to localStorage.
+                 So, calling add_product first would lead to saving obsolete values to localStorage.
+                 From the other side, ms_update work asynchronously (via setTimeout) and will get updates from add_product method
+             */
             this.trigger('change:sync');
             OrderSuper.prototype.set_client.apply(this,arguments);
         },
@@ -547,7 +551,6 @@ odoo.define('pos_multi_session', function(require){
             self.send_offline_orders();
         },
         warning: function(warning_message){
-            var self = this;
             this.pos.chrome.gui.show_popup('error',{
                 'title': _t('Warning'),
                 'body': warning_message,
