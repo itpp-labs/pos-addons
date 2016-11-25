@@ -59,7 +59,7 @@ class PosMultiSession(models.Model):
         sequence_number = message['data']['sequence_number']
         order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
-        if not revision or (order and order.state == 'deleted') :
+        if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
         if order:  # order already exists
             order.write({

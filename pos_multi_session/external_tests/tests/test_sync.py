@@ -49,7 +49,7 @@ class TestSync(TestCommon):
                   share.order = mstest.get_order();
               """,
              },
-            # extra time for demo 
+            # extra time for demo
             {"session": "demo",
              "code": """
                  mstest.wait(function(){
@@ -59,7 +59,7 @@ class TestSync(TestCommon):
             # demo syncs order
             {"session": "demo",
              "code": """
-                  mstest.find_order(share.order);
+                mstest.find_order(share.order);
              """,
              },
             # TODO: admin close order (make a payment)

@@ -5,7 +5,6 @@ odoo.define('pos_multi_session', function(require){
     var Backbone = window.Backbone;
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
-
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
@@ -62,7 +61,7 @@ odoo.define('pos_multi_session', function(require){
             });
             this.ready.then(function () {
                 self.init_multi_session();
-            })
+            });
 
         },
         init_multi_session: function(){
@@ -132,8 +131,9 @@ odoo.define('pos_multi_session', function(require){
                         self.multi_session.request_sync_all();
                     else
                         self.message_ID = data.message_ID;
-                    if (order && action == 'remove_order')
+                    if (order && action == 'remove_order') {
                         order.destroy({'reason': 'abandon'});
+                    }
                     else if (action == 'update_order')
                         this.ms_do_update(order, data);
                 }
@@ -180,8 +180,10 @@ odoo.define('pos_multi_session', function(require){
                     statement_ids: false,
                     lines: false,
                     multiprint_resume: data.multiprint_resume,
+                    new_order: false,
+                    order_on_server: true,
                 };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json, new_order:false});
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -288,9 +290,11 @@ odoo.define('pos_multi_session', function(require){
         initialize: function(attributes, options){
             var self = this;
             options = options || {};
-            this.new_order = true;
-            if ('new_order' in options)
-                this.new_order = options.new_order;
+
+            if (!options.json || !('new_order' in options.json)) {
+                this.new_order = true;
+            }
+
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
@@ -311,12 +315,18 @@ odoo.define('pos_multi_session', function(require){
             line.order.trigger('change:sync');
         },
         add_product: function(){
-            OrderSuper.prototype.add_product.apply(this, arguments);
             this.trigger('change:sync');
+            OrderSuper.prototype.add_product.apply(this, arguments);
         },
         set_client: function(client){
-            OrderSuper.prototype.set_client.apply(this,arguments);
+             /*  trigger event before calling add_product,
+                 because event handler ms_update updates some values of the order (e.g. new_name),
+                 while add_product saves order to localStorage.
+                 So, calling add_product first would lead to saving obsolete values to localStorage.
+                 From the other side, ms_update work asynchronously (via setTimeout) and will get updates from add_product method
+             */
             this.trigger('change:sync');
+            OrderSuper.prototype.set_client.apply(this,arguments);
         },
         ms_check: function(){
             if (! this.pos.multi_session )
@@ -356,7 +366,14 @@ odoo.define('pos_multi_session', function(require){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
             data.ms_info = this.ms_info;
             data.revision_ID = this.revision_ID;
+            data.new_order = this.new_order;
+            data.order_on_server = this.order_on_server;
             return data;
+        },
+        init_from_JSON: function(json) {
+            this.new_order = json.new_order;
+            this.order_on_server = json.order_on_server;
+            OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
             var self = this;
