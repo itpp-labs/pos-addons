@@ -13,6 +13,9 @@ odoo.define('pos_multi_session', function(require){
 
     var _t = core._t;
 
+    // prevent bus to be started by chat_manager.js
+    bus.bus.activated = true; // fake value to ignore start_polling call
+
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
             if (order_line.node && order_line.node.parentNode) {
@@ -58,6 +61,17 @@ odoo.define('pos_multi_session', function(require){
                 }
                 order.ms_remove_order();
             });
+            this.ready.then(function () {
+                self.init_multi_session();
+            })
+
+        },
+        init_multi_session: function(){
+            if (this.config.multi_session_id){
+                this.multi_session = new exports.MultiSession(this);
+                this.multi_session.start();
+                this.multi_session.request_sync_all();
+            }
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -261,17 +275,6 @@ odoo.define('pos_multi_session', function(require){
             }, function(err,event){ event.preventDefault(); def.reject(); });
         return def;
     },
-        load_server_data: function () {
-            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
-            var self = this;
-            return res.then(function(){
-                             if (self.config.multi_session_id){
-                                 self.multi_session = new exports.MultiSession(self);
-                                 self.multi_session.start();
-                                 self.multi_session.request_sync_all();
-                             }
-                         });
-        },
     });
 
     chrome.OrderSelectorWidget.include({
@@ -465,6 +468,7 @@ odoo.define('pos_multi_session', function(require){
             this.bus.last = this.pos.db.load('bus_last', 0);
             console.log("BUS LAST", this.bus.last);
             this.bus.on("notification", this, this.on_notification);
+            this.bus.stop_polling();
             this.bus.start_polling();
 
         },
@@ -557,10 +561,10 @@ odoo.define('pos_multi_session', function(require){
         },
         warning: function(warning_message){
             var self = this;
-                    this.pos.chrome.gui.show_popup('error',{
-                        'title': _t('Warning'),
-                        'body': warning_message,
-                    });
+            this.pos.chrome.gui.show_popup('error',{
+                'title': _t('Warning'),
+                'body': warning_message,
+            });
         },
         send_offline_orders: function() {
             var self = this;
@@ -587,6 +591,7 @@ odoo.define('pos_multi_session', function(require){
                 var message = notification[i][1];
                 this.on_notification_do(channel, message);
             }
+            this.pos.db.save('bus_last', this.bus.last);
         },
         on_notification_do: function (channel, message) {
             if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
@@ -599,7 +604,6 @@ odoo.define('pos_multi_session', function(require){
                     });
                 }
             }
-            this.pos.db.save('bus_last', this.bus.last);
         }
     });
     return exports;

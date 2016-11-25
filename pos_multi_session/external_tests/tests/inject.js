@@ -11,7 +11,7 @@ window.mstest = {
     gc: function(){
         url = '/pos_multi_session/test/gc';
         $.ajax(url).done(function(res){
-            if (res.error){
+            if (res && res.error){
                 console.log('error', 'error on GC');
             }
         }).fail(function(){
@@ -38,7 +38,7 @@ window.mstest = {
     },
     close_popup: function(){
         // close popup with error if any
-        $(".modal-dialog button.cancel").click();
+        $(".modal-dialog button.cancel:visible").click();
     },
     fill_order: function(){
         this.add_random_product();
