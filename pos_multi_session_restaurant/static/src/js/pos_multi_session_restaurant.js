@@ -51,7 +51,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.ms_table = false;
         },
         ms_create_order: function(options){
             var self = this;
@@ -59,10 +58,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
                 order.customer_count = options.data.customer_count;
-                order.save_to_db();
-            }
-            else if (this.ms_table){
-                order.table = this.ms_table;
                 order.save_to_db();
             }
             return order;
@@ -75,23 +70,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.gui.screen_instances.products.action_buttons.guests.renderElement();
             }
         },
-        ms_orders_to_sync: function(){
-            var self = this;
-            if (!this.ms_table){
-                return PosModelSuper.prototype.ms_orders_to_sync.apply(this, arguments);
-            }
-            return this.get('orders').filter(function(r){
-                       return r.table === self.ms_table;
-                   });
-        },
         ms_on_add_order: function(current_order){
             if (!current_order){
-                // no current_order, because we on floor screen
-                _.each(this.get('orders').models, function(o){
-                    if (o.table === this.ms_table && o.ms_replace_empty_order && o.is_empty()){
-                        o.destroy({'reason': 'abandon'});
-                    }
-                });
                 this.trigger('change:orders-count-on-floor-screen');
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
