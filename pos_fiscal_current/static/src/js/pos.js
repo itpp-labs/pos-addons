@@ -12,6 +12,6 @@ odoo.define('pos_fiscal_current', function (require) {
                 }
             }
         }
-    })
+    });
 
-})
+});

@@ -57,5 +57,5 @@ odoo.define('pos_product_available.PosModel', function(require){
 
             return invoiced;
         },
-    })
-})
+    });
+});

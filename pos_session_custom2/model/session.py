@@ -22,7 +22,7 @@ class PosBoxOut(PosBox):
         return values
 
 
-class account_bank_statement_line(models.Model):
+class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
 
@@ -35,7 +35,7 @@ class account_bank_statement_line(models.Model):
     }
 
 
-class account_cash_statement(models.Model):
+class AccountCashStatement(models.Model):
 
     _inherit = 'account.bank.statement'
 
@@ -102,8 +102,7 @@ class account_cash_statement(models.Model):
                                                          help="Total of cash transaction lines.")
 
 
-
-class sessionpos(models.Model):
+class Sessionpos(models.Model):
 
     def _fun_difference(self, cr, uid, ids, fields, args, context=None):
         res = {}
@@ -116,7 +115,7 @@ class sessionpos(models.Model):
                 flag = False
                 for producto in order.lines:
                     if producto.product_id.expense_pdt:
-                        print producto.product_id.name
+                        # print producto.product_id.name
                         flag = True
                 if flag:
                     totali -= (order.amount_total * 2)
@@ -267,7 +266,6 @@ class sessionpos(models.Model):
     def summary_by_tax(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}  # tax_id -> data
         for session in self.browse(cr, uid, ids, context=context):
             for order in session.order_ids:
@@ -278,7 +276,7 @@ class sessionpos(models.Model):
                     cur = line.order_id.pricelist_id.currency_id
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, cur.id, line.qty, line.product_id.id, line.order_id.partner_id.id or False)
 
-                    print 'taxes', taxes
+                    # print 'taxes', taxes
                     for tax in taxes['taxes']:
                         id = tax['id']
                         if id not in res:
@@ -293,7 +291,7 @@ class sessionpos(models.Model):
                                        'tax': tax_rule,
                                        'total': 0,
                                        }
-                        #res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
+                        # res[id]['base'] += cur.round(tax['price_unit'] * line.qty)
                         res[id]['base'] += cur.round(taxes['total_excluded'])
                         res[id]['total'] += tax['amount']
                         # cur_obj.round(cr, uid, cur, taxes['amount'])
@@ -302,7 +300,6 @@ class sessionpos(models.Model):
 
     def _calc_tax(self, cr, uid, ids, name, args, context=None):
         account_tax_obj = self.pool.get('account.tax')
-        cur_obj = self.pool.get('res.currency')
         res = {}
         for session in self.browse(cr, uid, ids, context=context):
             res[session.id] = {'tax_base_total': 0}
@@ -312,7 +309,6 @@ class sessionpos(models.Model):
 
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = account_tax_obj.compute_all(cr, uid, taxes_ids, price, line.qty, product=line.product_id, partner_id=line.order_id.partner_id.id or False)
-                    cur = line.order_id.pricelist_id.currency_id
 
                     res[session.id]['tax_base_total'] += taxes['total']
         return res
@@ -340,9 +336,7 @@ class sessionpos(models.Model):
     cash_register_total_entry_encoding_take_out = fields.Float(related='cash_register_id.total_entry_encoding_take_out',
                                                                       string='Cash take out',
                                                                       readonly=True,
-                                                                      )
-
-
+                                                                      ),
         #'validate':fields.Boolean(string="Validation",help="validation"),
         #'difference':fields.Function(_fun_difference,string="Difference"),
         #'difference2':fields.Float('difference2'),
@@ -361,4 +355,3 @@ class sessionpos(models.Model):
     ticket_last_id = fields.Many2one('pos.order', compute="_calc_tickets", string='Last Ticket',)
         #'money_close':fields.Float('money Close'),
         #'money_reported':fields.Float('money Reported'),
-

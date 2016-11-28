@@ -1,7 +1,12 @@
 .. _changelog:
 
-Changelog
-=========
+Updates
+=======
+
+`2.1.2`
+-------
+
+- FIX: "allow payments" checkbox was ignored after clicking "Set Customer" button
 
 `2.1.1`
 -------

@@ -1,7 +1,7 @@
 .. _changelog:
 
-Changelog
-=========
+Updates
+=======
 
 `1.0.1`
 -------

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
+    <data>
 
 <template id="assets" inherit_id="pos_restaurant.assets">
     <xpath expr="." position="inside">
@@ -8,5 +8,5 @@
     </xpath>
 </template>
 
-	</data>
+    </data>
 </openerp>

@@ -6,5 +6,5 @@ openerp.pos_disable_restore_orders = function(instance){
     module.PosModel = module.PosModel.extend({
         load_orders: function(){
         }
-  })
-}
+  });
+};

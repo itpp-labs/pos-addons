@@ -14,7 +14,7 @@ class PosConfig(models.Model):
         help='Group allows to sell products which are out of a stock.')
 
 
-class pos_order(models.Model):
+class PosOrder(models.Model):
     _inherit = "pos.order"
 
     negative_stock_user_id = fields.Many2one(
@@ -23,6 +23,6 @@ class pos_order(models.Model):
 
     @api.model
     def _order_fields(self, ui_order):
-        res = super(pos_order, self)._order_fields(ui_order)
+        res = super(PosOrder, self)._order_fields(ui_order)
         res['negative_stock_user_id'] = ui_order['negative_stock_user_id']
         return res

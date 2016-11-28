@@ -2,8 +2,7 @@
 from openerp import models
 
 
-
-class product_product(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     def generate_ean13(self, cr, uid, ids, context=None):
