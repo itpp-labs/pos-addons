@@ -30,7 +30,7 @@ window.mstest = {
     },
     remove_current_order: function() {
         $('.deleteorder-button').click();
-        $('.confirm').click();
+        $('.confirm:visible').click();
     },
     add_random_product: function(){
         this._rand($('.product')).click();
