@@ -46,5 +46,4 @@ class TestCommon(ExternalTestCase):
 
         ids = self.execute_kw('pos.session', 'search', [[('state', '<>', 'closed'), ('user_id', '=', uid)]], uid=SUPER_UID, password=SUPER_PASSWORD)
         if ids:
-            print 'ids', ids
             self.execute_kw('pos.session', 'action_pos_session_close', [ids], uid=SUPER_UID, password=SUPER_PASSWORD)
