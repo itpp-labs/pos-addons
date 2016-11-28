@@ -10,24 +10,45 @@ window.mstest = {
     },
     gc: function(){
         url = '/pos_multi_session/test/gc';
-        $.ajax(url, {
-            dataType: 'json',
-            type: 'POST',
-            data: '{}',
-            contentType: 'application/json'
-        }).done(function(res){
-            if (res.error){
+        $.ajax(url).done(function(res){
+            if (res && res.error){
                 console.log('error', 'error on GC');
             }
         }).fail(function(){
             console.log('error', 'cannot call GC');
         });
     },
-    fill_order: function(){
-        this._rand($('.product')).click();
-        this._rand($('.product')).click();
+    remove_all_orders: function() {
+        var orders = $(".select-order").length;
+        while (orders > 1) {
+            this.remove_current_order();
+            orders = $(".select-order").length;
+        }
+        if (orders == 1) {
+            this.remove_current_order();
+        }
     },
-    save_order: function(){
+    remove_current_order: function() {
+        $('.deleteorder-button').click();
+        $('.confirm').click();
+    },
+    add_random_product: function(){
+        this._rand($('.product')).click();
+        this.close_popup();
+    },
+    close_popup: function(){
+        // close popup with error if any
+        $(".modal-dialog button.cancel:visible").click();
+    },
+    fill_order: function(){
+        this.add_random_product();
+        this.add_random_product();
+    },
+    new_order: function(){
+        this.close_popup();
+        $(".neworder-button").click();
+    },
+    get_order: function(){
         lines = [];
         $('.orderline').each(function(){
             lines.push({
@@ -38,19 +59,26 @@ window.mstest = {
         });
         order = {
             "lines": lines,
-            "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text())
+            "order_num": parseInt($('.order-button.select-order.selected .order-sequence').text().split("\n")[3])
         };
-        //console.log('save_order', JSON.stringify(order))
         return order;
     },
-    find_order: function(order){
+    print_order: function(){
+        order = this.get_order();
+        console.log('Order', JSON.stringify(order));
+    },
+    switch_to_order: function(order){
         $('.order-sequence').each(function(){
-            if ($.trim($(this).text()) == order.order_num){
+            var order_num = $.trim($(this).html()).split("\n");
+            if (parseInt(order_num[2]) == order.order_num){
                 $(this).click();
                 return false;
             }
         });
-        found = this.save_order();
+    },
+    find_order: function(order){
+        this.switch_to_order(order);
+        found = this.get_order();
         if (JSON.stringify(order) !== JSON.stringify(found)){
             console.log('Expected Order', JSON.stringify(order));
             console.log('Found Order', JSON.stringify(found));
@@ -58,11 +86,37 @@ window.mstest = {
         }
         return found;
     },
+    order_exists: function(order){
+        this.switch_to_order(order);
+        found = this.get_order();
+        return order.order_num == found.order_num;
+    },
+    check_inclusion: function(small, big){
+        // check that order "big" includes order "small"
+        included = true;
+        if (small.order_num != big.order_num){
+            console.log('error', 'Order nums are mismatched', small.order_num, big.order_num);
+        }
+        _.each(small.lines, function(small_line){
+            big_line = _.find(big.lines, function(line){
+                return line.name == small_line.name;
+            });
+            if (!big_line)
+                included = false;
+            else if (parseInt(big_line.qty) < parseInt(small_line.qty))
+                included = false;
+        });
+        if (!included){
+            console.log('Small Order', JSON.stringify(small));
+            console.log('Big Order', JSON.stringify(big));
+            console.log('error', 'Order lines are lost');
+        }
+    },
     wait: function(callback, timeout){
         mstest.is_wait = true;
         setTimeout(function(){
-            mstest.is_wait = false;
             callback();
+            mstest.is_wait = false;
         }, timeout || 1000);
     },
 
