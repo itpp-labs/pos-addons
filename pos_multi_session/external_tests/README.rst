@@ -36,6 +36,10 @@ Odoo server
 * use database with demo data
 * use ``--db-filter`` it equal to database name
 * use ``--workers=0``
+* in file addons/point_of_sale/static/src/js/gui.js comment out following line ::
+
+    self.close_other_tabs();
+
 * in file addons/bus/static/src/js/bus.js replace ::
 
       if(typeof Storage !== "undefined"){

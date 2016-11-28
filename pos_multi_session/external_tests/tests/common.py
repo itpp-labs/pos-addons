@@ -11,7 +11,7 @@ class TestCommon(ExternalTestCase):
 
     def phantom_js_multi(self, sessions, commands, timeout=60, **kw):
         for sname, sdata in sessions.items():
-            sdata.setdefault('url_path', "/pos/web?debug")
+            sdata.setdefault('url_path', "/pos/web?debug=assets")
             sdata.setdefault('ready', "$('.loader:hidden').length")
             sdata.setdefault('timeout', 60)
             sdata.setdefault('login', sname)
@@ -46,4 +46,4 @@ class TestCommon(ExternalTestCase):
 
         ids = self.execute_kw('pos.session', 'search', [[('state', '<>', 'closed'), ('user_id', '=', uid)]], uid=SUPER_UID, password=SUPER_PASSWORD)
         if ids:
-            self.exec_workflow('pos.session', 'close', ids[0], uid=SUPER_UID, password=SUPER_PASSWORD)
+            self.execute_kw('pos.session', 'action_pos_session_close', [ids], uid=SUPER_UID, password=SUPER_PASSWORD)
