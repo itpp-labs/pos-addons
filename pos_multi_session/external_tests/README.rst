@@ -35,7 +35,8 @@ Odoo server
 * run it with ``--test-enable``
 * use database with demo data
 * use ``--db-filter`` it equal to database name
-* use ``--workers=0``
+* use ``--workers=1``
+* configure nginx to handle ``/longpolling/poll`` requests
 * in file addons/point_of_sale/static/src/js/gui.js comment out following line ::
 
     self.close_other_tabs();
