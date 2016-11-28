@@ -55,6 +55,11 @@ function pos_ticket_custom(instance, module){
                 return self.fetch('res.currency',['name', 'symbol','position','rounding','accuracy'],[['id','=',self.pricelist.currency_id[0]]]);
             }).then(function(currencies){
                 self.currency = currencies[0];
+                if (self.currency.rounding > 0) {
+                    self.currency.decimals = Math.ceil(Math.log(1.0 / self.currency.rounding) / Math.log(10));
+                } else {
+                    self.currency.decimals = 0;
+                }
 
                 return $.when();
             });

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
+    <data>
 
-		<!-- RESTAURANTS FLOORS -->
+        <!-- RESTAURANTS FLOORS -->
 
-		<record model="ir.ui.view" id="to_restaurant_floor_inherit_form">
-			<field name="name">to.restaurant.floor.inherit.form</field>
-			<field name="model">restaurant.floor</field>
-			<field name="inherit_id" ref="pos_restaurant.view_restaurant_floor_form"></field>
-			<field name="arch" type="xml">
-				<field name="pos_config_id" position="replace">
-					<field name="pos_config_id" invisible="1" />
-				</field>
-			</field>
-		</record>
+        <record model="ir.ui.view" id="to_restaurant_floor_inherit_form">
+            <field name="name">to.restaurant.floor.inherit.form</field>
+            <field name="model">restaurant.floor</field>
+            <field name="inherit_id" ref="pos_restaurant.view_restaurant_floor_form"></field>
+            <field name="arch" type="xml">
+                <field name="pos_config_id" position="replace">
+                    <field name="pos_config_id" invisible="1" />
+                </field>
+            </field>
+        </record>
 
-		<record model="ir.ui.view" id="to_pos_config_inherit_form">
-			<field name="name">to.pos.config.inherit.form</field>
-			<field name="model">pos.config</field>
-			<field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
-			<field name="arch" type="xml">
-				<data>
-					<xpath expr="//field[@name='floor_ids']" position="replace">
-						<field name="floor_ids" widget="many2many_tags"/>
-					</xpath>
-				</data>
-			</field>
-		</record>
+        <record model="ir.ui.view" id="to_pos_config_inherit_form">
+            <field name="name">to.pos.config.inherit.form</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='floor_ids']" position="replace">
+                        <field name="floor_ids" widget="many2many_tags"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
 
-	</data>
+    </data>
 </openerp>
