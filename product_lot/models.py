@@ -2,7 +2,7 @@
 from openerp.osv import fields, orm
 
 
-class product_product(orm.Model):
+class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     def _get_lot_id(self, cr, uid, ids, name, arg, context=None):

@@ -10,9 +10,22 @@
             </div>
         </t>
     </t>
+
     <t t-extend="OrderButtonWidget">
-        <t t-jquery=".order-sequence" t-operation="append">
-            <span t-if="widget.order.ms_info and widget.order.ms_info.created" class="ms_info"><t t-esc="widget.order.ms_info.created.pos.name"/></span>
+        <t t-jquery="t[t-if='widget.selected'] .order-sequence" t-operation="replace">
+            <span class='order-sequence'>
+                <span t-if="widget.order.ms_info and widget.order.ms_info.created" class="ms_info"><t t-esc="widget.order.ms_info.created.pos.name"/></span>
+                <t t-if="widget.order.new_order"><span class="new_order">New</span></t>
+                <t t-if="!widget.order.new_order"><t t-esc='widget.order.sequence_number' /></t>
+            </span>
+        </t>
+        <t t-jquery="t[t-if='!widget.selected'] .order-sequence" t-operation="replace">
+            <span class='order-sequence'>
+                <span t-if="widget.order.ms_info and widget.order.ms_info.created" class="ms_info"><t t-esc="widget.order.ms_info.created.pos.name"/></span>
+                <t t-if="widget.order.new_order">New</t>
+                <t t-if="!widget.order.new_order"><t t-esc='widget.order.sequence_number' /></t>
+            </span>
         </t>
     </t>
+
 </templates>

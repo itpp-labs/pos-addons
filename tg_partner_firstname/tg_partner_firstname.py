@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+#
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 - Thierry Godin. All Rights Reserved
@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#
 
 import logging
 from openerp.osv import fields, osv
@@ -26,7 +26,7 @@ from openerp.osv import fields, osv
 _logger = logging.getLogger(__name__)
 
 
-class inherit_res_partner(osv.osv):
+class InheritResPartner(osv.osv):
     _name = 'res.partner'
     _inherit = 'res.partner'
 
@@ -44,7 +44,7 @@ class inherit_res_partner(osv.osv):
             v_firstname = vals['firstname'].strip()
             vals['firstname'] = v_firstname.title()
 
-        result = super(inherit_res_partner, self).write(cr, uid, ids, vals, context=context)
+        result = super(InheritResPartner, self).write(cr, uid, ids, vals, context=context)
         return result
 
     def create(self, cr, uid, vals, context=None):
@@ -61,7 +61,7 @@ class inherit_res_partner(osv.osv):
             v_firstname = vals['firstname'].strip()
             vals['firstname'] = v_firstname.title()
 
-        result = super(inherit_res_partner, self).create(cr, uid, vals, context=context)
+        result = super(InheritResPartner, self).create(cr, uid, vals, context=context)
         return result
 
     _columns = {

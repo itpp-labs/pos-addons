@@ -1,7 +1,15 @@
 .. _changelog:
 
-Changelog
+Updates
 =========
+
+`2.0.0`
+-------
+
+- NEW: Protection against concurrent or obsolete order update requests
+- NEW: Stable order numbering: no duplicates, no omissions. Use word "New" for unregistered empty orders.
+- NEW: Restoring after connection problems
+
 
 `1.0.1`
 -------

@@ -2,18 +2,18 @@
 from openerp.osv import osv
 
 
-class report(osv.AbstractModel):
+class Report(osv.AbstractModel):
     _name = 'report.pos_session_custom.report'
 
     def render_html(self, cr, uid, ids, data=None, context=None):
         report_obj = self.pool['report']
-        report = report_obj._get_report_from_name(
+        Report = report_obj._get_report_from_name(
             cr, uid, 'pos_session_custom.report'
         )
         docargs = {
             'doc_ids': ids,
-            'doc_model': report.model,
-            'docs': self.pool[report.model].browse(
+            'doc_model': Report.model,
+            'docs': self.pool[Report.model].browse(
                 cr, uid, ids, context=context
             ),
         }
