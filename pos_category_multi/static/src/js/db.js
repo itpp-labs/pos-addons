@@ -19,7 +19,7 @@ odoo.define('pos_category_multi.DB', function (require) {
             return false;
         },
         is_product_in_category: function(category_ids, product_id) {
-            this._super.apply(this, arguments);
+            //this._super.apply(this, arguments);
             var cats = this.get_product_by_id(product_id).pos_category_ids;
             for (var j = 0; j < cats.length; j++) {
                 var cat = cats[j];
