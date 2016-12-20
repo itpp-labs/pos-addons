@@ -19,7 +19,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-from openerp import fields, models
+from odoo import fields, models
 
 
 class PosConfig(models.Model):
