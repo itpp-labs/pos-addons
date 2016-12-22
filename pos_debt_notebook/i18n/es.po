@@ -1,0 +1,150 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_debt_notebook
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-16 23:24+0000\n"
+"PO-Revision-Date: 2016-09-02 01:49-0600\n"
+"Last-Translator: Luis Alberto Guzmán <ark@switnet.org>\n"
+"Language-Team: SwITNet Ltd\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: Spanish\n"
+
+#. module: pos_debt_notebook
+#: field:account.journal,debt:0
+msgid "Debt Payment Method"
+msgstr "Método de pago Deuda"
+
+#. module: pos_debt_notebook
+#: view:res.partner:pos_debt_notebook.res_partner_kanban_view
+msgid "Debt:"
+msgstr "Deuda:"
+
+#. module: pos_debt_notebook
+#: field:pos.config,debt_dummy_product_id:0
+msgid "Dummy Product for Debt"
+msgstr "Producto ejemplo para Deuda"
+
+#. module: pos_debt_notebook
+#: help:pos.config,debt_dummy_product_id:0
+msgid ""
+"Dummy product used when a customer pays his debt without ordering new "
+"products. This is a workaround to the fact that Odoo needs to have at least "
+"one product on the order to validate the transaction."
+msgstr ""
+"Producto de ejemplo usado cuando el cliente paga su deuda sin ordenar "
+"productos nuevos. Este es un modo alterno para el hecho de que Odoo necesita "
+"tener al menos un producto en la orden para validad la transacción."
+
+#. module: pos_debt_notebook
+#: model:ir.model,name:pos_debt_notebook.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: pos_debt_notebook
+#: model:ir.model,name:pos_debt_notebook.model_res_partner
+msgid "Partner"
+msgstr "Socio"
+
+#. module: pos_debt_notebook
+#: model:product.template,name:pos_debt_notebook.product_pay_debt_product_template
+msgid "Pay Debt"
+msgstr "Pagar deuda"
+
+#. module: pos_debt_notebook
+#: model:product.template,description:pos_debt_notebook.product_pay_debt_product_template
+msgid ""
+"This is a dummy product used when a customer pays his debt without ordering "
+"new products. This is a workaround to the fact that Odoo needs to have at "
+"least one product on the order to validate the transaction."
+msgstr ""
+"Este es un producto de ejemplo usado cuando el cliente paga su deuda sin "
+"ordenar productos nuevos. Este es un modo alterno para el hecho de que Odoo "
+"necesita tener al menos un producto en la orden para validad la transacción."
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:165
+#, python-format
+msgid "Change Customer and Pay Full Debt"
+msgstr "Cambiar cliente y pagar deuda completa"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:11
+#, python-format
+msgid "Debt"
+msgstr "Deuda"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:91
+#, python-format
+msgid "Empty Order"
+msgstr "Orden vacia"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:181
+#, python-format
+msgid "Error: No Debt"
+msgstr "Error: Sin deuda"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:25
+#, python-format
+msgid "Pay Full Debt"
+msgstr "Pagar deuda completa"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:32
+#, python-format
+msgid "Select Customer and Pay Full Debt"
+msgstr "Seleccionar cliente y pagar deuda completa"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:163
+#, python-format
+msgid "Set Customer and Pay Full Debt"
+msgstr "Elegir cliente y pagar la deuda completa"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:182
+#, python-format
+msgid "The selected customer has no debt."
+msgstr "El cliente seleccionado no tiene deuda."
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:92
+#, python-format
+msgid ""
+"There must be at least one product in your order before it can be validated. "
+"(Hint: you can use some dummy zero price product)"
+msgstr ""
+"Debe haber al menos un producto en su orden antes de que pueda ser validada. "
+"(Pista: puede usar un producto de ejemplo con precio cero)"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:83
+#, python-format
+msgid "Unknown customer"
+msgstr "Cliente desconocido"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:84
+#, python-format
+msgid "You cannot use Debt payment. Select customer first."
+msgstr "No puedes usar el método de pago Deuda. Primero defina un cliente."
