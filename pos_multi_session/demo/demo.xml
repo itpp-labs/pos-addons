@@ -16,7 +16,7 @@
             <field name="multi_session_id" ref="demo_multi_session"/>
         </record>
 
-        <record id="base.partner_demo2" model="res.partner">
+        <record id="partner_demo2" model="res.partner">
             <field name="name">Demo User2</field>
             <field name="company_id" ref="base.main_company"/>
             <field name="customer" eval="False"/>
@@ -25,8 +25,8 @@
             <field name="city">Namur (Loyers)2</field>
             <field name="zip">5102</field>
         </record>
-        <record id="base.user_demo2" model="res.users">
-            <field name="partner_id" ref="base.partner_demo2"/>
+        <record id="user_demo2" model="res.users">
+            <field name="partner_id" ref="partner_demo2"/>
             <field name="login">demo2</field>
             <field name="password">demo2</field>
             <field name="signature">--Mr Demo2</field>
