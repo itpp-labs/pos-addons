@@ -494,13 +494,11 @@ odoo.define('pos_multi_session', function(require){
                         self.start_offline_sync_timer();
                         self.show_warning_message = false;
                     }
-                }
-                if(error.data.exception_type === "access_error") {
+                }else if(error.data && error.data.exception_type === "access_error") {
                     e.preventDefault();
                     var warning_message = error.data.message;
                     self.warning(warning_message);
-                }
-                else {
+                } else {
                     self.request_sync_all();
                 }
             }).done(function(res){
