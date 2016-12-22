@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, SUPERUSER_ID
-from openerp import models
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields, api
+import odoo.addons.decimal_precision as dp
 
 
 class ResPartner(models.Model):
@@ -55,13 +54,13 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     debt_dummy_product_id = fields.Many2one(
-            'product.product',
-            string='Dummy Product for Debt',
-            domain=[('available_in_pos', '=', True)],
-            help="Dummy product used when a customer pays his debt "
-                 "without ordering new products. This is a workaround to the fact "
-                 "that Odoo needs to have at least one product on the order to "
-                 "validate the transaction.")
+        'product.product',
+        string='Dummy Product for Debt',
+        domain=[('available_in_pos', '=', True)],
+        help="Dummy product used when a customer pays his debt "
+        "without ordering new products. This is a workaround to the fact "
+        "that Odoo needs to have at least one product on the order to "
+        "validate the transaction.")
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']

@@ -191,7 +191,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var order = self.pos.get_order();
                 if (order) {
                     var lastorderline = order.get_last_orderline();
-                    if (lastorderline == null && self.pos.config.debt_dummy_product_id){
+                    if (lastorderline === null && self.pos.config.debt_dummy_product_id){
                         var dummy_product = self.pos.db.get_product_by_id(
                             self.pos.config.debt_dummy_product_id[0]);
                         order.add_product(dummy_product, {'price': 0});
