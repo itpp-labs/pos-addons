@@ -102,7 +102,7 @@ class ExternalTestCase(unittest2.TestCase):
         options = {
             # since 10.0 we use odoo with --workers=1 + nginx,
             # and hence we shall not specify port and proxy requests to nginx
-            #'port': PORT,
+            # 'port': PORT,
             'db': DATABASE,
             'sessions': sessions,
             'commands': commands,
