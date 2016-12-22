@@ -15,6 +15,11 @@ Updates
 -------
 - FIX: For pos restaurant compatibility. Sync printed positions.
 
+`2.0.1`
+-------
+
+- FIX: "Sync conflict" error on slow connection
+
 `2.0.0`
 -------
 
