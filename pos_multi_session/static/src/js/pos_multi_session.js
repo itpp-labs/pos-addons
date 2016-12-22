@@ -305,7 +305,7 @@ openerp.pos_multi_session = function(instance){
                 function(){
                     self.ms_update_timeout = false;
                     self.do_ms_update();
-                }, 300);
+                }, 1000);
         },
         ms_remove_order: function(){
             if (!this.ms_check())
