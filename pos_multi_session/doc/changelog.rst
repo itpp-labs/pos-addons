@@ -3,6 +3,11 @@
 Updates
 =========
 
+`2.0.1`
+-------
+
+- FIX: "Sync conflict" error on slow connection
+
 `2.0.0`
 -------
 
