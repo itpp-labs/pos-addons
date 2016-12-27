@@ -5,8 +5,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var screens = require('point_of_sale.screens');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
+    var utils = require('web.utils');
 
     var _t = core._t;
+    var round_pr = utils.round_precision;
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
@@ -47,12 +49,29 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
 
             var newPaymentline = new models.Paymentline({},{order: this, cashregister: cashregister, pos: this.pos});
-            if(cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash ||
-                cashregister.journal.debt){
-                newPaymentline.set_amount( Math.max(this.get_due(),0) );
+            if (cashregister.journal.debt){
+                newPaymentline.set_amount(this.get_due_debt());
+            } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
+                newPaymentline.set_amount(this.get_due());
             }
             this.paymentlines.add(newPaymentline);
             this.select_paymentline(newPaymentline);
+        },
+        get_due_debt: function(paymentline) {
+            if (!paymentline) {
+                var due = this.get_total_with_tax() - this.get_total_paid();
+            } else {
+                var due = this.get_total_with_tax();
+                var lines = this.paymentlines.models;
+                for (var i = 0; i < lines.length; i++) {
+                    if (lines[i] === paymentline) {
+                        break;
+                    } else {
+                        due -= lines[i].get_amount();
+                    }
+                }
+            }
+            return round_pr(due, this.pos.currency.rounding);
         }
     });
 
