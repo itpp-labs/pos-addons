@@ -3,6 +3,11 @@
 Updates
 =======
 
+`3.0.1`
+-------
+
+- FIX: The "change" can be added to Debt Journal as negative amount of debt
+
 `3.0.0`
 -------
 

@@ -8,7 +8,7 @@
         'images/screenshot-3.png',
         'images/screenshot-1.png',
     ],
-    'version': '3.0.0',
+    'version': '3.0.1',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'website': 'https://it-projects.info',
