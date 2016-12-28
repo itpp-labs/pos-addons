@@ -3,7 +3,7 @@
     'name': "Sync restaurant orders",
     'summary': 'Staff get order details immediately after waiter taps on tablet',
     'version': '1.1.4',
-    'author': 'Ivan Yelizariev',
+    'author': 'IT-Projects LLC, Ivan Yelizariev',
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
     'price': 140.00,
