@@ -19,6 +19,7 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 
   [{"session": "session1",
     "extra": "connection_on" | "connection_off" | "connection_slow"
+    "screenshot": screenshot_name,
     "code": "console.log('ok')",
     "ready": false, # wait before calling next command
     "timeout": 60000, # code execution timeout
@@ -27,6 +28,11 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 * code:
 
   * to communicate between commands, variable ``share`` can be used. It's saved right after execution finish. It's not save in async code (e.g. inside setTimeout function)
+
+* screenshot:
+
+  * make screenshot before execution of the code
+  * filename is SESSION-SCREENSHOT-NUM.png
 
 */
 
@@ -250,8 +256,14 @@ function PhantomTest() {
             sname = command.session;
             page = self.pages[sname];
             extra = command.extra;
+            screenshot = command.screenshot;
             code = command.code || 'true';
             ready = command.ready || 'true';
+
+            if (screenshot){
+                console.log('Make screenshot', screenshot);
+                page.render(sname + '-' + screenshot + '-' + i + '.png');
+            }
 
             console.log("PhantomTest.runCommands: executing: " + code);
             (function(){

@@ -157,6 +157,7 @@ class TestSync(TestCommon):
              },
             # ok
             {"session": "demo",
+             "screenshot": "test-20-final",
              "code": "console.log('ok');",
              },
         ], 120)
