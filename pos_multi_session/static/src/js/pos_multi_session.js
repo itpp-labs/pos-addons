@@ -410,9 +410,12 @@ openerp.pos_multi_session = function(instance){
         update: function(data){
             return this.send({action: 'update_order', data: data});
         },
+        _debug_send_number: 0,
         send: function(message){
+            var current_send_number = 0;
             if (this.pos.debug){
-                console.log('MS', this.pos.config.name, 'send:', JSON.stringify(message));
+                current_send_number = this._debug_send_number++;
+                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
             }
             var self = this;
             var connection_status = new $.Deferred();
@@ -424,6 +427,9 @@ openerp.pos_multi_session = function(instance){
                 });
             };
             send_it().fail(function (error, e) {
+                if (self.pos.debug){
+                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error);
+                }
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
@@ -438,6 +444,10 @@ openerp.pos_multi_session = function(instance){
                     self.request_sync_all();
                 }
             }).done(function(res){
+                if (self.pos.debug){
+                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                }
+
                 var server_orders_uid = [];
                 self.client_online = true;
                 if (res.action == "update_revision_ID") {
@@ -446,6 +456,7 @@ openerp.pos_multi_session = function(instance){
                 connection_status.resolve();
                 if (res.action == "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
+                    console.log('error', warning_message);
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
