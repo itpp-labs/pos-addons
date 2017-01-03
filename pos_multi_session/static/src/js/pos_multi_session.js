@@ -595,7 +595,6 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-//                if(error.message === 'XmlHttpRequestError ' || error.message === 'XmlHttpRequestError Bad Gateway') {
                 if(error.data.type === "xhrerror") {
                     self.client_online = false;
                     e.preventDefault();
@@ -619,6 +618,7 @@ odoo.define('pos_multi_session', function(require){
 
                 if (res.action === "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
+                    console.log('error', warning_message);
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
