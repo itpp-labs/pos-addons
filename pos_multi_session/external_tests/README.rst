@@ -102,3 +102,28 @@ Run tests in Docker
 
     docker exec -u odoo -i -t odoo /bin/bash -c "cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover -t . -s external_tests"
 
+
+Run tests in browser
+====================
+
+You can try repeat test in real browser, though it's not very convenient
+
+* open odoo with localhost:8069
+* open POS interface
+* copy-paste code from ``pos_multi_session/external_tests/tests/inject.js``
+* line-by-line copy-paste test js code from ``pos_multi_session/external_tests/tests/test_sync.py``, e.g.
+
+  * in admin window::
+
+        console.log('test_10_new_order');
+        mstest.remove_all_orders();
+
+  * in demo window::
+
+        mstest.remove_all_orders();
+
+  * in admin window::
+
+        mstest.fill_order();
+
+  * etc.
