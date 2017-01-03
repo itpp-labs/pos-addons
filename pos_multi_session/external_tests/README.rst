@@ -36,3 +36,29 @@ Odoo server
 * use database with demo data
 * use ``--db-filter`` it equal to database name
 * use ``--workers=0``
+
+Run tests in browser
+--------------------
+
+You can try repeat test in real browser, though it's not very convenient
+
+* open odoo with localhost:8069
+* open POS interface
+* copy-paste code from ``pos_multi_session/external_tests/tests/inject.js``
+* line-by-line copy-paste test js code from ``pos_multi_session/external_tests/tests/test_sync.py``, e.g.
+
+  * in admin window::
+
+        console.log('test_10_new_order');
+        mstest.remove_all_orders();
+
+  * in demo window::
+
+        mstest.remove_all_orders();
+
+  * in admin window::
+
+        mstest.fill_order();
+
+  * etc.
+
