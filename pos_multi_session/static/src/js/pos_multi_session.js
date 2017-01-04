@@ -618,7 +618,6 @@ odoo.define('pos_multi_session', function(require){
 
                 if (res.action === "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
-                    console.log('error', warning_message);
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
@@ -662,6 +661,7 @@ odoo.define('pos_multi_session', function(require){
             self.send_offline_orders();
         },
         warning: function(warning_message){
+            console.info('warning', warning_message);
             this.pos.chrome.gui.show_popup('error',{
                 'title': _t('Warning'),
                 'body': warning_message,
