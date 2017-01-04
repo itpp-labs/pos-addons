@@ -498,6 +498,7 @@ openerp.pos_multi_session = function(instance){
             self.send_offline_orders();
         },
         warning: function(warning_message){
+            console.info('warning', warning_message);
             var self = this;
             new instance.web.Dialog(this, {
                 title: _t("Warning"),
