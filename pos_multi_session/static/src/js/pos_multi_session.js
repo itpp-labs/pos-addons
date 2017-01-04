@@ -428,7 +428,7 @@ openerp.pos_multi_session = function(instance){
             };
             send_it().fail(function (error, e) {
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error);
+                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
@@ -456,7 +456,6 @@ openerp.pos_multi_session = function(instance){
                 connection_status.resolve();
                 if (res.action == "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
-                    console.log('error', warning_message);
                     self.warning(warning_message);
                     self.request_sync_all();
                 }

@@ -443,6 +443,9 @@ class TestSync(TestCommon):
             {"session": "admin",
              "code": """
                  mstest.wait(function(){
+                     warning_message = 'There is a conflict during synchronization, try your action again';
+                     if ($('.modal .in').text() == warning_message)
+                         console.log('error', warning_message)
                  }, 10000)
              """,
              "timeout": 20000,
