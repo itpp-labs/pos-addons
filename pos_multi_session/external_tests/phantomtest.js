@@ -265,7 +265,7 @@ function PhantomTest() {
                 page.render(sname + '-' + screenshot + '-' + i + '.png');
             }
 
-            console.log("PhantomTest.runCommands: executing: " + code);
+            console.log("PhantomTest.runCommands: executing as "+sname+ ": " + code);
             (function(){
                 var commandNum = i;
                 timer = setTimeout(function () {

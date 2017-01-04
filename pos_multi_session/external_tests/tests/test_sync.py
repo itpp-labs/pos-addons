@@ -167,6 +167,9 @@ class TestSync(TestCommon):
              "code": """
                  mstest.fill_order();
                  share.order = mstest.get_order();
+                 mstest.wait(function(){
+                     mstest.check_revision_error();
+                 }, 5000)
              """,
              },
             # check sync on demo
@@ -174,7 +177,7 @@ class TestSync(TestCommon):
              "code": """
              mstest.wait(function(){
                 mstest.find_order(share.order);
-            }, 20000)
+            }, 10000)
              """,
              "timeout": 25000,
              },
@@ -203,7 +206,7 @@ class TestSync(TestCommon):
             # admin removes orders
             {"session": "admin",
              "code": """
-                 console.log('test_20_offline');
+                 console.log('test_21_offline_remove_order');
                  mstest.remove_all_orders();
              """,
              },
@@ -265,6 +268,7 @@ class TestSync(TestCommon):
             # demo creates new order (to start reconnection process)
             {"session": "demo",
              "code": """
+                console.log('demo creates new order (to start reconnection process)')
                 mstest.new_order();
                 mstest.fill_order();
                 mstest.wait(function(){
@@ -482,6 +486,7 @@ class TestSync(TestCommon):
             {"session": "admin",
              "code": """
                  mstest.wait(function(){
+                     mstest.check_revision_error();
                  }, 10000)
              """,
              "timeout": 20000,

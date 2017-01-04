@@ -123,5 +123,9 @@ window.mstest = {
             mstest.is_wait = false;
         }, timeout || 3000);
     },
-
+    check_revision_error: function(){
+        warning_message = 'There is a conflict during synchronization, try your action again';
+        if ($('.modal .in').text() == warning_message)
+            console.log('error', warning_message);
+    },
 };
