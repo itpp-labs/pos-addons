@@ -20,23 +20,19 @@
 #
 #
 {
-    'name': 'TO POS Shared Floor',
-    'version': '1.0.0',
-    'author': 'T.V.T Marine Automation (aka TVTMA), IT-Projects LLC',
-    'website': 'http://ma.tvtmarine.com',
-    'summary': 'Allow share multi floors to PoSes',
-    'sequence': 24,
-    'category': 'Point Of Sale',
-    'description': """
-Enable to share multiple floors to PoSes:
-==================================
-
-    """,
-    'depends': ['pos_restaurant'],
-    'data': [
-        'views/restaurant_view.xml',
-        'views/templates.xml',
+    "name": "TO POS Shared Floor",
+    "version": "1.0.0",
+    "author": "T.V.T Marine Automation (aka TVTMA), IT-Projects LLC",
+    "website": "http://ma.tvtmarine.com",
+    "licence": "AGPL-3",
+    "summary": "Allow share multi floors to PoSes",
+    "sequence": 24,
+    "category": "Point Of Sale",
+    "depends": ['pos_restaurant'],
+    "data": [
+        "views/restaurant_view.xml",
+        "views/templates.xml",
     ],
-    'demo': ['demo.xml'],
-    'installable': True,
+    "demo": ["demo.xml"],
+    "installable": True,
 }
