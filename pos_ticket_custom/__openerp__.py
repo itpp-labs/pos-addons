@@ -5,6 +5,7 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'description': """
     module *ir_sequence_autoreset* is available here: https://github.com/yelizariev/addons-yelizariev

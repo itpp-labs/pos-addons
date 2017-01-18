@@ -26,6 +26,7 @@
     'version': '1.0',
     'category': 'Point of sale',
     'author': 'Thierry Godin, IT-Projects LLC, Ivan Yelizariev',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io/',
     'summary': 'Create on demand packs of products for Point of sale',
     'description': """

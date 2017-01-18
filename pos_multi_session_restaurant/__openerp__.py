@@ -5,6 +5,7 @@
     'version': '1.1.4',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'price': 140.00,
     'currency': 'EUR',

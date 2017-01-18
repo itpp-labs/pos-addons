@@ -5,6 +5,7 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'images': ['images/product-form.png'],
     'depends': ['product', 'stock'],

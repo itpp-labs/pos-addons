@@ -5,6 +5,7 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://twitter.com/yelizariev',
     'images': ['images/screenshot.png'],
     'price': 9.00,

@@ -5,6 +5,7 @@
     'author': 'IT-Projects LLC',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'description': "Add Fiscal Position to POS floor model",
     'data': ['views.xml'],
