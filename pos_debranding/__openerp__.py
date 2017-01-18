@@ -5,6 +5,7 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Debranding',
+    "support": "apps@it-projects.info",
     'website': 'https://twitter.com/yelizariev',
     'depends': ['point_of_sale'],
     # 'price': 30.00,

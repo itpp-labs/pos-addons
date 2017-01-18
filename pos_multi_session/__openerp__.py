@@ -7,6 +7,7 @@
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'images': ['images/pos-multi-session.png'],
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'price': 160.00,
     'currency': 'EUR',

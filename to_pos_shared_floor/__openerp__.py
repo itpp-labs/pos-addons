@@ -23,6 +23,7 @@
     'name': 'TO POS Shared Floor',
     'version': '1.0.0',
     'author': 'T.V.T Marine Automation (aka TVTMA), IT-Projects LLC',
+    "support": "apps@it-projects.info",
     'website': 'http://ma.tvtmarine.com',
     'summary': 'Allow share multi floors to PoSes',
     'sequence': 24,

@@ -6,6 +6,7 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
     'images': ['images/pos_payment_access.png'],

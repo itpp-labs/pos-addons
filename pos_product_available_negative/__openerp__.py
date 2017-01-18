@@ -6,6 +6,7 @@
     'summary': 'Only supervisor can approve POS Order with out-of-stock product',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    "support": "apps@it-projects.info",
     'website': 'https://it-projects.info',
     'depends': ['pos_pin'],
     'data': [
