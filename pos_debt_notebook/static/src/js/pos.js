@@ -14,7 +14,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
-            partner_model.fields.push('debt');
+            partner_model.fields.push('debt_type', 'debt');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
             return _super_posmodel.initialize.call(this, session, attributes);
@@ -163,8 +163,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var client = this.pos.get_client();
             var debt = 0;
-            if (client) {debt = Math.round(client.debt * 100) / 100;}
-            this.$('.js_customer_name').text( client ? client.name + ' [Debt: ' + debt + ']' : _t('Customer') );
+            var debt_title = 'Debt';
+            if (client) {
+                debt = Math.round(client.debt * 100) / 100;
+                if (client.debt_type == 'credit') {
+                    debt_title = 'Credit';
+                    debt = - debt;
+                }
+            }
+            this.$('.js_customer_name').text(
+                client ? client.name + ' [' + debt_title + ': ' + debt + ']' : _t('Customer'));
 
 
             var pay_full_debt = this.$('.pay-full-debt');
