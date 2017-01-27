@@ -14,7 +14,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
-            partner_model.fields.push('debt');
+            partner_model.fields.push('debt_type', 'debt');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
             return _super_posmodel.initialize.call(this, session, attributes);
@@ -58,10 +58,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.select_paymentline(newPaymentline);
         },
         get_due_debt: function(paymentline) {
-            if (!paymentline) {
-                var due = this.get_total_with_tax() - this.get_total_paid();
-            } else {
-                var due = this.get_total_with_tax();
+            var due = this.get_total_with_tax() - this.get_total_paid();
+            if (paymentline) {
+                due = this.get_total_with_tax();
                 var lines = this.paymentlines.models;
                 for (var i = 0; i < lines.length; i++) {
                     if (lines[i] === paymentline) {
@@ -163,16 +162,33 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var client = this.pos.get_client();
             var debt = 0;
-            if (client) {debt = Math.round(client.debt * 100) / 100;}
-            this.$('.js_customer_name').text( client ? client.name + ' [Debt: ' + debt + ']' : _t('Customer') );
-
-
-            var pay_full_debt = this.$('.pay-full-debt');
-            pay_full_debt.on('click', function() {self.pay_full_debt();});
-            if (debt) {
-                pay_full_debt.removeClass('oe_hidden');
-            } else {
-                pay_full_debt.addClass('oe_hidden');
+            if (client) {
+                debt = Math.round(client.debt * 100) / 100;
+                if (client.debt_type == 'credit') {
+                    debt = - debt;
+                }
+            }
+            var $js_customer_name = this.$('.js_customer_name');
+            var $pay_full_debt = this.$('.pay-full-debt');
+            $js_customer_name.text(client ? client.name : _t('Customer'));
+            $pay_full_debt.on('click', function() {self.pay_full_debt();});
+            $pay_full_debt.addClass('oe_hidden');
+            if (client && debt) {
+                if (client.debt_type == 'debt') {
+                    if (debt > 0) {
+                        $pay_full_debt.removeClass('oe_hidden');
+                        $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + debt + ']</span>');
+                    } else if (debt < 0) {
+                        $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + debt + ']</span>');
+                    }
+                } else if (client.debt_type == 'credit') {
+                    if (debt > 0) {
+                        $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + debt + ']</span>');
+                    } else if (debt < 0) {
+                        $pay_full_debt.removeClass('oe_hidden');
+                        $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + debt + ']</span>');
+                    }
+                }
             }
         }
     });
@@ -183,7 +199,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var $button = this.$('.button.set-customer-pay-full-debt');
             if (this.editing_client) {
                 $button.addClass('oe_hidden');
-                return;
             } else if (this.new_client){
                 if (this.new_client.debt > 0){
                     $button.toggleClass('oe_hidden',!this.has_client_changed());

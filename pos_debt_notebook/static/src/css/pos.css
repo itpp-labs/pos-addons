@@ -1,8 +1,10 @@
-.pos .clientlist-screen .client-detail > .client-debt.positive{
+.pos .client-debt.positive,
+.pos .client-credit.negative {
     color: red;
 }
 
-.pos .clientlist-screen .client-detail > .client-debt.negative{
+.pos .client-debt.negative,
+.pos .client-credit.positive {
     color: green;
 }
 
