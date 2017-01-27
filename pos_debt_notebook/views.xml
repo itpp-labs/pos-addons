@@ -9,9 +9,11 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="account.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <field name="credit" position="after">
-            <field name="debt"/>
-        </field>
+        <xpath expr="//field[@name='credit']" position="after">
+            <field name="debt_type" invisible="1"/>
+            <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
+            <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
+        </xpath>
     </field>
 </record>
 
@@ -20,9 +22,11 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.view_partner_tree"/>
     <field name="arch" type="xml">
-        <field name="display_name" position="after">
-            <field name="debt"/>
-        </field>
+        <xpath expr="//field[@name='display_name']" position="after">
+            <field name="debt_type" invisible="1"/>
+            <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
+            <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
+        </xpath>
     </field>
 </record>
 
@@ -31,11 +35,14 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.res_partner_kanban_view"/>
     <field name="arch" type="xml">
-        <field name="mobile" position="after">
-            <field name="debt"/>
-        </field>
+        <xpath expr="//field[@name='mobile']" position="after">
+            <field name="debt_type" invisible="1"/>
+            <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
+            <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
+        </xpath>
         <xpath expr="//div[@class='oe_kanban_details']/ul" position="inside">
-            <li t-if="record.debt.raw_value">Debt: <field name="debt"/></li>
+            <li t-if="record.debt_type.raw_value == 'debt' and record.debt.raw_value">Debt: <field name="debt"/></li>
+            <li t-if="record.debt_type.raw_value == 'credit' and record.credit_balance.raw_value">Credit: <field name="credit_balance"/></li>
         </xpath>
     </field>
 </record>
@@ -61,6 +68,17 @@
         <field name="currency_id" position="after">
             <field name="debt_dummy_product_id"/>
         </field>
+    </field>
+</record>
+
+<record id="view_debt_sale_config_settings_form_pos" model="ir.ui.view">
+    <field name="name">pos.config.settings.form</field>
+    <field name="model">pos.config.settings</field>
+    <field name="inherit_id" ref="point_of_sale.view_sale_config_settings_form_pos"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='module_pos_reprint']" position="after">
+            <field name="debt_type" widget="radio"/>
+        </xpath>
     </field>
 </record>
 
