@@ -7,7 +7,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.multi
-    def _get_debt(self):
+    def _compute_debt(self):
         debt_journal = self.env['account.journal'].search([
             ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
         debt_account = []
@@ -47,10 +47,10 @@ class ResPartner(models.Model):
             partner.credit_balance = - res[partner.id]
 
     debt = fields.Float(
-        compute='_get_debt', string='Debt', readonly=True,
+        compute='_compute_debt', string='Debt', readonly=True,
         digits=dp.get_precision('Account'), help='This debt value for only current company')
     credit_balance = fields.Float(
-        compute='_get_debt', string='Credit', readonly=True,
+        compute='_compute_debt', string='Credit', readonly=True,
         digits=dp.get_precision('Account'), help='This credit balance value for only current company')
     debt_type = fields.Selection(compute='_compute_debt_type', selection=[
         ('debt', 'Display Debt'),
@@ -191,7 +191,7 @@ class PosConfiguration(models.TransientModel):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
-                                'In both cases debt will be red, credit - green')
+                                                'In both cases debt will be red, credit - green')
 
     def set_debt_type(self):
         for record in self:
