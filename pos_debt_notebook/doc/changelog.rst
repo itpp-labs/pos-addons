@@ -1,7 +1,8 @@
-.. _changelog:
+`3.1.0`
+-------
 
-Updates
-=======
+- **ADD:** An ability to select a way to display debt values: debt or credit
+- **ADD:** Colors of debt values
 
 `3.0.1`
 -------
