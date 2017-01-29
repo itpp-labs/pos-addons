@@ -1,0 +1,56 @@
+# -*- coding: utf-8 -*-
+from odoo import models, tools, api, fields
+
+
+class PosDebtReport(models.Model):
+
+    _name = "report.pos.debt"
+    _description = "POS Debt Statistics"
+    _auto = False
+    _order = 'date desc'
+
+    order_id = fields.Many2one('pos.order', string='Order', readonly=True)
+
+    date = fields.Datetime(string='Date', readonly=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
+    user_id = fields.Many2one('res.users', string='Salesperson', readonly=True)
+    session_id = fields.Many2one('pos.session', string='Session', readonly=True)
+    config_id = fields.Many2one('pos.config', string='Session', readonly=True)
+    company_id = fields.Many2one('res.company', string='Company', readonly=True)
+    currency_id = fields.Many2one('res.currency', string='Company', readonly=True)
+
+    state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
+    credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
+    balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
+
+    @api.model_cr
+    def init(self):
+        tools.drop_view_if_exists(self._cr, 'report_pos_debt')
+        self._cr.execute("""
+            CREATE OR REPLACE VIEW report_pos_debt AS (
+                SELECT
+                    st_line.id as id,
+                    o.id as order_id,
+                    -st_line.amount as balance,
+                    st.state as state,
+
+                    false as credit_product,
+                    o.date_order as date,
+                    o.partner_id as partner_id,
+                    o.user_id as user_id,
+                    o.session_id as session_id,
+                    session.config_id as config_id,
+                    o.company_id as company_id,
+                    pricelist.currency_id as currency_id
+
+                FROM account_bank_statement_line as st_line
+                    LEFT JOIN account_bank_statement st ON (st.id=st_line.statement_id)
+                    LEFT JOIN account_journal journal ON (journal.id=st.journal_id)
+                    LEFT JOIN pos_order o ON (o.id=st_line.pos_statement_id)
+
+                    LEFT JOIN pos_session session ON (session.id=o.session_id)
+                    LEFT JOIN product_pricelist pricelist ON (pricelist.id=o.pricelist_id)
+                WHERE
+                    journal.debt=true
+            )
+        """)
