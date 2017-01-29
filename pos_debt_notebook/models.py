@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 import odoo.addons.decimal_precision as dp
 
 
@@ -46,6 +46,11 @@ class ResPartner(models.Model):
             partner.debt = res[partner.id]
             partner.credit_balance = - res[partner.id]
 
+    @api.model
+    def _default_credit_limit(self):
+        credit_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.credit_limit", default=0)
+        return credit_limit
+
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
         digits=dp.get_precision('Account'), help='This debt value for only current company')
@@ -56,11 +61,23 @@ class ResPartner(models.Model):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
+    credit_limit = fields.Float(
+        string='Credit Limit', digits=dp.get_precision('Account'), default=_default_credit_limit,
+        help='The customer cannot buy products on credit over this value')
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
         for partner in self:
             partner.debt_type = debt_type
+
+    @api.model
+    def create_from_ui(self, partner):
+        if partner.get('credit_limit'):
+            if not self.env.user.has_group('point_of_sale.group_pos_manager'):
+                raise exceptions.Warning('Only POS managers can change a credit limit value!')
+        else:
+            partner['credit_limit'] = self._default_credit_limit()  # Default functions are not called in standard way
+        return super(ResPartner, self).create_from_ui(partner)
 
 
 class PosConfig(models.Model):
@@ -192,6 +209,9 @@ class PosConfiguration(models.TransientModel):
         ('credit', 'Display Credit')
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
                                                 'In both cases debt will be red, credit - green')
+    credit_limit = fields.Float(
+        string='Credit Limit', digits=dp.get_precision('Account'), default=0,
+        help='Customers cannot buy products on credit over this value')
 
     def set_debt_type(self):
         for record in self:
@@ -200,3 +220,11 @@ class PosConfiguration(models.TransientModel):
     def get_default_debt_type(self, fields):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
         return {'debt_type': debt_type}
+
+    def set_credit_limit(self):
+        for record in self:
+            self.env["ir.config_parameter"].set_param("pos_debt_notebook.credit_limit", record.credit_limit)
+
+    def get_default_credit_limit(self, fields):
+        credit_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.credit_limit", default=0)
+        return {'credit_limit': credit_limit}

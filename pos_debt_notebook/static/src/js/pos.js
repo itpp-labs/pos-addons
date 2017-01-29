@@ -14,7 +14,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
-            partner_model.fields.push('debt_type', 'debt');
+            partner_model.fields.push('debt_type', 'debt', 'credit_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
             return _super_posmodel.initialize.call(this, session, attributes);
@@ -79,21 +79,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var currentOrder = this.pos.get_order();
             var isDebt = false;
             var plines = currentOrder.get_paymentlines();
+            var debt_amount = 0;
             for (var i = 0; i < plines.length; i++) {
                 if (plines[i].cashregister.journal.debt) {
                     isDebt = true;
-                    break;
+                    debt_amount += plines[i].amount;
                 }
             }
-
-            if (isDebt && !currentOrder.get_client()){
+            var client = currentOrder.get_client();
+            if (isDebt && !client){
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
                     'body': _t('You cannot use Debt payment. Select customer first.'),
                 });
                 return;
             }
-
             if(isDebt && currentOrder.get_orderlines().length === 0){
                 this.gui.show_popup('error',{
                     'title': _t('Empty Order'),
@@ -101,7 +101,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-
+            if (client.debt + debt_amount > client.credit_limit) {
+                this.gui.show_popup('error', {
+                    'title': _t('Credit limit exceeded'),
+                    'body': _t('You cannot sell products on credit to the customer, because his credit limit will be exceeded.')
+                });
+                return;
+            }
+            this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
 
@@ -194,16 +201,36 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     });
 
     gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'clientlist';})[0].widget.include({
+        init: function(parent, options){
+            this._super(parent, options);
+            this.round = function(value) {
+                return Math.round(value * 100) / 100;
+            };
+            this.check_user_in_group = function(group_id, groups) {
+                return  $.inArray(group_id, groups) != -1;
+            };
+        },
+        render_list: function(partners){
+            var debt_type = partners ? partners[0].debt_type : '';
+            if (debt_type == 'debt') {
+                this.$('#client-list-credit').remove();
+            } else if (debt_type == 'credit') {
+                this.$('#client-list-debt').remove();
+            }
+            this._super(partners);
+        },
         toggle_save_button: function(){
             this._super();
-            var $button = this.$('.button.set-customer-pay-full-debt');
+            var $pay_full_debt = this.$('#set-customer-pay-full-debt');
+            var curr_client = this.pos.get_order().get_client();
             if (this.editing_client) {
-                $button.addClass('oe_hidden');
-            } else if (this.new_client){
-                if (this.new_client.debt > 0){
-                    $button.toggleClass('oe_hidden',!this.has_client_changed());
+                $pay_full_debt.addClass('oe_hidden');
+            } else {
+                if ((this.new_client && this.new_client.debt > 0) ||
+                        (curr_client && curr_client.debt > 0 && !this.new_client)) {
+                    $pay_full_debt.removeClass('oe_hidden');
                 }else{
-                    $button.addClass('oe_hidden');
+                    $pay_full_debt.addClass('oe_hidden');
                 }
             }
         },
@@ -211,7 +238,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         show: function(){
             this._super();
             var self = this;
-            this.$('.button.set-customer-pay-full-debt').click(function(){
+            this.$('#set-customer-pay-full-debt').click(function(){
                 self.save_changes();
 //                self.gui.back();
                 if (self.new_client.debt <= 0) {
