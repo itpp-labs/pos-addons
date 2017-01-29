@@ -21,6 +21,7 @@
     'data': [
         'data/product.xml',
         'views.xml',
+        'views/pos_debt_report_view.xml',
         'data.xml',
     ],
     'qweb': [

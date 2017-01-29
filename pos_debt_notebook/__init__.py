@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import models
+from . import report
+
 from openerp import SUPERUSER_ID
 from openerp.osv import osv
 from openerp.tools.translate import _

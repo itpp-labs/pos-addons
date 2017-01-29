@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_report_pos_debt_pivot" model="ir.ui.view">
+            <field name="name">report.pos.debt.pivot</field>
+            <field name="model">report.pos.debt</field>
+            <field name="arch" type="xml">
+                <pivot string="Debts / Credits Analysis">
+                    <field name="partner_id" type="row"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="balance" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_report_pos_debt_graph" model="ir.ui.view">
+            <field name="name">report.pos.debt.graph</field>
+            <field name="model">report.pos.debt</field>
+            <field name="arch" type="xml">
+                <graph string="Point of Sale Analysis">
+                    <field name="partner_id" type="row"/>
+                    <field name="balance" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_report_pos_debt_tree" model="ir.ui.view">
+            <field name="name">report.pos.debt.tree</field>
+            <field name="model">report.pos.debt</field>
+            <field name="arch" type="xml">
+                <tree string="Point of Sale Analysis">
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="balance"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_report_pos_debt_form" model="ir.ui.view">
+            <field name="name">report.pos.debt.form</field>
+            <field name="model">report.pos.debt</field>
+            <field name="arch" type="xml">
+                <form string="Point of Sale Analysis">
+                    <group>
+                        <field name="order_id"/>
+                        <field name="credit_product"/>
+                        <field name="state"/>
+
+                        <field name="partner_id"/>
+                        <field name="date"/>
+                        <field name="balance"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_report_pos_debt_search" model="ir.ui.view">
+            <field name="name">report.pos.debt.search</field>
+            <field name="model">report.pos.debt</field>
+            <field name="arch" type="xml">
+                <search string="Point of Sale Analysis">
+                    <field name="date"/>
+                    <filter string="Open" domain="[('state','=','closed')]"/>
+                    <filter string="Closed" domain="[('state','=','closed')]"/>
+                    <separator/>
+                    <filter name="today" string="Today" domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                    <filter string="This Year" name="year" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" help="POS ordered created during current year"/>
+                    <separator/>
+                    <field name="config_id"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
+                        <filter string="Customer" context="{'group_by':'partner_id'}"/>
+                        <separator/>
+                        <filter string="Year" context="{'group_by':'date:month'}"/>
+                        <filter string="Week" context="{'group_by':'date:week'}"/>
+                        <filter string="Day" context="{'group_by':'date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+<!--
+        <record id="filter_orders_per_session" model="ir.filters">
+            <field name="name">Per session</field>
+            <field name="model_id">report.pos.order</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['date', 'session_id'], 'measures': ['price_total']}</field>
+        </record>
+-->
+        <record id="action_report_pos_debt_all" model="ir.actions.act_window">
+            <field name="name">Debts / Credits</field>
+            <field name="res_model">report.pos.debt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree,form</field>
+            <field name="search_view_id" ref="view_report_pos_debt_search"/>
+            <field name="context">{}</field>
+        </record>
+
+
+        <menuitem id="menu_report_pos_debt_all" name="Debts / Credits" action="action_report_pos_debt_all" parent="point_of_sale.menu_point_rep" sequence="10"/>
+</odoo>

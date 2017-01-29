@@ -1,6 +1,7 @@
 `3.1.0`
 -------
 
+- **ADD:** Age analysis, debt statistics
 - **ADD:** An ability to select a way to display debt values: debt or credit
 - **ADD:** Colors of debt values
 
