@@ -26,6 +26,7 @@
         'views.xml',
         'views/pos_debt_report_view.xml',
         'data.xml',
+        'security/ir.model.access.csv',
     ],
     'qweb': [
         'static/src/xml/pos.xml',
