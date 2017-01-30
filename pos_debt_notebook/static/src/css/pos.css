@@ -8,9 +8,16 @@
     color: green;
 }
 
-.screen .top-content .button.set-customer-pay-full-debt {
-    right: 25%;
+#client_list_header_buttons {
+    height: 64px;
+    position: absolute; top: 0; right: 165px; left: 50%;
+}
+
+.screen .top-content .debt_notebook_button {
+    float: left;
     font-size: 15px;
+    margin-right: 0;
+    position: static !important;
 }
 
 .pos .clientlist-screen .searchbox {
@@ -19,4 +26,27 @@
 
 .pos .clientlist-screen .button.new-customer {
     left: 30%;
+}
+
+.pos .clientlist-screen .client-picture {
+    margin-right: 26px;
+}
+
+.pos .clientlist-screen .client-detail > .label {
+    width: 85px;
+}
+
+.label_nowrap {
+    white-space: nowrap;
+}
+
+.client-detail-notice {
+    clear: both;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.detail.disabled {
+    color: #999;
+    pointer-events: none;
 }
