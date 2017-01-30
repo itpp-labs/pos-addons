@@ -5,6 +5,7 @@ from odoo import models, tools, api, fields
 class PosDebtReport(models.Model):
 
     _name = "report.pos.debt"
+    _inherit = ['base_groupby_extra']
     _description = "POS Debt Statistics"
     _auto = False
     _order = 'date desc'
