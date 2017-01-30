@@ -60,11 +60,14 @@
             <field name="arch" type="xml">
                 <search string="Point of Sale Analysis">
                     <field name="date"/>
-                    <filter string="Open" domain="[('state','=','closed')]"/>
-                    <filter string="Closed" domain="[('state','=','closed')]"/>
+                    <filter string="Open" domain="[('state','=','open')]"/>
+                    <filter string="Closed" domain="[('state','=','confirm')]"/>
                     <separator/>
-                    <filter name="today" string="Today" domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                    <filter string="Inbound" domain="[('balance','&gt;',0)]"/>
+                    <filter string="Outbound" domain="[('balance','&lt;',0)]"/>
+                    <separator/>
                     <filter string="This Year" name="year" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" help="POS ordered created during current year"/>
+                    <filter string="Today" name="today" domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
                     <separator/>
                     <field name="config_id"/>
                     <field name="partner_id"/>
@@ -76,6 +79,7 @@
                         <filter string="Year" context="{'group_by':'date:month'}"/>
                         <filter string="Week" context="{'group_by':'date:week'}"/>
                         <filter string="Day" context="{'group_by':'date:day'}"/>
+                        <filter string="Hour" context="{'group_by':'date:hour'}"/>
                     </group>
                 </search>
             </field>
