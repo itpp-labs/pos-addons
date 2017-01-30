@@ -17,7 +17,10 @@
     "currency": "EUR",
 
     "external_dependencies": {"python": [], "bin": []},
-    'depends': ['point_of_sale'],
+    'depends': [
+        'point_of_sale',
+        'base_groupby_extra',
+    ],
     'data': [
         'data/product.xml',
         'views.xml',
