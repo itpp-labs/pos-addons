@@ -50,7 +50,7 @@ class ResPartner(models.Model):
     @api.model
     def _default_debt_limit(self):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
-        return debt_limit
+        return float(debt_limit)
 
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
@@ -73,8 +73,8 @@ class ResPartner(models.Model):
 
     def check_access_to_debt_limit(self, vals):
         debt_limit = vals.get('debt_limit')
-        if (not self.env.user.has_group('point_of_sale.group_pos_manager') and debt_limit and
-                float(self._default_debt_limit()) != debt_limit):
+        if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
+                not self.env.user.has_group('point_of_sale.group_pos_manager')):
             raise UserError('Only POS managers can change a debt limit value!')
 
     @api.model
