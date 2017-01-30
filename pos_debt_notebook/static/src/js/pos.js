@@ -14,7 +14,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
-            partner_model.fields.push('debt_type', 'debt', 'credit_limit');
+            partner_model.fields.push('debt_type', 'debt', 'debt_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
             return _super_posmodel.initialize.call(this, session, attributes);
@@ -101,10 +101,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (client.debt + debt_amount > client.credit_limit) {
+            if (client.debt + debt_amount > client.debt_limit) {
                 this.gui.show_popup('error', {
-                    'title': _t('Credit limit exceeded'),
-                    'body': _t('You cannot sell products on credit to the customer, because his credit limit will be exceeded.')
+                    'title': _t('Max Debt exceeded'),
+                    'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')
                 });
                 return;
             }
@@ -286,6 +286,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 newDebtPaymentline.set_amount(self.new_client.debt * -1);
                 order.paymentlines.add(newDebtPaymentline);
                 self.gui.show_screen('payment');
+            });
+        },
+        saved_client_details: function(partner_id){
+            this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(partner_id);
+            this._super(partner_id);
+        },
+        reload_partners: function(){
+            var self = this;
+            return this._super().then(function () {
+                self.render_list(self.pos.db.get_partners_sorted(1000));
             });
         }
     });

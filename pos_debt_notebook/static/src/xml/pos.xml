@@ -55,7 +55,7 @@
     <t t-extend="ClientListScreenWidget">
         <t t-jquery=".button.next" t-operation="before">
             <div id="client_list_header_buttons">
-                <span id="change_credit_limit" class="button debt_notebook_button oe_hidden highlight">
+                <span id="change_debt_limit" class="button debt_notebook_button oe_hidden highlight">
                     Change Limit
                 </span>
                 <span id="set-customer-pay-full-debt" class="button debt_notebook_button oe_hidden highlight">
@@ -66,18 +66,18 @@
         <t t-jquery="table.client-list tr" t-operation="append">
             <th id="client-list-debt">Debt</th>
             <th id="client-list-credit">Credit</th>
-            <th>Credit Limit</th>
+            <th>Max Debt</th>
         </t>
     </t>
 
     <t t-extend="ClientLine">
         <t t-jquery="tr.client-line" t-operation="append">
-            <td t-attf-class="client-debt #{((partner.debt_type == 'debt' and partner.debt gt 0) or (partner.debt_type == 'credit' and partner.debt lt 0)) ? 'negative' : ''} #{((partner.debt_type == 'debt' and partner.debt lt 0) or (partner.debt_type == 'credit' and partner.debt gt 0)) ? 'positive' : ''}">
+            <td t-attf-class="client-debt #{((partner.debt_type == 'debt' and partner.debt lt 0) or (partner.debt_type == 'credit' and partner.debt lt 0)) ? 'negative' : ''} #{((partner.debt_type == 'debt' and partner.debt gt 0) or (partner.debt_type == 'credit' and partner.debt gt 0)) ? 'positive' : ''}">
                 <t t-if="partner.debt_type == 'debt'" t-esc='widget.round(partner.debt)'/>
                 <t t-if="partner.debt_type == 'credit'" t-esc='widget.round(-partner.debt)'/>
             </td>
             <td>
-                <t t-esc='partner.credit_limit'/>
+                <t t-esc='partner.debt_limit'/>
             </td>
         </t>
     </t>
@@ -85,9 +85,9 @@
     <t t-extend="ClientDetailsEdit">
         <t t-jquery=".client-details-left" t-operation="append">
             <div class='client-detail'>
-                <span class='label label_nowrap'>Credit Limit *</span>
-                <input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='credit_limit' t-att-value='partner.credit_limit || ""' placeholder='Credit Limit'/>
-                <!--<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='credit_limit' t-att-value='partner.credit_limit || ""' placeholder='Credit Limit'/>
+                <span class='label label_nowrap'>Max Debt *</span>
+                <input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
+                <!--<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
                 This construction will not work after the user's POS right are changed -->
             </div>
         </t>
