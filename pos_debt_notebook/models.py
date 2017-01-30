@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, SUPERUSER_ID
+from openerp.exceptions import UserError
 from openerp.osv import osv
 from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
@@ -48,6 +49,11 @@ class ResPartner(models.Model):
             partner.debt = res[partner.id]
             partner.credit_balance = - res[partner.id]
 
+    @api.model
+    def _default_debt_limit(self):
+        debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
+        return float(debt_limit)
+
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
         digits=dp.get_precision('Account'), help='This debt value for only current company')
@@ -58,11 +64,36 @@ class ResPartner(models.Model):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
+    debt_limit = fields.Float(
+        string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
+        help='The customer is not allowed to have a debt more than this value')
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
         for partner in self:
             partner.debt_type = debt_type
+
+    def check_access_to_debt_limit(self, vals):
+        debt_limit = vals.get('debt_limit')
+        if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
+                not self.env.user.has_group('point_of_sale.group_pos_manager')):
+            raise UserError('Only POS managers can change a debt limit value!')
+
+    @api.model
+    def create(self, vals):
+        self.check_access_to_debt_limit(vals)
+        return super(ResPartner, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self.check_access_to_debt_limit(vals)
+        return super(ResPartner, self).write(vals)
+
+    @api.model
+    def create_from_ui(self, partner):
+        if partner.get('debt_limit') is False:
+            del partner['debt_limit']
+        return super(ResPartner, self).create_from_ui(partner)
 
 
 class PosConfig(osv.osv):
@@ -197,11 +228,20 @@ class PosConfiguration(models.TransientModel):
         ('credit', 'Display Credit')
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
                                                 'In both cases debt will be red, credit - green')
+    debt_limit = fields.Float(
+        string='Max Debt', digits=dp.get_precision('Account'), default=0,
+        help='Customers are not allowed to have a debt more than this value')
 
     def set_debt_type(self):
-        for record in self:
-            self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", record.debt_type)
+        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", self.debt_type)
 
     def get_default_debt_type(self, fields):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
         return {'debt_type': debt_type}
+
+    def set_debt_limit(self):
+        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", self.debt_limit)
+
+    def get_default_debt_limit(self, fields):
+        debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
+        return {'debt_limit': debt_limit}
