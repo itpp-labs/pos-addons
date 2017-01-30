@@ -16,9 +16,9 @@ class PosDebtReport(models.Model):
     partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
     user_id = fields.Many2one('res.users', string='Salesperson', readonly=True)
     session_id = fields.Many2one('pos.session', string='Session', readonly=True)
-    config_id = fields.Many2one('pos.config', string='Session', readonly=True)
+    config_id = fields.Many2one('pos.config', string='POS', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
-    currency_id = fields.Many2one('res.currency', string='Company', readonly=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
 
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
     credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
