@@ -102,5 +102,5 @@
         </record>
 
 
-        <menuitem id="menu_report_pos_debt_all" name="Debts / Credits" action="action_report_pos_debt_all" parent="point_of_sale.menu_point_rep" sequence="10"/>
+        <menuitem id="menu_report_pos_debt_all" name="Debts / Credits" action="action_report_pos_debt_all" parent="point_of_sale.menu_point_rep" groups="point_of_sale.group_pos_manager" sequence="10"/>
 </odoo>
