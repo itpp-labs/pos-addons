@@ -17,6 +17,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             partner_model.fields.push('debt_type', 'debt', 'debt_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
+            var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            product_model.fields.push('credit_product');
             return _super_posmodel.initialize.call(this, session, attributes);
         },
         push_order: function(order, opts){
@@ -37,12 +39,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     });
 
     models.Order = models.Order.extend({
+        has_credit_product: function(){
+            return this.orderlines.any(function(line){
+                return line.product.credit_product;
+            });
+        },
         add_paymentline: function(cashregister) {
             this.assert_editable();
-
             var self = this;
             var journal = cashregister.journal;
-            if (journal.debt && !this.get_client()){
+            if (!this.get_client() && (this.has_credit_product() || journal.debt)){
                 setTimeout(function(){
                     self.pos.gui.show_screen('clientlist');
                 }, 30);
@@ -91,6 +97,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
                     'body': _t('You cannot use Debt payment. Select customer first.'),
+                });
+                return;
+            }
+            if (currentOrder.has_credit_product() && !client){
+                this.gui.show_popup('error',{
+                    'title': _t('Unknown customer'),
+                    'body': _t("Don't forget to specify Customer when sell Credits."),
                 });
                 return;
             }
