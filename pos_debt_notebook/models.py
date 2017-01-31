@@ -235,7 +235,7 @@ class PosConfiguration(models.TransientModel):
         return {'debt_type': debt_type}
 
     def set_debt_limit(self):
-        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", self.debt_limit)
+        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", str(self.debt_limit))
 
     def get_default_debt_limit(self, fields):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
