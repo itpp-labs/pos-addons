@@ -36,30 +36,26 @@ odoo.define('pos_longpolling', function(require){
             this.lonpolling_activated = true;
         },
         add_channel: function(channel_name, callback) {
-            var self = this;
             this.channels[channel_name] = callback;
             if (this.lonpolling_activated) {
-                self.init_channel(channel_name)
+                this.init_channel(channel_name)
             }
         },
         get_full_channel_name: function(channel_name){
-            var self = this;
-            return JSON.stringify([session.db,channel_name,String(self.config.id)]);
+            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
         },
         init_channel: function(channel_name){
             var channel = this.get_full_channel_name(channel_name);
             this.bus.add_channel(channel);
         },
         remove_channel: function(channel_name) {
-            var self = this;
-            if (channel_name in self.channels) {
-                delete self.channels[channel_name];
+            if (channel_name in this.channels) {
+                delete this.channels[channel_name];
                 var channel = this.get_full_channel_name(channel_name);
                 this.bus.delete_channel(channel);
             }
         },
         on_notification: function(notification) {
-            var self = this;
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
