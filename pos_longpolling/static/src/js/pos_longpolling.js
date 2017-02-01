@@ -42,16 +42,19 @@ odoo.define('pos_longpolling', function(require){
                 self.init_channel(channel_name)
             }
         },
-        init_channel: function(channel_name){
+        get_full_channel_name: function(channel_name){
             var self = this;
-            var channel = JSON.stringify([session.db,channel_name,String(self.config.id)]);
+            return JSON.stringify([session.db,channel_name,String(self.config.id)]);
+        },
+        init_channel: function(channel_name){
+            var channel = this.get_full_channel_name(channel_name);
             this.bus.add_channel(channel);
         },
         remove_channel: function(channel_name) {
             var self = this;
             if (channel_name in self.channels) {
                 delete self.channels[channel_name];
-                var channel = JSON.stringify([session.db,channel_name,String(self.config.id)]);
+                var channel = this.get_full_channel_name(channel_name);
                 this.bus.delete_channel(channel);
             }
         },
