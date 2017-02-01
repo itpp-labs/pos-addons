@@ -8,9 +8,11 @@ odoo.define('pos_multi_session', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-    var longpolling = require('pos_longpolling');
 
     var _t = core._t;
+
+    // prevent bus to be started by chat_manager.js
+    bus.bus.activated = true; // fake value to ignore start_polling call
 
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
@@ -57,19 +59,15 @@ odoo.define('pos_multi_session', function(require){
                 }
                 order.ms_remove_order();
             });
-
             this.ready.then(function () {
                 self.init_multi_session();
             });
-            var channel_name = "pos.multi_session";
-            var callback = function(message){
-                return self.ms_on_update(message);
-            };
-            this.add_channel(channel_name, callback);
+
         },
         init_multi_session: function(){
             if (this.config.multi_session_id){
                 this.multi_session = new exports.MultiSession(this);
+                this.multi_session.start();
                 this.multi_session.request_sync_all();
             }
         },
@@ -451,20 +449,17 @@ odoo.define('pos_multi_session', function(require){
             this.show_warning_message = true;
             this.client_online = true;
             this.order_ID = null;
-            // var channel_name = "pos.multi_session";
-            // var callback = this.pos.ms_on_update;
-            // this.pos.add_channel(channel_name, callback);
         },
-        // start: function(){
-        //     var self = this;
-        //
-        //     this.bus = bus.bus;
-        //     this.bus.last = this.pos.db.load('bus_last', 0);
-        //     this.bus.on("notification", this, this.on_notification);
-        //     this.bus.stop_polling();
-        //     this.bus.start_polling();
-        //
-        // },
+        start: function(){
+            var self = this;
+
+            this.bus = bus.bus;
+            this.bus.last = this.pos.db.load('bus_last', 0);
+            this.bus.on("notification", this, this.on_notification);
+            this.bus.stop_polling();
+            this.bus.start_polling();
+
+        },
         request_sync_all: function(){
             var data = {};
             this.send({'action': 'sync_all', data: data});
@@ -573,30 +568,30 @@ odoo.define('pos_multi_session', function(require){
                 self.request_sync_all();
             }, 5000);
         },
-        // on_notification: function(notification) {
-        //     var self = this;
-        //     if (typeof notification[0][0] === 'string') {
-        //         notification = [notification];
-        //     }
-        //     for (var i = 0; i < notification.length; i++) {
-        //         var channel = notification[i][0];
-        //         var message = notification[i][1];
-        //         this.on_notification_do(channel, message);
-        //     }
-        //     this.pos.db.save('bus_last', this.bus.last);
-        // },
-        // on_notification_do: function (channel, message) {
-        //     if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-        //         try{
-        //             this.pos.ms_on_update(message);
-        //         }catch(err){
-        //             this.pos.chrome.gui.show_popup('error',{
-        //                 'title': _t('Error'),
-        //                 'body': err,
-        //             });
-        //         }
-        //     }
-        // }
+        on_notification: function(notification) {
+            var self = this;
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification];
+            }
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+            this.pos.db.save('bus_last', this.bus.last);
+        },
+        on_notification_do: function (channel, message) {
+            if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
+                try{
+                    this.pos.ms_on_update(message);
+                }catch(err){
+                    this.pos.chrome.gui.show_popup('error',{
+                        'title': _t('Error'),
+                        'body': err,
+                    });
+                }
+            }
+        }
     });
     return exports;
 });
