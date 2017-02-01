@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync for POS""",
-    "summary": """Sync for POS""",
+    "name": """POS Longpolling""",
+    "summary": """Technical module implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",

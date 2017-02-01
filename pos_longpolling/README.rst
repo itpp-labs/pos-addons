@@ -1,8 +1,8 @@
-==============
- Sync for POS
-==============
+=================
+ POS Longpolling
+=================
 
-The module allows to sync the another modules in POS
+Technical module implement instant updates in POS
 
 Credits
 =======

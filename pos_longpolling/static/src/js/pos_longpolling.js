@@ -18,7 +18,7 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.channels = {};
-            this.activeted_lonpolling = false;
+            this.lonpolling_activated = false;
             this.bus = bus.bus;
             this.ready.then(function () {
                 self.start_longpolling();
@@ -33,12 +33,12 @@ odoo.define('pos_longpolling', function(require){
                 self.init_channel(key);
             });
             this.bus.start_polling();
-            this.activeted_lonpolling = true;
+            this.lonpolling_activated = true;
         },
         add_channel: function(channel_name, callback) {
             var self = this;
             this.channels[channel_name] = callback;
-            if (this.activeted_lonpolling) {
+            if (this.lonpolling_activated) {
                 self.init_channel(channel_name)
             }
         },
@@ -51,6 +51,8 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             if (channel_name in self.channels) {
                 delete self.channels[channel_name];
+                var channel = JSON.stringify([session.db,channel_name,String(self.config.id)]);
+                this.bus.delete_channel(channel);
             }
         },
         on_notification: function(notification) {
