@@ -18,18 +18,34 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.channels = {};
-            this.start();
-        },
-        start: function(){
-            var self = this;
+            this.activeted_lonpolling = false;
             this.bus = bus.bus;
+            this.ready.then(function () {
+                self.start_longpolling();
+            });
+        },
+        start_longpolling: function(){
+            var self = this;
             this.bus.last = this.db.load('bus_last', 0);
             this.bus.on("notification", this, this.on_notification);
             this.bus.stop_polling();
+            _.each(self.channels, function(value, key){
+                self.init_channel(key);
+            });
             this.bus.start_polling();
+            this.activeted_lonpolling = true;
         },
         add_channel: function(channel_name, callback) {
+            var self = this;
             this.channels[channel_name] = callback;
+            if (this.activeted_lonpolling) {
+                self.init_channel(channel_name)
+            }
+        },
+        init_channel: function(channel_name){
+            var self = this;
+            var channel = JSON.stringify([session.db,channel_name,String(self.config.id)]);
+            this.bus.add_channel(channel);
         },
         remove_channel: function(channel_name) {
             var self = this;
@@ -39,9 +55,6 @@ odoo.define('pos_longpolling', function(require){
         },
         on_notification: function(notification) {
             var self = this;
-            if (typeof notification[0][0] === 'string') {
-                notification = [notification];
-            }
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
@@ -51,12 +64,13 @@ odoo.define('pos_longpolling', function(require){
         },
         on_notification_do: function (channel, message) {
             var self = this;
+            var channel = JSON.parse(channel);
             if(Array.isArray(channel) && (channel[1] in self.channels)){
                 try{
                     var callback = self.channels[channel[1]];
                     if (callback) {
                         if (self.debug){
-                            console.log('POS LONGPOLLING', channel[1], JSON.stringify(message));
+                            console.log('POS LONGPOLLING', self.config.name, channel[1], JSON.stringify(message));
                         }
                         callback(message);
                     }

@@ -10,6 +10,7 @@ class PosConfig(models.Model):
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed')]):
             if ps.user_id.id != self.env.user.id:
-                notifications.append([(self._cr.dbname, channel_name, ps.user_id.id), message])
+                channel = '["%s","%s","%s"]' % (self._cr.dbname, channel_name, ps.config_id.id)
+                notifications.append([channel, message])
         self.env['bus.bus'].sendmany(notifications)
         return 1
