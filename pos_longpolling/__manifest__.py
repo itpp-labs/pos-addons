@@ -1,27 +1,34 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync POS""",
-    "summary": """Sync POS""",
+    "name": """Sync for POS""",
+    "summary": """Sync for POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
+    "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
+    "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     # "price": 0.00,
     # "currency": "EUR",
 
     "depends": [
-        'bus',
-        'point_of_sale',
+        "bus",
+        "point_of_sale",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        'views/pos_longpolling_template.xml',
+        "views/pos_longpolling_template.xml",
     ],
     'qweb': [],
     "demo": [],
-    "installable": True,
+
+    "post_load": None,
+    "pre_init_hook": None,
+    "post_init_hook": None,
+
     "auto_install": False,
+    "installable": True,
 }
