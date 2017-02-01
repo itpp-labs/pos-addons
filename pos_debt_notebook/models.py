@@ -235,8 +235,15 @@ class PosConfiguration(models.TransientModel):
         return {'debt_type': debt_type}
 
     def set_debt_limit(self):
-        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", self.debt_limit)
+        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", str(self.debt_limit))
 
     def get_default_debt_limit(self, fields):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
         return {'debt_limit': debt_limit}
+
+
+class Product(models.Model):
+
+    _inherit = 'product.template'
+
+    credit_product = fields.Boolean('Credit Product', default=False, help="This product is used to buy Credits (pay for debts).")
