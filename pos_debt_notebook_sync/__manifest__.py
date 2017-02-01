@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync Debt notebook for POS""",
-    "summary": """Sync Debt notebook for POS""",
+    "name": """Sync Debt info across multiple sessions""",
+    "summary": """Credit payment system for festivals, food courts, etc.""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
