@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, tools, api, fields
+from openerp import models, tools, api, fields
 
 
 class PosDebtReport(models.Model):
@@ -24,10 +24,9 @@ class PosDebtReport(models.Model):
     credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
     balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
 
-    @api.model_cr
-    def init(self):
-        tools.drop_view_if_exists(self._cr, 'report_pos_debt')
-        self._cr.execute("""
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'report_pos_debt')
+        cr.execute("""
             CREATE OR REPLACE VIEW report_pos_debt AS (
                 (
                 SELECT
