@@ -6,6 +6,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var utils = require('web.utils');
+    var Model = require('web.DataModel');
 
     var _t = core._t;
     var round_pr = utils.round_precision;
@@ -13,6 +14,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
+            this.partner_list_ids = [];
+            this.reload_debts_ready = $.when();
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
             partner_model.fields.push('debt_type', 'debt', 'debt_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
@@ -35,14 +38,63 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
             }
             return pushed;
+        },
+        _save_to_server: function (orders, options) {
+            var self = this;
+            var def = _super_posmodel._save_to_server.call(this, orders, options);
+            var partner_ids = [];
+            _.each(orders, function(o){
+                if (o.data.updates_debt && o.data.partner_id)
+                    partner_ids.push(o.data.partner_id);
+            });
+            partner_ids = _.unique(partner_ids);
+            if (partner_ids.length){
+                return def.then(function(server_ids){
+                    self.reload_debts(partner_ids);
+                    return server_ids;
+                });
+            }else{
+                return def;
+            }
+        },
+        reload_debts: function(partner_ids){
+            // function is called whenever we need to update debt value from server
+            var limit = 0; // download only new debt value
+            limit = 10; //debug
+            var self = this;
+            this.partner_list_ids = this.partner_list_ids.concat(partner_ids);
+            this.reload_debts_ready = this.reload_debts_ready.then(function(){
+                return self._load_debts(self.partner_list_ids, limit).then(function(data){
+                    //TODO
+                    console.log('partner debt', data);
+                });
+            });
+        },
+        _load_debts: function(partner_ids, limit){
+            return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
         }
     });
 
+    var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
+        updates_debt: function(){
+            // wheither order update debt value
+            return this.has_credit_product() || this.has_debt_journal();
+        },
+        has_debt_journal: function(){
+            return this.paymentlines.any(function(line){
+                    return line.cashregister.journal.debt;
+                });
+        },
         has_credit_product: function(){
             return this.orderlines.any(function(line){
                 return line.product.credit_product;
             });
+        },
+        export_as_JSON: function(){
+            var data = _super_order.export_as_JSON.apply(this, arguments);
+            data.updates_debt = this.updates_debt();
+            return data;
         },
         add_paymentline: function(cashregister) {
             this.assert_editable();
