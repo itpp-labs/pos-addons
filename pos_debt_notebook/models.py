@@ -235,19 +235,23 @@ class PosConfiguration(models.TransientModel):
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
                                                 'In both cases debt will be red, credit - green')
     debt_limit = fields.Float(
-        string='Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='Customers are not allowed to have a debt more than this value')
+        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
+        help='Default value for new Customers')
 
+    @api.multi
     def set_debt_type(self):
         self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", self.debt_type)
 
+    @api.multi
     def get_default_debt_type(self, fields):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
         return {'debt_type': debt_type}
 
+    @api.multi
     def set_debt_limit(self):
         self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", str(self.debt_limit))
 
+    @api.multi
     def get_default_debt_limit(self, fields):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
         return {'debt_limit': debt_limit}
