@@ -55,8 +55,11 @@
     <t t-extend="ClientListScreenWidget">
         <t t-jquery=".button.next" t-operation="before">
             <div id="client_list_header_buttons">
-                <span id="change_debt_limit" class="button debt_notebook_button oe_hidden highlight">
-                    Change Limit
+                <span id="show_debt_history" class="button debt_notebook_button oe_hidden highlight">
+                    Show Debt History
+                </span>
+                <span id="show_customers" class="button debt_notebook_button oe_hidden highlight">
+                    Show Customers
                 </span>
                 <span id="set-customer-pay-full-debt" class="button debt_notebook_button oe_hidden highlight">
                     Pay Full Debt
@@ -67,6 +70,21 @@
             <th id="client-list-debt">Debt</th>
             <th id="client-list-credit">Credit</th>
             <th>Max Debt</th>
+        </t>
+        <t t-jquery="table.client-list" t-operation="after">
+            <table id="debt_history" class='client-list oe_hidden'>
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Point of Sale</th>
+                        <th>Purchased Credits (In)</th>
+                        <th>Credits Spent (Out)</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody id='debt_history_contents'>
+                </tbody>
+            </table>
         </t>
     </t>
 
@@ -96,6 +114,16 @@
                 * Some fields are editable only for POS managers.
             </div>
         </t>
+    </t>
+
+    <t t-name="DebtHistoryLine">
+        <tr>
+            <td><t t-esc="line ? line.date : ''"/></td>
+            <td><t t-esc="line ? line.config_id[1] : ''"/></td>
+            <td><t t-esc="((line and line.balance gt 0) ? (line.balance).toString() : '')"/></td>
+            <td><t t-esc="((line and line.balance lt 0) ? (-line.balance).toString() : '')"/></td>
+            <td><t t-esc="(line and line.total_balance ? (line.total_balance).toString() : '')"/></td>
+        </tr>
     </t>
 
 </templates>
