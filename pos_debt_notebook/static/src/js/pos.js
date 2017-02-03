@@ -64,7 +64,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
             if (this.reload_debts_ready.state() == 'resolved'){
-                // add timeout to gather requests defore reloading
+                // add timeout to gather requests before reloading
                 var def = $.Deferred();
                 this.reload_debts_ready = def;
                 setTimeout(function(){
