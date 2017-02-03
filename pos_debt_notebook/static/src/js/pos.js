@@ -63,7 +63,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             // function is called whenever we need to update debt value from server
             var limit = 0; // download only new debt value
             limit = 10; //debug
-            var self = this;
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
             if (this.reload_debts_ready.state() == 'resolved'){
                 // add timeout to gather requests before reloading
@@ -78,7 +77,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
                     self.reload_debts_partner_ids.splice(0);
                     return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
-                        self._on_load_debts(data);
+                        self._on_load_debts(data, partner_ids);
                     }).fail(function () {
                         self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
                     });
@@ -88,14 +87,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         _load_debts: function(partner_ids, limit){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
         },
-        _on_load_debts: function(debts){
+        _on_load_debts: function(debts, partner_ids){
             for (var i = 0; i < debts.length; i++) {
-                    var partner = self.db.get_partner_by_id(debts[i].partner_id);
+                    var partner = this.db.get_partner_by_id(debts[i].partner_id);
                     partner.debt = debts[i].debt;
                     partner.records_count = debts[i].records_count;
                     partner.history = debts[i].history;
                 }
-                self.trigger('updateDebtHistory', partner_ids);
+                this.trigger('updateDebtHistory', partner_ids);
         }
     });
 
@@ -336,9 +335,17 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             contents.innerHTML = "";
             var debt_history = partner.history;
             if (debt_history) {
-                for(var i = 0; i < debt_history.length; i++){
+                for (var i = 0; i < debt_history.length; i++) {
+                    if (i == 0) {
+                        debt_history[i].total_balance = Math.round(partner.debt * 100) / 100;
+                    } else {
+                        debt_history[i].total_balance = Math.
+                            round((debt_history[i-1].total_balance + debt_history[i-1].balance) * 100) / 100;
+                    }
+                }
+                for (var i = 0; i < debt_history.length; i++) {
                     var debt_history_line_html = QWeb.render('DebtHistoryLine', {
-                        widget: this,
+                        partner: partner,
                         line: debt_history[i]
                     });
                     var debt_history_line = document.createElement('tbody');
