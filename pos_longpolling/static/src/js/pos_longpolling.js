@@ -35,10 +35,13 @@ odoo.define('pos_longpolling', function(require){
             this.bus.start_polling();
             this.lonpolling_activated = true;
         },
-        add_channel: function(channel_name, callback) {
+        add_channel: function(channel_name, callback, thisArg) {
+            if (thisArg){
+                callback = _.bind(callback, thisArg);
+            }
             this.channels[channel_name] = callback;
             if (this.lonpolling_activated) {
-                this.init_channel(channel_name)
+                this.init_channel(channel_name);
             }
         },
         get_full_channel_name: function(channel_name){
