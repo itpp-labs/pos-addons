@@ -14,6 +14,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
+            this.reload_debts_partner_ids = [];
+            this.reload_debts_ready = $.when();
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
             partner_model.fields.push('debt_type', 'debt', 'debt_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
@@ -59,9 +61,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             // function is called whenever we need to update debt value from server
             var limit = 0; // download only new debt value
             limit = 10; //debug
-            return this._load_debts(partner_ids, limit).then(function(data){
-                //TODO
-                console.log('partner debt', data);
+            var self = this;
+            this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
+            this.reload_debts_ready = this.reload_debts_ready.then(function(){
+                if (self.reload_debts_partner_ids.length > 0) {
+                    var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
+                    self.reload_debts_partner_ids.splice(0);
+                    return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
+                        //TODO
+                        console.log('partner debt', data);
+                    }).fail(function () {
+                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
+                    });
+                }
             });
         },
         _load_debts: function(partner_ids, limit){
