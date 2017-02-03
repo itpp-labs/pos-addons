@@ -59,12 +59,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
-                    var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
-                    self.reload_debts_partner_ids.splice(0);
-                    return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
+                    var load_partner_ids = _.uniq(self.reload_debts_partner_ids.splice(0));
+                    return self._load_debts(load_partner_ids, limit).then(function (data) {
                         self._on_load_debts(data);
                     }).fail(function () {
-                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
+                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(load_partner_ids);
                     });
                 }
             });
