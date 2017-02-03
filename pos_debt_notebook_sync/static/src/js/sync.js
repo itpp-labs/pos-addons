@@ -13,37 +13,11 @@ odoo.define('pos_debt_sync', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
-            var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            var channel_name = "pos.order_test";
-            var callback = this.ms_on_update;
-            self.add_channel(channel_name, callback);
+            this.add_channel("pos_debt_notebook_sync", this.on_debt_updates, this);
         },
-        ms_on_update: function(message){
-            console.log("Adopted messages from another POS");
-        },
-    });
-
-    var OrderSuper = models.Order;
-    models.Order = models.Order.extend({
-        initialize: function(attributes, options){
-            var self = this;
-            options = options || {};
-            OrderSuper.prototype.initialize.apply(this, arguments);
-            this.bind('change:sync', function(){
-                self.do_ms_update();
-            });
-        },
-        add_product: function(){
-            OrderSuper.prototype.add_product.apply(this, arguments);
-            this.trigger('change:sync');
-        },
-        do_ms_update: function(){
-            var self = this;
-            var data = this.export_as_JSON();
-            session.rpc("/pos_order_test/update", {message: data}).then(function(res) {
-                console.log("Message sent");
-            });
+        on_debt_updates: function(message){
+            this.reload_debts(message.updated_partners);
         }
     });
 });

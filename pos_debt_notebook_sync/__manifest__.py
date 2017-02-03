@@ -15,12 +15,14 @@
     # "currency": "EUR",
 
     "depends": [
+        "base_action_rule",
         "pos_longpolling",
         "pos_debt_notebook",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/template.xml",
+        "data/base_action_rule.xml",
     ],
     'qweb': [],
     "demo": [],
