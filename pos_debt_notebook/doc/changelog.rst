@@ -1,5 +1,6 @@
 `4.0.0`
 -------
+- **ADD:** Credits can be purchased via Credit Product. No need to use Debt Journal at that case
 - **ADD:** Max Debt setting per each customer. Default is 0.
 - **ADD:** Age analysis, debt statistics
 - **ADD:** An ability to select a way to display debt values: debt or credit

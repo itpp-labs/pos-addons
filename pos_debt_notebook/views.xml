@@ -85,5 +85,19 @@
     </field>
 </record>
 
+<record id="product_template_form_view" model="ir.ui.view">
+    <field name="name">product.template.form.debt</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="point_of_sale.product_template_form_view"/>
+    <field name="arch" type="xml">
+        <xpath expr="//group[@name='properties']">
+            <group>
+                <field name="credit_product"/>
+            </group>
+        </xpath>
+    </field>
+</record>
+
+
 </data>
 </openerp>
