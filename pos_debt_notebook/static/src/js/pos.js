@@ -24,21 +24,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             product_model.fields.push('credit_product');
             return _super_posmodel.initialize.call(this, session, attributes);
         },
-        push_order: function(order, opts){
-            var self = this;
-            var pushed = _super_posmodel.push_order.call(this, order, opts);
-            var client = order && order.get_client();
-            if (client){
-                order.paymentlines.each(function(line){
-                    var journal = line.cashregister.journal;
-                    if (!journal.debt)
-                        return;
-                    var amount = line.get_amount();
-                    client.debt += amount;
-                });
-            }
-            return pushed;
-        },
         _save_to_server: function (orders, options) {
             var self = this;
             var def = _super_posmodel._save_to_server.call(this, orders, options);
