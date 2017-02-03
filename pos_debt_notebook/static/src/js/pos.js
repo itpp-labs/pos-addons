@@ -6,6 +6,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var utils = require('web.utils');
+    var Model = require('web.DataModel');
 
     var _t = core._t;
     var round_pr = utils.round_precision;
@@ -13,10 +14,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
+            this.reload_debts_partner_ids = [];
+            this.reload_debts_ready = $.when();
             var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
             partner_model.fields.push('debt_type', 'debt', 'debt_limit');
             var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
             journal_model.fields.push('debt');
+            var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            product_model.fields.push('credit_product');
             return _super_posmodel.initialize.call(this, session, attributes);
         },
         push_order: function(order, opts){
@@ -33,16 +38,85 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
             }
             return pushed;
+        },
+        _save_to_server: function (orders, options) {
+            var self = this;
+            var def = _super_posmodel._save_to_server.call(this, orders, options);
+            var partner_ids = [];
+            _.each(orders, function(o){
+                if (o.data.updates_debt && o.data.partner_id)
+                    partner_ids.push(o.data.partner_id);
+            });
+            partner_ids = _.unique(partner_ids);
+            if (partner_ids.length){
+                return def.then(function(server_ids){
+                    self.reload_debts(partner_ids);
+                    return server_ids;
+                });
+            }else{
+                return def;
+            }
+        },
+        reload_debts: function(partner_ids){
+            // function is called whenever we need to update debt value from server
+            var limit = 0; // download only new debt value
+            limit = 10; //debug
+            var self = this;
+            this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
+            if (this.reload_debts_ready.state() == 'resolved'){
+                // add timeout to gather requests before reloading
+                var def = $.Deferred();
+                this.reload_debts_ready = def;
+                setTimeout(function(){
+                    def.resolve();
+                }, 1000);
+            }
+            this.reload_debts_ready = this.reload_debts_ready.then(function(){
+                if (self.reload_debts_partner_ids.length > 0) {
+                    var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
+                    self.reload_debts_partner_ids.splice(0);
+                    return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
+                        self._on_load_debts(data);
+                    }).fail(function () {
+                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
+                    });
+                }
+            });
+        },
+        _load_debts: function(partner_ids, limit){
+            return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
+        },
+        _on_load_debts: function(debts){
+            // TODO
         }
     });
 
+    var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
+        updates_debt: function(){
+            // wheither order update debt value
+            return this.has_credit_product() || this.has_debt_journal();
+        },
+        has_debt_journal: function(){
+            return this.paymentlines.any(function(line){
+                    return line.cashregister.journal.debt;
+                });
+        },
+        has_credit_product: function(){
+            return this.orderlines.any(function(line){
+                return line.product.credit_product;
+            });
+        },
+        export_as_JSON: function(){
+            var data = _super_order.export_as_JSON.apply(this, arguments);
+            data.updates_debt = this.updates_debt();
+            return data;
+        },
         add_paymentline: function(cashregister) {
             this.assert_editable();
-
             var self = this;
             var journal = cashregister.journal;
-            if (journal.debt && !this.get_client()){
+            if (!this.get_client() && (this.has_credit_product() || journal.debt)){
                 setTimeout(function(){
                     self.pos.gui.show_screen('clientlist');
                 }, 30);
@@ -94,6 +168,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
+            if (currentOrder.has_credit_product() && !client){
+                this.gui.show_popup('error',{
+                    'title': _t('Unknown customer'),
+                    'body': _t("Don't forget to specify Customer when sell Credits."),
+                });
+                return;
+            }
             if(isDebt && currentOrder.get_orderlines().length === 0){
                 this.gui.show_popup('error',{
                     'title': _t('Empty Order'),
@@ -101,7 +182,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (client.debt + debt_amount > client.debt_limit) {
+            if (debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')

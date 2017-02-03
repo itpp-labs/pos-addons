@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync Debt info across multiple sessions""",
-    "summary": """Credit payment system for festivals, food courts, etc.""",
+    "name": """POS Longpolling""",
+    "summary": """Technical module implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
@@ -15,14 +15,12 @@
     # "currency": "EUR",
 
     "depends": [
-        "base_action_rule",
-        "pos_longpolling",
-        "pos_debt_notebook",
+        "bus",
+        "point_of_sale",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "views/template.xml",
-        "data/base_action_rule.xml",
+        "views/pos_longpolling_template.xml",
     ],
     'qweb': [],
     "demo": [],
