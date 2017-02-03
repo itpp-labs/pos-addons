@@ -77,7 +77,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
                     self.reload_debts_partner_ids.splice(0);
                     return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
-                        self._on_load_debts(data, partner_ids);
+                        self._on_load_debts(data);
                     }).fail(function () {
                         self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
                     });
@@ -87,7 +87,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         _load_debts: function(partner_ids, limit){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
         },
-        _on_load_debts: function(debts, partner_ids){
+        _on_load_debts: function(debts){
+            var partner_ids = _.map(debts, function(debt){ return debt.partner_id; });
             for (var i = 0; i < debts.length; i++) {
                     var partner = this.db.get_partner_by_id(debts[i].partner_id);
                     partner.debt = debts[i].debt;
