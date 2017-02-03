@@ -63,13 +63,20 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             limit = 10; //debug
             var self = this;
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
+            if (this.reload_debts_ready.state() == 'resolved'){
+                // add timeout to gather requests before reloading
+                var def = $.Deferred();
+                this.reload_debts_ready = def;
+                setTimeout(function(){
+                    def.resolve();
+                }, 1000);
+            }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
                     var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
                     self.reload_debts_partner_ids.splice(0);
                     return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
-                        //TODO
-                        console.log('partner debt', data);
+                        self._on_load_debts(data);
                     }).fail(function () {
                         self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
                     });
@@ -78,6 +85,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         _load_debts: function(partner_ids, limit){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
+        },
+        _on_load_debts: function(debts){
+            // TODO
         }
     });
 
