@@ -186,14 +186,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
+            if (client && debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')
                 });
                 return;
             }
-            this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
+            client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
 
