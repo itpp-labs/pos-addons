@@ -50,3 +50,8 @@
     color: #999;
     pointer-events: none;
 }
+
+#loading_history {
+    font-size: 400%;
+    text-align: center;
+}

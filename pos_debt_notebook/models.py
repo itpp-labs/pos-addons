@@ -22,7 +22,7 @@ class ResPartner(models.Model):
 
         for r in self:
             r.debt = -res_index[r.id]['balance']
-            r.credit_balance = r.debt
+            r.credit_balance = -r.debt
 
     @api.model
     def _default_debt_limit(self):
