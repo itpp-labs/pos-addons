@@ -9,48 +9,59 @@ class ResPartner(models.Model):
 
     @api.multi
     def _compute_debt(self):
-        debt_journal = self.env['account.journal'].search([
-            ('company_id', '=', self.env.user.company_id.id), ('debt', '=', True)])
-        debt_account = []
-        for journal in debt_journal:
-            debt_account.append(journal.default_debit_account_id.id)
+        domain = [('partner_id', 'in', self.ids)]
+        fields = ['partner_id', 'balance']
+        res = self.env['report.pos.debt'].read_group(
+            domain,
+            fields,
+            'partner_id')
 
-        res = {}
-        for partner in self:
-            res[partner.id] = 0
-        if len(debt_account) > 0:
-            self._cr.execute(
-                """SELECT l.partner_id, SUM(l.debit - l.credit)
-                FROM account_move_line l
-                WHERE l.account_id IN %s AND l.partner_id IN %s
-                GROUP BY l.partner_id
-                """,
-                (tuple(debt_account), tuple(self.ids)))
+        res_index = dict((id, {'balance': 0}) for id in self.ids)
+        for data in res:
+            res_index[data['partner_id'][0]] = data
 
-            for partner_id, val in self._cr.fetchall():
-                res[partner_id] += val
-
-        statements = self.env['account.bank.statement'].search(
-            [('journal_id', 'in', [j.id for j in debt_journal]), ('state', '=', 'open')])
-
-        if statements:
-            self._cr.execute(
-                """SELECT l.partner_id, SUM(l.amount)
-                FROM account_bank_statement_line l
-                WHERE l.statement_id IN %s AND l.partner_id IN %s
-                GROUP BY l.partner_id
-                """,
-                (tuple(statements.ids), tuple(self.ids)))
-            for partner_id, val in self._cr.fetchall():
-                res[partner_id] += val
-        for partner in self:
-            partner.debt = res[partner.id]
-            partner.credit_balance = - res[partner.id]
+        for r in self:
+            r.debt = -res_index[r.id]['balance']
+            r.credit_balance = -r.debt
 
     @api.model
     def _default_debt_limit(self):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
         return float(debt_limit)
+
+    @api.multi
+    def debt_history(self, limit=0):
+        """
+        Get debt details
+
+        :param int limit: max number of records to return
+        :return: dictonary with keys:
+             * debt: current debt
+             * records_count: total count of records
+             * history: list of dictionaries
+
+                 * date
+                 * config_id
+                 * balance
+
+        """
+        res = []
+        fields = ['date', 'config_id', 'balance']
+        for r in self:
+            domain = [('partner_id', '=', r.id)]
+            data = {"debt": r.debt}
+            if limit:
+                records = self.env['report.pos.debt'].search_read(
+                    domain=domain,
+                    fields=fields,
+                    limit=limit,
+                )
+            data['history'] = records
+            data['records_count'] = self.env['report.pos.debt'].search_count(domain)
+            data['partner_id'] = r.id
+            res.append(data)
+
+        return res
 
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
