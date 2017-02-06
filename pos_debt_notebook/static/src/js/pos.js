@@ -144,7 +144,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     screens.PaymentScreenWidget.include({
         init: function(parent, options) {
             this._super(parent, options);
-            this.pos.on('updateDebtHistory', function(partner_ids){this.update_debt_history(partner_ids);}, this);
+            this.pos.on('updateDebtHistory', function(partner_ids){
+                this.update_debt_history(partner_ids);
+            }, this);
         },
         update_debt_history: function (partner_ids){
             var client = this.pos.get_client();
@@ -293,9 +295,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.check_user_in_group = function(group_id, groups) {
                 return  $.inArray(group_id, groups) != -1;
             };
-            this.pos.on('updateDebtHistory', function(partner_ids){this.update_debt_history(partner_ids);}, this);
+            this.pos.on('updateDebtHistory', function(partner_ids){
+                this.update_debt_history(partner_ids);
+            }, this);
         },
         update_debt_history: function (partner_ids){
+            var self = this;
             if (this.new_client && $.inArray(this.new_client.id, partner_ids) != -1) {
                 var debt = this.pos.db.get_partner_by_id(this.new_client.id).debt;
                 if (this.new_client.debt_type == 'credit') {
@@ -303,10 +308,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 debt = this.format_currency(debt);
                 $('.client-detail .detail.client-debt').text(debt);
-                this.partner_cache.clear_node(this.new_client.id);
-                var customers = this.pos.db.get_partners_sorted(1000);
-                this.render_list(customers);
             }
+            _.each(partner_ids, function(id){
+                self.partner_cache.clear_node(id);
+            });
+            var customers = this.pos.db.get_partners_sorted(1000);
+            this.render_list(customers);
         },
         render_list: function(partners){
             var debt_type = partners && partners.length ? partners[0].debt_type : '';
