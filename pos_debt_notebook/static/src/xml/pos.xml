@@ -21,6 +21,9 @@
                 </span>
             </div>
         </t>
+        <t t-jquery=".client-details-box" t-operation="after">
+            <div id="loading_history" class="o_spinner oe_hidden"><i class="fa fa-spinner fa-spin fa-4"/></div>
+        </t>
     </t>
 
     <t t-extend="ActionpadWidget">
