@@ -309,7 +309,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
         },
         render_list: function(partners){
-            var debt_type = partners ? partners[0].debt_type : '';
+            var debt_type = partners && partners.length ? partners[0].debt_type : '';
             if (debt_type == 'debt') {
                 this.$('#client-list-credit').remove();
             } else if (debt_type == 'credit') {
