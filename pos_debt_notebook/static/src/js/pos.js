@@ -8,6 +8,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var utils = require('web.utils');
     var Model = require('web.DataModel');
 
+    var QWeb = core.qweb;
     var _t = core._t;
     var round_pr = utils.round_precision;
 
@@ -23,21 +24,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
             product_model.fields.push('credit_product');
             return _super_posmodel.initialize.call(this, session, attributes);
-        },
-        push_order: function(order, opts){
-            var self = this;
-            var pushed = _super_posmodel.push_order.call(this, order, opts);
-            var client = order && order.get_client();
-            if (client){
-                order.paymentlines.each(function(line){
-                    var journal = line.cashregister.journal;
-                    if (!journal.debt)
-                        return;
-                    var amount = line.get_amount();
-                    client.debt += amount;
-                });
-            }
-            return pushed;
         },
         _save_to_server: function (orders, options) {
             var self = this;
@@ -58,10 +44,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
         },
         reload_debts: function(partner_ids){
+            var self = this;
             // function is called whenever we need to update debt value from server
             var limit = 0; // download only new debt value
             limit = 10; //debug
-            var self = this;
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
             if (this.reload_debts_ready.state() == 'resolved'){
                 // add timeout to gather requests before reloading
@@ -73,21 +59,28 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
-                    var old_reload_debts_partner_ids = self.reload_debts_partner_ids.slice();
-                    self.reload_debts_partner_ids.splice(0);
-                    return self._load_debts(old_reload_debts_partner_ids, limit).then(function (data) {
+                    var load_partner_ids = _.uniq(self.reload_debts_partner_ids.splice(0));
+                    return self._load_debts(load_partner_ids, limit).then(function (data) {
                         self._on_load_debts(data);
                     }).fail(function () {
-                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(old_reload_debts_partner_ids);
+                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(load_partner_ids);
                     });
                 }
             });
+            return this.reload_debts_ready;
         },
         _load_debts: function(partner_ids, limit){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
         },
         _on_load_debts: function(debts){
-            // TODO
+            var partner_ids = _.map(debts, function(debt){ return debt.partner_id; });
+            for (var i = 0; i < debts.length; i++) {
+                    var partner = this.db.get_partner_by_id(debts[i].partner_id);
+                    partner.debt = debts[i].debt;
+                    partner.records_count = debts[i].records_count;
+                    partner.history = debts[i].history;
+                }
+                this.trigger('updateDebtHistory', partner_ids);
         }
     });
 
@@ -149,6 +142,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     });
 
     screens.PaymentScreenWidget.include({
+        init: function(parent, options) {
+            this._super(parent, options);
+            this.pos.on('updateDebtHistory', function(partner_ids){
+                this.update_debt_history(partner_ids);
+            }, this);
+        },
+        update_debt_history: function (partner_ids){
+            var client = this.pos.get_client();
+            if (client && $.inArray(client.id, partner_ids) != -1) {
+                this.gui.screen_instances.products.actionpad.renderElement();
+                this.customer_changed();
+            }
+        },
         validate_order: function(options) {
             var currentOrder = this.pos.get_order();
             var isDebt = false;
@@ -182,14 +188,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
+            if (client && debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')
                 });
                 return;
             }
-            this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
+            client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
 
@@ -200,7 +206,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             _.each(this.pos.cashregisters, function(cashregister) {
                 if (cashregister.journal.debt) {
                     debtjournal = cashregister;
-                    
                 }
 
             });
@@ -290,9 +295,28 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.check_user_in_group = function(group_id, groups) {
                 return  $.inArray(group_id, groups) != -1;
             };
+            this.pos.on('updateDebtHistory', function(partner_ids){
+                this.update_debt_history(partner_ids);
+            }, this);
+        },
+        update_debt_history: function (partner_ids){
+            var self = this;
+            if (this.new_client && $.inArray(this.new_client.id, partner_ids) != -1) {
+                var debt = this.pos.db.get_partner_by_id(this.new_client.id).debt;
+                if (this.new_client.debt_type == 'credit') {
+                    debt = - debt;
+                }
+                debt = this.format_currency(debt);
+                $('.client-detail .detail.client-debt').text(debt);
+            }
+            _.each(partner_ids, function(id){
+                self.partner_cache.clear_node(id);
+            });
+            var customers = this.pos.db.get_partners_sorted(1000);
+            this.render_list(customers);
         },
         render_list: function(partners){
-            var debt_type = partners ? partners[0].debt_type : '';
+            var debt_type = partners && partners.length ? partners[0].debt_type : '';
             if (debt_type == 'debt') {
                 this.$('#client-list-credit').remove();
             } else if (debt_type == 'credit') {
@@ -300,18 +324,70 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this._super(partners);
         },
+        render_debt_history: function(partner){
+            var contents = this.$el[0].querySelector('#debt_history_contents');
+            contents.innerHTML = "";
+            var debt_history = partner.history;
+            if (debt_history) {
+                for (var i = 0; i < debt_history.length; i++) {
+                    if (i == 0) {
+                        debt_history[i].total_balance = Math.round(partner.debt * 100) / 100;
+                    } else {
+                        debt_history[i].total_balance = Math.
+                            round((debt_history[i-1].total_balance + debt_history[i-1].balance) * 100) / 100;
+                    }
+                }
+                for (var i = 0; i < debt_history.length; i++) {
+                    var debt_history_line_html = QWeb.render('DebtHistoryLine', {
+                        partner: partner,
+                        line: debt_history[i]
+                    });
+                    var debt_history_line = document.createElement('tbody');
+                    debt_history_line.innerHTML = debt_history_line_html;
+                    debt_history_line = debt_history_line.childNodes[1];
+                    contents.appendChild(debt_history_line);
+                }
+            }
+        },
         toggle_save_button: function(){
             this._super();
+            var self = this;
             var $pay_full_debt = this.$('#set-customer-pay-full-debt');
+            var $show_customers = this.$('#show_customers');
+            var $show_debt_history = this.$('#show_debt_history');
+            var $debt_history = this.$('#debt_history');
             var curr_client = this.pos.get_order().get_client();
             if (this.editing_client) {
                 $pay_full_debt.addClass('oe_hidden');
+                $show_debt_history.addClass('oe_hidden');
+                $show_customers.addClass('oe_hidden');
             } else {
                 if ((this.new_client && this.new_client.debt > 0) ||
                         (curr_client && curr_client.debt > 0 && !this.new_client)) {
                     $pay_full_debt.removeClass('oe_hidden');
                 }else{
                     $pay_full_debt.addClass('oe_hidden');
+                }
+                if (this.new_client || curr_client) {
+                    $show_debt_history.removeClass('oe_hidden');
+                    $show_debt_history.on('click', function () {
+                        var $loading_history = $('#loading_history');
+                        $loading_history.removeClass('oe_hidden');
+                        self.render_debt_history(self.new_client || curr_client);
+                        $('.client-list').addClass('oe_hidden');
+                        $debt_history.removeClass('oe_hidden');
+                        $show_debt_history.addClass('oe_hidden');
+                        $show_customers.removeClass('oe_hidden');
+                        self.pos.reload_debts(
+                            (self.new_client && self.new_client.id) || (curr_client && curr_client.id)).then(
+                                function () {
+                                    self.render_debt_history(self.new_client || curr_client);
+                                    $loading_history.addClass('oe_hidden');
+                                });
+                    });
+                } else {
+                    $show_debt_history.addClass('oe_hidden');
+                    $show_debt_history.off();
                 }
             }
         },
@@ -321,7 +397,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             this.$('#set-customer-pay-full-debt').click(function(){
                 self.save_changes();
-//                self.gui.back();
                 if (self.new_client.debt <= 0) {
                     self.gui.show_popup('error',{
                         'title': _t('Error: No Debt'),
@@ -367,6 +442,17 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 newDebtPaymentline.set_amount(self.new_client.debt * -1);
                 order.paymentlines.add(newDebtPaymentline);
                 self.gui.show_screen('payment');
+            });
+            var $show_customers = $('#show_customers');
+            var $show_debt_history = $('#show_debt_history');
+            if (this.pos.get_order().get_client() || this.new_client) {
+                $show_debt_history.removeClass('oe_hidden');
+            }
+            $show_customers.off().on('click', function () {
+                $('.client-list').removeClass('oe_hidden');
+                $('#debt_history').addClass('oe_hidden');
+                $show_customers.addClass('oe_hidden');
+                $show_debt_history.removeClass('oe_hidden');
             });
         },
         saved_client_details: function(partner_id){

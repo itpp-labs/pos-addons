@@ -21,7 +21,7 @@ class ResPartner(models.Model):
             res_index[data['partner_id'][0]] = data
 
         for r in self:
-            r.debt = res_index[r.id]['balance']
+            r.debt = -res_index[r.id]['balance']
             r.credit_balance = -r.debt
 
     @api.model
