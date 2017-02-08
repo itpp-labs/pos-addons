@@ -1,25 +1,18 @@
-odoo.define('pos_longpolling', function(require){
-    var exports = {};
-
-    var session = require('web.session');
-    var core = require('web.core');
-    var models = require('point_of_sale.models');
-    var bus = require('bus.bus');
-    var chrome = require('point_of_sale.chrome');
-
-    var _t = core._t;
+openerp.pos_longpolling = function(instance){
+    var module = instance.point_of_sale;
+    var _t = instance.web._t;
 
     // prevent bus to be started by chat_manager.js
-    bus.bus.activated = true; // fake value to ignore start_polling call
+    openerp.bus.bus.activated = true; // fake value to ignore start_polling call
 
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
+    var PosModelSuper = module.PosModel;
+    module.PosModel = module.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.channels = {};
             this.lonpolling_activated = false;
-            this.bus = bus.bus;
+            this.bus = openerp.bus.bus;
             this.ready.then(function () {
                 self.start_longpolling();
             });
@@ -45,7 +38,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         get_full_channel_name: function(channel_name){
-            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
+            return JSON.stringify([openerp.session.db,channel_name,String(this.config.id)]);
         },
         init_channel: function(channel_name){
             var channel = this.get_full_channel_name(channel_name);
@@ -59,6 +52,9 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         on_notification: function(notification) {
+            if (typeof notification[0][0] === 'string') {
+                notification = [notification];
+            }
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
@@ -79,12 +75,12 @@ odoo.define('pos_longpolling', function(require){
                         callback(message);
                     }
                 }catch(err){
-                    this.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
+                    self.pos_widget.screen_selector.show_popup('error',{
+                        message: _t('Error'),
+                        comment: err,
                     });
                 }
             }
         }
     });
-});
+};

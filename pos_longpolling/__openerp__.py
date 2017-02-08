@@ -10,7 +10,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
-    "license": "LGPL-3",
+    "license": "GPL-3",
     # "price": 0.00,
     # "currency": "EUR",
 
