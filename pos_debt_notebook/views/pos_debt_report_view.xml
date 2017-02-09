@@ -43,6 +43,7 @@
                 <form string="Point of Sale Analysis">
                     <group>
                         <field name="order_id"/>
+                        <field name="invoice_id"/>
                         <field name="credit_product"/>
                         <field name="state"/>
 
