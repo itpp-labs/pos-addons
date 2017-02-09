@@ -1,3 +1,8 @@
+`4.1.0`
+-------
+- **ADD:** Invoice support
+- **FIX:** Fetch new partners before loading their debt history (e.g. when another POS create partner)
+
 `4.0.0`
 -------
 - **ADD:** An ability to show customer debt transactions 
