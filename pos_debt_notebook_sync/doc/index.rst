@@ -2,24 +2,49 @@
  Sync Debt notebook for POS
 ============================
 
-Longpolling
-===========
+Installation
+============
 
-Check following resources about activating longpolling:
+* Check instruction for `POS longpolling <https://apps.odoo.com/apps/modules/10.0/pos_longpolling/>`_ about activating longpolling
+* You probably need a module that force user to login before making purchase on website. E.g. this one: https://github.com/it-projects-llc/e-commerce/tree/10.0/website_sale_require_login
 
-* Official doc: https://www.odoo.com/documentation/8.0/setup/deploy.html#builtin-server
-* Non-official doc: https://odoo-development.readthedocs.io/en/latest/admin/longpolling.html
+Configuration
+=============
 
-In short, you need to start server with non-zero ``workers`` parameter:::
+Payment Acquirer
+----------------
 
-    openerp-server --workers=2 ...
+* open ``Invoicing >> Configuration >> Payments >> Payment Acquirer``
+* select Payment Acquirer you are going to use, e.g. Paypal.
 
-and configure nginx: ::
+  * click ``[Edit]``
+  * On ``Configuration`` tab set **Order Confirmation** field equal to ``Authorize & capture the amount, confirm the SO and auto-validate the invoice on acquirer confirmation``
+  * click ``[Save]``
 
-    location /longpolling {
-        proxy_pass http://127.0.0.1:8072;
-    }
-    location / {
-        proxy_pass http://127.0.0.1:8069;
-    }
+Usage
+=====
+
+POS sales
+---------
+
+* open one POS
+* open another POS as another user
+* on first POS:
+
+  * select customer
+  * EITHER add *Credit Product* to an order and register usual payment (e.g. via Cash journal)
+  * OR add usual products and register Debt payment. See `Debt notebook module <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook/>`_ for more information.
+  * click ``[Validate]``
+
+* on second POS
+
+  * open Customer list
+  * find the customer
+  * customer's debt is updated
+
+eCommerce sales
+---------------
+* open POS
+* purchase *Credit Product* via website (``/shop/...``)
+* debt value on POS is updated
 
