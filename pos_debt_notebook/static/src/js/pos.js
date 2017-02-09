@@ -338,15 +338,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         render_debt_history: function(partner){
             var contents = this.$el[0].querySelector('#debt_history_contents');
             contents.innerHTML = "";
+            var debt_type = partner.debt_type;
             var debt_history = partner.history;
+            var sign = debt_type == 'credit' ? -1 : 1;
             if (debt_history) {
+                var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {
-                    if (i == 0) {
-                        debt_history[i].total_balance = Math.round(partner.debt * 100) / 100;
-                    } else {
-                        debt_history[i].total_balance = Math.
-                            round((debt_history[i-1].total_balance + debt_history[i-1].balance) * 100) / 100;
-                    }
+                    debt_history[i].total_balance = sign * Math.round(total_balance * 100) / 100;
+                    total_balance += debt_history[i].balance;
                 }
                 for (var i = 0; i < debt_history.length; i++) {
                     var debt_history_line_html = QWeb.render('DebtHistoryLine', {
