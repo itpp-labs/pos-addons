@@ -100,9 +100,35 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return line.product.credit_product;
             });
         },
+        get_debt_delta: function(){
+            var debt_amount = 0;
+            var plines = this.get_paymentlines();
+            for (var i = 0; i < plines.length; i++) {
+                if (plines[i].cashregister.journal.debt) {
+                    debt_amount += plines[i].amount;
+                }
+            }
+            this.orderlines.each(function(line){
+                if (line.product.credit_product){
+                    debt_amount -= line.get_price_without_tax();
+                }
+            });
+            return debt_amount;
+        },
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
+            return data;
+        },
+        export_for_printing: function(){
+            var data = _super_order.export_for_printing.apply(this, arguments);
+            var client = this.get_client();
+            if (client){
+                data.debt_before = client.debt;
+                data.debt_after = data.debt_before + this.get_debt_delta();
+                data.debt_type = client.debt_type;
+
+            }
             return data;
         },
         add_paymentline: function(cashregister) {
@@ -157,15 +183,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         validate_order: function(options) {
             var currentOrder = this.pos.get_order();
-            var isDebt = false;
-            var plines = currentOrder.get_paymentlines();
-            var debt_amount = 0;
-            for (var i = 0; i < plines.length; i++) {
-                if (plines[i].cashregister.journal.debt) {
-                    isDebt = true;
-                    debt_amount += plines[i].amount;
-                }
-            }
+            var isDebt = currentOrder.updates_debt();
+            var debt_amount = currentOrder.get_debt_delta();
             var client = currentOrder.get_client();
             if (isDebt && !client){
                 this.gui.show_popup('error',{

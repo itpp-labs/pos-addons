@@ -1,3 +1,5 @@
+- **ADD:** print prev and new debt value in receipt as well as customer name
+
 `4.0.0`
 -------
 - **ADD:** An ability to show customer debt transactions 
