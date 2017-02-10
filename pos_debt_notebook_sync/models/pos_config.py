@@ -27,6 +27,14 @@ class PosConfig(models.Model):
             ).mapped(
                 lambda r: r.partner_id
             )
+        elif model == 'account.invoice':
+            partners = records.filtered(
+                lambda r:
+                r.state in ['paid'] and
+                any(line.product_id.credit_product for line in r.invoice_line_ids)
+            ).mapped(
+                lambda r: r.partner_id
+            )
 
         if partners:
             message = {"updated_partners": partners.ids}
