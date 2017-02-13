@@ -135,8 +135,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var data = _super_order.export_for_printing.apply(this, arguments);
             var client = this.get_client();
             if (client){
-                data.debt_before = client.debt;
-                data.debt_after = data.debt_before + this.get_debt_delta();
+                data.debt_before = this.debt_before;
+                data.debt_after = this.debt_after;
                 data.debt_type = client.debt_type;
 
             }
@@ -197,6 +197,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var isDebt = currentOrder.updates_debt();
             var debt_amount = currentOrder.get_debt_delta();
             var client = currentOrder.get_client();
+            if (client){
+                currentOrder.debt_before = client.debt;
+                currentOrder.debt_after = currentOrder.debt_before + debt_amount;
+            } else {
+                currentOrder.debt_before = false;
+                currentOrder.debt_after = false;
+            }
             if (isDebt && !client){
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
