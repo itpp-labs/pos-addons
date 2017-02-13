@@ -135,8 +135,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var data = _super_order.export_for_printing.apply(this, arguments);
             var client = this.get_client();
             if (client){
-                data.debt_before = this.debt_before;
-                data.debt_after = this.debt_after;
+                var rounding = this.pos.currency.rounding;
+                data.debt_before = round_pr(this.debt_before, rounding);
+                data.debt_after = round_pr(this.debt_after, rounding);
                 data.debt_type = client.debt_type;
 
             }
