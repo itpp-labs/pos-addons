@@ -10,7 +10,8 @@ class PosDebtReport(models.Model):
     _auto = False
     _order = 'date desc'
 
-    order_id = fields.Many2one('pos.order', string='Order', readonly=True)
+    order_id = fields.Many2one('pos.order', string='POS Order', readonly=True)
+    invoice_id = fields.Many2one('account.invoice', string='Invoice', readonly=True)
 
     date = fields.Datetime(string='Date', readonly=True)
     partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
@@ -33,6 +34,7 @@ class PosDebtReport(models.Model):
                 SELECT
                     st_line.id as id,
                     o.id as order_id,
+                    NULL::integer as invoice_id,
                     -st_line.amount as balance,
                     st.state as state,
                     false as credit_product,
@@ -60,6 +62,7 @@ class PosDebtReport(models.Model):
                 SELECT
                     -pos_line.id as id,
                     o.id as order_id,
+                    NULL::integer as invoice_id,
                     pos_line.price_unit * qty as balance,
                     CASE o.state
                         WHEN 'done' THEN 'confirm'
@@ -88,6 +91,32 @@ class PosDebtReport(models.Model):
                     pt.credit_product=true
                     AND o.state IN ('paid','done')
 
+                )
+                UNION ALL
+                (
+                SELECT
+                    (2147483647 - inv_line.id) as id,
+                    NULL::integer as order_id,
+                    inv.id as invoice_id,
+                    inv_line.price_subtotal as balance,
+                    'confirm' as state,
+                    true as credit_product,
+
+                    inv.date_invoice as date,
+                    inv.partner_id as partner_id,
+                    inv.user_id as user_id,
+                    NULL::integer as session_id,
+                    NULL::integer as config_id,
+                    inv.company_id as company_id,
+                    inv.currency_id as currency_id
+
+                FROM account_invoice_line as inv_line
+                    LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
+                    LEFT JOIN product_template pt ON (pt.id=pp.product_tmpl_id)
+                    LEFT JOIN account_invoice inv ON (inv.id=inv_line.invoice_id)
+                WHERE
+                    pt.credit_product=true
+                    AND inv.state in ('paid')
                 )
             )
         """)

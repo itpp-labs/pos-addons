@@ -1,3 +1,7 @@
+`4.1.0`
+-------
+- **ADD:** Invoice support
+- **FIX:** Fetch new partners before loading their debt history (e.g. when another POS create partner)
 - **ADD:** print prev and new debt value in receipt as well as customer name
 
 `4.0.0`

@@ -46,7 +46,13 @@ class ResPartner(models.Model):
 
         """
         res = []
-        fields = ['date', 'config_id', 'balance']
+        fields = [
+            'date',
+            'config_id',
+            'order_id',
+            'invoice_id',
+            'balance',
+        ]
         for r in self:
             domain = [('partner_id', '=', r.id)]
             data = {"debt": r.debt}
