@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="//link[last()]" position="after">
+                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/discount_program.js"></script>
+                <link rel="stylesheet" href="/pos_product_category_discount/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>
