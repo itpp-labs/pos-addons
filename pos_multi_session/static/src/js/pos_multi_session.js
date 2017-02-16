@@ -41,6 +41,18 @@ openerp.pos_multi_session = function(instance){
                 }
                 order.ms_remove_order();
             });
+            this.multi_session = new module.MultiSession(this);
+            this.ready.then(function () {
+                self.init_multi_session();
+            });
+            var channel_name = "pos.multi_session";
+            var callback = this.ms_on_update;
+            this.add_channel(channel_name, callback, this);
+        },
+        init_multi_session: function(){
+            if (this.config.multi_session_id){
+                this.multi_session.request_sync_all();
+            }
         },
         ms_my_info: function(){
             return {
@@ -221,17 +233,6 @@ openerp.pos_multi_session = function(instance){
             }, function(err,event){ event.preventDefault(); def.reject(); });
         return def;
     },
-        load_server_data: function () {
-            res = PosModelSuper.prototype.load_server_data.apply(this, arguments);
-            var self = this;
-            return res.then(function () {
-                if (self.config.multi_session_id) {
-                    self.multi_session = new module.MultiSession(self);
-                    self.multi_session.start();
-                    self.multi_session.request_sync_all();
-                }
-            });
-        },
     });
 
     module.OrderButtonWidget = module.OrderButtonWidget.extend({
@@ -391,15 +392,6 @@ openerp.pos_multi_session = function(instance){
             this.client_online = true;
             this.order_ID = null;
         },
-        start: function(){
-            var self = this;
-
-            this.bus = instance.bus.bus;
-            this.bus.last = this.pos.db.load('bus_last', 0);
-            this.bus.on("notification", this, this.on_notification);
-            this.bus.start_polling();
-
-        },
         request_sync_all: function(){
             var data = {};
             this.send({'action': 'sync_all', data: data});
@@ -520,29 +512,5 @@ openerp.pos_multi_session = function(instance){
                 self.request_sync_all();
             }, 5000);
         },
-        on_notification: function(notification) {
-            var self = this;
-            if (typeof notification[0][0] === 'string') {
-                notification = [notification];
-            }
-            for (var i = 0; i < notification.length; i++) {
-                var channel = notification[i][0];
-                var message = notification[i][1];
-                this.on_notification_do(channel, message);
-            }
-        },
-        on_notification_do: function (channel, message) {
-            if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-                try{
-                    this.pos.ms_on_update(message);
-                }catch(err){
-                    this.pos.pos_widget.screen_selector.show_popup('error',{
-                        message: _t('Error'),
-                        comment: err,
-                    });
-                }
-            }
-            this.pos.db.save('bus_last', this.bus.last);
-        }
     });
 };
