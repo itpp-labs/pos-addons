@@ -391,6 +391,7 @@ openerp.pos_multi_session = function(instance){
             this.show_warning_message = true;
             this.client_online = true;
             this.order_ID = null;
+            this.reload_session_ready = $.when();
         },
         request_sync_all: function(){
             var data = {};
@@ -461,6 +462,7 @@ openerp.pos_multi_session = function(instance){
                     self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {
+                    self.request_sync_all();
                     clearInterval(self.offline_sync_all_timer);
                     self.offline_sync_all_timer = false;
                 }
