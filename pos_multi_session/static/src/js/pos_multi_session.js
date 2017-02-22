@@ -105,10 +105,14 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
+                console.log("update message ", sync_all);
                 if (sync_all) {
+                    console.log("message_ID", data.message_ID);
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
+                    console.log("self.message_ID + 1", self.message_ID + 1);
+                    console.log("data.message_ID", data.message_ID);
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -306,7 +310,7 @@ openerp.pos_multi_session = function(instance){
                 function(){
                     self.ms_update_timeout = false;
                     self.do_ms_update();
-                }, 1000);
+                }, 0);
         },
         ms_remove_order: function(){
             if (!this.ms_check())
@@ -324,32 +328,31 @@ openerp.pos_multi_session = function(instance){
         },
         do_ms_update: function(){
             var self = this;
-            var data = this.export_as_JSON();
-            this.pos.multi_session.update(data).fail(function(error){
-                if (error == 'offline') {
-                    if (self.order_on_server) {
-                        self.order_on_server = true;
-                    } else {
-                        self.order_on_server = false;
+            if (this.enquied)
+                return
+            var f = function(){
+                self.enquied=false;
+                var data = self.export_as_JSON();
+                return self.pos.multi_session.update(data).done(function(res){
+                    self.order_on_server = true;
+                    if (res) {
+                        var server_revision_ID = res.revision_ID;
+                        var order_ID = res.order_ID;
+                        if (self.sequence_number != order_ID) {
+                            self.sequence_number = order_ID;
+                            // sequence number replace
+                            self.pos.pos_session.order_ID = order_ID;
+                            // rerender order
+                            self.trigger('change');
+                        }
+                        if (server_revision_ID && server_revision_ID > self.revision_ID) {
+                            self.revision_ID = server_revision_ID;
+                        }
                     }
-                }
-            }).done(function(res){
-                self.order_on_server = true;
-                if (res) {
-                    var server_revision_ID = res.revision_ID;
-                    var order_ID = res.order_ID;
-                    if (self.sequence_number != order_ID) {
-                        self.sequence_number = order_ID;
-                        // sequence number replace
-                        self.pos.pos_session.order_ID = order_ID;
-                        // rerender order
-                        self.trigger('change');
-                    }
-                    if (server_revision_ID && server_revision_ID > self.revision_ID) {
-                        self.revision_ID = server_revision_ID;
-                    }
-                }
-            });
+                })
+            };
+            this.enquied = true;
+            this.pos.multi_session.enque(f)
         }
     });
     var OrderlineSuper = module.Orderline;
@@ -391,7 +394,8 @@ openerp.pos_multi_session = function(instance){
             this.show_warning_message = true;
             this.client_online = true;
             this.order_ID = null;
-            this.reload_session_ready = $.when();
+            this.update_queue = $.when();
+            this.func_queue = [];
         },
         request_sync_all: function(){
             var data = {};
@@ -403,6 +407,20 @@ openerp.pos_multi_session = function(instance){
         update: function(data){
             return this.send({action: 'update_order', data: data});
         },
+        enque: function(func){
+            var self = this;
+            this.func_queue.push(func);
+            this.update_queue = this.update_queue.then(function() {
+                if (self.func_queue[0]) {
+                    var next = $.Deferred();
+                    var func1 = self.func_queue.shift();
+                    func1().always(function () {
+                        next.resolve()
+                    });
+                    return next;
+                }
+            })
+        },
         _debug_send_number: 0,
         send: function(message){
             var current_send_number = 0;
@@ -411,7 +429,6 @@ openerp.pos_multi_session = function(instance){
                 console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
             }
             var self = this;
-            var connection_status = new $.Deferred();
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
                 return openerp.session.rpc("/pos_multi_session/update", {
@@ -419,14 +436,13 @@ openerp.pos_multi_session = function(instance){
                     message: message
                 });
             };
-            send_it().fail(function (error, e) {
+            return send_it().fail(function (error, e) {
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    connection_status.reject('offline');
                     if (self.show_warning_message) {
                         var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
                         self.warning(warning_message);
@@ -436,17 +452,13 @@ openerp.pos_multi_session = function(instance){
                 } else {
                     self.request_sync_all();
                 }
+
             }).done(function(res){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
-
                 var server_orders_uid = [];
                 self.client_online = true;
-                if (res.action == "update_revision_ID") {
-                    connection_status.resolve(res);
-                }
-                connection_status.resolve();
                 if (res.action == "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
                     self.warning(warning_message);
@@ -462,13 +474,11 @@ openerp.pos_multi_session = function(instance){
                     self.destroy_removed_orders(server_orders_uid);
                 }
                 if (self.offline_sync_all_timer) {
-                    self.request_sync_all();
                     clearInterval(self.offline_sync_all_timer);
                     self.offline_sync_all_timer = false;
                 }
                 self.show_warning_message = true;
             });
-            return connection_status;
         },
         destroy_removed_orders: function(server_orders_uid) {
             var self = this;
@@ -503,12 +513,14 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
-                if (item.order_on_server === false) {
+                if (!item.order_on_server) {
+                    console.log("order is not server: ", item);
                     item.ms_update();
                 }
             });
         },
         start_offline_sync_timer: function(){
+            console.log("send offline timer");
             var self = this;
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();

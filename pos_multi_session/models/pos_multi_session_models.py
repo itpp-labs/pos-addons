@@ -115,13 +115,15 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         notifications = []
         channel_name = "pos.multi_session"
-        for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
-            if ps.user_id.id != self.env.user.id:
-                message_ID = ps.config_id.multi_session_message_ID
-                message_ID += 1
-                ps.config_id.multi_session_message_ID = message_ID
-                message['data']['message_ID'] = message_ID
-                self.pos_ids._send_to_channel(channel_name, message)
+        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
+            print "------------"
+            print ps.user_id.id, self.env.user.id
+            print "------------"
+            message_ID = ps.config_id.multi_session_message_ID
+            message_ID += 1
+            ps.config_id.multi_session_message_ID = message_ID
+            message['data']['message_ID'] = message_ID
+            ps.config_id._send_to_channel(channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
