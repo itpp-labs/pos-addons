@@ -21,8 +21,11 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_longpolling_template.xml",
+        "views/pos_longpolling_view.xml",
     ],
-    'qweb': [],
+    "qweb": [
+        "static/src/xml/pos_longpolling_connection.xml",
+    ],
     "demo": [],
 
     "post_load": None,
