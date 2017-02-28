@@ -42,12 +42,11 @@ openerp.pos_multi_session = function(instance){
                 order.ms_remove_order();
             });
             this.multi_session = new module.MultiSession(this);
-            this.ready.then(function () {
-                self.init_multi_session();
-            });
             var channel_name = "pos.multi_session";
             var callback = this.ms_on_update;
             this.add_channel(channel_name, callback, this);
+
+
         },
         init_multi_session: function(){
             if (this.config.multi_session_id){
@@ -105,14 +104,10 @@ openerp.pos_multi_session = function(instance){
                         return order.uid == data.uid;
                     });
                 }
-                console.log("update message ", sync_all);
                 if (sync_all) {
-                    console.log("message_ID", data.message_ID);
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
-                    console.log("self.message_ID + 1", self.message_ID + 1);
-                    console.log("data.message_ID", data.message_ID);
                     if (self.message_ID + 1 != data.message_ID)
                         self.multi_session.request_sync_all();
                     else
@@ -329,7 +324,7 @@ openerp.pos_multi_session = function(instance){
         do_ms_update: function(){
             var self = this;
             if (this.enquied)
-                return
+                return;
             var f = function(){
                 self.enquied=false;
                 var data = self.export_as_JSON();
@@ -390,16 +385,34 @@ openerp.pos_multi_session = function(instance){
 
     module.MultiSession = Backbone.Model.extend({
         initialize: function(pos){
+            var self = this;
             this.pos = pos;
-            this.show_warning_message = true;
             this.client_online = true;
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
+            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+                if (status) {
+                    if (self.offline_sync_all_timer) {
+                        clearInterval(self.offline_sync_all_timer);
+                        self.offline_sync_all_timer = false;
+                    }
+                    self.request_sync_all().done(function(){
+                        var element = $(".modal-popup-preload");
+                        if (!element.hasClass("oe_hidden")) {
+                            element.addClass("oe_hidden");
+                        }
+                    });
+                } else {
+                    var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
+                    self.warning(warning_message);
+                    self.start_offline_sync_timer();
+                }
+            });
         },
         request_sync_all: function(){
             var data = {};
-            this.send({'action': 'sync_all', data: data});
+            return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
             this.send({action: 'remove_order', data: data});
@@ -443,20 +456,16 @@ openerp.pos_multi_session = function(instance){
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    if (self.show_warning_message) {
-                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
-                        self.warning(warning_message);
-                        self.start_offline_sync_timer();
-                        self.show_warning_message = false;
-                    }
+                    self.pos.longpolling_connection.set_status(false);
                 } else {
                     self.request_sync_all();
                 }
-
             }).done(function(res){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
+                self.pos.longpolling_connection.set_status(true);
+
                 var server_orders_uid = [];
                 self.client_online = true;
                 if (res.action == "revision_error") {
@@ -473,11 +482,6 @@ openerp.pos_multi_session = function(instance){
                     self.pos.pos_session.sequence_number = res.order_ID;
                     self.destroy_removed_orders(server_orders_uid);
                 }
-                if (self.offline_sync_all_timer) {
-                    clearInterval(self.offline_sync_all_timer);
-                    self.offline_sync_all_timer = false;
-                }
-                self.show_warning_message = true;
             });
         },
         destroy_removed_orders: function(server_orders_uid) {
@@ -513,18 +517,27 @@ openerp.pos_multi_session = function(instance){
             var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
-                if (!item.order_on_server) {
-                    console.log("order is not server: ", item);
+                if (!item.order_on_server && item.get('orderLines').length > 0) {
                     item.ms_update();
                 }
             });
         },
         start_offline_sync_timer: function(){
-            console.log("send offline timer");
             var self = this;
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
             }, 5000);
+        },
+    });
+    module.PreloadPopupWidget = module.PopUpWidget.extend({
+        template:'PreloadPopupWidget',
+    });
+    module.PosWidget.include({
+        build_widgets: function() {
+            this._super();
+            this.preload_popup = new module.PreloadPopupWidget(this, {});
+            this.preload_popup.appendTo(this.$el);
+            this.screen_selector.popup_set['preload'] = this.preload_popup;
         },
     });
 };
