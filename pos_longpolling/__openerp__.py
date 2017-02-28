@@ -4,7 +4,7 @@
     "summary": """Technical module implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -21,8 +21,11 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_longpolling_template.xml",
+        "views/pos_longpolling_view.xml",
     ],
-    'qweb': [],
+    "qweb": [
+        "static/src/xml/pos_longpolling_connection.xml",
+    ],
     "demo": [],
 
     "post_load": None,
