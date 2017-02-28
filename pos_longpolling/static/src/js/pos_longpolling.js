@@ -13,6 +13,10 @@ openerp.pos_longpolling = function(instance){
             this.channels = {};
             this.lonpolling_activated = false;
             this.bus = openerp.bus.bus;
+            this.longpolling_connection = new module.LongpollingConnection(this);
+            var channel_name = "pos.longpolling";
+            var callback = this.longpolling_connection.update_status;
+            this.add_channel(channel_name, callback, this.longpolling_connection);
             this.ready.then(function () {
                 self.start_longpolling();
             });
@@ -27,6 +31,7 @@ openerp.pos_longpolling = function(instance){
             });
             this.bus.start_polling();
             this.lonpolling_activated = true;
+            this.longpolling_connection.send();
         },
         add_channel: function(channel_name, callback, thisArg) {
             if (thisArg){
@@ -67,6 +72,7 @@ openerp.pos_longpolling = function(instance){
             var channel = JSON.parse(channel);
             if(Array.isArray(channel) && (channel[1] in self.channels)){
                 try{
+                    self.longpolling_connection.update_status();
                     var callback = self.channels[channel[1]];
                     if (callback) {
                         if (self.debug){
@@ -82,5 +88,77 @@ openerp.pos_longpolling = function(instance){
                 }
             }
         }
+    });
+
+    module.LongpollingConnection = Backbone.Model.extend({
+        initialize: function(pos) {
+            this.pos = pos;
+            this.timer = false;
+            this.status = false;
+        },
+        set_status: function(status) {
+            this.status = status;
+            this.trigger("change:poll_connection", status);
+            this.start_timer(this.pos.config.query_timeout, 'query');
+        },
+        update_status: function(message) {
+            var self = this;
+            if (this.pos.debug) {
+                console.log("This message from server. Message: ", message);
+            }
+            self.stop_timer();
+            self.set_status(true);
+        },
+        stop_timer: function(){
+            var self = this;
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = false;
+            }
+        },
+        start_timer: function(time, type){
+            var time = Math.round(time * 3600.0);
+            var self = this;
+            this.stop_timer();
+            this.timer = setTimeout(function() {
+                if (type == "query") {
+                    self.send();
+                } else if (type == "response") {
+                    self.set_status(false);
+                }
+            }, time*1000);
+        },
+        send: function() {
+            var self = this;
+            openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+                self.start_timer(self.pos.config.response_timeout, "response");
+            }, function(error, e){
+                e.preventDefault();
+                self.set_status(false);
+            });
+        },
+    });
+
+    module.StatusWidget.include({
+        set_poll_status: function(status) {
+            var element = this.$('.js_poll_connected');
+            if (status) {
+                element.removeClass('oe_red');
+                element.addClass('oe_green');
+            } else {
+                element.removeClass('oe_green');
+                element.addClass('oe_red');
+            }
+        }
+    });
+
+    module.SynchNotificationWidget.include({
+        start: function(){
+            this._super();
+            var self = this;
+            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+                self.set_poll_status(status);
+            });
+        },
     });
 };
