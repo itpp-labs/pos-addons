@@ -11,7 +11,7 @@ odoo.define('pos_disable_payment', function(require){
 
     models.load_models({
         model:  'res.users',
-        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line'],
+        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
                 var user = _.find(self.users, function(el){ return el.id == users[i].id; });
@@ -88,6 +88,17 @@ odoo.define('pos_disable_payment', function(require){
         renderElement: function () {
             this._super();
             this.pos.bind('change:cashier', this.checkPayAllowed, this);
+            this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
+        },
+        checkCreateOrderLine: function () {
+            var user = this.pos.cashier || this.pos.user;
+            if (!user.allow_create_order_line) {
+                $('.numpad').hide();
+                $('.rightpane').hide();
+            }else{
+                $('.numpad').show();
+                $('.rightpane').show();
+            }
         },
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
@@ -106,6 +117,13 @@ odoo.define('pos_disable_payment', function(require){
                 $('.pay').hide();
             }else{
                 $('.pay').show();
+            }
+            if (!user.allow_create_order_line) {
+                $('.numpad').hide();
+                $('.rightpane').hide();
+            }else{
+                $('.numpad').show();
+                $('.rightpane').show();
             }
         }
     });
