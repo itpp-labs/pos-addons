@@ -167,4 +167,5 @@ odoo.define('pos_longpolling', function(require){
             });
         },
     });
+    return exports;
 });
