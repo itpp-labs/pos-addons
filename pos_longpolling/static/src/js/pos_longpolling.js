@@ -1,19 +1,28 @@
-openerp.pos_longpolling = function(instance){
-    var module = instance.point_of_sale;
-    var _t = instance.web._t;
+odoo.define('pos_longpolling', function(require){
+
+    var exports = {};
+
+    var Backbone = window.Backbone;
+    var session = require('web.session');
+    var core = require('web.core');
+    var models = require('point_of_sale.models');
+    var bus = require('bus.bus');
+    var chrome = require('point_of_sale.chrome');
+
+    var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
-    openerp.bus.bus.activated = true; // fake value to ignore start_polling call
+    bus.bus.activated = true; // fake value to ignore start_polling call
 
-    var PosModelSuper = module.PosModel;
-    module.PosModel = module.PosModel.extend({
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.channels = {};
             this.lonpolling_activated = false;
-            this.bus = openerp.bus.bus;
-            this.longpolling_connection = new module.LongpollingConnection(this);
+            this.bus = bus.bus;
+            this.longpolling_connection = new exports.LongpollingConnection(this);
             var channel_name = "pos.longpolling";
             var callback = this.longpolling_connection.update_status;
             this.add_channel(channel_name, callback, this.longpolling_connection);
@@ -43,7 +52,7 @@ openerp.pos_longpolling = function(instance){
             }
         },
         get_full_channel_name: function(channel_name){
-            return JSON.stringify([openerp.session.db,channel_name,String(this.config.id)]);
+            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
         },
         init_channel: function(channel_name){
             var channel = this.get_full_channel_name(channel_name);
@@ -57,9 +66,6 @@ openerp.pos_longpolling = function(instance){
             }
         },
         on_notification: function(notification) {
-            if (typeof notification[0][0] === 'string') {
-                notification = [notification];
-            }
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
@@ -81,33 +87,32 @@ openerp.pos_longpolling = function(instance){
                         callback(message);
                     }
                 }catch(err){
-                    self.pos_widget.screen_selector.show_popup('error',{
-                        message: _t('Error'),
-                        comment: err,
+                    this.chrome.gui.show_popup('error',{
+                        'title': _t('Error'),
+                        'body': err,
                     });
                 }
             }
         }
     });
-
-    module.LongpollingConnection = Backbone.Model.extend({
+    exports.LongpollingConnection = Backbone.Model.extend({
         initialize: function(pos) {
             this.pos = pos;
             this.timer = false;
             this.status = false;
         },
         set_status: function(status) {
+            this.start_timer(this.pos.config.query_timeout, 'query');
             if (this.status == status) {
                 return;
             }
             this.status = status;
             this.trigger("change:poll_connection", status);
-            this.start_timer(this.pos.config.query_timeout, 'query');
         },
         update_status: function(message) {
             var self = this;
             if (this.pos.debug) {
-                console.log("This message from server. Message: ", message);
+                console.log("Message: ", message);
             }
             self.stop_timer();
             self.set_status(true);
@@ -129,7 +134,7 @@ openerp.pos_longpolling = function(instance){
                 } else if (type == "response") {
                     self.set_status(false);
                 }
-            }, time*1000);
+            }, time * 1000);
         },
         send: function() {
             var self = this;
@@ -139,10 +144,9 @@ openerp.pos_longpolling = function(instance){
                 e.preventDefault();
                 self.set_status(false);
             });
-        },
+        }
     });
-
-    module.StatusWidget.include({
+    chrome.StatusWidget.include({
         set_poll_status: function(status) {
             var element = this.$('.js_poll_connected');
             if (status) {
@@ -154,8 +158,7 @@ openerp.pos_longpolling = function(instance){
             }
         }
     });
-
-    module.SynchNotificationWidget.include({
+    chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
@@ -164,4 +167,4 @@ openerp.pos_longpolling = function(instance){
             });
         },
     });
-};
+});

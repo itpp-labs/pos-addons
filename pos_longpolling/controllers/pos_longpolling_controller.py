@@ -3,12 +3,18 @@ import logging
 
 import openerp
 from openerp.http import request
-from openerp.addons.bus.bus import Controller as bus_controller
 
 _logger = logging.getLogger(__name__)
 
 
-class Controller(bus_controller):
+try:
+    from openerp.addons.bus.controllers.main import BusController
+except ImportError:
+    _logger.error('pos_longpolling inconsisten with odoo version')
+    BusController = object
+
+
+class Controller(BusController):
     @openerp.http.route('/pos_longpolling/update', type="json", auth="public")
     def update_connection(self, pos_id, message):
         channel_name = "pos.longpolling"

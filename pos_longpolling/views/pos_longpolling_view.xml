@@ -6,7 +6,7 @@
             <field name="model">pos.config</field>
             <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@string='Features']" position="after">
+                <xpath expr="//group[@name='features']" position="after">
                     <group string="Longpolling">
                         <group>
                             <field name="query_timeout"  widget="float_time"/>

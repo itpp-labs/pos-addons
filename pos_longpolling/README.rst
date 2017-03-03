@@ -18,12 +18,12 @@ Sponsors
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/8.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/9.0
 
-HTML Description: https://apps.odoo.com/apps/modules/8.0/pos_longpolling/
+HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_longpolling/
 
 Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 8.0 8ce1e5134037dfe6cfbd756813e9baa31a221958
+Tested on Odoo 9.0 9dc96091f3b43a0c8e91fad1c15a9665d3c1467b
