@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import models, tools, api, fields
+from openerp import models, tools, fields
 
 
 class PosDebtReport(models.Model):
