@@ -1,25 +1,39 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Sync POS orders across multiple sessions",
-    'version': '2.0.1',
-    'summary': """Use multiple POS for handling orders""",
-    'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'license': 'GPL-3',
-    'category': 'Point Of Sale',
-    'images': ['images/pos-multi-session.png'],
-    'website': 'https://yelizariev.github.io',
-    'price': 160.00,
-    'currency': 'EUR',
-    'depends': ['pos_disable_payment', 'bus'],
-    'data': [
-        'security/ir.model.access.csv',
-        'views.xml',
+    "name": """Sync POS orders across multiple sessions""",
+    "summary": """Use multiple POS for handling orders""",
+    "category": "Point Of Sale",
+    "images": ["images/pos-multi-session.png"],
+    "version": "2.0.1",
+    "application": False,
+
+    "author": "IT-Projects LLC, Ivan Yelizariev",
+    "support": "apps@it-projects.info",
+    "website": "https://yelizariev.github.io",
+    "license": "GPL-3",
+    "price": 160.00,
+    "currency": "EUR",
+
+    "depends": [
+        "pos_disable_payment",
+        "pos_longpolling",
     ],
-    'qweb': [
-        'static/src/xml/pos_multi_session.xml',
+    "external_dependencies": {"python": [], "bin": []},
+    "data": [
+        "security/ir.model.access.csv",
+        "views/views.xml",
     ],
-    'demo': [
-        'demo/demo.xml',
+    "qweb": [
+        "static/src/xml/pos_multi_session.xml",
     ],
-    'installable': True,
+    "demo": [
+        "demo/demo.xml",
+    ],
+
+    "post_load": None,
+    "pre_init_hook": None,
+    "post_init_hook": None,
+
+    "auto_install": False,
+    "installable": True,
 }
