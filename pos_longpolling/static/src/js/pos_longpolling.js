@@ -97,12 +97,12 @@ openerp.pos_longpolling = function(instance){
             this.status = false;
         },
         set_status: function(status) {
+            this.start_timer(this.pos.config.query_timeout, 'query');
             if (this.status == status) {
                 return;
             }
             this.status = status;
             this.trigger("change:poll_connection", status);
-            this.start_timer(this.pos.config.query_timeout, 'query');
         },
         update_status: function(message) {
             var self = this;
