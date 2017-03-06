@@ -62,7 +62,7 @@ class ResPartner(models.Model):
                     fields=fields,
                     limit=limit,
                 )
-            data['history'] = records
+                data['history'] = records
             data['records_count'] = self.env['report.pos.debt'].search_count(domain)
             data['partner_id'] = r.id
             res.append(data)
