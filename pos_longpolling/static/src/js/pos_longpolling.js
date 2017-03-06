@@ -75,7 +75,9 @@ odoo.define('pos_longpolling', function(require){
         },
         on_notification_do: function (channel, message) {
             var self = this;
-            var channel = JSON.parse(channel);
+            if (_.isString(channel)) {
+                var channel = JSON.parse(channel);
+            }
             if(Array.isArray(channel) && (channel[1] in self.channels)){
                 try{
                     self.longpolling_connection.update_status();
