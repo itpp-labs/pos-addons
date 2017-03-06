@@ -8,8 +8,8 @@ _logger = logging.getLogger(__name__)
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    query_timeout = fields.Float(string='Query timeout', default=0.0833)
-    response_timeout = fields.Float(string='Response timeout', default=0.01666)
+    query_timeout = fields.Float(string='Query timeout', default=0.0833)  # 5/60 = 0.0833 = 5 min
+    response_timeout = fields.Float(string='Response timeout', default=0.01666)  # 1/60 = 0.01666 = 1 min
 
     @api.multi
     def _send_to_channel(self, channel_name, message):
