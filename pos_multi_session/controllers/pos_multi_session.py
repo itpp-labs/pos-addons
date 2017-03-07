@@ -3,16 +3,16 @@ import datetime
 import logging
 import json
 
-import openerp
-from openerp.http import request
-from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
+import odoo
+from odoo.http import request
+from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 
 
 _logger = logging.getLogger(__name__)
 
 
 try:
-    from openerp.addons.bus.controllers.main import BusController
+    from odoo.addons.bus.controllers.main import BusController
 except ImportError:
     _logger.error('pos_multi_session inconsisten with odoo version')
     BusController = object
@@ -20,12 +20,7 @@ except ImportError:
 
 class Controller(BusController):
 
-    def _poll(self, dbname, channels, last, options):
-        if request.session.uid:
-            channels.append((request.db, 'pos.multi_session', request.uid))
-        return super(Controller, self)._poll(dbname, channels, last, options)
-
-    @openerp.http.route('/pos_multi_session/update', type="json", auth="public")
+    @odoo.http.route('/pos_multi_session/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message):
         phantomtest = request.httprequest.headers.get('phantomtest')
         res = request.env["pos.multi_session"]\
@@ -34,9 +29,9 @@ class Controller(BusController):
                      .on_update_message(message)
         return res
 
-    @openerp.http.route('/pos_multi_session/test/gc', type="http", auth="user")
+    @odoo.http.route('/pos_multi_session/test/gc', type="http", auth="user")
     def pos_multi_session_test_gc(self):
-        if not openerp.tools.config['test_enable']:
+        if not odoo.tools.config['test_enable']:
             _logger.warning('Run odoo with --test-enable to use test GC')
             return 'Run odoo with --test-enable to use test GC'
 
