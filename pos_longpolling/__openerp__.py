@@ -4,7 +4,7 @@
     "summary": """Technical module implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
-    "version": "1.1.0",
+    "version": "1.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
