@@ -8,11 +8,10 @@ odoo.define('pos_multi_session', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
+    var longpolling = require('pos_longpolling');
 
     var _t = core._t;
 
-    // prevent bus to be started by chat_manager.js
-    bus.bus.activated = true; // fake value to ignore start_polling call
 
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
@@ -59,15 +58,16 @@ odoo.define('pos_multi_session', function(require){
                 }
                 order.ms_remove_order();
             });
+            this.multi_session = new exports.MultiSession(this);
             this.ready.then(function () {
                 self.init_multi_session();
             });
-
+            var channel_name = "pos.multi_session";
+            var callback = this.ms_on_update;
+            this.add_channel(channel_name, callback, this);
         },
         init_multi_session: function(){
             if (this.config.multi_session_id){
-                this.multi_session = new exports.MultiSession(this);
-                this.multi_session.start();
                 this.multi_session.request_sync_all();
             }
         },
@@ -295,12 +295,12 @@ odoo.define('pos_multi_session', function(require){
             OrderSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
+
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
-
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -339,6 +339,8 @@ odoo.define('pos_multi_session', function(require){
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.sequence_number = this.pos.pos_session.order_ID;
                 this.trigger('change:update_new_order');
+            } else {
+                this.trigger('change');
             }
             if (!this.ms_check())
                 return;
@@ -450,16 +452,6 @@ odoo.define('pos_multi_session', function(require){
             this.client_online = true;
             this.order_ID = null;
         },
-        start: function(){
-            var self = this;
-
-            this.bus = bus.bus;
-            this.bus.last = this.pos.db.load('bus_last', 0);
-            this.bus.on("notification", this, this.on_notification);
-            this.bus.stop_polling();
-            this.bus.start_polling();
-
-        },
         request_sync_all: function(){
             var data = {};
             this.send({'action': 'sync_all', data: data});
@@ -567,30 +559,6 @@ odoo.define('pos_multi_session', function(require){
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
             }, 5000);
-        },
-        on_notification: function(notification) {
-            var self = this;
-            if (typeof notification[0][0] === 'string') {
-                notification = [notification];
-            }
-            for (var i = 0; i < notification.length; i++) {
-                var channel = notification[i][0];
-                var message = notification[i][1];
-                this.on_notification_do(channel, message);
-            }
-            this.pos.db.save('bus_last', this.bus.last);
-        },
-        on_notification_do: function (channel, message) {
-            if(Array.isArray(channel) && channel[1] === 'pos.multi_session'){
-                try{
-                    this.pos.ms_on_update(message);
-                }catch(err){
-                    this.pos.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
-                    });
-                }
-            }
         }
     });
     return exports;
