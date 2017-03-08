@@ -84,6 +84,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     def.resolve();
                 }, 1000);
             }
+            if (this.reload_debts_ready.state() == 'rejected') {
+                this.reload_debts_ready = $.when();
+            }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
                     var load_partner_ids = _.uniq(self.reload_debts_partner_ids.splice(0));
