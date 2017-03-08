@@ -434,8 +434,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var $show_debt_history = this.$('#show_debt_history');
             var $debt_history = this.$('#debt_history');
             var curr_client = this.pos.get_order().get_client();
-            // TODO use client instead of copy-pasting this.new_client || curr_client
-            var client = this.new_client || this.pos.get_order().get_client();
+            var client = this.new_client || curr_client;
             if (this.editing_client) {
                 $pay_full_debt.addClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
@@ -447,12 +446,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }else{
                     $pay_full_debt.addClass('oe_hidden');
                 }
-                if (this.new_client || curr_client) {
+                if (client) {
                     $show_debt_history.removeClass('oe_hidden');
                     $show_debt_history.on('click', function () {
                         var $loading_history = $('#loading_history');
                         $loading_history.removeClass('oe_hidden');
-                        self.render_debt_history(self.new_client || curr_client);
+                        self.render_debt_history(client);
                         $('.client-list').addClass('oe_hidden');
                         $debt_history.removeClass('oe_hidden');
                         $show_debt_history.addClass('oe_hidden');
@@ -460,12 +459,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         // TODO add "Load more" button
                         var debt_history_limit = 10;
                         self.pos.reload_debts(
-                            (self.new_client && self.new_client.id) || (curr_client && curr_client.id),
+                            client.id,
                             debt_history_limit,
                             {"postpone": false}
                         ).then(
                                 function () {
-                                    self.render_debt_history(self.new_client || curr_client);
+                                    self.render_debt_history(client);
                                     $loading_history.addClass('oe_hidden');
                                 });
                     });
