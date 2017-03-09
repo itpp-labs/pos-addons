@@ -102,7 +102,7 @@ odoo.define('pos_longpolling', function(require){
             this.pos = pos;
             this.timer = false;
             this.status = false;
-            this.response_status = false; // Is the message "PING" received from the server
+            this.response_status = false; // Is the message "PONG" received from the server
         },
         network_is_on: function(message) {
             if (message) {
