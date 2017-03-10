@@ -131,4 +131,30 @@
         </tr>
     </t>
 
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-if='receipt.cashier']" t-operation="after">
+            <t t-if='receipt.client'>
+                <div class='client'>
+                    <div>--------------------------------</div>
+                    <div>Customer: <t t-esc='receipt.client' /></div>
+                </div>
+            </t>
+        </t>
+        <t t-jquery=".before-footer" t-operation="before">
+            <div t-if="receipt.debt_before or receipt.debt_after" class="debt">
+                <t t-set="debt_label" t-value="receipt.debt_type=='debt' and 'Debt' or 'Credits'"/>
+                <t t-set="debt_sign" t-value="receipt.debt_type=='debt' and 1 or -1"/>
+                <line>
+                    <left>Prev <t t-esc="debt_label"/></left>
+                    <right><value><t t-esc='debt_sign * receipt.debt_before'/></value></right>
+                </line>
+                <line>
+                    <left>New <t t-esc="debt_label"/></left>
+                    <right><value><t t-esc='debt_sign * receipt.debt_after'/></value></right>
+                </line>
+            </div>
+
+        </t>
+
+    </t>
 </templates>

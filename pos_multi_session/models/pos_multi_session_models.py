@@ -114,20 +114,20 @@ class PosMultiSession(models.Model):
     def broadcast_message(self, message):
         self.ensure_one()
         notifications = []
-        for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
-            if ps.user_id.id != self.env.user.id:
-                message_ID = ps.config_id.multi_session_message_ID
-                message_ID += 1
-                ps.config_id.multi_session_message_ID = message_ID
-                message['data']['message_ID'] = message_ID
-                notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
+        channel_name = "pos.multi_session"
+        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'),
+                                                  ('config_id.multi_session_id', '=', self.id)]):
+            message_ID = ps.config_id.multi_session_message_ID
+            message_ID += 1
+            ps.config_id.multi_session_message_ID = message_ID
+            message['data']['message_ID'] = message_ID
+            ps.config_id._send_to_channel(channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
             # commit to update values on DB
             self.env.cr.commit()
             time.sleep(3)
-        self.env['bus.bus'].sendmany(notifications)
         return 1
 
 
