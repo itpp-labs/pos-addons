@@ -1,8 +1,8 @@
-============================
- Sync Debt notebook for POS
-============================
+========================
+ Internal Credit System
+========================
 
-The module allows to sync sale on credit in module 'Debt notebook for POS'.
+The module allows to organize cash-free system for set of shops with a single payment point. E.g. at festivals, amusements parks, etc.
 
 Credits
 =======

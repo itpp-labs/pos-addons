@@ -1,6 +1,6 @@
-============================
- Sync Debt notebook for POS
-============================
+========================
+ Internal Credit System
+========================
 
 Installation
 ============
@@ -11,6 +11,43 @@ Installation
 Configuration
 =============
 
+Max Debt Limit
+--------------
+
+* open Customer form
+
+  * click on ``[Edit]``
+  * On ``Accounting`` tab set ``Max Debt`` value
+  * click ``[Save]``
+
+Default Max Debt
+----------------
+
+* go to ``Point of Sale >> Settings``
+
+  * set ``Default Max Debt`` value for new customers
+
+POS Payment
+-----------
+
+* Go to ``Point of Sale >> Configuration >> Point of Sale``
+
+  * open POS
+  * select ``Available Payment Methods``
+    
+    * ``Debt Journal`` if POS will operate with credits only
+    * e.g. ``Cash`` or ``Bank`` if POS may receive a real money
+    * set both if POS is used to operate with credits and real money
+
+Credit Product
+--------------
+
+* go to ``Point of Sale >> Products``
+
+  * click on ``[Create]``
+  * on ``Invoicing`` tab check the box ``Credit Product``
+  * click ``[Save]``
+
 Payment Acquirer
 ----------------
 
@@ -18,7 +55,7 @@ Payment Acquirer
 * select Payment Acquirer you are going to use, e.g. Paypal.
 
   * click ``[Edit]``
-  * On ``Configuration`` tab set **Order Confirmation** field equal to ``Authorize & capture the amount, confirm the SO and auto-validate the invoice on acquirer confirmation``
+  * on ``Configuration`` tab set **Order Confirmation** field equal to ``Authorize & capture the amount, confirm the SO and auto-validate the invoice on acquirer confirmation``
   * click ``[Save]``
 
 Usage
@@ -29,7 +66,7 @@ POS sales
 
 * open one POS
 * open another POS as another user
-* on first POS:
+* on the first POS:
 
   * select customer
   * EITHER add *Credit Product* to an order and register usual payment (e.g. via Cash journal)
@@ -40,11 +77,11 @@ POS sales
 
   * open Customer list
   * find the customer
-  * customer's debt is updated
+  * customer's debt/credit is updated
 
 eCommerce sales
 ---------------
 * open POS
 * purchase *Credit Product* via website (``/shop/...``)
-* debt value on POS is updated
+* debt/credit value on POS is updated
 

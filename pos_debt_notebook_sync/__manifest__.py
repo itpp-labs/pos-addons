@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync Debt info across multiple sessions""",
+    "name": """Internal Credit System""",
     "summary": """Credit payment system for festivals, food courts, etc.""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/credit.png'],
     "version": "1.0.0",
     "application": False,
 
@@ -11,8 +11,8 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 510.00,
+    "currency": "EUR",
 
     "depends": [
         "base_action_rule",
