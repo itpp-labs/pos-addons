@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="OrderWidget">
+        <t t-jquery='div[class="line"]' t-operation="after">
+            <t t-if="order.note">
+                <div class="order-note-line">
+                    <div class='entry note'>
+                        <span class="label">Note:</span>
+                        <div class='order_note'><span class="value"><t t-esc="order.note" /></span></div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="OrderChangeReceipt">
+        <t t-jquery='t[t-foreach="changes.cancelled"]' t-operation="after">
+            <t t-if="changes.old_order_note">
+                <br />
+                <line>
+                    <left>ORDER NOTE</left>
+                    <right>...</right>
+                </line>
+                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="changes.old_order_note" /></span></div>
+                <line></line>
+            </t>
+        </t>
+        <t t-jquery='t[t-foreach="changes.new"]' t-operation="after">
+            <t t-if="changes.order_note">
+                <br />
+                <line>
+                    <left>ORDER NOTE</left>
+                    <right>...</right>
+                </line>
+                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="changes.order_note" /></span></div>
+                <line></line>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="ProductNotesPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-confirm-note">
+                <div class="header title">
+                    <div>
+                        <t t-esc="widget.options.title || '' " />
+                    </div>
+                    <div class="note_type">
+                        <div class="product_type button">Product Note</div>
+                        <div class="order_type button">Order Note</div>
+                    </div>
+                </div>
+
+                <textarea rows="1" cols="44" placeholder="Note"><t t-esc="widget.options.value || '' " /></textarea>
+                <div class="product_note">
+                    <ul>
+                        <t t-if="widget.options.notes">
+                            <t t-foreach="widget.options.notes" t-as="note">
+                                <li><div t-attf-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div></li>
+                            </t>
+                        </t>
+                        <li><div id="other" class="button other-note">Other</div></li>
+                    </ul>
+                </div>
+                <div class="footer centered">
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="ProductNotes">
+        <tr class='note-line' t-attf-id='{{note.id}}'>
+            <td><t t-esc='note.name' /></td>
+        </tr>
+    </t>
+
+    <t t-name="ProducNotesScreenWidget">
+        <div class="notelist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back note-back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='note-next button next oe_hidden highlight'>
+                        Apply
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='note-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='note-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+</templates>
