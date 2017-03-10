@@ -1,0 +1,82 @@
+/*ProductNotesPopupWidget*/
+.popup-confirm-note textarea {
+    margin-top: 10px;
+    resize: none;
+}
+.popup-confirm-note .button {
+    width: 150px !important;
+    float: left !important;
+    margin-left: 11px !important;
+    margin-right: 0px !important;
+}
+.popup-confirm-note .footer .button {
+    float: none !important;
+}
+.popup-confirm-note {
+    height: 400px !important;
+}
+.popup-confirm-note .header{
+    height: 70px;
+}
+.popup-confirm-note .note_type{
+    display: inline-block;
+}
+.popup-confirm-note .note_type .active{
+    color: white;
+    background: black;
+    border: 1px solid black;
+}
+.popup-confirm-note  textarea:focus::-webkit-input-placeholder {color: transparent}
+.popup-confirm-note  textarea:focus::-moz-placeholder {color: transparent}
+.popup-confirm-note  textarea:focus:-moz-placeholder {color: transparent}
+.popup-confirm-note  textarea:focus:-ms-input-placeholder {color: transparent}
+
+/*ReasonCancellationScreenWidget*/
+.pos .notelist-screen .note-list{
+    font-size: 16px;
+    width: 100%;
+    line-height: 40px;
+}
+.pos .notelist-screen .note-list th,
+.pos .notelist-screen .note-list td {
+    padding: 0px 8px;
+}
+.pos .notelist-screen .note-list tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+.pos .notelist-screen .note-list thead > tr,
+.pos .notelist-screen .note-list tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.pos .notelist-screen .note-list tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.pos .notelist-screen .note-list tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.pos .notelist-screen .reason-list tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+    background: rgb(227, 246, 237);
+}
+/*OrderWidget*/
+.order-note-line {
+    float: left;
+    margin-right: 15px;
+    margin-left: 15px;
+    padding-top: 5px;
+    border-top: solid 2px;
+    border-color: #777;
+}
+.order-note-line .note {
+    text-align: center;
+}
+.order-note-line .value {
+    font-weight: normal;
+}
+.order-note-line .label {
+    font-size: 22px;
+}
