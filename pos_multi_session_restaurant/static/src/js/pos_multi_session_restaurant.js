@@ -6,9 +6,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var chrome = require('point_of_sale.chrome');
+    var multi_session = require('pos_multi_session');
 
     var FloorScreenWidget;
-    //console.log('gui', gui.Gui.prototype.screen_classes);
     _.each(gui.Gui.prototype.screen_classes, function(o){
         if (o.name == 'floors'){
             FloorScreenWidget = o.widget;
@@ -51,6 +51,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
+            this.multi_session.remove_order = function(data) {
+                if (data.transfer) {
+                    data.transfer = false;
+                    return;
+                } else {
+                    this.send({action: 'remove_order', data: data});
+                }
+            };
         },
         ms_create_order: function(options){
             var self = this;
@@ -62,8 +70,28 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
+        ms_on_update: function(message, sync_all){
+            var self = this;
+            var data = message.data || {};
+            var order = false;
+            var old_order = this.get_order();
+
+            if (data.uid){
+                order = this.get('orders').find(function(order){
+                    return order.uid == data.uid;
+                });
+            }
+            if (order && order.table.id != data.table_id) {
+                order.transfer = true;
+                order.destroy({'reason': 'abandon'});
+            }
+            PosModelSuper.prototype.ms_on_update.apply(this, arguments);
+            if ((order && old_order && old_order.uid != order.uid) || (old_order == null)) {
+                this.set('selectedOrder',old_order);
+            }
+        },
         ms_do_update: function(order, data){
-           PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
@@ -75,6 +103,19 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.trigger('change:orders-count-on-floor-screen');
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
+            }
+        },
+        // changes the current table.
+        set_table: function(table) {
+            var self = this;
+            if (table && this.order_to_transfer_to_different_table) {
+                this.order_to_transfer_to_different_table.table = table;
+                this.order_to_transfer_to_different_table.ms_update();
+                this.order_to_transfer_to_different_table = null;
+                // set this table
+                this.set_table(table);
+            } else {
+                PosModelSuper.prototype.set_table.apply(this, arguments);
             }
         }
     });
@@ -90,6 +131,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
         printChanges: function(){
             OrderSuper.prototype.printChanges.apply(this, arguments);
             this.just_printed = true;
+        },
+        do_ms_remove_order: function(){
+            if (this.transfer) {
+                this.pos.multi_session.remove_order({
+                    'uid': this.uid,
+                    'revision_ID': this.revision_ID,
+                    'transfer': this.transfer
+                });
+            } else {
+                OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
+            }
         },
     });
 });
