@@ -24,7 +24,9 @@ class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
 
     name = fields.Char('Name')
+    remove_orders = fields.Boolean('Remove orders', default=True)
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
+    order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
 
     @api.multi
@@ -145,10 +147,15 @@ class PosSession(models.Model):
     _inherit = 'pos.session'
 
     @api.multi
-    def wkf_action_close(self):
-        self.config_id.write({'multi_session_message_ID': 1})
-        res = super(PosSession, self).wkf_action_close()
-        active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
-        if len(active_sessions) == 0:
-            self.config_id.multi_session_id.sudo().write({'order_ID': 0})
+    def action_pos_session_close(self):
+        res = super(PosSession, self).action_pos_session_close()
+        remove_orders = self.config_id.multi_session_id.remove_orders
+        if remove_orders:
+            self.config_id.write({'multi_session_message_ID': 1})
+            active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
+            if len(active_sessions) == 0:
+                self.config_id.multi_session_id.sudo().write({'order_ID': 0})
+                orders = self.config_id.multi_session_id.order_ids
+                for order in orders:
+                    order.state = 'deleted'
         return res
