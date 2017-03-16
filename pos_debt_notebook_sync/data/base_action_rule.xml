@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- call notify_debt_updates() -->
+        <record id="action_notify_pos_about_debt_updates" model="ir.actions.server">
+            <field name="name">Notify POS about Debt updates</field>
+            <field name="model_id" ref="point_of_sale.model_pos_config"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">model.notify_debt_updates()</field>
+        </record>
+
+        <!-- debt payments -->
+        <record id="filter_debt_payments" model="ir.filters">
+            <field name="name">Debt payments</field>
+            <field name="model_id">account.bank.statement.line</field>
+            <field name="domain">[('statement_id.journal_id.debt', '=', True)]</field>
+            <field name="user_id" eval="False"/>
+        </record>
+
+        <record id="rule_new_payment" model="base.action.rule">
+            <field name="name">Notify POS about Debt updates (on new payment).</field>
+            <field name="model_id" ref="account.model_account_bank_statement_line"/>
+            <field name="kind">on_create</field>
+            <field name="filter_id" ref="filter_debt_payments"/>
+            <field name="act_user_id" ref="base.user_root"/>
+            <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
+        </record>
+
+        <!-- Credit products: pos.order -->
+        <record id="filter_done_orders" model="ir.filters">
+            <field name="name">Finished orders</field>
+            <field name="model_id">pos.order</field>
+            <field name="domain">[('state', 'in', ['paid', 'done'])]</field>
+            <field name="user_id" eval="False"/>
+        </record>
+
+        <record id="rule_credit_products" model="base.action.rule">
+            <field name="name">Notify POS about Debt updates (on selling Credit products).</field>
+            <field name="model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="kind">on_create_or_write</field>
+            <field name="filter_id" ref="filter_done_orders"/>
+            <field name="act_user_id" ref="base.user_root"/>
+            <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
+        </record>
+
+        <!-- Credit products: account.invoice -->
+        <record id="filter_paid_invoices" model="ir.filters">
+            <field name="name">Paid invoices</field>
+            <field name="model_id">account.invoice</field>
+            <field name="domain">[('state', 'in', ['paid'])]</field>
+            <field name="user_id" eval="False"/>
+        </record>
+
+        <record id="rule_credit_products_invoice" model="base.action.rule">
+            <field name="name">Notify POS about Debt updates (on selling Credit products via invoices).</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="kind">on_create_or_write</field>
+            <field name="filter_id" ref="filter_paid_invoices"/>
+            <field name="act_user_id" ref="base.user_root"/>
+            <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
+        </record>
+
+    </data>
+</odoo>
