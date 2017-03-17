@@ -20,6 +20,7 @@
                     <group>
                         <field name="discount_program_name"/>
                         <field name="discount_program_number"/>
+                        <field name="discount_program_active"/>
                         <field name="discount_category_ids">
                             <tree string="Discount category">
                                 <field name="discount_category_id"/>
@@ -52,9 +53,10 @@
         <field name="name">pos.discount_program.tree</field>
         <field name="model">pos.discount_program</field>
         <field name="arch" type="xml">
-            <tree string="Pos Discount Program">
+            <tree string="Pos Discount Program" decoration-muted="discount_program_active == False">
                 <field name="discount_program_name"/>
                 <field name="discount_program_number"/>
+                <field name="discount_program_active"/>
             </tree>
         </field>
     </record>
@@ -72,5 +74,18 @@
             </p>
         </field>
     </record>
+
+    <record id="pos_discount_program_filter" model="ir.ui.view">
+        <field name="name">pos.discount_program.list.select</field>
+        <field name="model">pos.discount_program</field>
+        <field name="arch" type="xml">
+            <search string="Search Discount Program">
+                <field name="discount_program_active"/>
+                <filter string="Active" domain="[('discount_program_active','=',True)]"/>
+                <filter string="Inactive" domain="[('discount_program_active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
     <menuitem id="menu_pos_discount_program" action="pos_discount_program_action" parent="point_of_sale.menu_point_config_product" sequence="25" />
 </openerp>

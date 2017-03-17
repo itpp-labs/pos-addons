@@ -29,7 +29,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
         apply_discount_category: function(discount, category_id, discount_program_name) {
             var self = this;
             var order = this.get_order();
-            var lines = order.get_orderlines().filter(function (item) { return item.product.pos_categ_id[0] == category_id; });
+            var lines = order.get_orderlines().filter(function (item) { return item.product.pos_categ_id[0] == category_id && item.product.discount_allowed; });
             lines.forEach(function (item){
                 item.discount = discount;
                 item.discountStr = discount;
@@ -193,6 +193,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
     models.load_models({
         model: 'pos.discount_program',
         fields: ['discount_program_name', 'discount_program_number', 'id'],
+        domain: function(self){ return [['discount_program_active','=',true]]; },
         loaded: function(self,discount_program){
             var sorting_discount_program = function(idOne, idTwo){
                 return idOne.discount_program_number - idTwo.discount_program_number;
@@ -318,7 +319,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
                 return;
             } else {
                 $button.removeClass('oe_hidden');
-                $button.text(_t('Apply a Discount'));
+                $button.text(_t('Apply'));
             }
         },
         line_select: function(event,$line,id){

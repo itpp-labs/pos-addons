@@ -11,8 +11,8 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 100.00,
+    "currency": "EUR",
 
     "depends": [
         'point_of_sale',
