@@ -2,7 +2,7 @@
 {
     'name': "Sync restaurant orders",
     'summary': 'Staff get order details immediately after waiter taps on tablet',
-    'version': '1.1.4',
+    'version': '1.1.5',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'category': 'Point Of Sale',
     "support": "apps@it-projects.info",
