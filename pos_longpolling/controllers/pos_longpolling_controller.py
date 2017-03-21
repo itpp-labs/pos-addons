@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 
 try:
-    from openerp.addons.bus.controllers.main import BusController
+    from odoo.addons.bus.controllers.main import BusController
 except ImportError:
     _logger.error('pos_multi_session inconsisten with odoo version')
     BusController = object
