@@ -19,7 +19,7 @@ Updates
 -------
 
 - FIX: Issue on sessions synchronization after order transfer.
-- NEW: Option to remove unpaid orders, once all synced sessions are closed.
+- NEW: Remove unpaid orders, once all synced sessions are closed.
 
 `3.0.0`
 -------

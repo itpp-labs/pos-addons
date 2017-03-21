@@ -529,7 +529,9 @@ odoo.define('pos_multi_session', function(require){
                     });
                     self.pos.pos_session.order_ID = res.order_ID;
 
-                    // self.pos.pos_session.sequence_number = res.order_ID;
+                    if (res.order_ID != 0) {
+                        self.pos.pos_session.sequence_number = res.order_ID;
+                    }
                     self.destroy_removed_orders(server_orders_uid);
                 }
             });
