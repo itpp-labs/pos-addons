@@ -152,7 +152,7 @@ class PosSession(models.Model):
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
         if len(active_sessions) == 0:
             self.config_id.multi_session_id.sudo().write({'order_ID': 0})
-            orders = self.config_id.multi_session_id.order_ids.filtered(lambda x: x.state != "deleted")
+            orders = self.config_id.multi_session_id.order_ids.filtered(lambda x: x.state == "draft")
             for order in orders:
                 order.state = 'unpaid'
         return res
