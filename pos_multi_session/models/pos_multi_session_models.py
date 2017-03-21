@@ -137,7 +137,7 @@ class PosMultiSessionOrder(models.Model):
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char(index=True)
-    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted')], default='draft', index=True)
+    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid','Unpaid and removed')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session', index=True)
 
@@ -154,5 +154,5 @@ class PosSession(models.Model):
             self.config_id.multi_session_id.sudo().write({'order_ID': 0})
             orders = self.config_id.multi_session_id.order_ids.filtered(lambda x: x.state != "deleted")
             for order in orders:
-                order.state = 'deleted'
+                order.state = 'unpaid'
         return res

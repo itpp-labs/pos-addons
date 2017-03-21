@@ -451,9 +451,11 @@ odoo.define('pos_multi_session', function(require){
                     }
                     self.request_sync_all();
                 } else {
-                    var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
-                    self.warning(warning_message);
-                    self.start_offline_sync_timer();
+                    if (!self.offline_sync_all_timer) {
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
+                        self.warning(warning_message);
+                        self.start_offline_sync_timer();
+                    }
                 }
             });
         },
@@ -504,6 +506,11 @@ odoo.define('pos_multi_session', function(require){
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.longpolling_connection.network_is_off();
+                    if (!self.offline_sync_all_timer) {
+                        var warning_message = _t("No connection to the server. You can only create new orders. It is forbidden to modify existing orders.");
+                        self.warning(warning_message);
+                        self.start_offline_sync_timer();
+                    }
                 } else {
                     self.request_sync_all();
                 }
