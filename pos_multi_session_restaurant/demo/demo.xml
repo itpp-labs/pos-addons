@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<openerp>
+<odoo>
     <data>
         <record id="pos_restaurant.floor_main" model="restaurant.floor">
             <field name="pos_config_ids" eval="[(6,0,[ref('point_of_sale.pos_config_main'), ref('pos_multi_session.demo_multi_pos_config_one'), ref('pos_multi_session.demo_multi_pos_config_two')])]"/>
         </record>
     </data>
-</openerp>
+</odoo>
 
