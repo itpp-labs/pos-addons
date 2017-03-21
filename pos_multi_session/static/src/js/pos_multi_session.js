@@ -443,7 +443,6 @@ odoo.define('pos_multi_session', function(require){
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
-
             this.pos.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
                     if (self.offline_sync_all_timer) {
@@ -504,7 +503,7 @@ odoo.define('pos_multi_session', function(require){
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    self.pos.longpolling_connection.set_status(false);
+                    self.pos.longpolling_connection.network_is_off();
                 } else {
                     self.request_sync_all();
                 }
@@ -512,8 +511,6 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
-                self.pos.longpolling_connection.set_status(true);
-
                 var server_orders_uid = [];
                 self.client_online = true;
 
@@ -533,6 +530,10 @@ odoo.define('pos_multi_session', function(require){
                         self.pos.pos_session.sequence_number = res.order_ID;
                     }
                     self.destroy_removed_orders(server_orders_uid);
+                }
+                if (self.offline_sync_all_timer) {
+                    clearInterval(self.offline_sync_all_timer);
+                    self.offline_sync_all_timer = false;
                 }
             });
         },
