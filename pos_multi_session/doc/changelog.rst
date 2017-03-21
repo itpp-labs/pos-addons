@@ -15,11 +15,15 @@ Updates
 -------
 - FIX: For pos restaurant compatibility. Sync printed positions.
 
+`3.0.2`
+-------
+
+- FIX: Remove unpaid orders, once all synced sessions are closed.
+
 `3.0.1`
 -------
 
 - FIX: Issue on sessions synchronization after order transfer.
-- NEW: Option to remove unpaid orders, once all synced sessions are closed.
 
 `3.0.0`
 -------
