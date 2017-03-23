@@ -1,0 +1,53 @@
+/*ReasonCancellationPopupWidget*/
+.popup-confirm-cancellation textarea {
+    margin-top: 10px;
+    resize: none;
+}
+.popup-confirm-cancellation .button {
+    width: 150px !important;
+    float: left !important;
+    margin-left: 11px !important;
+    margin-right: 0px !important;
+}
+.popup-confirm-cancellation .footer .button {
+    float: none !important;
+}
+.popup-confirm-cancellation {
+    height: 380px !important;
+}
+.popup-confirm-cancellation  textarea:focus::-webkit-input-placeholder {color: transparent}
+.popup-confirm-cancellation  textarea:focus::-moz-placeholder {color: transparent}
+.popup-confirm-cancellation  textarea:focus:-moz-placeholder {color: transparent}
+.popup-confirm-cancellation  textarea:focus:-ms-input-placeholder {color: transparent}
+
+/*ReasonCancellationScreenWidget*/
+.pos .reasonlist-screen .reason-list{
+    font-size: 16px;
+    width: 100%;
+    line-height: 40px;
+}
+.pos .reasonlist-screen .reason-list th,
+.pos .reasonlist-screen .reason-list td {
+    padding: 0px 8px;
+}
+.pos .reasonlist-screen .reason-list tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+.pos .reasonlist-screen .reason-list thead > tr,
+.pos .reasonlist-screen .reason-list tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.pos .reasonlist-screen .reason-list tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.pos .reasonlist-screen .reason-list tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.pos .reasonlist-screen .reason-list tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+    background: rgb(227, 246, 237);
+}
