@@ -43,13 +43,40 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return def;
             }
         },
-        reload_debts: function(partner_ids){
+        reload_debts: function(partner_ids, limit, options){
+            /**
+             @param {Array} partner_ids
+             @param {Number} limit
+             @param {Object} options
+               * "shadow" - set true to load in background (i.e. without blocking the screen). Default is True
+               * "postpone" - make a short delay before actual requesting to
+                 gather partner_ids from other calls and request them at once.
+                 Default is true
+
+             **/
+
+            // FIXME: on multiple calls limit value from last call is conly used.
+            // We probably need to have different partner_ids list (like reload_debts_partner_ids) for each limit value, e.g.
+            // limit=0 -> partner_ids=[1,2,3]
+            // limit=10 -> partner_ids = [1, 101, 102, 103]
+            //
+            // As for shadow it seems ok to use last value
+
             var self = this;
             // function is called whenever we need to update debt value from server
-            var limit = 0; // download only new debt value
-            limit = 10; //debug
+            if (typeof limit === "undefined"){
+                limit = 0;
+            }
+            options = options || {};
+            if (typeof options.postpone === "undefined"){
+                options.postpone = true;
+            }
+            if (typeof options.shadow === "undefined"){
+                options.shadow = true;
+            }
+
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
-            if (this.reload_debts_ready.state() == 'resolved'){
+            if (options.postpone && this.reload_debts_ready.state() == 'resolved'){
                 // add timeout to gather requests before reloading
                 var def = $.Deferred();
                 this.reload_debts_ready = def;
@@ -70,18 +97,26 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         def = $.when();
                     }
                     return def.then(function(){
-                    return self._load_debts(load_partner_ids, limit).then(function (data) {
-                        self._on_load_debts(data);
-                    }).fail(function () {
-                        self.reload_debts_partner_ids = self.reload_debts_partner_ids.concat(load_partner_ids);
-                    });
+                        var request_finished = $.Deferred();
+
+                        self._load_debts(load_partner_ids, limit, options).then(function (data) {
+                            // success
+                            self._on_load_debts(data);
+                        }).always(function(){
+                            // allow to do next call
+                            request_finished.resolve();
+                        }).fail(function () {
+                            // make request again
+                            self.reload_debts(load_partner_ids, 0, {"postpone": true, "shadow": false});
+                        });
+                        return request_finished;
                     });
                 }
             });
             return this.reload_debts_ready;
         },
-        _load_debts: function(partner_ids, limit){
-            return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit});
+        _load_debts: function(partner_ids, limit, options){
+            return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
         },
         _on_load_debts: function(debts){
             var partner_ids = _.map(debts, function(debt){ return debt.partner_id; });
@@ -97,6 +132,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
+        initialize: function (session, attributes) {
+            this.on('change:client', function(){
+                // reload debt history whenever we set customer,
+                // because debt value can be obsolete due to network issues
+                // and pos_longpolling status is not 100% gurantee
+                var client = this.get_client();
+                if (client)
+                    // reload only debt value, use background mode, send request immediatly
+                    this.pos.reload_debts([client.id], 0, {"postpone": false});
+            }, this);
+            return _super_order.initialize.call(this, session, attributes);
+        },
+
         updates_debt: function(){
             // wheither order update debt value
             return this.has_credit_product() || this.has_debt_journal();
@@ -394,6 +442,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var $show_debt_history = this.$('#show_debt_history');
             var $debt_history = this.$('#debt_history');
             var curr_client = this.pos.get_order().get_client();
+            var client = this.new_client || curr_client;
             if (this.editing_client) {
                 $pay_full_debt.addClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
@@ -405,20 +454,25 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }else{
                     $pay_full_debt.addClass('oe_hidden');
                 }
-                if (this.new_client || curr_client) {
+                if (client) {
                     $show_debt_history.removeClass('oe_hidden');
                     $show_debt_history.on('click', function () {
                         var $loading_history = $('#loading_history');
                         $loading_history.removeClass('oe_hidden');
-                        self.render_debt_history(self.new_client || curr_client);
+                        self.render_debt_history(client);
                         $('.client-list').addClass('oe_hidden');
                         $debt_history.removeClass('oe_hidden');
                         $show_debt_history.addClass('oe_hidden');
                         $show_customers.removeClass('oe_hidden');
+                        // TODO add "Load more" button
+                        var debt_history_limit = 10;
                         self.pos.reload_debts(
-                            (self.new_client && self.new_client.id) || (curr_client && curr_client.id)).then(
+                            client.id,
+                            debt_history_limit,
+                            {"postpone": false}
+                        ).then(
                                 function () {
-                                    self.render_debt_history(self.new_client || curr_client);
+                                    self.render_debt_history(client);
                                     $loading_history.addClass('oe_hidden');
                                 });
                     });

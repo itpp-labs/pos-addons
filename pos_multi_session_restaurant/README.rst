@@ -25,4 +25,3 @@ Contact us by `email <mailto:it@it-projects.info>`__ or fill out `request form <
 
 * it@it-projects.info
 * https://www.it-projects.info/page/website.contactus
-
