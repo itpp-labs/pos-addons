@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="SynchNotificationWidget">
+        <t t-jquery=".js_synch" t-operation="append">
+            <div class="js_poll_connected oe_icon oe_red">
+                <i class='fa fa-fw fa-plug'></i>
+            </div>
+        </t>
+    </t>
+</templates>

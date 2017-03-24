@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp><data>
+<odoo>
+    <data>
+        <template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
+                <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
+            </xpath>
+        </template>
 
-<template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
-    <xpath expr="." position="inside">
-        <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
-        <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
-    </xpath>
-</template>
-
-<record model="ir.ui.view" id="view_pos_config_form">
-    <field name="name">pos.config.form.view.inherit</field>
-    <field name="model">pos.config</field>
-    <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
-    <field name="arch" type="xml">
-        <xpath expr="//group[@name='features']" position="after">
-            <group string="Multi-session" name="multi_session">
-                <group>
-                    <field name="multi_session_id"/>
-                    <field name="multi_session_accept_incoming_orders"/>
-                    <field name="multi_session_replace_empty_order" attrs="{'invisible':[('multi_session_accept_incoming_orders', '=', False)]}"/>
-                    <field name="multi_session_deactivate_empty_order" attrs="{'invisible':['|',('multi_session_replace_empty_order', '=', True),('multi_session_accept_incoming_orders', '=', False)]}"/>
-                </group>
-            </group>
-        </xpath>
-    </field>
-</record>
-
-</data></openerp>
+        <record model="ir.ui.view" id="view_pos_config_form">
+            <field name="name">pos.config.form.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='features']" position="after">
+                    <group string="Multi-session" name="multi_session">
+                        <group>
+                            <field name="multi_session_id"/>
+                            <field name="multi_session_accept_incoming_orders"/>
+                            <field name="multi_session_replace_empty_order" attrs="{'invisible':[('multi_session_accept_incoming_orders', '=', False)]}"/>
+                            <field name="multi_session_deactivate_empty_order" attrs="{'invisible':['|',('multi_session_replace_empty_order', '=', True),('multi_session_accept_incoming_orders', '=', False)]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

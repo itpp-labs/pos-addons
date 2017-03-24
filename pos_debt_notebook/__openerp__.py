@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Debt notebook for POS',
+    'name': 'Debt/Credit notebook for POS',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'category': 'Point Of Sale',
     "images": [
@@ -8,7 +8,7 @@
         'images/screenshot-3.png',
         'images/screenshot-1.png',
     ],
-    'version': '4.0.0',
+    'version': '4.1.0',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "apps@it-projects.info",
