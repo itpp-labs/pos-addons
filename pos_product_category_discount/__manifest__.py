@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Product categories discount in POS""",
-    "summary": """Product categories discount in POS""",
+    "name": """POS Discount Programs""",
+    "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/disc_prog.jpg'],
     "version": "1.0.0",
     "application": False,
 

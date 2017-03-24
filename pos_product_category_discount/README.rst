@@ -1,8 +1,8 @@
-====================================
- Product categories discount in POS
-====================================
+=======================
+ POS Discount Programs
+=======================
 
-Product categories discount in POS
+Set predefined discount programs for product categories in POS
 
 Credits
 =======
