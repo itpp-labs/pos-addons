@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="NumberPopupWidget">
+        <t t-jquery="div[class='footer centered']" t-operation="after">
+            <t t-if="widget.options.disc_program">
+                <div class="discount-program-content">
+                    <p class="title">Load Discount Program</p>
+                    <div class="discount-program-list">
+
+                            <ul>
+                                <t t-foreach="widget.options.disc_program" t-as="program">
+                                    <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
+                                </t>
+                            </ul>
+
+                        <ul>
+                            <li><div id="other" class="button other-discount-program">Other</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="Orderline">
+        <t t-jquery='.info-list .info:eq(1)' t-operation="replace">
+            <t t-if="line.discount_program_name">
+                <li class="info">
+                    With a
+                    <em>
+                        <t t-esc="line.get_discount_str()" />%
+                    </em>
+                    discount (<t t-esc="line.discount_program_name"/>)
+                </li>
+            </t>
+            <t t-if="!line.discount_program_name">
+                <li class="info">
+                    With a
+                    <em>
+                        <t t-esc="line.get_discount_str()" />%
+                    </em>
+                    discount
+                </li>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery='.pos-disc-font' t-operation="replace">
+            <t t-if="orderline.discount_program_name">
+                <div class="pos-disc-font">
+                    With a <t t-esc="orderline.get_discount()"/>% discount (<t t-esc="orderline.get_discount_name()"/>)
+                </div>
+            </t>
+            <t t-if="!orderline.discount_program_name">
+                <div class="pos-disc-font">
+                    With a <t t-esc="orderline.get_discount()"/>% discount
+                </div>
+            </t>
+        </t>
+    </t>
+
+
+    <t t-extend="OrderWidget">
+        <t t-jquery='.subentry' t-operation="after">
+            <div class='discount'>Discounts: <span class="value">0.00€</span></div>
+        </t>
+    </t>
+
+    <t t-name="DiscountLine">
+        <tr class='discount-line' t-att-data-id='discount.id'>
+            <td><t t-esc='discount.discount_program_name' /></td>
+        </tr>
+    </t>
+
+    <t t-name="DiscountProgramScreenWidget">
+        <div class="discountlist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='button next oe_hidden highlight'>
+                        Apply
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div class='subwindow-container-fix discount-details-contents'>
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='discount-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Discount program name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='discount-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+</templates>
