@@ -12,3 +12,4 @@ class PosConfig(models.Model):
     allow_edit_price = fields.Boolean('Allow edit price', default=True)
     allow_decrease_amount = fields.Boolean('Allow decrease order line', default=True)
     allow_delete_order_line = fields.Boolean('Allow remove order line', default=True)
+    allow_create_order_line = fields.Boolean('Allow create order line', default=True)
