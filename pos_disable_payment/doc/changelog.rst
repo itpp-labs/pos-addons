@@ -3,6 +3,11 @@
 Updates
 =======
 
+`2.2.2`
+-------
+
+- NEW: New option "Allow to create order line" for POS added to user access rights
+
 `2.1.2`
 -------
 
