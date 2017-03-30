@@ -7,7 +7,7 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='status']" position="before">
+                <xpath expr="//group[@name='group_lots_and_weight']" position="after">
                     <group name="product_lot" string="Product lot">
                         <field name="is_lot"/>
                         <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_product_id"/>
