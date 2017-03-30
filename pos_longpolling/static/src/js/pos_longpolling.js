@@ -114,7 +114,7 @@ odoo.define('pos_longpolling', function(require){
         update_status: function(message) {
             var self = this;
             if (this.pos.debug) {
-                console.log("Message: ", message);
+                console.log("This message from server. Message: ", message);
             }
             self.stop_timer();
             self.set_status(true);
