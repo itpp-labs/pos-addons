@@ -71,7 +71,11 @@ window.mstest = {
         $('.order-sequence').each(function(){
             var order_num = $.trim($(this).html()).split("\n");
             if (parseInt(order_num[2]) == order.order_num){
-                $(this).click();
+                if (!$(this).parent().hasClass('selected')){
+                    // click only on inactive tab.
+                    // Otherwise Customer Selection screen will be opened
+                    $(this).click();
+                }
                 return false;
             }
         });
@@ -117,7 +121,11 @@ window.mstest = {
         setTimeout(function(){
             callback();
             mstest.is_wait = false;
-        }, timeout || 1000);
+        }, timeout || 3000);
     },
-
+    check_revision_error: function(){
+        warning_message = 'There is a conflict during synchronization, try your action again';
+        if ($('.modal .in').text() == warning_message)
+            console.log('error', warning_message);
+    },
 };
