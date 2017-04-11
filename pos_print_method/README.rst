@@ -1,8 +1,8 @@
-==============================
- Сheck printing method in POS
-==============================
+==================
+ POS Print Method
+==================
 
-Сheck printing method in POS
+Сhoose print method for order printing in POS
 
 Credits
 =======
