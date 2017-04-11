@@ -25,6 +25,7 @@ class PosMultiSession(models.Model):
 
     name = fields.Char('Name')
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
+    order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
 
     @api.multi
@@ -114,20 +115,20 @@ class PosMultiSession(models.Model):
     def broadcast_message(self, message):
         self.ensure_one()
         notifications = []
-        for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
-            if ps.user_id.id != self.env.user.id:
-                message_ID = ps.config_id.multi_session_message_ID
-                message_ID += 1
-                ps.config_id.multi_session_message_ID = message_ID
-                message['data']['message_ID'] = message_ID
-                notifications.append([(self._cr.dbname, 'pos.multi_session', ps.user_id.id), message])
+        channel_name = "pos.multi_session"
+        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'),
+                                                  ('config_id.multi_session_id', '=', self.id)]):
+            message_ID = ps.config_id.multi_session_message_ID
+            message_ID += 1
+            ps.config_id.multi_session_message_ID = message_ID
+            message['data']['message_ID'] = message_ID
+            ps.config_id._send_to_channel(channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
             # commit to update values on DB
             self.env.cr.commit()
             time.sleep(3)
-        self.env['bus.bus'].sendmany(notifications)
         return 1
 
 
@@ -136,7 +137,7 @@ class PosMultiSessionOrder(models.Model):
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char(index=True)
-    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted')], default='draft', index=True)
+    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi session', index=True)
 
@@ -145,10 +146,12 @@ class PosSession(models.Model):
     _inherit = 'pos.session'
 
     @api.multi
-    def wkf_action_close(self):
+    def action_pos_session_close(self):
+        res = super(PosSession, self).action_pos_session_close()
         self.config_id.write({'multi_session_message_ID': 1})
-        res = super(PosSession, self).wkf_action_close()
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
         if len(active_sessions) == 0:
             self.config_id.multi_session_id.sudo().write({'order_ID': 0})
+            orders = self.config_id.multi_session_id.order_ids.filtered(lambda x: x.state == "draft")
+            orders.write({'state': 'unpaid'})
         return res

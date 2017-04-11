@@ -15,12 +15,13 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pos_security_pin']/.." position="after">
                     <group string="Access">
+                        <field name="allow_create_order_line"/>
                         <field name="allow_payments"/>
                         <field name="allow_delete_order"/>
-                        <field name="allow_discount"/>
-                        <field name="allow_edit_price"/>
-                        <field name="allow_decrease_amount"/>
-                        <field name="allow_delete_order_line" attrs="{'invisible':[('allow_decrease_amount','=',False)]}"/>
+                        <field name="allow_discount" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
+                        <field name="allow_edit_price" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
+                        <field name="allow_decrease_amount" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
+                        <field name="allow_delete_order_line" attrs="{'invisible':['|',('allow_decrease_amount','=',False),('allow_create_order_line','=',False)]}"/>
                     </group>
             </xpath>
         </field>

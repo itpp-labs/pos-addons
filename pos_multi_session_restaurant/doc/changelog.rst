@@ -3,6 +3,10 @@
 Updates
 =======
 
+`1.1.5`
+-------
+- FIX: Issue related to error 'get_orderlines is undefined'
+
 `1.1.4`
 -------
 - FIX: Send to sync already printed order lines to not print it on remote POS.
