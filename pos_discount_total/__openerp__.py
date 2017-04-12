@@ -7,7 +7,7 @@
     'category': 'Point Of Sale',
     "support": "apps@it-projects.info",
     'website': 'https://twitter.com/yelizariev',
-    'price': 9.00,
+    'price': 15.00,
     'currency': 'EUR',
     'depends': ['point_of_sale'],
     'data': [
