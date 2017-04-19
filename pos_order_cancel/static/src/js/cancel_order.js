@@ -3,7 +3,7 @@ odoo.define('pos_order_cancel', function (require) {
 
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
-    var chrome =  require('point_of_sale.chrome');
+    var chrome = require('point_of_sale.chrome');
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var multiprint = require('pos_restaurant.multiprint');
@@ -36,7 +36,7 @@ odoo.define('pos_order_cancel', function (require) {
 
     chrome.OrderSelectorWidget.include({
         deleteorder_click_handler: function(event, $el) {
-            var self  = this;
+            var self = this;
             var order = this.pos.get_order();
             var show_popup = false;
             if ( !order.is_empty() ){
@@ -49,7 +49,7 @@ odoo.define('pos_order_cancel', function (require) {
                 } else{
                     this._super(event, $el);
                 }
-            } else {
+            } else if (order.is_empty()) {
                 this._super(event, $el);
             }
         },
@@ -58,7 +58,7 @@ odoo.define('pos_order_cancel', function (require) {
     screens.OrderWidget.include({
         init: function(parent, options) {
             this._super(parent,options);
-            this.numpad_state.bind('show_popup',   this.show_popup, this);
+            this.numpad_state.bind('show_popup', this.show_popup, this);
             this.pos.selected_cancelled_reason = '';
         },
         show_popup: function(type){
@@ -73,13 +73,14 @@ odoo.define('pos_order_cancel', function (require) {
                 this.numpad_state.show_popup = false;
                 return false;
             }
-            var title = 'All ';
+            var title = 'Order ';
             if (type === 'product') {
-                title = 'POS ';
+                title = 'Product ';
             }
-            order.CancellationReasonType = type; // type of object which is removed (product or order)
+            // type of object which is removed (product or order)
+            order.CancellationReasonType = type;
             this.gui.show_popup('confirm-cancellation',{
-                'title': _t(title + 'Product Cancellation Reason'),
+                'title': _t(title + 'Cancellation Reason'),
                 'reasons': self.pos.cancelled_reason.slice(0,8),
                 'value': self.pos.selected_cancelled_reason.name,
                 confirm: function(){
@@ -114,7 +115,6 @@ odoo.define('pos_order_cancel', function (require) {
     var ConfirmCancellationPopupWidget = PopupWidget.extend({
         template: 'ConfirmCancellationPopupWidget',
         show: function(options){
-            options = options || {};
             this._super(options);
             if (options.reasons) {
                 this.events["click .cancelled-reason .button"] = "click_cancelled_reason";
@@ -130,7 +130,7 @@ odoo.define('pos_order_cancel', function (require) {
         click_cancelled_reason: function(e) {
             var self = this;
             var id = e.currentTarget.id;
-            if (id == 'other') {
+            if (id === 'other') {
                 var skip_close_popup = true;
                 self.gui.show_screen('reason_screen');
             } else {
@@ -141,7 +141,7 @@ odoo.define('pos_order_cancel', function (require) {
             this.gui.close_popup();
             if( this.options.confirm ){
                 var order = this.pos.get_order();
-                order.CancellationReason =  this.$('.popup-confirm-cancellation textarea').val();
+                order.CancellationReason = this.$('.popup-confirm-cancellation textarea').val();
                 this.options.confirm.call(this);
             }
         },
@@ -195,7 +195,7 @@ odoo.define('pos_order_cancel', function (require) {
             var printers = this.pos.printers;
             var categories_ids = [];
             for(var i = 0; i < printers.length; i++) {
-                var product_categories_ids = (printers[i].config.product_categories_ids);
+                var product_categories_ids = printers[i].config.product_categories_ids;
                 product_categories_ids.forEach(function(id){
                     categories_ids.push(id);
                 });
@@ -320,12 +320,12 @@ odoo.define('pos_order_cancel', function (require) {
         },
         toggle_save_button: function(){
             var $button = this.$('.button.next');
-            if (!this.show_reason_button) {
-                $button.addClass('oe_hidden');
-                return;
-            } else {
+            if (this.show_reason_button) {
                 $button.removeClass('oe_hidden');
                 $button.text(_t('Apply'));
+            } else {
+                $button.addClass('oe_hidden');
+                return;
             }
         },
         line_select: function(line,id){
