@@ -14,7 +14,7 @@ addons:
 
 env:
   global:
-  - VERSION="10.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" UNIT_TEST="0"
+  - VERSION="9.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" UNIT_TEST="0"
   - EXCLUDE="hw_printer_network"
   - PYLINT_ODOO_JSLINTRC="/home/travis/maintainer-quality-tools/travis/cfg/.jslintrc"
 
