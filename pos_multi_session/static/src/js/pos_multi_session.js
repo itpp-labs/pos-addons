@@ -158,14 +158,14 @@ odoo.define('pos_multi_session', function(require){
             }
         },
         ms_create_order: function(options){
-            var options = _.extend({pos: this}, options || {});
-            return new models.Order({}, options);
+            var updated_options = _.extend({pos: this}, options || {});
+            return new models.Order({}, updated_options);
         },
         ms_do_update: function(order, data){
             var pos = this;
-            var order = order;
+            var updated_order = order;
             this.pos_session.order_ID = data.sequence_number;
-            if (!order){
+            if (!updated_order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
                 if (!create_new_order){
                     return;
@@ -180,72 +180,72 @@ odoo.define('pos_multi_session', function(require){
                     new_order: false,
                     order_on_server: true,
                 };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
+                updated_order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
-                this.get('orders').add(order);
+                this.get('orders').add(updated_order);
                 this.ms_on_add_order(current_order);
-            } else if (order) {
-                order.ms_info = data.ms_info;
-                order.revision_ID = data.revision_ID;
+            } else if (updated_order) {
+                updated_order.ms_info = data.ms_info;
+                updated_order.revision_ID = data.revision_ID;
             }
-            var not_found = order.orderlines.map(function(r) {
+            var not_found = updated_order.orderlines.map(function(r) {
                 return r.uid;
             });
             if(data.partner_id !== false) {
-                var client = order.pos.db.get_partner_by_id(data.partner_id);
+                var client = updated_order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client) {
                     $.when(this.load_new_partners_by_id(data.partner_id)).then(function(res){
-                        client = order.pos.db.get_partner_by_id(data.partner_id);
-                        order.set_client(client);
+                        client = updated_order.pos.db.get_partner_by_id(data.partner_id);
+                        updated_order.set_client(client);
                     },function(){
                         // do nothing.
                     });
                 }
-                order.set_client(client);
+                updated_order.set_client(client);
             } else if (data.partner_id ) {
-                order.set_client(null);
+                updated_order.set_client(null);
             }
             _.each(data.lines, function(dline){
-                var dline = dline[2];
-                var line = order.orderlines.find(function(r){
-                    return dline.uid === r.uid;
+                var upd_dline = dline[2];
+                var line = updated_order.orderlines.find(function(r){
+                    return upd_dline.uid === r.uid;
                 });
-                not_found = _.without(not_found, dline.uid);
-                var product = pos.db.get_product_by_id(dline.product_id);
+                not_found = _.without(not_found, upd_dline.uid);
+                var product = pos.db.get_product_by_id(upd_dline.product_id);
                 if (!line){
-                    line = new models.Orderline({}, {pos: pos, order: order, product: product});
-                    line.uid = dline.uid;
+                    line = new models.Orderline({}, {pos: pos, order: updated_order, product: product});
+                    line.uid = upd_dline.uid;
                 }
-                line.ms_info = dline.ms_info || {};
-                if(dline.qty !== undefined){
-                    line.set_quantity(dline.qty);
+                line.ms_info = upd_dline.ms_info || {};
+                if(upd_dline.qty !== undefined){
+                    line.set_quantity(upd_dline.qty);
                 }
-                if(dline.price_unit !== undefined){
-                    line.set_unit_price(dline.price_unit);
+                if(upd_dline.price_unit !== undefined){
+                    line.set_unit_price(upd_dline.price_unit);
                 }
-                if(dline.discount !== undefined){
-                    line.set_discount(dline.discount);
+                if(upd_dline.discount !== undefined){
+                    line.set_discount(upd_dline.discount);
                 }
-                if(dline.mp_dirty !== undefined){
-                    line.set_dirty(dline.mp_dirty);
+                if(upd_dline.mp_dirty !== undefined){
+                    line.set_dirty(upd_dline.mp_dirty);
                 }
-                if(dline.mp_skip !== undefined){
-                    line.set_skip(dline.mp_skip);
+                if(upd_dline.mp_skip !== undefined){
+                    line.set_skip(upd_dline.mp_skip);
                 }
-                if(dline.note !== undefined){
-                    line.set_note(dline.note);
+                if(upd_dline.note !== undefined){
+                    line.set_note(upd_dline.note);
                 }
-                order.orderlines.add(line);
+                updated_order.orderlines.add(line);
             });
 
             _.each(not_found, function(uid){
-                var line = order.orderlines.find(function(r){
+                var line = updated_order.orderlines.find(function(r){
                                return uid === r.uid;
                            });
-                order.orderlines.remove(line);
+                updated_order.orderlines.remove(line);
             });
-            order.order_on_server = true;
-            order.new_order = false;
+            updated_order.order_on_server = true;
+            updated_order.new_order = false;
         },
         load_new_partners_by_id: function(partner_id){
             var self = this;
