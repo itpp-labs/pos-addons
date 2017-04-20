@@ -18,7 +18,7 @@ Updates
 `3.0.1`
 -------
 
-- FIX: Reference Error: Model is not defined
+- FIX: Reference Error "Model is not defined" if a customer is created from Pos interface directly
 
 `3.0.0`
 -------
