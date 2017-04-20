@@ -163,6 +163,7 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_do_update: function(order, data){
             var pos = this;
+            var order = order;
             this.pos_session.order_ID = data.sequence_number;
             if (!order){
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
@@ -193,7 +194,7 @@ odoo.define('pos_multi_session', function(require){
             if(data.partner_id !== false) {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client) {
-                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(client){
+                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(res){
                         client = order.pos.db.get_partner_by_id(data.partner_id);
                         order.set_client(client);
                     },function(){
@@ -205,7 +206,7 @@ odoo.define('pos_multi_session', function(require){
                 order.set_client(null);
             }
             _.each(data.lines, function(dline){
-                dline = dline[2];
+                var dline = dline[2];
                 var line = order.orderlines.find(function(r){
                     return dline.uid === r.uid;
                 });
@@ -262,6 +263,9 @@ odoo.define('pos_multi_session', function(require){
                     def.reject();
                 }
             }, function(err, event){
+                if (err) {
+                    console.error(err.stack);
+                }
                 event.preventDefault();
                 def.reject();
             });
@@ -285,7 +289,6 @@ odoo.define('pos_multi_session', function(require){
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
             var self = this;
-            options = options || {};
 
             if (!options.json || !('new_order' in options.json)) {
                 this.new_order = true;
@@ -402,7 +405,7 @@ odoo.define('pos_multi_session', function(require){
                             self.revision_ID = server_revision_ID;
                         }
                     }
-                })
+                });
             };
             this.enquied = true;
             this.pos.multi_session.enque(f);
@@ -430,7 +433,8 @@ odoo.define('pos_multi_session', function(require){
                     line.ms_info.changed = line.order.pos.ms_my_info();
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;
-                    order_lines.trigger('change', order_lines); // to rerender line
+                    // to rerender line
+                    order_lines.trigger('change', order_lines);
                     line.order.trigger('change:sync');
                 }
             });
