@@ -4,6 +4,7 @@ odoo.define('pos_multi_session', function(require){
     var session = require('web.session');
     var Backbone = window.Backbone;
     var core = require('web.core');
+    var Model = require('web.DataModel');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
@@ -15,7 +16,8 @@ odoo.define('pos_multi_session', function(require){
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
-    bus.bus.activated = true; // fake value to ignore start_polling call
+    // fake value to ignore start_polling call
+    bus.bus.activated = true;
 
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
@@ -102,51 +104,52 @@ odoo.define('pos_multi_session', function(require){
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
         ms_on_update: function(message, sync_all){
-            this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
+            // don't broadcast updates made from this message
+            this.ms_syncing_in_progress = true;
             var error = false;
             var self = this;
             var data = '';
             var action = '';
             try{
                 if (this.debug){
-                    console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
+                    console.info('MS', this.config.name, 'on_update:', JSON.stringify(message));
                 }
                 action = message.action;
                 data = message.data || {};
                 var order = false;
                 if (data.uid){
-                    order = this.get('orders').find(function(order){
-                        return order.uid == data.uid;
+                    order = this.get('orders').find(function(item){
+                        return item.uid === data.uid;
                     });
                 }
                 if (sync_all) {
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
-                    if (self.message_ID + 1 != data.message_ID)
+                    if (self.message_ID + 1 !== data.message_ID) {
                         self.multi_session.request_sync_all();
-                    else
+                    } else if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
-                    if (order && action == 'remove_order') {
-                        order.destroy({'reason': 'abandon'});
                     }
-                    else if (action == 'update_order')
+                    if (order && action === 'remove_order') {
+                        order.destroy({'reason': 'abandon'});
+                    } else if (action === 'update_order') {
                         this.ms_do_update(order, data);
+                    }
                 }
-            }catch(err){
+            } catch(err) {
                 error = err;
-                //console.error(err);
             }
             this.ms_syncing_in_progress = false;
             if (error){
-                throw(error);
+                throw error;
             }
         },
         ms_on_add_order: function (current_order) {
             if (!current_order) {
                 return;
             }
-            is_frozen = !current_order.ms_replace_empty_order;
+            var is_frozen = !current_order.ms_replace_empty_order;
             if (this.config.multi_session_replace_empty_order && current_order.new_order && !is_frozen) {
                 current_order.destroy({'reason': 'abandon'});
             } else if (is_frozen || !current_order.new_order || !this.config.multi_session_deactivate_empty_order) {
@@ -155,18 +158,19 @@ odoo.define('pos_multi_session', function(require){
             }
         },
         ms_create_order: function(options){
-            options = _.extend({pos: this}, options || {});
-            return new models.Order({}, options);
+            var updated_options = _.extend({pos: this}, options || {});
+            return new models.Order({}, updated_options);
         },
         ms_do_update: function(order, data){
             var pos = this;
+            var updated_order = order;
             this.pos_session.order_ID = data.sequence_number;
-            if (!order){
-                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
+            if (!updated_order){
+                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
                 if (!create_new_order){
                     return;
                 }
-                json = {
+                var json = {
                     sequence_number: data.sequence_number,
                     uid: data.uid,
                     pos_session_id: this.pos_session.id,
@@ -176,94 +180,97 @@ odoo.define('pos_multi_session', function(require){
                     new_order: false,
                     order_on_server: true,
                 };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
+                updated_order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
-                this.get('orders').add(order);
+                this.get('orders').add(updated_order);
                 this.ms_on_add_order(current_order);
-            } else {
-                order.ms_info = data.ms_info;
-                order.revision_ID = data.revision_ID;
+            } else if (updated_order) {
+                updated_order.ms_info = data.ms_info;
+                updated_order.revision_ID = data.revision_ID;
             }
-            var not_found = order.orderlines.map(function(r){
+            var not_found = updated_order.orderlines.map(function(r) {
                 return r.uid;
             });
-            if(data.partner_id !== false)
-            {
-                var client = order.pos.db.get_partner_by_id(data.partner_id);
-                if(!client)
-                {
-
-                    $.when(this.load_new_partners_by_id(data.partner_id))
-                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
-                             order.set_client(client);},function(){});
+            if(data.partner_id !== false) {
+                var client = updated_order.pos.db.get_partner_by_id(data.partner_id);
+                if(!client) {
+                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(res){
+                        client = updated_order.pos.db.get_partner_by_id(data.partner_id);
+                        updated_order.set_client(client);
+                    },function(){
+                        // do nothing.
+                    });
                 }
-                order.set_client(client);
+                updated_order.set_client(client);
+            } else if (data.partner_id ) {
+                updated_order.set_client(null);
             }
-            else
-            {
-                order.set_client(null);
-            }
-
             _.each(data.lines, function(dline){
-                dline = dline[2];
-                var line = order.orderlines.find(function(r){
-                    return dline.uid == r.uid;
+                var upd_dline = dline[2];
+                var line = updated_order.orderlines.find(function(r){
+                    return upd_dline.uid === r.uid;
                 });
-                not_found = _.without(not_found, dline.uid);
-                var product = pos.db.get_product_by_id(dline.product_id);
+                not_found = _.without(not_found, upd_dline.uid);
+                var product = pos.db.get_product_by_id(upd_dline.product_id);
                 if (!line){
-                    line = new models.Orderline({}, {pos: pos, order: order, product: product});
-                    line.uid = dline.uid;
+                    line = new models.Orderline({}, {pos: pos, order: updated_order, product: product});
+                    line.uid = upd_dline.uid;
                 }
-                line.ms_info = dline.ms_info || {};
-                if(dline.qty !== undefined){
-                    line.set_quantity(dline.qty);
+                line.ms_info = upd_dline.ms_info || {};
+                if(typeof upd_dline.qty !== "undefined"){
+                    line.set_quantity(upd_dline.qty);
                 }
-                if(dline.price_unit !== undefined){
-                    line.set_unit_price(dline.price_unit);
+                if(typeof upd_dline.price_unit !== "undefined"){
+                    line.set_unit_price(upd_dline.price_unit);
                 }
-                if(dline.discount !== undefined){
-                    line.set_discount(dline.discount);
+                if(typeof upd_dline.discount !== "undefined"){
+                    line.set_discount(upd_dline.discount);
                 }
-                if(dline.mp_dirty !== undefined){
-                    line.set_dirty(dline.mp_dirty);
+                if(typeof upd_dline.mp_dirty !== "undefined"){
+                    line.set_dirty(upd_dline.mp_dirty);
                 }
-                if(dline.mp_skip !== undefined){
-                    line.set_skip(dline.mp_skip);
+                if(typeof upd_dline.mp_skip !== "undefined"){
+                    line.set_skip(upd_dline.mp_skip);
                 }
-                if(dline.note !== undefined){
-                    line.set_note(dline.note);
+                if(typeof upd_dline.note !== "undefined"){
+                    line.set_note(upd_dline.note);
                 }
-                order.orderlines.add(line);
+                updated_order.orderlines.add(line);
             });
 
             _.each(not_found, function(uid){
-                var line = order.orderlines.find(function(r){
-                               return uid == r.uid;
+                var line = updated_order.orderlines.find(function(r){
+                               return uid === r.uid;
                            });
-                order.orderlines.remove(line);
+                updated_order.orderlines.remove(line);
             });
-            order.order_on_server = true;
-            order.new_order = false;
+            updated_order.order_on_server = true;
+            updated_order.new_order = false;
         },
         load_new_partners_by_id: function(partner_id){
-        var self = this;
-        var def  = new $.Deferred();
-        var client;
-        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
-        new Model('res.partner')
-            .query(fields)
-            .filter([['id','=',partner_id]])
-            .all({'timeout':3000, 'shadow': true})
-            .then(function(partners){
-                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+            var self = this;
+            var def = new $.Deferred();
+            var fields = _.find(this.models,function(model){
+                return model.model === 'res.partner';
+            }).fields;
+            new Model('res.partner').query(fields).filter([['id','=',partner_id]]).all({
+                'timeout':3000, 'shadow': true
+            }).then(function(partners){
+                // check if the partners we got were real updates
+                if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {
                     def.reject();
                 }
-            }, function(err,event){ event.preventDefault(); def.reject(); });
-        return def;
-    },
+            }, function(err, event){
+                if (err) {
+                    console.error(err.stack);
+                }
+                event.preventDefault();
+                def.reject();
+            });
+            return def;
+        },
     });
 
     chrome.OrderSelectorWidget.include({
@@ -282,7 +289,6 @@ odoo.define('pos_multi_session', function(require){
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
             var self = this;
-            options = options || {};
 
             if (!options.json || !('new_order' in options.json)) {
                 this.new_order = true;
@@ -322,10 +328,12 @@ odoo.define('pos_multi_session', function(require){
             OrderSuper.prototype.set_client.apply(this,arguments);
         },
         ms_check: function(){
-            if (! this.pos.multi_session )
+            if (! this.pos.multi_session ) {
                 return;
-            if (this.pos.ms_syncing_in_progress)
+            }
+            if (this.pos.ms_syncing_in_progress) {
                 return;
+            }
             return true;
         },
         ms_update: function(){
@@ -338,11 +346,13 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 this.trigger('change');
             }
-            if (!this.ms_check())
+            if (!this.ms_check()) {
                 return;
-            if (this.ms_update_timeout)
+            }
+            if (this.ms_update_timeout) {
                 // restart timeout
                 clearTimeout(this.ms_update_timeout);
+            }
             this.ms_update_timeout = setTimeout(
                 function(){
                     self.ms_update_timeout = false;
@@ -350,8 +360,9 @@ odoo.define('pos_multi_session', function(require){
                 }, 0);
         },
         ms_remove_order: function(){
-            if (!this.ms_check())
+            if (!this.ms_check()) {
                 return;
+            }
             this.do_ms_remove_order();
         },
         do_ms_remove_order: function(){
@@ -372,8 +383,9 @@ odoo.define('pos_multi_session', function(require){
         },
         do_ms_update: function(){
             var self = this;
-            if (this.enquied)
+            if (this.enquied) {
                 return;
+            }
             var f = function(){
                 self.enquied=false;
                 var data = self.export_as_JSON();
@@ -382,7 +394,7 @@ odoo.define('pos_multi_session', function(require){
                     if (res) {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
-                        if (self.sequence_number != order_ID) {
+                        if (self.sequence_number !== order_ID) {
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
@@ -393,7 +405,7 @@ odoo.define('pos_multi_session', function(require){
                             self.revision_ID = server_revision_ID;
                         }
                     }
-                })
+                });
             };
             this.enquied = true;
             this.pos.multi_session.enque(f);
@@ -405,9 +417,10 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            if (!this.order)
+            if (!this.order) {
                 // ignore new orderline from splitbill tool
                 return;
+            }
             if (this.order.ms_check()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
@@ -420,7 +433,8 @@ odoo.define('pos_multi_session', function(require){
                     line.ms_info.changed = line.order.pos.ms_my_info();
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;
-                    order_lines.trigger('change', order_lines); // to rerender line
+                    // to rerender line
+                    order_lines.trigger('change', order_lines);
                     line.order.trigger('change:sync');
                 }
             });
@@ -480,18 +494,18 @@ odoo.define('pos_multi_session', function(require){
                     var next = $.Deferred();
                     var func1 = self.func_queue.shift();
                     func1().always(function () {
-                        next.resolve()
+                        next.resolve();
                     });
                     return next;
                 }
-            })
+            });
         },
         _debug_send_number: 0,
         send: function(message){
             var current_send_number = 0;
             if (this.pos.debug){
                 current_send_number = this._debug_send_number++;
-                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
+                console.info('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
             }
             var self = this;
             message.data.pos_id = this.pos.config.id;
@@ -503,7 +517,7 @@ odoo.define('pos_multi_session', function(require){
             };
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
+                    console.info('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
@@ -514,19 +528,19 @@ odoo.define('pos_multi_session', function(require){
                 }
             }).done(function(res){
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                    console.info('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
                 self.pos.longpolling_connection.set_status(true);
 
                 var server_orders_uid = [];
                 self.client_online = true;
 
-                if (res.action == "revision_error") {
+                if (res.action === "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
                     self.warning(warning_message);
                     self.request_sync_all();
                 }
-                if (res.action == 'sync_all') {
+                if (res.action === 'sync_all') {
                     res.orders.forEach(function (item) {
                         self.pos.ms_on_update(item, true);
                         server_orders_uid.push(item.data.uid);
@@ -542,7 +556,7 @@ odoo.define('pos_multi_session', function(require){
             // find all client orders whose order_on_server is True
             var orders = self.pos.get('orders').filter(
                 function(r){
-                    return (r.order_on_server === true);
+                    return r.order_on_server === true;
                 }
             );
             /* if found by the order from the client is not on the
@@ -550,8 +564,8 @@ odoo.define('pos_multi_session', function(require){
             orders.forEach(function(item) {
                 var remove_order = server_orders_uid.indexOf(item.uid);
                 if (remove_order === -1) {
-                    var order = self.pos.get('orders').find(function (order) {
-                        return order.uid == item.uid;
+                    var order = self.pos.get('orders').find(function (current_order) {
+                        return current_order.uid === item.uid;
                     });
                     order.destroy({'reason': 'abandon'});
                 }
