@@ -15,20 +15,17 @@ Updates
 -------
 - FIX: For pos restaurant compatibility. Sync printed positions.
 
+`3.0.1`
+-------
+
+- FIX: Reference Error: Model is not defined
+
 `3.0.0`
 -------
 
 - FIX: Added a queue for request sending that allows to fix the syncronization error on slow or lost  connection
 - NEW: Added connection status with server to POS interface
 - NEW: Create new orders even if the connection with server temporarily has been lost
-
-`3.0.0`
--------
-
-- FIX: Added a queue for request sending that allows to fix the syncronization error on slow or lost  connection
-- NEW: Added connection status with server to POS interface
-- NEW: Create new orders even if the connection with server temporarily has been lost
-
 
 `2.0.1`
 -------
