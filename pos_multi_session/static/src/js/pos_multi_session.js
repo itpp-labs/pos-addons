@@ -128,14 +128,12 @@ odoo.define('pos_multi_session', function(require){
                 } else {
                     if (self.message_ID + 1 !== data.message_ID) {
                         self.multi_session.request_sync_all();
-                    }
-                    else if (self.message_ID + 1 === data.message_ID) {
+                    } else if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
                     }
                     if (order && action === 'remove_order') {
                         order.destroy({'reason': 'abandon'});
-                    }
-                    else if (action === 'update_order') {
+                    } else if (action === 'update_order') {
                         this.ms_do_update(order, data);
                     }
                 }
@@ -144,7 +142,7 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_syncing_in_progress = false;
             if (error){
-                throw(error);
+                throw error;
             }
         },
         ms_on_add_order: function (current_order) {
@@ -167,7 +165,7 @@ odoo.define('pos_multi_session', function(require){
             var pos = this;
             this.pos_session.order_ID = data.sequence_number;
             if (!order){
-                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id != pos.ms_my_info().user.id);
+                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
                 if (!create_new_order){
                     return;
                 }
@@ -181,7 +179,7 @@ odoo.define('pos_multi_session', function(require){
                     new_order: false,
                     order_on_server: true,
                 };
-                var order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -194,18 +192,20 @@ odoo.define('pos_multi_session', function(require){
             });
             if(data.partner_id !== false) {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
-                if(!client)
-                {
+                if(!client) {
                     $.when(this.load_new_partners_by_id(data.partner_id)).then(function(client){
                         client = order.pos.db.get_partner_by_id(data.partner_id);
-                        order.set_client(client);},function(){});
+                        order.set_client(client);
+                    },function(){
+                        // do nothing.
+                    });
                 }
                 order.set_client(client);
             } else if (data.partner_id ) {
                 order.set_client(null);
             }
             _.each(data.lines, function(dline){
-                var dline = dline[2];
+                dline = dline[2];
                 var line = order.orderlines.find(function(r){
                     return dline.uid === r.uid;
                 });
@@ -249,16 +249,22 @@ odoo.define('pos_multi_session', function(require){
         load_new_partners_by_id: function(partner_id){
             var self = this;
             var def = new $.Deferred();
-            var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+            var fields = _.find(this.models,function(model){
+                return model.model === 'res.partner';
+            }).fields;
             new Model('res.partner').query(fields).filter([['id','=',partner_id]]).all({
                 'timeout':3000, 'shadow': true
             }).then(function(partners){
-                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                // check if the partners we got were real updates
+                if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {
                     def.reject();
                 }
-            }, function(err,event){ event.preventDefault(); def.reject(); });
+            }, function(err, event){
+                event.preventDefault();
+                def.reject();
+            });
             return def;
         },
     });
@@ -319,10 +325,12 @@ odoo.define('pos_multi_session', function(require){
             OrderSuper.prototype.set_client.apply(this,arguments);
         },
         ms_check: function(){
-            if (! this.pos.multi_session )
+            if (! this.pos.multi_session ) {
                 return;
-            if (this.pos.ms_syncing_in_progress)
+            }
+            if (this.pos.ms_syncing_in_progress) {
                 return;
+            }
             return true;
         },
         ms_update: function(){
@@ -335,8 +343,9 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 this.trigger('change');
             }
-            if (!this.ms_check())
+            if (!this.ms_check()) {
                 return;
+            }
             if (this.ms_update_timeout) {
                 // restart timeout
                 clearTimeout(this.ms_update_timeout);
@@ -481,18 +490,18 @@ odoo.define('pos_multi_session', function(require){
                     var next = $.Deferred();
                     var func1 = self.func_queue.shift();
                     func1().always(function () {
-                        next.resolve()
+                        next.resolve();
                     });
                     return next;
                 }
-            })
+            });
         },
         _debug_send_number: 0,
         send: function(message){
             var current_send_number = 0;
             if (this.pos.debug){
                 current_send_number = this._debug_send_number++;
-                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
+                console.info('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
             }
             var self = this;
             message.data.pos_id = this.pos.config.id;
@@ -504,7 +513,7 @@ odoo.define('pos_multi_session', function(require){
             };
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
+                    console.info('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
@@ -515,7 +524,7 @@ odoo.define('pos_multi_session', function(require){
                 }
             }).done(function(res){
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                    console.info('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
                 self.pos.longpolling_connection.set_status(true);
 
@@ -543,7 +552,7 @@ odoo.define('pos_multi_session', function(require){
             // find all client orders whose order_on_server is True
             var orders = self.pos.get('orders').filter(
                 function(r){
-                    return (r.order_on_server === true);
+                    return r.order_on_server === true;
                 }
             );
             /* if found by the order from the client is not on the
@@ -552,7 +561,7 @@ odoo.define('pos_multi_session', function(require){
                 var remove_order = server_orders_uid.indexOf(item.uid);
                 if (remove_order === -1) {
                     var order = self.pos.get('orders').find(function (current_order) {
-                        return current_order.uid == item.uid;
+                        return current_order.uid === item.uid;
                     });
                     order.destroy({'reason': 'abandon'});
                 }
