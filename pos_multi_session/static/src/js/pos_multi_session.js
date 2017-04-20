@@ -4,6 +4,7 @@ odoo.define('pos_multi_session', function(require){
     var session = require('web.session');
     var Backbone = window.Backbone;
     var core = require('web.core');
+    var Model = require('web.DataModel');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
