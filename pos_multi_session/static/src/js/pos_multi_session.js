@@ -217,22 +217,22 @@ odoo.define('pos_multi_session', function(require){
                     line.uid = upd_dline.uid;
                 }
                 line.ms_info = upd_dline.ms_info || {};
-                if(typeof upd_dline.qty !== undefined){
+                if(typeof upd_dline.qty !== "undefined"){
                     line.set_quantity(upd_dline.qty);
                 }
-                if(typeof upd_dline.price_unit !== undefined){
+                if(typeof upd_dline.price_unit !== "undefined"){
                     line.set_unit_price(upd_dline.price_unit);
                 }
-                if(typeof upd_dline.discount !== undefined){
+                if(typeof upd_dline.discount !== "undefined"){
                     line.set_discount(upd_dline.discount);
                 }
-                if(typeof upd_dline.mp_dirty !== undefined){
+                if(typeof upd_dline.mp_dirty !== "undefined"){
                     line.set_dirty(upd_dline.mp_dirty);
                 }
-                if(typeof upd_dline.mp_skip !== undefined){
+                if(typeof upd_dline.mp_skip !== "undefined"){
                     line.set_skip(upd_dline.mp_skip);
                 }
-                if(typeof upd_dline.note !== undefined){
+                if(typeof upd_dline.note !== "undefined"){
                     line.set_note(upd_dline.note);
                 }
                 updated_order.orderlines.add(line);
