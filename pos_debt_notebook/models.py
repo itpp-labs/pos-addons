@@ -52,6 +52,7 @@ class ResPartner(models.Model):
             'order_id',
             'invoice_id',
             'balance',
+            'product_list',
         ]
         for r in self:
             domain = [('partner_id', '=', r.id)]
@@ -268,3 +269,18 @@ class Product(models.Model):
     _inherit = 'product.template'
 
     credit_product = fields.Boolean('Credit Product', default=False, help="This product is used to buy Credits (pay for debts).")
+
+
+class PosOrder(models.Model):
+    _inherit = "pos.order"
+
+    product_list = fields.Text('Product list', compute='_compute_product_list', store=True)
+
+    @api.multi
+    @api.depends('lines', 'lines.product_id', 'lines.product_id.name', 'lines.qty', 'lines.price_unit')
+    def _compute_product_list(self):
+        for order in self:
+            product_list = list()
+            for o_line in order.lines:
+                product_list.append('%s(%s * %s) + ' % (o_line.product_id.name, o_line.qty, o_line.price_unit))
+            order.product_list = ''.join(product_list).strip(' + ')
