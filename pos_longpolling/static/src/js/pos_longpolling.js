@@ -24,7 +24,7 @@ odoo.define('pos_longpolling', function(require){
             this.bus = bus.bus;
             this.longpolling_connection = new exports.LongpollingConnection(this);
             var channel_name = "pos.longpolling";
-            var callback = this.longpolling_connection.update_status;
+            var callback = this.longpolling_connection.network_is_on;
             this.add_channel(channel_name, callback, this.longpolling_connection);
             this.ready.then(function () {
                 self.start_longpolling();
@@ -80,7 +80,7 @@ odoo.define('pos_longpolling', function(require){
             }
             if(Array.isArray(channel) && (channel[1] in self.channels)){
                 try{
-                    self.longpolling_connection.update_status();
+                    self.longpolling_connection.network_is_on();
                     var callback = self.channels[channel[1]];
                     if (callback) {
                         if (self.debug){
@@ -102,22 +102,29 @@ odoo.define('pos_longpolling', function(require){
             this.pos = pos;
             this.timer = false;
             this.status = false;
+            this.response_status = false; // Is the message "PONG" received from the server
+        },
+        network_is_on: function(message) {
+            if (message) {
+                this.response_status = true;
+            }
+            this.update_timer();
+            this.set_status(true);
+        },
+        network_is_off: function() {
+            this.update_timer();
+            this.set_status(false);
         },
         set_status: function(status) {
-            this.start_timer(this.pos.config.query_timeout, 'query');
             if (this.status == status) {
                 return;
             }
             this.status = status;
             this.trigger("change:poll_connection", status);
         },
-        update_status: function(message) {
-            var self = this;
-            if (this.pos.debug) {
-                console.log("This message from server. Message: ", message);
-            }
-            self.stop_timer();
-            self.set_status(true);
+        update_timer: function(){
+            this.stop_timer();
+            this.start_timer(this.pos.config.query_timeout, 'query');
         },
         stop_timer: function(){
             var self = this;
@@ -129,22 +136,30 @@ odoo.define('pos_longpolling', function(require){
         start_timer: function(time, type){
             var time = Math.round(time * 3600.0);
             var self = this;
-            this.stop_timer();
             this.timer = setTimeout(function() {
                 if (type == "query") {
                     self.send();
                 } else if (type == "response") {
-                    self.set_status(false);
+                    self.network_is_off();
                 }
             }, time * 1000);
         },
+        response_timer: function() {
+            this.stop_timer();
+            this.start_timer(this.pos.config.response_timeout, "response");
+        },
         send: function() {
             var self = this;
+            this.response_status = false;
             openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
-                self.start_timer(self.pos.config.response_timeout, "response");
+                /* If the value "response_status" is true, then the poll message came earlier
+                 if the value is false you need to start the response timer*/
+                if (!self.response_status) {
+                    self.response_timer();
+                }
             }, function(error, e){
                 e.preventDefault();
-                self.set_status(false);
+                self.network_is_off();
             });
         }
     });
