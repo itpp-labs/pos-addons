@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, SUPERUSER_ID
 from openerp.exceptions import UserError
-from openerp.osv import osv
-from openerp.osv import fields as old_fields
+from openerp import models, fields, api
 import openerp.addons.decimal_precision as dp
+from openerp.tools.translate import _
 
 
 class ResPartner(models.Model):
@@ -77,7 +76,7 @@ class ResPartner(models.Model):
         debt_limit = vals.get('debt_limit')
         if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
                 not self.env.user.has_group('point_of_sale.group_pos_manager')):
-            raise UserError('Only POS managers can change a debt limit value!')
+            raise UserError(_('Only POS managers can change a debt limit value!'))
 
     @api.model
     def create(self, vals):
@@ -96,24 +95,20 @@ class ResPartner(models.Model):
         return super(ResPartner, self).create_from_ui(partner)
 
 
-class PosConfig(osv.osv):
+class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    _columns = {
-        'debt_dummy_product_id': old_fields.many2one(
-            'product.product',
-            string='Dummy Product for Debt',
-            domain=[('available_in_pos', '=', True)],
-            help="Dummy product used when a customer pays his debt "
-                 "without ordering new products. This is a workaround to the fact "
-                 "that Odoo needs to have at least one product on the order to "
-                 "validate the transaction.")
-    }
+    debt_dummy_product_id = fields.Many2one(
+        'product.product', string='Dummy Product for Debt', domain=[('available_in_pos', '=', True)],
+        help="Dummy product used when a customer pays his debt "
+             "without ordering new products. This is a workaround to the fact "
+             "that Odoo needs to have at least one product on the order to "
+             "validate the transaction.")
 
-    def init_debt_journal(self, cr, uid, ids, context=None):
-        journal_obj = self.pool['account.journal']
-        user = self.pool['res.users'].browse(cr, uid, uid, context=context)
-        debt_journal_active = journal_obj.search(cr, SUPERUSER_ID, [
+    def init_debt_journal(self):
+        journal_obj = self.env['account.journal']
+        user = self.env.user
+        debt_journal_active = journal_obj.search([
             ('code', '=', 'TDEBT'),
             ('name', '=', 'Debt Journal'),
             ('company_id', '=', user.company_id.id),
@@ -123,94 +118,91 @@ class PosConfig(osv.osv):
             #  Check if the debt journal is created already for the company.
             return
 
-        account_obj = self.pool['account.account']
-        mod_obj = self.pool['ir.model.data']
-        debt_account_old_version = account_obj.search(cr, SUPERUSER_ID, [
+        account_obj = self.env['account.account']
+        debt_account_old_version = account_obj.search([
             ('code', '=', 'XDEBT'), ('company_id', '=', user.company_id.id)])
         if debt_account_old_version:
             debt_account = debt_account_old_version[0]
         else:
-            debt_account = account_obj.create(cr, uid, {
+            debt_account = account_obj.create({
                 'name': 'Debt',
                 'code': 'XDEBT',
-                'user_type_id': mod_obj.get_object_reference(cr, SUPERUSER_ID, 'account', 'data_account_type_current_assets')[1],
+                'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
                 'company_id': user.company_id.id,
                 'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
-            mod_obj.create(cr, SUPERUSER_ID, {
+            self.env['ir.model.data'].create({
                 'name': 'debt_account_for_company' + str(user.company_id.id),
                 'model': 'account.account',
                 'module': 'pos_debt_notebook',
-                'res_id': debt_account,
+                'res_id': debt_account.id,
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        debt_journal_inactive_id = journal_obj.search(cr, SUPERUSER_ID, [
+        debt_journal_inactive = journal_obj.search([
             ('code', '=', 'TDEBT'),
             ('name', '=', 'Debt Journal'),
             ('company_id', '=', user.company_id.id),
             ('debt', '=', False),
         ])
-        if debt_journal_inactive_id:
-            debt_journal_inactive = journal_obj.browse(cr, uid, debt_journal_inactive_id[0], context=context)
+        if debt_journal_inactive:
             debt_journal_inactive.write({
                 'debt': True,
                 'default_debit_account_id': debt_account,
                 'default_credit_account_id': debt_account
             })
-            debt_journal = debt_journal_inactive.id
+            debt_journal = debt_journal_inactive
         else:
-            new_sequence = self.pool['ir.sequence'].create(cr, SUPERUSER_ID, {
+            new_sequence = self.env['ir.sequence'].create({
                 'name': 'Account Default Debt Journal ' + str(user.company_id.id),
                 'padding': 3,
                 'prefix': 'DEBT ' + str(user.company_id.id),
             })
-            mod_obj.create(cr, SUPERUSER_ID, {
-                'name': 'journal_sequence' + str(new_sequence),
+            self.env['ir.model.data'].create({
+                'name': 'journal_sequence' + str(new_sequence.id),
                 'model': 'ir.sequence',
                 'module': 'pos_debt_notebook',
-                'res_id': new_sequence,
+                'res_id': new_sequence.id,
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
-            debt_journal = journal_obj.create(cr, SUPERUSER_ID, {
+            debt_journal = journal_obj.create({
                 'name': 'Debt Journal',
                 'code': 'TDEBT',
                 'type': 'cash',
                 'debt': True,
                 'journal_user': True,
-                'sequence_id': new_sequence,
+                'sequence_id': new_sequence.id,
                 'company_id': user.company_id.id,
-                'default_debit_account_id': debt_account,
-                'default_credit_account_id': debt_account,
+                'default_debit_account_id': debt_account.id,
+                'default_credit_account_id': debt_account.id,
             })
-            mod_obj.create(cr, SUPERUSER_ID, {
-                'name': 'debt_journal_' + str(debt_journal),
+            self.env['ir.model.data'].create({
+                'name': 'debt_journal_' + str(debt_journal.id),
                 'model': 'account.journal',
                 'module': 'pos_debt_notebook',
-                'res_id': int(debt_journal),
+                'res_id': int(debt_journal.id),
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        config = self.browse(cr, uid, ids[0], context=context)
-        config.write({
-            'journal_ids': [(4, debt_journal)],
-            'debt_dummy_product_id': mod_obj.get_object_reference(cr, SUPERUSER_ID, 'pos_debt_notebook', 'product_pay_debt')[1],
+        self.write({
+            'journal_ids': [(4, debt_journal.id)],
+            'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
         })
-
         statement = [(0, 0, {
-            'journal_id': debt_journal,
-            'user_id': uid,
+            'journal_id': debt_journal.id,
+            'user_id': user.id,
             'company_id': user.company_id.id
         })]
-        current_session = config.current_session_id
+        current_session = self.current_session_id
         current_session.write({
             'statement_ids': statement,
         })
         return
 
-    def open_session_cb(self, cr, uid, ids, context=None):
-        res = super(PosConfig, self).open_session_cb(cr, uid, ids, context)
-        self.init_debt_journal(cr, uid, ids, context)
+    @api.multi
+    def open_session_cb(self):
+        res = super(PosConfig, self).open_session_cb()
+        self.init_debt_journal()
         return res
 
 
