@@ -44,10 +44,11 @@ odoo.define('pos_longpolling', function(require){
             this.longpolling_connection.send();
         },
         add_channel: function(channel_name, callback, thisArg) {
+            var current_callback = callback;
             if (thisArg){
-                callback = _.bind(callback, thisArg);
+                current_callback = _.bind(callback, thisArg);
             }
-            this.channels[channel_name] = callback;
+            this.channels[channel_name] = current_callback;
             if (this.lonpolling_activated) {
                 this.init_channel(channel_name);
             }
@@ -79,7 +80,7 @@ odoo.define('pos_longpolling', function(require){
             if (_.isString(channel)){
                 var current_channel = JSON.parse(channel);
             }
-            if(Array.isArray(current_channel) && (current_channel[1] in self.channels)){
+            if(Array.isArray(current_channel) && current_channel[1] in self.channels){
                 try{
                     self.longpolling_connection.network_is_on();
                     var callback = self.channels[current_channel[1]];
