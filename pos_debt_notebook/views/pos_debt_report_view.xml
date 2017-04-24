@@ -29,6 +29,7 @@
             <field name="arch" type="xml">
                 <tree string="Point of Sale Analysis">
                     <field name="partner_id"/>
+                    <field name="product_list"/>
                     <field name="date"/>
                     <field name="balance"/>
                     <field name="state"/>
@@ -50,6 +51,7 @@
                         <field name="partner_id"/>
                         <field name="date"/>
                         <field name="balance"/>
+                        <field name="product_list"/>
                     </group>
                 </form>
             </field>
