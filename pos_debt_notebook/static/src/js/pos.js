@@ -86,7 +86,7 @@ openerp.pos_debt_notebook = function(instance){
 
             if(isDebt && currentOrder.getPaidTotal() > currentOrder.getTotalTaxIncluded()){
                 this.pos_widget.screen_selector.show_popup('error',{
-                    'message': _t('Cannot return change with a debt payment method'),
+                    'message': _t('Unable to return the change with a debt payment method'),
                     'comment': _t('Please enter the exact or lower debt amount than the cost of the order'),
                 });
                 return;
