@@ -23,9 +23,9 @@ odoo.define('pos_product_available.PosModel', function(require){
                 $elem.addClass('not-available');
             }
         },
-        push_order: function(order){
+        push_order: function(order, opts){
             var self = this;
-            var pushed = PosModelSuper.prototype.push_order.call(this, order);
+            var pushed = PosModelSuper.prototype.push_order.call(this, order, opts);
             if (order){
                 order.orderlines.each(function(line){
                     var product = line.get_product();
