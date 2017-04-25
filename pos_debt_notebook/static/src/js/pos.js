@@ -1,24 +1,27 @@
-openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sale
+// Module is instance.point_of_sale
+openerp.pos_debt_notebook = function(instance){
     var module = instance.point_of_sale;
     var _t = instance.web._t;
 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
         initialize: function(session, attributes) {
-            var partner_model = _.find(this.models,function(model){ return model.model === 'res.partner'; });
+            var partner_model = _.find(this.models,function(model){
+                return model.model === 'res.partner';
+            });
             partner_model.fields.push('debt');
-            return PosModelSuper.prototype.initialize.call(this, session, attributes);
+            return PosModelSuper.prototype.initialize.apply(this, arguments);
         },
 
         push_order: function(order){
-            var self = this;
-            var pushed = PosModelSuper.prototype.push_order.call(this, order);
+            var pushed = PosModelSuper.prototype.push_order.apply(this, arguments);
             var client = order && order.get_client();
             if (client){
                 order.get('paymentLines').each(function(line){
                     var journal = line.cashregister.journal;
-                    if (!journal.debt)
+                    if (!journal.debt) {
                         return;
+                    }
                     var amount = line.get_amount();
                     client.debt += amount;
                 });
@@ -39,15 +42,12 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
             }
 
             var paymentLines = this.get('paymentLines');
-            var newPaymentline = new module.Paymentline({},{cashregister:cashregister, pos:this.pos});
+            var newPaymentline = new module.Paymentline({}, {
+                cashregister:cashregister, pos:this.pos
+            });
 
-            if(journal.type !== 'cash' || journal.debt){
-                var val;
-                if (journal.debt)
-                    val = -this.getChange() || 0;
-                else
-                    val = this.getDueLeft();
-                newPaymentline.set_amount( val );
+            if(!journal.debt && (journal.type !== 'cash' || journal.debt)){
+                newPaymentline.set_amount(this.getDueLeft());
             }
             paymentLines.add(newPaymentline);
             this.selectPaymentline(newPaymentline);
@@ -84,15 +84,24 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
                 return;
             }
 
+            if(isDebt && currentOrder.getPaidTotal() > currentOrder.getTotalTaxIncluded()){
+                this.pos_widget.screen_selector.show_popup('error',{
+                    'message': _t('Unable to return the change with a debt payment method'),
+                    'comment': _t('Please enter the exact or lower debt amount than the cost of the order'),
+                });
+                return;
+            }
+
             this._super(options);
         },
 
         render_paymentline: function(line){
-            el_node = this._super(line);
+            var el_node = this._super(line);
             var self = this;
             if (line.cashregister.journal.debt){
-                el_node.querySelector('.pay-full-debt')
-                    .addEventListener('click', function(){self.pay_full_debt(line);});
+                el_node.querySelector('.pay-full-debt').addEventListener('click', function(){
+                        self.pay_full_debt(line);
+                    });
                 }
             return el_node;
         },
@@ -100,7 +109,7 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
         - only display the button "Pay Full Debt" when the user has a debt */
 
         pay_full_debt: function(line){
-            partner = this.pos.get_order().get_client();
+            var partner = this.pos.get_order().get_client();
             // Now I write in the amount the debt x -1
             line.set_amount(partner.debt * -1);
             // refresh the display of the payment line
@@ -171,12 +180,12 @@ openerp.pos_debt_notebook = function(instance){ //module is instance.point_of_sa
                     return;
                 }
                 // if the order is empty, add a dummy product with price = 0
-                order = self.pos.get_order();
+                var order = self.pos.get_order();
                 if (order) {
-                    lastorderline = order.getLastOrderline();
-                    if (lastorderline == null &&
+                    var lastorderline = order.getLastOrderline();
+                    if (lastorderline === null &&
                             self.pos.config.debt_dummy_product_id){
-                        dummy_product = self.pos.db.get_product_by_id(
+                        var dummy_product = self.pos.db.get_product_by_id(
                             self.pos.config.debt_dummy_product_id[0]);
                         order.addProduct(dummy_product, {'price': 0});
                         }
