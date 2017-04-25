@@ -132,6 +132,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
+            if (isDebt && currentOrder.get_total_paid() > currentOrder.get_total_with_tax()) {
+                this.gui.show_popup('error', {
+                    'title': _t('Cannot return change with a debt payment method'),
+                    'body': _t('Please enter the exact or lower debt amount than the cost of the order.')
+                });
+                return;
+            }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
