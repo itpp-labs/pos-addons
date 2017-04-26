@@ -2,7 +2,7 @@
  POS Order Cancel
 ==================
 
-The module allows to specify a reason for cancel separate products or entire order in POS.
+The module allows to specify a reason for cancel separate products or entire order after printing on POS order printer.
 
 After the product or order is cancelled, the corresponding order receipt will be printed on order printer containing the reason you specified.
 

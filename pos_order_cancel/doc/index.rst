@@ -24,13 +24,15 @@ Usage
 * Add new products in order
 * Click ``[Order]``
 
-* Product Cancellation Reason
+Product Cancellation Reason
+---------------------------
 
   * Remove product using numpad
   * Specify cancellation reason or set new one
   * Click ``[Ok]``
 
-* Order Cancellation Reason
+Order Cancellation Reason
+-------------------------
 
   * Remove order by clicking on order cancel button
   * Specify cancellation reason or set new one

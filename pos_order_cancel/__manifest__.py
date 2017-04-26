@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Cancel product or order in POS""",
-    "summary": """Cancel product or order in POS""",
+    "name": """POS Order Cancel""",
+    "summary": """Specify reasons for cancel separate products or entire order after printing in POS""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/pos_order_cancel_main.png'],
     "version": "1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
-    "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "license": "OPL-1",
+    "price": 79.00,
+    "currency": "EUR",
 
     "depends": [
         'pos_restaurant',
