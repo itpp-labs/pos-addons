@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Pos multi session restaurant cancel order""",
-    "summary": """Technical module""",
+    "name": """Pos Multi Session Restaurant Cancel Order""",
+    "summary": """Technical module to provide compitability the pos_multi_session_restaurant and pos_cancel_order modules""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
