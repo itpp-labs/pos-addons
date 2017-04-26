@@ -13,10 +13,17 @@ addons:
       - python-lxml  # because pip installation is slow
 
 env:
-  - VERSION="10.0" LINT_CHECK="1"
-  - VERSION="10.0" ODOO_REPO="odoo/odoo" LINT_CHECK="0"
-  - VERSION="10.0" ODOO_REPO="OCA/OCB" LINT_CHECK="0"
-  - VERSION="10.0" UNIT_TEST="1" LINT_CHECK="0"
+  global:
+  - VERSION="10.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" UNIT_TEST="0"
+  - EXCLUDE="hw_printer_network"
+  - PYLINT_ODOO_JSLINTRC="/home/travis/maintainer-quality-tools/travis/cfg/.jslintrc"
+
+
+  matrix:
+  - LINT_CHECK="1"
+  - TESTS="1" ODOO_REPO="odoo/odoo"
+  - TESTS="1" ODOO_REPO="OCA/OCB""
+  - TESTS="1" UNIT_TEST="1"
 
 virtualenv:
   system_site_packages: true

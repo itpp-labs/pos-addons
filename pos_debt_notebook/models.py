@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import odoo.addons.decimal_precision as dp
 
@@ -93,7 +93,7 @@ class ResPartner(models.Model):
         debt_limit = vals.get('debt_limit')
         if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
                 not self.env.user.has_group('point_of_sale.group_pos_manager')):
-            raise UserError('Only POS managers can change a debt limit value!')
+            raise UserError(_('Only POS managers can change a debt limit value!'))
 
     @api.model
     def create(self, vals):
