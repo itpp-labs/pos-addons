@@ -3,13 +3,13 @@ from . import models
 from . import report
 
 from openerp import SUPERUSER_ID
-from openerp.osv import osv
+from openerp.exceptions import Warning as UserError
 from openerp.tools.translate import _
 
 
 def pre_uninstall(cr, registry):
     if registry['pos.session'].search(cr, SUPERUSER_ID, [('state', '=', 'opened')]):
-        raise osv.except_osv(_('Error!'), _('You have open session of Point of Sale. Please close them first.'))
+        raise UserError(_('You have open session of Point of Sale. Please close them first.'))
 
     config_ids = registry['pos.config'].search(cr, SUPERUSER_ID, [])
     debt_journals = registry['account.journal'].search(cr, SUPERUSER_ID, [('debt', '=', True)])
