@@ -55,3 +55,19 @@
     font-size: 400%;
     text-align: center;
 }
+
+.pos_text_center {
+    text-align: center;
+}
+
+#load_more {
+    border: solid 1px rgb(209, 209, 209);
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    line-height: 32px;
+    margin: 12px 0;
+    padding: 3px 13px;
+    transition: all 150ms linear;
+}
