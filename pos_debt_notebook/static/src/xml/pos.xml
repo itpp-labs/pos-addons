@@ -80,6 +80,7 @@
                     <tr>
                         <th>Date/Time</th>
                         <th>Point of Sale</th>
+                        <th>Products</th>
                         <th>Purchased Credits (In)</th>
                         <th>Credits Spent (Out)</th>
                         <th>Balance</th>
@@ -123,6 +124,7 @@
         <tr>
             <td><t t-esc="line ? line.date : ''"/></td>
             <td><t t-esc="line ? line.config_id[1] : ''"/></td>
+            <td><t t-esc="line ? line.product_list : ''"/></td>
             <td><t t-esc="((line and line.balance gt 0) ? (line.balance).toString() : '')"/></td>
             <td><t t-esc="((line and line.balance lt 0) ? (-line.balance).toString() : '')"/></td>
             <td>
