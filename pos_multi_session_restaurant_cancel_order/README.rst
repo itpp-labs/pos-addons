@@ -2,7 +2,7 @@
  Pos Multi Session Cancel Order
 ================================
 
-Technical module to provide compitability the pos_multi_session_restaurant and pos_cancel_order modules.
+Technical module to provide compatibility the pos_multi_session_restaurant and pos_cancel_order modules.
 
 Use it if you have the modules above installed on your system.
 
@@ -11,14 +11,17 @@ Credits
 
 Contributors
 ------------
+
 * Dinar Gabbasov <gabbasov@it-projects.info>
 
 Sponsors
 --------
+
 * `IT-Projects LLC <https://it-projects.info>`__
 
 Maintainers
 -----------
+
 * `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
