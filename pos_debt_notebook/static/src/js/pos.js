@@ -405,8 +405,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.pos.on('updateDebtHistory', function(partner_ids){
                 this.update_debt_history(partner_ids);
             }, this);
-            this.debt_history_limit = 10;
-            this.debt_history_built_lines = 0;
+            this.debt_history_limit_initial = 2;
+            this.debt_history_limit_increment = 3;
+            this.debt_history_previous_number = 0;
         },
         update_debt_history: function (partner_ids){
             var self = this;
@@ -460,17 +461,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     debt_history_line = debt_history_line.childNodes[1];
                     contents.appendChild(debt_history_line);
                 }
-                if (debt_history.length % this.debt_history_limit === 0) {
+                if (debt_history.length !== this.debt_history_previous_number) {
                     var debt_history_load_more_html = QWeb.render('DebtHistoryLoadMore');
                     var debt_history_load_more = document.createElement('tbody');
                     debt_history_load_more.innerHTML = debt_history_load_more_html;
                     debt_history_load_more = debt_history_load_more.childNodes[1];
                     contents.appendChild(debt_history_load_more);
-                    this.debt_history_built_lines += debt_history.length;
                     this.$('#load_more').on('click', function () {
                         self.pos.reload_debts(
                             partner.id,
-                            self.debt_history_built_lines + self.debt_history_limit,
+                            debt_history.length + self.debt_history_limit_increment,
                             {'postpone': false}
                         ).then(
                             function () {
@@ -479,6 +479,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         );
                     });
                 }
+                this.debt_history_previous_number = debt_history.length;
             }
         },
         toggle_save_button: function(){
@@ -513,7 +514,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         $show_customers.removeClass('oe_hidden');
                         self.pos.reload_debts(
                             client.id,
-                            self.debt_history_limit,
+                            self.debt_history_limit_initial,
                             {"postpone": false}
                         ).then(
                                 function () {
@@ -526,7 +527,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     $show_debt_history.off();
                 }
             }
-            this.debt_history_built_lines = 0;
         },
 
         show: function(){
