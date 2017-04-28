@@ -9,15 +9,9 @@ odoo.define('pos_multi_session', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-    var PopupWidget = require('point_of_sale.popups');
-    var gui = require('point_of_sale.gui');
     var longpolling = require('pos_longpolling');
 
     var _t = core._t;
-
-    // prevent bus to be started by chat_manager.js
-    // fake value to ignore start_polling call
-    bus.bus.activated = true;
 
     screens.OrderWidget.include({
         rerender_orderline: function(order_line){
@@ -554,6 +548,10 @@ odoo.define('pos_multi_session', function(require){
                         self.pos.pos_session.sequence_number = res.order_ID;
                     }
                     self.destroy_removed_orders(server_orders_uid);
+                }
+                if (self.offline_sync_all_timer) {
+                    clearInterval(self.offline_sync_all_timer);
+                    self.offline_sync_all_timer = false;
                 }
             });
         },
