@@ -114,7 +114,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
         },
         on_removed_order: function(removed_order, index, reason){
-            PosModelSuper.prototype.on_removed_order.apply(this, arguments)
+            PosModelSuper.prototype.on_removed_order.apply(this, arguments);
             this.trigger('change:orders-count-on-floor-screen');
         },
         // changes the current table.
