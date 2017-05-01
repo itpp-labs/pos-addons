@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from datetime import datetime
+from pytz import timezone
+import pytz
 import odoo.addons.decimal_precision as dp
-
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -63,6 +65,8 @@ class ResPartner(models.Model):
                     fields=fields,
                     limit=limit,
                 )
+                for r2 in records:
+                    r2['date'] = self._get_date_formats(r2['date'])
                 data['history'] = records
             data['records_count'] = self.env['report.pos.debt'].search_count(domain)
             data['partner_id'] = r.id
@@ -83,6 +87,22 @@ class ResPartner(models.Model):
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
         help='The customer is not allowed to have a debt more than this value')
+
+    def _get_date_formats(self, report):
+
+        lang_code = self.env.user.lang or 'en_US'
+        lang = self.env['res.lang']
+        lang_id = lang._lang_get(lang_code)
+        date_format = lang.browse(lang_id).date_format
+        time_format = lang.browse(lang_id).time_format
+        fmt = date_format + " " + time_format
+
+        server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
+        utc_tz = pytz.utc.localize(server_date, is_dst=False)
+        user_tz = timezone(self.env.user.tz)
+        final = utc_tz.astimezone(user_tz)
+
+        return final.strftime(fmt)
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
