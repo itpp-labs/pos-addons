@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<openerp>
+    <record id="pos_cancelled_reason_form_view" model="ir.ui.view">
+        <field name="name">pos.cancelled_reason.form</field>
+        <field name="model">pos.cancelled_reason</field>
+        <field name="arch" type="xml">
+            <form string="POS Product Cancellation Reason">
+                <sheet>
+                    <group>
+                        <field name="number"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_cancelled_reason_tree_view" model="ir.ui.view">
+        <field name="name">pos.cancelled_reason.tree</field>
+        <field name="model">pos.cancelled_reason</field>
+        <field name="arch" type="xml">
+            <tree string="Pos Product Cancellation Reason">
+                <field name="number"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pos_cancelled_reason_action" model="ir.actions.act_window">
+        <field name="name">POS Product Cancellation Reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.cancelled_reason</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new cancellation reason.
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_pos_cancelled_reason" action="pos_cancelled_reason_action" parent="point_of_sale.menu_point_config_product" sequence="25" />
+
+    <record id="view_pos_pos_form" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='note']" position="replace">
+                <separator string="Notes" colspan="4"/>
+                <field name="note" colspan="4" nolabel="1"/>
+                <separator string="Cancellation Reason" colspan="4" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
+                <field name="cancellation_reason" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
+                <field name="is_cancelled" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="computed_state" widget="statusbar" statusbar_visible="draft,paid,done"/>
+            </xpath>
+
+            <xpath expr="//button[@name='refund']" position="replace">
+                <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|',('computed_state','=','draft'),('computed_state','=','cancel')]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_tree" model="ir.ui.view">
+        <field name="name">pos.order.tree</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="computed_state"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-muted">(state in ('done','cancel')) or computed_state == 'cancel'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_filter" model="ir.ui.view">
+        <field name="name">pos.order.tree</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/filter[2]" position="attributes">
+                <attribute name="domain">[('state','in',('paid','invoiced','done')),('is_cancelled','=',False)]</attribute>
+            </xpath>
+            <xpath expr="//filter[4]" position="attributes">
+                <attribute name="domain">[('state','=','done'),('is_cancelled','=',False)]</attribute>
+            </xpath>
+            <xpath expr="//filter[4]" position="after">
+                <filter string="Cancelled" domain="[('is_cancelled','=',True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</openerp>
