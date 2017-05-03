@@ -1,6 +1,6 @@
 `4.2.0`
 -------
-- **ADD:** A "Load More" button in debt history
+- **ADD:** The "Load More" button in debt history
 - **ADD:** A product list to each debt history line
 
 `4.1.0`
