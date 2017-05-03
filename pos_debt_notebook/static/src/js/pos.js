@@ -405,9 +405,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.pos.on('updateDebtHistory', function(partner_ids){
                 this.update_debt_history(partner_ids);
             }, this);
-            this.debt_history_limit_initial = 2;
-            this.debt_history_limit_increment = 3;
-            this.debt_history_previous_number = 0;
+            this.debt_history_limit_initial = 10;
+            this.debt_history_limit_increment = 10;
         },
         update_debt_history: function (partner_ids){
             var self = this;
@@ -461,7 +460,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     debt_history_line = debt_history_line.childNodes[1];
                     contents.appendChild(debt_history_line);
                 }
-                if (debt_history.length !== this.debt_history_previous_number) {
+                if (debt_history.length !== partner.records_count) {
                     var debt_history_load_more_html = QWeb.render('DebtHistoryLoadMore');
                     var debt_history_load_more = document.createElement('tbody');
                     debt_history_load_more.innerHTML = debt_history_load_more_html;
@@ -479,7 +478,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         );
                     });
                 }
-                this.debt_history_previous_number = debt_history.length;
             }
         },
         toggle_save_button: function(){
