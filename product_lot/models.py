@@ -1,47 +1,40 @@
 # -*- coding: utf-8 -*-
-from openerp import fields
+from odoo import fields, models
 
 
-class ProductProduct(orm.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    def _get_lot_id(self, cr, uid, ids, name, arg, context=None):
+    # lot product fields
+    is_lot = fields.Boolean(string='Lot of products', default=False)
+    lot_qty = fields.Integer(string='Quantity products in Lot')
+    lot_product_id = fields.Many2one('product.product', 'Product in lot')  # In fact is one2one
+    # normal product fields
+    lot_id = fields.Many2one('product.product', compute="_get_lot_id", string='Used in Lot')
+
+    def _get_lot_id(self):
         res = {}
-        for id in ids:
-            lot_id = self.search(cr, uid, [('lot_product_id', '=', id)])
-            res[id] = lot_id and lot_id[0] or None
+        for i in self:
+            lot_id = i.search([('lot_product_id', '=', i.id)])
+            res[i.id] = lot_id and lot_id[0].id or None
         return res
 
+    def button_split_lot(self):
+        return self._split_lot()
 
-        # lot product fields
-    is_lot = fields.Boolean('Lot of products')
-    lot_qty = fields.Integer('Quantity products in Lot')
-    lot_product_id = fields.Many2one('product.product', 'Product in lot')  # In fact is one2one
-
-        # normal product fields
-    lot_id = fields.Many2one(compute="_get_lot_id", relation='product.product', string='Used in Lot')
-
-    _defaults = {
-        'is_lot': False
-    }
-
-    def button_split_lot(self, cr, uid, ids, context=None):
-        return self._split_lot(cr, uid, ids[0], context=context)
-
-    def _split_lot(self, cr, uid, lot_id, qty=1.0, context=None):
-        lot = self.browse(cr, uid, lot_id, context=context)
+    def _split_lot(self, qty=1.0):
+        lot = self
         assert lot.is_lot, "You can split only lot product"
         assert lot.lot_product_id, "Product in lot is not specified"
-        assert lot.lot_qty > 0, "Check quantity roducts in lot"
-        stock_move_obj = self.pool.get('stock.move')
-
-        source_location_id = context and context.get('location')
+        assert lot.lot_qty > 0, "Check quantity products in lot"
+        stock_move_obj = self.env['stock.move']
+        source_location_id = self._context and self._context.get('location')
         if not source_location_id:
-            source_location_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'stock_location_stock')[1]
+            source_location_id = self.env['ir.model.data'].get_object_reference('stock', 'stock_location_stock')[1]
         destination_location_id = source_location_id
         middle_location_id = lot.property_stock_production.id
 
-        cons_move_id = stock_move_obj.create(cr, uid, {
+        cons_move_id = stock_move_obj.create({
             'name': 'split product (consume)',
             'product_id': lot.id,
             'product_uom_qty': qty,
@@ -49,9 +42,9 @@ class ProductProduct(orm.Model):
             'location_id': source_location_id,
             'location_dest_id': middle_location_id,
             'company_id': lot.company_id.id,
-        }, context=context)
+        })
 
-        prod_move_id = stock_move_obj.create(cr, uid, {
+        prod_move_id = stock_move_obj.create({
             'name': 'split product (produce)',
             'product_id': lot.lot_product_id.id,
             'product_uom_qty': qty * lot.lot_qty,
@@ -59,6 +52,7 @@ class ProductProduct(orm.Model):
             'location_id': middle_location_id,
             'location_dest_id': destination_location_id,
             'company_id': lot.lot_product_id.company_id.id,
-        }, context=context)
-        stock_move_obj.action_done(cr, uid, [cons_move_id, prod_move_id], context=context)
+        })
+        cons_move_id.action_done()
+        prod_move_id.action_done()
         return True

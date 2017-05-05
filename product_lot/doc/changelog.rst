@@ -1,9 +1,15 @@
-.. _changelog:
+`1.0.2`
+-------
 
-Updates
-=======
+- **Port:** Added support for version 10
 
 `1.0.1`
 -------
 
-- [IMP] support multi-stock configuration
+- **IMP** Support multi-stock configuration
+
+
+`1.0.0`
+-------
+
+- Init version
