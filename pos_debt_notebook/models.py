@@ -91,10 +91,9 @@ class ResPartner(models.Model):
     def _get_date_formats(self, report):
 
         lang_code = self.env.user.lang or 'en_US'
-        lang = self.env['res.lang']
-        lang_id = lang._lang_get(lang_code)
-        date_format = lang.browse(lang_id).date_format
-        time_format = lang.browse(lang_id).time_format
+        lang = self.env['res.lang']._lang_get(lang_code)
+        date_format = lang.date_format
+        time_format = lang.time_format
         fmt = date_format + " " + time_format
 
         server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
