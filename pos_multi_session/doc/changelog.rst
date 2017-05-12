@@ -15,6 +15,11 @@ Updates
 -------
 - FIX: For pos restaurant compatibility. Sync printed positions.
 
+`3.0.2`
+-------
+
+- FIX: sequence number error after closing all sessions 
+
 `3.0.1`
 -------
 
