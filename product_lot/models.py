@@ -10,9 +10,9 @@ class ProductProduct(models.Model):
     lot_qty = fields.Integer(string='Quantity products in Lot')
     lot_product_id = fields.Many2one('product.product', 'Product in lot')  # In fact is one2one
     # normal product fields
-    lot_id = fields.Many2one('product.product', compute="_get_lot_id", string='Used in Lot')
+    lot_id = fields.Many2one('product.product', compute="_compute_get_lot_id", string='Used in Lot')
 
-    def _get_lot_id(self):
+    def _compute_get_lot_id(self):
         res = {}
         for i in self:
             lot_id = i.search([('lot_product_id', '=', i.id)])
