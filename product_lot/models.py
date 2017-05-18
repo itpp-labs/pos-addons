@@ -13,11 +13,8 @@ class ProductProduct(models.Model):
     lot_id = fields.Many2one('product.product', compute="_compute_get_lot_id", string='Used in Lot')
 
     def _compute_get_lot_id(self):
-        res = {}
         for i in self:
-            lot_id = i.search([('lot_product_id', '=', i.id)])
-            res[i.id] = lot_id and lot_id[0].id or None
-        return res
+            i.lot_id = self.env['product.product'].search([('lot_product_id', '=', i.id)])
 
     def button_split_lot(self):
         return self._split_lot()
