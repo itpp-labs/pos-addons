@@ -189,8 +189,7 @@ function geByClass(searchClass, node, tag) {
         },
         getUniqueTime: function() {
             var time = this.getTime();
-            while (time === this.getTime());
-            {
+            while (time === this.getTime()) {
                 return this.getTime();
             }
         },
