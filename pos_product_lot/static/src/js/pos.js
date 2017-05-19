@@ -9,24 +9,26 @@ var Model = require('web.Model');
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {
   var classElements = [];
-  if (node == null)
+  if (node === null) {
     node = document;
-  if (tag == null)
+  }
+  if (tag === null) {
     tag = '*';
+  }
   if (node.getElementsByClassName) {
     classElements = node.getElementsByClassName(searchClass);
-    if (tag != '*') {
-      for (i = 0; i < classElements.length; i++) {
-        if (classElements.nodeName == tag)
+    if (tag !== '*') {
+      for (var i = 0; i < classElements.length; i++) {
+        if (classElements.nodeName === tag) {
           classElements.splice(i, 1);
+        }
       }
     }
     return classElements;
   }
   var els = node.getElementsByTagName(tag);
-  var elsLen = els.length;
   var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-  for (i = 0, j = 0; i < elsLen; i++) {
+  for (var i = 0, var j = 0; i < els.length; i++) {
     if ( pattern.test(els[i].className) ) {
       classElements[j] = els[i];
       j++;
@@ -38,7 +40,9 @@ function geByClass(searchClass, node, tag) {
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
-            var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            var product_model = _.find(this.models, function(model) {
+                return model.model === 'product.product';
+            });
             product_model.fields.push('is_lot', 'lot_qty', 'lot_product_id', 'lot_id');
             return PosModelSuper.prototype.initialize.call(this, session, attributes);
         },
@@ -49,17 +53,19 @@ function geByClass(searchClass, node, tag) {
             var flushed = new $.Deferred();
 
             old_flushed.done(function(){
-                self.flush_mutex.exec(function(){
+                self.flush_mutex.exec(function () {
                     var done = new $.Deferred();
 
-                    self._flush_all_split_lot()
-                    .done(  function(){ flushed.resolve();})
-                    .fail(  function(){ flushed.reject(); })
-                    .always(function(){ done.resolve();   });
-
+                    self._flush_all_split_lot().done(function () {
+                        flushed.resolve();
+                    }).fail(function () {
+                        flushed.reject();
+                    }).always(function () {
+                        done.resolve();
+                    });
                     return done;
                 });
-            }).fail(function(){
+            }).fail(function () {
                 flushed.reject();
             });
             return flushed;
@@ -67,18 +73,19 @@ function geByClass(searchClass, node, tag) {
         scan_product: function(parsed_code){
             var self = this;
             var selectedOrder = this.get('selectedOrder');
-            if(parsed_code.encoding === 'ean13'){
-                var product = this.db.get_product_by_ean13(parsed_code.base_code);
-            }else if(parsed_code.encoding === 'reference'){
-                var product = this.db.get_product_by_reference(parsed_code.code);
+            var product;
+            if (parsed_code.encoding === 'ean13') {
+                product = this.db.get_product_by_ean13(parsed_code.base_code);
+            } else if (parsed_code.encoding === 'reference') {
+                product = this.db.get_product_by_reference(parsed_code.code);
             }
 
-            if(!product){
+            if(!product) {
                 return false;
             }
 
             //added code
-            if (product.lot_id){
+            if (product.lot_id) {
                 var lot_product = this.db.get_product_by_id(product.lot_id[0]);
                 if (parsed_code.encoding === 'ean13' && lot_product.ean13 == parsed_code.base_code
                   || parsed_code.encoding === 'reference' && lot_product.default_code == parsed_code.code)
@@ -86,13 +93,13 @@ function geByClass(searchClass, node, tag) {
                     product = lot_product;
             }
 
-            if(parsed_code.type === 'price'){
+            if (parsed_code.type === 'price') {
                 selectedOrder.addProduct(product, {price:parsed_code.value});
-            }else if(parsed_code.type === 'weight'){
+            } else if (parsed_code.type === 'weight'){
                 selectedOrder.addProduct(product, {quantity:parsed_code.value, merge:false});
-            }else if(parsed_code.type === 'discount'){
+            } else if (parsed_code.type === 'discount'){
                 selectedOrder.addProduct(product, {discount:parsed_code.value, merge:false});
-            }else{
+            } else {
                 selectedOrder.addProduct(product);
             }
             return true;
@@ -130,7 +137,6 @@ function geByClass(searchClass, node, tag) {
             // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
             // then we want to notify the user that we are waiting on something )
             var ppModel = new Model('product.product');
-            console.log('here!', records)
             return ppModel.call('split_lot_from_ui',
                 [[], records],
                 {'context': {'location': self.config.stock_location_id[0]}},
@@ -208,7 +214,7 @@ function geByClass(searchClass, node, tag) {
 
             this.unpack_lot_handler = function(){
                 var product = this.orderline.product;
-                console.log(product)
+                console.log(product);
                 var lot_product = self.pos.db.get_product_by_id(product.lot_id[0]);
                 var qty = 1;
 
@@ -225,15 +231,14 @@ function geByClass(searchClass, node, tag) {
         render_orderline: function(orderline){
             var el_node = this._super(orderline);
             var button = geByClass('unpack-lot', el_node);
-            if (button && button.length){
+            if (button && button.length) {
                 button = button[0];
                 button.orderline = orderline;
                 button.addEventListener('click', this.unpack_lot_handler);
-            }
+            };
 
             return el_node;
         },
     });
-
 
 });
