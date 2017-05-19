@@ -1,4 +1,10 @@
-(function(){
+odoo.define('pos_product_lot.PosLot', function(require) {
+'use strict';
+
+var models = require('point_of_sale.models');
+var PosDB = require('point_of_sale.DB');
+var screens = require('point_of_sale.screens');
+var Model = require('web.Model');
 
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {
@@ -29,9 +35,13 @@ function geByClass(searchClass, node, tag) {
   return classElements;
 }
 
-function pos(instance, module){
-    var PosModelSuper = module.PosModel;
-    module.PosModel = module.PosModel.extend({
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            product_model.fields.push('is_lot', 'lot_qty', 'lot_product_id', 'lot_id');
+            return PosModelSuper.prototype.initialize.call(this, session, attributes);
+        },
         flush: function(){
             var old_flushed = PosModelSuper.prototype.flush.call(this);
 
@@ -53,25 +63,6 @@ function pos(instance, module){
                 flushed.reject();
             });
             return flushed;
-        },
-        load_server_data: function(){
-            var self = this;
-            var loaded = PosModelSuper.prototype.load_server_data.call(this);
-
-            loaded = loaded.then(function(){
-                return self.fetch(
-                    'product.product',
-                    ['is_lot', 'lot_qty', 'lot_product_id', 'lot_id'],
-                    [['sale_ok','=',true],['available_in_pos','=',true]],
-                    {}
-                );
-            }).then(function(products){
-                $.each(products, function(){
-                    $.extend(self.db.get_product_by_id(this.id) || {}, this);
-                });
-                return $.when();
-            });
-            return loaded;
         },
         scan_product: function(parsed_code){
             var self = this;
@@ -138,9 +129,10 @@ function pos(instance, module){
 
             // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
             // then we want to notify the user that we are waiting on something )
-            var ppModel = new instance.web.Model('product.product');
+            var ppModel = new Model('product.product');
+            console.log('here!', records)
             return ppModel.call('split_lot_from_ui',
-                [records],
+                [[], records],
                 {'context': {'location': self.config.stock_location_id[0]}},
                 {
                     shadow: true,
@@ -179,7 +171,7 @@ function pos(instance, module){
 
         }
     });
-    module.PosDB.include({
+    PosDB.include({
         getTime: function(){
             return String(new Date().getTime());
         },
@@ -209,13 +201,14 @@ function pos(instance, module){
         }
     });
 
-    module.OrderWidget.include({
+    screens.OrderWidget.include({
         init: function(parent, options) {
             var self = this;
             this._super(parent,options);
 
             this.unpack_lot_handler = function(){
                 var product = this.orderline.product;
+                console.log(product)
                 var lot_product = self.pos.db.get_product_by_id(product.lot_id[0]);
                 var qty = 1;
 
@@ -242,16 +235,5 @@ function pos(instance, module){
         },
     });
 
-}
 
-var _super = window.openerp.point_of_sale;
-window.openerp.point_of_sale = function(instance){
-    _super(instance);
-    var module = instance.point_of_sale;
-
-    pos(instance, module);
-
-    $('<link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css"/>').appendTo($("head"));
-};
-
-})();
+});
