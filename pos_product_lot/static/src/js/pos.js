@@ -9,10 +9,10 @@ var Model = require('web.Model');
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {
   var classElements = [];
-  if (node === null) {
+  if (!node) {
     node = document;
   }
-  if (tag === null) {
+  if (!tag) {
     tag = '*';
   }
   if (node.getElementsByClassName) {
@@ -20,7 +20,7 @@ function geByClass(searchClass, node, tag) {
     if (tag !== '*') {
       for (var i = 0; i < classElements.length; i++) {
         if (classElements.nodeName === tag) {
-          classElements.splice(i, 1);
+            classElements.splice(i, 1);
         }
       }
     }
@@ -28,7 +28,7 @@ function geByClass(searchClass, node, tag) {
   }
   var els = node.getElementsByTagName(tag);
   var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-  for (var i = 0, var j = 0; i < els.length; i++) {
+  for (var i = 0, j = 0; i < els.length; i++) {
     if ( pattern.test(els[i].className) ) {
       classElements[j] = els[i];
       j++;
