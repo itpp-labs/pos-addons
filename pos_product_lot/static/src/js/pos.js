@@ -28,7 +28,8 @@ function geByClass(searchClass, node, tag) {
   }
   var els = node.getElementsByTagName(tag);
   var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-  for (var i = 0, j = 0; i < els.length; i++) {
+  var j = 0;
+  for (i = 0, j = 0; i < els.length; i++) {
     if ( pattern.test(els[i].className) ) {
       classElements[j] = els[i];
       j++;
@@ -117,9 +118,9 @@ function geByClass(searchClass, node, tag) {
             return self._save_to_server_split_lot(self.db.get_split_lot_records()).done(function () {
                 var pending = self.db.get_split_lot_records().length;
                 self.set('synch', {
-                    state: pending ?
-                     'connecting' :
-                      'connected',
+                    state: pending
+                    ? 'connecting'
+                    : 'connected',
                     pending: pending
                 });
             });
@@ -135,9 +136,9 @@ function geByClass(searchClass, node, tag) {
             options = options || {};
 
             var self = this;
-            var timeout = typeof options.timeout === 'number' ?
-             options.timeout :
-              7500 * records.length;
+            var timeout = typeof options.timeout === 'number'
+            ? options.timeout
+            : 7500 * records.length;
 
             // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
             // then we want to notify the user that we are waiting on something )
@@ -189,7 +190,9 @@ function geByClass(searchClass, node, tag) {
         getUniqueTime: function() {
             var time = this.getTime();
             while (time === this.getTime());
-            return this.getTime();
+            {
+                return this.getTime();
+            }
         },
         add_split_lot:function(r){
             var records = this.load('split_lot_records',[]);
