@@ -73,9 +73,8 @@ function geByClass(searchClass, node, tag) {
         scan_product: function(parsed_code){
             var self = this;
             var selectedOrder = this.get('selectedOrder');
-            var product;
             if (parsed_code.encoding === 'ean13') {
-                product = this.db.get_product_by_ean13(parsed_code.base_code);
+                var product = this.db.get_product_by_ean13(parsed_code.base_code);
             } else if (parsed_code.encoding === 'reference') {
                 product = this.db.get_product_by_reference(parsed_code.code);
             }
@@ -87,10 +86,12 @@ function geByClass(searchClass, node, tag) {
             //added code
             if (product.lot_id) {
                 var lot_product = this.db.get_product_by_id(product.lot_id[0]);
-                if (parsed_code.encoding === 'ean13' && lot_product.ean13 == parsed_code.base_code
-                  || parsed_code.encoding === 'reference' && lot_product.default_code == parsed_code.code)
-                    //lot with same code has priority
+                if (((parsed_code.encoding === 'ean13') && (lot_product.ean13 === parsed_code.base_code)) ||
+                ((parsed_code.encoding === 'reference') && (lot_product.default_code === parsed_code.code))) {
+                     //lot with same code has priority
                     product = lot_product;
+                  }
+
             }
 
             if (parsed_code.type === 'price') {
@@ -116,7 +117,9 @@ function geByClass(searchClass, node, tag) {
             return self._save_to_server_split_lot(self.db.get_split_lot_records()).done(function () {
                 var pending = self.db.get_split_lot_records().length;
                 self.set('synch', {
-                    state: pending ? 'connecting' : 'connected',
+                    state: pending ?
+                     'connecting' :
+                      'connected',
                     pending: pending
                 });
             });
@@ -132,7 +135,9 @@ function geByClass(searchClass, node, tag) {
             options = options || {};
 
             var self = this;
-            var timeout = typeof options.timeout === 'number' ? options.timeout : 7500 * records.length;
+            var timeout = typeof options.timeout === 'number' ?
+             options.timeout :
+              7500 * records.length;
 
             // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
             // then we want to notify the user that we are waiting on something )
@@ -183,11 +188,11 @@ function geByClass(searchClass, node, tag) {
         },
         getUniqueTime: function() {
             var time = this.getTime();
-            while (time == this.getTime());
+            while (time === this.getTime());
             return this.getTime();
         },
         add_split_lot:function(r){
-            var records  = this.load('split_lot_records',[]);
+            var records = this.load('split_lot_records',[]);
 
             r.id = this.getUniqueTime();
 
@@ -235,7 +240,7 @@ function geByClass(searchClass, node, tag) {
                 button = button[0];
                 button.orderline = orderline;
                 button.addEventListener('click', this.unpack_lot_handler);
-            };
+            }
 
             return el_node;
         },
