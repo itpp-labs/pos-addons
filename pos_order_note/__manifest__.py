@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Order Notes in POS""",
-    "summary": """Order Notes in POS""",
+    "name": """POS Advanced Order Notes""",
+    "summary": """Set predefined notes for separate product or entire order""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
@@ -11,8 +11,8 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 69.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_restaurant",
