@@ -1,8 +1,8 @@
-====================
- Order Notes in POS
-====================
+==========================
+ POS Advanced Order Notes
+==========================
 
-Order Notes in POS
+Set predefined notes for separate product or entire order in POS
 
 Credits
 =======
