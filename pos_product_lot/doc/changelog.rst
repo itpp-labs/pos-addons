@@ -1,10 +1,10 @@
-.. _changelog:
+`1.0.2`
+-------
 
-Updates
-=======
+- **PORT** added Odoo 10 support
 
 `1.0.1`
 -------
 
-- [FIX] spliting lot was lost if one click button quick enough
-- [IMP] support multi-stock configuration
+- **FIX** spliting lot was lost if one click button quick enough
+- **IMP** support multi-stock configuration
