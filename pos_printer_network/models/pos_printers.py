@@ -14,4 +14,5 @@ class PosConfig(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    receipt_network_printer_ip = fields.Char(default=False, string="Receipt Printer IP", help="The ip address of the network printer for receipt, unused if left empty")
+    receipt_network_printer_ip = fields.Char(default=False, string="Receipt Network Printer IP", help="The ip address of the network printer for receipt, unused if left empty")
+    network_printer = fields.Boolean(default=False, string="Network Printer")

@@ -20,6 +20,48 @@ except ImportError:
 
 
 class UpdatedEscposDriver(EscposDriver):
+
+    def __init__(self):
+        self.network_printers = False
+        super(UpdatedEscposDriver, self).__init__()
+
+    def connected_network_printers(self, printers):
+        printer = False
+        if printers and len(printers) > 0:
+            network_printers = []
+            for p in printers:
+                if type(p) is str:
+                    p = eval(p)
+                try:
+                    printer = UpdatedNetwork(p['ip'])
+                    printer.close()
+                    p['status'] = 'online'
+                except:
+                    p['status'] = 'offline'
+                if printer:
+                    printer.close()
+                network_printers.append({
+                    'ip': str(p['ip']),
+                    'status': str(p['status']),
+                    'name': str(p['name'])
+                })
+            return network_printers
+        return printers
+
+    # def get_escpos_printer(self):
+    #     printers = self.connected_usb_devices()
+    #     if len(printers) > 0:
+    #         return super(UpdatedEscposDriver, self).get_escpos_printer()
+    #     else:
+    #         network_printers = self.connected_network_printers()
+    #         if network_printers:
+    #             print "++++++++++++++++++ network_printers", network_printers
+    #             self.set_status('connected', "Connected to Network Printer")
+    #             return UpdatedNetwork(self.network_printers_ip[0])
+    #         else:
+    #             print "++++++++++++++++++ else network_printers", network_printers
+    #             return super(UpdatedEscposDriver, self).get_escpos_printer()
+
     def run(self):
         printer = None
         if not escpos:
@@ -27,6 +69,8 @@ class UpdatedEscposDriver(EscposDriver):
             return
         while True:
             try:
+                driver.network_printers = self.connected_network_printers(self.network_printers)
+
                 error = True
                 timestamp, task, data = self.queue.get(True)
                 printer = None
@@ -94,6 +138,18 @@ class UpdatedEscposProxy(EscposProxy):
             driver.push_task(['network_xml_receipt', proxy], receipt)
         else:
             super(UpdatedEscposProxy, self).print_xml_receipt(receipt)
+
+
+    @http.route('/hw_proxy/network_printers', type='json', auth='none', cors='*')
+    def networ_printers(self, network_printers=None):
+        network_printers = list(set([str(e) for e in network_printers]))
+        for i in range(len(network_printers)):
+            network_printers[i] = eval(network_printers[i])
+        driver.network_printers = network_printers
+
+    @http.route('/hw_proxy/status_network_printers', type='json', auth='none', cors='*')
+    def networ_printers_status(self):
+        return driver.network_printers
 
 
 class UpdatedNetwork(Network):
