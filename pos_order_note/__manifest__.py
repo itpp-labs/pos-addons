@@ -3,7 +3,7 @@
     "name": """POS Advanced Order Notes""",
     "summary": """Set predefined notes for separate product or entire order""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/pos_order_note_main.png'],
     "version": "1.0.0",
     "application": False,
 
