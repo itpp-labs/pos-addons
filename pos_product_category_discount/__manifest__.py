@@ -3,7 +3,7 @@
     "name": """POS Discount Programs""",
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
-    "images": ['images/disc_prog.jpg'],
+    "images": ['images/dp3.png'],
     "version": "1.0.0",
     "application": False,
 
