@@ -3,7 +3,7 @@
     "name": """POS Print Method""",
     "summary": """Choose print method for order printing in POS""",
     "category": "Point of Sale",
-    "images": ['images/print_method_main.png'],
+    "images": ['images/pn2.png'],
     "version": "1.0.0",
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
