@@ -128,8 +128,6 @@ class PosConfig(models.Model):
         journal_obj = self.env['account.journal']
         user = self.env.user
         debt_journal_active = journal_obj.search([
-            ('code', '=', 'TDEBT'),
-            ('name', '=', 'Debt Journal'),
             ('company_id', '=', user.company_id.id),
             ('debt', '=', True),
         ])
