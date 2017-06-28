@@ -158,7 +158,6 @@ class PosConfig(models.Model):
 
         debt_journal_inactive = journal_obj.search([
             ('code', '=', 'TDEBT'),
-            ('name', '=', 'Debt Journal'),
             ('company_id', '=', user.company_id.id),
             ('debt', '=', False),
         ])
