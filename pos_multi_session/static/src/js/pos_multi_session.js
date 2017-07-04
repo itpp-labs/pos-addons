@@ -63,14 +63,6 @@ odoo.define('pos_multi_session', function(require){
             var callback = this.ms_on_update;
             this.add_channel(channel_name, callback, this);
         },
-        add_new_order: function(){
-            var self = this;
-            PosModelSuper.prototype.add_new_order.apply(this, arguments);
-            if (this.multi_session){
-                var current_order = this.get_order();
-                current_order.ms_update();
-            }
-        },
         ms_my_info: function(){
             var user = this.cashier || this.user;
             return {
