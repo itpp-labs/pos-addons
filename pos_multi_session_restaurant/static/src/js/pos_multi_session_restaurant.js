@@ -156,4 +156,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
         },
     });
+
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
+        get_line_diff_hash: function(){
+            if (this.get_note()) {
+                return this.id + '|' + this.get_note();
+            } else if (this.uid) {
+                return '' + this.uid;
+            } else {
+                return '' + this.id;
+            }
+        },
+    });
 });
