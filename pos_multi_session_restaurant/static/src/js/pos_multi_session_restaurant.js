@@ -161,11 +161,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
     models.Orderline = models.Orderline.extend({
         get_line_diff_hash: function(){
             if (this.get_note()) {
-                return this.id + '|' + this.get_note();
-            } else if (this.uid) {
-                return '' + this.uid;
+                return this.uid + '|' + this.get_note();
             } else {
-                return '' + this.id;
+                return '' + this.uid;
             }
         },
     });
