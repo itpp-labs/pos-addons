@@ -1,16 +1,24 @@
+`4.3.0`
+-------
+
+- **ADD:** Manual Credit Updates
+
 `4.2.0`
 -------
+
 - **ADD:** The "Load More" button in debt history
 - **ADD:** A product list to each debt history line
 
 `4.1.0`
 -------
+
 - **ADD:** Invoice support
 - **FIX:** Fetch new partners before loading their debt history (e.g. when another POS create partner)
 - **ADD:** print prev and new debt value in receipt as well as customer name
 
 `4.0.0`
 -------
+
 - **ADD:** An ability to show customer debt transactions 
 - **ADD:** Credits can be purchased via Credit Product. No need to use Debt Journal at that case
 - **ADD:** Max Debt setting per each customer. Default is 0.

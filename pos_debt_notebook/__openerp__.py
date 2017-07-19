@@ -8,7 +8,7 @@
         'images/screenshot-3.png',
         'images/screenshot-1.png',
     ],
-    'version': '4.2.0',
+    'version': '4.3.0',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "apps@it-projects.info",
@@ -26,6 +26,7 @@
         'data/product.xml',
         'views.xml',
         'views/pos_debt_report_view.xml',
+        'views/pos_credit_update.xml',
         'data.xml',
         'security/ir.model.access.csv',
     ],
