@@ -2,8 +2,7 @@
  POS Cashier Select
 ====================
 
-This module allows to select cashier before payment in POS.
-You can confirm choice by scanning barcode or do it in a usual way.
+Modules forces to select Cashier before switching to payment screen. Once user clicks "Payment", custom popup is shown and  user selects Cashier by scanning cashier's barcode or by clicking one from the list.
 
 Credits
 =======
@@ -31,4 +30,4 @@ Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 10.0 
+Tested on Odoo 10.0 ffba5c688ff74a0630f9f70be1d7760a43a7deba

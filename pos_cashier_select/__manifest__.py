@@ -19,7 +19,9 @@
     "data": [
         "views/views.xml",
     ],
-    "qweb": [],
+    "qweb": [
+        "static/src/xml/pos.xml",
+    ],
 
     "post_load": None,
     "pre_init_hook": None,

@@ -7,16 +7,61 @@ odoo.define('pos_choosing_cashier', function(require){
     var PopupWidget = require('point_of_sale.popups');
     var ScreenWidget = require('point_of_sale.screens').ScreenWidget;
     var Gui = require('point_of_sale.gui').Gui;
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var gui = require('point_of_sale.gui');
 
     var _t = core._t;
     var _lt = core._lt;
     var QWeb = core.qweb;
 
+    var CashierSelectionPopupWidget = PopupWidget.extend({
+        template: 'CashierSelectionPopupWidget',
+        show: function(options){
+            options = options || {};
+            var self = this;
+            this._super(options);
+
+            this.list = options.list || [];
+            this.renderElement();
+        },
+        click_item : function(event) {
+            this.gui.close_popup();
+            if (this.options.confirm) {
+                var item = this.list[parseInt($(event.target).data('item-index'))];
+                item = item
+                    ? item.item
+                    : item;
+                this.options.confirm.call(self,item);
+            }
+        }
+    });
+
+    gui.define_popup({name:'cashier', widget: CashierSelectionPopupWidget});
+
     BarcodeReader.include({
         init: function (attributes) {
             this._super(attributes);
             this.on_cashier_screen = false;
-        }
+        },
+
+        scan: function(code){
+            if (!code) {
+                return;
+            }
+            var parsed_result = this.barcode_parser.parse_barcode(code);
+            //Blocks barcodes on cashier select window besides cases when barcode's type is 'cashier'
+            if (this.on_cashier_screen && (parsed_result.type !== 'cashier')) {
+                console.warn("Ignored Barcode Scan:", parsed_result);
+                return;
+            }
+            if (this.action_callback[parsed_result.type]) {
+                this.action_callback[parsed_result.type](parsed_result);
+            } else if (this.action_callback.error) {
+                this.action_callback.error(parsed_result);
+            } else {
+                console.warn("Ignored Barcode Scan:", parsed_result);
+            }
+        },
     });
 
     ActionpadWidget.include({
@@ -33,6 +78,8 @@ odoo.define('pos_choosing_cashier', function(require){
         },
 
         payment: function () {
+            // This method has been added to encapsulate the original widget's logic 
+            // just to make code more clean and readable
             var self = this;
             var order = self.pos.get_order();
                 var has_valid_product_lot = _.every(order.orderlines.models, function(line){
@@ -58,6 +105,7 @@ odoo.define('pos_choosing_cashier', function(require){
                 'security':     true,
                 'current_user': this.pos.get_cashier(),
                 'title':      _t('Change Cashier'),
+                'cashier_window': true
             }).then(function(user){
                 self.pos.set_cashier(user);
                 self.gui.chrome.widget.username.renderElement();
@@ -79,8 +127,11 @@ odoo.define('pos_choosing_cashier', function(require){
             }
 
             this.renderElement();
-            // popups DO NOT block the barcode reader ... 
-
+            // popups block the barcode reader ...
+            if (this.pos.barcode_reader && !(this.pos.barcode_reader.on_cashier_screen)) {
+                this.pos.barcode_reader.save_callbacks();
+                this.pos.barcode_reader.reset_action_callbacks();
+            }
         },
     });
 
@@ -105,6 +156,9 @@ odoo.define('pos_choosing_cashier', function(require){
     });
 
     Gui.include({
+    /* This method has been redefined in order to add a trigger that allows to determine
+     whether the cashiers's selection screen is active. Used to block the redirect to the payment window.
+     Also allows to use a new cashier widget instead of the old select widget one */
         select_user: function(options){
             options = options || {};
             var self = this;
@@ -120,15 +174,19 @@ odoo.define('pos_choosing_cashier', function(require){
                     });
                 }
             }
-
-            this.show_popup('selection',{
+            var popup_type = (options.cashier_window
+                ? 'cashier'
+                : 'selection');
+            this.show_popup(popup_type,{
                 'title': options.title || _t('Select User'),
                 list: list,
                 confirm: function(_user){
+                    // switches cashier on cashier state screen property to false on user confirmation
                     self.pos.barcode_reader.on_cashier_screen = false;
                     def.resolve(_user);
                 },
                 cancel:  function(){
+                    //same on cancel
                     self.pos.barcode_reader.on_cashier_screen = false;
                     def.reject();
                 },
