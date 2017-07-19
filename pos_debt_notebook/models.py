@@ -281,3 +281,32 @@ class PosOrder(models.Model):
             for o_line in order.lines:
                 product_list.append('%s(%s * %s) + ' % (o_line.product_id.name, o_line.qty, o_line.price_unit))
             order.product_list = ''.join(product_list).strip(' + ')
+
+
+class PosCreditUpdate(models.Model):
+    _name = 'pos.credit.update'
+    _description = "Manual Credit Updates"
+
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    user_id = fields.Many2one(
+        'res.users',
+        string='Salesperson',
+        default=lambda s: s.env.user,
+        readonly=True
+    )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        required=True,
+        default=lambda s: s.env.user.company_id,
+    )
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Currency',
+        default=lambda s: s.env.user.company_id.currency_id,
+    )
+    balance = fields.Monetary('Balance Update', help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
+    note = fields.Text('Note')
+    date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
+
+    state = fields.Selection([('confirm', 'Confirmed'), ('cancel', 'Canceled')], default='confirm', required=True)
