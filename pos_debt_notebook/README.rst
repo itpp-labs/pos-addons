@@ -13,6 +13,7 @@ Debt (Credit) value is changed whenever:
 Other features:
 
 * each user has Debt Limit field. By default is 0, i.e. user has to pay in advance and cannot have negative credits amount.
+* Working with employees of company. You can get a sum of Credits of all employess of any company. You can make invoices per each employee at once to updates their Credits.
 
 Installation \ Deinstallation
 =============================
