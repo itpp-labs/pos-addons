@@ -24,6 +24,30 @@ class ResPartner(models.Model):
             r.debt = -res_index[r.id]['balance']
             r.credit_balance = -r.debt
 
+    @api.multi
+    def _compute_debt_company(self):
+        partners = self.filtered(lambda r: len(r.child_ids))
+        if not partners:
+            return
+        domain = [('partner_id', 'in', partners.ids + partners.mapped('child_ids').ids)]
+        fields = ['partner_id', 'balance']
+        res = self.env['report.pos.debt'].read_group(
+            domain,
+            fields,
+            'partner_id')
+
+        res_index = dict((id, 0) for id in partners.ids)
+        for data in res:
+            id = data['partner_id'][0]
+            balance = data['balance']
+            for r in partners:
+                if id == r.id or id in r.child_ids.ids:
+                    res_index[r.id] += balance
+
+        for r in partners:
+            r.debt_company = -res_index[r.id]
+            r.credit_balance_company = -r.debt_company
+
     @api.model
     def _default_debt_limit(self):
         debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
@@ -72,17 +96,23 @@ class ResPartner(models.Model):
 
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
-        digits=dp.get_precision('Account'), help='This debt value for only current company')
+        digits=dp.get_precision('Account'), help='Debt of this partner only.')
     credit_balance = fields.Float(
         compute='_compute_debt', string='Credit', readonly=True,
-        digits=dp.get_precision('Account'), help='This credit balance value for only current company')
+        digits=dp.get_precision('Account'), help='Credit balance of this partner only.')
+    debt_company = fields.Float(
+        compute='_compute_debt_company', string='Total Debt', readonly=True,
+        digits=dp.get_precision('Account'), help='Debt value of this company (including its contacts)')
+    credit_balance_company = fields.Float(
+        compute='_compute_debt_company', string='Total Credit', readonly=True,
+        digits=dp.get_precision('Account'), help='Credit balance of this company (including its contacts)')
     debt_type = fields.Selection(compute='_compute_debt_type', selection=[
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
-        help='The customer is not allowed to have a debt more than this value')
+        help='The partner is not allowed to have a debt more than this value')
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
