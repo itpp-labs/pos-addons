@@ -11,7 +11,6 @@ class PosCreditInvoices(models.TransientModel):
         if product:
             return product.id
 
-
     partner_id = fields.Many2one('res.partner', 'Company', domain="[('is_company', '=', True)]", required=True)
     product_id = fields.Many2one(
         'product.product',
@@ -22,7 +21,6 @@ class PosCreditInvoices(models.TransientModel):
         required="True",
         help="This product will be used on creating invoices."
     )
-    #child_ids = fields.One2many('res.partner', related='partner_id.child_ids')
     credit_balance_company = fields.Float(related='partner_id.credit_balance_company')
     amount = fields.Float('Amount')
     payment_type = fields.Selection([
@@ -37,13 +35,16 @@ class PosCreditInvoices(models.TransientModel):
     def update_lines(self):
         p2amount = None
         if self.payment_type == 'custom':
-            p2amount = lambda p: 0
+            def p2amount(p):
+                return 0
 
         if self.payment_type == 'pay_debts':
-            p2amount = lambda p: p.debt
+            def p2amount(p):
+                return p.debt
 
         if self.payment_type == 'pay_per_employee':
-            p2amount = lambda p: self.amount
+            def p2amount(p):
+                return self.amount
 
         self.line_ids = [
             # remove old lines
