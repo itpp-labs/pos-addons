@@ -7,9 +7,9 @@
 <record id="view_partner_form_debt" model="ir.ui.view">
     <field name="name">res.partner.form.debt</field>
     <field name="model">res.partner</field>
-    <field name="inherit_id" ref="account.view_partner_property_form"/>
+    <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//field[@name='credit']" position="after">
+        <xpath expr="//field[@name='barcode']" position="after">
             <field name="debt_type" invisible="1"/>
             <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
             <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
