@@ -41,6 +41,25 @@ To use it
 * open ``Point of sale >> Configuration >> Manual Credit Updates``
 * create record or import csv, Excel file
 
+Handling employees
+------------------
+
+Group of partner from the same Company can be handling together.
+
+* Open wizard via ``Invoicing >> Sales >> Generate POS Credits Invoices``
+
+  * Specify **Company**
+  * Select **Credit Product** (create one if needed)
+  * Select **Payment Type** -- way to compute **Credits to Add** for each employee
+  * At employee list you can see **Current Credits** and check\edit **Credits to Add**
+  * Click ``[Generate]``
+
+* Open ``Invoicing >> Sales >>  Customer Invoices``
+* Select Invoices for the same company
+* Click ``[Action] -> Confirm Draft Invoices``
+* Click ``[Action] -> Register Payment``
+* Now Credits for employees are updated
+
 Uninstallation
 ==============
 
