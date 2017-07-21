@@ -1,3 +1,10 @@
+`4.4.0`
+-------
+
+- **ADD:** new field *Company Credit Balance* -- sum of credits of all company's employees.
+- **FIX:** move Debt fields at partner form. New place is Point of Sale section at Sales & Purchases tab. Otherwise the fields are hidden if partner has parent_id value
+- **ADD:** wizard to add Credits to company's employees. It creates invoices per each partner.
+
 `4.3.0`
 -------
 
