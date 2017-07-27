@@ -49,14 +49,15 @@
                     </table>
                 </div>
 
-                <div class="usb-printer-body">
-                    <h4>USB printers</h4>
-                    <div class='printer-list'>
-                        <div class="usb-printers-list-contents">
+                <t t-if="widget.get_usb_printer_status()">
+                    <div class="usb-printer-body">
+                        <h4>USB printers</h4>
+                        <div class='printer-list'>
+                            <div class="usb-printers-list-contents">
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                </t>
 
                 <div class="footer centered">
                     <div class="button confirm">

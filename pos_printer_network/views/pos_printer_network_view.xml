@@ -29,6 +29,7 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='iface_print_via_proxy']" position="after">
+                    <field name="usb_printer_active"/>
                     <field name="network_printer"/>
                     <field name="receipt_network_printer_ip" attrs="{'invisible' : [('network_printer', '=', False)]}"/>
                 </xpath>
