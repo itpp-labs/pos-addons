@@ -31,7 +31,7 @@
 .popup-confirm-note  textarea:focus:-moz-placeholder {color: transparent}
 .popup-confirm-note  textarea:focus:-ms-input-placeholder {color: transparent}
 
-/*ReasonCancellationScreenWidget*/
+/*ScreenWidget*/
 .pos .notelist-screen .note-list{
     font-size: 16px;
     width: 100%;
@@ -64,6 +64,7 @@
 }
 /*OrderWidget*/
 .order-note-line {
+    max-width: 50%;
     float: left;
     margin-right: 15px;
     margin-left: 15px;
@@ -79,4 +80,13 @@
 }
 .order-note-line .label {
     font-size: 22px;
+}
+.pos .product_note li .active {
+    color: white;
+    background: black;
+    border: 1px solid black;
+}
+/*OrderLineWidget*/
+.pos .info.orderline-note {
+    max-width: 50%;
 }
