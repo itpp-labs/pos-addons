@@ -20,8 +20,8 @@
                 <form string="POS Product Notes">
                     <sheet>
                         <group>
-                            <field name="number"/>
-                            <field name="name"/>
+                            <field name="number" required="1"/>
+                            <field name="name" required="1"/>
                         </group>
                     </sheet>
                 </form>
