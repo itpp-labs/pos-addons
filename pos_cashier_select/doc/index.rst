@@ -9,9 +9,12 @@ Installation
 Configuration
 =============
 
-This module don't need special configuration.
+The module doesn't need a special configuration.
 
 Usage
 =====
 
-* Click ``[Payment]`` button to choose cashier.
+* Open POS session
+* Create an order
+* Click on ``[Payment]`` button to choose a cashier
+* Select a cashier by scanning cashier's barcode or by clicking one from the list

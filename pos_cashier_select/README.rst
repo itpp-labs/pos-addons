@@ -2,7 +2,7 @@
  POS Cashier Select
 ====================
 
-Modules forces to select Cashier before switching to payment screen. Once user clicks "Payment", custom popup is shown and  user selects Cashier by scanning cashier's barcode or by clicking one from the list.
+The module forces to select a cashier before switching to payment screen. Once user clicks on "Payment", custom popup is shown and user can select a cashier by scanning cashier's barcode or by clicking one from the list.
 
 Credits
 =======
