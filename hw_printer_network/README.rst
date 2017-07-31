@@ -2,10 +2,10 @@
  Hardware Network Printer
 ==========================
 
-The module adds support for Network Printers through a POS Box.
+Hardware Driver for Network pinters.
 
-When print an order using this module, the POS Box receives the network printer IP address and the receipt from client's POS.
-If the ip address is not empty, it will be connected to the network printer using this address, which in turn prints the receipt.
+When print an order, the PosBox receives the network printer IP address and the receipt from client's POS.
+If the IP address is not empty, it will be connected to the network printer by using this address, which in turn prints the receipt.
 
 Credits
 =======

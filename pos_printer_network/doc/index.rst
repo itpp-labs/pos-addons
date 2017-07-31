@@ -7,7 +7,10 @@ Installation
 
 * Install the pos_printer_network module on Odoo instance
 
-* Add hw_printer_network module together with hw_escpos and hw_proxy to server wide modules (set server_wide_modules in config file or specify --load parameter in run command): e.g. ./odoo-bin --load=hw_escpos,hw_proxy,hw_printer_network
+* Add hw_printer_network module together with hw_escpos and hw_proxy to server wide modules. It can be achieved by using one of the folowing ways: 
+  
+  * use server_wide_modules in odoo config file, i.e. server_wide_modules=hw_escpos,hw_proxy,hw_printer_network
+  * specify --load parameter in run command, i.e. ./odoo-bin --load=hw_escpos,hw_proxy,hw_printer_network
 
 Configuration
 =============
@@ -52,4 +55,5 @@ Print a receipt
 Note
 ====
 
-In the POS interface you can see the printers status by clicking on posbox icon at the top right corner.
+In the POS interface you can see the connection status of your printers by clicking on posbox icon at the top right corner.
+

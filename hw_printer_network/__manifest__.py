@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": """Hardware Network Printer""",
-    "summary": """The module adds support for a Network Printer through a POS Box""",
+    "summary": """Hardware Driver for Network Printers""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.0.0",
@@ -11,8 +11,8 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 59.00,
+    "currency": "EUR",
 
     "depends": [
         "hw_escpos",
