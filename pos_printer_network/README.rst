@@ -1,10 +1,10 @@
 =====================
- POS Network Printer
+ Pos Network Printer
 =====================
 
-The module allows to send orders for printing using a network printer in the POS.
+Print POS orders and receipts by using a network printer.
 
-This module establishes a connection with the POS Box and sends it the ip address of the printer and the receipt.
+By default, odoo supports usb printers only for POS order printing. The module makes it possible to print POS orders and receipts on network printers.
 
 Credits
 =======

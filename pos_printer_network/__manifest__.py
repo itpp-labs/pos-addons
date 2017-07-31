@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Network Printer""",
-    "summary": """The module allows to send orders for printing using a network printer in the POS""",
+    "name": """Pos Network Printer""",
+    "summary": """Print POS orders and receipts by using network printers""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/pos_printer_network_main.png'],
     "version": "1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
-    "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "license": "OPL-1",
+    "price": 390.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_restaurant_base",
