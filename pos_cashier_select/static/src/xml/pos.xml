@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="CashierSelectionPopupWidget">
+        <div class="modal-dialog cashier">
+            <div class="popup popup-selection cashier">
+                <p class="title"><t t-esc=" widget.options.title || 'Select' " /></p>
+                <div class='selection scrollable-y touch-scrollable cashier'>
+                    <div class="selection cashier">
+                        <t t-foreach="widget.list || []" t-as="item">
+                            <div class='selection-item' t-att-data-item-index='item_index'>
+                                <t t-esc='item.label'/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <div class="footer cashier">
+                    <div class="button cancel">
+                        Cancel 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -80,6 +80,7 @@
                     <tr>
                         <th>Date/Time</th>
                         <th>Point of Sale</th>
+                        <th>Products</th>
                         <th>Purchased Credits (In)</th>
                         <th>Credits Spent (Out)</th>
                         <th>Balance</th>
@@ -123,10 +124,20 @@
         <tr>
             <td><t t-esc="line ? line.date : ''"/></td>
             <td><t t-esc="line ? line.config_id[1] : ''"/></td>
+            <td><t t-esc="line ? line.product_list : ''"/></td>
             <td><t t-esc="((line and line.balance gt 0) ? (line.balance).toString() : '')"/></td>
             <td><t t-esc="((line and line.balance lt 0) ? (-line.balance).toString() : '')"/></td>
             <td>
                 <span t-attf-class="client-#{partner.debt_type} #{(line and line.total_balance lt 0) ? 'negative' : ''} #{(line and line.total_balance gt 0) ? 'positive' : ''}"><t t-esc="(line and line.total_balance ? (line.total_balance).toString() : '')"/></span>
+            </td>
+        </tr>
+    </t>
+
+    <t t-name="DebtHistoryLoadMore">
+        <tr>
+            <td colspan="6" class="pos_text_center">
+                <div id="loading_history" class="o_spinner oe_hidden"><i class="fa fa-spinner fa-spin fa-4"/></div>
+                <span id="load_more" class="button highlight">Load More</span>
             </td>
         </tr>
     </t>

@@ -1,0 +1,26 @@
+
+.popup.popup-selection.cashier {
+	height: 90%;
+	width: 90%;
+	overflow-y: hidden;
+	max-height: 100%;
+
+
+}
+
+.pos .popup.popup-selection .selection .cashier {
+	max-height: 100%;
+}
+
+.selection.scrollable-y.touch-scrollable.cashier {
+	max-height: 100%;
+}
+
+.selection.cashier {
+	padding-bottom: 125px;
+	max-height: 100%;
+}
+
+.footer.cashier {
+	background-color: #F0EEEE;
+}

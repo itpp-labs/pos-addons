@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="OrderChangeReceipt">
+        <t t-jquery='t[t-foreach="changes.cancelled"]' t-operation="after">
+            <t t-if="changes.reason">
+                <br />
+                <line>
+                    <left>REASON</left>
+                    <right>...</right>
+                </line>
+                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="changes.reason" /></span></div>
+                <line></line>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="ConfirmCancellationPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-confirm-cancellation">
+                <p class="title"><t t-esc=" widget.options.title || '' " /></p>
+                <textarea rows="1" cols="44" placeholder="Reason"></textarea>
+                <div class="cancelled-reason">
+                    <ul>
+                        <t t-if="widget.options.reasons">
+                            <t t-foreach="widget.options.reasons" t-as="reason">
+                                <li><div t-attf-id="{{reason.id}}" t-attf-class="button"><t t-esc="reason.name"/></div></li>
+                            </t>
+                        </t>
+                        <li><div id="other" class="button other-reason">Other</div></li>
+                    </ul>
+                </div>
+                <div class="footer centered">
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="CancellationReason">
+        <tr class='reason-line' t-attf-id='{{reason.id}}'>
+            <td><t t-esc='reason.name' /></td>
+        </tr>
+    </t>
+
+    <t t-name="ReasonCancellationScreenWidget">
+        <div class="reasonlist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back reason-back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='reason-next button next oe_hidden highlight'>
+                        Apply
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='reason-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='reason-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+</templates>
