@@ -13,23 +13,30 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
-            var partner_model = _.find(this.models, function(model){ return model.model === 'res.partner'; });
+            var partner_model = _.find(this.models, function(model){
+                return model.model === 'res.partner';
+            });
             partner_model.fields.push('debt_type', 'debt', 'debt_limit');
-            var journal_model = _.find(this.models, function(model){ return model.model === 'account.journal'; });
+            var journal_model = _.find(this.models, function(model){
+                return model.model === 'account.journal';
+            });
             journal_model.fields.push('debt');
-            var product_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            var product_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
             product_model.fields.push('credit_product');
-            return _super_posmodel.initialize.call(this, session, attributes);
+            return _super_posmodel.initialize.apply(this, arguments);
         },
         push_order: function(order, opts){
             var self = this;
-            var pushed = _super_posmodel.push_order.call(this, order, opts);
+            var pushed = _super_posmodel.push_order.apply(this, arguments);
             var client = order && order.get_client();
             if (client){
                 order.paymentlines.each(function(line){
                     var journal = line.cashregister.journal;
-                    if (!journal.debt)
+                    if (!journal.debt) {
                         return;
+                    }
                     var amount = line.get_amount();
                     client.debt += amount;
                 });
@@ -54,7 +61,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }, 30);
             }
 
-            var newPaymentline = new models.Paymentline({},{order: this, cashregister: cashregister, pos: this.pos});
+            var newPaymentline = new models.Paymentline({}, {
+                order: this,
+                cashregister: cashregister,
+                pos: this.pos
+            });
             if (cashregister.journal.debt){
                 newPaymentline.set_amount(this.get_due_debt());
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
@@ -121,20 +132,25 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
+            if (isDebt && currentOrder.get_total_paid() > currentOrder.get_total_with_tax()) {
+                this.gui.show_popup('error', {
+                    'title': _t('Unable to return the change with a debt payment method'),
+                    'body': _t('Please enter the exact or lower debt amount than the cost of the order.')
+                });
+                return;
+            }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
 
         pay_full_debt: function(){
             var order = this.pos.get_order();
-            
+
             var debtjournal = false;
             _.each(this.pos.cashregisters, function(cashregister) {
                 if (cashregister.journal.debt) {
                     debtjournal = cashregister;
-                    
                 }
-
             });
 
             var paymentLines = order.get_paymentlines();
@@ -146,7 +162,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
             }
 
-            var newDebtPaymentline = new models.Paymentline({},{order: order, cashregister: debtjournal, pos: this.pos});
+            var newDebtPaymentline = new models.Paymentline({},{
+                order: order,
+                cashregister: debtjournal,
+                pos: this.pos
+            });
             newDebtPaymentline.set_amount(order.get_client().debt * -1);
             order.paymentlines.add(newDebtPaymentline);
             this.render_paymentlines();
@@ -176,7 +196,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         "currentOrder.getTotalTaxIncluded() < 0.000001" */
         is_paid: function(){
             var currentOrder = this.pos.get_order();
-            return (currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded());
+            return currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded();
         },
         customer_changed: function() {
             var self = this;
@@ -184,24 +204,30 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var debt = 0;
             if (client) {
                 debt = Math.round(client.debt * 100) / 100;
-                if (client.debt_type == 'credit') {
+                if (client.debt_type === 'credit') {
                     debt = - debt;
                 }
             }
             var $js_customer_name = this.$('.js_customer_name');
             var $pay_full_debt = this.$('.pay-full-debt');
-            $js_customer_name.text(client ? client.name : _t('Customer'));
-            $pay_full_debt.on('click', function() {self.pay_full_debt();});
+            $js_customer_name.text(
+                client
+                    ? client.name
+                    : _t('Customer')
+            );
+            $pay_full_debt.on('click', function() {
+                self.pay_full_debt();
+            });
             $pay_full_debt.addClass('oe_hidden');
             if (client && debt) {
-                if (client.debt_type == 'debt') {
+                if (client.debt_type === 'debt') {
                     if (debt > 0) {
                         $pay_full_debt.removeClass('oe_hidden');
                         $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + debt + ']</span>');
                     } else if (debt < 0) {
                         $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + debt + ']</span>');
                     }
-                } else if (client.debt_type == 'credit') {
+                } else if (client.debt_type === 'credit') {
                     if (debt > 0) {
                         $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + debt + ']</span>');
                     } else if (debt < 0) {
@@ -213,21 +239,25 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         }
     });
 
-    gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'clientlist';})[0].widget.include({
+    gui.Gui.prototype.screen_classes.filter(function(el) {
+        return el.name === 'clientlist';
+    })[0].widget.include({
         init: function(parent, options){
             this._super(parent, options);
             this.round = function(value) {
                 return Math.round(value * 100) / 100;
             };
             this.check_user_in_group = function(group_id, groups) {
-                return  $.inArray(group_id, groups) != -1;
+                return $.inArray(group_id, groups) !== -1;
             };
         },
         render_list: function(partners){
-            var debt_type = partners && partners.length ? partners[0].debt_type : '';
-            if (debt_type == 'debt') {
+            var debt_type = partners && partners.length
+                ? partners[0].debt_type
+                : '';
+            if (debt_type === 'debt') {
                 this.$('#client-list-credit').remove();
-            } else if (debt_type == 'credit') {
+            } else if (debt_type === 'credit') {
                 this.$('#client-list-debt').remove();
             }
             this._super(partners);
@@ -238,13 +268,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var curr_client = this.pos.get_order().get_client();
             if (this.editing_client) {
                 $pay_full_debt.addClass('oe_hidden');
+            } else if ((this.new_client && this.new_client.debt > 0) ||
+                    (curr_client && curr_client.debt > 0 && !this.new_client)) {
+                $pay_full_debt.removeClass('oe_hidden');
             } else {
-                if ((this.new_client && this.new_client.debt > 0) ||
-                        (curr_client && curr_client.debt > 0 && !this.new_client)) {
-                    $pay_full_debt.removeClass('oe_hidden');
-                }else{
-                    $pay_full_debt.addClass('oe_hidden');
-                }
+                $pay_full_debt.addClass('oe_hidden');
             }
         },
 
@@ -265,7 +293,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var order = self.pos.get_order();
                 if (order) {
                     var lastorderline = order.get_last_orderline();
-                    if (lastorderline == null && self.pos.config.debt_dummy_product_id){
+                    if (lastorderline === null && self.pos.config.debt_dummy_product_id){
                         var dummy_product = self.pos.db.get_product_by_id(
                             self.pos.config.debt_dummy_product_id[0]);
                         order.add_product(dummy_product, {'price': 0});
