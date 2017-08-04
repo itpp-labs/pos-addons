@@ -5,6 +5,8 @@ from datetime import datetime
 from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
