@@ -3,7 +3,7 @@
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/s2.png'],
     "version": "1.1.5",
     "application": False,
 

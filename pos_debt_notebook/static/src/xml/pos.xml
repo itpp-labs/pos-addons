@@ -133,6 +133,15 @@
         </tr>
     </t>
 
+    <t t-name="DebtHistoryLoadMore">
+        <tr>
+            <td colspan="6" class="pos_text_center">
+                <div id="loading_history" class="o_spinner oe_hidden"><i class="fa fa-spinner fa-spin fa-4"/></div>
+                <span id="load_more" class="button highlight">Load More</span>
+            </td>
+        </tr>
+    </t>
+
     <t t-extend="XmlReceipt">
         <t t-jquery="t[t-if='receipt.cashier']" t-operation="after">
             <t t-if='receipt.client'>
