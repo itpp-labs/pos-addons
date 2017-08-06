@@ -378,7 +378,7 @@ odoo.define('pos_multi_session', function(require){
                     if (res) {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
-                        if (self.sequence_number != order_ID) {
+                        if (order_ID && self.sequence_number != order_ID) {
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
