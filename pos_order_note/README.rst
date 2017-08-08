@@ -4,6 +4,7 @@
 
 * allows to add a note to entire order
 * allows to use predefined notes
+* allows to specify note at product form to apply it automatically on adding to order at POS
 
 Credits
 =======
