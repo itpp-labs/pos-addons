@@ -10,6 +10,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
 
     var FloorScreenWidget;
     _.each(gui.Gui.prototype.screen_classes, function(o){
+        if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
         if (o.name == 'floors'){
             FloorScreenWidget = o.widget;
             FloorScreenWidget.include({
@@ -23,6 +24,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             });
             return false;
         }
+        };
     });
     var _t = core._t;
 
@@ -59,6 +61,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             this.multi_session.remove_order = function(data) {
                 if (data.transfer) {
                     data.transfer = false;
@@ -67,17 +70,21 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     this.send({action: 'remove_order', data: data});
                 }
             };
+            }
         },
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
                 order.customer_count = options.data.customer_count;
                 order.save_to_db();
             }
+            };
             return order;
         },
+
         ms_on_update: function(message, sync_all){
             var self = this;
             var data = message.data || {};
@@ -94,17 +101,21 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.destroy({'reason': 'abandon'});
             }
             PosModelSuper.prototype.ms_on_update.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             if ((order && old_order && old_order.uid != order.uid) || (old_order == null)) {
                 this.set('selectedOrder',old_order);
             }
+            };
         },
         ms_do_update: function(order, data){
             PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
                 this.gui.screen_instances.products.action_buttons.guests.renderElement();
             }
+            };
         },
         ms_on_add_order: function(current_order){
             if (!current_order){
@@ -115,7 +126,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         on_removed_order: function(removed_order, index, reason){
             PosModelSuper.prototype.on_removed_order.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             this.trigger('change:orders-count-on-floor-screen');
+            }
         },
         // changes the current table.
         set_table: function(table) {
@@ -136,13 +149,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
     models.Order = models.Order.extend({
         set_customer_count: function (count, skip_ms_update) {
             OrderSuper.prototype.set_customer_count.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             if (!skip_ms_update) {
                 this.ms_update();
             }
+            };
         },
         printChanges: function(){
             OrderSuper.prototype.printChanges.apply(this, arguments);
+            if (models.pos && models.pos.config.multi_session_id && models.pos.config.multi_session_id[0]){
             this.just_printed = true;
+            };
         },
         do_ms_remove_order: function(){
             if (this.transfer) {
