@@ -2,7 +2,8 @@
  POS Advanced Order Notes
 ==========================
 
-Set predefined notes for separate product or entire order in POS
+* allows to add a note to entire order
+* allows to use predefined notes
 
 Credits
 =======
