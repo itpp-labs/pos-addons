@@ -187,27 +187,25 @@ odoo.define('pos_multi_session', function(require){
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
             });
-            if(data.partner_id !== false)
-            {
+            if(data.partner_id !== false) {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
-                if(!client)
-                {
+                if(!client) {
 
-                    $.when(this.load_new_partners_by_id(data.partner_id))
-                                    .then(function(client){client = order.pos.db.get_partner_by_id(data.partner_id);
-                             order.set_client(client);},function(){});
+                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(client){
+                        client = order.pos.db.get_partner_by_id(data.partner_id);
+                             order.set_client(client);
+                    },function(){
+                    });
                 }
                 order.set_client(client);
-            }
-            else
-            {
+            } else {
                 order.set_client(null);
             }
 
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
-                    return dline.uid == r.uid;
+                    return dline.uid === r.uid;
                 });
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
@@ -239,7 +237,7 @@ odoo.define('pos_multi_session', function(require){
 
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
-                               return uid == r.uid;
+                               return uid === r.uid;
                            });
                 order.orderlines.remove(line);
             });
@@ -248,14 +246,12 @@ odoo.define('pos_multi_session', function(require){
         },
         load_new_partners_by_id: function(partner_id){
         var self = this;
-        var def  = new $.Deferred();
-        var client;
-        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
-        new Model('res.partner')
-            .query(fields)
-            .filter([['id','=',partner_id]])
-            .all({'timeout':3000, 'shadow': true})
-            .then(function(partners){
+        var def = new $.Deferred();
+//        var client;
+        var fields = _.find(this.models,function(model){
+            return model.model === 'res.partner';
+        }).fields;
+        new Model('res.partner').query(fields).filter([['id','=',partner_id]]).all({'timeout':3000, 'shadow': true}).then(function(partners){
             // check if the partners we got were real updates
                 if (self.db.add_partners(partners)) {
                     def.resolve();
