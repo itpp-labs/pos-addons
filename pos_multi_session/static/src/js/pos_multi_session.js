@@ -9,6 +9,7 @@ odoo.define('pos_multi_session', function(require){
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
+    var Model = require('web.Model');
 
     var _t = core._t;
 
@@ -114,8 +115,8 @@ odoo.define('pos_multi_session', function(require){
                 data = message.data || {};
                 var order = false;
                 if (data.uid){
-                    order = this.get('orders').find(function(order){
-                        return order.uid === data.uid;
+                    order = this.get('orders').find(function(current_order){
+                        return current_order.uid === data.uid;
                     });
                 }
                 if (sync_all) {
@@ -193,7 +194,7 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client) {
-                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(client){
+                    $.when(this.load_new_partners_by_id(data.partner_id)).then(function(res){
                         client = order.pos.db.get_partner_by_id(data.partner_id);
                              order.set_client(client);
                     },
@@ -205,34 +206,34 @@ odoo.define('pos_multi_session', function(require){
             }
 
             _.each(data.lines, function(dline){
-                dline = dline[2];
+                var new_dline = dline[2];
                 var line = order.orderlines.find(function(r){
-                    return dline.uid === r.uid;
+                    return new_dline.uid === r.uid;
                 });
-                not_found = _.without(not_found, dline.uid);
-                var product = pos.db.get_product_by_id(dline.product_id);
+                not_found = _.without(not_found, new_dline.uid);
+                var product = pos.db.get_product_by_id(new_dline.product_id);
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
-                    line.uid = dline.uid;
+                    line.uid = new_dline.uid;
                 }
-                line.ms_info = dline.ms_info || {};
-                if(dline.qty !== undefined){
-                    line.set_quantity(dline.qty);
+                line.ms_info = new_dline.ms_info || {};
+                if(new_dline.qty !== undefined){
+                    line.set_quantity(new_dline.qty);
                 }
-                if(dline.price_unit !== undefined){
-                    line.set_unit_price(dline.price_unit);
+                if(new_dline.price_unit !== undefined){
+                    line.set_unit_price(new_dline.price_unit);
                 }
-                if(dline.discount !== undefined){
-                    line.set_discount(dline.discount);
+                if(new_dline.discount !== undefined){
+                    line.set_discount(new_dline.discount);
                 }
-                if(dline.mp_dirty !== undefined){
-                    line.set_dirty(dline.mp_dirty);
+                if(new_dline.mp_dirty !== undefined){
+                    line.set_dirty(new_dline.mp_dirty);
                 }
-                if(dline.mp_skip !== undefined){
-                    line.set_skip(dline.mp_skip);
+                if(new_dline.mp_skip !== undefined){
+                    line.set_skip(new_dline.mp_skip);
                 }
-                if(dline.note !== undefined){
-                    line.set_note(dline.note);
+                if(new_dline.note !== undefined){
+                    line.set_note(new_dline.note);
                 }
                 order.orderlines.add(line);
             });
@@ -262,6 +263,9 @@ odoo.define('pos_multi_session', function(require){
                 }
             },
             function(err,event){
+                if (self.debug && err) {
+                    console.log(err.stack);
+                }
                 event.preventDefault();
                 def.reject();
             });
@@ -574,8 +578,8 @@ odoo.define('pos_multi_session', function(require){
             orders.forEach(function(item) {
                 var remove_order = server_orders_uid.indexOf(item.uid);
                 if (remove_order === -1) {
-                    var order = self.pos.get('orders').find(function (order) {
-                        return order.uid === item.uid;
+                    var order = self.pos.get('orders').find(function (current_order) {
+                        return current_order.uid === item.uid;
                     });
                     order.destroy({'reason': 'abandon'});
                 }
