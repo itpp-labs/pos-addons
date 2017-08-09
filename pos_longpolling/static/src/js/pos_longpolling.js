@@ -12,7 +12,8 @@ odoo.define('pos_longpolling', function(require){
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
-    bus.bus.activated = true; // fake value to ignore start_polling call
+    // fake value to ignore start_polling call
+    bus.bus.activated = true;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -76,7 +77,7 @@ odoo.define('pos_longpolling', function(require){
         on_notification_do: function (channel, message) {
             var self = this;
             if (_.isString(channel)) {
-                var channel = JSON.parse(channel);
+                channel = JSON.parse(channel);
             }
             if(Array.isArray(channel) && (channel[1] in self.channels)){
                 try{
@@ -102,7 +103,8 @@ odoo.define('pos_longpolling', function(require){
             this.pos = pos;
             this.timer = false;
             this.status = false;
-            this.response_status = false; // Is the message "PONG" received from the server
+            // Is the message "PONG" received from the server
+            this.response_status = false;
         },
         network_is_on: function(message) {
             if (message) {
@@ -116,7 +118,7 @@ odoo.define('pos_longpolling', function(require){
             this.set_status(false);
         },
         set_status: function(status) {
-            if (this.status == status) {
+            if (this.status === status) {
                 return;
             }
             this.status = status;
@@ -134,12 +136,12 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start_timer: function(time, type){
-            var time = Math.round(time * 3600.0);
+            time = Math.round(time * 3600.0);
             var self = this;
             this.timer = setTimeout(function() {
-                if (type == "query") {
+                if (type === "query") {
                     self.send();
-                } else if (type == "response") {
+                } else if (type === "response") {
                     if (self.pos.debug){
                         console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
                     }
