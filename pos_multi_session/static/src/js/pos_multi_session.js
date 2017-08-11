@@ -470,12 +470,10 @@ odoo.define('pos_multi_session', function(require){
                     }
                     self.request_sync_all();
                 } else {
-                    if (!self.offline_sync_all_timer) {
-                        self.no_connection_warning();
-                        self.start_offline_sync_timer();
-                        if (self.pos.debug){
-                            console.log('MultiSession initialize error');
-                        }
+                    self.no_connection_warning();
+                    self.start_offline_sync_timer();
+                    if (self.pos.debug){
+                        console.log('MultiSession initialize error');
                     }
                 }
             });
