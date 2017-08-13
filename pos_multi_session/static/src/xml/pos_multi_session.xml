@@ -11,21 +11,37 @@
         </t>
     </t>
 
+
     <t t-extend="OrderSelectorWidget">
         <t t-jquery="t[t-if='order === widget.pos.get_order()'] .order-sequence" t-operation="replace">
-            <span class='order-sequence'>
-                <span t-if="order.ms_info and order.ms_info.created" class="ms_info"><t t-esc="order.ms_info.created.pos.name"/></span>
-                <t t-if="order.new_order"><span class="new_order">New</span></t>
-                <t t-if="!order.new_order"><t t-esc='order.sequence_number' /></t>
-            </span>
+            <t t-if="widget.pos.config.multi_session_id">
+                <span class='order-sequence'>
+                    <span t-if="order.ms_info and order.ms_info.created" class="ms_info"><t t-esc="order.ms_info.created.pos.name"/></span>
+                    <t t-if="order.new_order"><span class="new_order">New</span></t>
+                    <t t-if="!order.new_order"><t t-esc='order.sequence_number' /></t>
+                </span>
+            </t>
+            <t t-if="!widget.pos.config.multi_session_id">
+                <span class='order-sequence'>
+                    <t t-esc='order.sequence_number' />
+                </span>
+            </t>
         </t>
-        <t t-jquery="t[t-if='order !== widget.pos.get_order()'] .order-sequence" t-operation="replace">
-            <span class='order-sequence'>
-                <span t-if="order.ms_info and order.ms_info.created" class="ms_info"><t t-esc="order.ms_info.created.pos.name"/></span>
-                <t t-if="order.new_order">New</t>
-                <t t-if="!order.new_order"><t t-esc='order.sequence_number' /></t>
-            </span>
-        </t>
-    </t>
 
+        <t t-jquery="t[t-if='order !== widget.pos.get_order()'] .order-sequence" t-operation="replace">
+            <t t-if="widget.pos.config.multi_session_id">
+                <span class='order-sequence'>
+                    <span t-if="order.ms_info and order.ms_info.created" class="ms_info"><t t-esc="order.ms_info.created.pos.name"/></span>
+                    <t t-if="order.new_order">New</t>
+                    <t t-if="!order.new_order"><t t-esc='order.sequence_number' /></t>
+                </span>
+            </t>
+            <t t-if="!widget.pos.config.multi_session_id">
+                <span class='order-sequence'>
+                    <t t-esc='order.sequence_number' />
+                </span>
+            </t>
+        </t>
+
+    </t>
 </templates>
