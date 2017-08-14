@@ -9,6 +9,7 @@ odoo.define('pos_multi_session', function(require){
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
+    var Model = require('web.Model');
 
     var _t = core._t;
 
