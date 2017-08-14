@@ -68,6 +68,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 }
             };
         },
+        add_new_order: function(){
+            var self = this;
+            PosModelSuper.prototype.add_new_order.apply(this, arguments);
+            if (this.multi_session){
+                var current_order = this.get_order();
+                current_order.ms_update();
+            }
+        },
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
