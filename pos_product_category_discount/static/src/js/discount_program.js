@@ -111,9 +111,9 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
         update_summary: function(){
             this._super();
             var order = this.pos.get_order();
-            var discount = order ?
-                           order.get_total_discount() :
-                           0;
+            var discount = order
+                           ? order.get_total_discount()
+                           : 0;
             if (this.el.querySelector('.summary .total .discount .value')) {
                 if (order.product_discount) {
                     discount -= order.product_discount;
