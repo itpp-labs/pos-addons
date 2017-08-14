@@ -16,6 +16,13 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            var partner_model = _.find(this.models, function(model){
+                return model.model === 'res.partner';
+            });
+            partner_model.fields.push('discount_program_id');
+            return PosModelSuper.prototype.initialize.apply(this, arguments);
+        },
         get_discount_category: function(id) {
             var self = this;
             var model = new Model('pos.category_discount');
@@ -41,6 +48,25 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
 
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
+        initialize: function(attr,options){
+            OrderlineSuper.prototype.initialize.apply(this,arguments);
+            if (this.order && this.order.get_client() && this.order.get_client().discount_program_id) {
+                this.apply_product_discount(this.order.get_client().discount_program_id[0]);
+            }
+        },
+        apply_product_discount: function(id) {
+            var self = this;
+            var model = new Model('pos.category_discount');
+            var domain = [['discount_program_id', '=', id]];
+            model.call('search_read', [domain]).then(function (result) {
+                result.forEach(function(res) {
+                    if (res.discount_category_id[0] === self.product.pos_categ_id[0]) {
+                        self.discount_program_name = res.discount_program_id[1];
+                        self.set_discount(res.category_discount_pc);
+                    }
+                });
+            });
+        },
         export_as_JSON: function(){
             var json = OrderlineSuper.prototype.export_as_JSON.call(this);
             json.discount_program_name = this.discount_program_name || false;
@@ -344,4 +370,43 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
         },
     });
     gui.define_screen({name:'discountlist', widget: DiscountProgramScreenWidget});
+
+    gui.Gui.prototype.screen_classes.filter(function(el) {
+        return el.name === 'clientlist';
+    })[0].widget.include({
+        save_changes: function(){
+            var self = this;
+            var order = this.pos.get_order();
+            if (this.new_client) {
+                if ((this.has_client_changed() || this.has_discount_program_changed()) &&
+                    this.new_client && this.new_client.discount_program_id) {
+                    order.get_orderlines().forEach(function(line){
+                        line.set_discount(false);
+                    });
+                    this.pos.get_discount_category(this.new_client.discount_program_id[0]);
+
+                }
+            }
+            this._super();
+        },
+        has_discount_program_changed: function(){
+            if (this.old_client && this.new_client && this.old_client.id === this.new_client.id) {
+                if (this.old_client.discount_program_id && this.new_client.discount_program_id && (
+                    this.old_client.discount_program_id[0] === this.new_client.discount_program_id[0]
+                )) {
+                    return false;
+                }
+                return true;
+            }
+        },
+        toggle_save_button: function() {
+            var $button = this.$('.button.next');
+            if (!this.editing_client && this.has_discount_program_changed()) {
+                 $button.text(_t('Apply Change'));
+                 $button.toggleClass('oe_hidden',!this.has_discount_program_changed());
+            } else {
+                this._super();
+            }
+        },
+    });
 });
