@@ -30,16 +30,27 @@ odoo.define('pos_cancel_order.order_note', function (require) {
     });
     models.load_models({
         model: 'pos.product_notes',
-        fields: ['name', 'number'],
+        fields: ['name', 'sequence'],
         loaded: function(self,product_notes){
             var sorting_product_notes = function(idOne, idTwo){
-                return idOne.number - idTwo.number;
+                return idOne.sequence - idTwo.sequence;
             };
             if (product_notes) {
                 self.product_notes = product_notes.sort(sorting_product_notes);
             }
         },
     });
+
+//    var _super_pos = models.PosModel.prototype;
+//    models.PosModel = models.PosModel.extend({
+//        initialize: function (session, attributes) {
+//            var product_template_model = _.find(this.models, function(model){
+//                return model.model === 'product.template';
+//            });
+//            product_template_model.fields.push('pos_notes');
+//            return _super_pos.initialize.apply(this, arguments);
+//        },
+//    });
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
