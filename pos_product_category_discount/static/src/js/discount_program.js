@@ -36,6 +36,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
         apply_discount_category: function(discount_program) {
             var self = this;
             var order = this.get_order();
+            order.remove_all_discounts();
             var lines = order.get_orderlines().filter(function(item) {
                 return item.product.pos_categ_id[0] === discount_program.discount_category_id[0] && item.product.discount_allowed;
             });
@@ -55,9 +56,6 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
             OrderlineSuper.prototype.initialize.apply(this,arguments);
             if (this.order && this.order.current_discount_program) {
                 this.apply_product_discount(this.order.current_discount_program[0]);
-            }
-            if (this.order && this.order.get_client() && this.order.get_client().discount_program_id) {
-                this.apply_product_discount(this.order.get_client().discount_program_id[0]);
             }
         },
         apply_product_discount: function(id) {
@@ -395,7 +393,6 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
         save_changes: function(){
             var self = this;
             var order = this.pos.get_order();
-            order.remove_all_discounts();
             if (this.new_client) {
                 if ((this.has_client_changed() || this.has_discount_program_changed()) &&
                     this.new_client && this.new_client.discount_program_id) {
