@@ -6,13 +6,11 @@
                 <div class="discount-program-content">
                     <p class="title">Load Discount Program</p>
                     <div class="discount-program-list">
-
-                            <ul>
-                                <t t-foreach="widget.options.disc_program" t-as="program">
-                                    <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
-                                </t>
-                            </ul>
-
+                        <ul>
+                            <t t-foreach="widget.options.disc_program" t-as="program">
+                                <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
+                            </t>
+                        </ul>
                         <ul>
                             <li><div id="other" class="button other-discount-program">Other</div></li>
                         </ul>
@@ -20,6 +18,7 @@
                 </div>
             </t>
         </t>
+
     </t>
 
     <t t-extend="Orderline">
