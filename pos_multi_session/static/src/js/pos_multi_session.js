@@ -179,6 +179,7 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 order.ms_info = data.ms_info;
                 order.revision_ID = data.revision_ID;
+                order.sequence_number = data.sequence_number;
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -199,7 +200,7 @@ odoo.define('pos_multi_session', function(require){
             {
                 order.set_client(null);
             }
-
+            var new_lines = [];
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
@@ -207,9 +208,11 @@ odoo.define('pos_multi_session', function(require){
                 });
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
+                var new_line = false;
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
+                    new_line = true;
                 }
                 line.ms_info = dline.ms_info || {};
                 if(dline.qty !== undefined){
@@ -230,8 +233,15 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
                 }
-                order.orderlines.add(line);
+                if (new_line){
+                    new_lines.push(line)
+                }
             });
+            if (new_lines && new_lines.length) {
+                new_lines.forEach(function(line) {
+                    order.orderlines.add(line);
+                })
+            }
 
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
