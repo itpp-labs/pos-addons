@@ -88,6 +88,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         remove_all_discounts: function() {
+            this.current_discount_program = false;
             this.get_orderlines().forEach(function(line){
                 line.set_discount(false);
             });
@@ -268,8 +269,14 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
             this._super(options);
             this.popup_discount = false;
             if (options.disc_program) {
-                self.popup_discount = true;
-                self.events["click .discount-program-list .button"] = "click_discount_program";
+                this.popup_discount = true;
+                this.events = _.extend(this.events || {}, {
+                    'click .discount-program-list .button': 'click_discount_program',
+                    'click .reset': function() {
+                        self.pos.get_order().remove_all_discounts();
+                        self.gui.close_popup();
+                    },
+                });
             }
         },
         renderElement: function(){

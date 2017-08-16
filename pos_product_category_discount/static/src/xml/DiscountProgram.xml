@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-extend="NumberPopupWidget">
+        <t t-jquery="div[class='button cancel']" t-operation="after">
+            <t t-if="widget.options.disc_program">
+                <div class="button reset">
+                    Reset
+                </div>
+            </t>
+        </t>
         <t t-jquery="div[class='footer centered']" t-operation="after">
             <t t-if="widget.options.disc_program">
                 <div class="discount-program-content">
