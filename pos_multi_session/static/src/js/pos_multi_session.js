@@ -200,6 +200,8 @@ odoo.define('pos_multi_session', function(require){
             {
                 order.set_client(null);
             }
+//          new lines is created for aggregated adding new lines to order
+//          to prevent incorrect order creation during billsplitting for other POSes after synchronization
             var new_lines = [];
             _.each(data.lines, function(dline){
                 dline = dline[2];
@@ -208,11 +210,10 @@ odoo.define('pos_multi_session', function(require){
                 });
                 not_found = _.without(not_found, dline.uid);
                 var product = pos.db.get_product_by_id(dline.product_id);
-                var new_line = false;
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
-                    new_line = true;
+                    new_lines.push(line);
                 }
                 line.ms_info = dline.ms_info || {};
                 if(dline.qty !== undefined){
@@ -233,15 +234,13 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
                 }
-                if (new_line){
-                    new_lines.push(line)
+                if (new_lines){
+                    new_lines[new_lines.length - 1] = line;
                 }
             });
-            if (new_lines && new_lines.length) {
-                new_lines.forEach(function(line) {
-                    order.orderlines.add(line);
-                })
-            }
+            new_lines.forEach(function(line) {
+                order.orderlines.add(line);
+            })
 
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){

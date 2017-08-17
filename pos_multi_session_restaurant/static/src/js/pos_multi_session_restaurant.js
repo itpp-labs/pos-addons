@@ -156,6 +156,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
         },
         remove_orderline: function(line){
+//        the call of "super" cause new order creation after removing an orderline for temporary orders
             if (this.temporary){
                 this.assert_editable();
                 this.orderlines.remove(line);
