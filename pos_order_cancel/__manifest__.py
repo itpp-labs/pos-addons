@@ -3,7 +3,7 @@
     "name": """POS Order Cancel""",
     "summary": """Specify reasons for cancel separate products or entire order after printing in POS""",
     "category": "Point of Sale",
-    "images": ['images/pos_order_cancel_main.png'],
+    "images": ["images/pos_order_cancel_main.png"],
     "version": "1.0.0",
     "application": False,
 
@@ -15,7 +15,7 @@
     "currency": "EUR",
 
     "depends": [
-        'pos_restaurant',
+        "point_of_sale",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

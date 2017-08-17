@@ -1,0 +1,208 @@
+odoo.define('pos_order_cancel.widgets', function (require) {
+    "use strict";
+
+    var models = require('pos_order_cancel.models');
+    var screens = require('point_of_sale.screens');
+    var chrome = require('point_of_sale.chrome');
+    var gui = require('point_of_sale.gui');
+    var core = require('web.core');
+    var PopupWidget = require('point_of_sale.popups');
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var Model = require('web.DataModel');
+    var QWeb = core.qweb;
+    var _t = core._t;
+
+    gui.Gui.include({
+        back: function() {
+            if (this.pos.get_order()){
+                this._super();
+            }
+        }
+    });
+
+    chrome.OrderSelectorWidget.include({
+        deleteorder_click_handler: function(event, $el) {
+            var self = this;
+            var order = this.pos.get_order();
+            if (order.is_empty()) {
+                if (order.contains_canceled_lines) {
+                    this.gui.screen_instances.products.order_widget.show_popup('order');
+                } else {
+                    this._super(event, $el);
+                }
+            } else {
+                this.gui.screen_instances.products.order_widget.show_popup('order');
+            }
+        },
+    });
+
+    screens.OrderWidget.include({
+        init: function(parent, options) {
+            this._super(parent,options);
+            this.numpad_state.bind('show_popup', this.show_popup, this);
+            this.pos.selected_cancelled_reason = '';
+        },
+        show_popup: function(type){
+            var self = this;
+            var order = this.pos.get_order();
+            var orderline = order.get_selected_orderline();
+            this.numpad_state.show_popup = true;
+            var title = 'Order ';
+            if (type === "product") {
+                if (!orderline) {
+                    this.numpad_state.show_popup = false;
+                    return false;
+                }
+                title = 'Product ';
+            }
+
+            // type of object which is removed (product or order)
+            this.gui.show_popup('confirm-cancellation',{
+                'title': _t(title + 'Cancellation Reason'),
+                'reasons': self.pos.cancelled_reason.slice(0,8),
+                'value': self.pos.selected_cancelled_reason.name,
+                'type': type,
+                confirm: function(reason){
+                    if (type === 'product') {
+                        orderline.save_canceled_line(reason)
+                    }
+                    if (type === 'order') {
+                        order.save_canceled_order(reason);
+                    }
+                },
+            });
+        },
+    });
+
+    var ConfirmCancellationPopupWidget = PopupWidget.extend({
+        template: 'ConfirmCancellationPopupWidget',
+        show: function(options){
+            this._super(options);
+            if (options.reasons) {
+                this.events = _.extend(this.events, {
+                    'click .cancelled-reason .button': 'click_cancelled_reason',
+                });
+            }
+            this.type = options.type;
+            this.renderElement();
+        },
+        get_reason_by_id: function(id) {
+            var reason = this.options.reasons.find(function(item) {
+                return item.id === Number(id);
+            });
+            return reason;
+        },
+        click_cancelled_reason: function(e) {
+            var self = this;
+            var id = e.currentTarget.id;
+            if (id === 'other') {
+                var skip_close_popup = true;
+                self.gui.show_screen('reason_screen', {type: this.type});
+            } else {
+                this.$('.popup-confirm-cancellation textarea').val(this.get_reason_by_id(id).name);
+            }
+        },
+        click_confirm: function(){
+            this.gui.close_popup();
+            if( this.options.confirm ){
+                var order = this.pos.get_order();
+                var reason = this.$('.popup-confirm-cancellation textarea').val();
+                this.options.confirm.call(this, reason);
+            }
+        },
+    });
+    gui.define_popup({name:'confirm-cancellation', widget: ConfirmCancellationPopupWidget});
+
+    var ReasonCancellationScreenWidget = screens.ScreenWidget.extend({
+        template: 'ReasonCancellationScreenWidget',
+        events: {
+            'click .reason-line': function (event) {
+                var line = $('.reason-line#'+parseInt(event.currentTarget.id));
+                this.line_select(line, parseInt(event.currentTarget.id));
+            },
+            'click .reason-back': function () {
+                this.gui.back();
+            },
+            'click .reason-next': function () {
+                this.save_changes();
+                this.gui.back();
+            },
+        },
+        init: function(parent, options){
+            this._super(parent, options);
+            this.reason_cache = new screens.DomCache();
+        },
+        auto_back: true,
+        show: function(){
+            this._super();
+            this.show_reason_button = false;
+            this.render_list(this.pos.cancelled_reason);
+        },
+        render_list: function(reasons){
+            var contents = this.$el[0].querySelector('.reason-list-contents');
+            contents.innerHTML = "";
+            for(var i = 0, len = Math.min(reasons.length,1000); i < len; i++){
+                var reason = reasons[i];
+                var cancellation_reason = this.reason_cache.get_node(reason.id);
+                if(!cancellation_reason){
+                    var cancellation_reason_html = QWeb.render('CancellationReason',{widget: this, reason:reasons[i]});
+                    cancellation_reason = document.createElement('tbody');
+                    cancellation_reason.innerHTML = cancellation_reason_html;
+                    cancellation_reason = cancellation_reason.childNodes[1];
+                    this.reason_cache.cache_node(reason.id,cancellation_reason);
+                }
+                cancellation_reason.classList.remove('highlight');
+                contents.appendChild(cancellation_reason);
+            }
+        },
+        save_changes: function(){
+            var self = this;
+            var order = this.pos.get_order();
+            var orderline = order.get_selected_orderline();
+            var type = this.get_type();
+            var reason = $('.reason-line#'+this.old_id + ' td').text();
+
+            if (type === 'product') {
+                orderline.save_canceled_line(reason)
+            }
+            if (type === 'order') {
+                order.save_canceled_order(reason);
+            }
+        },
+        toggle_save_button: function(){
+            var $button = this.$('.button.next');
+            if (this.show_reason_button) {
+                $button.removeClass('oe_hidden');
+                $button.text(_t('Apply'));
+            } else {
+                $button.addClass('oe_hidden');
+                return;
+            }
+        },
+        line_select: function(line,id){
+            if (this.old_id !== id) {
+                this.show_reason_button = true;
+                this.old_id = id;
+            }
+            if ( line.hasClass('highlight') ){
+                line.removeClass('highlight');
+                this.show_reason_button = false;
+            }else{
+                this.$('.reason-list .highlight').removeClass('highlight');
+                line.addClass('highlight');
+                this.show_reason_button = true;
+            }
+
+            this.toggle_save_button();
+        },
+        get_type: function(){
+            return this.gui.get_current_screen_param('type');
+        },
+    });
+    gui.define_screen({name:'reason_screen', widget: ReasonCancellationScreenWidget});
+
+    return {
+        ConfirmCancellationPopupWidget: ConfirmCancellationPopupWidget,
+        ReasonCancellationScreenWidget: ReasonCancellationScreenWidget,
+    }
+});
