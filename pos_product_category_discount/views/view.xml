@@ -51,7 +51,7 @@
             <form string="Pos Category Discount">
                 <sheet>
                     <group>
-                        <field name="discount_category_id"/>
+                        <field name="discount_category_id" required="1"/>
                         <field name="category_discount_pc"/>
                         <field name="discount_program_id" invisible="1"/>
                     </group>
