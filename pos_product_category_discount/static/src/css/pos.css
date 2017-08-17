@@ -178,3 +178,7 @@
     font-weight: normal;
     text-align: center;
 }
+.pos .discount_program_td {
+    padding: 0px;
+    line-height: 25px;
+}
