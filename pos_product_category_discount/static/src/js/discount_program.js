@@ -435,5 +435,9 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
                 this._super();
             }
         },
+        saved_client_details: function(partner_id){
+            this.partner_cache.clear_node(partner_id);
+            this._super(partner_id);
+        },
     });
 });
