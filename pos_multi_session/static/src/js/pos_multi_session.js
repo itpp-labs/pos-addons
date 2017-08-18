@@ -378,7 +378,7 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    if (res) {
+                    if (res && res.action=="update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
                         if (order_ID && self.sequence_number != order_ID) {
