@@ -10,47 +10,110 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
-        get_printed_order_lines: function(mp_dirty_status) {
-            return this.get_orderlines().filter(function(line){
+        saveChanges: function(){
+            var self = this;
+            if (this.pos.config.kitchen_canceled_only) {
+                if (this.was_removed_product) {
+                    var not_printed_lines = this.get_order_lines_by_dirty_status(true);
+                    this.trigger('change',this);
+                    this.saved_resume = this.build_line_resume();
+                    not_printed_lines.forEach(function (item) {
+                        delete self.saved_resume[item.id];
+                    });
+                    this.trigger('change',this);
+                    this.was_removed_product = false;
+                } else {
+                    _super_order.saveChanges.call(this, arguments);
+                }
+                var lines = this.get_order_lines_by_dirty_status(false);
+                lines.forEach(function(line){
+                    line.was_printed = true;
+                });
+            } else {
+                _super_order.saveChanges.call(this, arguments);
+            }
+        },
+        get_order_lines_by_dirty_status: function(mp_dirty_status) {
+            var lines = this.get_orderlines();
+            lines = lines.filter(function(line){
                 return line.mp_dirty === mp_dirty_status;
             });
+            var printers = this.pos.printers;
+            var categories_ids = [];
+            for(var i = 0; i < printers.length; i++) {
+                var product_categories_ids = printers[i].config.product_categories_ids;
+                product_categories_ids.forEach(function(id){
+                    categories_ids.push(id);
+                });
+            }
+            var unique_categories_ids = [];
+            this.unique(categories_ids).forEach(function(id){
+                unique_categories_ids.push(Number(id));
+            });
+            var new_lines = [];
+            unique_categories_ids.forEach(function(id){
+                lines.forEach(function(line){
+                    if (line.product.pos_categ_id[0] === id) {
+                        new_lines.push(line);
+                    }
+                });
+            });
+            if (new_lines.length === 0) {
+                this.сancel_button_available = false;
+            } else {
+                this.сancel_button_available = true;
+            }
+            return new_lines;
         },
-//        initialize: function(attributes, options){
-//            var res = _super_order.initialize.apply(this, arguments);
-//            this.canceled_lines = [];
-//            this.contains_canceled_lines = false;
-//            return res;
-//        },
-//        save_canceled_order: function(reason) {
-//            var self = this;
-//            this.is_cancelled = true;
-//            this.reason = reason;
-//            this.orderlines.each(function(orderline){
-//                self.get_last_orderline().save_canceled_line(_t("Order Deleting"));
-//            });
-//            this.pos.push_order(this).then(function() {
-//                self.destroy({'reason':'abandon'});
-//            });
-//        },
-//        export_as_JSON: function() {
-//            var data = _super_order.export_as_JSON.apply(this, arguments);
-//            data.canceled_lines = this.canceled_lines;
-//            data.reason = this.reason;
-//            data.is_cancelled = this.is_cancelled;
-//            data.contains_canceled_lines = this.contains_canceled_lines;
-//            return data;
-//        },
-//        init_from_JSON: function(json) {
-//            this.canceled_lines = json.canceled_lines;
-//            this.reason = json.reason;
-//            this.is_cancelled = json.is_cancelled;
-//            this.contains_canceled_lines = json.contains_canceled_lines;
-//            _super_order.init_from_JSON.call(this, json);
-//        },
+        unique: function(arr){
+            var obj = {};
+            for (var i = 0; i < arr.length; i++) {
+                var str = arr[i];
+                obj[str] = true;
+            }
+            return Object.keys(obj);
+        },
+        computeChanges: function(categories){
+            var res = _super_order.computeChanges.apply(this, arguments);
+            if (this.pos.config.kitchen_canceled_only) {
+                if (this.was_removed_product) {
+                    res.new = [];
+                }
+                if (this.reason) {
+                    res.reason = this.reason;
+                }
+            }
+            return res;
+        },
+        save_canceled_order: function(reason) {
+            var self = this;
+            if (this.pos.config.kitchen_canceled_only) {
+                this.is_cancelled = true;
+                this.reason = reason;
+                this.orderlines.each(function(orderline){
+                    self.get_last_orderline().save_canceled_line(_t("Order Deleting"));
+                });
+                this.printChanges();
+                this.saveChanges();
+                this.pos.push_order(this).then(function() {
+                    self.destroy({'reason':'abandon'});
+                });
+            } else {
+                _super_order.save_canceled_order.apply(this, arguments);
+            }
+        },
     });
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
+        save_canceled_line: function(reason) {
+            if (this.pos.config.kitchen_canceled_only) {
+                this.order.was_removed_product = true;
+                this.order.printChanges();
+                this.order.saveChanges();
+            }
+            _super_orderline.save_canceled_line.apply(this, arguments);
+        },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.was_printed = this.was_printed;
