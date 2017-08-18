@@ -2,13 +2,13 @@
  POS Order Cancel
 ==================
 
-The module allows to add a reason on canceling kitchen order. The reason will be added to cancelation receipt.
+The module allows to add a reason on canceling order or orderline in POS.
 
 Besides,
 
 * On canceling user can click on predefined Reason and specify custom one
 * Canceled order is saved at database
-* TODO Canceled order line is save at database
+* Canceled order line is save at database
 
 Credits
 =======

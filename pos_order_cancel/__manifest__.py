@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": """POS Order Cancel""",
-    "summary": """Specify reasons for cancel separate products or entire order after printing in POS""",
+    "summary": """Specify reasons for cancel separate products or entire order in POS""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_main.png"],
     "version": "1.0.0",
