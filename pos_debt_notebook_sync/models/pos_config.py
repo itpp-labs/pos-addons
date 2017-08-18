@@ -35,6 +35,10 @@ class PosConfig(models.Model):
             ).mapped(
                 lambda r: r.partner_id
             )
+        elif model == 'pos.credit.update':
+            partners = records.mapped(
+                lambda r: r.partner_id
+            )
 
         if partners:
             message = {"updated_partners": partners.ids}

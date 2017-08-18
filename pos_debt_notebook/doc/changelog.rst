@@ -1,16 +1,31 @@
+`4.4.0`
+-------
+
+- **ADD:** new field *Company Credit Balance* -- sum of credits of all company's employees.
+- **FIX:** move Debt fields at partner form. New place is Point of Sale section at Sales & Purchases tab. Otherwise the fields are hidden if partner has parent_id value
+- **ADD:** wizard to add Credits to company's employees. It creates invoices per each partner.
+
+`4.3.0`
+-------
+
+- **ADD:** Manual Credit Updates
+
 `4.2.0`
 -------
+
 - **ADD:** The "Load More" button in debt history
 - **ADD:** A product list to each debt history line
 
 `4.1.0`
 -------
+
 - **ADD:** Invoice support
 - **FIX:** Fetch new partners before loading their debt history (e.g. when another POS create partner)
 - **ADD:** print prev and new debt value in receipt as well as customer name
 
 `4.0.0`
 -------
+
 - **ADD:** An ability to show customer debt transactions 
 - **ADD:** Credits can be purchased via Credit Product. No need to use Debt Journal at that case
 - **ADD:** Max Debt setting per each customer. Default is 0.
