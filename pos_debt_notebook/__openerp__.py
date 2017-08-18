@@ -3,12 +3,8 @@
     'name': 'POS Debt & Credit notebook',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'category': 'Point Of Sale',
-    "images": [
-        'images/screenshot-2.png',
-        'images/screenshot-3.png',
-        'images/screenshot-1.png',
-    ],
-    'version': '4.2.0',
+    "images": ['images/debt_notebook.png'],
+    'version': '4.4.0',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "apps@it-projects.info",
@@ -26,6 +22,8 @@
         'data/product.xml',
         'views.xml',
         'views/pos_debt_report_view.xml',
+        'views/pos_credit_update.xml',
+        'wizard/pos_credit_invoices_views.xml',
         'data.xml',
         'security/ir.model.access.csv',
     ],

@@ -68,6 +68,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 }
             };
         },
+        add_new_order: function(){
+            var self = this;
+            PosModelSuper.prototype.add_new_order.apply(this, arguments);
+            if (this.multi_session){
+                var current_order = this.get_order();
+                current_order.ms_update();
+            }
+        },
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
@@ -165,6 +173,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.select_orderline(this.get_last_orderline());
             } else {
                 OrderSuper.prototype.remove_orderline.apply(this, arguments);
+            }
+        },
+    });
+
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
+        get_line_diff_hash: function(){
+            if (this.get_note()) {
+                return this.uid + '|' + this.get_note();
+            } else {
+                return '' + this.uid;
             }
         },
     });

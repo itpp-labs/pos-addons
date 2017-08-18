@@ -140,6 +140,9 @@ odoo.define('pos_longpolling', function(require){
                 if (type == "query") {
                     self.send();
                 } else if (type == "response") {
+                    if (self.pos.debug){
+                        console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
+                    }
                     self.network_is_off();
                 }
             }, time * 1000);
@@ -159,6 +162,9 @@ odoo.define('pos_longpolling', function(require){
                 }
             }, function(error, e){
                 e.preventDefault();
+                if (self.pos.debug){
+                    console.log('POS LONGPOLLING send error', self.pos.config.name);
+                }
                 self.network_is_off();
             });
         }

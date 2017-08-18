@@ -9,6 +9,7 @@ odoo.define('pos_multi_session', function(require){
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
+    var Model = require('web.Model');
 
     var _t = core._t;
 
@@ -51,8 +52,10 @@ odoo.define('pos_multi_session', function(require){
             this.get('orders').bind('remove', function(order, collection, options){
                 if (!self.multi_session.client_online) {
                     if (order.order_on_server ) {
-                        var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
-                        self.multi_session.warning(warning_message);
+                        self.multi_session.no_connection_warning();
+                        if (self.debug){
+                            console.log('PosModel initialize error');
+                        }
                         return false;
                     }
                 }
@@ -382,10 +385,10 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    if (res) {
+                    if (res && res.action=="update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
-                        if (self.sequence_number != order_ID) {
+                        if (order_ID && self.sequence_number != order_ID) {
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
@@ -459,9 +462,11 @@ odoo.define('pos_multi_session', function(require){
                     self.request_sync_all();
                 } else {
                     if (!self.offline_sync_all_timer) {
-                        var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
-                        self.warning(warning_message);
+                        self.no_connection_warning();
                         self.start_offline_sync_timer();
+                        if (self.pos.debug){
+                            console.log('MultiSession initialize error');
+                        }
                     }
                 }
             });
@@ -514,8 +519,10 @@ odoo.define('pos_multi_session', function(require){
                     e.preventDefault();
                     self.pos.longpolling_connection.network_is_off();
                     if (!self.offline_sync_all_timer) {
-                        var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
-                        self.warning(warning_message);
+                        if (self.pos.debug){
+                            console.log('send, return send_it error');
+                        }
+                        self.no_connection_warning();
                         self.start_offline_sync_timer();
                     }
                 } else {
@@ -592,6 +599,10 @@ odoo.define('pos_multi_session', function(require){
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
             }, 5000);
+        },
+        no_connection_warning: function(){
+            var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
+            this.warning(warning_message);
         }
     });
     return exports;
