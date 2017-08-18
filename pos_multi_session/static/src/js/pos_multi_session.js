@@ -179,7 +179,8 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 order.ms_info = data.ms_info;
                 order.revision_ID = data.revision_ID;
-                order.sequence_number = data.sequence_number;
+//                order.sequence_number = data.sequence_number;
+//                order.new_order = false;
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -233,9 +234,6 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
-                }
-                if (new_lines){
-                    new_lines[new_lines.length - 1] = line;
                 }
             });
             new_lines.forEach(function(line) {

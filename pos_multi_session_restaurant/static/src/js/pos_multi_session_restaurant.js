@@ -156,8 +156,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
         },
         remove_orderline: function(line){
-//        the call of "super" cause new order creation after removing an orderline for temporary orders
             if (this.temporary){
+// "super" defined in pos_restaurant include "line.order.trigger('change:sync');".
+// It leads to creating new order for other POSes after removing an orderline in temporary orders.
+// So we use origin "remove_orderline" code for temporary orders
                 this.assert_editable();
                 this.orderlines.remove(line);
                 this.select_orderline(this.get_last_orderline());
