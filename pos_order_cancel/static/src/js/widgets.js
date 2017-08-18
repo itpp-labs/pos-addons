@@ -96,7 +96,6 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             var self = this;
             var id = e.currentTarget.id;
             if (id === 'other') {
-                var skip_close_popup = true;
                 self.gui.show_screen('reason_screen', {type: this.type});
             } else {
                 this.$('.popup-confirm-cancellation textarea').val(this.get_reason_by_id(id).name);
