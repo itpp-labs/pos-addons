@@ -179,8 +179,8 @@ odoo.define('pos_multi_session', function(require){
             } else {
                 order.ms_info = data.ms_info;
                 order.revision_ID = data.revision_ID;
-//                order.sequence_number = data.sequence_number;
-//                order.new_order = false;
+                order.sequence_number = data.sequence_number;
+                order.new_order = false;
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
