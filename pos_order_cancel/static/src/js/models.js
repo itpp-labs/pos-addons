@@ -76,7 +76,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             var self = this;
             var line = this.export_as_JSON();
             line.reason = reason;
-            line.user_id = this.pos.cashier ? this.pos.cashier.id : this.pos.user.id;
+            line.user_id = this.pos.cashier ?
+                           this.pos.cashier.id :
+                           this.pos.user.id;
             line.canceled_date = this.get_datetime();
             this.order.contains_canceled_lines = true;
             this.order.canceled_lines.push([0, 0, line]);
@@ -84,12 +86,12 @@ odoo.define('pos_order_cancel.models', function (require) {
         },
         get_datetime: function() {
             var currentdate = new Date();
-            var datetime = currentdate.getDate() + "/"
-                           + (currentdate.getMonth()+1)  + "/"
-                           + currentdate.getFullYear() + " "
-                           + currentdate.getHours() + ":"
-                           + currentdate.getMinutes() + ":"
-                           + currentdate.getSeconds();
+            var datetime = currentdate.getDate() + "/" +
+                           (currentdate.getMonth()+1) + "/" +
+                           currentdate.getFullYear() + " " +
+                           currentdate.getHours() + ":" +
+                           currentdate.getMinutes() + ":" +
+                           currentdate.getSeconds();
             return datetime;
         },
     });
