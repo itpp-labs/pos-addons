@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api, _
-from functools import partial
-from datetime import datetime
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DF
+from odoo import fields, models
 
 
 class PosConfig(models.Model):
