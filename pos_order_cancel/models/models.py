@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DF
