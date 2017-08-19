@@ -8,6 +8,5 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DF
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    kitchen_canceled_only = fields.Boolean(string="Save kitchen orders",
-                                           dafeult=False, help="Canceled orders: "
-                                                               "save kitchen orders only")
+    kitchen_canceled_only = fields.Boolean(string="Save Kitchen Orders Only",
+                                           dafeult=False, help="Save printed orders only")

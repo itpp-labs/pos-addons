@@ -2,6 +2,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     "use strict";
 
     var models = require('pos_order_cancel.models');
+    var multiprint = require('pos_restaurant.multiprint');
     var Model = require('web.DataModel');
     var core = require('web.core');
     var QWeb = core.qweb;
@@ -108,9 +109,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     models.Orderline = models.Orderline.extend({
         save_canceled_line: function(reason) {
             if (this.pos.config.kitchen_canceled_only) {
-                this.order.was_removed_product = true;
-                this.order.printChanges();
-                this.order.saveChanges();
+                if (!this.order.is_cancelled) {
+                    this.order.was_removed_product = true;
+                    this.order.reason = reason;
+                    this.order.printChanges();
+                    this.order.saveChanges();
+                }
             }
             _super_orderline.save_canceled_line.apply(this, arguments);
         },
@@ -124,29 +128,5 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             _super_orderline.init_from_JSON.call(this, json);
         },
     });
-
-//    var _super_orderline = models.Orderline.prototype;
-//    models.Orderline = models.Orderline.extend({
-//        save_canceled_line:!!!! function(reason) {
-//            var self = this;
-//            var line = this.export_as_JSON();
-//            line.reason = reason;
-//            line.user_id = this.pos.cashier ? this.pos.cashier.id : this.pos.user.id;
-//            line.canceled_date = this.get_datetime();
-//            this.order.contains_canceled_lines = true;
-//            this.order.canceled_lines.push([0, 0, line]);
-//            this.order.remove_orderline(this);
-//        },
-//        get_datetime: function() {
-//            var currentdate = new Date();
-//            var datetime = currentdate.getDate() + "/"
-//                           + (currentdate.getMonth()+1)  + "/"
-//                           + currentdate.getFullYear() + " "
-//                           + currentdate.getHours() + ":"
-//                           + currentdate.getMinutes() + ":"
-//                           + currentdate.getSeconds();
-//            return datetime;
-//        },
-//    });
     return models;
 });

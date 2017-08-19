@@ -5,7 +5,6 @@
             <xpath expr="//link[last()]" position="after">
                 <script type="text/javascript" src="/pos_order_cancel_restaurant/static/src/js/models.js"></script>
                 <script type="text/javascript" src="/pos_order_cancel_restaurant/static/src/js/widgets.js"></script>
-                <!--<link rel="stylesheet" href="/pos_order_cancel_restaurant/static/src/css/pos.css"/>-->
             </xpath>
         </template>
     </data>

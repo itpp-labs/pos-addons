@@ -23,7 +23,7 @@
         "views/views.xml",
     ],
     'qweb': [
-        # 'static/src/xml/cancel_order.xml',
+        'static/src/xml/cancel_order.xml',
     ],
     "demo": [],
 
