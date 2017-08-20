@@ -86,7 +86,7 @@ class PosOrderLineCanceled(models.Model):
     order_id = fields.Many2one('pos.order', string='Order Ref', ondelete='cascade', readonly=True)
     pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
     tax_ids = fields.Many2many('account.tax', string='Taxes', readonly=True)
-    canceled_date = fields.Datetime(string='Canceled Date', readonly=True)
+    canceled_date = fields.Datetime(string='Canceled Date', readonly=True, default=fields.Datetime.now)
 
     @api.model
     def create(self, values):

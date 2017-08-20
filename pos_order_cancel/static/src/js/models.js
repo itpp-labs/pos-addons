@@ -79,7 +79,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             line.user_id = this.pos.cashier
                            ? this.pos.cashier.id
                            : this.pos.user.id;
-            line.canceled_date = this.get_datetime();
+            if (!this.order.is_cancelled) {
+                line.canceled_date = this.get_datetime();
+            }
             this.order.contains_canceled_lines = true;
             this.order.canceled_lines.push([0, 0, line]);
             this.order.remove_orderline(this);
