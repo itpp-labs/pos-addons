@@ -68,11 +68,12 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Canceled Products">
                     <field name="canceled_lines" colspan="4" nolabel="1">
-                        <tree string="Canceled Order lines" editable="bottom">
+                        <tree string="Canceled Order lines" editable="bottom" create="false" delete="false">
                             <field name="product_id"/>
                             <field name="price_unit" widget="monetary"/>
                             <field name="discount" widget="monetary"/>
                             <field name="reason" string="Reason"/>
+                            <field name="user_id"/>
                             <field name="canceled_date" string="Canceled Datetime"/>
                             <field name="tax_ids" invisible="1"/>
                         </tree>
