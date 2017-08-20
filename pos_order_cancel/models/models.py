@@ -47,8 +47,8 @@ class PosOrder(models.Model):
         return order
 
     def _create_account_move_line(self, session=None, move=None):
-        canceled_order = self.filtered(lambda o: (not o.account_move or o.state == 'paid') and o.is_cancelled is True)
-        return super(PosOrder, self-canceled_order)._create_account_move_line(session, move)
+        uncanceled_order = self.filtered(lambda o: not o.is_cancelled)
+        return super(PosOrder, uncanceled_order)._create_account_move_line(session, move)
 
     @api.multi
     def action_pos_order_paid(self):
