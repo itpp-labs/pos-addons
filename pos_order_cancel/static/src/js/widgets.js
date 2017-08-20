@@ -85,7 +85,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
             this.type = options.type;
             options.reasons.forEach(function(item) {
-                return item.active = false;
+                item.active = false;
             });
             this.renderElement();
         },
