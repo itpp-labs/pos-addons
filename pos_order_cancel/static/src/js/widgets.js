@@ -84,6 +84,9 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 });
             }
             this.type = options.type;
+            options.reasons.forEach(function(item) {
+                return item.active = false;
+            });
             this.renderElement();
         },
         get_reason_by_id: function(id) {
@@ -97,15 +100,30 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             if (id === 'other') {
                 self.gui.show_screen('reason_screen', {type: this.type});
             } else {
-                this.$('.popup-confirm-cancellation textarea').val(this.get_reason_by_id(id).name);
+                self.set_active_reason_status($(e.target), Number(id));
+            }
+        },
+        set_active_reason_status: function(reason_obj, id){
+            if (reason_obj.hasClass("active")) {
+                reason_obj.removeClass("active");
+                this.get_reason_by_id(id).active = false;
+            } else {
+                reason_obj.addClass("active");
+                this.get_reason_by_id(id).active = true;
             }
         },
         click_confirm: function(){
             this.gui.close_popup();
             if( this.options.confirm ){
-                var order = this.pos.get_order();
+                var active_reasons = this.options.reasons.filter(function(item) {
+                    return item.active === true;
+                });
+                var active_reasons_name = [];
+                active_reasons.forEach(function(item) {
+                    active_reasons_name.push(item.name);
+                });
                 var reason = this.$('.popup-confirm-cancellation textarea').val();
-                this.options.confirm.call(this, reason);
+                this.options.confirm.call(this, reason + "; " + active_reasons_name.join("; "));
             }
         },
     });
@@ -149,7 +167,11 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     cancellation_reason = cancellation_reason.childNodes[1];
                     this.reason_cache.cache_node(reason.id,cancellation_reason);
                 }
-                cancellation_reason.classList.remove('highlight');
+                if (reason.active) {
+                    cancellation_reason.classList.add('highlight');
+                } else {
+                    cancellation_reason.classList.remove('highlight');
+                }
                 contents.appendChild(cancellation_reason);
             }
         },
@@ -157,9 +179,16 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             var self = this;
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
-            var type = this.get_type();
-            var reason = $('.reason-line#'+this.old_id + ' td').text();
 
+            var type = this.get_type();
+            var active_reasons = this.pos.cancelled_reason.filter(function(item) {
+                return item.active === true;
+            });
+            var active_reasons_name = [];
+            active_reasons.forEach(function(item) {
+                active_reasons_name.push(item.name);
+            });
+            var reason = active_reasons_name.join("; ");
             if (type === 'product') {
                 orderline.save_canceled_line(reason);
             }
@@ -178,23 +207,29 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
         },
         line_select: function(line,id){
-            if (this.old_id !== id) {
-                this.show_reason_button = true;
-                this.old_id = id;
+            if (line.hasClass("highlight")) {
+                line.removeClass("highlight");
+                this.get_reason_by_id(id).active = false;
+            } else {
+                line.addClass("highlight");
+                this.get_reason_by_id(id).active = true;
             }
-            if ( line.hasClass('highlight') ){
-                line.removeClass('highlight');
-                this.show_reason_button = false;
-            }else{
-                this.$('.reason-list .highlight').removeClass('highlight');
-                line.addClass('highlight');
+            this.show_reason_button = false;
+            var exist_active_reason = this.pos.cancelled_reason.find(function(item) {
+                return item.active === true;
+            });
+            if (exist_active_reason) {
                 this.show_reason_button = true;
             }
-
             this.toggle_save_button();
         },
         get_type: function(){
             return this.gui.get_current_screen_param('type');
+        },
+        get_reason_by_id: function(id) {
+            return this.pos.cancelled_reason.find(function(item) {
+                return item.id === Number(id);
+            });
         },
     });
     gui.define_screen({name:'reason_screen', widget: ReasonCancellationScreenWidget});
