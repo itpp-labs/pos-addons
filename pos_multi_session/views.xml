@@ -41,5 +41,19 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_pos_config_search">
+            <field name="name">pos.config.search.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stock_location_id']" position="after">
+                    <group string="Multi-session" name="multi_session" expand="0">
+                        <field name="multi_session_id"/>
+                        <filter name="multi_session_id" string="Multi-session id" domain="[]" context="{'group_by': 'multi_session_id'}" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>
