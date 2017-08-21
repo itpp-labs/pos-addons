@@ -2,7 +2,7 @@
 from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DF
+import pytz
 
 
 class PosCancelledReason(models.Model):
@@ -92,5 +92,9 @@ class PosOrderLineCanceled(models.Model):
     def create(self, values):
         if values.get('canceled_date'):
             canceled_date = datetime.strptime(values.get('canceled_date'), "%d/%m/%Y %H:%M:%S")
-            values['canceled_date'] = canceled_date.strftime(DF)
+            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc
+            canceled_date = tz.localize(canceled_date)
+            canceled_date = canceled_date.astimezone(pytz.utc)
+            canceled_date = fields.Datetime.to_string(canceled_date)
+            values['canceled_date'] = canceled_date
         return super(PosOrderLineCanceled, self).create(values)

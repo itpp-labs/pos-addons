@@ -123,7 +123,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     active_reasons_name.push(item.name);
                 });
                 var reason = this.$('.popup-confirm-cancellation textarea').val();
-                this.options.confirm.call(this, reason + "; " + active_reasons_name.join("; "));
+                if (reason) {
+                    reason += "; ";
+                }
+                this.options.confirm.call(this, reason + active_reasons_name.join("; "));
             }
         },
     });
