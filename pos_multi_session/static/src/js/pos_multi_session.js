@@ -204,9 +204,7 @@ odoo.define('pos_multi_session', function(require){
             {
                 order.set_client(null);
             }
-//          new lines is created for aggregated adding new lines to order
-//          to prevent incorrect order creation during billsplitting for other POSes after synchronization
-            var new_lines = [];
+
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
@@ -217,7 +215,6 @@ odoo.define('pos_multi_session', function(require){
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
-                    new_lines.push(line);
                 }
                 line.ms_info = dline.ms_info || {};
                 if(dline.qty !== undefined){
@@ -238,10 +235,8 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
                 }
-            });
-            new_lines.forEach(function(line) {
                 order.orderlines.add(line);
-            })
+            });
 
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
@@ -411,6 +406,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
+            this.uid = this.order.generate_unique_id() + '-' + this.id;
             if (this.order.screen_data.screen === "splitbill")
                 // ignore new orderline from splitbill tool
                 return;
@@ -430,7 +426,6 @@ odoo.define('pos_multi_session', function(require){
                     line.order.trigger('change:sync');
                 }
             });
-            this.uid = this.order.generate_unique_id() + '-' + this.id;
         },
         set_selected: function(){
             this.ms_changing_selected = true;
