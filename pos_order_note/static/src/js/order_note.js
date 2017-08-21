@@ -379,12 +379,12 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                 custom_notes = this.custom_product_ids;
             }
             if (custom_notes && custom_notes.length) {
-                this.notes.forEach(function(note) {
-                    var res = custom_notes.find(function(element) {
-                        return String(note.number) === String(element.number);
+                custom_notes.forEach(function(note) {
+                    var exist_note = self.notes.find(function(n) {
+                        return note.id === n.id;
                     });
-                    if (res) {
-                        note.active = true;
+                    if (exist_note) {
+                        exist_note.active = true;
                     }
                 });
             }
@@ -486,31 +486,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this._super();
             this.show_next_note_button = false;
             this.notes = this.pos.product_notes;
-            this.set_active_note_buttons();
             this.render_list(this.notes);
-        },
-        set_active_note_buttons: function() {
-            if (!this.notes) {
-                return false;
-            }
-            var self = this;
-            var order = this.pos.get_order();
-            var custom_notes = false;
-            if (order.note_type === "Order") {
-               custom_notes = this.custom_order_ids;
-            } else if (order.note_type === "Product") {
-                custom_notes = this.custom_product_ids;
-            }
-            if (custom_notes && custom_notes.length) {
-                this.notes.forEach(function(note) {
-                    var res = custom_notes.find(function(element) {
-                        return String(note.number) === String(element.number);
-                    });
-                    if (res) {
-                        note.active = true;
-                    }
-                });
-            }
         },
         set_active_note_status: function(note_obj, id){
             if (note_obj.hasClass("highlight")) {
