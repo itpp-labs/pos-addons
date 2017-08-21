@@ -121,7 +121,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             var json = this.export_as_JSON();
             var add = [];
             var rem = [];
-            var line_hash;
+            var line_hash = false;
 
             var res = _super_order.computeChanges.apply(this, arguments);
 
@@ -208,27 +208,29 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             res.order_custom_notes = current_order_custom_notes;
 
             for (line_hash in current_res) {
-                var curr = current_res[line_hash];
-                var old = old_res[line_hash];
-                var current_product = curr.product_id;
-                var new_exist_product = false;
-                var cancelled_exist_product = false;
-                if (res.new) {
-                    new_exist_product = res.new.find(function(product) {
-                        return product.id === current_product;
-                    });
-                }
-                if (res.cancelled) {
-                    cancelled_exist_product = res.cancelled.find(function(product) {
-                        return product.id === current_product;
-                    });
-                }
-                if (new_exist_product && curr.custom_notes) {
-                    new_exist_product.custom_notes = curr.custom_notes;
-                }
-                if (cancelled_exist_product && curr.old_custom_notes) {
-                    if (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes) {
-                        cancelled_exist_product.custom_notes = curr.old_custom_notes;
+                if (Object.prototype.hasOwnProperty.call(current_res, line_hash)) {
+                    var curr = current_res[line_hash];
+                    var old = old_res[line_hash];
+                    var current_product = curr.product_id;
+                    var new_exist_product = false;
+                    var cancelled_exist_product = false;
+                    if (res.new) {
+                        new_exist_product = res.new.find(function(product) {
+                            return product.id === current_product;
+                        });
+                    }
+                    if (res.cancelled) {
+                        cancelled_exist_product = res.cancelled.find(function(product) {
+                            return product.id === current_product;
+                        });
+                    }
+                    if (new_exist_product && curr.custom_notes) {
+                        new_exist_product.custom_notes = curr.custom_notes;
+                    }
+                    if (cancelled_exist_product && curr.old_custom_notes) {
+                        if (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes) {
+                            cancelled_exist_product.custom_notes = curr.old_custom_notes;
+                        }
                     }
                 }
             }
@@ -281,15 +283,13 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             if (this.get_note()) {
                 if(this.get_custom_notes()) {
                     return this.id + '|' + this.get_note() + '|' + custom_notes_ids_line;
-                } else {
-                    return _super_orderline.get_line_diff_hash.apply(this,arguments);
-                }
-            } else {
-                if(this.get_custom_notes()) {
-                    return this.id + '|' + custom_notes_ids_line;
                 }
                 return _super_orderline.get_line_diff_hash.apply(this,arguments);
             }
+            if(this.get_custom_notes()) {
+               return this.id + '|' + custom_notes_ids_line;
+            }
+            return _super_orderline.get_line_diff_hash.apply(this,arguments);
         },
         clone: function(){
             var orderline = _super_orderline.clone.call(this);
