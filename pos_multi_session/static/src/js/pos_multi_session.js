@@ -306,7 +306,9 @@ odoo.define('pos_multi_session', function(require){
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
-            line.order.trigger('change:sync');
+            if (!this.temporary){
+                line.order.trigger('change:sync');
+            };
         },
         add_product: function(){
             this.trigger('change:sync');

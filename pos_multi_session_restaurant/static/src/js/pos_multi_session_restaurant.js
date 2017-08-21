@@ -163,18 +163,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
             }
         },
-        remove_orderline: function(line){
-            if (this.temporary){
-// "super" defined in pos_restaurant include "line.order.trigger('change:sync');".
-// It leads to creating new order for other POSes after removing an orderline in temporary orders.
-// So we use origin "remove_orderline" code for temporary orders
-                this.assert_editable();
-                this.orderlines.remove(line);
-                this.select_orderline(this.get_last_orderline());
-            } else {
-                OrderSuper.prototype.remove_orderline.apply(this, arguments);
-            }
-        },
     });
 
     var OrderlineSuper = models.Orderline;
