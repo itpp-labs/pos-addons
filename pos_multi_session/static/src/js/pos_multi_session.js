@@ -230,6 +230,9 @@ odoo.define('pos_multi_session', function(require){
                 if(dline.mp_skip !== undefined){
                     line.set_skip(dline.mp_skip);
                 }
+                if(dline.old_note !== undefined){
+                    line.old_note = dline.old_note;
+                }
                 if(dline.note !== undefined){
                     line.set_note(dline.note);
                 }
