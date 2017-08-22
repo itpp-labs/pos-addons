@@ -12,6 +12,7 @@ class PosDebtReport(models.Model):
 
     order_id = fields.Many2one('pos.order', string='POS Order', readonly=True)
     invoice_id = fields.Many2one('account.invoice', string='Invoice', readonly=True)
+    update_id = fields.Many2one('pos.credit.update', string='Manual Update', readonly=True)
 
     date = fields.Datetime(string='Date', readonly=True)
     partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
@@ -24,6 +25,7 @@ class PosDebtReport(models.Model):
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
     credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
     balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
+    product_list = fields.Text('Product List', readonly=True)
 
     @api.model_cr
     def init(self):
@@ -35,6 +37,7 @@ class PosDebtReport(models.Model):
                     st_line.id as id,
                     o.id as order_id,
                     NULL::integer as invoice_id,
+                    NULL::integer as update_id,
                     -st_line.amount as balance,
                     st.state as state,
                     false as credit_product,
@@ -45,7 +48,8 @@ class PosDebtReport(models.Model):
                     o.session_id as session_id,
                     session.config_id as config_id,
                     o.company_id as company_id,
-                    pricelist.currency_id as currency_id
+                    pricelist.currency_id as currency_id,
+                    o.product_list as product_list
 
                 FROM account_bank_statement_line as st_line
                     LEFT JOIN account_bank_statement st ON (st.id=st_line.statement_id)
@@ -63,6 +67,7 @@ class PosDebtReport(models.Model):
                     -pos_line.id as id,
                     o.id as order_id,
                     NULL::integer as invoice_id,
+                    NULL::integer as update_id,
                     pos_line.price_unit * qty as balance,
                     CASE o.state
                         WHEN 'done' THEN 'confirm'
@@ -77,7 +82,8 @@ class PosDebtReport(models.Model):
                     o.session_id as session_id,
                     session.config_id as config_id,
                     o.company_id as company_id,
-                    pricelist.currency_id as currency_id
+                    pricelist.currency_id as currency_id,
+                    o.product_list as product_list
 
                 FROM pos_order_line as pos_line
                     LEFT JOIN product_product pp ON (pp.id=pos_line.product_id)
@@ -98,6 +104,7 @@ class PosDebtReport(models.Model):
                     (2147483647 - inv_line.id) as id,
                     NULL::integer as order_id,
                     inv.id as invoice_id,
+                    NULL::integer as update_id,
                     inv_line.price_subtotal as balance,
                     'confirm' as state,
                     true as credit_product,
@@ -108,7 +115,8 @@ class PosDebtReport(models.Model):
                     NULL::integer as session_id,
                     NULL::integer as config_id,
                     inv.company_id as company_id,
-                    inv.currency_id as currency_id
+                    inv.currency_id as currency_id,
+                    '' as product_list
 
                 FROM account_invoice_line as inv_line
                     LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
@@ -117,6 +125,30 @@ class PosDebtReport(models.Model):
                 WHERE
                     pt.credit_product=true
                     AND inv.state in ('paid')
+                )
+                UNION ALL
+                (
+                SELECT
+                    (-2147483647 + record.id) as id,
+                    NULL::integer as order_id,
+                    NULL::integer as invoice_id,
+                    record.id as update_id,
+                    record.balance as balance,
+                    record.state as state,
+                    false as credit_product,
+
+                    record.date as date,
+                    record.partner_id as partner_id,
+                    record.user_id as user_id,
+                    NULL::integer as session_id,
+                    NULL::integer as config_id,
+                    record.company_id as company_id,
+                    record.currency_id as currency_id,
+                    record.note as product_list
+
+                FROM pos_credit_update as record
+                WHERE
+                    record.state in ('confirm')
                 )
             )
         """)
