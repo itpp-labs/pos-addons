@@ -4,14 +4,14 @@
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
     "images": ['images/disc_prog.jpg'],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 100.00,
+    "price": 39.00,
     "currency": "EUR",
 
     "depends": [

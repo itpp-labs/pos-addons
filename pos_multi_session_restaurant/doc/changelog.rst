@@ -3,6 +3,10 @@
 Updates
 =======
 
+`1.1.6`
+-------
+- FIX: sync empty orders
+
 `1.1.5`
 -------
 - FIX: Issue related to error 'get_orderlines is undefined'

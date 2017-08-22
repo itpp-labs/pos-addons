@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
-        <record id="product_normal_form_view" model="ir.ui.view">
-            <field name="name">product.product.form</field>
+        <record id="product_lot_normal_form_view" model="ir.ui.view">
+            <field name="name">product_lot.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='status']" position="before">
+                <xpath expr="//group[@name='group_lots_and_weight']" position="after">
                     <group name="product_lot" string="Product lot">
                         <field name="is_lot"/>
                         <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_product_id"/>
@@ -18,6 +17,5 @@
                 </xpath>
             </field>
         </record>
-
     </data>
 </openerp>

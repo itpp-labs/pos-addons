@@ -29,6 +29,7 @@
             <field name="arch" type="xml">
                 <tree string="Point of Sale Analysis">
                     <field name="partner_id"/>
+                    <field name="product_list"/>
                     <field name="date"/>
                     <field name="balance"/>
                     <field name="state"/>
@@ -44,12 +45,14 @@
                     <group>
                         <field name="order_id"/>
                         <field name="invoice_id"/>
+                        <field name="update_id"/>
                         <field name="credit_product"/>
                         <field name="state"/>
 
                         <field name="partner_id"/>
                         <field name="date"/>
                         <field name="balance"/>
+                        <field name="product_list"/>
                     </group>
                 </form>
             </field>
@@ -77,7 +80,7 @@
                         <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
                         <filter string="Customer" context="{'group_by':'partner_id'}"/>
                         <separator/>
-                        <filter string="Year" context="{'group_by':'date:month'}"/>
+                        <filter string="Month" context="{'group_by':'date:month'}"/>
                         <filter string="Week" context="{'group_by':'date:week'}"/>
                         <filter string="Day" context="{'group_by':'date:day'}"/>
                         <filter string="Hour" context="{'group_by':'date:hour'}"/>
