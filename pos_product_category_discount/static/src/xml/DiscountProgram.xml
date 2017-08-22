@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-extend="NumberPopupWidget">
+        <t t-jquery="div[class='button cancel']" t-operation="after">
+            <t t-if="widget.options.disc_program">
+                <div class="button reset">
+                    Reset
+                </div>
+            </t>
+        </t>
         <t t-jquery="div[class='footer centered']" t-operation="after">
             <t t-if="widget.options.disc_program">
                 <div class="discount-program-content">
                     <p class="title">Load Discount Program</p>
                     <div class="discount-program-list">
-
-                            <ul>
-                                <t t-foreach="widget.options.disc_program" t-as="program">
-                                    <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
-                                </t>
-                            </ul>
-
+                        <ul>
+                            <t t-foreach="widget.options.disc_program" t-as="program">
+                                <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
+                            </t>
+                        </ul>
                         <ul>
                             <li><div id="other" class="button other-discount-program">Other</div></li>
                         </ul>
@@ -20,6 +25,7 @@
                 </div>
             </t>
         </t>
+
     </t>
 
     <t t-extend="Orderline">
@@ -114,4 +120,50 @@
             </div>
         </div>
     </t>
+
+    <t t-extend="ClientListScreenWidget">
+        <t t-jquery="table.client-list tr" t-operation="append">
+            <th>Discount Program</th>
+        </t>
+    </t>
+
+    <t t-extend="ClientLine">
+        <t t-jquery="tr.client-line" t-operation="append">
+            <td class="discount_program_td">
+                <t t-if="partner.discount_program_id">
+                    <t t-esc='partner.discount_program_id[1]'/>
+                </t>
+            </td>
+        </t>
+    </t>
+
+    <t t-extend="ClientDetails">
+        <t t-jquery=".client-details-right" t-operation="append">
+            <t t-if="partner.discount_program_id">
+                <div class="client-detail discount-program-details">
+                    <span class='label'>Discount</span>
+                    <span t-attf-class="detail">
+                        <t t-esc='partner.discount_program_id[1]'/>
+                    </span>
+                </div>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="ClientDetailsEdit">
+        <t t-jquery=".client-details-right" t-operation="append">
+            <div class='client-detail discount-program-details'>
+                <span class='label'>Discount</span>
+                <select class='detail client-discount-program needsclick' name='discount_program_id'>
+                    <option value=''>None</option>
+                    <t t-foreach='widget.pos.discount_program' t-as='program'>
+                        <option t-att-value='program.id' t-att-selected="partner.discount_program_id ? ((program.id === partner.discount_program_id[0]) ? true : undefined) : undefined">
+                            <t t-esc='program.discount_program_name'/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </t>
+    </t>
+
 </templates>
