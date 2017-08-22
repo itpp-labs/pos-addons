@@ -94,7 +94,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             this._super();
         },
         message : function(name,params){
-            if (name === 'print_xml_receipt' && this.pos.config.receipt_network_printer_ip) {
+            if (name === 'print_xml_receipt' && this.pos.config.receipt_printer_type === "network_printer") {
                 var connection = new Session(void 0, this.pos.proxy.host, {
                     use_cors: true
                 });
@@ -114,6 +114,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             var self = this;
             var port = ':' + (options.port || '8069');
             var url = current_url;
+            this.pos.receipt_printer_is_usb = true;
             if(url.indexOf('//') < 0){
                 url = 'http://' + url;
             }
@@ -125,12 +126,18 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                     return (r.config.network_printer === true);
                 }
             );
+            // Network printers are used when using receipt printers
             this.network_printers = [];
             network_printers.forEach(function(item){
                 self.network_printers.push({'ip': item.config.proxy_ip, 'status': 'offline', 'name': item.config.name});
             });
-
-            if (!this.pos.config.usb_printer_active) {
+            if (this.pos.config.receipt_printer_type === "network_printer") {
+                this.pos.receipt_printer_is_usb = false;
+            }
+            var connect = false;
+            if (this.pos.receipt_printer_is_usb) {
+                connect = this._super(url, options);
+            } else {
                 var try_real_hard_to_connect = function(new_url, retries, done) {
                     done = done || new $.Deferred();
                     $.ajax({
@@ -148,28 +155,21 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                     });
                     return done;
                 };
-                return try_real_hard_to_connect(url,3).done(function(){
-                    $.ajax({
-                        url: url + '/hw_proxy/network_printers',
-                        type: "POST",
-                        method: "POST",
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({'jsonrpc': "2.0", 'method': "call", "params": {'network_printers': self.network_printers}}),
-                        timeout: 1000,
-                    });
-                });
+                connect = try_real_hard_to_connect(url,3);
             }
-            return this._super(url, options).done(function(){
-                $.ajax({
-                    url: url + '/hw_proxy/network_printers',
-                    type: "POST",
-                    method: "POST",
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({'jsonrpc': "2.0", 'method': "call", "params": {'network_printers': self.network_printers}}),
-                    timeout: 1000,
-                });
+            return connect.done(function(){
+                self.send_network_printers_to_pos_box(url, self.network_printers);
+            });
+        },
+        send_network_printers_to_pos_box: function(url, network_printers) {
+            $.ajax({
+                url: url + '/hw_proxy/network_printers',
+                type: "POST",
+                method: "POST",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({'jsonrpc': "2.0", 'method': "call", "params": {'network_printers': network_printers}}),
+                timeout: 1000,
             });
         },
     });
@@ -202,9 +202,9 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                         msg += _t('Scanner');
                     }
                 }
-                if (this.pos.config.usb_printer_active) {
+                if (this.pos.receipt_printer_is_usb) {
                     if( this.pos.config.iface_print_via_proxy ||
-                        this.pos.config.iface_cashdrawer ){
+                        this.pos.config.iface_cashdrawer ) {
                         var printer = status.drivers.escpos
                         ? status.drivers.escpos.status
                         : false;
@@ -215,6 +215,9 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                             this.usb_printer_status = true;
                         }
                     }
+                } else if (this.pos.config.receipt_printer_type === "usb_printer") {
+                    warning = true;
+                    this.usb_printer_status = false;
                 }
                 if( this.pos.config.iface_electronic_scale ){
                     var scale = status.drivers.scale
@@ -249,7 +252,11 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             }
         },
         open_printers_in_popup: function() {
-            if( this.pos.config.network_printer ) {
+            // if exist network printer then open popup
+            var network_printer = this.pos.printers.find(function(printer) {
+                return printer.config.network_printer === true;
+            });
+            if (this.pos.config.receipt_printer_type === "network_printer" || network_printer) {
                 this.gui.show_popup('proxy_printers', {
                     title: "Printers",
                     value: this.devices_status,
@@ -277,20 +284,26 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             if (this.devices_status) {
                 network_printers = this.devices_status;
             }
-            this.renderElement();
-            this.render_network_list(network_printers);
-            if (this.pos.config.usb_printer_active) {
+            // usb printer
+            if (this.pos.receipt_printer_is_usb) {
                 if (this.usb_status) {
                     this.usb_printer_status = [{'status':'online'}];
                 } else {
                     this.usb_printer_status = [{'status':'offline'}];
                 }
-
+            } else if (this.pos.config.receipt_printer_type === "usb_printer") {
+                this.usb_printer_status = [{'status':'offline'}];
+            } else {
+                this.usb_printer_status = false;
+            }
+            this.renderElement();
+            this.render_network_list(network_printers);
+            if (this.usb_printer_status) {
                 this.render_usb_list(this.usb_printer_status);
             }
         },
         get_usb_printer_status: function(){
-            return this.pos.config.usb_printer_active;
+            return this.pos.receipt_printer_is_usb;
         },
         render_network_list: function(network_printers) {
             var network_contents = this.$el[0].querySelector('.network-printers-list-contents');
@@ -306,8 +319,8 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             }
         },
         render_usb_list: function(usb_printers) {
-            var network_contents = this.$el[0].querySelector('.usb-printers-list-contents');
-            network_contents.innerHTML = "";
+            var usb_contents = this.$el[0].querySelector('.usb-printers-list-contents');
+            usb_contents.innerHTML = "";
             for(var i = 0, len = Math.min(1,1000); i < len; i++){
                 var printer = usb_printers[i];
                 var printerline = this.usb_printer_cache.get_node(1);
@@ -319,7 +332,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                     this.usb_printer_cache.cache_node(1,printerline);
                 }
                 printerline.classList.remove('highlight');
-                network_contents.appendChild(printerline);
+                usb_contents.appendChild(printerline);
             }
         },
     });
