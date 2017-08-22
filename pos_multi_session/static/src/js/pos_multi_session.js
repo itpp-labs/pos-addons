@@ -407,6 +407,7 @@ odoo.define('pos_multi_session', function(require){
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
             if (!this.order){
+                // probably impossible case in odoo 10.0, but keep it here to remove doubts
                 return;
             }
             this.uid = this.order.generate_unique_id() + '-' + this.id;
