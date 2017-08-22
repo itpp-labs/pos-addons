@@ -35,8 +35,8 @@
                     <field name="multi_session_id"/>
                 </xpath>
 
-                <xpath expr="//div[@class='o_secondary']" position="after">
-                    <div class="o_secondary"><t t-esc="record.multi_session_id.value || 'Not synchronized'"/></div>
+                <xpath expr="//div[@class='o_primary']" position="inside">
+                    <t t-esc=" record.multi_session_id.value and ' (' + record.multi_session_id.value + ')' or ''"/>
                 </xpath>
             </field>
         </record>
@@ -49,7 +49,7 @@
                 <xpath expr="//field[@name='stock_location_id']" position="after">
                     <group string="Multi-session" name="multi_session" expand="0">
                         <field name="multi_session_id"/>
-                        <filter name="multi_session_id" string="Multi-session id" domain="[]" context="{'group_by': 'multi_session_id'}" />
+                        <filter name="multi_session_id" string="Multi-session" domain="[]" context="{'group_by': 'multi_session_id'}" />
                     </group>
                 </xpath>
             </field>
