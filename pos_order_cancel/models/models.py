@@ -31,7 +31,7 @@ class PosOrder(models.Model):
     def _process_order(self, pos_order):
         order = super(PosOrder, self)._process_order(pos_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
-            order.cancellation_reason = str(pos_order['CancellationReason'].strip(" \t\n"))
+            order.cancellation_reason = pos_order['CancellationReason'].encode('utf-8').strip(" \t\n")
             order.is_cancelled = True
         return order
 
