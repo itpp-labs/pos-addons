@@ -304,9 +304,7 @@ odoo.define('pos_multi_session', function(require){
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
-            if (!this.temporary){
                 line.order.trigger('change:sync');
-            };
         },
         add_product: function(){
             this.trigger('change:sync');
@@ -341,14 +339,16 @@ odoo.define('pos_multi_session', function(require){
             }
             if (!this.ms_check())
                 return;
-            if (this.ms_update_timeout)
-                // restart timeout
-                clearTimeout(this.ms_update_timeout);
-            this.ms_update_timeout = setTimeout(
-                function(){
-                    self.ms_update_timeout = false;
-                    self.do_ms_update();
+            if (!this.temporary){
+                if (this.ms_update_timeout)
+                    // restart timeout
+                    clearTimeout(this.ms_update_timeout);
+                this.ms_update_timeout = setTimeout(
+                    function(){
+                        self.ms_update_timeout = false;
+                        self.do_ms_update();
                 }, 0);
+            }
         },
         ms_remove_order: function(){
             if (!this.ms_check())
