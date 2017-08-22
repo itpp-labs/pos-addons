@@ -348,7 +348,7 @@ odoo.define('pos_multi_session', function(require){
                 function(){
                     self.ms_update_timeout = false;
                     self.do_ms_update();
-            }, 0);
+                }, 0);
         },
         ms_remove_order: function(){
             if (!this.ms_check())
@@ -406,7 +406,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            if (this.order){
+            if (!this.order){
                 return;
             }
             this.uid = this.order.generate_unique_id() + '-' + this.id;
