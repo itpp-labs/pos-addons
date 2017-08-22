@@ -168,7 +168,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
         set_note: function(note){
-
+            if (this.old_note === undefined){
+                this.old_note = "";
+            }
             OrderlineSuper.prototype.set_note.apply(this, arguments);
             if (this.old_note !== note){
                 if (this.pos.gui.screen_instances.products.action_buttons.submit_order){
