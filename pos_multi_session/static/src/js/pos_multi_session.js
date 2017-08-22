@@ -406,7 +406,12 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            this.uid = this.order.generate_unique_id() + '-' + this.id;
+            if (this.order){
+                this.uid = this.order.generate_unique_id() + '-' + this.id;
+            }
+            else{
+                return;
+            }
             if (this.order.screen_data.screen === "splitbill")
                 // ignore new orderline from splitbill tool
                 return;
