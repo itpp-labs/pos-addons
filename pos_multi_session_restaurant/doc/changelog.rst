@@ -3,6 +3,12 @@
 Updates
 =======
 
+`1.1.8`
+-------
+- ADD: show Multi-session value in Dashboard.
+- ADD: allow group by Multi-session in Dashboard.
+- FIX: 'submit order' button rendering sinchronization.
+
 `1.1.7`
 -------
 - FIX: Issue with bill splitting: incorrect creation of a new order for other POSes after synchronization.
