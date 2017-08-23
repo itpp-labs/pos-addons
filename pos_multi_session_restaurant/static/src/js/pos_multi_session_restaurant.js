@@ -30,13 +30,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
     screens.OrderWidget.include({
         update_summary: function(){
             var order = this.pos.get('selectedOrder');
-            if (order){
-                this._super();
-                var buttons = this.getParent().action_buttons;
-                if (buttons && buttons.submit_order && this.all_lines_printed(order)) {
-                    buttons.submit_order.highlight(false);
-                }
+            if (!order){
+                return;
             }
+            this._super();
         },
         all_lines_printed: function (order) {
             not_printed_line = order.orderlines.find(function(lines){
@@ -111,7 +108,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
-                this.gui.screen_instances.products.action_buttons.guests.renderElement();
+                order.trigger('change');
             }
         },
         ms_on_add_order: function(current_order){
