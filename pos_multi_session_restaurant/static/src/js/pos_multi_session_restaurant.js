@@ -139,10 +139,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.ms_update();
             }
         },
-        printChanges: function(){
-            OrderSuper.prototype.printChanges.apply(this, arguments);
-            this.just_printed = true;
-        },
         do_ms_remove_order: function(){
             if (this.transfer) {
                 this.pos.multi_session.remove_order({
