@@ -1,5 +1,8 @@
 odoo.define('pos_restaurant.base', function (require) {
     "use strict";
+    // DIFFERENCES FROM ORIGINAL: 
+    // * Printer class is copy-pasted, but added to returns to be extendable
+    // * PosModel::initialize is updated to use this Printer class
 
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
@@ -40,7 +43,7 @@ odoo.define('pos_restaurant.base', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
-            // New code
+            // <new-code>
             var printer_model = _.find(this.models, function(model){
                 return model.model === 'restaurant.printer';
             });
@@ -73,10 +76,9 @@ odoo.define('pos_restaurant.base', function (require) {
                 self.printers_categories = _.keys(self.printers_categories);
                 self.config.iface_printers = !!self.printers.length;
             }
-            // Inheritance
+            // </new-code>
             return _super_posmodel.initialize.call(this, session, attributes);
         },
     });
-
     return Printer;
 });

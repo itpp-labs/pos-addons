@@ -5,7 +5,7 @@
 Technical module in POS.
 
 The standard Printer class in pos_restaurant/static/src/js/multiprint.js does not allow you to override the functions of this class.
-This module duplicates the Printer class and allows you to override it.
+This module duplicate the Printer class, computeChanges, printChanges, hasChangesToPrint functions from Order class and allows you to redefine them.
 
 Credits
 =======
