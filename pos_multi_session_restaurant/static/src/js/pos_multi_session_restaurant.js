@@ -175,12 +175,34 @@ odoo.define('pos_multi_session_restaurant', function(require){
 
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
+        set_note: function(note){
+            if (this.old_note === undefined){
+                this.old_note = "";
+            }
+            OrderlineSuper.prototype.set_note.apply(this, arguments);
+            if (this.old_note !== note){
+                if (this.pos.gui.screen_instances.products.action_buttons.submit_order){
+                    this.pos.gui.screen_instances.products.action_buttons.submit_order.highlight(true);
+                }
+                this.set_dirty(true);
+            }
+            this.old_note = this.note;
+        },
         get_line_diff_hash: function(){
             if (this.get_note()) {
                 return this.uid + '|' + this.get_note();
             } else {
                 return '' + this.uid;
             }
+        },
+        init_from_JSON: function(json) {
+            this.old_note = json.old_note;
+            OrderlineSuper.prototype.init_from_JSON.call(this, json);
+        },
+        export_as_JSON: function(){
+            var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
+            data.old_note = this.old_note;
+            return data;
         },
     });
 });
