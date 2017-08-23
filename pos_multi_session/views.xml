@@ -49,7 +49,7 @@
                 <xpath expr="//field[@name='stock_location_id']" position="after">
                     <group string="Multi-session" name="multi_session" expand="0">
                         <field name="multi_session_id"/>
-                        <filter name="multi_session_id" domain="[]" context="{'group_by': 'multi_session_id'}" />
+                        <filter name="multi_session_id" string="Multi-session" domain="[]" context="{'group_by': 'multi_session_id'}" />
                     </group>
                 </xpath>
             </field>
