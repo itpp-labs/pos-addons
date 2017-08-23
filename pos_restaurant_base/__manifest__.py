@@ -1,38 +1,36 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Sync restaurant orders""",
-    "summary": """Staff get order details immediately after waiter taps on tablet""",
+    "name": """POS restaurant base""",
+    "summary": """Technical module in POS""",
     "category": "Point of Sale",
-    "images": ['images/s2.png'],
-    "version": "1.1.7",
+    # "live_test_URL": "",
+    "images": [],
+    "version": "1.0.0",
     "application": False,
 
-    "author": "IT-Projects LLC, Ivan Yelizariev",
+    "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://yelizariev.github.io",
+    "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 140.00,
+    "price": 35.00,
     "currency": "EUR",
 
     "depends": [
         "pos_restaurant",
-        "pos_multi_session",
-        "to_pos_shared_floor",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "views/views.xml",
+        "views/template.xml",
     ],
     "qweb": [
     ],
     "demo": [
-        "demo/demo.xml",
     ],
 
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
 
-    "auto_install": True,
+    "auto_install": False,
     "installable": True,
 }

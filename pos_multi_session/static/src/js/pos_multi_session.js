@@ -325,6 +325,8 @@ odoo.define('pos_multi_session', function(require){
                 return;
             if (this.pos.ms_syncing_in_progress)
                 return;
+            if (this.temporary)
+                return;
             return true;
         },
         ms_update: function(){
@@ -378,7 +380,7 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    if (res) {
+                    if (res && res.action=="update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
                         if (order_ID && self.sequence_number != order_ID) {
@@ -404,7 +406,12 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            if (!this.order)
+            if (!this.order){
+                // probably impossible case in odoo 10.0, but keep it here to remove doubts
+                return;
+            }
+            this.uid = this.order.generate_unique_id() + '-' + this.id;
+            if (this.order.screen_data.screen === "splitbill")
                 // ignore new orderline from splitbill tool
                 return;
             if (this.order.ms_check()){
@@ -419,7 +426,6 @@ odoo.define('pos_multi_session', function(require){
                     line.order.trigger('change:sync');
                 }
             });
-            this.uid = this.order.generate_unique_id() + '-' + this.id;
         },
         set_selected: function(){
             this.ms_changing_selected = true;

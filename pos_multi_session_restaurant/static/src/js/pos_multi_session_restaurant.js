@@ -26,6 +26,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
     });
     var _t = core._t;
 
+    gui.Gui.prototype.screen_classes.filter(function(el) {
+        return el.name == 'splitbill'
+    })[0].widget.include({
+        pay: function(order,neworder,splitlines){
+            this._super(order,neworder,splitlines);
+            neworder.save_to_db();
+        }
+    });
 
     screens.OrderWidget.include({
         update_summary: function(){
