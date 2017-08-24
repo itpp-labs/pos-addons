@@ -2,9 +2,13 @@
  POS Order Cancel
 ==================
 
-The module allows to specify a reason for cancel separate products or entire order after printing on POS order printer.
+The module allows to add a reason on canceling kitchen order. The reason will be added to cancelation receipt.
 
-After the product or order is cancelled, the corresponding order receipt will be printed on order printer containing the reason you specified.
+Besides,
+
+* On canceling user can click on predefined Reason and specify custom one
+* Canceled order is saved at database
+* TODO Canceled order line is save at database
 
 Credits
 =======

@@ -3,9 +3,9 @@ import logging
 import json
 import time
 
-from openerp import api
-from openerp import fields
-from openerp import models
+from odoo import api
+from odoo import fields
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 
@@ -109,7 +109,7 @@ class PosMultiSession(models.Model):
         if order:
             order.state = 'deleted'
         self.broadcast_message(message)
-        return 1
+        return {'order_ID': self.order_ID}
 
     @api.multi
     def broadcast_message(self, message):

@@ -24,7 +24,6 @@
             <field name="model_id" ref="account.model_account_bank_statement_line"/>
             <field name="kind">on_create</field>
             <field name="filter_id" ref="filter_debt_payments"/>
-            <field name="act_user_id" ref="base.user_root"/>
             <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
         </record>
 
@@ -41,7 +40,6 @@
             <field name="model_id" ref="point_of_sale.model_pos_order"/>
             <field name="kind">on_create_or_write</field>
             <field name="filter_id" ref="filter_done_orders"/>
-            <field name="act_user_id" ref="base.user_root"/>
             <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
         </record>
 
@@ -58,9 +56,17 @@
             <field name="model_id" ref="account.model_account_invoice"/>
             <field name="kind">on_create_or_write</field>
             <field name="filter_id" ref="filter_paid_invoices"/>
-            <field name="act_user_id" ref="base.user_root"/>
             <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
         </record>
+
+        <!-- manual credit updates -->
+        <record id="rule_pos_credit_updates" model="base.action.rule">
+            <field name="name">Notify POS about Debt updates (on addins Manual Credit Updates).</field>
+            <field name="model_id" ref="pos_debt_notebook.model_pos_credit_update"/>
+            <field name="kind">on_create_or_write</field>
+            <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
+        </record>
+
 
     </data>
 </odoo>
