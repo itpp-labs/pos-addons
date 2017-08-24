@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="NetworkPrinterLine">
+        <tr class='printer-line'>
+            <t t-if="printer.status=='offline'">
+                <td class="offline"><t t-esc='printer.name' /></td>
+                <td class="offline"><t t-esc='printer.ip' /></td>
+                <td class="offline"><t t-esc='printer.status' /></td>
+            </t>
+            <t t-if="printer.status!='offline'">
+                <td><t t-esc='printer.name' /></td>
+                <td><t t-esc='printer.ip' /></td>
+                <td><t t-esc='printer.status' /></td>
+            </t>
+        </tr>
+    </t>
+
+    <t t-name="USBPrinterLine">
+        <t t-if="printer.status=='offline'">
+            <div class="offline">offline</div>
+        </t>
+        <t t-if="printer.status!='offline'">
+            <div>online</div>
+        </t>
+    </t>
+
+    <t t-name="ProxyPrintersPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup">
+                <div class="header title">
+                    <div>
+                        <t t-esc="widget.options.title || '' " />
+                    </div>
+                </div>
+
+                <div class="network-printer-body">
+                    <h4>Network printers</h4>
+                    <table class='printer-list'>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>IP</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class='network-printers-list-contents'>
+                        </tbody>
+                    </table>
+                </div>
+
+                <t t-if="widget.usb_printer_status">
+                    <div class="usb-printer-body">
+                        <h4>USB printers</h4>
+                        <div class='printer-list'>
+                            <div class="usb-printers-list-contents">
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="footer centered">
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_restaurant_printer_form" model="ir.ui.view">
+            <field name="name">Order Printer</field>
+            <field name="model">restaurant.printer</field>
+            <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='proxy_ip']" position="after">
+                    <field name="network_printer"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_restaurant_printer" model="ir.ui.view">
+            <field name="name">Order Printers</field>
+            <field name="model">restaurant.printer</field>
+            <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='proxy_ip']" position="after">
+                    <field name="network_printer"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_pos_config_form">
+            <field name="name">pos.config.form.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='iface_print_via_proxy']" position="after">
+                    <field name="receipt_printer_type" widget="radio" attrs="{'invisible':[('iface_print_via_proxy', '=', False)],'required':[('iface_print_via_proxy', '!=', False)]}"/>
+                    <field name="receipt_network_printer_ip" attrs="{'invisible' : ['|',('receipt_printer_type', '=', 'usb_printer'),('iface_print_via_proxy', '=', False)],'required':[('receipt_printer_type', '=', 'network_printer')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
