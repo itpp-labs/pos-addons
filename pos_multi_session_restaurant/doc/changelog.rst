@@ -7,7 +7,7 @@ Updates
 -------
 - ADD: show Multi-session value in Dashboard.
 - ADD: allow group by Multi-session in Dashboard.
-- FIX: 'submit order' button rendering sinchronization.
+- FIX: Order button was not synced after adding notes.
 
 `1.1.7`
 -------
