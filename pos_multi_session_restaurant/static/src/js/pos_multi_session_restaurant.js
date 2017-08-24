@@ -38,19 +38,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
     screens.OrderWidget.include({
         update_summary: function(){
             var order = this.pos.get('selectedOrder');
-            if (order){
-                this._super();
-                var buttons = this.getParent().action_buttons;
-                if (buttons && buttons.submit_order && this.all_lines_printed(order)) {
-                    buttons.submit_order.highlight(false);
-                }
+            if (!order){
+                return;
             }
-        },
-        all_lines_printed: function (order) {
-            not_printed_line = order.orderlines.find(function(lines){
-                                return lines.mp_dirty;
-                            });
-            return !not_printed_line;
+            this._super();
         },
         remove_orderline: function(order_line){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
@@ -119,7 +110,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
-                this.gui.screen_instances.products.action_buttons.guests.renderElement();
+                order.trigger('change');
             }
         },
         ms_on_add_order: function(current_order){
@@ -155,10 +146,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (!skip_ms_update) {
                 this.ms_update();
             }
-        },
-        printChanges: function(){
-            OrderSuper.prototype.printChanges.apply(this, arguments);
-            this.just_printed = true;
         },
         do_ms_remove_order: function(){
             if (this.transfer) {

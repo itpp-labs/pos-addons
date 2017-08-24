@@ -418,10 +418,6 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
             this.bind('change', function(line){
-                if(this.order.just_printed){
-                    line.order.trigger('change:sync');
-                    return;
-                }
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
