@@ -1,0 +1,33 @@
+.network-printer-body h4 {
+    margin: 10px;
+}
+.network-printer-body .printer-list {
+    width: 100%;
+}
+.network-printer-body .printer-list tbody td{
+    font-weight: 300;
+}
+.network-printers-list-contents td {
+    color: green;
+    padding: 5px;
+}
+.network-printers-list-contents .offline {
+    color: red;
+}
+
+.usb-printer-body h4 {
+    margin: 10px;
+}
+.usb-printer-body .printer-list {
+    width: 100%;
+}
+.usb-printers-list-contents div {
+    color: green;
+    font-weight: 300;
+    padding: 5px;
+}
+.usb-printers-list-contents .offline {
+    color: red;
+    font-weight: 300;
+    padding: 5px;
+}
