@@ -8,6 +8,8 @@ _logger = logging.getLogger(__name__)
 class RestaurantPrinter(models.Model):
     _inherit = 'restaurant.printer'
 
+    proxy_ip = fields.Char('IP Address', help="IP Address of PosBox if it's USB Printer"
+                                              "or IP Address Network Printer otherwise")
     network_printer = fields.Boolean(default=False, string='Network Printer', help="Check this box if this printer is Network printer")
 
 

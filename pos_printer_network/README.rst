@@ -1,5 +1,5 @@
 =====================
- Pos Network Printer
+ POS Network Printer
 =====================
 
 Print POS orders and receipts by using a network printer.
