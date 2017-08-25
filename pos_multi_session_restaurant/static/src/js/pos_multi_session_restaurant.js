@@ -111,6 +111,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
                 order.trigger('change');
+                this.gui.screen_instances.floors.renderElement();
             }
         },
         ms_on_add_order: function(current_order){
