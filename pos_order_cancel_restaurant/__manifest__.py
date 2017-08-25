@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Order Cancel""",
-    "summary": """Specify reasons for cancel separate products or entire order in POS""",
+    "name": """POS Order Cancel Restaurant""",
+    "summary": """Specify reasons for cancel separate products or entire order after printing in POS""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_main.png"],
     "version": "1.0.0",
@@ -15,11 +15,11 @@
     "currency": "EUR",
 
     "depends": [
-        "point_of_sale",
+        "pos_order_cancel",
+        "pos_restaurant",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "security/ir.model.access.csv",
         "views/template.xml",
         "views/views.xml",
     ],
@@ -33,5 +33,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

@@ -1,6 +1,6 @@
-==================
- POS Order Cancel
-==================
+=============================
+ POS Order Cancel Restaurant
+=============================
 
 Installation
 ============
@@ -16,11 +16,19 @@ Configuration
   * Specify a cancellation reason
   * Click ``[Save]``
 
+* Go to ``Point of Sale >> Configuration >> Point of Sale``
+
+  * Open POS configuration form
+  * Click on ``[Edit]``
+  * Select ``Save Kitchen Orders Only`` for save printed orders
+  * Click on ``[Save]``
+
 Usage
 =====
 
 * Open POS session
 * Add new products in order
+* Click ``[Order]``
 
 Product Cancellation Reason
 ---------------------------
