@@ -51,3 +51,8 @@
     transition: all 150ms linear;
     background: rgb(227, 246, 237);
 }
+.pos .cancelled-reason li .active {
+    color: white;
+    background: black;
+    border: 1px solid black;
+}

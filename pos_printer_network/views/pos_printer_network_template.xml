@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="pos_printer_network_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_printer_network/static/src/js/network_printer.js"></script>
+                <link rel="stylesheet" href="/pos_printer_network/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

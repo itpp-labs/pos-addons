@@ -1,5 +1,17 @@
 <?xml version="1.0"?>
-<openerp>
+<odoo>
+
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">res.partner.form.debt</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="discount_program_id"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="product_template_form_view" model="ir.ui.view">
         <field name="name">product.template.form.inherit</field>
         <field name="model">product.template</field>
@@ -19,7 +31,6 @@
                 <sheet>
                     <group>
                         <field name="discount_program_name"/>
-                        <field name="discount_program_number"/>
                         <field name="discount_program_active"/>
                         <field name="discount_category_ids">
                             <tree string="Discount category">
@@ -40,7 +51,7 @@
             <form string="Pos Category Discount">
                 <sheet>
                     <group>
-                        <field name="discount_category_id"/>
+                        <field name="discount_category_id" required="1"/>
                         <field name="category_discount_pc"/>
                         <field name="discount_program_id" invisible="1"/>
                     </group>
@@ -54,8 +65,8 @@
         <field name="model">pos.discount_program</field>
         <field name="arch" type="xml">
             <tree string="Pos Discount Program" decoration-muted="discount_program_active == False">
+                <field name="discount_program_number" widget="handle"/>
                 <field name="discount_program_name"/>
-                <field name="discount_program_number"/>
                 <field name="discount_program_active"/>
             </tree>
         </field>
@@ -88,4 +99,4 @@
     </record>
 
     <menuitem id="menu_pos_discount_program" action="pos_discount_program_action" parent="point_of_sale.menu_point_config_product" sequence="25" />
-</openerp>
+</odoo>
