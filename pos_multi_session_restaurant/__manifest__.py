@@ -17,7 +17,6 @@
     "depends": [
         "pos_restaurant",
         "pos_multi_session",
-        "to_pos_shared_floor",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
