@@ -18,6 +18,13 @@ class PosConfig(models.Model):
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
     multi_session_message_ID = fields.Integer(default=1, string="Last sent message number")
+    floor_ids = fields.Many2many('restaurant.floor', 'pos_config_floor_rel', 'pos_config_id', 'floor_id', required=True, string="Restaurant Floors", help='The restaurant floors served by this point of sale')
+
+
+class RestaurantFloor(models.Model):
+    _inherit = 'restaurant.floor'
+
+    pos_config_ids = fields.Many2many('restaurant.floor', 'pos_config_floor_rel', 'floor_id', 'pos_config_id', string="POS configs")
 
 
 class PosMultiSession(models.Model):
