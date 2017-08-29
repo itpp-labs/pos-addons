@@ -67,6 +67,10 @@ class PosOrder(models.Model):
         else:
             return super(PosOrder, self).action_pos_order_done()
 
+    def _reconcile_payments(self):
+        uncanceled_order = self.filtered(lambda o: not o.is_cancelled)
+        super(PosOrder, uncanceled_order)._reconcile_payments()
+
 
 class PosOrderLineCanceled(models.Model):
     _name = "pos.order.line.canceled"
