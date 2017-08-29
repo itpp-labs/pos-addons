@@ -2,7 +2,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     "use strict";
 
     var models = require('pos_order_cancel.models');
-    var multiprint = require('pos_restaurant.multiprint');
+    var multiprint = require('pos_restaurant_base.models');
     var Model = require('web.DataModel');
     var core = require('web.core');
     var QWeb = core.qweb;
@@ -88,6 +88,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
         },
         save_canceled_order: function(reason) {
             var self = this;
+
             if (this.pos.config.kitchen_canceled_only) {
                 this.is_cancelled = true;
                 this.reason = reason;
@@ -108,13 +109,11 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
         save_canceled_line: function(reason) {
-            if (this.pos.config.kitchen_canceled_only) {
-                if (!this.order.is_cancelled) {
-                    this.order.was_removed_product = true;
-                    this.order.reason = reason;
-                    this.order.printChanges();
-                    this.order.saveChanges();
-                }
+            if (this.pos.config.kitchen_canceled_only && !this.order.is_cancelled && this.was_printed) {
+                this.order.was_removed_product = true;
+                this.order.reason = reason;
+                this.order.printChanges();
+                this.order.saveChanges();
             }
             _super_orderline.save_canceled_line.apply(this, arguments);
         },

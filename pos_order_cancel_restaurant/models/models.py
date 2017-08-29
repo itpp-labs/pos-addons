@@ -7,3 +7,9 @@ class PosConfig(models.Model):
 
     kitchen_canceled_only = fields.Boolean(string="Save Kitchen Orders Only",
                                            dafeult=False, help="Save printed orders only")
+
+
+class PosOrderLineCanceled(models.Model):
+    _inherit = "pos.order.line.canceled"
+
+    was_printed = fields.Boolean("Product is Printed", default=False, readonly=True)
