@@ -3,7 +3,7 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
 
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
-    var chrome =  require('point_of_sale.chrome');
+    var chrome = require('point_of_sale.chrome');
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var multiprint = require('pos_restaurant_base.models');
@@ -16,10 +16,10 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
             MultiSessionSuper.prototype.initialize.apply(this, arguments);
         },
         send: function(message){
-            if (message.action == 'remove_order' && message.data.cancelled) {
+            if (message.action === 'remove_order' && message.data.cancelled) {
                 this.cancelled_order_uid = message.data.uid;
             }
-            if (message.action == 'update_order' && message.data.uid == this.cancelled_order_uid) {
+            if (message.action === 'update_order' && message.data.uid === this.cancelled_order_uid) {
                 var next = $.Deferred();
                 return next.resolve();
             }
@@ -49,7 +49,7 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
-                    return dline.uid == r.uid;
+                    return dline.uid === r.uid;
                 });
                 line.was_printed = dline.was_printed;
                 order.orderlines.add(line);
