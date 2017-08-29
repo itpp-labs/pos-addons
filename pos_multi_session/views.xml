@@ -73,7 +73,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='floor_ids']" position="replace">
-                        <field name="floor_ids" widget="many2many_tags"/>
+                        <field name="floor_ids" required="1" widget="many2many_tags"/>
                     </xpath>
                 </data>
             </field>
