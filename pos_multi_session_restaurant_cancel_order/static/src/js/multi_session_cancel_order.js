@@ -6,7 +6,7 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
     var chrome =  require('point_of_sale.chrome');
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
-    var multiprint = require('pos_restaurant.multiprint');
+    var multiprint = require('pos_restaurant_base.models');
     var multisession = require('pos_multi_session');
 
     var MultiSessionSuper = multisession.MultiSession;
@@ -20,7 +20,7 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
                 this.cancelled_order_uid = message.data.uid;
             }
             if (message.action == 'update_order' && message.data.uid == this.cancelled_order_uid) {
-                var next =  $.Deferred();
+                var next = $.Deferred();
                 return next.resolve();
             }
             return MultiSessionSuper.prototype.send.apply(this, arguments);
@@ -29,21 +29,31 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
-        save_cancellation_order_to_server: function() {
-            var self = this;
-            this.order_is_cancelled = true;
-            _super_order.save_cancellation_order_to_server.apply(this, arguments);
-        },
         do_ms_remove_order: function(){
-            if (this.order_is_cancelled) {
+            if (this.is_cancelled) {
                 this.pos.multi_session.remove_order({
                     'uid': this.uid,
                     'revision_ID': this.revision_ID,
-                    'cancelled': this.order_is_cancelled
+                    'cancelled': this.is_cancelled
                 });
             } else {
                 _super_order.do_ms_remove_order.apply(this, arguments);
             }
+        },
+    });
+
+    var _super_pos = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        ms_do_update: function(order, data){
+            _super_pos.ms_do_update.apply(this, arguments);
+            _.each(data.lines, function(dline){
+                dline = dline[2];
+                var line = order.orderlines.find(function(r){
+                    return dline.uid == r.uid;
+                });
+                line.was_printed = dline.was_printed;
+                order.orderlines.add(line);
+            });
         },
     });
 });
