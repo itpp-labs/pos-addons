@@ -3,6 +3,7 @@
     <data>
         <record id="demo_multi_session" model="pos.multi_session">
             <field name="name">multi session demo</field>
+            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
         </record>
         <record id="demo_multi_pos_config_one" model="pos.config">
             <field name="name">POS1</field>
@@ -37,10 +38,6 @@
         </record>
         <record id="base.user_demo" model="res.users">
             <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
-        </record>
-
-        <record id="point_of_sale.pos_config_main" model="pos.config">
-            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
         </record>
 
     </data>
