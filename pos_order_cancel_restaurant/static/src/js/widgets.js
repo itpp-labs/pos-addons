@@ -49,7 +49,7 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             var orderline = order.get_selected_orderline();
             if (this.pos.config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
                 this.numpad_state.show_popup = false;
-                orderline.save_canceled_line(false);
+                order.save_canceled_line(false, orderline);
                 return false;
             }
             this._super(type);
