@@ -42,10 +42,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             this.numpad_state.bind('show_popup', this.show_popup, this);
             this.pos.selected_cancelled_reason = '';
         },
-        show_popup: function(type){
+        show_popup: function(type, line){
             var self = this;
             var order = this.pos.get_order();
-            var orderline = order.get_selected_orderline();
+            var orderline = line || order.get_selected_orderline();
             this.numpad_state.show_popup = true;
             var title = 'Order ';
             if (type === "product") {
@@ -54,8 +54,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     return false;
                 }
                 title = 'Product ';
+                if (!line) {
+                    orderline.remove_with_numpad = true;
+                }
             }
-
             // type of object which is removed (product or order)
             this.gui.show_popup('confirm-cancellation',{
                 'title': _t(title + 'Cancellation Reason'),
@@ -64,12 +66,17 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 'type': type,
                 confirm: function(reason){
                     if (type === 'product') {
-                        orderline.save_canceled_line(reason);
+                        order.save_canceled_line(reason, orderline);
                     }
                     if (type === 'order') {
                         order.save_canceled_order(reason);
                     }
                 },
+                cancel: function() {
+                    if (type === 'product') {
+                        order.save_canceled_line(false, orderline);
+                    }
+                }
             });
         },
     });
@@ -193,7 +200,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             });
             var reason = active_reasons_name.join("; ");
             if (type === 'product') {
-                orderline.save_canceled_line(reason);
+                order.save_canceled_line(reason, orderline);
             }
             if (type === 'order') {
                 order.save_canceled_order(reason);

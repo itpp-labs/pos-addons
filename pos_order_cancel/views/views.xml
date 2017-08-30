@@ -69,6 +69,7 @@
                         <field name="canceled_lines" colspan="4" nolabel="1">
                             <tree string="Canceled Order lines" editable="bottom" create="false" delete="false">
                                 <field name="product_id"/>
+                                <field name="qty"/>
                                 <field name="price_unit" widget="monetary"/>
                                 <field name="discount" widget="monetary"/>
                                 <field name="reason" string="Reason"/>
@@ -79,6 +80,7 @@
                             <form string="Order lines">
                                 <group col="4">
                                     <field name="product_id"/>
+                                    <field name="qty"/>
                                     <field name="price_unit" widget="monetary"/>
                                     <field name="discount" widget="monetary"/>
                                     <field name="reason" string="Reason"/>
@@ -138,6 +140,7 @@
                 <field name="reason" type="measure"/>
                 <field name="canceled_date" type="col"/>
                 <field name="price_unit" type="measure"/>
+                <field name="qty" type="measure"/>
             </graph>
         </field>
     </record>
@@ -152,6 +155,7 @@
                 <field name="price_unit" type="measure"/>
                 <field name="user_id"/>
                 <field name="reason"/>
+                <field name="qty" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -164,14 +168,15 @@
                 <group>
                     <group>
                         <field name="product_id"/>
+                        <field name="qty"/>
                         <field name="price_unit" widget="monetary"/>
                         <field name="discount" widget="monetary"/>
-                        <field name="reason" string="Reason"/>
                     </group>
                     <group>
                         <field name="canceled_date" string="Canceled Datetime"/>
                         <field name="tax_ids"/>
                         <field name="user_id"/>
+                        <field name="reason" string="Reason"/>
                     </group>
                 </group>
             </form>
@@ -184,6 +189,7 @@
         <field name="arch" type="xml">
             <tree string="Canceled Lines" create="false" delete="false">
                 <field name="product_id"/>
+                <field name="qty"/>
                 <field name="price_unit" widget="monetary"/>
                 <field name="discount" widget="monetary"/>
                 <field name="reason" string="Reason"/>
