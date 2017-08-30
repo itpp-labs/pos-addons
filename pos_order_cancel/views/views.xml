@@ -128,4 +128,106 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_pos_order_line_canceled_graph" model="ir.ui.view">
+        <field name="name">pos.order.line.canceled.graph</field>
+        <field name="model">pos.order.line.canceled</field>
+        <field name="arch" type="xml">
+            <graph string="Canceled Lines">
+                <field name="product_id" type="row"/>
+                <field name="reason" type="measure"/>
+                <field name="canceled_date" type="col"/>
+                <field name="price_unit" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_pos_order_line_canceled_pivot" model="ir.ui.view">
+        <field name="name">pos.order.line.canceled.pivot</field>
+        <field name="model">pos.order.line.canceled</field>
+        <field name="arch" type="xml">
+            <pivot string="Canceled Lines">
+                <field name="product_id" type="row"/>
+                <field name="canceled_date" interval="month" type="col"/>
+                <field name="price_unit" type="measure"/>
+                <field name="user_id"/>
+                <field name="reason"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_pos_order_line_canceled_form" model="ir.ui.view">
+        <field name="name">pos.order.line.canceled.form</field>
+        <field name="model">pos.order.line.canceled</field>
+        <field name="arch" type="xml">
+            <form string="Canceled Line" create="false" delete="false" edit="false">
+                <group>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="price_unit" widget="monetary"/>
+                        <field name="discount" widget="monetary"/>
+                        <field name="reason" string="Reason"/>
+                    </group>
+                    <group>
+                        <field name="canceled_date" string="Canceled Datetime"/>
+                        <field name="tax_ids"/>
+                        <field name="user_id"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_order_line_canceled_tree" model="ir.ui.view">
+        <field name="name">pos.order.line.canceled.tree</field>
+        <field name="model">pos.order.line.canceled</field>
+        <field name="arch" type="xml">
+            <tree string="Canceled Lines" create="false" delete="false">
+                <field name="product_id"/>
+                <field name="price_unit" widget="monetary"/>
+                <field name="discount" widget="monetary"/>
+                <field name="reason" string="Reason"/>
+                <field name="user_id"/>
+                <field name="canceled_date" string="Canceled Datetime"/>
+                <field name="tax_ids" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_report_cancelations_search" model="ir.ui.view">
+        <field name="name">pos.order.line.canceled.search</field>
+        <field name="model">pos.order.line.canceled</field>
+        <field name="arch" type="xml">
+            <search string="Canceled Lines">
+                <field name="canceled_date"/>
+                <filter string="Today" name="today" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
+                <filter string="This Month" name="thismonth" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
+                <filter string="This Year" name="thisyear" domain="[('canceled_date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <field name="product_id"/>
+                <field name="user_id"/>
+                <field name="reason"/>
+                <group expand="1" string="Group By">
+                    <filter string="Users" context="{'group_by':'user_id'}"/>
+                    <separator/>
+                    <filter string="Products" context="{'group_by':'product_id'}"/>
+                    <separator/>
+                    <filter string="Days" context="{'group_by':'canceled_date:day'}" help="Day of canceled date"/>
+                    <filter string="Weeks" context="{'group_by':'canceled_date:week'}" help="Week of canceled date"/>
+                    <filter string="Months" context="{'group_by':'canceled_date:month'}" help="Month of canceled date"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_report_cancelations_details" model="ir.actions.act_window">
+        <field name="name">Cancelations Details</field>
+        <field name="res_model">pos.order.line.canceled</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_report_cancelations_search"/>
+        <field name="context">{'search_default_today':1, 'group_by':[]}</field>
+    </record>
+
+    <menuitem id="menu_report_cancelations_details" name="Refunds/Cancelations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
+
 </odoo>
