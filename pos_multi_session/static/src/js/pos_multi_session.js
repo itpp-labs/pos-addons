@@ -509,7 +509,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                if(error.message === 'XmlHttpRequestError ') {
+                if(error.message.search('XmlHttpRequestError') > -1) {
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.longpolling_connection.network_is_off();
