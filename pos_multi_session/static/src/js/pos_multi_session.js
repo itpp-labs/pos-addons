@@ -331,13 +331,16 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_update: function(){
             var self = this;
-            if (this.new_order) {
+            if (this.new_order && this.pos.config.multi_session_id) {
                 this.new_order = false;
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.sequence_number = this.pos.pos_session.order_ID;
                 this.trigger('change:update_new_order');
-            } else {
+            } else if(!this.new_order && this.pos.config.multi_session_id){
                 this.trigger('change');
+            } else {
+                this.new_order = false;
+                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
             }
             if (!this.ms_check())
                 return;
@@ -396,6 +399,9 @@ odoo.define('pos_multi_session', function(require){
                     }
                 })
             };
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             this.enquied = true;
             this.pos.multi_session.enque(f);
         }
@@ -467,13 +473,22 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             var data = {};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             return this.send({action: 'update_order', data: data});
         },
         enque: function(func){
