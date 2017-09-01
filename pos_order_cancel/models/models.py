@@ -102,6 +102,4 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = canceled_date.astimezone(pytz.utc)
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
-        if not values.get('reason'):
-            values['reason'] = _("User did not indicate a reason")
         return super(PosOrderLineCanceled, self).create(values)
