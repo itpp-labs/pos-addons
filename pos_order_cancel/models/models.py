@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api, _
+from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
 import pytz
