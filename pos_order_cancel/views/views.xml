@@ -59,7 +59,7 @@
             </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="Cancellations">
+                <page string="Refunds / Cancellations">
                     <group>
                         <separator string="Order Cancellation Reason" colspan="4" attrs="{'invisible': ['|',('is_cancelled','!=',True),('cancellation_reason','=',False)]}"/>
                         <field name="cancellation_reason" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
@@ -85,11 +85,21 @@
                                     <field name="discount" widget="monetary"/>
                                     <field name="reason" string="Reason"/>
                                     <field name="canceled_date" string="Canceled Datetime"/>
-                                    <field name="tax_ids"/>
                                     <field name="user_id"/>
+                                </group>
+                                <group>
+                                    <field name="tax_ids"/>
                                 </group>
                             </form>
                         </field>
+                    </group>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                        <field name="cancelled_amount_tax" widget="monetary"/>
+                        <div class="oe_subtotal_footer_separator oe_inline">
+                            <label for="cancelled_amount_total" />
+                            <button name="button_dummy" states="draft" string="(update)" class="oe_edit_only oe_link"/>
+                        </div>
+                        <field name="cancelled_amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
                     </group>
                     <div class="oe_clear"/>
                 </page>
@@ -139,7 +149,7 @@
                 <field name="canceled_date"  interval="day" type="row"/>
                 <field name="reason" type="measure"/>
                 <field name="product_id" type="col"/>
-                <field name="price_unit" type="measure"/>
+                <field name="price_subtotal" type="measure"/>
             </graph>
         </field>
     </record>
@@ -154,6 +164,7 @@
                 <field name="price_unit" type="measure"/>
                 <field name="reason"/>
                 <field name="qty" type="measure"/>
+                <field name="price_subtotal" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -194,6 +205,8 @@
                 <field name="user_id"/>
                 <field name="canceled_date" string="Canceled Datetime"/>
                 <field name="tax_ids" invisible="1"/>
+                <field name="price_subtotal" sum="Amount total w/o Tax" widget="monetary"/>
+                <field name="price_subtotal_incl" sum="Amount total" widget="monetary"/>
             </tree>
         </field>
     </record>
@@ -232,6 +245,6 @@
         <field name="context">{'search_default_thismonth':1, 'group_by':[]}</field>
     </record>
 
-    <menuitem id="menu_report_cancelations_details" name="Refunds / Cancelations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
+    <menuitem id="menu_report_cancelations_details" name="Refunds / Cancellations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
 
 </odoo>
