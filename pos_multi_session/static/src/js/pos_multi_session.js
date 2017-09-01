@@ -101,7 +101,7 @@ odoo.define('pos_multi_session', function(require){
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
         ms_on_update: function(message, sync_all){
-            this.ms_syncing_in_progress = true; // don't broadcast updates made from this message
+            this.ms_syncing_in_progress = true;
             var error = false;
             var self = this;
             var data = '';
