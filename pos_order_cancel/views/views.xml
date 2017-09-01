@@ -153,7 +153,6 @@
                 <field name="product_id" type="row"/>
                 <field name="canceled_date" interval="month" type="col"/>
                 <field name="price_unit" type="measure"/>
-                <field name="user_id"/>
                 <field name="reason"/>
                 <field name="qty" type="measure"/>
             </pivot>
