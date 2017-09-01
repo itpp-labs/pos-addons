@@ -234,6 +234,6 @@
         <field name="context">{'search_default_today':1, 'group_by':[]}</field>
     </record>
 
-    <menuitem id="menu_report_cancelations_details" name="Refunds/Cancelations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
+    <menuitem id="menu_report_cancelations_details" name="Refunds / Cancelations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
 
 </odoo>
