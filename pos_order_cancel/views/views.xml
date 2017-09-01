@@ -136,11 +136,10 @@
         <field name="model">pos.order.line.canceled</field>
         <field name="arch" type="xml">
             <graph string="Canceled Lines">
-                <field name="product_id" type="row"/>
+                <field name="canceled_date"  interval="day" type="row"/>
                 <field name="reason" type="measure"/>
-                <field name="canceled_date" type="col"/>
+                <field name="product_id" type="col"/>
                 <field name="price_unit" type="measure"/>
-                <field name="qty" type="measure"/>
             </graph>
         </field>
     </record>
@@ -151,7 +150,7 @@
         <field name="arch" type="xml">
             <pivot string="Canceled Lines">
                 <field name="product_id" type="row"/>
-                <field name="canceled_date" interval="month" type="col"/>
+                <field name="canceled_date" interval="day" type="col"/>
                 <field name="price_unit" type="measure"/>
                 <field name="reason"/>
                 <field name="qty" type="measure"/>
@@ -228,9 +227,9 @@
         <field name="name">Cancelations Details</field>
         <field name="res_model">pos.order.line.canceled</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="view_mode">graph,tree,form,pivot</field>
         <field name="search_view_id" ref="view_report_cancelations_search"/>
-        <field name="context">{'search_default_today':1, 'group_by':[]}</field>
+        <field name="context">{'search_default_thismonth':1, 'group_by':[]}</field>
     </record>
 
     <menuitem id="menu_report_cancelations_details" name="Refunds / Cancelations" action="action_report_cancelations_details" parent="point_of_sale.menu_point_rep" sequence="5"/>
