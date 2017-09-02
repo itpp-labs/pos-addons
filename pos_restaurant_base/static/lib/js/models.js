@@ -21,7 +21,8 @@ odoo.define('pos_restaurant_base.models', function (require) {
                 var line_hash = line.get_line_diff_hash();
 
                 // DIFFERENCES FROM ORIGINAL:
-                // * getting qty, note, product_id and new field line_id to a separate function
+                // * getting qty, note, product_id is moved to a separate function
+                // * add line_id value
                 var line_resume = self.get_line_resume(line);
 
                 if (typeof resume[line_hash] === 'undefined') {
