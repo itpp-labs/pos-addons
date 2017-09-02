@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='features']" position="after">
-                <group string="Order Cancel" >
+                <group string="Refunds / Cancellations" >
                     <field name="kitchen_canceled_only"/>
                 </group>
             </xpath>
