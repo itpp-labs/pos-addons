@@ -85,10 +85,8 @@ odoo.define('pos_order_cancel.models', function (require) {
             var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
             if (exist_cancelled_line) {
                 exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
-            } else {
-                if (this.pos.gui && this.pos.gui.screen_instances.products) {
-                    this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
-                }
+            } else if (this.pos.gui && this.pos.gui.screen_instances.products) {
+                this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
             }
         },
         change_canceled_lines: function(line) {
