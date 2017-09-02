@@ -2,9 +2,13 @@
  POS Order Cancel
 ==================
 
-The module allows to specify a reason for cancel separate products or entire order after printing on POS order printer.
+The module allows to add a reason on canceling order or orderline in POS.
 
-After the product or order is cancelled, the corresponding order receipt will be printed on order printer containing the reason you specified.
+Besides,
+
+* On canceling user can click on predefined Reason and specify custom one
+* Canceled order is saved at database
+* Canceled order line is save at database
 
 Credits
 =======
@@ -32,4 +36,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 0b4c18f05bcedc86ba1ffadd18f318c66afa1a0e
+Tested on Odoo 10.0 c5a6d369d5c5867792052d539ce9de497f52d416

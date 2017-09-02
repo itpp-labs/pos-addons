@@ -4,7 +4,7 @@
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
     "images": ['images/dp3.png'],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
