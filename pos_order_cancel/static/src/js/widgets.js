@@ -25,7 +25,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             var self = this;
             var order = this.pos.get_order();
             if (order.is_empty()) {
-                if (order.contains_canceled_lines) {
+                if (order.canceled_lines && order.canceled_lines.length) {
                     this.gui.screen_instances.products.order_widget.show_popup('order');
                 } else {
                     this._super(event, $el);
@@ -39,24 +39,18 @@ odoo.define('pos_order_cancel.widgets', function (require) {
     screens.OrderWidget.include({
         init: function(parent, options) {
             this._super(parent,options);
-            this.numpad_state.bind('show_popup', this.show_popup, this);
             this.pos.selected_cancelled_reason = '';
         },
         show_popup: function(type, line){
             var self = this;
             var order = this.pos.get_order();
             var orderline = line || order.get_selected_orderline();
-            this.numpad_state.show_popup = true;
             var title = 'Order ';
             if (type === "product") {
                 if (!orderline) {
-                    this.numpad_state.show_popup = false;
                     return false;
                 }
                 title = 'Product ';
-                if (!line) {
-                    orderline.remove_with_numpad = true;
-                }
             }
             // type of object which is removed (product or order)
             this.gui.show_popup('confirm-cancellation',{
