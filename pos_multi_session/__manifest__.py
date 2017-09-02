@@ -4,7 +4,7 @@
     "summary": """Use multiple POS for handling orders""",
     "category": "Point Of Sale",
     "images": ["images/pos-multi-session.png"],
-    "version": "3.0.2",
+    "version": "3.0.3",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
