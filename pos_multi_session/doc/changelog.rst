@@ -8,18 +8,6 @@ Updates
 - FIX: POS floors synchronization.
 - REM: Remove to_pos_shared from dependencies. After renewal this module is necessary to remove module to_pos_shared and renew the module once again.
 
-`1.0.4`
--------
-- FIX: Print only not printed order lines (*Order* button).
-
-`1.0.3`
--------
-- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
-
-`1.0.2`
--------
-- FIX: For pos restaurant compatibility. Sync printed positions.
-
 `3.0.3`
 -------
 
@@ -54,6 +42,17 @@ Updates
 - NEW: Stable order numbering: no duplicates, no omissions. Use word "New" for unregistered empty orders.
 - NEW: Restoring after connection problems
 
+`1.0.4`
+-------
+- FIX: Print only not printed order lines (*Order* button).
+
+`1.0.3`
+-------
+- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
+
+`1.0.2`
+-------
+- FIX: For pos restaurant compatibility. Sync printed positions.
 
 `1.0.1`
 -------
