@@ -79,6 +79,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             return datetime;
         },
         change_cancelled_quantity: function(line) {
+            if (!line) {
+                return;
+            }
             var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
             if (exist_cancelled_line) {
                 exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
