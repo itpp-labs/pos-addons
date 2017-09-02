@@ -34,7 +34,6 @@ class PosOrder(models.Model):
             amount_untaxed = currency.round(sum(line.price_subtotal for line in order.canceled_lines))
             order.cancelled_amount_total = order.cancelled_amount_tax + amount_untaxed
 
-
     @api.depends('is_cancelled', 'state')
     def _compute_state(self):
         for pos_order in self:
