@@ -13,7 +13,6 @@ Configuration
 * Go to ``Point of Sale >> POS Product Cancellation Reason``
 
   * Click on ``[Create]``
-  * Specify a number
   * Specify a cancellation reason
   * Click ``[Save]``
 
@@ -22,7 +21,6 @@ Usage
 
 * Open POS session
 * Add new products in order
-* Click ``[Order]``
 
 Product Cancellation Reason
 ---------------------------
