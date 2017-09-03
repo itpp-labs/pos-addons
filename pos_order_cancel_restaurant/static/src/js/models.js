@@ -61,7 +61,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
         computeChanges: function(categories){
             var self = this;
             var res = _super_order.computeChanges.apply(this, arguments);
-            if (this.pos.config.kitchen_canceled_only && res.cancelled && res.cancelled.length) {
+            if (res.cancelled && res.cancelled.length) {
                 res.cancelled.forEach(function(product) {
                     var line = self.get_exist_cancelled_line(product.line_id);
                     if (line && line[2].reason) {
@@ -75,23 +75,9 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             return res;
         },
         save_canceled_order: function(reason) {
-            var self = this;
-            if (this.pos.config.kitchen_canceled_only) {
-                this.is_cancelled = true;
-                this.reason = reason;
-                this.orderlines.each(function(orderline){
-                    self.save_canceled_line(_t("Order Deleting"), self.get_last_orderline());
-                    self.remove_orderline(self.get_last_orderline());
-                });
-                this.printChanges();
-                this.saveChanges();
-                this.pos.push_order(this).then(function() {
-                    self.reason = false;
-                    self.destroy({'reason':'abandon'});
-                });
-            } else {
-                _super_order.save_canceled_order.apply(this, arguments);
-            }
+            _super_order.save_canceled_order.apply(this, arguments);
+            this.printChanges();
+            this.saveChanges();
         },
         change_cancelled_quantity: function(line) {
             if (this.pos.config.kitchen_canceled_only) {
@@ -101,7 +87,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                     this.save_canceled_line(false, line);
                 }
             } else {
-                _super_order.change_cancelled_quantity.call(line);
+                _super_order.change_cancelled_quantity.apply(this, arguments);
             }
         },
     });
