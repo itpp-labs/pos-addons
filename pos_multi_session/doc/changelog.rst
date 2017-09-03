@@ -15,6 +15,11 @@ Updates
 -------
 - FIX: For pos restaurant compatibility. Sync printed positions.
 
+`3.0.3`
+-------
+
+- FIX: KeyError: 'sequence_number'.
+
 `3.0.2`
 -------
 
