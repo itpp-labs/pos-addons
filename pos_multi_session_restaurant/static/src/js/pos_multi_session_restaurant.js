@@ -75,6 +75,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.multi_session){
                 var current_order = this.get_order();
                 current_order.ms_update();
+                current_order.save_to_db();
             }
         },
         ms_create_order: function(options){
