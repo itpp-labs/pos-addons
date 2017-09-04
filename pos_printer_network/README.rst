@@ -6,7 +6,7 @@ Print POS orders and receipts by using a network printer.
 
 By default, odoo supports usb printers only for POS order printing. The module makes it possible to print POS orders and receipts on network printers.
 
-**TODO:** The Kitchen Printers can not be used if unchecked **[x] Receipt Printer** box.
+**TODO:** Kitchen Printers can not be used if **[x] Receipt Printer** box unchecked.
 
 Credits
 =======
