@@ -23,7 +23,7 @@ class PosOrder(models.Model):
         'Status', compute='_compute_state')
 
     cancelled_amount_tax = fields.Float(compute='_compute_cancelled_amount_all', string='Taxes', digits=0)
-    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Total', digits=0)
+    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Total', digits=0, default=0)
 
     @api.depends('canceled_lines', 'canceled_lines.price_subtotal_incl', 'canceled_lines.discount')
     def _compute_cancelled_amount_all(self):
