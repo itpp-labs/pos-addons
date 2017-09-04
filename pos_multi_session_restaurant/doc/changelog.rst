@@ -6,7 +6,7 @@ Updates
 `2.0.0`
 -------
 - FIX: POS floors synchronization.
-- REM: to_pos_shared was removed from dependencies. After renewal this module is necessary to remove module to_pos_shared and renew the module once again.
+- REM: to_pos_shared was removed from dependencies. After updating this module is necessary to remove module to_pos_shared and update the module once again.
 
 `1.1.8`
 -------
