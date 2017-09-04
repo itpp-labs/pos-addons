@@ -37,8 +37,9 @@ odoo.define('pos_restaurant_base.models', function (require) {
             var qty  = Number(line.get_quantity());
             var note = line.get_note();
             var product_id = line.get_product().id;
+            var product_name_wrapped = line.generate_wrapped_product_name();
             var line_id = line.id;
-            return {qty: qty, note: note, product_id: product_id, line_id: line_id};
+            return {qty: qty, note: note, product_id: product_id, product_name_wrapped: product_name_wrapped, line_id: line_id};
         },
         computeChanges: function(categories, config){
             //  DIFFERENCES FROM ORIGINAL: 
@@ -64,6 +65,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     add.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      curr.qty,
                         'line_id':  curr.line_id,
@@ -72,6 +74,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     add.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      curr.qty - old.qty,
                         'line_id':  curr.line_id,
@@ -80,6 +83,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     rem.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      old.qty - curr.qty,
                         'line_id':  curr.line_id,
@@ -93,6 +97,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     rem.push({
                         'id':       old.product_id,
                         'name':     this.pos.db.get_product_by_id(old.product_id).display_name,
+                        'name_wrapped': old.product_name_wrapped,
                         'note':     old.note,
                         'qty':      old.qty,
                         'line_id':  old.line_id,
