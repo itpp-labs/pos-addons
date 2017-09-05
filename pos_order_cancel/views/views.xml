@@ -4,7 +4,7 @@
         <field name="name">pos.cancelled_reason.form</field>
         <field name="model">pos.cancelled_reason</field>
         <field name="arch" type="xml">
-            <form string="POS Product Cancellation Reason">
+            <form string="Refund / Cancellation Reason">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -18,7 +18,7 @@
         <field name="name">pos.cancelled_reason.tree</field>
         <field name="model">pos.cancelled_reason</field>
         <field name="arch" type="xml">
-            <tree string="Pos Product Cancellation Reason">
+            <tree string="Refund / Cancellation Reason">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
@@ -26,7 +26,7 @@
     </record>
 
     <record id="pos_cancelled_reason_action" model="ir.actions.act_window">
-        <field name="name">POS Product Cancellation Reason</field>
+        <field name="name">Refund / Cancellation Reasons</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pos.cancelled_reason</field>
         <field name="view_type">form</field>
@@ -34,7 +34,7 @@
         <field name="view_id" eval="False"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
-                Click to define a new cancellation reason.
+                Click to define a new Refund / Cancellation Reason.
             </p>
         </field>
     </record>
@@ -72,25 +72,11 @@
                                 <field name="qty"/>
                                 <field name="price_unit" widget="monetary"/>
                                 <field name="discount" widget="monetary"/>
-                                <field name="reason" string="Reason"/>
+                                <field name="reason"/>
                                 <field name="user_id"/>
-                                <field name="canceled_date" string="Canceled Datetime"/>
+                                <field name="canceled_date"/>
                                 <field name="tax_ids" invisible="1"/>
                             </tree>
-                            <form string="Order lines">
-                                <group col="4">
-                                    <field name="product_id"/>
-                                    <field name="qty"/>
-                                    <field name="price_unit" widget="monetary"/>
-                                    <field name="discount" widget="monetary"/>
-                                    <field name="reason" string="Reason"/>
-                                    <field name="canceled_date" string="Canceled Datetime"/>
-                                    <field name="user_id"/>
-                                </group>
-                                <group>
-                                    <field name="tax_ids"/>
-                                </group>
-                            </form>
                         </field>
                     </group>
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
@@ -136,7 +122,7 @@
                 <attribute name="domain">[('state','=','done'),('is_cancelled','=',False)]</attribute>
             </xpath>
             <xpath expr="//filter[4]" position="after">
-                <filter string="Cancelled" domain="[('is_cancelled','=',True)]"/>
+                <filter string="Canceled" domain="[('is_cancelled','=',True)]"/>
             </xpath>
         </field>
     </record>
@@ -179,9 +165,10 @@
                     <field name="qty"/>
                     <field name="price_unit" widget="monetary"/>
                     <field name="discount" widget="monetary"/>
-                    <field name="reason" string="Reason"/>
-                    <field name="canceled_date" string="Canceled Datetime"/>
+                    <field name="reason"/>
+                    <field name="canceled_date"/>
                     <field name="user_id"/>
+                    <field name="order_id"/>
                 </group>
                 <group>
                     <field name="tax_ids"/>
@@ -198,10 +185,10 @@
                 <field name="product_id"/>
                 <field name="qty"/>
                 <field name="price_unit" widget="monetary"/>
-                <field name="discount" widget="monetary"/>
-                <field name="reason" string="Reason"/>
+                <field name="order_id"/>
+                <field name="reason"/>
                 <field name="user_id"/>
-                <field name="canceled_date" string="Canceled Datetime"/>
+                <field name="canceled_date"/>
                 <field name="tax_ids" invisible="1"/>
                 <field name="price_subtotal" sum="Amount total w/o Tax" widget="monetary"/>
                 <field name="price_subtotal_incl" sum="Amount total" widget="monetary"/>
@@ -226,6 +213,8 @@
                     <separator/>
                     <filter string="Products" context="{'group_by':'product_id'}"/>
                     <separator/>
+                    <filter string="POS Order" context="{'group_by':'order_id'}"/>
+                    <separator/>
                     <filter string="Days" context="{'group_by':'canceled_date:day'}" help="Day of canceled date"/>
                     <filter string="Weeks" context="{'group_by':'canceled_date:week'}" help="Week of canceled date"/>
                     <filter string="Months" context="{'group_by':'canceled_date:month'}" help="Month of canceled date"/>
@@ -235,7 +224,7 @@
     </record>
 
     <record id="action_report_cancelations_details" model="ir.actions.act_window">
-        <field name="name">Cancelations Details</field>
+        <field name="name">Refund / Cancelation Details</field>
         <field name="res_model">pos.order.line.canceled</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,tree,form,pivot</field>
