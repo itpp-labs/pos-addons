@@ -22,6 +22,18 @@ class PosOrder(models.Model):
         [('draft', 'New'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')],
         'Status', compute='_compute_state')
 
+    cancelled_amount_tax = fields.Float(compute='_compute_cancelled_amount_all', string='Taxes', digits=0)
+    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Total', digits=0, default=0)
+
+    @api.depends('canceled_lines', 'canceled_lines.price_subtotal_incl', 'canceled_lines.discount')
+    def _compute_cancelled_amount_all(self):
+        for order in self:
+            order.cancelled_amount_total = order.cancelled_amount_tax = 0.0
+            currency = order.pricelist_id.currency_id
+            order.cancelled_amount_tax = currency.round(sum(self._amount_line_tax(line, order.fiscal_position_id) for line in order.canceled_lines))
+            amount_untaxed = currency.round(sum(line.price_subtotal for line in order.canceled_lines))
+            order.cancelled_amount_total = order.cancelled_amount_tax + amount_untaxed
+
     @api.depends('is_cancelled', 'state')
     def _compute_state(self):
         for pos_order in self:
@@ -42,7 +54,8 @@ class PosOrder(models.Model):
     def _process_order(self, pos_order):
         order = super(PosOrder, self)._process_order(pos_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
-            order.cancellation_reason = pos_order['reason'].encode('utf-8').strip(" \t\n")
+            if pos_order['reason']:
+                order.cancellation_reason = pos_order['reason'].encode('utf-8').strip(" \t\n")
             order.is_cancelled = True
         return order
 
@@ -66,6 +79,10 @@ class PosOrder(models.Model):
         else:
             return super(PosOrder, self).action_pos_order_done()
 
+    def _reconcile_payments(self):
+        uncanceled_order = self.filtered(lambda o: not o.is_cancelled)
+        super(PosOrder, uncanceled_order)._reconcile_payments()
+
 
 class PosOrderLineCanceled(models.Model):
     _name = "pos.order.line.canceled"
@@ -87,6 +104,26 @@ class PosOrderLineCanceled(models.Model):
     pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
     tax_ids = fields.Many2many('account.tax', string='Taxes', readonly=True)
     canceled_date = fields.Datetime(string='Canceled Date', readonly=True, default=fields.Datetime.now)
+    price_subtotal = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal w/o Tax', store=True)
+    price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
+
+    @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
+    def _compute_amount_line_all(self):
+        for line in self:
+            currency = line.order_id.pricelist_id.currency_id
+            taxes = line.tax_ids.filtered(lambda tax: tax.company_id.id == line.order_id.company_id.id)
+            fiscal_position_id = line.order_id.fiscal_position_id
+            if fiscal_position_id:
+                taxes = fiscal_position_id.map_tax(taxes, line.product_id, line.order_id.partner_id)
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            line.price_subtotal = line.price_subtotal_incl = price * line.qty
+            if taxes:
+                taxes = taxes.compute_all(price, currency, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
+                line.price_subtotal = taxes['total_excluded']
+                line.price_subtotal_incl = taxes['total_included']
+
+            line.price_subtotal = currency.round(line.price_subtotal)
+            line.price_subtotal_incl = currency.round(line.price_subtotal_incl)
 
     @api.model
     def create(self, values):

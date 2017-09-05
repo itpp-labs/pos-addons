@@ -22,17 +22,19 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             if (!order) {
                 return;
             }
-            if (!order.is_empty() && this.pos.config.kitchen_canceled_only) {
-                if (order.get_order_lines_by_dirty_status(false).length) {
-                    this._super(event, $el);
-                } else {
-                    this.gui.show_popup('confirm',{
+            if (this.pos.config.kitchen_canceled_only) {
+                if (order.is_empty() && order.canceled_lines && order.canceled_lines.length) {
+                    order.save_canceled_order(false);
+                } else if (!order.is_empty() && !order.get_order_lines_by_dirty_status(false).length){
+                     this.gui.show_popup('confirm',{
                         'title': _t('Destroy Current Order ?'),
                         'body': _t('You will lose any data associated with the current order'),
-                        confirm: function(){
-                            self.pos.delete_current_order();
+                        confirm: function() {
+                            order.save_canceled_order(false);
                         },
                     });
+                } else {
+                    this._super(event, $el);
                 }
             } else {
                 this._super(event, $el);
@@ -46,7 +48,7 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
             if (this.pos.config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
-                this.numpad_state.show_popup = false;
+                order.save_canceled_line(false, orderline);
                 return false;
             }
             this._super(type);

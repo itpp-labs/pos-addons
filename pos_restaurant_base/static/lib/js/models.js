@@ -11,6 +11,36 @@ odoo.define('pos_restaurant_base.models', function (require) {
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
+        build_line_resume: function(){
+            var resume = {};
+            var self = this;
+            this.orderlines.each(function(line){
+                if (line.mp_skip) {
+                    return;
+                }
+                var line_hash = line.get_line_diff_hash();
+
+                // DIFFERENCES FROM ORIGINAL:
+                // * getting qty, note, product_id is moved to a separate function
+                // * add line_id value
+                var line_resume = self.get_line_resume(line);
+
+                if (typeof resume[line_hash] === 'undefined') {
+                    resume[line_hash] = line_resume;
+                } else {
+                    resume[line_hash].qty += line_resume.qty;
+                }
+            });
+            return resume;
+        },
+        get_line_resume: function(line) {
+            var qty  = Number(line.get_quantity());
+            var note = line.get_note();
+            var product_id = line.get_product().id;
+            var product_name_wrapped = line.generate_wrapped_product_name();
+            var line_id = line.id;
+            return {qty: qty, note: note, product_id: product_id, product_name_wrapped: product_name_wrapped, line_id: line_id};
+        },
         computeChanges: function(categories, config){
             //  DIFFERENCES FROM ORIGINAL: 
             // * new incomming argument "config" (printer config)
@@ -19,6 +49,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
             //   but we'd like to do it to make code more readable)
             //
             // * new attributes in return: new_all and cancelled_all - lines without filtration with categories
+            // * new attributes in return: line_id - id the changed line
             var current_res = this.build_line_resume();
             var old_res     = this.saved_resume || {};
             var json        = this.export_as_JSON();
@@ -34,22 +65,28 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     add.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      curr.qty,
+                        'line_id':  curr.line_id,
                     });
                 } else if (old.qty < curr.qty) {
                     add.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      curr.qty - old.qty,
+                        'line_id':  curr.line_id,
                     });
                 } else if (old.qty > curr.qty) {
                     rem.push({
                         'id':       curr.product_id,
                         'name':     this.pos.db.get_product_by_id(curr.product_id).display_name,
+                        'name_wrapped': curr.product_name_wrapped,
                         'note':     curr.note,
                         'qty':      old.qty - curr.qty,
+                        'line_id':  curr.line_id,
                     });
                 }
             }
@@ -60,8 +97,10 @@ odoo.define('pos_restaurant_base.models', function (require) {
                     rem.push({
                         'id':       old.product_id,
                         'name':     this.pos.db.get_product_by_id(old.product_id).display_name,
+                        'name_wrapped': old.product_name_wrapped,
                         'note':     old.note,
                         'qty':      old.qty,
+                        'line_id':  old.line_id,
                     });
                 }
             }
@@ -120,7 +159,6 @@ odoo.define('pos_restaurant_base.models', function (require) {
                 // DIFFERENCES FROM ORIGINAL: 
                 // * call computeChanges with config
                 var changes = this.computeChanges(printers[i].config.product_categories_ids, printers[i].config);
-
                 // DIFFERENCES FROM ORIGINAL:
                 // * move printing to a separate function
                 this.print_order_receipt(printers[i], changes);

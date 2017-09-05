@@ -16,7 +16,7 @@
 
     "depends": [
         "pos_order_cancel",
-        "pos_restaurant",
+        "pos_restaurant_base",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
