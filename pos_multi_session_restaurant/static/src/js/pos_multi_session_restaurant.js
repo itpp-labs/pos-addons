@@ -63,6 +63,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     data.transfer = false;
                     return;
                 } else {
+                    if (!this.pos.config.multi_session_id){
+                        return;
+                    }
                     this.send({action: 'remove_order', data: data});
                 }
             };
