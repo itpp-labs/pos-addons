@@ -8,10 +8,6 @@
         <record id="point_of_sale.pos_config_main" model="pos.config">
             <field name="multi_session_id" ref="pos_multi_session.demo_multi_session"/>
         </record>
-
-        <record id="pos_restaurant.floor_main" model="restaurant.floor">
-            <field name="pos_multi_session_ids" eval="[(6,0,[ref('point_of_sale.pos_config_main'), ref('pos_multi_session.demo_multi_pos_config_one'), ref('pos_multi_session.demo_multi_pos_config_two')])]"/>
-        </record>
     </data>
 </odoo>
 
