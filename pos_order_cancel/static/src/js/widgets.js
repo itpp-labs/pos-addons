@@ -25,7 +25,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             var self = this;
             var order = this.pos.get_order();
             if (order.is_empty()) {
-                if (order.contains_canceled_lines) {
+                if (order.canceled_lines && order.canceled_lines.length) {
                     this.gui.screen_instances.products.order_widget.show_popup('order');
                 } else {
                     this._super(event, $el);
@@ -39,23 +39,19 @@ odoo.define('pos_order_cancel.widgets', function (require) {
     screens.OrderWidget.include({
         init: function(parent, options) {
             this._super(parent,options);
-            this.numpad_state.bind('show_popup', this.show_popup, this);
             this.pos.selected_cancelled_reason = '';
         },
-        show_popup: function(type){
+        show_popup: function(type, line){
             var self = this;
             var order = this.pos.get_order();
-            var orderline = order.get_selected_orderline();
-            this.numpad_state.show_popup = true;
+            var orderline = line || order.get_selected_orderline();
             var title = 'Order ';
             if (type === "product") {
                 if (!orderline) {
-                    this.numpad_state.show_popup = false;
                     return false;
                 }
                 title = 'Product ';
             }
-
             // type of object which is removed (product or order)
             this.gui.show_popup('confirm-cancellation',{
                 'title': _t(title + 'Cancellation Reason'),
@@ -64,12 +60,17 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 'type': type,
                 confirm: function(reason){
                     if (type === 'product') {
-                        orderline.save_canceled_line(reason);
+                        order.save_canceled_line(reason, orderline);
                     }
                     if (type === 'order') {
                         order.save_canceled_order(reason);
                     }
                 },
+                cancel: function() {
+                    if (type === 'product') {
+                        order.save_canceled_line(false, orderline);
+                    }
+                }
             });
         },
     });
@@ -193,7 +194,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             });
             var reason = active_reasons_name.join("; ");
             if (type === 'product') {
-                orderline.save_canceled_line(reason);
+                order.save_canceled_line(reason, orderline);
             }
             if (type === 'order') {
                 order.save_canceled_order(reason);
