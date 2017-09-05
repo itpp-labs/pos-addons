@@ -20,26 +20,11 @@ odoo.define('pos_order_cancel.models', function (require) {
         },
     });
 
-    var NumpadSuper = models.NumpadState;
-    models.NumpadState = models.NumpadState.extend({
-        deleteLastChar: function() {
-            if(this.get('buffer') === "" && this.get('mode') === 'quantity'){
-                this.trigger('show_popup', 'product');
-                if (!this.show_popup) {
-                    NumpadSuper.prototype.deleteLastChar.apply(this, arguments);
-                }
-            } else {
-                NumpadSuper.prototype.deleteLastChar.apply(this, arguments);
-            }
-        },
-    });
-
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
             var res = _super_order.initialize.apply(this, arguments);
             this.canceled_lines = [];
-            this.contains_canceled_lines = false;
             return res;
         },
         save_canceled_order: function(reason) {
@@ -47,44 +32,41 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.is_cancelled = true;
             this.reason = reason;
             this.orderlines.each(function(orderline){
-                self.get_last_orderline().save_canceled_line(_t("Order Deleting"));
+                self.save_canceled_line(_t("Order Deleting"), self.get_last_orderline());
+                self.remove_orderline(self.get_last_orderline());
             });
             this.pos.push_order(this).then(function() {
                 self.destroy({'reason':'abandon'});
             });
         },
-        export_as_JSON: function() {
-            var data = _super_order.export_as_JSON.apply(this, arguments);
-            data.canceled_lines = this.canceled_lines;
-            data.reason = this.reason;
-            data.is_cancelled = this.is_cancelled;
-            data.contains_canceled_lines = this.contains_canceled_lines;
-            return data;
-        },
-        init_from_JSON: function(json) {
-            this.canceled_lines = json.canceled_lines;
-            this.reason = json.reason;
-            this.is_cancelled = json.is_cancelled;
-            this.contains_canceled_lines = json.contains_canceled_lines;
-            _super_order.init_from_JSON.call(this, json);
-        },
-    });
-
-    var _super_orderline = models.Orderline.prototype;
-    models.Orderline = models.Orderline.extend({
-        save_canceled_line: function(reason) {
-            var self = this;
-            var line = this.export_as_JSON();
-            line.reason = reason;
-            line.user_id = this.pos.cashier
-                           ? this.pos.cashier.id
-                           : this.pos.user.id;
-            if (!this.order.is_cancelled) {
-                line.canceled_date = this.get_datetime();
+        add_cancelled_line: function(line, reason) {
+            var new_line = line.export_as_JSON();
+            new_line.reason = reason;
+            if (this.is_cancelled) {
+                new_line.qty = line.max_quantity;
+            } else {
+                new_line.qty = line.max_quantity - line.quantity;
+                new_line.canceled_date = this.get_datetime();
             }
-            this.order.contains_canceled_lines = true;
-            this.order.canceled_lines.push([0, 0, line]);
-            this.order.remove_orderline(this);
+            new_line.cancelled_id = line.id;
+            new_line.user_id = this.pos.cashier
+                               ? this.pos.cashier.id
+                               : this.pos.user.id;
+            this.canceled_lines.push([0, 0, new_line]);
+        },
+        save_canceled_line: function(reason, orderline) {
+            var self = this;
+            var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
+            if (exist_cancelled_line && this.is_cancelled) {
+                exist_cancelled_line[2].qty = orderline.max_quantity;
+            } else {
+                this.add_cancelled_line(orderline, reason);
+            }
+        },
+        get_exist_cancelled_line: function(id) {
+            return this.canceled_lines.find(function(exist_line) {
+                return id === exist_line[2].cancelled_id;
+            });
         },
         get_datetime: function() {
             var currentdate = new Date();
@@ -95,6 +77,63 @@ odoo.define('pos_order_cancel.models', function (require) {
                            currentdate.getMinutes() + ":" +
                            currentdate.getSeconds();
             return datetime;
+        },
+        change_cancelled_quantity: function(line) {
+            if (!line) {
+                return;
+            }
+            var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
+            if (exist_cancelled_line) {
+                exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
+            } else if (this.pos.gui && this.pos.gui.screen_instances.products) {
+                this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
+            }
+        },
+        change_canceled_lines: function(line) {
+            var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
+            if (exist_cancelled_line) {
+                var index = this.canceled_lines.indexOf(exist_cancelled_line);
+                this.canceled_lines.splice(index, 1);
+            }
+        },
+        export_as_JSON: function() {
+            var data = _super_order.export_as_JSON.apply(this, arguments);
+            data.canceled_lines = this.canceled_lines;
+            data.reason = this.reason;
+            data.is_cancelled = this.is_cancelled;
+            return data;
+        },
+        init_from_JSON: function(json) {
+            this.canceled_lines = json.canceled_lines;
+            this.reason = json.reason;
+            this.is_cancelled = json.is_cancelled;
+            _super_order.init_from_JSON.call(this, json);
+        },
+    });
+
+    var _super_orderline = models.Orderline.prototype;
+    models.Orderline = models.Orderline.extend({
+        initialize: function(attr,options){
+            this.max_quantity = 1;
+            _super_orderline.initialize.apply(this,arguments);
+        },
+        set_quantity: function(quantity) {
+            _super_orderline.set_quantity.apply(this,arguments);
+            if (this.max_quantity < Number(quantity)) {
+                this.max_quantity = Number(quantity);
+                this.order.change_canceled_lines(this);
+            } else if(this.max_quantity > Number(quantity)){
+                this.order.change_cancelled_quantity(this);
+            }
+        },
+        export_as_JSON: function() {
+            var data = _super_orderline.export_as_JSON.apply(this, arguments);
+            data.max_quantity = this.max_quantity;
+            return data;
+        },
+        init_from_JSON: function(json) {
+            this.max_quantity = json.max_quantity;
+            _super_orderline.init_from_JSON.call(this, json);
         },
     });
     return models;

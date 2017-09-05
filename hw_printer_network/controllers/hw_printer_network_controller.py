@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import http
+from openerp import http
 import logging
 import time
 import traceback
@@ -10,12 +10,12 @@ _logger = logging.getLogger(__name__)
 
 
 try:
-    from odoo.addons.hw_escpos.escpos import escpos
-    from odoo.addons.hw_escpos.controllers.main import EscposProxy
-    from odoo.addons.hw_escpos.controllers.main import EscposDriver
-    from odoo.addons.hw_escpos.escpos.exceptions import NoDeviceError, HandleDeviceError, TicketNotPrinted, NoStatusError
-    from odoo.addons.hw_escpos.escpos.printer import Network
-    import odoo.addons.hw_escpos.controllers.main as hw_escpos_main
+    from openerp.addons.hw_escpos.escpos import escpos
+    from openerp.addons.hw_escpos.controllers.main import EscposProxy
+    from openerp.addons.hw_escpos.controllers.main import EscposDriver
+    from openerp.addons.hw_escpos.escpos.exceptions import NoDeviceError, HandleDeviceError, TicketNotPrinted, NoStatusError
+    from openerp.addons.hw_escpos.escpos.printer import Network
+    import openerp.addons.hw_escpos.controllers.main as hw_escpos_main
 except ImportError:
     EscposProxy = object
 
