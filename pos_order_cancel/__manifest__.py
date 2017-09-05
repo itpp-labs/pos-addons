@@ -26,7 +26,9 @@
     'qweb': [
         'static/src/xml/cancel_order.xml',
     ],
-    "demo": [],
+    "demo": [
+        'data/pos_cancelled_reason_demo.xml'
+    ],
 
     "post_load": None,
     "pre_init_hook": None,
