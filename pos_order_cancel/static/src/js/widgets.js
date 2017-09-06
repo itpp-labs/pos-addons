@@ -95,12 +95,11 @@ odoo.define('pos_order_cancel.widgets', function (require) {
 
             var split_to_array = function(arr, size) {
                 var newArray = [];
-                i = 0;
-                for (var i; i < arr.length; i += size) {
+                for (var i=0; i < arr.length; i += size) {
                     newArray.push(arr.slice(i, i + size));
                 }
                 return newArray;
-            }
+            };
             if (this.options.reasons.length === 9) {
                 this.options.reasons = this.options.reasons.slice(0, 8);
                 this.buttons = this.options.reasons.slice();
