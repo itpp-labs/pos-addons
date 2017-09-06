@@ -298,6 +298,9 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             this.bind('change:sync', function(){
                 self.ms_update();
             });
@@ -331,20 +334,13 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_update: function(){
             var self = this;
-            if (this.pos.config.multi_session_id){
-                if (this.new_order) {
-                    this.new_order = false;
-                    this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
-                    this.sequence_number = this.pos.pos_session.order_ID;
-                    this.trigger('change:update_new_order');
-                } else {
-                    this.trigger('change');
-                    }
-            }
-             else if (this.new_order) {
+            if (this.new_order) {
                 this.new_order = false;
+                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
+                this.sequence_number = this.pos.pos_session.order_ID;
                 this.trigger('change:update_new_order');
-                this.save_to_db();
+            } else {
+                this.trigger('change');
             }
             if (!this.ms_check())
                 return;
