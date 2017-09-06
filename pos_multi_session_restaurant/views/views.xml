@@ -25,8 +25,8 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='floor_ids']" position="replace">
-                        <field name="floor_ids" widget="many2many_tags" attrs="{'required':[('multi_session_id', 'in', [None,False])], 'invisible':[('multi_session_id', 'in', [None,False])]}"/>
-                        <field name="multi_session_no_id_floor_ids" widget="one2many_tags" attrs="{'required':[('multi_session_id', 'not in', [None,False])], 'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
+                        <field name="floor_ids" widget="many2many_tags" attrs="{'required':[('multi_session_id', 'not in', [None,False])], 'invisible':[('multi_session_id', 'in', [None,False])]}"/>
+                        <field name="multi_session_no_id_floor_ids" widget="one2many_tags" attrs="{'required':[('multi_session_id', 'in', [None,False])], 'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
                     </xpath>
                 </data>
             </field>

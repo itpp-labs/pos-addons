@@ -57,7 +57,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
-            floor_model.domain = function(self){ return [['id','in',self.config.floor_ids]]; };
+            floor_model.domain = function(self){
+                var temporary = [['id','in',self.config.floor_ids]];
+                return temporary[0][2].length > 0 ? temporary : [['id','in',self.config.multi_session_no_id_floor_ids]];
+            };
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session.remove_order = function(data) {
