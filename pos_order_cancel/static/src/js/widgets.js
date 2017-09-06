@@ -55,7 +55,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             // type of object which is removed (product or order)
             this.gui.show_popup('confirm-cancellation',{
                 'title': _t(title + 'Cancellation Reason'),
-                'reasons': self.pos.cancelled_reason.slice(0,8),
+                'reasons': self.pos.cancelled_reason,
                 'value': self.pos.selected_cancelled_reason.name,
                 'type': type,
                 confirm: function(reason){
@@ -81,13 +81,32 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             this._super(options);
             if (options.reasons) {
                 this.events = _.extend(this.events, {
-                    'click .cancelled-reason .button': 'click_cancelled_reason',
+                    'click .cancelled-reason .reason-button': 'click_cancelled_reason',
                 });
             }
             this.type = options.type;
+
             options.reasons.forEach(function(item) {
                 item.active = false;
             });
+            var other = {'other': true};
+            this.options.reasons = this.options.reasons.slice(0, 9);
+            this.buttons = this.options.reasons.slice();
+
+            var split_to_array = function(arr, size) {
+                var newArray = [];
+                i = 0;
+                for (var i; i < arr.length; i += size) {
+                    newArray.push(arr.slice(i, i + size));
+                }
+                return newArray;
+            }
+            if (this.options.reasons.length === 9) {
+                this.options.reasons = this.options.reasons.slice(0, 8);
+                this.buttons = this.options.reasons.slice();
+                this.buttons.push(other);
+            }
+            this.buttons = split_to_array(this.buttons, 3);
             this.renderElement();
         },
         get_reason_by_id: function(id) {
@@ -173,11 +192,13 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 }
                 if (reason.active) {
                     cancellation_reason.classList.add('highlight');
+                    this.show_reason_button = true;
                 } else {
                     cancellation_reason.classList.remove('highlight');
                 }
                 contents.appendChild(cancellation_reason);
             }
+            this.toggle_save_button();
         },
         save_changes: function(){
             var self = this;
