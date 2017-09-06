@@ -12,6 +12,7 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     floor_ids = fields.Many2many(related='multi_session_id.floor_ids')
+    multi_session_no_id_floor_ids = fields.One2many('restaurant.floor', 'pos_config_id')
 
 
 class PosMultiSession(models.Model):
