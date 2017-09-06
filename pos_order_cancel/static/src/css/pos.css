@@ -7,7 +7,7 @@
     width: 33%!important;
 }
 .popup-confirm-cancellation .cancelled-reason ul {
-    height: 200px;
+    height: 199px;
     overflow-x: auto;
     border-top: 1px solid #e3e1e1;
 }
@@ -32,15 +32,11 @@
     padding-top: 10px;
     padding-bottom: 0;
 }
+.popup-confirm-cancellation .break{
+    height: 10px;
+}
 .popup-confirm-cancellation .cancelled-reason .other-reason {
     font-style: italic;
-    height: 30px;
-}
-.popup-confirm-cancellation .cancelled-reason .other {
-    float: right;
-}
-.popup-confirm-cancellation .cancelled-reason .other-reason.hidden {
-    display: none;
 }
 .popup-confirm-cancellation .cancelled-reason {
     display: table;

@@ -55,7 +55,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             // type of object which is removed (product or order)
             this.gui.show_popup('confirm-cancellation',{
                 'title': _t(title + 'Cancellation Reason'),
-                'reasons': self.pos.cancelled_reason.slice(0, 8),
+                'reasons': self.pos.cancelled_reason,
                 'value': self.pos.selected_cancelled_reason.name,
                 'type': type,
                 confirm: function(reason){
@@ -89,6 +89,9 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             options.reasons.forEach(function(item) {
                 item.active = false;
             });
+            var other = {'other': true};
+            this.options.reasons = this.options.reasons.slice(0, 9);
+            this.buttons = this.options.reasons.slice();
 
             var split_to_array = function(arr, size) {
                 var newArray = [];
@@ -98,11 +101,13 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 }
                 return newArray;
             }
-            this.reasons = split_to_array(this.options.reasons, 3);
-            this.renderElement();
-            if (this.options.reasons.length < 8) {
-                this.$('.other-reason').addClass("hidden");
+            if (this.options.reasons.length === 9) {
+                this.options.reasons = this.options.reasons.slice(0, 8);
+                this.buttons = this.options.reasons.slice();
+                this.buttons.push(other);
             }
+            this.buttons = split_to_array(this.buttons, 3);
+            this.renderElement();
         },
         get_reason_by_id: function(id) {
             return this.options.reasons.find(function(item) {

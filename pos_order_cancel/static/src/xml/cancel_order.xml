@@ -8,16 +8,21 @@
                 <textarea rows="1" cols="44" placeholder="Reason"></textarea>
                 <div class="cancelled-reason">
                     <ul>
-                        <t t-if="widget.reasons">
-                            <t t-foreach="widget.reasons" t-as="reasons">
+                        <t t-if="widget.buttons">
+                            <t t-foreach="widget.buttons" t-as="buttons">
                                 <span class="reason-row">
-                                    <t t-foreach="reasons" t-as="reason">
-                                        <li class="reason-col"><div t-attf-id="{{reason.id}}" class="reason-button"><t t-esc="reason.name"/></div></li>
+                                    <t t-foreach="buttons" t-as="button">
+                                        <t t-if="!button.other">
+                                            <li class="reason-col"><div t-attf-id="{{button.id}}" class="reason-button"><t t-esc="button.name"/></div></li>
+                                        </t>
+                                        <t t-if="button.other">
+                                            <li class="reason-col other"><div id="other" class="reason-button other-reason">Other</div></li>
+                                        </t>
                                     </t>
                                 </span>
                             </t>
+                            <div class="break"></div>
                         </t>
-                        <li class="other"><div id="other" class="reason-col reason-button other-reason">Other</div></li>
                     </ul>
                 </div>
                 <div class="footer centered">
