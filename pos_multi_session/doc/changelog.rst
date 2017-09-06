@@ -3,18 +3,6 @@
 Updates
 =======
 
-`1.0.4`
--------
-- FIX: Print only not printed order lines (*Order* button).
-
-`1.0.3`
--------
-- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
-
-`1.0.2`
--------
-- FIX: For pos restaurant compatibility. Sync printed positions.
-
 `3.0.3`
 -------
 
@@ -49,6 +37,17 @@ Updates
 - NEW: Stable order numbering: no duplicates, no omissions. Use word "New" for unregistered empty orders.
 - NEW: Restoring after connection problems
 
+`1.0.4`
+-------
+- FIX: Print only not printed order lines (*Order* button).
+
+`1.0.3`
+-------
+- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
+
+`1.0.2`
+-------
+- FIX: For pos restaurant compatibility. Sync printed positions.
 
 `1.0.1`
 -------

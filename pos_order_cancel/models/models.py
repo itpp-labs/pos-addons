@@ -99,11 +99,11 @@ class PosOrderLineCanceled(models.Model):
     price_unit = fields.Float(string='Unit Price', digits=0, readonly=True)
     user_id = fields.Many2one(comodel_name='res.users', string='Salesman', help="Person who removed order line", default=lambda self: self.env.uid, readonly=True)
     qty = fields.Float('Quantity', default=1, readonly=True)
-    reason = fields.Text(string="The Reason of Line Canceled", readonly=True)
+    reason = fields.Text(string="Reason", help="The Reason of Line Canceled", readonly=True)
     order_id = fields.Many2one('pos.order', string='Order Ref', ondelete='cascade', readonly=True)
     pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
     tax_ids = fields.Many2many('account.tax', string='Taxes', readonly=True)
-    canceled_date = fields.Datetime(string='Canceled Date', readonly=True, default=fields.Datetime.now)
+    canceled_date = fields.Datetime(string='Cancelation Time', readonly=True, default=fields.Datetime.now)
     price_subtotal = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal w/o Tax', store=True)
     price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
 
