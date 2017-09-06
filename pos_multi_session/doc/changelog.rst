@@ -3,6 +3,11 @@
 Updates
 =======
 
+`3.0.4`
+-------
+
+- FIX: In case of an empty multi_session_id field works without synchronization.
+
 `3.0.3`
 -------
 
