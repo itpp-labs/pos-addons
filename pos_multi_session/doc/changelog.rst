@@ -6,7 +6,7 @@ Updates
 `3.0.4`
 -------
 
-- FIX: In case of an empty multi_session_id field works without synchronization.
+- FIX: Errors in case of an empty multi_session_id field.
 
 `3.0.3`
 -------
