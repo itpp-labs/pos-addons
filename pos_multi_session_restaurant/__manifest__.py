@@ -4,7 +4,7 @@
     "summary": """Staff get order details immediately after waiter taps on tablet""",
     "category": "Point of Sale",
     "images": ['images/s2.png'],
-    "version": "1.1.8",
+    "version": "2.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
@@ -17,7 +17,6 @@
     "depends": [
         "pos_restaurant",
         "pos_multi_session",
-        "to_pos_shared_floor",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
