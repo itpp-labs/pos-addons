@@ -484,9 +484,6 @@ odoo.define('pos_multi_session', function(require){
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             return this.send({action: 'update_order', data: data});
         },
         enque: function(func){
