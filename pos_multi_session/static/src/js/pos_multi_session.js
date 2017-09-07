@@ -301,8 +301,17 @@ odoo.define('pos_multi_session', function(require){
             if (!this.pos.config.multi_session_id){
                 if (this.new_order) {
                     this.new_order = false;
-                    this.pos.pos_session.order_ID = ( this.pos.pos_session.order_ID || 0 ) + 1;
-                    this.sequence_number = this.pos.pos_session.order_ID;
+                    if (!this.pos.pos_session.order_ID){
+                        this.sequence_number = this.sequence_number || 1;
+                    }
+                    else {
+                        if ( this.sequence_number > this.pos.pos_session.order_ID ){
+                            this.pos.pos_session.order_ID = this.sequence_number;
+                        }
+                        else {
+                            this.sequence_number = this.pos.pos_session.order_ID;
+                        }
+                    }
                 }
                 return;
             }

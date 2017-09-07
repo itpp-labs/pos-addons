@@ -81,11 +81,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.multi_session){
                 var current_order = this.get_order();
                 if (!this.config.multi_session_id){
-                    if (current_order.new_order){
-                        current_order.new_order = false;
-                        this.pos_session.order_ID = ( this.pos_session.order_ID || 0 ) + 1;
-                        current_order.sequence_number = this.pos_session.order_ID;
-                    }
                     current_order.save_to_db();
                     return;
                 }
