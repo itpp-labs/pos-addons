@@ -299,6 +299,11 @@ odoo.define('pos_multi_session', function(require){
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             if (!this.pos.config.multi_session_id){
+                if (this.new_order) {
+                    this.new_order = false;
+                    this.pos.pos_session.order_ID = ( this.pos.pos_session.order_ID || 0 ) + 1;
+                    this.sequence_number = this.pos.pos_session.order_ID;
+                }
                 return;
             }
             this.bind('change:sync', function(){
