@@ -26,12 +26,14 @@
     'qweb': [
         'static/src/xml/cancel_order.xml',
     ],
-    "demo": [],
+    "demo": [
+        'data/pos_cancelled_reason_demo.xml'
+    ],
 
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
