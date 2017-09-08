@@ -23,7 +23,7 @@
                             <field name="multi_session_deactivate_empty_order" attrs="{'invisible':['|',('multi_session_replace_empty_order', '=', True),('multi_session_accept_incoming_orders', '=', False)]}"/>
                         </group>
                         <group>
-                            <p class="oe_edit_only" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"> You need to close current session to set Multi-session parameter </p>
+                            <p class="oe_edit_only" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"> You need to close current session to be able modify Multi-session value </p>
                         </group>
                     </group>
                 </xpath>
