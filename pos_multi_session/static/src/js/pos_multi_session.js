@@ -107,6 +107,9 @@ odoo.define('pos_multi_session', function(require){
             var data = '';
             var action = '';
             try{
+                if (!this.pos.config.multi_session_id){
+                    return;
+                }
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
                 }
@@ -331,6 +334,9 @@ odoo.define('pos_multi_session', function(require){
                 return;
             if (this.temporary)
                 return;
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             return true;
         },
         ms_update: function(){
@@ -453,6 +459,9 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.pos.longpolling_connection.on("change:poll_connection", function(status){
+                if (!this.pos.config.multi_session_id){
+                    return;
+                }
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
@@ -471,16 +480,10 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             var data = {};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
