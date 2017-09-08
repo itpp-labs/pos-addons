@@ -1,6 +1,6 @@
-=============================
- POS Order Cancel Restaurant
-=============================
+====================================
+ Analyzing of refunds in Restaurant
+====================================
 
 Installation
 ============
@@ -20,26 +20,31 @@ Configuration
 
   * Open POS configuration form
   * Click on ``[Edit]``
-  * Select ``Save Kitchen Orders Only`` for save printed orders
+  * Select ``Ask reason for kitchen orders only`` if needed. Otherwise waiter is
+    asked for reason for any product removings. Facts of removing are registered
+    at backend at any way.
   * Click on ``[Save]``
 
 Usage
 =====
 
 * Open POS session
-* Add new products in order
-* Click ``[Order]``
+* On canceling one product at an order:
 
-Product Cancellation Reason
----------------------------
+  * create order with few lines
+  * Remove kitchen product or decrease its quantity
+  * Specify cancellation reason or set custom one
+  * Click ``[Ok]``
+  * Click ``[Order]`` to print cancellation receipt -- receipt contains cancellation reason
 
-  * Remove product using numpad
-  * Specify cancellation reason or set new one
+* On canceling whole order:
+
+  * Create order with few lines
+  * Remove order by clicking Minus Button near the order tabs
+  * Specify cancellation reason or set custom one
   * Click ``[Ok]``
 
-Order Cancellation Reason
--------------------------
+* At backend go to ``Point of Sale >> Reports >> Refunds / Cancellations``
 
-  * Remove order by clicking on order cancel button
-  * Specify cancellation reason or set new one
-  * Click ``[Ok]``
+  * Switch to list view
+  * You can see all information about canceled products
