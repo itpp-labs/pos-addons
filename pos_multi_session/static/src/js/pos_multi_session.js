@@ -70,8 +70,6 @@ odoo.define('pos_multi_session', function(require){
                 var callback = self.ms_on_update;
                 self.add_channel(channel_name, callback, self);
             });
-
-
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
