@@ -49,22 +49,29 @@ odoo.define('pos_multi_session', function(require){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            this.get('orders').bind('remove', function(order, collection, options){
-                if (!self.multi_session.client_online) {
-                    if (order.order_on_server ) {
-                        self.multi_session.no_connection_warning();
-                        if (self.debug){
-                            console.log('PosModel initialize error');
-                        }
-                        return false;
-                    }
+            this.ready.then(function () {
+                if (!self.config.multi_session_id){
+                    return;
                 }
-                order.ms_remove_order();
+                self.get('orders').bind('remove', function(order, collection, options){
+                    if (!self.multi_session.client_online) {
+                        if (order.order_on_server ) {
+                            self.multi_session.no_connection_warning();
+                            if (self.debug){
+                                console.log('PosModel initialize error');
+                            }
+                            return false;
+                        }
+                    }
+                    order.ms_remove_order();
+                });
+                self.multi_session = new exports.MultiSession(self);
+                var channel_name = "pos.multi_session";
+                var callback = self.ms_on_update;
+                self.add_channel(channel_name, callback, self);
             });
-            this.multi_session = new exports.MultiSession(this);
-            var channel_name = "pos.multi_session";
-            var callback = this.ms_on_update;
-            this.add_channel(channel_name, callback, this);
+
+
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -107,9 +114,6 @@ odoo.define('pos_multi_session', function(require){
             var data = '';
             var action = '';
             try{
-                if (!this.pos.config.multi_session_id){
-                    return;
-                }
                 if (this.debug){
                     console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
                 }
@@ -334,9 +338,6 @@ odoo.define('pos_multi_session', function(require){
                 return;
             if (this.temporary)
                 return;
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             return true;
         },
         ms_update: function(){
@@ -459,9 +460,6 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.pos.longpolling_connection.on("change:poll_connection", function(status){
-                if (!this.pos.config.multi_session_id){
-                    return;
-                }
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
