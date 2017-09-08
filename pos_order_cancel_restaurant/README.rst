@@ -1,14 +1,10 @@
-=============================
- POS Order Cancel Restaurant
-=============================
+====================================
+ Analyzing of refunds in Restaurant
+====================================
 
-The module allows to add a reason on canceling kitchen order. The reason will be added to cancellation receipt.
+The module extends ``pos_order_cancel`` for restaurant environment:
 
-Besides,
-
-* On canceling user can click on predefined Reason and specify custom one
-* Canceled order is saved at database
-* Canceled order line is save at database
+* the reason will be added to cancellation kitchen receipt.
 
 Credits
 =======
