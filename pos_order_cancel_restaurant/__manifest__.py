@@ -3,7 +3,7 @@
     "name": """POS Order Cancel Restaurant""",
     "summary": """Specify reasons for cancel separate products or entire order after printing in POS""",
     "category": "Point of Sale",
-    "images": ["images/pos_order_cancel_main.png"],
+    "images": ["images/pos_order_cancel_restaurant.png"],
     "version": "1.0.0",
     "application": False,
 
