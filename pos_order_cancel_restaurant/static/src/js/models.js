@@ -2,7 +2,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     "use strict";
 
     var models = require('pos_order_cancel.models');
-    var multiprint = require('pos_restaurant.multiprint');
+    var multiprint = require('pos_restaurant_base.models');
     var Model = require('web.DataModel');
     var core = require('web.core');
     var QWeb = core.qweb;
@@ -12,27 +12,11 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         saveChanges: function(){
-            var self = this;
-            if (this.pos.config.kitchen_canceled_only) {
-                if (this.was_removed_product) {
-                    var not_printed_lines = this.get_order_lines_by_dirty_status(true);
-                    this.trigger('change',this);
-                    this.saved_resume = this.build_line_resume();
-                    not_printed_lines.forEach(function (item) {
-                        delete self.saved_resume[item.id];
-                    });
-                    this.trigger('change',this);
-                    this.was_removed_product = false;
-                } else {
-                    _super_order.saveChanges.call(this, arguments);
-                }
-                var lines = this.get_order_lines_by_dirty_status(false);
-                lines.forEach(function(line){
-                    line.was_printed = true;
-                });
-            } else {
-                _super_order.saveChanges.call(this, arguments);
-            }
+            _super_order.saveChanges.call(this, arguments);
+            var lines = this.get_order_lines_by_dirty_status(false);
+            lines.forEach(function(line){
+                line.was_printed = true;
+            });
         },
         get_order_lines_by_dirty_status: function(mp_dirty_status) {
             var lines = this.get_orderlines();
@@ -75,49 +59,41 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             return Object.keys(obj);
         },
         computeChanges: function(categories){
+            var self = this;
             var res = _super_order.computeChanges.apply(this, arguments);
-            if (this.pos.config.kitchen_canceled_only) {
-                if (this.was_removed_product) {
-                    res.new = [];
-                }
-                if (this.reason) {
-                    res.reason = this.reason;
-                }
+            if (res.cancelled && res.cancelled.length) {
+                res.cancelled.forEach(function(product) {
+                    var line = self.get_exist_cancelled_line(product.line_id);
+                    if (line && line[2].reason) {
+                        product.reason = line[2].reason;
+                    }
+                });
+            }
+            if (this.reason) {
+                res.reason = this.reason;
             }
             return res;
         },
         save_canceled_order: function(reason) {
-            var self = this;
+            _super_order.save_canceled_order.apply(this, arguments);
+            this.printChanges();
+            this.saveChanges();
+        },
+        change_cancelled_quantity: function(line) {
             if (this.pos.config.kitchen_canceled_only) {
-                this.is_cancelled = true;
-                this.reason = reason;
-                this.orderlines.each(function(orderline){
-                    self.get_last_orderline().save_canceled_line(_t("Order Deleting"));
-                });
-                this.printChanges();
-                this.saveChanges();
-                this.pos.push_order(this).then(function() {
-                    self.destroy({'reason':'abandon'});
-                });
+                if (line.was_printed) {
+                    _super_order.change_cancelled_quantity.apply(this, arguments);
+                } else {
+                    this.save_canceled_line(false, line);
+                }
             } else {
-                _super_order.save_canceled_order.apply(this, arguments);
+                _super_order.change_cancelled_quantity.apply(this, arguments);
             }
         },
     });
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
-        save_canceled_line: function(reason) {
-            if (this.pos.config.kitchen_canceled_only) {
-                if (!this.order.is_cancelled) {
-                    this.order.was_removed_product = true;
-                    this.order.reason = reason;
-                    this.order.printChanges();
-                    this.order.saveChanges();
-                }
-            }
-            _super_orderline.save_canceled_line.apply(this, arguments);
-        },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.was_printed = this.was_printed;

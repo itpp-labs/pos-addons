@@ -6,9 +6,20 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='features']" position="after">
-                <group string="Order Cancel" >
+                <group string="Refunds / Cancellations" >
                     <field name="kitchen_canceled_only"/>
                 </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_pos_form" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="pos_order_cancel.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='canceled_lines']/tree" position="inside">
+                <field name="was_printed"/>
             </xpath>
         </field>
     </record>

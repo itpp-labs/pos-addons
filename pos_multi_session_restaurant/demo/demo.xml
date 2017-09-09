@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
-        <record id="pos_restaurant.floor_main" model="restaurant.floor">
-            <field name="pos_config_ids" eval="[(6,0,[ref('point_of_sale.pos_config_main'), ref('pos_multi_session.demo_multi_pos_config_one'), ref('pos_multi_session.demo_multi_pos_config_two')])]"/>
+        <record id="pos_multi_session.demo_multi_session" model="pos.multi_session">
+            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
+        </record>
+
+        <record id="point_of_sale.pos_config_main" model="pos.config">
+            <field name="multi_session_id" ref="pos_multi_session.demo_multi_session"/>
         </record>
     </data>
 </odoo>
