@@ -64,7 +64,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 if (!self.config.multi_session_id){
                     return;
                 }
-                var remove_order_super = self.multi_session.__proto__.remove_order;
+                var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
                 self.multi_session.remove_order = function(data) {
                     if (data.transfer) {
                         data.transfer = false;
