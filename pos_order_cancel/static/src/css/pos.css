@@ -3,13 +3,50 @@
     margin-top: 10px;
     resize: none;
 }
-.popup-confirm-cancellation .button {
+.popup-confirm-cancellation li {
+    width: 33%!important;
+}
+.popup-confirm-cancellation .cancelled-reason ul {
+    height: 199px;
+    overflow-x: auto;
+    border-top: 1px solid #e3e1e1;
+}
+.popup-confirm-cancellation .cancelled-reason .reason-row{
+    width: 100%;
+    display: flex;
+}
+.popup-confirm-cancellation .cancelled-reason .reason-col{
+    font-size: 14px;
+    line-height: 18px;
+    flex: 1;
+    margin: 10px;
+}
+.popup-confirm-cancellation .cancelled-reason .reason-button{
+    height: 100%;
+    border-radius: 2px;
+    font-weight: bold;
+    cursor: pointer;
+    border: solid 1px rgba(60,60,60,0.1);
+    background: rgba(0,0,0,0.05);
+    padding: 6px;
+    padding-top: 10px;
+    padding-bottom: 0;
+}
+.popup-confirm-cancellation .break{
+    height: 10px;
+}
+.popup-confirm-cancellation .cancelled-reason .other-reason {
+    font-style: italic;
+}
+.popup-confirm-cancellation .cancelled-reason {
+    display: table;
+    width: 100%;
+}
+.popup-confirm-cancellation .footer .button {
     width: 150px !important;
     float: left !important;
     margin-left: 11px !important;
     margin-right: 0px !important;
-}
-.popup-confirm-cancellation .footer .button {
     float: none !important;
 }
 .popup-confirm-cancellation {

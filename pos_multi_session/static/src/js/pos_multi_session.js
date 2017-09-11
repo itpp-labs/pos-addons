@@ -49,22 +49,27 @@ odoo.define('pos_multi_session', function(require){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            this.get('orders').bind('remove', function(order, collection, options){
-                if (!self.multi_session.client_online) {
-                    if (order.order_on_server ) {
-                        self.multi_session.no_connection_warning();
-                        if (self.debug){
-                            console.log('PosModel initialize error');
-                        }
-                        return false;
-                    }
+            this.ready.then(function () {
+                if (!self.config.multi_session_id){
+                    return;
                 }
-                order.ms_remove_order();
+                self.get('orders').bind('remove', function(order, collection, options){
+                    if (!self.multi_session.client_online) {
+                        if (order.order_on_server ) {
+                            self.multi_session.no_connection_warning();
+                            if (self.debug){
+                                console.log('PosModel initialize error');
+                            }
+                            return false;
+                        }
+                    }
+                    order.ms_remove_order();
+                });
+                self.multi_session = new exports.MultiSession(self);
+                var channel_name = "pos.multi_session";
+                var callback = self.ms_on_update;
+                self.add_channel(channel_name, callback, self);
             });
-            this.multi_session = new exports.MultiSession(this);
-            var channel_name = "pos.multi_session";
-            var callback = this.ms_on_update;
-            this.add_channel(channel_name, callback, this);
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -288,6 +293,10 @@ odoo.define('pos_multi_session', function(require){
             }
 
             OrderSuper.prototype.initialize.apply(this, arguments);
+            if (!this.pos.config.multi_session_id){
+                this.new_order = false;
+                return;
+            }
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
 

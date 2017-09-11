@@ -21,9 +21,6 @@
             <xpath expr="//field[@name='canceled_lines']/tree" position="inside">
                 <field name="was_printed"/>
             </xpath>
-            <xpath expr="//field[@name='canceled_lines']/form/group" position="inside">
-                <field name="was_printed"/>
-            </xpath>
         </field>
     </record>
 </odoo>
