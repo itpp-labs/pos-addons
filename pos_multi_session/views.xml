@@ -16,10 +16,14 @@
                 <xpath expr="//group[@name='features']" position="after">
                     <group string="Multi-session" name="multi_session">
                         <group>
-                            <field name="multi_session_id"/>
+                            <field name="current_session_state" class="oe_edit_only" readonly="1" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"/>
+                            <field name="multi_session_id" attrs="{'readonly':[('current_session_state', '=', 'opened')]}"></field>
                             <field name="multi_session_accept_incoming_orders"/>
                             <field name="multi_session_replace_empty_order" attrs="{'invisible':[('multi_session_accept_incoming_orders', '=', False)]}"/>
                             <field name="multi_session_deactivate_empty_order" attrs="{'invisible':['|',('multi_session_replace_empty_order', '=', True),('multi_session_accept_incoming_orders', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <p class="oe_edit_only" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"> You need to close current session to be able modify Multi-session value </p>
                         </group>
                     </group>
                 </xpath>
