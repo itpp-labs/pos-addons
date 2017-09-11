@@ -64,12 +64,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 if (!self.config.multi_session_id){
                     return;
                 }
-                this.multi_session.remove_order = function(data) {
+                var remove_order_super = self.multi_session.__proto__.remove_order;
+                self.multi_session.remove_order = function(data) {
                     if (data.transfer) {
                         data.transfer = false;
                         return;
                     } else {
-                        this.send({action: 'remove_order', data: data});
+                        remove_order_super.apply(self.multi_session, arguments);
                     }
                  };
             });
