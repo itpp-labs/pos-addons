@@ -8,6 +8,8 @@ Syncs additional restaurant data:
 * Printer status (green "Order" button)
 * Notes
 
+FIXME: there is issue with floor real-time synchronization, to synchronize tables after modifying them it is mandatory to refresh all POSes pages, also deleting a table with open order on it leads to constant error messages. See https://github.com/it-projects-llc/pos-addons/issues/375.
+
 Local run
 ---------
 
@@ -17,8 +19,6 @@ Further information
 -------------------
 
 Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
-
-FIXME: there is issue with floor real-time synchronization, to synchronize tables after modifying them it is mandatory to refresh all POSes pages, also deleting a table with open order on it leads to constant error messages. Issue #375.
 
 Need our service?
 -----------------
