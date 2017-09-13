@@ -26,6 +26,37 @@ odoo.define('pos_multi_session_restaurant', function(require){
     });
     var _t = core._t;
 
+    models.load_models({
+        model: 'pos.multi_session',
+        fields: ['name','floor_ids'],
+        domain: null,
+        loaded: function(self,floors){
+//            if (self.floors){
+//                self.floors = floors.concat()
+//            }
+            self.multi_session_floors = floors[0];
+        },
+    });
+
+//    models.load_models({
+//        model: 'restaurant.floor',
+//        fields: ['name','background_color','table_ids','sequence'],
+//        domain: function(self){ return [['pos_config_id','=',self.config.id]]; },
+//        loaded: function(self,floors){
+//            self.floors = floors;
+//            self.floors_by_id = {};
+//            for (var i = 0; i < floors.length; i++) {
+//                floors[i].tables = [];
+//                self.floors_by_id[floors[i].id] = floors[i];
+//            }
+//
+//            // Make sure they display in the correct order
+//            self.floors = self.floors.sort(function(a,b){ return a.sequence - b.sequence; });
+//
+//            // Ignore floorplan features if no floor specified.
+//            self.config.iface_floorplan = !!self.floors.length;
+//        },
+//    });
     gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name == 'splitbill'
     })[0].widget.include({
@@ -57,16 +88,30 @@ odoo.define('pos_multi_session_restaurant', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
+            var ms_floor_model = _.find(this.models, function(model){ return model.model === 'pos.multi_session'; });
+//            this.multi_session.floor_ids = this.multi_session_floors[0].floor_ids;
+//            ms_floor_model.domain = function(self){
+////                self.multi_session.floor_ids = self.multi_session_floors[0].floor_ids;
+//                var temporary = [['id','in',self.multi_session.floor_ids]];
+//                return temporary[0][2].length > 0 ? temporary : [['id','in',self.config.multi_session_no_id_floor_ids]];
+//            }
             floor_model.domain = function(self){
-                var temporary = [['id','in',self.config.floor_ids]];
-                return temporary[0][2].length > 0 ? temporary : [['id','in',self.config.multi_session_no_id_floor_ids]];
-            };
+                    var temporary = [['id','in',self.config.floor_ids]];
+                    var temp1 = [['id','in',self.config.floor_ids]];
+                    var temp2 = [['id','in',self.multi_session.floor_ids]];
+                    var temp3 = [['id','in',self.multi_session_floors]];
+                    return temporary[0][2].length > 0 ? temporary : [['id','in',self.config.multi_session.floor_ids]];
+                };
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ready.then(function () {
                 if (!self.config.multi_session_id){
                     return;
                 }
+
+                self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
+                self.config.floor_ids = self.multi_session.floor_ids;
+
                 var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
                 self.multi_session.remove_order = function(data) {
                     if (data.transfer) {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="multi_session_form" model="ir.ui.view">
+            <field name="name">pos.multi_session.form</field>
+            <field name="model">pos.multi_session</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group string="Multi-session">
+                            <field name="name"/>
+                            <field name="pos_ids" widget="one2many"/>
+                            <field name="order_ids" readonly="1"/>
+                            <field name="order_ID" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <record id="action_multi_session_form" model="ir.actions.act_window">
+            <field name="name">Multi-sessions Settings</field>
+            <field name="res_model">pos.multi_session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    test
+                </p><p>
+                    Description goes Here.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_pos_ms_settings" name="Multi-session Settings" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
+
+    </data>
+</odoo>
