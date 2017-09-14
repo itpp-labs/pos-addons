@@ -112,6 +112,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             PosModelSuper.prototype.ms_on_update.apply(this, arguments);
             if ((order && old_order && old_order.uid != order.uid) || (old_order == null)) {
                 this.set('selectedOrder',old_order);
+                this.gui.screen_instances.floors.renderElement();
             }
         },
         ms_do_update: function(order, data){
