@@ -3,6 +3,11 @@
 Updates
 =======
 
+`2.2.3`
+-------
+
+- IMP: Compatibility with the latest odoo version, tested on Odoo 10 e14ab697727d87773dbefba11453b9edca79fc68
+
 `2.2.2`
 -------
 
