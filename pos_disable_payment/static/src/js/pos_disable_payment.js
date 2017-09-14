@@ -27,6 +27,13 @@ odoo.define('pos_disable_payment', function(require){
     // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            var self = this;
+            this.ready.then(function () {
+                self.set_cashier(self.user);
+            });
+        },
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
             this.trigger('change:cashier',this);
