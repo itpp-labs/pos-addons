@@ -5,7 +5,7 @@ odoo.define('pos_disable_payment', function(require){
     var screens = require('point_of_sale.screens');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');    
+    var models = require('point_of_sale.models');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var _t = core._t;
 
@@ -14,7 +14,9 @@ odoo.define('pos_disable_payment', function(require){
         fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
-                var user = _.find(self.users, function(el){ return el.id == users[i].id; });
+                var user = _.find(self.users, function(el){
+                    return el.id === users[i].id;
+                });
                 if (user) {
                     _.extend(user,users[i]);
                 }
