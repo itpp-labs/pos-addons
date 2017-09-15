@@ -8,12 +8,16 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
-                    <sheet>
-                        <group string="Multi-session">
-                            <field name="name"/>
-                            <field name="pos_ids" widget="one2many"/>
-                            <field name="order_ids" readonly="1"/>
+                    <sheet string="Multi-session">
+                        <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name"/></h1>
+                        <group string="Settings">
+                            <field name="pos_ids" widget="one2many" string="POSes in Multi-session"/>
                             <field name="order_ID" readonly="1"/>
+                            <field name="order_ids" class="oe_edit_only" readonly="1"/>
+                        </group>
+                        <group>
+                        <p class="oe_edit_only"> To remove or add a POS to multi-session close it's session first </p>
                         </group>
                     </sheet>
                 </form>
@@ -25,13 +29,6 @@
             <field name="res_model">pos.multi_session</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                    test
-                </p><p>
-                    Description goes Here.
-                </p>
-            </field>
         </record>
 
         <menuitem id="menu_pos_ms_settings" name="Multi-session Settings" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
