@@ -31,7 +31,8 @@ odoo.define('pos_disable_payment', function(require){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             var self = this;
             this.ready.then(function () {
-//            At this point cashier has no rights added by module. Set a user like a cashier resolve the issue.
+                // At this point this.cashier has no rights settings added by module. 
+                // Reset cashier to fix it
                 var current_cashier = self.users.find(function(user){
                     return user.id === self.cashier.id;
                 });
