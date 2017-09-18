@@ -185,8 +185,7 @@ odoo.define('pos_multi_session', function(require){
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
             } else {
-                order.ms_info = data.ms_info;
-                order.revision_ID = data.revision_ID;
+                order.update_order(data);
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -219,25 +218,7 @@ odoo.define('pos_multi_session', function(require){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
                 }
-                line.ms_info = dline.ms_info || {};
-                if(dline.qty !== undefined){
-                    line.set_quantity(dline.qty);
-                }
-                if(dline.price_unit !== undefined){
-                    line.set_unit_price(dline.price_unit);
-                }
-                if(dline.discount !== undefined){
-                    line.set_discount(dline.discount);
-                }
-                if(dline.mp_dirty !== undefined){
-                    line.set_dirty(dline.mp_dirty);
-                }
-                if(dline.mp_skip !== undefined){
-                    line.set_skip(dline.mp_skip);
-                }
-                if(dline.note !== undefined){
-                    line.set_note(dline.note);
-                }
+                line.update_line(dline);
                 order.orderlines.add(line);
             });
 
@@ -359,6 +340,10 @@ odoo.define('pos_multi_session', function(require){
                     self.do_ms_update();
                 }, 0);
         },
+        update_order: function(data) {
+            this.ms_info = data.ms_info;
+            this.revision_ID = data.revision_ID;
+        },
         ms_remove_order: function(){
             if (!this.ms_check())
                 return;
@@ -435,6 +420,18 @@ odoo.define('pos_multi_session', function(require){
                     line.order.trigger('change:sync');
                 }
             });
+        },
+        update_line: function(data) {
+            this.ms_info = data.ms_info || {};
+            if(data.qty !== undefined){
+                this.set_quantity(data.qty);
+            }
+            if(data.price_unit !== undefined){
+                this.set_unit_price(data.price_unit);
+            }
+            if(data.discount !== undefined){
+                this.set_discount(data.discount);
+            }
         },
         set_selected: function(){
             this.ms_changing_selected = true;
