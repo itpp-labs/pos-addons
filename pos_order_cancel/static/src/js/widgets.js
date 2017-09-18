@@ -43,7 +43,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         show_popup: function(type, line){
             var self = this;
-            var order = this.pos.get_order();
+            var order = this.pos.get_order() || false;
+            if (!order) {
+                return false;
+            }
             var orderline = line || order.get_selected_orderline();
             var title = 'Order ';
             if (type === "product") {
@@ -201,7 +204,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         save_changes: function(){
             var self = this;
-            var order = this.pos.get_order();
+            var order = this.pos.get_order() || false;
+            if (!order) {
+                return false;
+            }
             var orderline = order.get_selected_orderline();
 
             var type = this.get_type();

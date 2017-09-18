@@ -46,12 +46,16 @@ odoo.define('pos_multi_session_cancel_order', function (require) {
     models.PosModel = models.PosModel.extend({
         ms_do_update: function(order, data){
             _super_pos.ms_do_update.apply(this, arguments);
+            if (!order) {
+                return false;
+            }
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
                     return dline.uid === r.uid;
                 });
                 line.was_printed = dline.was_printed;
+                line.canceled_lines = dline.canceled_lines;
                 order.orderlines.add(line);
             });
         },
