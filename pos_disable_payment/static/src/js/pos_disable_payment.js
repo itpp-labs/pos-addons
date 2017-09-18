@@ -5,7 +5,7 @@ odoo.define('pos_disable_payment', function(require){
     var screens = require('point_of_sale.screens');
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');    
+    var models = require('point_of_sale.models');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var _t = core._t;
 
@@ -14,7 +14,9 @@ odoo.define('pos_disable_payment', function(require){
         fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
-                var user = _.find(self.users, function(el){ return el.id == users[i].id; });
+                var user = _.find(self.users, function(el){
+                    return el.id === users[i].id;
+                });
                 if (user) {
                     _.extend(user,users[i]);
                 }
@@ -27,6 +29,18 @@ odoo.define('pos_disable_payment', function(require){
     // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            var self = this;
+            this.ready.then(function () {
+                // At this point this.cashier has no rights settings added by module. 
+                // Reset cashier to fix it
+                var current_cashier = self.users.find(function(user){
+                    return user.id === self.cashier.id;
+                });
+                self.set_cashier(current_cashier);
+            });
+        },
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
             this.trigger('change:cashier',this);
@@ -92,20 +106,20 @@ odoo.define('pos_disable_payment', function(require){
         },
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_create_order_line) {
-                $('.numpad').hide();
-                $('.rightpane').hide();
-            }else{
+            if (user.allow_create_order_line) {
                 $('.numpad').show();
                 $('.rightpane').show();
+            }else{
+                $('.numpad').hide();
+                $('.rightpane').hide();
             }
         },
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide();
-            }else{
+            if (user.allow_payments) {
                 this.actionpad.$('.pay').show();
+            }else{
+                this.actionpad.$('.pay').hide();
             }
         }
     });
@@ -113,17 +127,17 @@ odoo.define('pos_disable_payment', function(require){
         renderElement: function () {
             this._super();
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                $('.pay').hide();
-            }else{
+            if (user.allow_payments) {
                 $('.pay').show();
-            }
-            if (!user.allow_create_order_line) {
-                $('.numpad').hide();
-                $('.rightpane').hide();
             }else{
+                $('.pay').hide();
+            }
+            if (user.allow_create_order_line) {
                 $('.numpad').show();
                 $('.rightpane').show();
+            }else{
+                $('.numpad').hide();
+                $('.rightpane').hide();
             }
         }
     });
@@ -131,10 +145,10 @@ odoo.define('pos_disable_payment', function(require){
         renderElement: function () {
             this._super();
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                $('.pay').hide();
-            }else{
+            if (user.allow_payments) {
                 $('.pay').show();
+            }else{
+                $('.pay').hide();
             }
         }
     });
@@ -149,15 +163,15 @@ odoo.define('pos_disable_payment', function(require){
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_discount) {
-                this.$el.find("[data-mode='discount']").css('visibility', 'hidden');
-            }else{
+            if (user.allow_discount) {
                 this.$el.find("[data-mode='discount']").css('visibility', 'visible');
-            }
-            if (!user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").css('visibility', 'hidden');
             }else{
+                this.$el.find("[data-mode='discount']").css('visibility', 'hidden');
+            }
+            if (user.allow_edit_price) {
                 this.$el.find("[data-mode='price']").css('visibility', 'visible');
+            }else{
+                this.$el.find("[data-mode='price']").css('visibility', 'hidden');
             }
         }
     });
