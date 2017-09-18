@@ -533,9 +533,9 @@ odoo.define('pos_multi_session', function(require){
                     self.request_sync_all();
                 }
             }).done(function(res){
-                if (!self.pos.message_ID) {
-                    self.pos.message_ID = 1;
-                }
+//                if (!self.pos.message_ID) {
+//                    self.pos.message_ID = 1;
+//                }
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
