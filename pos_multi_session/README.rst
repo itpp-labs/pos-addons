@@ -1,7 +1,9 @@
 Sync POS orders across multiple sessions
 ========================================
 
-POSes are able to work without synchronization. Different in behavior: each new order is immediately given a number.
+The module synchronize orders data between POSes related to a common multi session. Longpolling provides instant updates between POSes in a multi session.
+All work data is stored on server. Offline POS is only able to create new orders, but not modify already existed, after connecting a POS back, data will be synchronized.
+POSes are able to work without synchronization, like without the module. Different in behavior: each new order is immediately given a number.
 
 Tests: `<external_tests/README.rst>`__
 
