@@ -307,23 +307,6 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
-            if (!this.pos.config.multi_session_id){
-                if (this.new_order) {
-                    this.new_order = false;
-                    if (!this.pos.pos_session.order_ID){
-                        this.sequence_number = this.sequence_number || 1;
-                    }
-                    else {
-                        if ( this.sequence_number > this.pos.pos_session.order_ID ){
-                            this.pos.pos_session.order_ID = this.sequence_number;
-                        }
-                        else {
-                            this.sequence_number = this.pos.pos_session.order_ID;
-                        }
-                    }
-                }
-                return;
-            }
             this.bind('change:sync', function(){
                 self.ms_update();
             });
@@ -496,28 +479,16 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             var data = {};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             return this.send({action: 'update_order', data: data});
         },
         enque: function(func){
-            if (!this.pos.config.multi_session_id){
-                return;
-            }
             var self = this;
             this.func_queue.push(func);
             this.update_queue = this.update_queue.then(function() {

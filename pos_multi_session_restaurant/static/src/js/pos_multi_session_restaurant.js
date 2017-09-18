@@ -73,25 +73,23 @@ odoo.define('pos_multi_session_restaurant', function(require){
             this.models.splice(11, 0, ms_floor_model);
             this.models.splice(this.models.lastIndexOf(ms_floor_model) + 1, 1);
             floor_model.domain = function(self, ms_floor_model){
-                    var temporary = [['id','in',self.config.floor_ids]];
-                    if (self.config.multi_session_id){
-                        var ms_floors = _.find(self.multi_session_floors, function(session){
-                            return session.id === self.config.multi_session_id[0];
-                        });
-                        temporary = [['id','in', ms_floors.floor_ids]];
-                    }
-                    return temporary;
-                };
+                var temporary = [['id','in',self.config.floor_ids]];
+                if (self.config.multi_session_id){
+                    var ms_floors = _.find(self.multi_session_floors, function(session){
+                        return session.id === self.config.multi_session_id[0];
+                    });
+                    temporary = [['id','in', ms_floors.floor_ids]];
+                }
+                return temporary;
+            };
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ready.then(function () {
                 if (!self.config.multi_session_id){
                     return;
                 }
-
                 self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
                 self.config.floor_ids = self.multi_session.floor_ids;
-
                 var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
                 self.multi_session.remove_order = function(data) {
                     if (data.transfer) {

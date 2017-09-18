@@ -1,7 +1,7 @@
 Sync POS orders across multiple sessions
 ========================================
 
-POSes are able to work without synchronization. Different in behavior: each new order is immediately given a number. Avoid including unsynchronized POS to multi session with unclosed session. It may leads to errors.
+POSes are able to work without synchronization. Different in behavior: each new order is immediately given a number.
 
 Tests: `<external_tests/README.rst>`__
 
