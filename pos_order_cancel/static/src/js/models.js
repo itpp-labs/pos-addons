@@ -95,7 +95,8 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.canceled_lines.splice(index, 1);
             }
         },
-        //  This function is used for sync all POS when using the module pos_multi_session
+        // This function is used to sync cancelation data accross all POSes
+        // (only when pos_multi_session is installed)
         apply_ms_data: function(data) {
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
