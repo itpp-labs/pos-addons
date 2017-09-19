@@ -180,8 +180,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 return '' + this.uid;
             }
         },
-        /*  There is no need to check the existence of a super method. Since the pos_multi_session module
-            which depends with pos_multi_session_restaurant, already has the super method.
+        /*  There is no need to check the presence of super method.
+            Because pos_multi_session_restaurant is loaded later than pos_multi_session.
         */
         apply_ms_data: function(data) {
             if(data.mp_dirty !== undefined){

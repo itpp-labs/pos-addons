@@ -43,10 +43,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         show_popup: function(type, line){
             var self = this;
-            var order = this.pos.get_order() || false;
-            if (!order) {
-                return false;
-            }
+            var order = this.pos.get_order();
             var orderline = line || order.get_selected_orderline();
             var title = 'Order ';
             if (type === "product") {
@@ -77,10 +74,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             });
         },
         set_value: function(val) {
-            //  user_id which changed orderline with numpad
+            //  ask_cancel_reason show reason popup after change qty with numpad
             var order = this.pos.get_order();
             if (order) {
-                order.numpad_user_id = this.pos.get_user_id();
+                order.ask_cancel_reason = true;
             }
             this._super(val);
         },
@@ -212,10 +209,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         save_changes: function(){
             var self = this;
-            var order = this.pos.get_order() || false;
-            if (!order) {
-                return false;
-            }
+            var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
 
             var type = this.get_type();

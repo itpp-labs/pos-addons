@@ -20,13 +20,6 @@ odoo.define('pos_order_cancel.models', function (require) {
         },
     });
 
-    var _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
-        get_user_id: function() {
-            return this.cashier ? this.cashier.id : this.user.id;
-        },
-    });
-
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
@@ -55,7 +48,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 new_line.canceled_date = this.get_datetime();
             }
             new_line.cancelled_id = line.id;
-            new_line.user_id = this.pos.get_user_id();
+            new_line.user_id = this.pos.get_cashier().id;
             this.canceled_lines.push([0, 0, new_line]);
         },
         save_canceled_line: function(reason, orderline) {
@@ -89,9 +82,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
             if (exist_cancelled_line) {
                 exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
-                exist_cancelled_line[2].user_id = this.pos.get_user_id();
+                exist_cancelled_line[2].user_id = this.pos.get_cashier().id;
                 this.trigger('change:sync');
-            } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.pos.get_user_id() === this.numpad_user_id) {
+            } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.ask_cancel_reason) {
                 this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
             }
         },
@@ -102,11 +95,11 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.canceled_lines.splice(index, 1);
             }
         },
+        //  This function is used for sync all POS when using the module pos_multi_session
         apply_ms_data: function(data) {
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
-            this.numpad_user_id = data.numpad_user_id;
             this.canceled_lines = data.canceled_lines;
             this.reason = data.reason;
             this.is_cancelled = data.is_cancelled;
@@ -116,14 +109,12 @@ odoo.define('pos_order_cancel.models', function (require) {
             data.canceled_lines = this.canceled_lines;
             data.reason = this.reason;
             data.is_cancelled = this.is_cancelled;
-            data.numpad_user_id = this.numpad_user_id;
             return data;
         },
         init_from_JSON: function(json) {
             this.canceled_lines = json.canceled_lines;
             this.reason = json.reason;
             this.is_cancelled = json.is_cancelled;
-            this.numpad_user_id = json.numpad_user_id;
             _super_order.init_from_JSON.call(this, json);
         },
     });
@@ -141,18 +132,10 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.order.change_canceled_lines(this);
             } else if(this.max_quantity > Number(quantity)) {
                 this.order.change_cancelled_quantity(this);
+                this.order.ask_cancel_reason = false;
             }
         },
-        /*  It is necessary to check the presence of the super method for the function,
-            in order to be able to inherit the "apply_ms_data" function in other modules
-            without specifying "require" of the "pos_multi_session" module (without adding in
-            dependencies in the manifest).
-
-            At the time of loading, the super method may not exist. So, if the js file is loaded
-            first, among all inherited, then there is no super method and it is not called,
-            if the file is not the first, then the super method is already created by other modules,
-            and we inherit this function.
-        */
+        //  Read more about this function in pos_multi_session module
         apply_ms_data: function(data) {
             if (_super_orderline.apply_ms_data) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
