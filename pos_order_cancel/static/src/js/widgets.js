@@ -74,7 +74,9 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             });
         },
         set_value: function(val) {
-            //  ask_cancel_reason show reason popup after change qty with numpad
+            // ask_cancel_reason -- show reason popup after change qty with numpad
+            // This is essential when pos_multi_session is installed,
+            // because otherwise every POS will be asked for reason
             var order = this.pos.get_order();
             if (order) {
                 order.ask_cancel_reason = true;
