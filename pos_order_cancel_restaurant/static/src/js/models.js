@@ -78,6 +78,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             _super_order.save_canceled_order.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
+            this.trigger('change:sync');
         },
         change_cancelled_quantity: function(line) {
             if (this.pos.config.kitchen_canceled_only) {
@@ -94,6 +95,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
+        apply_ms_data: function(data) {
+            if (_super_orderline.apply_ms_data) {
+                _super_orderline.apply_ms_data.apply(this, arguments);
+            }
+            this.was_printed = data.was_printed;
+        },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.was_printed = this.was_printed;

@@ -185,7 +185,7 @@ odoo.define('pos_multi_session', function(require){
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
             } else {
-                order.update_order(data);
+                order.apply_ms_data(data);
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -218,7 +218,7 @@ odoo.define('pos_multi_session', function(require){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
                 }
-                line.update_line(dline);
+                line.apply_ms_data(dline);
                 order.orderlines.add(line);
             });
 
@@ -340,7 +340,10 @@ odoo.define('pos_multi_session', function(require){
                     self.do_ms_update();
                 }, 0);
         },
-        update_order: function(data) {
+        apply_ms_data: function(data) {
+            if (OrderSuper.prototype.apply_ms_data) {
+                OrderSuper.prototype.apply_ms_data.apply(this, arguments);
+            }
             this.ms_info = data.ms_info;
             this.revision_ID = data.revision_ID;
         },
@@ -421,7 +424,20 @@ odoo.define('pos_multi_session', function(require){
                 }
             });
         },
-        update_line: function(data) {
+        /*  It is necessary to check the presence of the super method for the function,
+            in order to be able to inherit the "apply_ms_data" function in other modules
+            without specifying "require" of the "pos_multi_session" module (without adding in
+            dependencies in the manifest).
+
+            At the time of loading, the super method may not exist. So, if the js file is loaded
+            first, among all inherited, then there is no super method and it is not called,
+            if the file is not the first, then the super method is already created by other modules,
+            and we inherit this function.
+        */
+        apply_ms_data: function(data) {
+            if (OrderlineSuper.prototype.apply_ms_data) {
+                OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
+            }
             this.ms_info = data.ms_info || {};
             if(data.qty !== undefined){
                 this.set_quantity(data.qty);

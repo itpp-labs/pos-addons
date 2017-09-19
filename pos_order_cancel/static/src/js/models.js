@@ -20,19 +20,18 @@ odoo.define('pos_order_cancel.models', function (require) {
         },
     });
 
+    var _super_posmodel = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        get_user_id: function() {
+            return this.cashier ? this.cashier.id : this.user.id;
+        },
+    });
+
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
             _super_order.initialize.apply(this, arguments);
             this.canceled_lines = [];
-            var self = this;
-            this.bind('change:sync', function(){
-                self.update_cancelled_lines();
-            });
-        },
-        update_cancelled_lines: function() {
-            var data = this.export_as_JSON();
-            console.log("cancelled lines", data);
         },
         save_canceled_order: function(reason) {
             var self = this;
@@ -56,13 +55,10 @@ odoo.define('pos_order_cancel.models', function (require) {
                 new_line.canceled_date = this.get_datetime();
             }
             new_line.cancelled_id = line.id;
-            new_line.user_id = this.pos.cashier
-                               ? this.pos.cashier.id
-                               : this.pos.user.id;
+            new_line.user_id = this.pos.get_user_id();
             this.canceled_lines.push([0, 0, new_line]);
         },
         save_canceled_line: function(reason, orderline) {
-            var self = this;
             var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
             if (exist_cancelled_line && this.is_cancelled) {
                 exist_cancelled_line[2].qty = orderline.max_quantity;
@@ -72,11 +68,8 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.trigger('change:sync');
         },
         get_exist_cancelled_line: function(id) {
-            var user_id = this.pos.cashier
-                          ? this.pos.cashier.id
-                          : this.pos.user.id;
             return this.canceled_lines.find(function(exist_line) {
-                return id === exist_line[2].cancelled_id && exist_line[2].user_id === user_id;
+                return id === exist_line[2].cancelled_id;
             });
         },
         get_datetime: function() {
@@ -96,8 +89,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
             if (exist_cancelled_line) {
                 exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
+                exist_cancelled_line[2].user_id = this.pos.get_user_id();
                 this.trigger('change:sync');
-            } else if (this.pos.gui && this.pos.gui.screen_instances.products) {
+            } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.pos.get_user_id() === this.numpad_user_id) {
                 this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
             }
         },
@@ -108,17 +102,28 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.canceled_lines.splice(index, 1);
             }
         },
+        apply_ms_data: function(data) {
+            if (_super_order.apply_ms_data) {
+                _super_order.apply_ms_data.apply(this, arguments);
+            }
+            this.numpad_user_id = data.numpad_user_id;
+            this.canceled_lines = data.canceled_lines;
+            this.reason = data.reason;
+            this.is_cancelled = data.is_cancelled;
+        },
         export_as_JSON: function() {
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.canceled_lines = this.canceled_lines;
             data.reason = this.reason;
             data.is_cancelled = this.is_cancelled;
+            data.numpad_user_id = this.numpad_user_id;
             return data;
         },
         init_from_JSON: function(json) {
             this.canceled_lines = json.canceled_lines;
             this.reason = json.reason;
             this.is_cancelled = json.is_cancelled;
+            this.numpad_user_id = json.numpad_user_id;
             _super_order.init_from_JSON.call(this, json);
         },
     });
@@ -134,9 +139,25 @@ odoo.define('pos_order_cancel.models', function (require) {
             if (this.max_quantity < Number(quantity)) {
                 this.max_quantity = Number(quantity);
                 this.order.change_canceled_lines(this);
-            } else if(this.max_quantity > Number(quantity)){
+            } else if(this.max_quantity > Number(quantity)) {
                 this.order.change_cancelled_quantity(this);
             }
+        },
+        /*  It is necessary to check the presence of the super method for the function,
+            in order to be able to inherit the "apply_ms_data" function in other modules
+            without specifying "require" of the "pos_multi_session" module (without adding in
+            dependencies in the manifest).
+
+            At the time of loading, the super method may not exist. So, if the js file is loaded
+            first, among all inherited, then there is no super method and it is not called,
+            if the file is not the first, then the super method is already created by other modules,
+            and we inherit this function.
+        */
+        apply_ms_data: function(data) {
+            if (_super_orderline.apply_ms_data) {
+                _super_orderline.apply_ms_data.apply(this, arguments);
+            }
+            this.max_quantity = data.max_quantity;
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);

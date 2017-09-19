@@ -76,6 +76,14 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 }
             });
         },
+        set_value: function(val) {
+            //  user_id which changed orderline with numpad
+            var order = this.pos.get_order();
+            if (order) {
+                order.numpad_user_id = this.pos.get_user_id();
+            }
+            this._super(val);
+        },
     });
 
     var ConfirmCancellationPopupWidget = PopupWidget.extend({
