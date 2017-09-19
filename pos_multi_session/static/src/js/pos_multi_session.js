@@ -47,6 +47,9 @@ odoo.define('pos_multi_session', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
+            if (!this.message_ID) {
+                this.message_ID = 1;
+            }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
             this.ready.then(function () {
@@ -533,9 +536,6 @@ odoo.define('pos_multi_session', function(require){
                     self.request_sync_all();
                 }
             }).done(function(res){
-                if (!self.pos.message_ID) {
-                    self.pos.message_ID = 1;
-                }
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
                 }
