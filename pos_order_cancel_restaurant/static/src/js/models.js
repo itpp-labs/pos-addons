@@ -78,6 +78,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             _super_order.save_canceled_order.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
+            //  Read more about this trigger in pos_order_cancel module
             this.trigger('change:sync');
         },
         change_cancelled_quantity: function(line) {

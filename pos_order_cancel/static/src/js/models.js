@@ -52,7 +52,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             new_line.user_id = this.pos.get_cashier().id;
             this.canceled_lines.push([0, 0, new_line]);
         },
-        // save reason of line cancellation
+        /*  If pos_multi_session is installed then trigger('change:sync') is used to sync
+            cancelation data accross all POSes
+        */
         save_reason_cancelled_line: function(orderline, reason) {
             var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
             exist_cancelled_line[2].reason = reason;

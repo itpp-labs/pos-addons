@@ -46,9 +46,6 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
         show_popup: function(type){
             var self = this;
             var order = this.pos.get_order();
-            if (!order) {
-                return false;
-            }
             var orderline = order.get_selected_orderline();
             if (this.pos.config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
                 return false;
