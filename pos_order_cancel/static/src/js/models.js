@@ -98,7 +98,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
             }
         },
-        change_canceled_lines: function(line) {
+        remove_canceled_lines: function(line) {
             var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
             if (exist_cancelled_line) {
                 var index = this.canceled_lines.indexOf(exist_cancelled_line);
@@ -140,7 +140,7 @@ odoo.define('pos_order_cancel.models', function (require) {
             _super_orderline.set_quantity.apply(this,arguments);
             if (this.max_quantity < Number(quantity)) {
                 this.max_quantity = Number(quantity);
-                this.order.change_canceled_lines(this);
+                this.order.remove_canceled_lines(this);
             } else if(this.max_quantity > Number(quantity)) {
                 this.order.change_cancelled_quantity(this);
                 this.order.ask_cancel_reason = false;
