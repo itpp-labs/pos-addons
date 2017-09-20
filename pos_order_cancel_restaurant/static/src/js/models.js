@@ -85,7 +85,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 if (line.was_printed) {
                     _super_order.change_cancelled_quantity.apply(this, arguments);
                 } else {
-                    this.save_canceled_line(false, line);
+                    this.save_canceled_line(line);
                 }
             } else {
                 _super_order.change_cancelled_quantity.apply(this, arguments);
