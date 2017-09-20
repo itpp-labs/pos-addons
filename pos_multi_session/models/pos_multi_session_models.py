@@ -18,18 +18,19 @@ class PosConfig(models.Model):
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
     multi_session_message_ID = fields.Integer(default=1, string="Last sent message number")
-    current_session_state = fields.Char(compute='_compute_current_session', search='_search_current_session_state')
+    current_session_state = fields.Char(search='_search_current_session_state')
 
     def _search_current_session_state(self, operator, value):
-        ids = map(lambda x: x.id, self.env["res.users"].search([]))
-        value_ids = map(lambda x: x.state == value and x.user_id.id or -1, self.env["pos.session"].search([]))
+        ids = map(lambda x: x.id, self.env["pos.config"].search([]))
+        value_ids = map(lambda x: x.config_id.id, self.env["pos.session"].search([('state', '=', value)]))
+        value_ids = list(set(value_ids))
         if operator == '=':
-            ids = value_ids
+            return [('id', 'in', value_ids)]
         elif operator == '!=':
             ids = [item for item in ids if item not in value_ids]
+            return [('id', 'in', ids)]
         else:
-            ids = []
-        return [('id', 'in', ids)]
+            return [('id', 'in', [])]
 
 
 class PosMultiSession(models.Model):
