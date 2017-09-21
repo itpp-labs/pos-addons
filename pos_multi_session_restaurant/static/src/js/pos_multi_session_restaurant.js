@@ -26,15 +26,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
     });
     var _t = core._t;
 
-    models.load_models({
-        model: 'pos.multi_session',
-        fields: ['name','floor_ids'],
-        domain: null,
-        loaded: function(self,floors){
-            self.multi_session_floors = floors;
-        },
-    });
-
     gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name == 'splitbill'
     })[0].widget.include({
@@ -65,14 +56,19 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
+            var ms_model = {
+                model: 'pos.multi_session',
+                fields: ['name','floor_ids'],
+                domain: null,
+                loaded: function(self,floors){
+                    self.multi_session_floors = floors;
+            }};
+            this.models.splice(
+                1 + this.models.indexOf(_.find(this.models, function(model){
+                    return model.model === 'pos.config';
+                })), 0, ms_model);
             var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
-            var ms_floor_model = _.find(this.models, function(model){ return model.model === 'pos.multi_session'; });
-            var config_model_index = this.models.indexOf(_.find(this.models, function(model){
-                return model.model === 'pos.config';
-            }));
-            this.models.splice(config_model_index + 1, 0, ms_floor_model);
-            this.models.splice(this.models.lastIndexOf(ms_floor_model), 1);
-            floor_model.domain = function(self, ms_floor_model){
+            floor_model.domain = function(self, ms_model){
                 var temporary = [['id','in',self.config.floor_ids]];
                 if (self.config.multi_session_id){
                     var ms_floors = _.find(self.multi_session_floors, function(session){
