@@ -17,7 +17,7 @@
                             <field name="order_ids" class="oe_edit_only" readonly="1"/>
                         </group>
                         <group>
-                        <p class="oe_edit_only"> To remove or add a POS to multi-session close it's session first </p>
+                        <p class="oe_edit_only"> To remove or add a POS to multi-session close its session first </p>
                         </group>
                     </sheet>
                 </form>
