@@ -25,7 +25,7 @@
         </record>
 
          <record id="action_multi_session_form" model="ir.actions.act_window">
-            <field name="name">Multi-sessions Settings</field>
+            <field name="name">Multi-sessions</field>
             <field name="res_model">pos.multi_session</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
