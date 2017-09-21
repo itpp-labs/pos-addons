@@ -48,7 +48,7 @@ odoo.define('pos_order_printer_product', function(require){
                 }
 
                 for(i = 0; i < res.cancelled_all.length; i++){
-                    if(this.is_product_in_product_list(res.cancelled_all[i].id, config.product_ids)){
+                    if(this.pos.is_product_in_product_list(res.cancelled_all[i].id, config.product_ids)){
                         rem.push(res.cancelled_all[i]);
                     }
                 }
