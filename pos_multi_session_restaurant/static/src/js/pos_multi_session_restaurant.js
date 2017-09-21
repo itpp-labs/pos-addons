@@ -31,9 +31,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         fields: ['name','floor_ids'],
         domain: null,
         loaded: function(self,floors){
-//            if (self.floors){
-//                self.floors = floors.concat()
-//            }
             self.multi_session_floors = floors;
         },
     });
@@ -70,8 +67,11 @@ odoo.define('pos_multi_session_restaurant', function(require){
         initialize: function(){
             var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
             var ms_floor_model = _.find(this.models, function(model){ return model.model === 'pos.multi_session'; });
-            this.models.splice(11, 0, ms_floor_model);
-            this.models.splice(this.models.lastIndexOf(ms_floor_model) + 1, 1);
+            var config_model_index = this.models.indexOf(_.find(this.models, function(model){
+                return model.model === 'pos.config';
+            }));
+            this.models.splice(config_model_index + 1, 0, ms_floor_model);
+            this.models.splice(this.models.lastIndexOf(ms_floor_model), 1);
             floor_model.domain = function(self, ms_floor_model){
                 var temporary = [['id','in',self.config.floor_ids]];
                 if (self.config.multi_session_id){
@@ -106,10 +106,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
             if (this.multi_session){
                 var current_order = this.get_order();
-                if (!this.config.multi_session_id){
-                    current_order.save_to_db();
-                    return;
-                }
                 current_order.ms_update();
                 current_order.save_to_db();
             }
