@@ -64,8 +64,8 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             if (res.cancelled && res.cancelled.length) {
                 res.cancelled.forEach(function(product) {
                     var line = self.get_orderline(product.line_id);
-                    if (line && line.cancelled_line && line.cancelled_line[2].reason) {
-                        product.reason = line.cancelled_line[2].reason;
+                    if (line && line.cancelled_line && line.cancelled_line.reason) {
+                        product.reason = line.cancelled_line.reason;
                     }
                 });
             }
