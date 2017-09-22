@@ -6,6 +6,20 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_discount_absolute/static/src/js/pos_discount_absolute.js"></script>
         </xpath>
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" href="/pos_discount_absolute/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
+    <template id="abs_disc_widget_header_buttons">
+        <div class="header centered">
+            <div class="button cancel">
+                Cancel
+            </div>
+            <div class="button confirm">
+                Ok
+            </div>
+        </div>
     </template>
 
     <record model="ir.ui.view" id="view_pos_config_form_discount">
@@ -15,11 +29,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='iface_discount']" position="replace">
                 <field name='iface_discount'/>
-                <field name='discount_abs'/>
+                <field name='discount_abs_on'/>
             </xpath>
 
             <xpath expr="//field[@name='discount_pc']" position="after">
-                <field name='discount_abs_value' attrs="{'invisible':[('discount_abs','=', False)]}"/>
+                <field name='discount_abs_value' attrs="{'invisible':[('discount_abs_on','=', False)]}"/>
             </xpath>
         </field>
     </record>
