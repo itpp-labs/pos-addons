@@ -9,3 +9,4 @@ class PosConfig(models.Model):
 
     discount_abs_value = fields.Float(string='Discount value', default=0, help='The default discount value')
     discount_abs_on = fields.Boolean(string='Use absolute discount type', default=False, help='Discount type')
+    discount_abs_type = fields.Boolean(default=True)

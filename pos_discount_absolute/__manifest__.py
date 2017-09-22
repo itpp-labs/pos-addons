@@ -18,10 +18,9 @@
     "data": [
         'views.xml',
     ],
-
-    "post_load": None,
-    "pre_init_hook": None,
-    "post_init_hook": None,
+    'qweb': [
+        'static/src/xml/DiscountAbs.xml',
+    ],
 
     "auto_install": False,
     "installable": True,

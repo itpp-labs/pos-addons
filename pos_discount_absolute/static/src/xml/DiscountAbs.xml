@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <templates id="template" xml:space="preserve">
+        <t t-name="abs_disc_widget_header_buttons">
+            <div class="button percentage">
+                Percentage
+            </div>
+            <div class="button absolute">
+                Absolute
+            </div>
+        </t>
+    </templates>

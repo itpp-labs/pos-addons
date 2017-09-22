@@ -11,17 +11,6 @@
         </xpath>
     </template>
 
-    <template id="abs_disc_widget_header_buttons">
-        <div class="header centered">
-            <div class="button cancel">
-                Cancel
-            </div>
-            <div class="button confirm">
-                Ok
-            </div>
-        </div>
-    </template>
-
     <record model="ir.ui.view" id="view_pos_config_form_discount">
         <field name="name">pos.config.form.inherit</field>
         <field name="model">pos.config</field>

@@ -23,7 +23,7 @@ odoo.define('pos_discount_absolute', function (require) {
                         'title': 'Absolute Discount',
                         'value': self.pos.config.discount_abs_value,
                         'confirm': function (val) {
-                            self.gui.screen_instances.products.action_buttons.discount.apply_abs_discount(val);
+                            self.apply_abs_discount(val);
                         },
                     });
                 };
@@ -43,33 +43,15 @@ odoo.define('pos_discount_absolute', function (require) {
                 }
             }
             // Add discount
-            var discount = Math.max(order.get_total_with_tax() - val, 0);
-            order.add_product(product, { price: discount });
-        },
-    });
-
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-        get_discount_type: function() {
-            var self = this;
-            var model = new Model('pos.category_discount');
-            var domain = [['discount_program_id', '=', id]];
-            model.call('search_read', [domain]).then(function (resultat) {
-                resultat.forEach(function(item){
-                    self.apply_discount_category(item.category_discount_pc, item.discount_category_id[0], item.discount_program_id[1]);
-                });
-            });
-        },
-        apply_discount_category: function(discount, category_id, discount_program_name) {
-            var self = this;
-            var order = this.get_order();
-            var lines = order.get_orderlines().filter(function (item) { return item.product.pos_categ_id[0] == category_id && item.product.discount_allowed; });
-            lines.forEach(function (item){
-                item.discount = discount;
-                item.discountStr = discount;
-                item.discount_program_name = discount_program_name;
-                order.get_orderline(item.id).set_discount(discount);
-            });
+            if (this.pos.config.discount_abs_type){
+                var discount = - Math.min(val, order.get_total_with_tax());
+                order.add_product(product, { price: discount });
+            } else {
+                var discount = - val / 100.0 * order.get_total_with_tax();
+                if( discount < 0 ){
+                    order.add_product(product, { price: discount });
+                }
+            }
         },
     });
 
@@ -80,16 +62,33 @@ odoo.define('pos_discount_absolute', function (require) {
             this.popup_abs_discount = false;
             if (this.pos.config.discount_abs_on) {
                 self.popup_abs_discount = true;
-//                self.events["click .discount-program-list .button"] = "click_discount_program";
+                self.events["click .absolute.button"] = "click_absolute_discount";
+                self.events["click .percentage.button"] = "click_percentage_discount";
             }
+        },
+        click_absolute_discount: function() {
+            var self = this;
+            this.pos.config.discount_abs_type = true;
+            this.renderElement();
+        },
+        click_percentage_discount: function() {
+            var self = this;
+            this.pos.config.discount_abs_type = false;
+            this.renderElement();
         },
         renderElement: function(){
             this._super();
             if (this.popup_abs_discount) {
                 this.$('.popup.popup-number').addClass("popup-abs-discount");
                 var header_buttons_html = QWeb.render('abs_disc_widget_header_buttons',{widget: this});
-                var node = document.getElementByClassName("popup-input value active");
-                node.insertBefore(header_buttons_html, node.childNodes[0])
+                var node = document.getElementsByClassName("popup-input value active")[0];
+                var div = document.createElement('div');
+                div.innerHTML = header_buttons_html;
+                div.className = "header";
+                node.parentElement.insertBefore(div, node);
+                var header_title = node.parentElement.getElementsByClassName("title")[0];
+                var text = this.pos.config.discount_abs_type && "Absolute Discount" || "Discount Percentage"
+                header_title.innerText = text;
             }
         },
     });
