@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Direct product assignment to Kitchen Printers""",
-    "summary": """More flexible way to specify which product need to be printed""",
+    "name": """Print certain products on Order Printers""",
+    "summary": """Specify certain products to be allowed to print on order printers""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": [],
+    "images": ['images/pos_order_printer_product_main.png'],
     "version": "1.0.0",
     "application": False,
 
@@ -12,8 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 49.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_restaurant",
