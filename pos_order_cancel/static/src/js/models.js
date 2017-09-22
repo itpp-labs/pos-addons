@@ -137,8 +137,8 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.order.remove_canceled_lines(this);
             } else if(this.max_quantity > Number(quantity)) {
                 this.order.change_cancelled_quantity(this);
-                this.order.ask_cancel_reason = false;
             }
+            this.order.ask_cancel_reason = false;
         },
         //  Read more about this function in pos_multi_session module
         apply_ms_data: function(data) {
