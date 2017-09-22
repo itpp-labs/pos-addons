@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class PosConfig(models.Model):
-    _name = 'pos.config'
+    _inherit = 'pos.config'
 
     discount_abs_value = fields.Float(string='Discount value', default=0, help='The default discount value')
     discount_abs = fields.Boolean(string='Use absolute discount type', default=False, help='Discount type')
