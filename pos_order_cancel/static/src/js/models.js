@@ -51,28 +51,24 @@ odoo.define('pos_order_cancel.models', function (require) {
             new_line.cancelled_id = line.id;
             new_line.user_id = this.pos.get_cashier().id;
             this.canceled_lines.push([0, 0, new_line]);
+            line.cancelled_line = this.canceled_lines.find(function(exist_line) {
+                return line.id === exist_line[2].cancelled_id;
+            });
         },
         /*  If pos_multi_session is installed then trigger('change:sync') is used to sync
             cancelation data accross all POSes
         */
         save_reason_cancelled_line: function(orderline, reason) {
-            var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
-            exist_cancelled_line[2].reason = reason;
+            orderline.cancelled_line[2].reason = reason;
             this.trigger('change:sync');
         },
         save_canceled_line: function(orderline) {
-            var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
-            if (exist_cancelled_line && this.is_cancelled) {
-                exist_cancelled_line[2].qty = orderline.max_quantity;
+            if (orderline.cancelled_line && this.is_cancelled) {
+                orderline.cancelled_line[2].qty = orderline.max_quantity;
             } else {
                 this.add_cancelled_line(orderline);
             }
             this.trigger('change:sync');
-        },
-        get_exist_cancelled_line: function(id) {
-            return this.canceled_lines.find(function(exist_line) {
-                return id === exist_line[2].cancelled_id;
-            });
         },
         get_datetime: function() {
             var currentdate = new Date();
@@ -88,10 +84,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             if (!line) {
                 return;
             }
-            var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
-            if (exist_cancelled_line) {
-                exist_cancelled_line[2].qty = line.max_quantity - line.quantity;
-                exist_cancelled_line[2].user_id = this.pos.get_cashier().id;
+            if (line.cancelled_line) {
+                line.cancelled_line[2].qty = line.max_quantity - line.quantity;
+                line.cancelled_line[2].user_id = this.pos.get_cashier().id;
                 this.trigger('change:sync');
             } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.ask_cancel_reason) {
                 this.save_canceled_line(line);
@@ -99,9 +94,8 @@ odoo.define('pos_order_cancel.models', function (require) {
             }
         },
         remove_canceled_lines: function(line) {
-            var exist_cancelled_line = this.get_exist_cancelled_line(line.id);
-            if (exist_cancelled_line) {
-                var index = this.canceled_lines.indexOf(exist_cancelled_line);
+            if (line.cancelled_line) {
+                var index = this.canceled_lines.indexOf(line.cancelled_line);
                 this.canceled_lines.splice(index, 1);
             }
         },
