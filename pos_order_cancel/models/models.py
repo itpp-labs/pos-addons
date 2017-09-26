@@ -10,6 +10,10 @@ class PosCancelledReason(models.Model):
 
     sequence = fields.Integer(string="Sequence")
     name = fields.Char(string="Reason")
+    canceled_line_ids = fields.Many2many('pos.order.line.canceled',
+                                         'reason_cancelled_line_rel',
+                                         'cancelled_reason_id',
+                                         'canceled_line_id')
 
 
 class PosOrder(models.Model):
@@ -106,6 +110,10 @@ class PosOrderLineCanceled(models.Model):
     canceled_date = fields.Datetime(string='Cancelation Time', readonly=True, default=fields.Datetime.now)
     price_subtotal = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal w/o Tax', store=True)
     price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
+    cancelled_reason_ids = fields.Many2many('pos.cancelled_reason',
+                                            'reason_cancelled_lines_rel',
+                                            'canceled_line_id',
+                                            'cancelled_reason_id')
 
     @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
     def _compute_amount_line_all(self):
@@ -134,4 +142,7 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = canceled_date.astimezone(pytz.utc)
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
+        if values.get('cancelled_reason_ids'):
+            values['cancelled_reason_ids'] = [(4, id) for id in values.get('cancelled_reason_ids')]
+
         return super(PosOrderLineCanceled, self).create(values)
