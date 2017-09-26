@@ -19,7 +19,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="confirm,cancel" />
+                        <field name="state" widget="statusbar" statusbar_visible="confirm,cancel,draft" clickable="True"/>
                     </header>
 
                     <sheet>
@@ -27,7 +27,9 @@
                             <group>
                                 <field name="partner_id"/>
                                 <field name="date"/>
-                                <field name="balance"/>
+                                <field name="update_type"/>
+                                <field name="balance" attrs="{'readonly': [('update_type', '!=', 'balance')]}"/>
+                                <field name="new_balance" attrs="{'invisible': [('update_type', '!=', 'new_balance')]}"/>
                                 <field name="currency_id"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
                                 <field name="note"/>

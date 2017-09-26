@@ -357,7 +357,45 @@ class PosCreditUpdate(models.Model):
         default=lambda s: s.env.user.company_id.currency_id,
     )
     balance = fields.Monetary('Balance Update', help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
+    new_balance = fields.Monetary('New Balance', help="Value to set balance to. Used only in Canceled state.")
     note = fields.Text('Note')
     date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
 
-    state = fields.Selection([('confirm', 'Confirmed'), ('cancel', 'Canceled')], default='confirm', required=True)
+    state = fields.Selection([('confirm', 'Confirmed'), ('cancel', 'Canceled'), ('draft', 'Draft')], default='draft', required=True)
+    update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
+
+    def get_balance(self_, balance, new_balance):
+        return -balance + new_balance
+
+    def get_credit_balance(self_, balance, new_balance):
+        return -balance + new_balance
+
+    @api.model
+    def create(self, vals):
+        partner_id = vals.get('partner_id')
+        new_balance = vals.get('new_balance')
+        state = vals.get('state') or 'undefined'
+        update_type = vals.get('update_type') or 'undefined'
+        if ('partner_id' and 'new_balance' in vals and state == 'cancel' and update_type == 'new_balance'):
+            entries = self.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance')])
+            if entries:
+                credit_balance = entries[-1].new_balance
+            else:
+                credit_balance = self.partner_id.browse(partner_id).credit_balance
+            vals['balance'] = self.get_balance(credit_balance, new_balance)
+        return super(PosCreditUpdate, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        partner_id = vals.get('partner_id') or self.partner_id.id
+        new_balance = vals.get('new_balance') or self.new_balance
+        state = vals.get('state') or self.state
+        update_type = vals.get('update_type') or self.update_type
+        if (state == 'cancel' and update_type == 'new_balance'):
+            entries = self.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance'), ('id', '<', self.id)])
+            if entries:
+                credit_balance = self.get_credit_balance(self.balance, self.new_balance)
+            else:
+                credit_balance = self.partner_id.browse(partner_id).credit_balance
+            vals['balance'] = self.get_balance(credit_balance, new_balance)
+        return super(PosCreditUpdate, self).write(vals)
