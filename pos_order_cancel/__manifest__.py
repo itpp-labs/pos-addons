@@ -22,6 +22,7 @@
         "security/ir.model.access.csv",
         "views/template.xml",
         "views/views.xml",
+        "views/pos_config_view.xml",
     ],
     'qweb': [
         'static/src/xml/cancel_order.xml',
