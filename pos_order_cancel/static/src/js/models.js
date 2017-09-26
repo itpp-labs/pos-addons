@@ -117,21 +117,18 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.canceled_lines = data.canceled_lines;
             this.reason = data.reason;
             this.is_cancelled = data.is_cancelled;
-            this.cancelled_reason_ids = data.cancelled_reason_ids;
         },
         export_as_JSON: function() {
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.canceled_lines = this.canceled_lines;
             data.reason = this.reason;
             data.is_cancelled = this.is_cancelled;
-            data.cancelled_reason_ids = this.cancelled_reason_ids;
             return data;
         },
         init_from_JSON: function(json) {
             this.canceled_lines = json.canceled_lines;
             this.reason = json.reason;
             this.is_cancelled = json.is_cancelled;
-            this.cancelled_reason_ids = json.cancelled_reason_ids;
             _super_order.init_from_JSON.call(this, json);
         },
     });
@@ -158,7 +155,6 @@ odoo.define('pos_order_cancel.models', function (require) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
             this.max_quantity = data.max_quantity;
-            this.cancelled_reason_ids = data.cancelled_reason_ids;
             if (data.cancelled_line) {
                 var cancelled_line = this.order.canceled_lines.find(function(line) {
                     return line[2].id === data.cancelled_line.id;
@@ -172,13 +168,11 @@ odoo.define('pos_order_cancel.models', function (require) {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.max_quantity = this.max_quantity;
             data.cancelled_line = this.cancelled_line;
-            data.cancelled_reason_ids = this.cancelled_reason_ids;
             return data;
         },
         init_from_JSON: function(json) {
             this.max_quantity = json.max_quantity;
             this.cancelled_line = json.cancelled_line;
-            this.cancelled_reason_ids = json.cancelled_reason_ids;
             _super_orderline.init_from_JSON.call(this, json);
         },
     });

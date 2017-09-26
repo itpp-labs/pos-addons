@@ -64,7 +64,6 @@
                         <separator string="Order Cancellation Reason" colspan="4" attrs="{'invisible': ['|',('is_cancelled','!=',True),('cancellation_reason','=',False)]}"/>
                         <field name="cancellation_reason" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
                         <field name="is_cancelled" invisible="1"/>
-                        <field name="cancelled_reason_ids" widget="many2many_tags" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
                     </group>
                     <group>
                         <field name="canceled_lines" colspan="4" nolabel="1">
@@ -166,16 +165,13 @@
                     <field name="qty"/>
                     <field name="price_unit" widget="monetary"/>
                     <field name="discount" widget="monetary"/>
+                    <field name="reason"/>
                     <field name="canceled_date"/>
                     <field name="user_id"/>
                     <field name="order_id"/>
                 </group>
                 <group>
-                    <field name="tax_ids" widget="many2many_tags"/>
-                </group>
-                <group>
-                    <field name="reason"/>
-                    <field name="cancelled_reason_ids" widget="many2many_tags"/>
+                    <field name="tax_ids"/>
                 </group>
             </form>
         </field>
