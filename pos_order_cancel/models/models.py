@@ -9,7 +9,7 @@ class PosCancelledReason(models.Model):
     _name = "pos.cancelled_reason"
 
     sequence = fields.Integer(string="Sequence")
-    name = fields.Char(string="Reason")
+    name = fields.Char(string="Reason", translate=True)
 
 
 class PosOrder(models.Model):
