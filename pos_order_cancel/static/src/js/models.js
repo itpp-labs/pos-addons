@@ -104,6 +104,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 this.canceled_lines = this.canceled_lines.filter(function(l){
                     return l[2].id !== line.cancelled_line.id;
                 });
+                line.cancelled_line = false;
             }
         },
         // This function is used to sync cancelation data accross all POSes
