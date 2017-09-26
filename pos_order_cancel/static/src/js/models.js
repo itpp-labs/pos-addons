@@ -156,6 +156,8 @@ odoo.define('pos_order_cancel.models', function (require) {
             }
             this.max_quantity = data.max_quantity;
             if (data.cancelled_line) {
+                // order.canceled_lines is already synced
+                // here we just update link for cancelled_line
                 var cancelled_line = this.order.canceled_lines.find(function(line) {
                     return line[2].id === data.cancelled_line.id;
                 });
