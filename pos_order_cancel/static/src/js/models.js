@@ -104,7 +104,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 var cancelled_line = this.canceled_lines.find(function(l) {
                      return l[2].id === line.cancelled_line.id;
                 });
-                var index = this.canceled_lines.indexOf(cancelled_line);
+                var index = _.indexBy(this.canceled_lines, cancelled_line);
                 this.canceled_lines.splice(index, 1);
             }
         },
