@@ -23,8 +23,8 @@ odoo.define('pos_order_cancel.models', function (require) {
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         initialize: function(attributes, options){
-            _super_order.initialize.apply(this, arguments);
             this.canceled_lines = [];
+            _super_order.initialize.apply(this, arguments);
         },
         save_canceled_order: function(reason) {
             var self = this;
