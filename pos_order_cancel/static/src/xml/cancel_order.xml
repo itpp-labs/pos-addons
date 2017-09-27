@@ -29,7 +29,7 @@
                 </div>
                 <div class="footer centered">
                 <t t-if="widget.pos.config.accept_free_reason">
-                	<div class="button cancel">
+                    <div class="button cancel">
                         Cancel
                     </div>
                 </t>
