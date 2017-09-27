@@ -396,6 +396,9 @@ odoo.define('pos_multi_session', function(require){
                     }
                 })
             };
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             this.enquied = true;
             this.pos.multi_session.enque(f);
         }

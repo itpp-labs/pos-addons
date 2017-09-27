@@ -4,7 +4,7 @@
     "summary": """Use multiple POS for handling orders""",
     "category": "Point Of Sale",
     "images": ["images/pos-multi-session.png"],
-    "version": "3.0.4",
+    "version": "3.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
@@ -22,6 +22,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views.xml",
+        "multi_session_view.xml"
     ],
     "qweb": [
         "static/src/xml/pos_multi_session.xml",
