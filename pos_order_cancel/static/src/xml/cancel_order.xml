@@ -5,7 +5,7 @@
         <div class="modal-dialog">
             <div class="popup popup-confirm-cancellation">
                 <p class="title"><t t-esc=" widget.options.title || '' " /></p>
-<t t-if="widget.pos.config.accept_free_reason">
+                <t t-if="widget.pos.config.accept_free_reason">
                     <textarea rows="1" cols="44" placeholder="Reason"></textarea>
                 </t>
                 <div class="cancelled-reason">
