@@ -31,17 +31,19 @@ odoo.define('pos_order_cancel.models', function (require) {
             var self = this;
             this.is_cancelled = true;
             this.reason = reason;
+
             this.orderlines.each(function(orderline){
-                self.save_canceled_line(_t("Order Deleting"), self.get_last_orderline());
+                self.save_canceled_line(_t("Order Deleting"), [], self.get_last_orderline());
                 self.remove_orderline(self.get_last_orderline());
             });
             this.pos.push_order(this).then(function() {
                 self.destroy({'reason':'abandon'});
             });
         },
-        add_cancelled_line: function(line, reason) {
+        add_cancelled_line: function(line, reason, cancelled_reason_ids) {
             var new_line = line.export_as_JSON();
             new_line.reason = reason;
+            new_line.cancelled_reason_ids = cancelled_reason_ids;
             if (this.is_cancelled) {
                 new_line.qty = line.max_quantity;
             } else {
@@ -54,13 +56,13 @@ odoo.define('pos_order_cancel.models', function (require) {
                                : this.pos.user.id;
             this.canceled_lines.push([0, 0, new_line]);
         },
-        save_canceled_line: function(reason, orderline) {
+        save_canceled_line: function(reason, cancelled_reason_ids, orderline) {
             var self = this;
             var exist_cancelled_line = this.get_exist_cancelled_line(orderline.id);
             if (exist_cancelled_line && this.is_cancelled) {
                 exist_cancelled_line[2].qty = orderline.max_quantity;
             } else {
-                this.add_cancelled_line(orderline, reason);
+                this.add_cancelled_line(orderline, reason, cancelled_reason_ids);
             }
         },
         get_exist_cancelled_line: function(id) {
@@ -129,10 +131,12 @@ odoo.define('pos_order_cancel.models', function (require) {
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.max_quantity = this.max_quantity;
+            data.cancelled_reason_ids = this.cancelled_reason_ids;
             return data;
         },
         init_from_JSON: function(json) {
             this.max_quantity = json.max_quantity;
+            this.cancelled_reason_ids = json.cancelled_reason_ids;
             _super_orderline.init_from_JSON.call(this, json);
         },
     });

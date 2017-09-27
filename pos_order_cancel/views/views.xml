@@ -165,13 +165,16 @@
                     <field name="qty"/>
                     <field name="price_unit" widget="monetary"/>
                     <field name="discount" widget="monetary"/>
-                    <field name="reason"/>
                     <field name="canceled_date"/>
                     <field name="user_id"/>
                     <field name="order_id"/>
                 </group>
                 <group>
-                    <field name="tax_ids"/>
+                    <field name="tax_ids" widget="many2many_tags"/>
+                </group>
+                <group>
+                    <field name="reason"/>
+                    <field name="cancelled_reason_ids" widget="many2many_tags"/>
                 </group>
             </form>
         </field>
