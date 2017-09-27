@@ -206,8 +206,13 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function(status) {
+        set_poll_status: function(status,not_long_poll) {
             var element = this.$('.js_poll_connected');
+            if (not_long_poll){
+                element.removeClass('oe_red');
+                element.addClass('oe_gray');
+                return;
+            }
             if (status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
@@ -221,10 +226,15 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            this.pos.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(status);
-            });
+            if (this.pos.config.longpolling_enabled){
+                this.pos.longpolling_connection.on("change:poll_connection", function(status){
+                    self.set_poll_status(status, false);
+                });
+            } else {
+                self.set_poll_status('', true);
+            }
         },
     });
+
     return exports;
 });
