@@ -137,7 +137,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
         },
         click_confirm: function(){
-        	var active_reasons = this.options.reasons.filter(function(item) {
+            var active_reasons = this.options.reasons.filter(function(item) {
             return item.active === true;
             });
             var active_reasons_name = [];
