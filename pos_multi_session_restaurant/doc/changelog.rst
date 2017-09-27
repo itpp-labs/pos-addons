@@ -3,7 +3,7 @@
 Updates
 =======
 
-`2.0.1`
+`2.1.0`
 -------
 - IMP: POSes in Multi-session have one common floor set. Unsynchronized POSes may have its own floor set.
 - FIX: Deleting floors data whilst removing them from POS.

@@ -4,7 +4,7 @@
     "summary": """Staff get order details immediately after waiter taps on tablet""",
     "category": "Point of Sale",
     "images": ['images/s2.png'],
-    "version": "2.0.1",
+    "version": "2.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
