@@ -56,14 +56,36 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
+            var ms_model = {
+                model: 'pos.multi_session',
+                fields: ['name','floor_ids'],
+                domain: null,
+                loaded: function(self,floors){
+                    self.multi_session_floors = floors;
+            }};
+            this.models.splice(
+                1 + this.models.indexOf(_.find(this.models, function(model){
+                    return model.model === 'pos.config';
+                })), 0, ms_model);
             var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
-            floor_model.domain = function(self){ return [['id','in',self.config.floor_ids]]; };
+            floor_model.domain = function(self, ms_model){
+                var temporary = [['id','in',self.config.floor_ids]];
+                if (self.config.multi_session_id){
+                    var ms_floors = _.find(self.multi_session_floors, function(session){
+                        return session.id === self.config.multi_session_id[0];
+                    });
+                    temporary = [['id','in', ms_floors.floor_ids]];
+                }
+                return temporary;
+            };
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ready.then(function () {
                 if (!self.config.multi_session_id){
                     return;
                 }
+                self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
+                self.config.floor_ids = self.multi_session.floor_ids;
                 var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
                 self.multi_session.remove_order = function(data) {
                     if (data.transfer) {
@@ -179,6 +201,21 @@ odoo.define('pos_multi_session_restaurant', function(require){
             } else {
                 return '' + this.uid;
             }
+        },
+        /*  There is no need to check the presence of super method.
+            Because pos_multi_session_restaurant is loaded later than pos_multi_session.
+        */
+        apply_ms_data: function(data) {
+            if(data.mp_dirty !== undefined){
+                this.set_dirty(data.mp_dirty);
+            }
+            if(data.mp_skip !== undefined){
+                this.set_skip(data.mp_skip);
+            }
+            if(data.note !== undefined){
+                this.set_note(data.note);
+            }
+            OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
         },
     });
 });

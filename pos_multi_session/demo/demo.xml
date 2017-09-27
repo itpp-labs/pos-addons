@@ -12,6 +12,9 @@
             <field name="name">POS2</field>
             <field name="multi_session_id" ref="demo_multi_session"/>
         </record>
+        <record id="demo_multi_pos_config_three" model="pos.config">
+            <field name="name">POS3</field>
+        </record>
         <record id="point_of_sale.pos_config_main" model="pos.config">
             <field name="multi_session_id" ref="demo_multi_session"/>
         </record>
