@@ -6,7 +6,7 @@
             <div class="popup popup-confirm-cancellation">
                 <p class="title"><t t-esc=" widget.options.title || '' " /></p>
                 <t t-if="widget.pos.config.accept_free_reason">
-                	<textarea rows="1" cols="44" placeholder="Reason"></textarea>
+                    <textarea rows="1" cols="44" placeholder="Reason"></textarea>
                 </t>
                 <div class="cancelled-reason">
                     <ul>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="footer centered">
                 <t t-if="widget.pos.config.accept_free_reason">
-                	<div class="button cancel">
+                    <div class="button cancel">
                         Cancel
                     </div>
                 </t>

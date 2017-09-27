@@ -138,15 +138,13 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         click_confirm: function(){
         	var active_reasons = this.options.reasons.filter(function(item) {
-                return item.active === true;
+            return item.active === true;
             });
             var active_reasons_name = [];
             active_reasons.forEach(function(item) {
                 active_reasons_name.push(item.name);
             });
-            
-            if(this.pos.config.accept_free_reason || active_reasons_name.length>0)
-            {
+            if(this.pos.config.accept_free_reason || active_reasons_name.length>0){
                 this.gui.close_popup();
                 if( this.options.confirm ){
                     var reason = this.$('.popup-confirm-cancellation textarea').val();
@@ -154,7 +152,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                         reason += "; ";
                     }
                     this.options.confirm.call(this, reason + active_reasons_name.join("; "));
-	            }
+                }
             }
         },
     });
