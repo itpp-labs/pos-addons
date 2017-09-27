@@ -182,19 +182,5 @@ odoo.define('pos_order_cancel.models', function (require) {
             _super_orderline.init_from_JSON.call(this, json);
         },
     });
-    
-    var _super_posmodel = models.PosModel.prototype;
-
-    models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
-
-            var config_model = _.find(this.models, function(model){
-                return model.model === 'pos.config';
-            });
-            partner_model.fields.push('free_reason');
-
-            return _super_posmodel.initialize.call(this, session, attributes);
-        },
-    });
     return models;
 });

@@ -140,4 +140,4 @@ class PosOrderLineCanceled(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
     
-    accept_free_reason=fields.Boolean(string="accept free reason",help="the field to send a reason is activate")
+    accept_free_reason=fields.Boolean(string="accept free reason",help="the field to send a reason is activate",default=True)
