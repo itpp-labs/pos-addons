@@ -52,6 +52,7 @@ odoo.define('pos_multi_session', function(require){
             }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
+            session.longpolling_server = '//second.odoo10.local:8079';
             this.ready.then(function () {
                 if (!self.config.multi_session_id){
                     return;
@@ -71,6 +72,7 @@ odoo.define('pos_multi_session', function(require){
                 self.multi_session = new exports.MultiSession(self);
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
+                // here settings for longpolling server, if not -> /longpolling
                 self.add_channel(channel_name, callback, self);
             });
         },

@@ -13,6 +13,40 @@ odoo.define('pos_longpolling', function(require){
 
     // prevent bus to be started by chat_manager.js
     bus.bus.activated = true; // fake value to ignore start_polling call
+    var PARTNERS_PRESENCE_CHECK_PERIOD = 30000;  // don't check presence more than once every 30s
+    bus.ERROR_DELAY = 10000;
+
+    bus.Bus.include({
+        poll: function() {
+            var self = this;
+            self.activated = true;
+            var now = new Date().getTime();
+            var options = _.extend({}, this.options, {
+                bus_inactivity: now - this.get_last_presence(),
+            });
+            if (this.last_partners_presence_check + PARTNERS_PRESENCE_CHECK_PERIOD > now) {
+                options = _.omit(options, 'bus_presence_partner_ids');
+            } else {
+                this.last_partners_presence_check = now;
+            }
+            var data = {channels: self.channels, last: self.last, options: options};
+            var serv_adr = '';
+            if (session.longpolling_server){
+                var serv_adr = session.longpolling_server;
+            };
+            session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
+                self.on_notification(result);
+                if(!self.stop){
+                    self.poll();
+                }
+            }, function(unused, e) {
+                // no error popup if request is interrupted or fails for any reason
+                e.preventDefault();
+                // random delay to avoid massive longpolling
+                setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
+            });
+        },
+    });
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({

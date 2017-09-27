@@ -27,6 +27,7 @@ class PosMultiSession(models.Model):
     pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
     order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
+    longpolling_server = fields.Char('Longpolling Server Address')
 
     @api.multi
     def on_update_message(self, message):
