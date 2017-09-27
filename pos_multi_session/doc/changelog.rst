@@ -3,6 +3,13 @@
 Updates
 =======
 
+`3.0.5`
+-------
+
+- NEW: Added "Multi-session Settings" form, unsynchronized POS in Demo.
+- NEW: Added unsynchronized POS in Demo.
+- NEW: Added tests.
+
 `3.0.4`
 -------
 

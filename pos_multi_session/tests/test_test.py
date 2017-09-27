@@ -16,6 +16,7 @@ class TestPoSSessionState(TransactionCase):
 
         # I click on create a new session button
         self.pos_config.open_session_cb()
+        opened_session_pos = self.pos_config.id
 
         # Check that this session state is opened
         self.assertEqual(
@@ -24,13 +25,11 @@ class TestPoSSessionState(TransactionCase):
         # _search_current_session_state function check
         poses_with_opened_sessions = self.env['pos.config'].search([('current_session_state', '=', 'opened')])
         poses_with_not_opened_sessions = self.env['pos.config'].search([('current_session_state', '!=', 'opened')])
-        poses_with_opened_sessions = map(lambda x: x.id, poses_with_opened_sessions)
-        poses_with_not_opened_sessions = map(lambda x: x.id, poses_with_not_opened_sessions)
-        third_case = map(lambda x: x.id,  self.env['pos.config'].search([('current_session_state', '>', 'opened')]))
-        # Checking two cases: operator = '=' and operator = '!='
-        self.assertEqual(
-            poses_with_opened_sessions[0], 1)
+        third_case = self.env['pos.config'].search([('current_session_state', '>', 'opened')])
+        # Checking next cases: operator = '=', operator = '!=' and contradictory case
+        self.assertIn(
+            opened_session_pos, poses_with_opened_sessions.ids)
         self.assertNotIn(
-            1, poses_with_not_opened_sessions)
+            opened_session_pos, poses_with_not_opened_sessions.ids)
         self.assertEqual(
             len(third_case), 0)
