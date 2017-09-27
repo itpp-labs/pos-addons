@@ -31,6 +31,8 @@ odoo.define('pos_longpolling', function(require){
             }
             var data = {channels: self.channels, last: self.last, options: options};
             var serv_adr = '';
+            console.log(models)
+            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             if (session.longpolling_server){
                 var serv_adr = session.longpolling_server;
             };

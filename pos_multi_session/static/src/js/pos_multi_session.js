@@ -46,13 +46,20 @@ odoo.define('pos_multi_session', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
+            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
+            var config_model_loaded = config_model.loaded;
+            config_model.loaded = function(self,configs){
+                config_model_loaded(self,configs);
+//                self.config.sync_server = '//second.odoo10.local:8079';
+                session.longpolling_server = self.config.sync_server;
+            }
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
                 this.message_ID = 1;
             }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            session.longpolling_server = '//second.odoo10.local:8079';
+//            session.longpolling_server = '//second.odoo10.local:8079';
             this.ready.then(function () {
                 if (!self.config.multi_session_id){
                     return;

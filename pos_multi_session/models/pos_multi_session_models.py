@@ -19,6 +19,7 @@ class PosConfig(models.Model):
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
     multi_session_message_ID = fields.Integer(default=1, string="Last sent message number")
     current_session_state = fields.Char(search='_search_current_session_state')
+    sync_server = fields.Char(related='multi_session_id.sync_server')
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -40,7 +41,7 @@ class PosMultiSession(models.Model):
     pos_ids = fields.One2many('pos.config', 'multi_session_id', string='POSes in Multi-session')
     order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
-    longpolling_server = fields.Char('Longpolling Server Address')
+    sync_server = fields.Char('Longpolling Server Address', default='//second.odoo10.local:8079')
 
     @api.multi
     def on_update_message(self, message):
