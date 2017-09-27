@@ -180,5 +180,20 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 return '' + this.uid;
             }
         },
+        /*  There is no need to check the presence of super method.
+            Because pos_multi_session_restaurant is loaded later than pos_multi_session.
+        */
+        apply_ms_data: function(data) {
+            if(data.mp_dirty !== undefined){
+                this.set_dirty(data.mp_dirty);
+            }
+            if(data.mp_skip !== undefined){
+                this.set_skip(data.mp_skip);
+            }
+            if(data.note !== undefined){
+                this.set_note(data.note);
+            }
+            OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
+        },
     });
 });
