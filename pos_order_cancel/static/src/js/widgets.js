@@ -144,7 +144,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             active_reasons.forEach(function(item) {
                 active_reasons_name.push(item.name);
             });
-            if(this.pos.config.accept_free_reason || active_reasons_name.length>0){
+            if(this.pos.config.allow_custom_reason || active_reasons_name.length>0){
                 this.gui.close_popup();
                 if( this.options.confirm ){
                     var reason = this.$('.popup-confirm-cancellation textarea').val();

@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='iface_display_categ_images']" position="after">
-                <field name="accept_free_reason"/>
+                <field name="allow_custom_reason"/>
             </xpath>
          </field>
     </record>
