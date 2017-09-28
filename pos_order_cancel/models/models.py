@@ -141,4 +141,4 @@ class PosOrderLineCanceled(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    allow_custom_reason = fields.Boolean(string="accept free reason", help="the field to send a reason is activate", default=True)
+    allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
