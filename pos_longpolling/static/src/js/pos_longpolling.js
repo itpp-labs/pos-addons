@@ -190,7 +190,13 @@ odoo.define('pos_longpolling', function(require){
         send: function() {
             var self = this;
             this.response_status = false;
-            openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+            //new added lines for modifying url
+            var serv_adr = '';
+            if (session.longpolling_server){
+                var serv_adr = session.longpolling_server;
+            };
+            //---------------------------------------------
+            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                 if the value is false you need to start the response timer*/
                 if (!self.response_status) {
@@ -206,9 +212,10 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function(status,not_long_poll) {
+        set_poll_status: function(status) {
             var element = this.$('.js_poll_connected');
-            if (not_long_poll){
+            // default sync_server = ""
+            if (this.pos.config.sync_server === false){
                 element.removeClass('oe_red');
                 element.addClass('oe_gray');
                 return;
@@ -226,13 +233,9 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            if (this.pos.config.autostart_longpolling){
-                this.pos.longpolling_connection.on("change:poll_connection", function(status){
-                    self.set_poll_status(status, false);
-                });
-            } else {
-                self.set_poll_status('', true);
-            }
+            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+                self.set_poll_status(status);
+            });
         },
     });
 
