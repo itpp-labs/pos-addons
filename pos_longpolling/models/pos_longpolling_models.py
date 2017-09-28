@@ -21,7 +21,8 @@ class PosConfig(models.Model):
                                          "at this period and if the message has not been received, the icon turns "
                                          "color to red. Once the connection is restored, the icon changes its color "
                                          "back to green)")
-    longpolling_enabled = fields.Boolean('Longpolling in use', default=True)
+    autostart_longpolling = fields.Boolean('Autostart longpolling', default=True,
+                                           help='When switched off longpoling will start only when other module start it')
 
     @api.multi
     def _send_to_channel(self, channel_name, message):

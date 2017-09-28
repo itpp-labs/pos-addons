@@ -30,12 +30,12 @@ odoo.define('pos_longpolling', function(require){
                 this.last_partners_presence_check = now;
             }
             var data = {channels: self.channels, last: self.last, options: options};
+            //new added lines for modifying url
             var serv_adr = '';
-            console.log(models)
-            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             if (session.longpolling_server){
                 var serv_adr = session.longpolling_server;
             };
+            //---------------------------------------------
             session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
@@ -226,7 +226,7 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            if (this.pos.config.longpolling_enabled){
+            if (this.pos.config.autostart_longpolling){
                 this.pos.longpolling_connection.on("change:poll_connection", function(status){
                     self.set_poll_status(status, false);
                 });

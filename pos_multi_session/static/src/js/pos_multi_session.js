@@ -75,7 +75,7 @@ odoo.define('pos_multi_session', function(require){
                     order.ms_remove_order();
                 });
                 self.multi_session = new exports.MultiSession(self);
-                if (self.config.longpolling_enabled){
+                if (self.config.autostart_longpolling){
                     var channel_name = "pos.multi_session";
                     var callback = self.ms_on_update;
                     self.add_channel(channel_name, callback, self);
@@ -537,7 +537,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = self.pos.config.longpolling_enabled && self.pos.config.sync_server || '';
+                var temp = self.pos.config.autostart_longpolling && self.pos.config.sync_server || '';
                 temp = temp + "/pos_multi_session_sync/update";
                 return openerp.session.rpc(temp, {
                     multi_session_id: self.pos.config.multi_session_id[0],
