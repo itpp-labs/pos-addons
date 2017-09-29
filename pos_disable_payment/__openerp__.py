@@ -15,5 +15,8 @@
     'data': [
         'views.xml',
     ],
+    'demo': [
+        'views/assets_demo.xml',
+    ],
     'installable': True,
 }
