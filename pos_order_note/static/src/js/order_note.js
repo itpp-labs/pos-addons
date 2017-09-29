@@ -110,7 +110,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             var json = this.export_as_JSON();
             var add = [];
             var rem = [];
-            var line_hash;
+            var line_hash = false;
 
             var res = _super_order.computeChanges.apply(this, arguments);
 
@@ -131,32 +131,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                     current_order_custom_notes_ids.push(current_note.id);
                 });
             }
+            var change_custom_notes = this.change_custom_notes(current_order_custom_notes_ids, old_order_custom_notes_ids) || false;
 
-            var DiffArrays = function(A,B) {
-                var M = A.length, N = B.length, c = 0, C = [];
-                for (var i = 0; i < M; i++) {
-                    var j = 0, k = 0;
-                    while (B[j] !== A[ i ] && j < N) {
-                        j++;
-                    }
-                    while (C[k] !== A[ i ] && k < c) {
-                        k++;
-                    }
-                    if (j === N && k === c) {
-                        C[c++] = A[ i ];
-                    }
-                }
-                return C;
-            };
-            var change_custom_notes = false;
-            if (current_order_custom_notes_ids.length === old_order_custom_notes_ids.length) {
-                var difference = DiffArrays(current_order_custom_notes_ids, old_order_custom_notes_ids);
-                if (difference.length) {
-                    change_custom_notes = true;
-                }
-            } else {
-                change_custom_notes = true;
-            }
             if (change_custom_notes) {
                 if (current_order_custom_notes) {
                     res.new.push({
@@ -197,32 +173,60 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             res.order_custom_notes = current_order_custom_notes;
 
             for (line_hash in current_res) {
-                var curr = current_res[line_hash];
-                var old = old_res[line_hash];
-                var current_product = curr.product_id;
-                var new_exist_product = false;
-                var cancelled_exist_product = false;
-                if (res.new) {
-                    new_exist_product = res.new.find(function(product) {
-                        return product.id === current_product;
-                    });
-                }
-                if (res.cancelled) {
-                    cancelled_exist_product = res.cancelled.find(function(product) {
-                        return product.id === current_product;
-                    });
-                }
-                if (new_exist_product && curr.custom_notes) {
-                    new_exist_product.custom_notes = curr.custom_notes;
-                }
-                if (cancelled_exist_product && curr.old_custom_notes) {
-                    if (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes) {
-                        cancelled_exist_product.custom_notes = curr.old_custom_notes;
+                if (Object.prototype.hasOwnProperty.call(current_res, line_hash)) {
+                    var curr = current_res[line_hash];
+                    var old = old_res[line_hash];
+                    var current_product = curr.product_id;
+                    var new_exist_product = false;
+                    var cancelled_exist_product = false;
+                    if (res.new) {
+                        new_exist_product = res.new.find(function(product) {
+                            return product.id === current_product;
+                        });
+                    }
+                    if (res.cancelled) {
+                        cancelled_exist_product = res.cancelled.find(function(product) {
+                            return product.id === current_product;
+                        });
+                    }
+                    if (new_exist_product && curr.custom_notes) {
+                        new_exist_product.custom_notes = curr.custom_notes;
+                    }
+                    if (cancelled_exist_product && curr.old_custom_notes) {
+                        if (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes) {
+                            cancelled_exist_product.custom_notes = curr.old_custom_notes;
+                        }
                     }
                 }
             }
             return res;
         },
+        DiffArrays: function(A,B) {
+            var M = A.length, N = B.length, c = 0, C = [];
+            for (var i = 0; i < M; i++) {
+                var j = 0, k = 0;
+                while (B[j] !== A[ i ] && j < N) {
+                    j++;
+                }
+                while (C[k] !== A[ i ] && k < c) {
+                    k++;
+                }
+                if (j === N && k === c) {
+                    C[c++] = A[ i ];
+                }
+            }
+            return C;
+        },
+        change_custom_notes: function(current_order_custom_notes_ids, old_order_custom_notes_ids) {
+            if (current_order_custom_notes_ids.length === old_order_custom_notes_ids.length) {
+                var difference = this.DiffArrays(current_order_custom_notes_ids, old_order_custom_notes_ids);
+                if (difference.length) {
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
     });
 
     var _super_orderline = models.Orderline.prototype;
@@ -270,15 +274,13 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             if (this.get_note()) {
                 if(this.get_custom_notes()) {
                     return this.id + '|' + this.get_note() + '|' + custom_notes_ids_line;
-                } else {
-                    return _super_orderline.get_line_diff_hash.apply(this,arguments);
-                }
-            } else {
-                if(this.get_custom_notes()) {
-                    return this.id + '|' + custom_notes_ids_line;
                 }
                 return _super_orderline.get_line_diff_hash.apply(this,arguments);
             }
+            if(this.get_custom_notes()) {
+                return this.id + '|' + custom_notes_ids_line;
+            }
+            return _super_orderline.get_line_diff_hash.apply(this,arguments);
         },
         clone: function(){
             var orderline = _super_orderline.clone.call(this);
