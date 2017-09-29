@@ -29,6 +29,7 @@
                 </xpath>
                 <xpath expr="//field[@name='query_timeout']" position="before">
                     <field name="sync_server"/>
+                    <field name="sync_server_secondary"/>
                 </xpath>
             </field>
         </record>

@@ -50,7 +50,7 @@ odoo.define('pos_multi_session', function(require){
             var config_model_loaded = config_model.loaded;
             config_model.loaded = function(self,configs){
                 config_model_loaded(self,configs);
-                session.longpolling_server = self.config.sync_server;
+                session.longpolling_server = self.config.sync_server || '';
             }
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
@@ -75,12 +75,9 @@ odoo.define('pos_multi_session', function(require){
                     order.ms_remove_order();
                 });
                 self.multi_session = new exports.MultiSession(self);
-                if (self.config.autostart_longpolling){
-                    var channel_name = "pos.multi_session";
-                    var callback = self.ms_on_update;
-                    self.add_channel(channel_name, callback, self);
-                }
-
+                var channel_name = "pos.multi_session";
+                var callback = self.ms_on_update;
+                self.bus.add_channel_callback(channel_name, callback, self);
             });
         },
         ms_my_info: function(){
@@ -485,7 +482,7 @@ odoo.define('pos_multi_session', function(require){
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
-            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);

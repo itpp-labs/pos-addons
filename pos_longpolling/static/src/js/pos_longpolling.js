@@ -17,6 +17,14 @@ odoo.define('pos_longpolling', function(require){
     bus.ERROR_DELAY = 10000;
 
     bus.Bus.include({
+        init_bus: function(pos){
+            this.pos = pos;
+            this.pos.channels = {};
+            this.longpolling_connection = new exports.LongpollingConnection(this.pos);
+            var callback = this.longpolling_connection.network_is_on;
+            var channel_name = "pos.longpolling";
+            this.add_channel_callback(channel_name, callback, this.longpolling_connection);
+        },
         poll: function() {
             var self = this;
             self.activated = true;
@@ -48,6 +56,81 @@ odoo.define('pos_longpolling', function(require){
                 setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
             });
         },
+        on_notification: function(notifications) {
+            var self = this;
+            var notifs = _.map(notifications, function (notif) {
+                if (notif.id > self.last) {
+                    self.last = notif.id;
+                }
+                return [notif.channel, notif.message];
+            });
+            this.trigger("notification", notifs);
+        },
+        add_channel_callback: function(channel_name, callback, thisArg) {
+            if (thisArg){
+                callback = _.bind(callback, thisArg);
+            }
+            this.pos.channels[channel_name] = callback;
+            if (this.pos.lonpolling_activated) {
+                this.init_channel(channel_name);
+            }
+        },
+        remove_channel_callback: function(channel_name) {
+            if (channel_name in this.channels) {
+                delete this.channels[channel_name];
+                var channel = this.pos.get_full_channel_name(channel_name);
+                this.delete_channel(channel);
+            }
+        },
+        start: function(){
+            var self = this;
+            this.last = this.pos.db.load('bus_last', 0);
+            this.on("notification", this, this.on_notification_callback);
+            this.stop_polling();
+            _.each(self.pos.channels, function(value, key){
+                self.init_channel(key);
+            });
+            this.start_polling();
+            this.pos.lonpolling_activated = true;
+            this.longpolling_connection.send();
+        },
+
+        init_channel: function(channel_name){
+            var channel = this.pos.get_full_channel_name(channel_name);
+            this.add_channel(channel);
+        },
+
+        on_notification_callback: function(notification) {
+            for (var i = 0; i < notification.length; i++) {
+                var channel = notification[i][0];
+                var message = notification[i][1];
+                this.on_notification_do(channel, message);
+            }
+            this.pos.db.save('bus_last', this.last);
+        },
+        on_notification_do: function (channel, message) {
+            var self = this;
+            if (_.isString(channel)) {
+                var channel = JSON.parse(channel);
+            }
+            if(Array.isArray(channel) && (channel[1] in self.pos.channels)){
+                try{
+                    self.longpolling_connection.network_is_on();
+                    var callback = self.pos.channels[channel[1]];
+                    if (callback) {
+                        if (self.pos.debug){
+                            console.log('POS LONGPOLLING', self.pos.config.name, channel[1], JSON.stringify(message));
+                        }
+                        callback(message);
+                    }
+                }catch(err){
+                    this.pos.chrome.gui.show_popup('error',{
+                        'title': _t('Error'),
+                        'body': err,
+                    });
+                }
+            }
+        }
     });
 
     var PosModelSuper = models.PosModel;
@@ -55,83 +138,31 @@ odoo.define('pos_longpolling', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.channels = {};
             this.lonpolling_activated = false;
+            this.buses = {};
             this.bus = bus.bus;
-            this.longpolling_connection = new exports.LongpollingConnection(this);
-            var channel_name = "pos.longpolling";
-            var callback = this.longpolling_connection.network_is_on;
-            this.add_channel(channel_name, callback, this.longpolling_connection);
+            this.bus.init_bus(this);
             this.ready.then(function () {
-                self.start_longpolling();
+                if (self.config.autostart_longpolling){
+                    self.bus.start();
+                };
             });
-        },
-        start_longpolling: function(){
-            var self = this;
-            this.bus.last = this.db.load('bus_last', 0);
-            this.bus.on("notification", this, this.on_notification);
-            this.bus.stop_polling();
-            _.each(self.channels, function(value, key){
-                self.init_channel(key);
-            });
-            this.bus.start_polling();
-            this.lonpolling_activated = true;
-            this.longpolling_connection.send();
-        },
-        add_channel: function(channel_name, callback, thisArg) {
-            if (thisArg){
-                callback = _.bind(callback, thisArg);
-            }
-            this.channels[channel_name] = callback;
-            if (this.lonpolling_activated) {
-                this.init_channel(channel_name);
-            }
         },
         get_full_channel_name: function(channel_name){
             return JSON.stringify([session.db,channel_name,String(this.config.id)]);
         },
-        init_channel: function(channel_name){
-            var channel = this.get_full_channel_name(channel_name);
-            this.bus.add_channel(channel);
+        add_bus: function(key){
+            this.buses[key] = new bus.Bus();
+            this.buses[key].init_bus();
         },
-        remove_channel: function(channel_name) {
-            if (channel_name in this.channels) {
-                delete this.channels[channel_name];
-                var channel = this.get_full_channel_name(channel_name);
-                this.bus.delete_channel(channel);
+        get_bus: function(key){
+            if (key){
+                return this.buses[key];
+            } else {
+                return this.bus;
             }
         },
-        on_notification: function(notification) {
-            for (var i = 0; i < notification.length; i++) {
-                var channel = notification[i][0];
-                var message = notification[i][1];
-                this.on_notification_do(channel, message);
-            }
-            this.db.save('bus_last', this.bus.last);
-        },
-        on_notification_do: function (channel, message) {
-            var self = this;
-            if (_.isString(channel)) {
-                var channel = JSON.parse(channel);
-            }
-            if(Array.isArray(channel) && (channel[1] in self.channels)){
-                try{
-                    self.longpolling_connection.network_is_on();
-                    var callback = self.channels[channel[1]];
-                    if (callback) {
-                        if (self.debug){
-                            console.log('POS LONGPOLLING', self.config.name, channel[1], JSON.stringify(message));
-                        }
-                        callback(message);
-                    }
-                }catch(err){
-                    this.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
-                    });
-                }
-            }
-        }
+
     });
     exports.LongpollingConnection = Backbone.Model.extend({
         initialize: function(pos) {
@@ -193,7 +224,7 @@ odoo.define('pos_longpolling', function(require){
             //new added lines for modifying url
             var serv_adr = '';
             if (session.longpolling_server){
-                var serv_adr = session.longpolling_server;
+                var serv_adr = session.longpolling_server || '';
             };
             //---------------------------------------------
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
@@ -233,7 +264,7 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 self.set_poll_status(status);
             });
         },
