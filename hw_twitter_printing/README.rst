@@ -4,6 +4,8 @@
 
 The module allows to print tweets with specific hashtags by using PosBox.
 
+TODO: Works with Network Printer only
+
 Credits
 =======
 
