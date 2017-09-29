@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 import logging
 import threading
-from twython import TwythonStreamer
-from escpos.printer import Network
 from odoo.tools import config
 
 
 _logger = logging.getLogger(__name__)
+
+
+try:
+    from twython import TwythonStreamer
+    from escpos.printer import Network
+except ImportError as err:
+    _logger.debug(err)
 
 
 class MyStreamerThread(threading.Thread):
