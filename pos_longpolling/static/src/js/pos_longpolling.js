@@ -17,12 +17,15 @@ odoo.define('pos_longpolling', function(require){
     bus.ERROR_DELAY = 10000;
 
     bus.Bus.include({
-        init_bus: function(pos){
+        init_bus: function(pos, sync_server, channel){
             this.pos = pos;
-            this.pos.channels = {};
+            if (!this.pos.channels){
+                this.pos.channels = {};
+            }
+            this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             var callback = this.longpolling_connection.network_is_on;
-            var channel_name = "pos.longpolling";
+            var channel_name = channel || "pos.longpolling";
             this.add_channel_callback(channel_name, callback, this.longpolling_connection);
         },
         poll: function() {
@@ -38,13 +41,8 @@ odoo.define('pos_longpolling', function(require){
                 this.last_partners_presence_check = now;
             }
             var data = {channels: self.channels, last: self.last, options: options};
-            //new added lines for modifying url
-            var serv_adr = '';
-            if (session.longpolling_server){
-                var serv_adr = session.longpolling_server;
-            };
-            //---------------------------------------------
-            session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
+
+            session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
                     self.poll();
@@ -141,7 +139,7 @@ odoo.define('pos_longpolling', function(require){
             this.lonpolling_activated = false;
             this.buses = {};
             this.bus = bus.bus;
-            this.bus.init_bus(this);
+            this.bus.init_bus(this, session.main_server,'');
             this.ready.then(function () {
                 if (self.config.autostart_longpolling){
                     self.bus.start();
@@ -151,9 +149,9 @@ odoo.define('pos_longpolling', function(require){
         get_full_channel_name: function(channel_name){
             return JSON.stringify([session.db,channel_name,String(this.config.id)]);
         },
-        add_bus: function(key){
+        add_bus: function(key, sync_server, channel){
             this.buses[key] = new bus.Bus();
-            this.buses[key].init_bus();
+            this.buses[key].init_bus(this, sync_server, channel);
         },
         get_bus: function(key){
             if (key){
@@ -223,8 +221,8 @@ odoo.define('pos_longpolling', function(require){
             this.response_status = false;
             //new added lines for modifying url
             var serv_adr = '';
-            if (session.longpolling_server){
-                var serv_adr = session.longpolling_server || '';
+            if (session.main_server){
+                var serv_adr = session.main_server || '';
             };
             //---------------------------------------------
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){

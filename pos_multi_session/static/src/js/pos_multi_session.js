@@ -49,8 +49,11 @@ odoo.define('pos_multi_session', function(require){
             var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             var config_model_loaded = config_model.loaded;
             config_model.loaded = function(self,configs){
+                session.sync_servers = [];
                 config_model_loaded(self,configs);
-                session.longpolling_server = self.config.sync_server || '';
+                session.main_server = self.config.sync_server || '';
+                session.sync_servers.push(self.config.sync_server || '');
+                session.sync_servers.push(self.config.sync_server_secondary || '');
             }
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
@@ -78,6 +81,13 @@ odoo.define('pos_multi_session', function(require){
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
+                if (self.config.sync_server_secondary){
+                    var channel_name = "pos.multi_session.secondary";
+                    var callback = self.ms_on_update;
+                    self.add_bus('secondary', self.config.sync_server_secondary, channel_name);
+                    self.get_bus('secondary').add_channel_callback(channel_name, callback, self);
+                    self.get_bus('secondary').start();
+                }
             });
         },
         ms_my_info: function(){
@@ -534,9 +544,9 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = self.pos.config.autostart_longpolling && self.pos.config.sync_server || '';
-                temp = temp + "/pos_multi_session_sync/update";
-                return openerp.session.rpc(temp, {
+                var temp = session.main_server || '';
+//                temp = temp + "/pos_multi_session_sync/update";
+                return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message
                 });
