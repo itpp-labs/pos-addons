@@ -26,23 +26,22 @@ odoo.define('pos_multi_session_restaurant', function(require){
     });
     var _t = core._t;
 
+    gui.Gui.prototype.screen_classes.filter(function(el) {
+        return el.name == 'splitbill'
+    })[0].widget.include({
+        pay: function(order,neworder,splitlines){
+            this._super(order,neworder,splitlines);
+            neworder.save_to_db();
+        }
+    });
 
     screens.OrderWidget.include({
         update_summary: function(){
             var order = this.pos.get('selectedOrder');
-            if (order){
-                this._super();
-                var buttons = this.getParent().action_buttons;
-                if (buttons && buttons.submit_order && this.all_lines_printed(order)) {
-                    buttons.submit_order.highlight(false);
-                }
+            if (!order){
+                return;
             }
-        },
-        all_lines_printed: function (order) {
-            not_printed_line = order.orderlines.find(function(lines){
-                                return lines.mp_dirty;
-                            });
-            return !not_printed_line;
+            this._super();
         },
         remove_orderline: function(order_line){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
@@ -57,16 +56,46 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
+            var ms_model = {
+                model: 'pos.multi_session',
+                fields: ['name','floor_ids'],
+                domain: null,
+                loaded: function(self,floors){
+                    self.multi_session_floors = floors;
+            }};
+            this.models.splice(
+                1 + this.models.indexOf(_.find(this.models, function(model){
+                    return model.model === 'pos.config';
+                })), 0, ms_model);
+            var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
+            floor_model.domain = function(self, ms_model){
+                var temporary = [['id','in',self.config.floor_ids]];
+                if (self.config.multi_session_id){
+                    var ms_floors = _.find(self.multi_session_floors, function(session){
+                        return session.id === self.config.multi_session_id[0];
+                    });
+                    temporary = [['id','in', ms_floors.floor_ids]];
+                }
+                return temporary;
+            };
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.multi_session.remove_order = function(data) {
-                if (data.transfer) {
-                    data.transfer = false;
+            this.ready.then(function () {
+                if (!self.config.multi_session_id){
                     return;
-                } else {
-                    this.send({action: 'remove_order', data: data});
                 }
-            };
+                self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
+                self.config.floor_ids = self.multi_session.floor_ids;
+                var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
+                self.multi_session.remove_order = function(data) {
+                    if (data.transfer) {
+                        data.transfer = false;
+                        return;
+                    } else {
+                        remove_order_super.apply(self.multi_session, arguments);
+                    }
+                 };
+            });
         },
         add_new_order: function(){
             var self = this;
@@ -74,6 +103,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.multi_session){
                 var current_order = this.get_order();
                 current_order.ms_update();
+                current_order.save_to_db();
             }
         },
         ms_create_order: function(options){
@@ -105,13 +135,15 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if ((order && old_order && old_order.uid != order.uid) || (old_order == null)) {
                 this.set('selectedOrder',old_order);
             }
+            this.gui.screen_instances.floors.renderElement();
         },
         ms_do_update: function(order, data){
             PosModelSuper.prototype.ms_do_update.apply(this, arguments);
             if (order) {
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
-                this.gui.screen_instances.products.action_buttons.guests.renderElement();
+                order.trigger('change');
+                this.gui.screen_instances.floors.renderElement();
             }
         },
         ms_on_add_order: function(current_order){
@@ -148,10 +180,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.ms_update();
             }
         },
-        printChanges: function(){
-            OrderSuper.prototype.printChanges.apply(this, arguments);
-            this.just_printed = true;
-        },
         do_ms_remove_order: function(){
             if (this.transfer) {
                 this.pos.multi_session.remove_order({
@@ -173,6 +201,21 @@ odoo.define('pos_multi_session_restaurant', function(require){
             } else {
                 return '' + this.uid;
             }
+        },
+        /*  There is no need to check the presence of super method.
+            Because pos_multi_session_restaurant is loaded later than pos_multi_session.
+        */
+        apply_ms_data: function(data) {
+            if(data.mp_dirty !== undefined){
+                this.set_dirty(data.mp_dirty);
+            }
+            if(data.mp_skip !== undefined){
+                this.set_skip(data.mp_skip);
+            }
+            if(data.note !== undefined){
+                this.set_note(data.note);
+            }
+            OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
         },
     });
 });

@@ -1,6 +1,6 @@
-==================
- POS Order Cancel
-==================
+======================================
+ Saving removed products of POS order
+======================================
 
 Installation
 ============
@@ -10,10 +10,9 @@ Installation
 Configuration
 =============
 
-* Go to ``Point of Sale >> POS Product Cancellation Reason``
+* Go to ``Point of Sale >> Settings >> Refund / Cancellation Reasons``
 
   * Click on ``[Create]``
-  * Specify a number
   * Specify a cancellation reason
   * Click ``[Save]``
 
@@ -21,19 +20,22 @@ Usage
 =====
 
 * Open POS session
-* Add new products in order
-* Click ``[Order]``
+* On canceling one product at an order:
 
-Product Cancellation Reason
----------------------------
-
-  * Remove product using numpad
-  * Specify cancellation reason or set new one
+  * create order with few lines
+  * Remove product or decrease its quantity
+  * Specify cancellation reason or set custom one
   * Click ``[Ok]``
 
-Order Cancellation Reason
--------------------------
+* On canceling whole order:
 
-  * Remove order by clicking on order cancel button
-  * Specify cancellation reason or set new one
+
+  * Create order with few lines
+  * Remove order by clicking Minus Button near the order tabs
+  * Specify cancellation reason or set custom one
   * Click ``[Ok]``
+
+* At backend go to ``Point of Sale >> Reports >> Refunds / Cancellations``
+
+  * Switch to list view
+  * You can see all information about canceled products

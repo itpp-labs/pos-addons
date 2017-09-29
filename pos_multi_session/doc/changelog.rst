@@ -3,17 +3,22 @@
 Updates
 =======
 
-`1.0.4`
+`3.1.0`
 -------
-- FIX: Print only not printed order lines (*Order* button).
 
-`1.0.3`
--------
-- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
+- NEW: Added "Multi-session Settings" form.
+- NEW: Added unsynchronized POS in Demo.
+- NEW: Added unittests.
 
-`1.0.2`
+`3.0.4`
 -------
-- FIX: For pos restaurant compatibility. Sync printed positions.
+
+- FIX: Errors in case of an empty multi_session_id field.
+
+`3.0.3`
+-------
+
+- FIX: KeyError: 'sequence_number'.
 
 `3.0.2`
 -------
@@ -44,6 +49,17 @@ Updates
 - NEW: Stable order numbering: no duplicates, no omissions. Use word "New" for unregistered empty orders.
 - NEW: Restoring after connection problems
 
+`1.0.4`
+-------
+- FIX: Print only not printed order lines (*Order* button).
+
+`1.0.3`
+-------
+- IMP: For pos restaurant compatibility. Sync notes. Sync guests.
+
+`1.0.2`
+-------
+- FIX: For pos restaurant compatibility. Sync printed positions.
 
 `1.0.1`
 -------

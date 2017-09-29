@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="demo_reason_1" model="pos.cancelled_reason">
+        <field name="name">Wrong Quantity</field>
+    </record>
+    <record id="demo_reason_2" model="pos.cancelled_reason">
+        <field name="name">Price differs from one at Store shelf</field>
+    </record>
+    <record id="demo_reason_3" model="pos.cancelled_reason">
+        <field name="name">Customer doesn't have enough money to pay</field>
+    </record>
+</odoo>

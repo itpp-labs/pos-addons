@@ -1,14 +1,14 @@
-==================
- POS Order Cancel
-==================
+======================================
+ Saving removed products of POS order
+======================================
 
-The module allows to add a reason on canceling kitchen order. The reason will be added to cancelation receipt.
+The module allows to add a reason on canceling order or orderline in POS.
 
 Besides,
 
 * On canceling user can click on predefined Reason and specify custom one
 * Canceled order is saved at database
-* TODO Canceled order line is save at database
+* Canceled order line is saved at database
 
 Credits
 =======
@@ -36,4 +36,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 0b4c18f05bcedc86ba1ffadd18f318c66afa1a0e
+Tested on Odoo 10.0 dad095de301580cdde70eba747792e835cbbc0fd

@@ -47,24 +47,32 @@ odoo.define('pos_multi_session', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
+            if (!this.message_ID) {
+                this.message_ID = 1;
+            }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
-            this.get('orders').bind('remove', function(order, collection, options){
-                if (!self.multi_session.client_online) {
-                    if (order.order_on_server ) {
-                        self.multi_session.no_connection_warning();
-                        if (self.debug){
-                            console.log('PosModel initialize error');
-                        }
-                        return false;
-                    }
+            this.ready.then(function () {
+                if (!self.config.multi_session_id){
+                    return;
                 }
-                order.ms_remove_order();
+                self.get('orders').bind('remove', function(order, collection, options){
+                    if (!self.multi_session.client_online) {
+                        if (order.order_on_server ) {
+                            self.multi_session.no_connection_warning();
+                            if (self.debug){
+                                console.log('PosModel initialize error');
+                            }
+                            return false;
+                        }
+                    }
+                    order.ms_remove_order();
+                });
+                self.multi_session = new exports.MultiSession(self);
+                var channel_name = "pos.multi_session";
+                var callback = self.ms_on_update;
+                self.add_channel(channel_name, callback, self);
             });
-            this.multi_session = new exports.MultiSession(this);
-            var channel_name = "pos.multi_session";
-            var callback = this.ms_on_update;
-            this.add_channel(channel_name, callback, this);
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -180,8 +188,7 @@ odoo.define('pos_multi_session', function(require){
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
             } else {
-                order.ms_info = data.ms_info;
-                order.revision_ID = data.revision_ID;
+                order.apply_ms_data(data);
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -214,25 +221,7 @@ odoo.define('pos_multi_session', function(require){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
                 }
-                line.ms_info = dline.ms_info || {};
-                if(dline.qty !== undefined){
-                    line.set_quantity(dline.qty);
-                }
-                if(dline.price_unit !== undefined){
-                    line.set_unit_price(dline.price_unit);
-                }
-                if(dline.discount !== undefined){
-                    line.set_discount(dline.discount);
-                }
-                if(dline.mp_dirty !== undefined){
-                    line.set_dirty(dline.mp_dirty);
-                }
-                if(dline.mp_skip !== undefined){
-                    line.set_skip(dline.mp_skip);
-                }
-                if(dline.note !== undefined){
-                    line.set_note(dline.note);
-                }
+                line.apply_ms_data(dline);
                 order.orderlines.add(line);
             });
 
@@ -288,6 +277,10 @@ odoo.define('pos_multi_session', function(require){
             }
 
             OrderSuper.prototype.initialize.apply(this, arguments);
+            if (!this.pos.config.multi_session_id){
+                this.new_order = false;
+                return;
+            }
             this.ms_info = {};
             this.revision_ID = options.revision_ID || 1;
 
@@ -325,6 +318,8 @@ odoo.define('pos_multi_session', function(require){
                 return;
             if (this.pos.ms_syncing_in_progress)
                 return;
+            if (this.temporary)
+                return;
             return true;
         },
         ms_update: function(){
@@ -347,6 +342,13 @@ odoo.define('pos_multi_session', function(require){
                     self.ms_update_timeout = false;
                     self.do_ms_update();
                 }, 0);
+        },
+        apply_ms_data: function(data) {
+            if (OrderSuper.prototype.apply_ms_data) {
+                OrderSuper.prototype.apply_ms_data.apply(this, arguments);
+            }
+            this.ms_info = data.ms_info;
+            this.revision_ID = data.revision_ID;
         },
         ms_remove_order: function(){
             if (!this.ms_check())
@@ -394,6 +396,9 @@ odoo.define('pos_multi_session', function(require){
                     }
                 })
             };
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
             this.enquied = true;
             this.pos.multi_session.enque(f);
         }
@@ -404,17 +409,18 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             OrderlineSuper.prototype.initialize.apply(this, arguments);
             this.ms_info = {};
-            if (!this.order)
+            if (!this.order){
+                // probably impossible case in odoo 10.0, but keep it here to remove doubts
+                return;
+            }
+            this.uid = this.order.generate_unique_id() + '-' + this.id;
+            if (this.order.screen_data.screen === "splitbill")
                 // ignore new orderline from splitbill tool
                 return;
             if (this.order.ms_check()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
             this.bind('change', function(line){
-                if(this.order.just_printed){
-                    line.order.trigger('change:sync');
-                    return;
-                }
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
@@ -423,7 +429,31 @@ odoo.define('pos_multi_session', function(require){
                     line.order.trigger('change:sync');
                 }
             });
-            this.uid = this.order.generate_unique_id() + '-' + this.id;
+        },
+        /*  It is necessary to check the presence of the super method for the function,
+            in order to be able to inherit the "apply_ms_data" function in other modules
+            without specifying "require" of the "pos_multi_session" module (without adding in
+            dependencies in the manifest).
+
+            At the time of loading, the super method may not exist. So, if the js file is loaded
+            first, among all inherited, then there is no super method and it is not called,
+            if the file is not the first, then the super method is already created by other modules,
+            and we inherit this function.
+        */
+        apply_ms_data: function(data) {
+            if (OrderlineSuper.prototype.apply_ms_data) {
+                OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
+            }
+            this.ms_info = data.ms_info || {};
+            if(data.qty !== undefined){
+                this.set_quantity(data.qty);
+            }
+            if(data.price_unit !== undefined){
+                this.set_unit_price(data.price_unit);
+            }
+            if(data.discount !== undefined){
+                this.set_discount(data.discount);
+            }
         },
         set_selected: function(){
             this.ms_changing_selected = true;

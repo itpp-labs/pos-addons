@@ -1,22 +1,38 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo import fields, models, api
+from functools import partial
+from datetime import datetime
+import pytz
 
 
 class PosCancelledReason(models.Model):
     _name = "pos.cancelled_reason"
 
-    number = fields.Integer(string="Number")
-    name = fields.Char(string="Reason")
+    sequence = fields.Integer(string="Sequence")
+    name = fields.Char(string="Reason", translate=True)
 
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
-    cancellation_reason = fields.Text(string='Order Cancellation Reason')
+
+    cancellation_reason = fields.Text(string="Order Cancellation Reason")
     is_cancelled = fields.Boolean("Stage Cancelled", default=False)
+    canceled_lines = fields.One2many("pos.order.line.canceled", "order_id", string="Canceled Lines")
     computed_state = fields.Selection(
         [('draft', 'New'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')],
         'Status', compute='_compute_state')
+
+    cancelled_amount_tax = fields.Float(compute='_compute_cancelled_amount_all', string='Taxes', digits=0)
+    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Total', digits=0, default=0)
+
+    @api.depends('canceled_lines', 'canceled_lines.price_subtotal_incl', 'canceled_lines.discount')
+    def _compute_cancelled_amount_all(self):
+        for order in self:
+            order.cancelled_amount_total = order.cancelled_amount_tax = 0.0
+            currency = order.pricelist_id.currency_id
+            order.cancelled_amount_tax = currency.round(sum(self._amount_line_tax(line, order.fiscal_position_id) for line in order.canceled_lines))
+            amount_untaxed = currency.round(sum(line.price_subtotal for line in order.canceled_lines))
+            order.cancelled_amount_total = order.cancelled_amount_tax + amount_untaxed
 
     @api.depends('is_cancelled', 'state')
     def _compute_state(self):
@@ -28,150 +44,24 @@ class PosOrder(models.Model):
                 pos_order.computed_state = pos_order.state
 
     @api.model
+    def _order_fields(self, ui_order):
+        order = super(PosOrder, self)._order_fields(ui_order)
+        process_canceled_line = partial(self.env['pos.order.line.canceled']._order_cancel_line_fields)
+        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order['canceled_lines']] if ui_order['canceled_lines'] else False
+        return order
+
+    @api.model
     def _process_order(self, pos_order):
         order = super(PosOrder, self)._process_order(pos_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
-            order.cancellation_reason = pos_order['CancellationReason'].encode('utf-8').strip(" \t\n")
+            if pos_order['reason']:
+                order.cancellation_reason = pos_order['reason'].encode('utf-8').strip(" \t\n")
             order.is_cancelled = True
         return order
 
     def _create_account_move_line(self, session=None, move=None):
-        # Tricky, via the workflow, we only have one id in the ids variable
-        """Create a account move line of order grouped by products or not."""
-        IrProperty = self.env['ir.property']
-        ResPartner = self.env['res.partner']
-
-        if session and not all(session.id == order.session_id.id for order in self):
-            raise UserError(_('Selected orders do not have the same session!'))
-
-        grouped_data = {}
-        have_to_group_by = session and session.config_id.group_by or False
-        rounding_method = session and session.config_id.company_id.tax_calculation_rounding_method
-
-        for order in self.filtered(lambda o: (not o.account_move or order.state == 'paid') and o.is_cancelled is False):
-            current_company = order.sale_journal.company_id
-            account_def = IrProperty.get(
-                'property_account_receivable_id', 'res.partner')
-            order_account = order.partner_id.property_account_receivable_id.id or account_def and account_def.id
-            partner_id = ResPartner._find_accounting_partner(order.partner_id).id or False
-            if move is None:
-                # Create an entry for the sale
-                journal_id = self.env['ir.config_parameter'].sudo().get_param(
-                    'pos.closing.journal_id_%s' % current_company.id, default=order.sale_journal.id)
-                move = self._create_account_move(
-                    order.session_id.start_at, order.name, int(journal_id), order.company_id.id)
-
-            def insert_data(data_type, values):
-                # if have_to_group_by:
-                values.update({
-                    'partner_id': partner_id,
-                    'move_id': move.id,
-                })
-
-                if data_type == 'product':
-                    key = ('product', values['partner_id'], (values['product_id'], tuple(values['tax_ids'][0][2]), values['name']), values['analytic_account_id'], values['debit'] > 0)
-                elif data_type == 'tax':
-                    key = ('tax', values['partner_id'], values['tax_line_id'], values['debit'] > 0)
-                elif data_type == 'counter_part':
-                    key = ('counter_part', values['partner_id'], values['account_id'], values['debit'] > 0)
-                else:
-                    return
-
-                grouped_data.setdefault(key, [])
-
-                if have_to_group_by:
-                    if not grouped_data[key]:
-                        grouped_data[key].append(values)
-                    else:
-                        current_value = grouped_data[key][0]
-                        current_value['quantity'] = current_value.get('quantity', 0.0) + values.get('quantity', 0.0)
-                        current_value['credit'] = current_value.get('credit', 0.0) + values.get('credit', 0.0)
-                        current_value['debit'] = current_value.get('debit', 0.0) + values.get('debit', 0.0)
-                else:
-                    grouped_data[key].append(values)
-
-            # because of the weird way the pos order is written, we need to make sure there is at least one line,
-            # because just after the 'for' loop there are references to 'line' and 'income_account' variables (that
-            # are set inside the for loop)
-            # TOFIX: a deep refactoring of this method (and class!) is needed
-            # in order to get rid of this stupid hack
-            assert order.lines, _('The POS order must have lines when calling this method')
-            # Create an move for each order line
-            cur = order.pricelist_id.currency_id
-            for line in order.lines:
-                amount = line.price_subtotal
-
-                # Search for the income account
-                if line.product_id.property_account_income_id.id:
-                    income_account = line.product_id.property_account_income_id.id
-                elif line.product_id.categ_id.property_account_income_categ_id.id:
-                    income_account = line.product_id.categ_id.property_account_income_categ_id.id
-                else:
-                    raise UserError(_('Please define income '
-                                      'account for this product: "%s" (id:%d).')
-                                    % (line.product_id.name, line.product_id.id))
-
-                name = line.product_id.name
-                if line.notice:
-                    # add discount reason in move
-                    name = name + ' (' + line.notice + ')'
-
-                # Create a move for the line for the order line
-                insert_data('product', {
-                    'name': name,
-                    'quantity': line.qty,
-                    'product_id': line.product_id.id,
-                    'account_id': income_account,
-                    'analytic_account_id': self._prepare_analytic_account(line),
-                    'credit': ((amount > 0) and amount) or 0.0,
-                    'debit': ((amount < 0) and -amount) or 0.0,
-                    'tax_ids': [(6, 0, line.tax_ids_after_fiscal_position.ids)],
-                    'partner_id': partner_id
-                })
-
-                # Create the tax lines
-                taxes = line.tax_ids_after_fiscal_position.filtered(lambda t: t.company_id.id == current_company.id)
-                if not taxes:
-                    continue
-                for tax in taxes.compute_all(line.price_unit * (100.0 - line.discount) / 100.0, cur, line.qty)['taxes']:
-                    insert_data('tax', {
-                        'name': _('Tax') + ' ' + tax['name'],
-                        'product_id': line.product_id.id,
-                        'quantity': line.qty,
-                        'account_id': tax['account_id'] or income_account,
-                        'credit': ((tax['amount'] > 0) and tax['amount']) or 0.0,
-                        'debit': ((tax['amount'] < 0) and -tax['amount']) or 0.0,
-                        'tax_line_id': tax['id'],
-                        'partner_id': partner_id
-                    })
-
-            # round tax lines per order
-            if rounding_method == 'round_globally':
-                for group_key, group_value in grouped_data.iteritems():
-                    if group_key[0] == 'tax':
-                        for line in group_value:
-                            line['credit'] = cur.round(line['credit'])
-                            line['debit'] = cur.round(line['debit'])
-
-            # counterpart
-            insert_data('counter_part', {
-                'name': _("Trade Receivables"),  # order.name,
-                'account_id': order_account,
-                'credit': ((order.amount_total < 0) and -order.amount_total) or 0.0,
-                'debit': ((order.amount_total > 0) and order.amount_total) or 0.0,
-                'partner_id': partner_id
-            })
-
-            order.write({'state': 'done', 'account_move': move.id})
-
-        all_lines = []
-        for group_key, group_data in grouped_data.iteritems():
-            for value in group_data:
-                all_lines.append((0, 0, value),)
-        if move:  # In case no order was changed
-            move.sudo().write({'line_ids': all_lines})
-            move.sudo().post()
-        return True
+        uncanceled_order = self.filtered(lambda o: not o.is_cancelled)
+        return super(PosOrder, uncanceled_order)._create_account_move_line(session, move)
 
     @api.multi
     def action_pos_order_paid(self):
@@ -188,3 +78,60 @@ class PosOrder(models.Model):
             return True
         else:
             return super(PosOrder, self).action_pos_order_done()
+
+    def _reconcile_payments(self):
+        uncanceled_order = self.filtered(lambda o: not o.is_cancelled)
+        super(PosOrder, uncanceled_order)._reconcile_payments()
+
+
+class PosOrderLineCanceled(models.Model):
+    _name = "pos.order.line.canceled"
+    _rec_name = "product_id"
+
+    def _order_cancel_line_fields(self, line):
+        if line and 'tax_ids' not in line[2]:
+            product = self.env['product.product'].browse(line[2]['product_id'])
+            line[2]['tax_ids'] = [(6, 0, [x.id for x in product.taxes_id])]
+        return line
+
+    product_id = fields.Many2one('product.product', string='Product', domain=[('sale_ok', '=', True)], required=True, change_default=True, readonly=True)
+    discount = fields.Float(string='Discount (%)', digits=0, default=0.0, readonly=True)
+    price_unit = fields.Float(string='Unit Price', digits=0, readonly=True)
+    user_id = fields.Many2one(comodel_name='res.users', string='Salesman', help="Person who removed order line", default=lambda self: self.env.uid, readonly=True)
+    qty = fields.Float('Quantity', default=1, readonly=True)
+    reason = fields.Text(string="Reason", help="The Reason of Line Canceled", readonly=True)
+    order_id = fields.Many2one('pos.order', string='Order Ref', ondelete='cascade', readonly=True)
+    pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
+    tax_ids = fields.Many2many('account.tax', string='Taxes', readonly=True)
+    canceled_date = fields.Datetime(string='Cancelation Time', readonly=True, default=fields.Datetime.now)
+    price_subtotal = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal w/o Tax', store=True)
+    price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
+
+    @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
+    def _compute_amount_line_all(self):
+        for line in self:
+            currency = line.order_id.pricelist_id.currency_id
+            taxes = line.tax_ids.filtered(lambda tax: tax.company_id.id == line.order_id.company_id.id)
+            fiscal_position_id = line.order_id.fiscal_position_id
+            if fiscal_position_id:
+                taxes = fiscal_position_id.map_tax(taxes, line.product_id, line.order_id.partner_id)
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            line.price_subtotal = line.price_subtotal_incl = price * line.qty
+            if taxes:
+                taxes = taxes.compute_all(price, currency, line.qty, product=line.product_id, partner=line.order_id.partner_id or False)
+                line.price_subtotal = taxes['total_excluded']
+                line.price_subtotal_incl = taxes['total_included']
+
+            line.price_subtotal = currency.round(line.price_subtotal)
+            line.price_subtotal_incl = currency.round(line.price_subtotal_incl)
+
+    @api.model
+    def create(self, values):
+        if values.get('canceled_date'):
+            canceled_date = datetime.strptime(values.get('canceled_date'), "%d/%m/%Y %H:%M:%S")
+            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc
+            canceled_date = tz.localize(canceled_date)
+            canceled_date = canceled_date.astimezone(pytz.utc)
+            canceled_date = fields.Datetime.to_string(canceled_date)
+            values['canceled_date'] = canceled_date
+        return super(PosOrderLineCanceled, self).create(values)

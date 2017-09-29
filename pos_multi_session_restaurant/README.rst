@@ -8,6 +8,10 @@ Syncs additional restaurant data:
 * Printer status (green "Order" button)
 * Notes
 
+Each multi-session and each unsynchronized POS may have its own floor set. POSes in multi-session have same floors.
+
+FIXME: there is issue with floor real-time synchronization, to synchronize tables after modifying them it is mandatory to refresh all POSes pages, also deleting a table with open order on it leads to constant error messages. See https://github.com/it-projects-llc/pos-addons/issues/375.
+
 Local run
 ---------
 

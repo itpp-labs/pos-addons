@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-extend="OrderChangeReceipt">
-        <t t-jquery='t[t-foreach="changes.cancelled"]' t-operation="after">
-            <t t-if="changes.reason">
-                <br />
-                <line>
-                    <left>REASON</left>
-                    <right>...</right>
-                </line>
-                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="changes.reason" /></span></div>
-                <line></line>
-            </t>
-        </t>
-    </t>
-
     <t t-name="ConfirmCancellationPopupWidget">
         <div class="modal-dialog">
             <div class="popup popup-confirm-cancellation">
@@ -22,12 +8,21 @@
                 <textarea rows="1" cols="44" placeholder="Reason"></textarea>
                 <div class="cancelled-reason">
                     <ul>
-                        <t t-if="widget.options.reasons">
-                            <t t-foreach="widget.options.reasons" t-as="reason">
-                                <li><div t-attf-id="{{reason.id}}" t-attf-class="button"><t t-esc="reason.name"/></div></li>
+                        <t t-if="widget.buttons">
+                            <t t-foreach="widget.buttons" t-as="buttons">
+                                <span class="reason-row">
+                                    <t t-foreach="buttons" t-as="button">
+                                        <t t-if="!button.other">
+                                            <li class="reason-col"><div t-attf-id="{{button.id}}" class="reason-button"><t t-esc="button.name"/></div></li>
+                                        </t>
+                                        <t t-if="button.other">
+                                            <li class="reason-col other"><div id="other" class="reason-button other-reason">Other</div></li>
+                                        </t>
+                                    </t>
+                                </span>
                             </t>
+                            <div class="break"></div>
                         </t>
-                        <li><div id="other" class="button other-reason">Other</div></li>
                     </ul>
                 </div>
                 <div class="footer centered">

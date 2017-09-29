@@ -13,7 +13,7 @@ class PosConfig(models.Model):
     def notify_debt_updates(self):
         model = self.env.context['active_model']
         ids = self.env.context['active_ids']
-        records = self.env[model].browse(ids)
+        records = self.env[model].sudo().browse(ids)
 
         partners = None
         if model == 'account.bank.statement.line':

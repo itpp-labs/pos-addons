@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="OrderChangeReceipt">
+        <t t-jquery='t[t-foreach="changes.cancelled"] t[t-if="change.note"]' t-operation="after">
+            <t t-if="change.reason and !changes.reason">
+                <br />
+                <line>
+                    <left>REASON</left>
+                    <right>...</right>
+                </line>
+                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="change.reason" /></span></div>
+                <line></line>
+            </t>
+        </t>
+        <t t-jquery='t[t-foreach="changes.cancelled"]' t-operation="after">
+            <t t-if="changes.reason">
+                <br />
+                <line>
+                    <left>REASON</left>
+                    <right>...</right>
+                </line>
+                <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="changes.reason" /></span></div>
+                <line></line>
+            </t>
+        </t>
+    </t>
+</templates>
