@@ -15,7 +15,7 @@ addons:
 env:
   global:
   - VERSION="10.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" UNIT_TEST="0"
-  - EXCLUDE="hw_printer_network"
+  - EXCLUDE="hw_printer_network,hw_twitter_printing"
   - PYLINT_ODOO_JSLINTRC="/home/travis/maintainer-quality-tools/travis/cfg/.jslintrc"
   - TRANSIFEX_USER='i18n-bot@it-projects.info'
   - secure: "LALUDmASaCYKLpDE97zycd1tnui7ozddyjrfCLAowKUyMxx5xjrCSeFzebZfYVpf+PeBunYOrRpspgRi81NpWeFUjb92TrGSdFmkcPQKQJa1zFRhblRexR48dxv1+/Ubi/ZNIvt6uxztPvynCDk78j7jwiSj3bKD6t5P7oI22jwo4DkhlY9gmb9Ook3pxKm1enohyUpSgfAUyoINvOdaLXMmCg0lxwVmzNw4jgWWIQDgmycrCjQioRFeiPOsvvNC0RklVaKbtnzsA9PmfMUL40F2Lu67EnBXk3IVfqnQJQjVYVO5IUbAtpw76+CTheFXBrDIJ2gk5y/tpOk215N8DekFaX0BRLOlTkF+PLUO9RHLWHfrVTwYqBggKcTj2Oz+nsGuj5sTRSTVLU03vKGMb2KKmH4QldgLgcRG26qTKVhRw6LCaCsLgdZptF93c8QoyI7bgQspOBVb9asQIJ/wbS+SluPBLAw4WTWrqI0BY+y4YjaSSZO9QNLUgthhg1AuSJw2Kb5265AI1ha7HQUEsYYDP4l8K68RK22TnuPvgBcbCpiEmU28D1o08Va2Q6W2BFu+zhbNF1CP6endtbk2kjdLtyu06XaJkY8Ac8TexaYb9wvvfDNfdpQGhIMRpdQDhjLMdLT3VfkNBmOU1w2214zl6YzqxTh0OXrsZC64IPM="
