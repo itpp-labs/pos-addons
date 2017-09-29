@@ -8,6 +8,9 @@
                 <t t-if="widget.pos.config.allow_custom_reason">
                     <textarea rows="1" cols="44" placeholder="Reason"></textarea>
                 </t>
+                <t t-if="!widget.pos.config.allow_custom_reason">
+                    <textarea rows="1" cols="44" placeholder="Reason" style="display:none;"></textarea>
+                </t>
                 <div class="cancelled-reason">
                     <ul>
                         <t t-if="widget.buttons">
