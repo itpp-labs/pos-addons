@@ -2,9 +2,13 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="SynchNotificationWidget">
         <t t-jquery=".js_synch" t-operation="append">
-            <div class="js_poll_connected oe_icon oe_red">
+            <div class="js_poll_connected oe_icon oe_red serv_primary">
                 <i class='fa fa-fw fa-refresh'></i>
             </div>
         </t>
+    </t>
+
+    <t t-name="additional_servers_synch">
+        <i class='fa fa-fw fa-refresh'></i>
     </t>
 </templates>

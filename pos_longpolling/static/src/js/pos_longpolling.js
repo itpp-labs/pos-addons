@@ -8,7 +8,8 @@ odoo.define('pos_longpolling', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-
+    var core = require('web.core');
+    var QWeb = core.qweb;
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
@@ -243,12 +244,21 @@ odoo.define('pos_longpolling', function(require){
     chrome.StatusWidget.include({
         set_poll_status: function(status) {
             var element = this.$('.js_poll_connected');
-            // default sync_server = ""
-            if (this.pos.config.sync_server === false){
+            if (status) {
                 element.removeClass('oe_red');
-                element.addClass('oe_gray');
-                return;
+                element.addClass('oe_green');
+            } else {
+                element.removeClass('oe_green');
+                element.addClass('oe_red');
             }
+        },
+        set_secondary_poll_status: function(status) {
+            var machines = Object.entries(this.pos.buses);
+            machines.forEach(function(bus){
+                bus = bus[1]
+                var element = this.$('.serv_secondary_' + bus.bus_id);
+                bus.set_poll_status(bus.longpolling_connection.status);
+            });
             if (status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
@@ -258,15 +268,28 @@ odoo.define('pos_longpolling', function(require){
             }
         }
     });
+
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
+            var machines = Object.entries(this.pos.buses);
+            machines.forEach(function(bus){
+                bus = bus[1];
+                var additional_refresh_icon = QWeb.render('additional_servers_synch',{widget: this});
+                var div = document.createElement('div');
+                div.className = "js_poll_connected oe_icon oe_red serv_secondary_" + bus.bus_id;
+                div.innerHTML = additional_refresh_icon;
+                this.$('.js_synch').append(div);
+            });
+            var additional_widget = QWeb.render('additional_servers_synch',{widget: this});
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(status);
+                    self.set_poll_status(status);
+            });
+            this.pos.get_bus('secondary').longpolling_connection.on("change:poll_connection", function(status){
+                    self.set_secondary_poll_status(status);
             });
         },
     });
-
     return exports;
 });
