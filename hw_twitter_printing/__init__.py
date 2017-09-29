@@ -11,6 +11,7 @@ try:
     from twython import TwythonStreamer
     from escpos.printer import Network
 except ImportError as err:
+    TwythonStreamer = False
     _logger.debug(err)
 
 
@@ -27,10 +28,10 @@ class MyStreamerThread(threading.Thread):
         app_secret = config['app_secret']
         oauth_token = config['oauth_token']
         oauth_token_secret = config['oauth_token_secret']
-
-        stream = MyStreamer(app_key, app_secret, oauth_token, oauth_token_secret)
-        stream.printer = False
-        stream.statuses.filter(track='#OdooExperience,#OdooExperience2017')
+        if TwythonStreamer is not False:
+            stream = MyStreamer(app_key, app_secret, oauth_token, oauth_token_secret)
+            stream.printer = False
+            stream.statuses.filter(track='#OdooExperience,#OdooExperience2017')
 
 
 class MyStreamer(TwythonStreamer):
