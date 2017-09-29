@@ -1,0 +1,42 @@
+.invoice-so-buttons {
+    padding: 0;
+    margin: 16px;
+    margin-top: 8px;
+    margin-right: 0;
+    text-align: center;
+    vertical-align: top;
+}
+
+.inv-so {
+    display: inline-block;
+    cursor: pointer;
+    padding: 4px 10px;
+    font-weight: bold;
+    border: 1px solid #cacaca;
+    background: #e2e2e2;
+    border-radius: 3px;
+    float:left;
+    height: 54px;
+}
+
+
+.inv-so.fetch-orders {
+    width: 188px;
+    font-size: 14px;
+    color:#555555;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+
+}
+
+.inv-so.fetch-invoices {
+    width: 216px;
+    font-size: 14px;
+    color:#555555;
+    border-left: 0px;
+}
+
+.inv-so:hover {
+    background: #efefef;
+}
