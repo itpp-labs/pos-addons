@@ -41,7 +41,7 @@ class PosMultiSession(models.Model):
     pos_ids = fields.One2many('pos.config', 'multi_session_id', string='POSes in Multi-session')
     order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
-    sync_server = fields.Char('Server Address', default='')
+    sync_server = fields.Char('Sync Server', default='')
     sync_server_secondary = fields.Char('Server Address', default='')
 
     @api.multi
