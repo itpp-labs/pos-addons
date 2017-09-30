@@ -83,7 +83,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start: function(){
-            if (self.activated){
+            if (this.activated){
                 return;
             }
             var self = this;

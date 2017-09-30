@@ -69,7 +69,6 @@ odoo.define('pos_multi_session', function(require){
                     }
                     order.ms_remove_order();
                 });
-                self.multi_session = new exports.MultiSession(self);
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
@@ -85,6 +84,7 @@ odoo.define('pos_multi_session', function(require){
                     self.sync_bus = self.get_bus();
                     self.sync_bus.start();
                 }
+                self.multi_session = new exports.MultiSession(self);
             });
         },
         ms_my_info: function(){
