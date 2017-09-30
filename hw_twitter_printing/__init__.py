@@ -7,11 +7,13 @@ from odoo.tools import config
 _logger = logging.getLogger(__name__)
 
 
+twython_imported = False
 try:
     from twython import TwythonStreamer
     from escpos.printer import Network
+    twython_imported = True
 except ImportError as err:
-    TwythonStreamer = False
+    TwythonStreamer = object
     _logger.debug(err)
 
 
@@ -28,7 +30,7 @@ class MyStreamerThread(threading.Thread):
         app_secret = config['app_secret']
         oauth_token = config['oauth_token']
         oauth_token_secret = config['oauth_token_secret']
-        if TwythonStreamer is not False:
+        if twython_imported:
             stream = MyStreamer(app_key, app_secret, oauth_token, oauth_token_secret)
             stream.printer = False
             stream.statuses.filter(track='#OdooExperience,#OdooExperience2017')
