@@ -95,5 +95,6 @@ class MyStreamer(TwythonStreamer):
         _logger.error("Can not printing tweets: %s" % status_code)
 
 
-my_streamer = MyStreamerThread()
-my_streamer.start()
+def post_init(cr, registry):
+    my_streamer = MyStreamerThread()
+    my_streamer.start()
