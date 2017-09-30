@@ -47,6 +47,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_note = this.note;
             this.note = note;
             this.trigger('change',this);
+            this.trigger('change:sync');
             this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
         get_note: function(){
@@ -58,10 +59,12 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_custom_notes: function(notes) {
             this.old_custom_notes = this.custom_notes;
             this.custom_notes = notes;
+            this.trigger('change:sync');
             this.trigger('change', this);
         },
         set_old_custom_notes: function(notes) {
             this.old_custom_notes = notes;
+            this.trigger('change:sync');
             this.trigger('change', this);
         },
         get_custom_notes: function() {
@@ -75,6 +78,18 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             res.custom_notes = line.get_custom_notes() || false;
             res.old_custom_notes = line.old_custom_notes || false;
             return res;
+        },
+        // This function is used to sync notes data accross all POSes
+        // (only when pos_multi_session is installed)
+        apply_ms_data: function(data) {
+            if (_super_order.apply_ms_data) {
+                _super_order.apply_ms_data.apply(this, arguments);
+            }
+            this.note = data.note;
+            this.old_note = data.old_note;
+            this.custom_notes = data.custom_notes;
+            this.old_custom_notes = data.old_custom_notes;
+            this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
         export_as_JSON: function() {
             var data = _super_order.export_as_JSON.apply(this, arguments);
@@ -96,7 +111,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_custom_notes = this.get_custom_notes();
             _super_order.saveChanges.call(this, arguments);
         },
-        // TODO: computeChanges
+        // TODO: make fast
         computeChanges: function(categories, config){
             var current_res = this.build_line_resume();
             var old_res = this.saved_resume || {};
@@ -236,6 +251,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_custom_notes: function(notes) {
             this.custom_notes = notes;
             this.trigger('change', this);
+            this.order.trigger('change:sync');
         },
         get_custom_notes: function() {
             if (this.custom_notes && this.custom_notes.length) {
@@ -246,6 +262,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_old_custom_notes: function(notes) {
             this.old_custom_notes = notes;
             this.trigger('change', this);
+            this.order.trigger('change:sync');
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
@@ -282,6 +299,15 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             var orderline = _super_orderline.clone.call(this);
             orderline.custom_notes = this.custom_notes;
             return orderline;
+        },
+        //  Read more about this function in pos_multi_session module
+        apply_ms_data: function(data) {
+            if (_super_orderline.apply_ms_data) {
+                _super_orderline.apply_ms_data.apply(this, arguments);
+            }
+            this.custom_notes = data.custom_notes;
+            this.old_custom_notes = data.old_custom_notes;
+            this.trigger('change', this);
         },
     });
 
