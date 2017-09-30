@@ -284,14 +284,15 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                 });
                 custom_notes_ids_line = custom_notes_ids.join('');
             }
+            var id = this.uid || this.id;
             if (this.get_note()) {
                 if(this.get_custom_notes()) {
-                    return this.id + '|' + this.get_note() + '|' + custom_notes_ids_line;
+                    return id + '|' + this.get_note() + '|' + custom_notes_ids_line;
                 }
                 return _super_orderline.get_line_diff_hash.apply(this,arguments);
             }
             if(this.get_custom_notes()) {
-               return this.id + '|' + custom_notes_ids_line;
+               return id + '|' + custom_notes_ids_line;
             }
             return _super_orderline.get_line_diff_hash.apply(this,arguments);
         },
