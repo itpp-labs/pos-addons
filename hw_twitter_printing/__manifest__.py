@@ -27,7 +27,7 @@
 
     "post_load": None,
     "pre_init_hook": None,
-    "post_init_hook": None,
+    "post_init_hook": 'post_init',
 
     "auto_install": False,
     "installable": True,
