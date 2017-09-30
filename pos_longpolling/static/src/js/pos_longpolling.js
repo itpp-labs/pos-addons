@@ -8,94 +8,164 @@ odoo.define('pos_longpolling', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-
+    var core = require('web.core');
+    var QWeb = core.qweb;
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
     bus.bus.activated = true; // fake value to ignore start_polling call
+    var PARTNERS_PRESENCE_CHECK_PERIOD = 30000;  // don't check presence more than once every 30s
+    bus.ERROR_DELAY = 10000;
 
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-        initialize: function(){
-            var self = this;
-            PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.channels = {};
-            this.lonpolling_activated = false;
-            this.bus = bus.bus;
-            this.longpolling_connection = new exports.LongpollingConnection(this);
-            var channel_name = "pos.longpolling";
+    bus.Bus.include({
+        init_bus: function(pos, sync_server, channel){
+            this.pos = pos;
+            if (!this.pos.channels){
+                this.pos.channels = {};
+            }
+            this.serv_adr = sync_server || '';
+            this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             var callback = this.longpolling_connection.network_is_on;
-            this.add_channel(channel_name, callback, this.longpolling_connection);
-            this.ready.then(function () {
-                self.start_longpolling();
-            });
+            var channel_name = channel || "pos.longpolling";
+            this.add_channel_callback(channel_name, callback, this.longpolling_connection);
         },
-        start_longpolling: function(){
+        poll: function() {
             var self = this;
-            this.bus.last = this.db.load('bus_last', 0);
-            this.bus.on("notification", this, this.on_notification);
-            this.bus.stop_polling();
-            _.each(self.channels, function(value, key){
-                self.init_channel(key);
+            self.activated = true;
+            var now = new Date().getTime();
+            var options = _.extend({}, this.options, {
+                bus_inactivity: now - this.get_last_presence(),
             });
-            this.bus.start_polling();
-            this.lonpolling_activated = true;
-            this.longpolling_connection.send();
+            if (this.last_partners_presence_check + PARTNERS_PRESENCE_CHECK_PERIOD > now) {
+                options = _.omit(options, 'bus_presence_partner_ids');
+            } else {
+                this.last_partners_presence_check = now;
+            }
+            var data = {channels: self.channels, last: self.last, options: options};
+            // function is copy-pasted from bus.js but the line below defines a custom server address
+            session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
+                self.on_notification(result);
+                if(!self.stop){
+                    self.poll();
+                }
+
+            }, function(unused, e) {
+                // no error popup if request is interrupted or fails for any reason
+                e.preventDefault();
+                // random delay to avoid massive longpolling
+                setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
+            });
         },
-        add_channel: function(channel_name, callback, thisArg) {
+        on_notification: function(notifications) {
+            var self = this;
+            var notifs = _.map(notifications, function (notif) {
+                if (notif.id > self.last) {
+                    self.last = notif.id;
+                }
+                return [notif.channel, notif.message];
+            });
+            this.trigger("notification", notifs);
+        },
+        add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
                 callback = _.bind(callback, thisArg);
             }
-            this.channels[channel_name] = callback;
+            this.pos.channels[channel_name] = callback;
             if (this.lonpolling_activated) {
-                this.init_channel(channel_name);
+                this.activate_channel(channel_name);
             }
-        },
-        get_full_channel_name: function(channel_name){
-            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
-        },
-        init_channel: function(channel_name){
-            var channel = this.get_full_channel_name(channel_name);
-            this.bus.add_channel(channel);
         },
         remove_channel: function(channel_name) {
             if (channel_name in this.channels) {
                 delete this.channels[channel_name];
-                var channel = this.get_full_channel_name(channel_name);
-                this.bus.delete_channel(channel);
+                var channel = this.pos.get_full_channel_name(channel_name);
+                this.delete_channel(channel);
             }
         },
-        on_notification: function(notification) {
+        start: function(){
+            if (self.activated){
+                return;
+            }
+            var self = this;
+            this.last = this.pos.db.load('bus_last', 0);
+            this.on("notification", this, this.on_notification_callback);
+            this.stop_polling();
+            _.each(self.pos.channels, function(value, key){
+                self.activate_channel(key);
+            });
+            this.start_polling();
+            this.lonpolling_activated = true;
+            this.longpolling_connection.send();
+        },
+        activate_channel: function(channel_name){
+            var channel = this.pos.get_full_channel_name(channel_name);
+            this.add_channel(channel);
+        },
+        on_notification_callback: function(notification) {
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
                 this.on_notification_do(channel, message);
             }
-            this.db.save('bus_last', this.bus.last);
+            this.pos.db.save('bus_last', this.last);
         },
         on_notification_do: function (channel, message) {
             var self = this;
             if (_.isString(channel)) {
                 var channel = JSON.parse(channel);
             }
-            if(Array.isArray(channel) && (channel[1] in self.channels)){
+            if(Array.isArray(channel) && (channel[1] in self.pos.channels)){
                 try{
                     self.longpolling_connection.network_is_on();
-                    var callback = self.channels[channel[1]];
+                    var callback = self.pos.channels[channel[1]];
                     if (callback) {
-                        if (self.debug){
-                            console.log('POS LONGPOLLING', self.config.name, channel[1], JSON.stringify(message));
+                        if (self.pos.debug){
+                            console.log('POS LONGPOLLING', self.name, self.pos.config.name, channel[1], JSON.stringify(message));
                         }
                         callback(message);
                     }
                 }catch(err){
-                    this.chrome.gui.show_popup('error',{
+                    this.pos.chrome.gui.show_popup('error',{
                         'title': _t('Error'),
                         'body': err,
                     });
                 }
             }
         }
+    });
+
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            var self = this;
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            this.buses = {};
+            this.bus = bus.bus;
+            this.bus.lonpolling_activated = false;
+            this.bus.name = 'Default';
+            this.ready.then(function () {
+                console.log(models)
+                self.bus.init_bus(self);
+                if (self.config.autostart_longpolling){
+                    self.bus.start();
+                };
+            });
+        },
+        get_full_channel_name: function(channel_name){
+            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
+        },
+        add_bus: function(key, sync_server, channel){
+            this.buses[key] = new bus.Bus();
+            this.buses[key].init_bus(this, sync_server, channel);
+            this.buses[key].name = key;
+        },
+        get_bus: function(key){
+            if (key){
+                return this.buses[key];
+            } else {
+                return this.bus;
+            }
+        },
     });
     exports.LongpollingConnection = Backbone.Model.extend({
         initialize: function(pos) {
@@ -154,7 +224,11 @@ odoo.define('pos_longpolling', function(require){
         send: function() {
             var self = this;
             this.response_status = false;
-            openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+            var serv_adr = '';
+            if (this.pos.config.sync_server){
+                var serv_adr = this.pos.config.sync_server || '';
+            };
+            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                 if the value is false you need to start the response timer*/
                 if (!self.response_status) {
@@ -170,23 +244,48 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function(status) {
-            var element = this.$('.js_poll_connected');
-            if (status) {
+        set_poll_status: function() {
+            var element = this.$('.serv_primary');
+            if (self.posmodel.bus.longpolling_connection.status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
             } else {
                 element.removeClass('oe_green');
                 element.addClass('oe_red');
             }
+            this.set_secondary_poll_status()
+        },
+        set_secondary_poll_status: function() {
+            var machines = Object.entries(this.pos.buses);
+            machines.forEach(function(bus){
+                bus = bus[1]
+                var element = this.$('.serv_secondary_' + bus.bus_id);
+                if (bus.longpolling_connection.status) {
+                    element.removeClass('oe_red');
+                    element.addClass('oe_green');
+                } else {
+                    element.removeClass('oe_green');
+                    element.addClass('oe_red');
+                }
+            });
         }
     });
+
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
-            this.pos.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(status);
+            var machines = Object.entries(this.pos.buses);
+            machines.forEach(function(bus){
+                bus = bus[1];
+                var additional_refresh_icon = QWeb.render('additional_servers_synch',{widget: this});
+                var div = document.createElement('div');
+                div.className = "js_poll_connected oe_icon oe_red serv_secondary_" + bus.bus_id;
+                div.innerHTML = additional_refresh_icon;
+                this.$('.js_synch').append(div);
+            });
+            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
+                    self.set_poll_status();
             });
         },
     });

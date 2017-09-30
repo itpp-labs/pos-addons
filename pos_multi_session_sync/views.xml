@@ -3,8 +3,8 @@
     <data>
         <template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
-                <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
+                <script type="text/javascript" src="/pos_multi_session_sync/static/src/js/pos_multi_session_sync.js"></script>
+                <link rel="stylesheet" href="/pos_multi_session_sync/static/src/css/pos_multi_session_sync.css"/>
             </xpath>
         </template>
 
@@ -26,10 +26,6 @@
                             <p class="oe_edit_only" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"> You need to close current session to be able modify Multi-session value </p>
                         </group>
                     </group>
-                </xpath>
-                <xpath expr="//field[@name='query_timeout']" position="before">
-                    <field name="sync_server"/>
-                    <field name="sync_server_secondary"/>
                 </xpath>
             </field>
         </record>
@@ -62,6 +58,5 @@
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>

@@ -17,6 +17,7 @@
     "depends": [
         "pos_disable_payment",
         "pos_longpolling",
+        "pos_multi_session_sync"
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

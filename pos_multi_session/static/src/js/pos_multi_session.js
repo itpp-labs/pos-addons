@@ -46,6 +46,7 @@ odoo.define('pos_multi_session', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
+//            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
                 this.message_ID = 1;
@@ -71,7 +72,19 @@ odoo.define('pos_multi_session', function(require){
                 self.multi_session = new exports.MultiSession(self);
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
-                self.add_channel(channel_name, callback, self);
+                self.bus.add_channel_callback(channel_name, callback, self);
+                if (self.config.sync_server){
+                    var channel_name = "pos.multi_session.sync_server";
+                    var callback = self.ms_on_update;
+                    self.add_bus('sync_server', self.config.sync_server, channel_name);
+                    self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
+                    self.sync_bus = self.get_bus('sync_server');
+                    self.get_bus('sync_server').start();
+
+                } else {
+                    self.sync_bus = self.get_bus();
+                    self.sync_bus.start();
+                }
             });
         },
         ms_my_info: function(){
@@ -476,7 +489,7 @@ odoo.define('pos_multi_session', function(require){
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
-            this.pos.longpolling_connection.on("change:poll_connection", function(status){
+            this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
@@ -528,7 +541,8 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                return openerp.session.rpc("/pos_multi_session/update", {
+                var temp = self.pos.config.sync_server || '';
+                return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message
                 });
@@ -540,7 +554,7 @@ odoo.define('pos_multi_session', function(require){
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    self.pos.longpolling_connection.network_is_off();
+                    self.pos.sync_bus.longpolling_connection.network_is_off();
                     if (!self.offline_sync_all_timer) {
                         if (self.pos.debug){
                             console.log('send, return send_it error');
