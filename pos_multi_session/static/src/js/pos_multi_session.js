@@ -73,16 +73,16 @@ odoo.define('pos_multi_session', function(require){
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
-                if (self.config.sync_server && self.config.autostart_longpolling){
-                    var channel_name = "pos.multi_session.default";
+                if (self.config.sync_server){
+                    var channel_name = "pos.multi_session.sync_server";
                     var callback = self.ms_on_update;
-                    self.add_bus('default', '', channel_name);
-                    self.get_bus('default').add_channel_callback(channel_name, callback, self);
-                    self.get_bus('default').start();
-                }
-                if (!self.config.sync_server && !self.config.autostart_longpolling) {
-                    // explicit assignment of default longpolling in case of sync_server lack
-                    self.bus.start();
+                    self.add_bus('sync_server', self.config.sync_server, channel_name);
+                    self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
+                    self.sync_bus = self.get_bus('sync_server');
+                    self.get_bus('sync_server').start();
+
+                } else {
+                    self.sync_bus = self.get_bus();
                 }
             });
         },
@@ -488,7 +488,7 @@ odoo.define('pos_multi_session', function(require){
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
-            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
+            this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
@@ -553,7 +553,7 @@ odoo.define('pos_multi_session', function(require){
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    self.pos.bus.longpolling_connection.network_is_off();
+                    self.pos.sync_bus.longpolling_connection.network_is_off();
                     if (!self.offline_sync_all_timer) {
                         if (self.pos.debug){
                             console.log('send, return send_it error');

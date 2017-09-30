@@ -20,7 +20,6 @@ class PosConfig(models.Model):
     multi_session_message_ID = fields.Integer(default=1, string="Last sent message number")
     current_session_state = fields.Char(search='_search_current_session_state')
     sync_server = fields.Char(related='multi_session_id.sync_server')
-    sync_server_secondary = fields.Char(related='multi_session_id.sync_server_secondary')
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))

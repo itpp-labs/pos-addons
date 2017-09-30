@@ -72,10 +72,10 @@ odoo.define('pos_longpolling', function(require){
             }
             this.pos.channels[channel_name] = callback;
             if (this.pos.lonpolling_activated) {
-                this.init_channel(channel_name);
+                this.activate_channel(channel_name);
             }
         },
-        remove_channel_callback: function(channel_name) {
+        remove_channel: function(channel_name) {
             if (channel_name in this.channels) {
                 delete this.channels[channel_name];
                 var channel = this.pos.get_full_channel_name(channel_name);
@@ -88,13 +88,13 @@ odoo.define('pos_longpolling', function(require){
             this.on("notification", this, this.on_notification_callback);
             this.stop_polling();
             _.each(self.pos.channels, function(value, key){
-                self.init_channel(key);
+                self.activate_channel(key);
             });
             this.start_polling();
             this.pos.lonpolling_activated = true;
             this.longpolling_connection.send();
         },
-        init_channel: function(channel_name){
+        activate_channel: function(channel_name){
             var channel = this.pos.get_full_channel_name(channel_name);
             this.add_channel(channel);
         },
@@ -117,7 +117,7 @@ odoo.define('pos_longpolling', function(require){
                     var callback = self.pos.channels[channel[1]];
                     if (callback) {
                         if (self.pos.debug){
-                            console.log('POS LONGPOLLING', self.pos.config.name, channel[1], JSON.stringify(message));
+                            console.log('POS LONGPOLLING', self.name, self.pos.config.name, channel[1], JSON.stringify(message));
                         }
                         callback(message);
                     }
@@ -139,10 +139,11 @@ odoo.define('pos_longpolling', function(require){
             this.lonpolling_activated = false;
             this.buses = {};
             this.bus = bus.bus;
+            this.bus.name = 'Default';
             this.ready.then(function () {
                 console.log(models)
-                self.bus.init_bus(self, self.config.sync_server,'');
-                if (self.config.sync_server || self.config.autostart_longpolling){
+                self.bus.init_bus(self);
+                if (self.config.autostart_longpolling){
                     self.bus.start();
                 };
             });
@@ -153,6 +154,7 @@ odoo.define('pos_longpolling', function(require){
         add_bus: function(key, sync_server, channel){
             this.buses[key] = new bus.Bus();
             this.buses[key].init_bus(this, sync_server, channel);
+            this.buses[key].name = key;
         },
         get_bus: function(key){
             if (key){
@@ -219,12 +221,10 @@ odoo.define('pos_longpolling', function(require){
         send: function() {
             var self = this;
             this.response_status = false;
-            //new added lines for modifying url
             var serv_adr = '';
             if (this.pos.config.sync_server){
                 var serv_adr = this.pos.config.sync_server || '';
             };
-            //---------------------------------------------
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                 if the value is false you need to start the response timer*/
