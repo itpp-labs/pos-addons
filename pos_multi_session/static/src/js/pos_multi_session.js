@@ -83,6 +83,7 @@ odoo.define('pos_multi_session', function(require){
 
                 } else {
                     self.sync_bus = self.get_bus();
+                    self.sync_bus.start();
                 }
             });
         },

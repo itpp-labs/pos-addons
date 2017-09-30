@@ -71,7 +71,7 @@ odoo.define('pos_longpolling', function(require){
                 callback = _.bind(callback, thisArg);
             }
             this.pos.channels[channel_name] = callback;
-            if (this.pos.lonpolling_activated) {
+            if (this.lonpolling_activated) {
                 this.activate_channel(channel_name);
             }
         },
@@ -83,6 +83,9 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start: function(){
+            if (self.activated){
+                return;
+            }
             var self = this;
             this.last = this.pos.db.load('bus_last', 0);
             this.on("notification", this, this.on_notification_callback);
@@ -91,7 +94,7 @@ odoo.define('pos_longpolling', function(require){
                 self.activate_channel(key);
             });
             this.start_polling();
-            this.pos.lonpolling_activated = true;
+            this.lonpolling_activated = true;
             this.longpolling_connection.send();
         },
         activate_channel: function(channel_name){
@@ -136,9 +139,9 @@ odoo.define('pos_longpolling', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.lonpolling_activated = false;
             this.buses = {};
             this.bus = bus.bus;
+            this.bus.lonpolling_activated = false;
             this.bus.name = 'Default';
             this.ready.then(function () {
                 console.log(models)
