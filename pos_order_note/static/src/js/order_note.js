@@ -112,7 +112,6 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             _super_order.saveChanges.call(this, arguments);
         },
         // TODO: make fast
-
         computeChanges: function(categories, config){
             var current_res = this.build_line_resume();
             var old_res = this.saved_resume || {};
