@@ -140,7 +140,7 @@ odoo.define('pos_longpolling', function(require){
             this.bus = bus.bus;
             this.bus.init_bus(this, session.main_server,'');
             this.ready.then(function () {
-                if (self.config.autostart_longpolling){
+                if (session.main_server || self.config.autostart_longpolling){
                     self.bus.start();
                 };
             });
@@ -159,7 +159,6 @@ odoo.define('pos_longpolling', function(require){
                 return this.bus;
             }
         },
-
     });
     exports.LongpollingConnection = Backbone.Model.extend({
         initialize: function(pos) {

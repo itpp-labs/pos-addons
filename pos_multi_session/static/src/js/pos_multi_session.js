@@ -49,7 +49,7 @@ odoo.define('pos_multi_session', function(require){
             var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             var config_model_loaded = config_model.loaded;
             config_model.loaded = function(self,configs){
-                session.sync_servers = [];
+//                session.sync_servers = [];
                 config_model_loaded(self,configs);
                 session.main_server = self.config.sync_server || '';
             }
@@ -79,6 +79,17 @@ odoo.define('pos_multi_session', function(require){
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
+                if (self.config.sync_server && self.config.autostart_longpolling){
+                    var channel_name = "pos.multi_session.default";
+                    var callback = self.ms_on_update;
+                    self.add_bus('default', '', channel_name);
+                    self.get_bus('default').add_channel_callback(channel_name, callback, self);
+                    self.get_bus('default').start();
+                }
+                if (!self.config.sync_server && !self.config.autostart_longpolling) {
+                    // explicit assignment of default longpolling in case of sync_server lack
+                    self.bus.start();
+                }
                 if (self.config.sync_server_secondary){
                     var channel_name = "pos.multi_session.secondary";
                     var callback = self.ms_on_update;
@@ -555,7 +566,7 @@ odoo.define('pos_multi_session', function(require){
                 if(error.message === 'XmlHttpRequestError ') {
                     self.client_online = false;
                     e.preventDefault();
-                    self.pos.longpolling_connection.network_is_off();
+                    self.pos.bus.longpolling_connection.network_is_off();
                     if (!self.offline_sync_all_timer) {
                         if (self.pos.debug){
                             console.log('send, return send_it error');
