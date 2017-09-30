@@ -20,7 +20,7 @@ except ImportError:
 
 class Controller(BusController):
 
-    @odoo.http.route('/pos_multi_session/update', type="json", auth="public")
+    @odoo.http.route('/pos_multi_session_sync/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message):
         phantomtest = request.httprequest.headers.get('phantomtest')
         res = request.env["pos.multi_session"]\

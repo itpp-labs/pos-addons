@@ -46,13 +46,7 @@ odoo.define('pos_multi_session', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
-            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
-            var config_model_loaded = config_model.loaded;
-            config_model.loaded = function(self,configs){
-//                session.sync_servers = [];
-                config_model_loaded(self,configs);
-                session.main_server = self.config.sync_server || '';
-            }
+//            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
                 this.message_ID = 1;
@@ -89,13 +83,6 @@ odoo.define('pos_multi_session', function(require){
                 if (!self.config.sync_server && !self.config.autostart_longpolling) {
                     // explicit assignment of default longpolling in case of sync_server lack
                     self.bus.start();
-                }
-                if (self.config.sync_server_secondary){
-                    var channel_name = "pos.multi_session.secondary";
-                    var callback = self.ms_on_update;
-                    self.add_bus('secondary', self.config.sync_server_secondary, channel_name);
-                    self.get_bus('secondary').add_channel_callback(channel_name, callback, self);
-                    self.get_bus('secondary').start();
                 }
             });
         },
@@ -553,7 +540,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = session.main_server || '';
+                var temp = self.pos.config.sync_server || '';
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message

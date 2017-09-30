@@ -42,6 +42,7 @@ odoo.define('pos_longpolling', function(require){
                 this.last_partners_presence_check = now;
             }
             var data = {channels: self.channels, last: self.last, options: options};
+            // function is copy-pasted from bus.js but the line below defines a custom server address
             session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
@@ -139,8 +140,9 @@ odoo.define('pos_longpolling', function(require){
             this.buses = {};
             this.bus = bus.bus;
             this.ready.then(function () {
-                self.bus.init_bus(this, session.main_server,'');
-                if (session.main_server || self.config.autostart_longpolling){
+                console.log(models)
+                self.bus.init_bus(self, self.config.sync_server,'');
+                if (self.config.sync_server || self.config.autostart_longpolling){
                     self.bus.start();
                 };
             });
@@ -219,8 +221,8 @@ odoo.define('pos_longpolling', function(require){
             this.response_status = false;
             //new added lines for modifying url
             var serv_adr = '';
-            if (session.main_server){
-                var serv_adr = session.main_server || '';
+            if (this.pos.config.sync_server){
+                var serv_adr = this.pos.config.sync_server || '';
             };
             //---------------------------------------------
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
