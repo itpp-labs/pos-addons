@@ -42,12 +42,12 @@ odoo.define('pos_longpolling', function(require){
                 this.last_partners_presence_check = now;
             }
             var data = {channels: self.channels, last: self.last, options: options};
-
             session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
                     self.poll();
                 }
+
             }, function(unused, e) {
                 // no error popup if request is interrupted or fails for any reason
                 e.preventDefault();
@@ -93,12 +93,10 @@ odoo.define('pos_longpolling', function(require){
             this.pos.lonpolling_activated = true;
             this.longpolling_connection.send();
         },
-
         init_channel: function(channel_name){
             var channel = this.pos.get_full_channel_name(channel_name);
             this.add_channel(channel);
         },
-
         on_notification_callback: function(notification) {
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
@@ -242,30 +240,30 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function(status) {
-            var element = this.$('.js_poll_connected');
-            if (status) {
+        set_poll_status: function() {
+            var element = this.$('.serv_primary');
+            if (self.posmodel.bus.longpolling_connection.status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
             } else {
                 element.removeClass('oe_green');
                 element.addClass('oe_red');
             }
+            this.set_secondary_poll_status()
         },
-        set_secondary_poll_status: function(status) {
+        set_secondary_poll_status: function() {
             var machines = Object.entries(this.pos.buses);
             machines.forEach(function(bus){
                 bus = bus[1]
                 var element = this.$('.serv_secondary_' + bus.bus_id);
-                bus.set_poll_status(bus.longpolling_connection.status);
+                if (bus.longpolling_connection.status) {
+                    element.removeClass('oe_red');
+                    element.addClass('oe_green');
+                } else {
+                    element.removeClass('oe_green');
+                    element.addClass('oe_red');
+                }
             });
-            if (status) {
-                element.removeClass('oe_red');
-                element.addClass('oe_green');
-            } else {
-                element.removeClass('oe_green');
-                element.addClass('oe_red');
-            }
         }
     });
 
@@ -282,12 +280,8 @@ odoo.define('pos_longpolling', function(require){
                 div.innerHTML = additional_refresh_icon;
                 this.$('.js_synch').append(div);
             });
-            var additional_widget = QWeb.render('additional_servers_synch',{widget: this});
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                    self.set_poll_status(status);
-            });
-            this.pos.get_bus('secondary').longpolling_connection.on("change:poll_connection", function(status){
-                    self.set_secondary_poll_status(status);
+                    self.set_poll_status();
             });
         },
     });

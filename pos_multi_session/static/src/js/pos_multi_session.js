@@ -52,8 +52,6 @@ odoo.define('pos_multi_session', function(require){
                 session.sync_servers = [];
                 config_model_loaded(self,configs);
                 session.main_server = self.config.sync_server || '';
-                session.sync_servers.push(self.config.sync_server || '');
-                session.sync_servers.push(self.config.sync_server_secondary || '');
             }
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
@@ -545,7 +543,6 @@ odoo.define('pos_multi_session', function(require){
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
                 var temp = session.main_server || '';
-//                temp = temp + "/pos_multi_session_sync/update";
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message
