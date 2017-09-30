@@ -112,6 +112,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             _super_order.saveChanges.call(this, arguments);
         },
         // TODO: make fast
+
         computeChanges: function(categories, config){
             var current_res = this.build_line_resume();
             var old_res = this.saved_resume || {};
@@ -141,26 +142,9 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                 });
             }
 
-            var DiffArrays = function(A,B) {
-                var M = A.length, N = B.length, c = 0, C = [];
-                for (var i = 0; i < M; i++) {
-                    var j = 0, k = 0;
-                    while (B[j] !== A[ i ] && j < N) {
-                        j++;
-                    }
-                    while (C[k] !== A[ i ] && k < c) {
-                        k++;
-                    }
-                    if (j === N && k === c) {
-                        C[c++] = A[ i ];
-                    }
-                }
-                return C;
-            };
-
             var change_custom_notes = false;
             if (current_order_custom_notes_ids.length === old_order_custom_notes_ids.length) {
-                var difference = DiffArrays(current_order_custom_notes_ids, old_order_custom_notes_ids);
+                var difference = this.DiffArrays(current_order_custom_notes_ids, old_order_custom_notes_ids);
                 if (difference.length) {
                     change_custom_notes = true;
                 }
@@ -228,16 +212,30 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                         var cancelled_exist_change = res.cancelled.find(function(r) {
                             return r.line_id === current_line_id;
                         });
-                        if (cancelled_exist_change && curr.old_custom_notes) {
-                            if (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes) {
-                                cancelled_exist_change.custom_notes = curr.old_custom_notes;
-                            }
+                        if ((cancelled_exist_change && curr.old_custom_notes) && (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes)) {
+                            cancelled_exist_change.custom_notes = curr.old_custom_notes;
                         }
                     }
                 }
             }
             return res;
         },
+        DiffArrays: function(A,B) {
+            var M = A.length, N = B.length, c = 0, C = [];
+            for (var i = 0; i < M; i++) {
+                var j = 0, k = 0;
+                while (B[j] !== A[ i ] && j < N) {
+                    j++;
+                }
+                while (C[k] !== A[ i ] && k < c) {
+                    k++;
+                }
+                if (j === N && k === c) {
+                    C[c++] = A[ i ];
+                }
+            }
+            return C;
+        }
     });
 
     var _super_orderline = models.Orderline.prototype;
