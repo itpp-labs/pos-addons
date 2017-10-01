@@ -69,7 +69,6 @@ odoo.define('pos_multi_session', function(require){
                     }
                     order.ms_remove_order();
                 });
-                self.multi_session = new exports.MultiSession(self);
                 var channel_name = "pos.multi_session";
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
@@ -85,6 +84,7 @@ odoo.define('pos_multi_session', function(require){
                     self.sync_bus = self.get_bus();
                     self.sync_bus.start();
                 }
+                self.multi_session = new exports.MultiSession(self);
             });
         },
         ms_my_info: function(){
@@ -295,8 +295,9 @@ odoo.define('pos_multi_session', function(require){
                 return;
             }
             this.ms_info = {};
-            this.revision_ID = options.revision_ID || 1;
-
+            if (!this.revision_ID){
+                this.revision_ID = options.revision_ID || 1;
+            }
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
             } else if (this.pos.multi_session){
@@ -382,6 +383,7 @@ odoo.define('pos_multi_session', function(require){
         init_from_JSON: function(json) {
             this.new_order = json.new_order;
             this.order_on_server = json.order_on_server;
+            this.revision_ID = json.revision_ID;
             OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
@@ -405,6 +407,7 @@ odoo.define('pos_multi_session', function(require){
                         }
                         if (server_revision_ID && server_revision_ID > self.revision_ID) {
                             self.revision_ID = server_revision_ID;
+                            self.save_to_db();
                         }
                     }
                 })
@@ -544,7 +547,9 @@ odoo.define('pos_multi_session', function(require){
                 var temp = self.pos.config.sync_server || '';
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
-                    message: message
+                    message: message,
+                    dbname: session.db,
+                    user_ID: self.pos.user.id
                 });
             };
             return send_it().fail(function (error, e) {

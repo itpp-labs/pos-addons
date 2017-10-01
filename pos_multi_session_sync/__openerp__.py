@@ -16,11 +16,11 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_disable_payment",
         "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "security/ir.model.access.csv"
     ],
     "qweb": [
     ],

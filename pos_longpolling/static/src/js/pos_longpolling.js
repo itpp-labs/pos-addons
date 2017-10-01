@@ -83,7 +83,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start: function(){
-            if (self.activated){
+            if (this.activated){
                 return;
             }
             var self = this;
@@ -144,7 +144,6 @@ odoo.define('pos_longpolling', function(require){
             this.bus.lonpolling_activated = false;
             this.bus.name = 'Default';
             this.ready.then(function () {
-                console.log(models)
                 self.bus.init_bus(self);
                 if (self.config.autostart_longpolling){
                     self.bus.start();
