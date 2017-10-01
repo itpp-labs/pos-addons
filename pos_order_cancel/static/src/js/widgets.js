@@ -65,6 +65,16 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     if (type === 'order') {
                         order.save_canceled_order(reason);
                     }
+                },
+                cancel: function() {
+                    if (type === 'product') {
+                        var old_quantity = String(orderline.old_quantity);
+                        orderline.set_quantity(orderline.old_quantity);
+                        self.gui.screen_instances['products'].numpad.state.set({
+                            buffer: String(0)
+                        });
+                        self.gui.screen_instances['products'].numpad.state.appendNewChar(old_quantity);
+                    }
                 }
             });
         },
