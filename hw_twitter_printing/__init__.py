@@ -81,7 +81,7 @@ class MyStreamer(TwythonStreamer):
         self.printer.cut()
 
     def connect_to_printer(self):
-        NETWORK_PRINTER_IP = config['printer_ip']
+        NETWORK_PRINTER_IP = config['twitter_printer_ip']
         if self.printer:
             self.printer.close()
         try:
@@ -94,6 +94,6 @@ class MyStreamer(TwythonStreamer):
         _logger.error("Can not printing tweets: %s" % status_code)
 
 
-def post_init(cr, registry):
+def post_load():
     my_streamer = MyStreamerThread()
     my_streamer.start()

@@ -25,9 +25,9 @@
     "demo": [
     ],
 
-    "post_load": None,
+    "post_load": "post_load",
     "pre_init_hook": None,
-    "post_init_hook": 'post_init',
+    "post_init_hook": None,
 
     "auto_install": False,
     "installable": True,
