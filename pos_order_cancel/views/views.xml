@@ -209,9 +209,11 @@
                 <filter string="Today" name="today" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
                 <filter string="This Month" name="thismonth" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
                 <filter string="This Year" name="thisyear" domain="[('canceled_date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <filter string="No Negative Refunds" name="no_negative_refunds" domain="[('current_qty','>=',0)]"/>
                 <field name="product_id"/>
                 <field name="user_id"/>
                 <field name="reason"/>
+                <field name="current_qty"/>
                 <group expand="1" string="Group By">
                     <filter string="Users" context="{'group_by':'user_id'}"/>
                     <separator/>
