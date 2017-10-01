@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ProductScreenWidget">
+        <t t-jquery="div[class='product-screen screen']">
+            $(this).addClass('swipe');
+        </t>
+    </t>
+
+    <t t-extend="Chrome">
+        <t t-jquery="div[class='subwindow-container-fix screens']">
+            $(this).addClass('swipe').attr('id', 'mySwipe');
+        </t>
+    </t>
+
+    <t t-extend="CategorySimpleButton">
+        <t t-jquery="span[class='category-simple-button js-category-switch']" t-operation="replace">
+            <span class='control-button js-category-switch' t-att-data-category-id="category.id" >
+                <t t-esc="category.name"/>
+            </span>
+        </t>
+    </t>
+
+</templates>

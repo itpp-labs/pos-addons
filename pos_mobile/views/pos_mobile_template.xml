@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="pos_mobile assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_mobile/static/src/js/screens.js"></script>
+                <link rel="stylesheet" href="/pos_mobile/static/src/css/swipe_styles.css"/>
+                <script type="text/javascript" src="/pos_mobile/static/lib/swipe.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
