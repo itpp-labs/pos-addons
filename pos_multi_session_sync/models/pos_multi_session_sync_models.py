@@ -47,6 +47,9 @@ class PosMultiSessionSync(models.Model):
         self.ensure_one()
         client_revision_ID = message['data']['revision_ID']
         server_revision_ID = order.revision_ID
+        print "========="
+        print client_revision_ID
+        print server_revision_ID
         if not server_revision_ID:
             server_revision_ID = 1
         if client_revision_ID is not server_revision_ID:
@@ -64,11 +67,13 @@ class PosMultiSessionSync(models.Model):
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
         if order:  # order already exists
+            print "--------------if"
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
             })
         else:
+            print "--------------else"
             if self.order_ID + 1 != sequence_number:
                 sequence_number = self.order_ID + 1
                 message['data']['sequence_number'] = sequence_number
@@ -78,8 +83,12 @@ class PosMultiSessionSync(models.Model):
                 # 'multi_session_id': self.id,
             })
             self.write({'order_ID': sequence_number})
+
         revision_ID = order.revision_ID
         message['data']['revision_ID'] = revision_ID
+        print "--------------"
+        print revision_ID
+        print
         self.broadcast_message(message)
         return {'action': 'update_revision_ID', 'revision_ID': revision_ID, 'order_ID': sequence_number}
 

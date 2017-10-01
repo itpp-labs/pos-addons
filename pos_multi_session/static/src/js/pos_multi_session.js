@@ -295,8 +295,9 @@ odoo.define('pos_multi_session', function(require){
                 return;
             }
             this.ms_info = {};
-            this.revision_ID = options.revision_ID || 1;
-
+            if (!this.revision_ID){
+                this.revision_ID = options.revision_ID || 1;
+            }
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
             } else if (this.pos.multi_session){
@@ -382,6 +383,7 @@ odoo.define('pos_multi_session', function(require){
         init_from_JSON: function(json) {
             this.new_order = json.new_order;
             this.order_on_server = json.order_on_server;
+            this.revision_ID = json.revision_ID;
             OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
@@ -405,6 +407,7 @@ odoo.define('pos_multi_session', function(require){
                         }
                         if (server_revision_ID && server_revision_ID > self.revision_ID) {
                             self.revision_ID = server_revision_ID;
+                            self.save_to_db();
                         }
                     }
                 })
