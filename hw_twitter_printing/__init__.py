@@ -51,13 +51,15 @@ class MyStreamer(TwythonStreamer):
         self.printer.text(name)
 
         login = '@' + data['user']['screen_name'] + '\n'
-        self.printer.set()
         self.printer.text(login)
 
-        self.printer.set()
         self.printer.text('\n')
-        text = data['text'].encode('utf-8') + '\n'
-        self.printer.text(text)
+        text = data['text'] + '\n'
+        # TODO: fix encoding
+        try:
+            self.printer.text(text)
+        except:
+            pass
         self.printer.text('\n')
         if 'quoted_status' in data:
             self.printer.text("_______________________________________________\n\n")
@@ -70,7 +72,11 @@ class MyStreamer(TwythonStreamer):
             self.printer.text('\n')
             quoted_text = data['quoted_status']['text'] + '\n'
             self.printer.set(align='right', font='b')
-            self.printer.text(quoted_text)
+            # TODO: fix encoding
+            try:
+                self.printer.text(quoted_text)
+            except:
+                pass
             self.printer.text('\n')
             self.printer.set()
             self.printer.text("_______________________________________________\n\n")
