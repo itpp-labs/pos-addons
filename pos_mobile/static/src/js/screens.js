@@ -1,5 +1,7 @@
 odoo.define('pos_mobile.screens', function (require) {
     "use strict";
+    if (!odoo.is_mobile)
+        return;
 
     var screens = require('point_of_sale.screens');
 
