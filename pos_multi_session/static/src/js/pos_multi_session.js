@@ -544,7 +544,9 @@ odoo.define('pos_multi_session', function(require){
                 var temp = self.pos.config.sync_server || '';
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
-                    message: message
+                    message: message,
+                    dbname: session.db,
+                    user_ID: self.pos.user.id
                 });
             };
             return send_it().fail(function (error, e) {

@@ -8,18 +8,26 @@ from odoo import fields
 from odoo import models
 
 _logger = logging.getLogger(__name__)
-#
-# class PosConfig(models.Model):
-#     _inherit = 'pos.co'
 
 
-class PosMultiSession(models.Model):
-    _name = 'pos.multi_session'
+class PosConfigSync(models.Model):
+    _name = 'pos_multi_session_sync.pos'
 
-    name = fields.Char('Name')
-    # pos_ids = fields.One2many('pos.config', 'multi_session_id', 'POSes')
-    # order_ids = fields.One2many('pos.multi_session.order', 'multi_session_id', 'Orders')
-    order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
+    multi_session_ID = fields.Integer('Multi-session', index=True,
+                                       help='Set the same value for POSes where orders should be synced. Keep empty if this POS should not use syncing. Before updating it you need to close active session')
+    multi_session_message_ID = fields.Integer(index=True, string='Multi-session message')
+    pos_ID = fields.Integer(index=True, string='POS')
+    user_ID = fields.Integer(index=True)
+
+
+class PosMultiSessionSync(models.Model):
+    _name = 'pos_multi_session_sync.multi_session'
+
+    multi_session_ID = fields.Integer('Multi-session', index=True,
+                                       help='Set the same value for POSes where orders should be synced. Keep empty if this POS should not use syncing. Before updating it you need to close active session')
+    order_ID = fields.Integer(index=True, string='Order')
+    dbname = fields.Char(index=True)
+
 
     @api.multi
     def on_update_message(self, message):
@@ -51,7 +59,7 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         order_uid = message['data']['uid']
         sequence_number = message['data']['sequence_number']
-        order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
+        order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
@@ -78,15 +86,27 @@ class PosMultiSession(models.Model):
     @api.multi
     def get_sync_all(self, message):
         self.ensure_one()
-        pos_id = message['data']['pos_id']
-        pos = self.env['pos.config'].search([('multi_session_id', '=', self.id), ("id", "=", pos_id)])
+        pos_ID = message['data']['pos_id']
+        user_ID = self.env.context.get("user_ID")
+        pos = self.env['pos_multi_session_sync.pos'] \
+                  .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
+        if not pos:
+            pos = self.env['pos_multi_session_sync.pos'] \
+                .create({'multi_session_ID': self.multi_session_ID, 'id': pos_ID, 'user_ID': user_ID})
+        if pos.user_ID != user_ID:
+            pos.user_ID = user_ID
         data = []
-        for order in self.env['pos.multi_session.order'].search([('multi_session_id', '=', self.id), ('state', '=', 'draft')]):
+        for order in self.env['pos_multi_session_sync.order'].search([('multi_session_ID', '=', self.id), ('state', '=', 'draft')]):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = pos.multi_session_message_ID
             msg['data']['revision_ID'] = order.revision_ID
             data.append(msg)
         message = {'action': 'sync_all', 'orders': data, 'order_ID': self.order_ID}
+
+        poses = self.env['pos_multi_session_sync.pos'] \
+                    .search([('multi_session_ID', '=', self.multi_session_ID)])
+        for pos in poses:
+            pos.multi_session_message_ID = 0
         return message
 
     @api.multi
@@ -94,7 +114,7 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         order_uid = message['data']['uid']
 
-        order = self.env['pos.multi_session.order'].search([('order_uid', '=', order_uid)])
+        order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         if order.state is not 'deleted':
             revision = self.check_order_revision(message, order)
             if not revision:
@@ -109,13 +129,13 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         notifications = []
         channel_name = "pos.multi_session"
-        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'),
-                                                  ('config_id.multi_session_id', '=', self.id)]):
-            message_ID = ps.config_id.multi_session_message_ID
+        for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '!=', self.env.context.get('user_ID')),
+                                                                  ('multi_session_ID', '=', self.id)]):
+            message_ID = pos.multi_session_message_ID
             message_ID += 1
-            ps.config_id.multi_session_message_ID = message_ID
+            pos.multi_session_message_ID = message_ID
             message['data']['message_ID'] = message_ID
-            ps.config_id._send_to_channel(channel_name, message)
+            self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
@@ -125,11 +145,11 @@ class PosMultiSession(models.Model):
         return 1
 
 
-class PosMultiSessionOrder(models.Model):
-    _name = 'pos.multi_session.order'
+class PosMultiSessionSyncOrder(models.Model):
+    _name = 'pos_multi_session_sync.order'
 
     order = fields.Text('Order JSON format')
     order_uid = fields.Char(index=True)
     state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
-    multi_session_id = fields.Many2one('pos.multi_session', 'Multi session', index=True)
+    multi_session_ID = fields.Integer(default=0, string='Multi session')
