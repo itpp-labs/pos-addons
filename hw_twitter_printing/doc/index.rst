@@ -27,4 +27,4 @@ In PosBox
 Gevent
 ------
 
-If you face problem like ``wrap_socket does not accept server_hostname`` then try upgrading ``gevent``.
+If you face the problem like ``wrap_socket does not accept server_hostname``, try to upgrade ``gevent`` library
