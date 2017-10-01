@@ -100,11 +100,12 @@ odoo.define('pos_order_cancel.models', function (require) {
             }
         },
         remove_canceled_lines: function(line) {
-            if (line.cancelled_line) {
+            if (line.cancelled_line && this.canceled_lines) {
                 this.canceled_lines = this.canceled_lines.filter(function(l){
                     return l[2].id !== line.cancelled_line.id;
                 });
                 line.cancelled_line = false;
+                this.trigger('change:sync');
             }
         },
         // This function is used to sync cancelation data accross all POSes
@@ -113,19 +114,19 @@ odoo.define('pos_order_cancel.models', function (require) {
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
-            this.canceled_lines = data.canceled_lines;
+            this.canceled_lines = data.canceled_lines || [];
             this.reason = data.reason;
             this.is_cancelled = data.is_cancelled;
         },
         export_as_JSON: function() {
             var data = _super_order.export_as_JSON.apply(this, arguments);
-            data.canceled_lines = this.canceled_lines;
+            data.canceled_lines = this.canceled_lines || [];
             data.reason = this.reason;
             data.is_cancelled = this.is_cancelled;
             return data;
         },
         init_from_JSON: function(json) {
-            this.canceled_lines = json.canceled_lines;
+            this.canceled_lines = json.canceled_lines || [];
             this.reason = json.reason;
             this.is_cancelled = json.is_cancelled;
             _super_order.init_from_JSON.call(this, json);
@@ -154,7 +155,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
             this.max_quantity = data.max_quantity;
-            if (data.cancelled_line) {
+            if (data.cancelled_line && this.order.canceled_lines) {
                 // order.canceled_lines is already synced
                 // here we just update link for cancelled_line
                 var cancelled_line = this.order.canceled_lines.find(function(line) {
