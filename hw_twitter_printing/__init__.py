@@ -2,6 +2,7 @@
 import logging
 import threading
 from odoo.tools import config
+import escpos_encoding
 
 
 _logger = logging.getLogger(__name__)
@@ -55,8 +56,8 @@ class MyStreamer(TwythonStreamer):
 
         self.printer.text('\n')
         text = data['text'] + '\n'
-        # TODO: fix encoding
         try:
+            text = escpos_encoding.encode_str(text)
             self.printer.text(text)
         except:
             pass
@@ -72,8 +73,8 @@ class MyStreamer(TwythonStreamer):
             self.printer.text('\n')
             quoted_text = data['quoted_status']['text'] + '\n'
             self.printer.set(align='right', font='b')
-            # TODO: fix encoding
             try:
+                quoted_text = escpos_encoding.encode_str(quoted_text)
                 self.printer.text(quoted_text)
             except:
                 pass
