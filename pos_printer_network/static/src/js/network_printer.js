@@ -21,7 +21,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
         domain: null,
         loaded: function(self,printers){
             self.printers.forEach(function(item){
-                var printer_obj = printers.find(function(printer){
+                var printer_obj = _.find(printers, function(printer){
                     return printer.id === item.config.id;
                 });
                 if (printer_obj.network_printer) {
