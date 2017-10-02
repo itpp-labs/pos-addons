@@ -1,0 +1,29 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_fiscal_floor
+# 
+# Translators:
+# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-30 15:22+0000\n"
+"PO-Revision-Date: 2017-09-30 15:22+0000\n"
+"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_fiscal_floor
+#: model:ir.model.fields,field_description:pos_fiscal_floor.field_restaurant_floor_pos_default_fiscal
+msgid "Fiscal Position"
+msgstr "Posición Fiscal"
+
+#. module: pos_fiscal_floor
+#: model:ir.model,name:pos_fiscal_floor.model_restaurant_floor
+msgid "restaurant.floor"
+msgstr ""
