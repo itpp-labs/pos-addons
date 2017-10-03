@@ -49,7 +49,7 @@ odoo.define('pos_multi_session', function(require){
 //            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
-                this.message_ID = 1;
+                this.message_ID = 0;
             }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
@@ -79,10 +79,11 @@ odoo.define('pos_multi_session', function(require){
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
                     self.sync_bus = self.get_bus('sync_server');
                     self.get_bus('sync_server').start();
-
                 } else {
                     self.sync_bus = self.get_bus();
-                    self.sync_bus.start();
+                    if (!self.config.autostart_longpolling) {
+                        self.sync_bus.start();
+                    }
                 }
                 self.multi_session = new exports.MultiSession(self);
             });
@@ -143,8 +144,10 @@ odoo.define('pos_multi_session', function(require){
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
-                    if (self.message_ID + 1 != data.message_ID)
+                    if (self.message_ID + 1 != data.message_ID){
                         self.multi_session.request_sync_all();
+                        self.message_ID = 0;
+                    }
                     else
                         self.message_ID = data.message_ID;
                     if (order && action == 'remove_order') {
@@ -409,6 +412,7 @@ odoo.define('pos_multi_session', function(require){
                             self.revision_ID = server_revision_ID;
                             self.save_to_db();
                         }
+
                     }
                 })
             };

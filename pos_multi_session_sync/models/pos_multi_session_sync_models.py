@@ -47,9 +47,6 @@ class PosMultiSessionSync(models.Model):
         self.ensure_one()
         client_revision_ID = message['data']['revision_ID']
         server_revision_ID = order.revision_ID
-        print "========="
-        print client_revision_ID
-        print server_revision_ID
         if not server_revision_ID:
             server_revision_ID = 1
         if client_revision_ID is not server_revision_ID:
@@ -67,28 +64,23 @@ class PosMultiSessionSync(models.Model):
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
         if order:  # order already exists
-            print "--------------if"
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
             })
         else:
-            print "--------------else"
             if self.order_ID + 1 != sequence_number:
                 sequence_number = self.order_ID + 1
                 message['data']['sequence_number'] = sequence_number
             order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
-                # 'multi_session_id': self.id,
+                 'multi_session_ID': self.id,
             })
             self.write({'order_ID': sequence_number})
 
         revision_ID = order.revision_ID
         message['data']['revision_ID'] = revision_ID
-        print "--------------"
-        print revision_ID
-        print
         self.broadcast_message(message)
         return {'action': 'update_revision_ID', 'revision_ID': revision_ID, 'order_ID': sequence_number}
 
@@ -101,21 +93,25 @@ class PosMultiSessionSync(models.Model):
                   .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
         if not pos:
             pos = self.env['pos_multi_session_sync.pos'] \
-                .create({'multi_session_ID': self.multi_session_ID, 'id': pos_ID, 'user_ID': user_ID})
+                .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID})
         if pos.user_ID != user_ID:
             pos.user_ID = user_ID
+        poses_sync = self.env['pos_multi_session_sync.pos'] \
+            .search([('multi_session_ID', '=', self.multi_session_ID)])
+        poses_conf = self.env['pos.config'] \
+            .search([('multi_session_id', '=', self.multi_session_ID)])
+        for poss in poses_sync:
+            poss.multi_session_message_ID = 0
+        for poss in poses_conf:
+            poss.multi_session_message_ID = 0
+            poss.message_ID = 0
         data = []
         for order in self.env['pos_multi_session_sync.order'].search([('multi_session_ID', '=', self.id), ('state', '=', 'draft')]):
             msg = json.loads(order.order)
-            msg['data']['message_ID'] = pos.multi_session_message_ID
+            msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
             data.append(msg)
         message = {'action': 'sync_all', 'orders': data, 'order_ID': self.order_ID}
-
-        poses = self.env['pos_multi_session_sync.pos'] \
-                    .search([('multi_session_ID', '=', self.multi_session_ID)])
-        for pos in poses:
-            pos.multi_session_message_ID = 0
         return message
 
     @api.multi

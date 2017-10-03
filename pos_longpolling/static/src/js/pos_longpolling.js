@@ -28,6 +28,7 @@ odoo.define('pos_longpolling', function(require){
             var callback = this.longpolling_connection.network_is_on;
             var channel_name = channel || "pos.longpolling";
             this.add_channel_callback(channel_name, callback, this.longpolling_connection);
+            this.activated = false;
         },
         poll: function() {
             var self = this;
@@ -96,6 +97,7 @@ odoo.define('pos_longpolling', function(require){
             this.start_polling();
             this.lonpolling_activated = true;
             this.longpolling_connection.send();
+            this.activated = true;
         },
         activate_channel: function(channel_name){
             var channel = this.pos.get_full_channel_name(channel_name);

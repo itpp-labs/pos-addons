@@ -31,6 +31,5 @@ class Controller(BusController):
         if not ms:
             ms = request.env["pos_multi_session_sync.multi_session"]\
                         .create({'multi_session_ID': int(multi_session_id), 'dbname': dbname})
-        res = ms.with_context(user_ID=user_ID, phantomtest=phantomtest)\
-                .on_update_message(message)
+        res = ms.with_context(user_ID=user_ID, phantomtest=phantomtest).on_update_message(message)
         return res
