@@ -91,9 +91,13 @@ class PosMultiSessionSync(models.Model):
         user_ID = self.env.context.get("user_ID")
         pos = self.env['pos_multi_session_sync.pos'] \
                   .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
+        pos_conf = self.env['pos.config'] \
+            .search([('multi_session_id', '=', self.multi_session_ID), ("pos_id", "=", pos_ID)])
+        pos_session_ID = pos_conf.current_session_id[0]
         if not pos:
             pos = self.env['pos_multi_session_sync.pos'] \
-                .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID})
+                .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID,
+                         'pos_session_ID': pos_session_ID})
         if pos.user_ID != user_ID:
             pos.user_ID = user_ID
         poses_sync = self.env['pos_multi_session_sync.pos'] \
@@ -106,7 +110,9 @@ class PosMultiSessionSync(models.Model):
             poss.multi_session_message_ID = 0
             poss.message_ID = 0
         data = []
-        for order in self.env['pos_multi_session_sync.order'].search([('multi_session_ID', '=', self.id), ('state', '=', 'draft')]):
+        for order in self.env['pos_multi_session_sync.order'] \
+                         .search([('multi_session_ID', '=', self.id),('state', '=', 'draft'),
+                                  ('pos_session_ID', '=', pos_session_ID)]):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
@@ -158,3 +164,4 @@ class PosMultiSessionSyncOrder(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_ID = fields.Integer(default=0, string='Multi session')
+    pos_session_ID = fields.Integer(index=True, default=0, string='POS session')

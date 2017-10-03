@@ -306,6 +306,9 @@ odoo.define('pos_multi_session', function(require){
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
+            if (!this.pos_session_ID){
+                this.pos_session_ID = this.pos.config.current_session_id[0];
+            }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
@@ -381,6 +384,7 @@ odoo.define('pos_multi_session', function(require){
             data.revision_ID = this.revision_ID;
             data.new_order = this.new_order;
             data.order_on_server = this.order_on_server;
+            data.pos_session_ID = this.pos_session_ID;
             return data;
         },
         init_from_JSON: function(json) {
