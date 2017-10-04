@@ -43,3 +43,18 @@ class PosMultiSession(models.Model):
     order_ids = fields.One2many('pos_multi_session_sync.order', 'multi_session_ID', 'Orders')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
     sync_server = fields.Char('Sync Server', default='')
+
+
+class PosSession(models.Model):
+    _inherit = 'pos.session'
+
+    @api.multi
+    def action_pos_session_close(self):
+        res = super(PosSession, self).action_pos_session_close()
+        self.config_id.write({'multi_session_message_ID': 1})
+        active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
+        if len(active_sessions) == 0:
+            self.config_id.multi_session_id.sudo().write({'order_ID': 0})
+            orders = self.config_id.multi_session_id.order_ids.filtered(lambda x: x.state == "draft")
+            orders.write({'state': 'unpaid'})
+        return res

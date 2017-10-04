@@ -14,22 +14,29 @@ odoo.define('pos_longpolling', function(require){
 
     // prevent bus to be started by chat_manager.js
     bus.bus.activated = true; // fake value to ignore start_polling call
-    var PARTNERS_PRESENCE_CHECK_PERIOD = 30000;  // don't check presence more than once every 30s
     bus.ERROR_DELAY = 10000;
 
     bus.Bus.include({
-        init_bus: function(pos, sync_server, channel){
+        init_bus: function(pos, sync_server){
             this.pos = pos;
-            if (!this.pos.channels){
-                this.pos.channels = {};
+            if (!this.channel_callbacks){
+                this.channel_callbacks = {};
             }
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
-            var callback = this.longpolling_connection.network_is_on;
-            var channel_name = channel || "pos.longpolling";
-            this.add_channel_callback(channel_name, callback, this.longpolling_connection);
             this.activated = false;
+//            if (this != this.pos.bus){
+//                this.create_icon();
+//            }
         },
+//        create_icon: function(){
+//            var additional_refresh_icon = QWeb.render('synch_icon');
+//            var div = document.createElement('div');
+//            div.className = "js_poll_connected oe_icon oe_red serv_additional_" + this.bus_id;
+//            div.innerHTML = additional_refresh_icon;
+//            this.$('.js_synch').append(div);
+////            this.trigger("change:poll_connection", false);
+//        },
         poll: function() {
             var self = this;
             self.activated = true;
@@ -37,11 +44,6 @@ odoo.define('pos_longpolling', function(require){
             var options = _.extend({}, this.options, {
                 bus_inactivity: now - this.get_last_presence(),
             });
-            if (this.last_partners_presence_check + PARTNERS_PRESENCE_CHECK_PERIOD > now) {
-                options = _.omit(options, 'bus_presence_partner_ids');
-            } else {
-                this.last_partners_presence_check = now;
-            }
             var data = {channels: self.channels, last: self.last, options: options};
             // function is copy-pasted from bus.js but the line below defines a custom server address
             session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
@@ -57,21 +59,11 @@ odoo.define('pos_longpolling', function(require){
                 setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
             });
         },
-        on_notification: function(notifications) {
-            var self = this;
-            var notifs = _.map(notifications, function (notif) {
-                if (notif.id > self.last) {
-                    self.last = notif.id;
-                }
-                return [notif.channel, notif.message];
-            });
-            this.trigger("notification", notifs);
-        },
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
                 callback = _.bind(callback, thisArg);
             }
-            this.pos.channels[channel_name] = callback;
+            this.channel_callbacks[channel_name] = callback;
             if (this.lonpolling_activated) {
                 this.activate_channel(channel_name);
             }
@@ -79,7 +71,7 @@ odoo.define('pos_longpolling', function(require){
         remove_channel: function(channel_name) {
             if (channel_name in this.channels) {
                 delete this.channels[channel_name];
-                var channel = this.pos.get_full_channel_name(channel_name);
+                var channel = this.get_full_channel_name(channel_name);
                 this.delete_channel(channel);
             }
         },
@@ -88,10 +80,10 @@ odoo.define('pos_longpolling', function(require){
                 return;
             }
             var self = this;
-            this.last = this.pos.db.load('bus_last', 0);
+            this.last = this.pos.db.load('bus_' + this.bus_id + 'last', 0);
             this.on("notification", this, this.on_notification_callback);
             this.stop_polling();
-            _.each(self.pos.channels, function(value, key){
+            _.each(self.channel_callbacks, function(value, key){
                 self.activate_channel(key);
             });
             this.start_polling();
@@ -100,7 +92,7 @@ odoo.define('pos_longpolling', function(require){
             this.activated = true;
         },
         activate_channel: function(channel_name){
-            var channel = this.pos.get_full_channel_name(channel_name);
+            var channel = this.get_full_channel_name(channel_name);
             this.add_channel(channel);
         },
         on_notification_callback: function(notification) {
@@ -109,17 +101,17 @@ odoo.define('pos_longpolling', function(require){
                 var message = notification[i][1];
                 this.on_notification_do(channel, message);
             }
-            this.pos.db.save('bus_last', this.last);
+            this.pos.db.save('bus_' + this.bus_id + 'last', this.last);
         },
         on_notification_do: function (channel, message) {
             var self = this;
             if (_.isString(channel)) {
                 var channel = JSON.parse(channel);
             }
-            if(Array.isArray(channel) && (channel[1] in self.pos.channels)){
+            if(Array.isArray(channel) && (channel[1] in self.channel_callbacks)){
                 try{
                     self.longpolling_connection.network_is_on();
-                    var callback = self.pos.channels[channel[1]];
+                    var callback = self.channel_callbacks[channel[1]];
                     if (callback) {
                         if (self.pos.debug){
                             console.log('POS LONGPOLLING', self.name, self.pos.config.name, channel[1], JSON.stringify(message));
@@ -133,7 +125,10 @@ odoo.define('pos_longpolling', function(require){
                     });
                 }
             }
-        }
+        },
+        get_full_channel_name: function(channel_name){
+            return JSON.stringify([session.db,channel_name,String(this.pos.config.id)]);
+        },
     });
 
     var PosModelSuper = models.PosModel;
@@ -147,17 +142,16 @@ odoo.define('pos_longpolling', function(require){
             this.bus.name = 'Default';
             this.ready.then(function () {
                 self.bus.init_bus(self);
+                var callback = self.bus.longpolling_connection.network_is_on;
+                self.bus.add_channel_callback("pos.longpolling", callback, self.bus.longpolling_connection);
                 if (self.config.autostart_longpolling){
                     self.bus.start();
                 };
             });
         },
-        get_full_channel_name: function(channel_name){
-            return JSON.stringify([session.db,channel_name,String(this.config.id)]);
-        },
-        add_bus: function(key, sync_server, channel){
+        add_bus: function(key, sync_server){
             this.buses[key] = new bus.Bus();
-            this.buses[key].init_bus(this, sync_server, channel);
+            this.buses[key].init_bus(this, sync_server);
             this.buses[key].name = key;
         },
         get_bus: function(key){
@@ -245,31 +239,15 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function() {
-            var element = this.$('.serv_primary');
-            if (self.posmodel.bus.longpolling_connection.status) {
+        set_poll_status: function(element, bus) {
+            if (bus.longpolling_connection.status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
             } else {
                 element.removeClass('oe_green');
                 element.addClass('oe_red');
             }
-            this.set_secondary_poll_status()
         },
-        set_secondary_poll_status: function() {
-            var machines = Object.entries(this.pos.buses);
-            machines.forEach(function(bus){
-                bus = bus[1]
-                var element = this.$('.serv_secondary_' + bus.bus_id);
-                if (bus.longpolling_connection.status) {
-                    element.removeClass('oe_red');
-                    element.addClass('oe_green');
-                } else {
-                    element.removeClass('oe_green');
-                    element.addClass('oe_red');
-                }
-            });
-        }
     });
 
     chrome.SynchNotificationWidget.include({
@@ -279,15 +257,23 @@ odoo.define('pos_longpolling', function(require){
             var machines = Object.entries(this.pos.buses);
             machines.forEach(function(bus){
                 bus = bus[1];
-                var additional_refresh_icon = QWeb.render('additional_servers_synch',{widget: this});
+                var additional_refresh_icon = QWeb.render('synch_icon',{widget: this});
                 var div = document.createElement('div');
-                div.className = "js_poll_connected oe_icon oe_red serv_secondary_" + bus.bus_id;
+                div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
                 div.innerHTML = additional_refresh_icon;
                 this.$('.js_synch').append(div);
             });
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                    self.set_poll_status();
+                var element = self.$('.serv_primary');
+                self.set_poll_status(element, self.pos.bus);
+                var machines = Object.entries(this.pos.buses);
+                machines.map(function(bus){
+                    bus = bus[1]
+                    var element = this.$('.serv_additional_' + bus.bus_id);
+                    self.set_poll_status(element, bus);
+                });
             });
+            this.pos.bus.longpolling_connection.set_status(true)
         },
     });
     return exports;
