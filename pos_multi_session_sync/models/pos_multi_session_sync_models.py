@@ -91,15 +91,12 @@ class PosMultiSessionSync(models.Model):
         user_ID = self.env.context.get("user_ID")
         pos = self.env['pos_multi_session_sync.pos'] \
                   .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
+        # active_sessions = self.env['pos.session'] \
+        #     .search([('config_id.multi_session_id', '=', pos.multi_session_ID)])
         # pos_conf = self.env['pos.config'] \
             # .search([('multi_session_id', '=', self.multi_session_ID), ("id", "=", pos_ID)])
         # pos_session = pos_conf.current_session_id[0]
         # pos_session_ID = pos_session.id
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        # print pos_session_ID
-        # print pos_conf
-        # print pos_conf.current_session_id[0]
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         if not pos:
             pos = self.env['pos_multi_session_sync.pos'] \
                 .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID})
@@ -117,8 +114,8 @@ class PosMultiSessionSync(models.Model):
             poss.message_ID = 0
         data = []
         for order in self.env['pos_multi_session_sync.order'] \
-                         .search([('multi_session_ID', '=', self.id),('state', '=', 'draft')]):
-                                  # ('pos_session_ID', '=', pos_session_ID)]):
+                         .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft')]):
+                                  # ('pos_session_ID', 'in', active_sessions.ids)]):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
