@@ -387,12 +387,13 @@ class PosCreditUpdate(models.Model):
 
     @api.multi
     def write(self, vals):
-        partner_id = vals.get('partner_id') or self.partner_id.id
-        new_balance = vals.get('new_balance') or self.new_balance
-        state = vals.get('state') or self.state
-        update_type = vals.get('update_type') or self.update_type
+        partner_id = vals.get('partner_id') if vals.get('partner_id') is not False else self.partner_id.id
+        new_balance = vals.get('new_balance') if vals.get('new_balance') is not False else self.new_balance
+        state = vals.get('state') if vals.get('state') is not False else self.state
+        update_type = vals.get('update_type') if vals.get('update_type') is not False else self.update_type
+        id = vals.get('id') if vals.get('id') is not False else self.id
         if (state == 'cancel' and update_type == 'new_balance'):
-            entries = self.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance'), ('id', '<', self.id)])
+            entries = self.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance'), ('id', '<', id)])
             if entries:
                 credit_balance = self.get_credit_balance(self.balance, self.new_balance)
             else:
@@ -408,4 +409,3 @@ class PosCreditUpdate(models.Model):
 
     def switch_to_draft(self):
         self.write({'state': 'draft'})
-
