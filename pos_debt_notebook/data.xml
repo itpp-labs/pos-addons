@@ -8,16 +8,6 @@
                 <link rel="stylesheet" href="/pos_debt_notebook/static/src/css/pos.css" id="pos_debt_notebook-stylesheet"/>
             </xpath>
         </template>
-        <template id="debt" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_debt_notebook/static/src/js/draft.js"></script>
-            </xpath>
-        </template>
-        <template id="action" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_debt_notebook/static/src/js/action.js"></script>
-            </xpath>
-        </template>
 
     </data>
 </openerp>

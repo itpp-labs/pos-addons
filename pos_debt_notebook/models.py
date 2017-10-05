@@ -399,3 +399,13 @@ class PosCreditUpdate(models.Model):
                 credit_balance = self.partner_id.browse(partner_id).credit_balance
             vals['balance'] = self.get_balance(credit_balance, new_balance)
         return super(PosCreditUpdate, self).write(vals)
+
+    def switch_to_confirm(self):
+        self.write({'state': 'confirm'})
+
+    def switch_to_cancel(self):
+        self.write({'state': 'cancel'})
+
+    def switch_to_draft(self):
+        self.write({'state': 'draft'})
+
