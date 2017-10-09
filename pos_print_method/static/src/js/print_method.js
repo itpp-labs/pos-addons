@@ -12,7 +12,7 @@ odoo.define('pos_restaurant.print_method', function (require) {
         loaded: function(self,printers){
             self.printers.forEach(function(item){
                 var printer_obj = _.find(printers, function(printer){
-                    return printer.id == item.config.id;
+                    return printer.id === item.config.id;
                 });
                 item.config.printer_method_name = printer_obj.printer_method_name;
             });
