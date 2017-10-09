@@ -11,6 +11,7 @@ try:
     from twython import TwythonStreamer
     from escpos.printer import Network
 except ImportError as err:
+    TwythonStreamer = object
     _logger.debug(err)
 
 
@@ -23,14 +24,15 @@ class MyStreamerThread(threading.Thread):
     def run(self):
         _logger.info("MyStreamerThread started.")
 
-        app_key = config['app_key']
-        app_secret = config['app_secret']
-        oauth_token = config['oauth_token']
-        oauth_token_secret = config['oauth_token_secret']
+        app_key = config['twitter_app_key']
+        app_secret = config['twitter_app_secret']
+        oauth_token = config['twitter_oauth_token']
+        oauth_token_secret = config['twitter_oauth_token_secret']
+        twitter_search = config['twitter_search']
 
         stream = MyStreamer(app_key, app_secret, oauth_token, oauth_token_secret)
         stream.printer = False
-        stream.statuses.filter(track='#OdooExperience,#OdooExperience2017')
+        stream.statuses.filter(track=twitter_search)
 
 
 class MyStreamer(TwythonStreamer):
@@ -79,7 +81,7 @@ class MyStreamer(TwythonStreamer):
         self.printer.cut()
 
     def connect_to_printer(self):
-        NETWORK_PRINTER_IP = config['printer_ip']
+        NETWORK_PRINTER_IP = config['twitter_printer_ip']
         if self.printer:
             self.printer.close()
         try:
@@ -92,5 +94,6 @@ class MyStreamer(TwythonStreamer):
         _logger.error("Can not printing tweets: %s" % status_code)
 
 
-my_streamer = MyStreamerThread()
-my_streamer.start()
+def post_load():
+    my_streamer = MyStreamerThread()
+    my_streamer.start()
