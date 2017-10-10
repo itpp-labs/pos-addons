@@ -28,7 +28,8 @@
         'static/src/xml/cancel_order.xml',
     ],
     "demo": [
-        'data/pos_cancelled_reason_demo.xml'
+        'data/pos_cancelled_reason_demo.xml',
+        'views/assets_demo.xml',
     ],
 
     "post_load": None,
