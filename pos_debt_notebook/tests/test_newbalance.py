@@ -14,7 +14,7 @@ class TestPosCreditUpdate(TransactionCase):
                 'id': i,
                 'partner_id': partner_id,
                 'new_balance': new_balance,
-                'state': 'cancel',
+                'state': 'draft',
                 'update_type': 'new_balance'
             })
         entries = posCreditUpdate.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance')])
@@ -27,7 +27,7 @@ class TestPosCreditUpdate(TransactionCase):
                 'id': i,
                 'partner_id': partner_id,
                 'new_balance': new_balance,
-                'state': 'cancel',
+                'state': 'draft',
                 'update_type': 'new_balance'
             })
         entries = posCreditUpdate.search([('partner_id', '=', partner_id), ('state', '=', 'cancel'), ('update_type', '=', 'new_balance')])

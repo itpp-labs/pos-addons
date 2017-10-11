@@ -367,28 +367,23 @@ class PosCreditUpdate(models.Model):
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
 
-    def update_balance(self, vals, partner_id, new_balance):
-        credit_balance = self.partner_id.browse(partner_id).credit_balance
-        vals['balance'] = self.get_balance(credit_balance, new_balance)
+    def update_balance(self, vals):
+        partner_id = vals.get('partner_id') if vals.get('partner_id') is not None else self.partner_id.id
+        new_balance = vals.get('new_balance') if vals.get('new_balance') is not None else self.new_balance
+        state = vals.get('state') if vals.get('state') is not None else self.state
+        update_type = vals.get('update_type') if vals.get('update_type') is not None else self.update_type
+        if (state == 'draft' and update_type == 'new_balance'):
+            credit_balance = self.partner_id.browse(partner_id).credit_balance
+            vals['balance'] = self.get_balance(credit_balance, new_balance)
 
     @api.model
     def create(self, vals):
-        partner_id = vals.get('partner_id')
-        new_balance = vals.get('new_balance')
-        state = vals.get('state') or 'undefined'
-        update_type = vals.get('update_type') or 'undefined'
-        if ('partner_id' and 'new_balance' in vals and state == 'cancel' and update_type == 'new_balance'):
-            self.update_balance(vals, partner_id, new_balance)
+        self.update_balance(vals)
         return super(PosCreditUpdate, self).create(vals)
 
     @api.multi
     def write(self, vals):
-        partner_id = vals.get('partner_id') if vals.get('partner_id') is not False else self.partner_id.id
-        new_balance = vals.get('new_balance') if vals.get('new_balance') is not False else self.new_balance
-        state = vals.get('state') if vals.get('state') is not False else self.state
-        update_type = vals.get('update_type') if vals.get('update_type') is not False else self.update_type
-        if (state == 'cancel' and update_type == 'new_balance'):
-            self.update_balance(vals, partner_id, new_balance)
+        self.update_balance(vals)
         return super(PosCreditUpdate, self).write(vals)
 
     def switch_to_confirm(self):
