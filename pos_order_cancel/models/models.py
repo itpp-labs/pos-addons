@@ -136,3 +136,9 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
         return super(PosOrderLineCanceled, self).create(values)
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
