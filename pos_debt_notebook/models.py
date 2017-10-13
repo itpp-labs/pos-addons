@@ -374,7 +374,7 @@ class PosCreditUpdate(models.Model):
     def update_balance(self, vals):
         partner_id = vals.get('partner_id') if vals.get('partner_id') is not None else self.partner_id.id
         new_balance = vals.get('new_balance') if vals.get('new_balance') is not None else self.new_balance
-        state = vals.get('state') if vals.get('state') is not None else self.state
+        state = vals.get('state') if vals.get('state') is not None else self.state or 'draft'
         update_type = vals.get('update_type') if vals.get('update_type') is not None else self.update_type
         if (state == 'draft' and update_type == 'new_balance'):
             credit_balance = self.partner_id.browse(partner_id).credit_balance
