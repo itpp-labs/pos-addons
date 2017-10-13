@@ -137,22 +137,24 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
         },
         click_confirm: function(){
-            this.gui.close_popup();
-            if( this.options.confirm ){
-                var active_reasons = this.options.reasons.filter(function(item) {
-                    return item.active === true;
-                });
-                var active_reasons_name = [];
-                var cancelled_reason_ids = [];
-                active_reasons.forEach(function(item) {
-                    active_reasons_name.push(item.name);
-                    cancelled_reason_ids.push(item.id);
-                });
-                var reason = this.$('.popup-confirm-cancellation textarea').val();
-                if (reason) {
-                    reason += "; ";
+            var active_reasons = this.options.reasons.filter(function(item) {
+                return item.active === true;
+            });
+            var active_reasons_name = [];
+            var cancelled_reason_ids = [];
+            active_reasons.forEach(function(item) {
+                active_reasons_name.push(item.name);
+                cancelled_reason_ids.push(item.id);
+            });
+            if(this.pos.config.allow_custom_reason || active_reasons_name.length>0){
+                this.gui.close_popup();
+                if( this.options.confirm ){
+                    var reason = this.$('.popup-confirm-cancellation textarea').val();
+                    if (reason) {
+                        reason += "; ";
+                    }
+                    this.options.confirm.call(this, reason + active_reasons_name.join("; "), cancelled_reason_ids);
                 }
-                this.options.confirm.call(this, reason + active_reasons_name.join("; "), cancelled_reason_ids);
             }
         },
     });

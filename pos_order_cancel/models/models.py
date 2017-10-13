@@ -142,3 +142,9 @@ class PosOrderLineCanceled(models.Model):
         if values.get('cancelled_reason_ids') and len(values.get('cancelled_reason_ids')) > 0:
             values['cancelled_reason_ids'] = [(4, id) for id in values.get('cancelled_reason_ids')]
         return super(PosOrderLineCanceled, self).create(values)
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
