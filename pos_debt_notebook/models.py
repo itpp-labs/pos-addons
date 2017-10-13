@@ -362,9 +362,9 @@ class PosCreditUpdate(models.Model):
     date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
 
     state = fields.Selection([
-        ('draft', 'Draft')
+        ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
-        ('cancel', 'Canceled'),
+        ('cancel', 'Canceled')
     ], default='draft', required=True)
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
 
