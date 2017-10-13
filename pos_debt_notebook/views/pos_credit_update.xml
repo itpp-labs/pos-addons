@@ -22,7 +22,7 @@
                         <button string="Confirm" type="object" name="switch_to_confirm" attrs="{'invisible': [('state', '==', 'confirm')]}"/>
                         <button string="Cancel" type="object" name="switch_to_cancel" attrs="{'invisible': [('state', '==', 'cancel')]}"/>
                         <button string="Draft" type="object" name="switch_to_draft" attrs="{'invisible': [('state', '==', 'draft')]}"/>
-                        <field name="state" widget="statusbar" statusbar_visible="confirm,cancel,draft"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
                     </header>
 
                     <sheet>
@@ -31,7 +31,7 @@
                                 <field name="partner_id"/>
                                 <field name="date"/>
                                 <field name="update_type"/>
-                                <field name="balance" attrs="{'readonly': [('update_type', '!=', 'balance')]}"/>
+                                <field name="balance" attrs="{'readonly': [('update_type', '!=', 'balance_update')]}"/>
                                 <field name="new_balance" attrs="{'invisible': [('update_type', '!=', 'new_balance')]}"/>
                                 <field name="currency_id"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
