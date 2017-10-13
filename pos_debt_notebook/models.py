@@ -398,3 +398,8 @@ class PosCreditUpdate(models.Model):
 
     def switch_to_draft(self):
         self.write({'state': 'draft'})
+
+    def do_confirm(self):
+        active_ids = self._context.get('active_ids')
+        for r in self.env['pos.credit.update'].browse(active_ids):
+            r.switch_to_confirm()
