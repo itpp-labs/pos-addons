@@ -80,7 +80,7 @@ odoo.define('pos_longpolling', function(require){
                 return;
             }
             var self = this;
-            this.last = this.pos.db.load('bus_' + this.bus_id + 'last', 0);
+            this.last = this.pos.db.load(this.bus_id_last(), 0);
             this.on("notification", this, this.on_notification_callback);
             this.stop_polling();
             _.each(self.channel_callbacks, function(value, key){
@@ -101,7 +101,10 @@ odoo.define('pos_longpolling', function(require){
                 var message = notification[i][1];
                 this.on_notification_do(channel, message);
             }
-            this.pos.db.save('bus_' + this.bus_id + 'last', this.last);
+            this.pos.db.save(this.bus_id_last(), this.last);
+        },
+        bus_id_last: function () {
+            return 'bus_' + this.bus_id + 'last';
         },
         on_notification_do: function (channel, message) {
             var self = this;
