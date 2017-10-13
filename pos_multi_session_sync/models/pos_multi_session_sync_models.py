@@ -65,6 +65,7 @@ class PosMultiSessionSync(models.Model):
         sequence_number = message['data']['sequence_number']
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
+        run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)]).run_ID or False
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
         if order:  # order already exists
@@ -80,14 +81,17 @@ class PosMultiSessionSync(models.Model):
             order = order.create({
                 'order': json.dumps(message),
                 'order_uid': order_uid,
-                 'multi_session_ID': self.id,
+                'multi_session_ID': self.id,
+                'run_ID': run_ID,
             })
             self.write({'order_ID': sequence_number})
 
         revision_ID = order.revision_ID
+
         message['data']['revision_ID'] = revision_ID
         self.broadcast_message(message)
-        return {'action': 'update_revision_ID', 'revision_ID': revision_ID, 'order_ID': sequence_number}
+        return {'action': 'update_revision_ID', 'revision_ID': revision_ID,
+                'order_ID': sequence_number, 'run_ID': run_ID}
 
     @api.multi
     def get_sync_all(self, message):

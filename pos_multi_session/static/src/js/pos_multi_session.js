@@ -50,13 +50,15 @@ odoo.define('pos_multi_session', function(require){
                 model: 'pos.multi_session',
                 fields: ['run_ID'],
                 domain: null,
-                loaded: function(self,session){
-                    self.multi_session_subsession_ID = session;
+                loaded: function(self,sessions){
+                    self.multi_session_current_subsession_ID = sessions.find(function (ms) {
+                        return ms.id === self.config.multi_session_id[0];
+                    }).run_ID;
             }};
             this.models.splice(
                 this.models.indexOf(_.find(this.models, function(model){
                     return model.model === 'pos.config';
-                })) - 2, 0, ms_model);
+                })) + 1, 0, ms_model);
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
                 this.message_ID = 0;
@@ -318,20 +320,18 @@ odoo.define('pos_multi_session', function(require){
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
-            if (!this.run_ID) {
-                if (this.pos.multi_session_subsession_ID) {
-                    this.run_ID = this.pos.multi_session_subsession_ID.find(function (ms) {
-                    return ms.id === self.pos.config.multi_session_id[0];
-                }).run_ID;
-                } else {
-                    this.run_ID = 1;
-                }
-            }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
                 self.ms_update();
             });
+            if (!this.run_ID) {
+                if (this.pos.multi_session_current_subsession_ID) {
+                    this.run_ID = this.pos.multi_session_current_subsession_ID;
+                } else {
+                    this.run_ID = 1;
+                }
+            }
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
@@ -409,6 +409,7 @@ odoo.define('pos_multi_session', function(require){
             this.new_order = json.new_order;
             this.order_on_server = json.order_on_server;
             this.revision_ID = json.revision_ID;
+            this.run_ID = json.run_ID;
             OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
@@ -519,9 +520,7 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             if (!this.run_ID) {
-                this.run_ID = this.pos.get_order().run_ID || this.pos.multi_session_subsession_ID.find(function (ms) {
-                    return ms.id === self.pos.config.multi_session_id[0];
-                }).id;;
+                this.run_ID = this.pos.multi_session_current_subsession_ID;
             }
             this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
@@ -542,7 +541,7 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
-            var data = {run_ID: this.pos.get_order().run_ID};
+            var data = {run_ID: this.pos.multi_session_current_subsession_ID};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
