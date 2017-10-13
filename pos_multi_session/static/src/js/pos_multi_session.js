@@ -49,11 +49,9 @@ odoo.define('pos_multi_session', function(require){
             var ms_model = {
                 model: 'pos.multi_session',
                 fields: ['run_ID'],
-                domain: null,
-                loaded: function(self,sessions){
-                    self.multi_session_current_subsession_ID = sessions.find(function (ms) {
-                        return ms.id === self.config.multi_session_id[0];
-                    }).run_ID;
+                domain: function(self){ return [['id', '=', self.config.multi_session_id[0]]]; },
+                loaded: function(self,current_session){
+                    self.multi_session_run_ID = current_session[0].run_ID;
             }};
             this.models.splice(
                 this.models.indexOf(_.find(this.models, function(model){
@@ -326,11 +324,7 @@ odoo.define('pos_multi_session', function(require){
                 self.ms_update();
             });
             if (!this.run_ID) {
-                if (this.pos.multi_session_current_subsession_ID) {
-                    this.run_ID = this.pos.multi_session_current_subsession_ID;
-                } else {
-                    this.run_ID = 1;
-                }
+                this.run_ID = this.pos.multi_session_run_ID || 1;
             }
         },
         remove_orderline: function(line){
@@ -519,9 +513,6 @@ odoo.define('pos_multi_session', function(require){
             this.order_ID = null;
             this.update_queue = $.when();
             this.func_queue = [];
-            if (!this.run_ID) {
-                this.run_ID = this.pos.multi_session_current_subsession_ID;
-            }
             this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (status) {
                     if (self.offline_sync_all_timer) {
@@ -541,7 +532,7 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
-            var data = {run_ID: this.pos.multi_session_current_subsession_ID};
+            var data = {run_ID: this.pos.multi_session_run_ID};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
