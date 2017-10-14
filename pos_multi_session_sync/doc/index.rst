@@ -9,7 +9,7 @@ Installation
 
 Usage
 =====
-In case you use second server, there might be an 'Access-Control-Allow-Origin' error. Try to write next code below each line contains proxy_pass in the Nginx configuration file::
+In case you use second server, there might be an 'Access-Control-Allow-Origin' error. Your web server has to add additional header to response. Configuration for nginx may look as following::
 
         add_header 'Access-Control-Allow-Origin' * always;
 
