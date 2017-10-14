@@ -11,7 +11,6 @@
                         <group>
                             <field name="query_timeout"  widget="float_time"/>
                             <field name="response_timeout"  widget="float_time"/>
-                            <field name="autostart_longpolling"/>
                         </group>
                     </group>
                 </xpath>

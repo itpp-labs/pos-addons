@@ -4,7 +4,6 @@
         <template id="assets_backend" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_longpolling/static/src/js/pos_longpolling.js"></script>
-                <link rel="stylesheet" href="/pos_longpolling/static/src/css/pos_longpolling.css"/>
             </xpath>
         </template>
     </data>
