@@ -3,12 +3,14 @@
     <t t-extend="SynchNotificationWidget">
         <t t-jquery=".js_synch" t-operation="append">
             <div class="js_poll_connected oe_icon oe_red serv_primary">
-                <i class='fa fa-fw fa-refresh'></i>
+                <!--<i class='fa fa-fw fa-refresh'></i>-->
+                <t t-call="synch_icon"/>
             </div>
         </t>
     </t>
 
-    <t t-name="additional_servers_synch">
+    <t t-name="synch_icon">
         <i class='fa fa-fw fa-refresh'></i>
+        <!--<t t-call=""-->
     </t>
 </templates>
