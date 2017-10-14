@@ -30,8 +30,6 @@ class PosConfig(models.Model):
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id', 'in', self.ids)]):
             channel = ps.config_id._get_full_channel_name(channel_name)
             notifications.append([channel, message])
-        print "==================================="
-        print self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id', 'in', self.ids)])
         if notifications:
             self.env['bus.bus'].sendmany(notifications)
         _logger.debug('POS notifications for %s: %s', self.ids, notifications)
@@ -41,8 +39,6 @@ class PosConfig(models.Model):
     def _send_to_channel_by_id(self, dbname, pos_id, channel_name, message='PONG'):
         channel = self._get_full_channel_name_by_id(dbname, pos_id, channel_name)
         self.env['bus.bus'].sendmany([[channel, message]])
-        print self.env['bus.bus'].sendmany([[channel, message]])
-
         _logger.debug('POS notifications for %s: %s', pos_id, [[channel, message]])
         return 1
 

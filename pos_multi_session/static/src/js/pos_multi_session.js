@@ -46,10 +46,20 @@ odoo.define('pos_multi_session', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
-//            var config_model = _.find(this.models, function(model){ return model.model === 'pos.config'; });
+            var ms_model = {
+                model: 'pos.multi_session',
+                fields: ['run_ID'],
+                domain: function(self){ return [['id', '=', self.config.multi_session_id[0]]]; },
+                loaded: function(self,current_session){
+                    self.multi_session_run_ID = current_session[0].run_ID;
+            }};
+            this.models.splice(
+                this.models.indexOf(_.find(this.models, function(model){
+                    return model.model === 'pos.config';
+                })) + 1, 0, ms_model);
             PosModelSuper.prototype.initialize.apply(this, arguments);
             if (!this.message_ID) {
-                this.message_ID = 1;
+                this.message_ID = 0;
             }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
@@ -75,16 +85,19 @@ odoo.define('pos_multi_session', function(require){
                 if (self.config.sync_server){
                     var channel_name = "pos.multi_session.sync_server";
                     var callback = self.ms_on_update;
-                    self.add_bus('sync_server', self.config.sync_server, channel_name);
+                    self.add_bus('sync_server', self.config.sync_server);
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
                     self.sync_bus = self.get_bus('sync_server');
                     self.get_bus('sync_server').start();
-
                 } else {
                     self.sync_bus = self.get_bus();
-                    self.sync_bus.start();
+                    if (!self.config.autostart_longpolling) {
+                        self.sync_bus.start();
+                    }
                 }
+
                 self.multi_session = new exports.MultiSession(self);
+
             });
         },
         ms_my_info: function(){
@@ -143,8 +156,10 @@ odoo.define('pos_multi_session', function(require){
                     this.message_ID = data.message_ID;
                     this.ms_do_update(order, data);
                 } else {
-                    if (self.message_ID + 1 != data.message_ID)
+                    if (self.message_ID + 1 != data.message_ID){
                         self.multi_session.request_sync_all();
+                        self.message_ID = 0;
+                    }
                     else
                         self.message_ID = data.message_ID;
                     if (order && action == 'remove_order') {
@@ -189,7 +204,7 @@ odoo.define('pos_multi_session', function(require){
                 json = {
                     sequence_number: data.sequence_number,
                     uid: data.uid,
-                    pos_session_id: this.pos_session.id,
+                    run_ID: data.run_ID,
                     statement_ids: false,
                     lines: false,
                     multiprint_resume: data.multiprint_resume,
@@ -248,23 +263,23 @@ odoo.define('pos_multi_session', function(require){
             order.new_order = false;
         },
         load_new_partners_by_id: function(partner_id){
-        var self = this;
-        var def  = new $.Deferred();
-        var client;
-        var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
-        new Model('res.partner')
-            .query(fields)
-            .filter([['id','=',partner_id]])
-            .all({'timeout':3000, 'shadow': true})
-            .then(function(partners){
-                if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
-                    def.resolve();
-                } else {
-                    def.reject();
-                }
-            }, function(err,event){ event.preventDefault(); def.reject(); });
-        return def;
-    },
+            var self = this;
+            var def  = new $.Deferred();
+            var client;
+            var fields = _.find(this.models,function(model){ return model.model === 'res.partner'; }).fields;
+            new Model('res.partner')
+                .query(fields)
+                .filter([['id','=',partner_id]])
+                .all({'timeout':3000, 'shadow': true})
+                .then(function(partners){
+                    if (self.db.add_partners(partners)) {   // check if the partners we got were real updates
+                        def.resolve();
+                    } else {
+                        def.reject();
+                    }
+                }, function(err,event){ event.preventDefault(); def.reject(); });
+            return def;
+        },
     });
 
     chrome.OrderSelectorWidget.include({
@@ -308,6 +323,9 @@ odoo.define('pos_multi_session', function(require){
             this.bind('change:sync', function(){
                 self.ms_update();
             });
+            if (!this.run_ID) {
+                this.run_ID = this.pos.multi_session_run_ID || 1;
+            }
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
@@ -378,12 +396,14 @@ odoo.define('pos_multi_session', function(require){
             data.revision_ID = this.revision_ID;
             data.new_order = this.new_order;
             data.order_on_server = this.order_on_server;
+            data.run_ID = this.run_ID;
             return data;
         },
         init_from_JSON: function(json) {
             this.new_order = json.new_order;
             this.order_on_server = json.order_on_server;
             this.revision_ID = json.revision_ID;
+            this.run_ID = json.run_ID;
             OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         do_ms_update: function(){
@@ -409,6 +429,7 @@ odoo.define('pos_multi_session', function(require){
                             self.revision_ID = server_revision_ID;
                             self.save_to_db();
                         }
+
                     }
                 })
             };
@@ -511,7 +532,7 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         request_sync_all: function(){
-            var data = {};
+            var data = {run_ID: this.pos.multi_session_run_ID};
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
