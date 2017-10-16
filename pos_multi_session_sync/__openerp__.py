@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": """pos_multi_session_sync""",
-    "summary": """{SHORT_DESCRIPTION_OF_THE_MODULE}""",
+    "summary": """Multi-session Synchronization""",
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],

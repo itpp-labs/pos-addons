@@ -14,9 +14,9 @@ class PosConfigSync(models.Model):
     _name = 'pos_multi_session_sync.pos'
 
     multi_session_ID = fields.Integer('Multi-session', index=True,
-                                       help='Set the same value for POSes where orders should be synced. '
-                                            'Keep empty if this POS should not use syncing. '
-                                            'Before updating it you need to close active session')
+                                      help='Set the same value for POSes where orders should be synced. '
+                                           'Keep empty if this POS should not use syncing. '
+                                           'Before updating it you need to close active session')
     multi_session_message_ID = fields.Integer(index=True, default=1, string="Last sent Multi-session message number")
     pos_ID = fields.Integer(index=True, string='POS')
     user_ID = fields.Integer(index=True)
@@ -26,9 +26,9 @@ class PosMultiSessionSync(models.Model):
     _name = 'pos_multi_session_sync.multi_session'
 
     multi_session_ID = fields.Integer('Multi-session', index=True,
-                                       help='Set the same value for POSes where orders should be synced. '
-                                            'Keep empty if this POS should not use syncing. '
-                                            'Before updating it you need to close active session')
+                                      help='Set the same value for POSes where orders should be synced. '
+                                           'Keep empty if this POS should not use syncing. '
+                                           'Before updating it you need to close active session')
     order_ID = fields.Integer(index=True, string='Order')
     dbname = fields.Char(index=True)
     order_ids = fields.One2many('pos_multi_session_sync.order', 'multi_session_ID', 'Orders')
