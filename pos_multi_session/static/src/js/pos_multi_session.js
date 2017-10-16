@@ -159,14 +159,12 @@ odoo.define('pos_multi_session', function(require){
                 } else {
                     if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
-                    }
-                    else {
+                    } else {
                         self.multi_session.request_sync_all();
                     }
                     if (order && action === 'remove_order') {
                         order.destroy({'reason': 'abandon'});
-                    }
-                    else if (action === 'update_order'){
+                    } else if (action === 'update_order'){
                         this.ms_do_update(order, data);
                     }
                 }
@@ -225,8 +223,7 @@ odoo.define('pos_multi_session', function(require){
             });
             if(data.partner_id === false) {
                 order.set_client(null);
-            }
-            else {
+            } else {
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client) {
 
@@ -283,6 +280,9 @@ odoo.define('pos_multi_session', function(require){
                         def.reject();
                     }
                 }, function(err,event){
+                    if (err) {
+                        console.log(err);
+                    }
                     event.preventDefault(); def.reject();
                 });
             return def;
@@ -498,13 +498,13 @@ odoo.define('pos_multi_session', function(require){
                 OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
             }
             this.ms_info = data.ms_info || {};
-            if(data.qty !== undefined){
+            if(typeof data.qty !== "undefined"){
                 this.set_quantity(data.qty);
             }
-            if(data.price_unit !== undefined){
+            if(typeof data.price_unit !== "undefined"){
                 this.set_unit_price(data.price_unit);
             }
-            if(data.discount !== undefined){
+            if(typeof data.discount !== "undefined"){
                 this.set_discount(data.discount);
             }
         },
