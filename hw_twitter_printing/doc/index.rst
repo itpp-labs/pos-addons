@@ -16,7 +16,7 @@ Installation
 * Save  ``Consumer Key (API Key)`` and ``Consumer Secret (API Secret)`` in the PosBox config using the parameters twitter_app_key, twitter_app_secret
 * Click ``[Create my access token]``
 * Save ``Access Token`` and ``Access Token Secret`` in the PosBox config using the parameters twitter_oauth_token, twitter_oauth_token_secret
-* Specify a ``Printer IP`` in the PosBox config using the parameter printer_ip
+* Specify a ``Printer IP`` in the PosBox config using the parameter twitter_printer_ip
 * Specify ``Keywords`` in the PosBox config using the parameter twitter_search (e.g.: twitter_search=#OdooExperience,#OdooExperience2017)
 
 In PosBox
