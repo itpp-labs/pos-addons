@@ -5,7 +5,12 @@
         <div class="modal-dialog">
             <div class="popup popup-confirm-cancellation">
                 <p class="title"><t t-esc=" widget.options.title || '' " /></p>
-                <textarea rows="1" cols="44" placeholder="Reason"></textarea>
+                <t t-if="widget.pos.config.allow_custom_reason">
+                    <textarea rows="1" cols="44" placeholder="Reason"></textarea>
+                </t>
+                <t t-if="!widget.pos.config.allow_custom_reason">
+                    <textarea rows="1" cols="44" placeholder="Reason" style="display:none;"></textarea>
+                </t>
                 <div class="cancelled-reason">
                     <ul>
                         <t t-if="widget.buttons">
@@ -26,9 +31,11 @@
                     </ul>
                 </div>
                 <div class="footer centered">
+                <t t-if="widget.pos.config.allow_custom_reason">
                     <div class="button cancel">
                         Cancel
                     </div>
+                </t>
                     <div class="button confirm">
                         Ok
                     </div>
