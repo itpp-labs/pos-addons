@@ -1,0 +1,56 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_order_printer_product
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-14 10:52+0000\n"
+"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_order_printer_product
+#: model:ir.ui.view,arch_db:pos_order_printer_product.product_template_search_view_pos
+msgid "Category"
+msgstr "Kategorie"
+
+#. module: pos_order_printer_product
+#: model:ir.ui.view,arch_db:pos_order_printer_product.product_template_search_view_pos
+msgid "Group By"
+msgstr "Gruppieren nach"
+
+#. module: pos_order_printer_product
+#: model:ir.ui.view,arch_db:pos_order_printer_product.view_restaurant_printer_form
+msgid "POS products"
+msgstr "POS-Produkte"
+
+#. module: pos_order_printer_product
+#: model:ir.model.fields,field_description:pos_order_printer_product.field_restaurant_printer_product_ids
+msgid "Printed Products"
+msgstr "Gedruckte Produkte"
+
+#. module: pos_order_printer_product
+#: model:ir.model.fields,field_description:pos_order_printer_product.field_product_product_printers_ids
+#: model:ir.model.fields,field_description:pos_order_printer_product.field_product_template_printers_ids
+#: model:ir.ui.view,arch_db:pos_order_printer_product.product_template_form_view
+msgid "Printers"
+msgstr "Drucker"
+
+#. module: pos_order_printer_product
+#: model:ir.model,name:pos_order_printer_product.model_product_template
+msgid "Product Template"
+msgstr "Produktvorlage"
+
+#. module: pos_order_printer_product
+#: model:ir.model,name:pos_order_printer_product.model_restaurant_printer
+msgid "restaurant.printer"
+msgstr "restaurant.printer"

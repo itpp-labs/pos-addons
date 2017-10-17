@@ -47,7 +47,7 @@ class PosOrder(models.Model):
     def _order_fields(self, ui_order):
         order = super(PosOrder, self)._order_fields(ui_order)
         process_canceled_line = partial(self.env['pos.order.line.canceled']._order_cancel_line_fields)
-        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order['canceled_lines']] if ui_order['canceled_lines'] else False
+        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order.get('canceled_lines', [])]
         return order
 
     @api.model
@@ -98,7 +98,8 @@ class PosOrderLineCanceled(models.Model):
     discount = fields.Float(string='Discount (%)', digits=0, default=0.0, readonly=True)
     price_unit = fields.Float(string='Unit Price', digits=0, readonly=True)
     user_id = fields.Many2one(comodel_name='res.users', string='Salesman', help="Person who removed order line", default=lambda self: self.env.uid, readonly=True)
-    qty = fields.Float('Quantity', default=1, readonly=True)
+    qty = fields.Float('Cancelled Quantity', default=1, readonly=True)
+    current_qty = fields.Float('Remainder', default=0, readonly=True)
     reason = fields.Text(string="Reason", help="The Reason of Line Canceled", readonly=True)
     order_id = fields.Many2one('pos.order', string='Order Ref', ondelete='cascade', readonly=True)
     pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
@@ -135,3 +136,9 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
         return super(PosOrderLineCanceled, self).create(values)
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)

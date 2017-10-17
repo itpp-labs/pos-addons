@@ -1,0 +1,44 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_debt_notebook_sync
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-14 10:52+0000\n"
+"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_debt_notebook_sync
+#: model:ir.filters,name:pos_debt_notebook_sync.filter_debt_payments
+msgid "Debt payments"
+msgstr "Schuldzahlung"
+
+#. module: pos_debt_notebook_sync
+#: model:ir.filters,name:pos_debt_notebook_sync.filter_done_orders
+msgid "Finished orders"
+msgstr "Erledigte Bestellungen"
+
+#. module: pos_debt_notebook_sync
+#: model:ir.actions.server,name:pos_debt_notebook_sync.action_notify_pos_about_debt_updates
+msgid "Notify POS about Debt updates"
+msgstr "POS über Schuldaktualisierungen benachrichtigen"
+
+#. module: pos_debt_notebook_sync
+#: model:ir.filters,name:pos_debt_notebook_sync.filter_paid_invoices
+msgid "Paid invoices"
+msgstr "Bezahlte Rechnungen"
+
+#. module: pos_debt_notebook_sync
+#: model:ir.model,name:pos_debt_notebook_sync.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"
