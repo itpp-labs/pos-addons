@@ -27,6 +27,7 @@
     "qweb": [
     ],
     "demo": [
+        "data/restaurant_printer_demo.xml",
     ],
 
     "post_load": None,
