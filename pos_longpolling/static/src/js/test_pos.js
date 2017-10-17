@@ -1,4 +1,3 @@
-
 odoo.define('pos_longpolling.tour', function (require) {
     "use strict";
 
