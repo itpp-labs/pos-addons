@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-import datetime
-import logging
-import json
 
+import logging
 import odoo
 from odoo.http import request
-from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
-
 
 _logger = logging.getLogger(__name__)
 

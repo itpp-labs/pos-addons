@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import json
-import time
-
 from odoo import api
 from odoo import fields
 from odoo import models
@@ -45,6 +42,7 @@ class PosMultiSession(models.Model):
                             help="Number of Multi-session starts. "
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")
+
 
 class PosSession(models.Model):
     _inherit = 'pos.session'

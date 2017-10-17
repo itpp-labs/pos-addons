@@ -1,17 +1,17 @@
-===============
- {Module Name}
-===============
+===============================
+ Multi-session Synchronization
+===============================
 
-{Put some short introduction first.}
+Provides synchronization for POS multi-session.
 
-{Then add more detailed description, technical specifications, any other information that could be interested for other developers. Don't forget that Usage instructions is a separated and has to be located in doc/index.rst file.}
+Has an opportunity of using an external longpolling server.
 
 Credits
 =======
 
 Contributors
 ------------
-* `{DEVELOPER_NAME} <https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------
@@ -24,12 +24,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/{REPO-NAME}/{BRANCH}
+Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
-HTML Description: https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/
+HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session_sync/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 {ODOO_COMMIT_SHA_TO_BE_UPDATED}
+Tested on Odoo 10.0 3d61fcb7a23f65862e10115955645f325db33289
