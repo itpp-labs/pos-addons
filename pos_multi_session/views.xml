@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
+        <template id="point_of_sale_assets" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
-                <script type="text/javascript" src="/pos_multi_session/static/src/js/test_pos.js"></script>
                 <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
+            </xpath>
+        </template>
+
+        <template id="assets_backend" name="pos_multi_session backend_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_multi_session/static/src/js/test_pos.js"></script>
             </xpath>
         </template>
 
