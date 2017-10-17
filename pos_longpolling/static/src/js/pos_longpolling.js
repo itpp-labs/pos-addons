@@ -63,6 +63,9 @@ odoo.define('pos_longpolling', function(require){
             if (thisArg){
                 callback = _.bind(callback, thisArg);
             }
+            if (!this.channel_callbacks){
+                this.channel_callbacks = {};
+            }
             this.channel_callbacks[channel_name] = callback;
             if (this.lonpolling_activated) {
                 this.activate_channel(channel_name);
