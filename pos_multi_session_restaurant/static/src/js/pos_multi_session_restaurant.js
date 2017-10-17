@@ -196,11 +196,15 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
         get_line_diff_hash: function(){
-            if (this.get_note()) {
-                return this.uid + '|' + this.get_note();
+            var res = OrderlineSuper.prototype.get_line_diff_hash.apply(this, arguments);
+            res = res.split('|');
+            if (res.length > 1) {
+                res[0] = this.uid;
+                res.join('|');
             } else {
-                return '' + this.uid;
+                res = '' + this.uid;
             }
+            return res;
         },
         /*  There is no need to check the presence of super method.
             Because pos_multi_session_restaurant is loaded later than pos_multi_session.
