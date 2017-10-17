@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import odoo
-from odoo import fields
-from odoo.tools import float_compare, mute_logger
 from odoo.tests.common import TransactionCase
 # from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
+
 
 @odoo.tests.common.at_install(False)
 @odoo.tests.common.post_install(True)

@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.2.4`
+-------
+- FIX: module didn't work with older odoo version in some context
+
 `2.2.3`
 -------
 
