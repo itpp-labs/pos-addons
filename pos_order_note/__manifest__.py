@@ -28,6 +28,7 @@
         "static/src/xml/order_note.xml",
     ],
     "demo": [
+        "data/pos_product_notes_demo.xml",
     ],
 
     "post_load": None,
