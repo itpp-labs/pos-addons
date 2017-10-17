@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="assets_backend" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
+        <template id="point_of_sale_assets" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_longpolling/static/src/js/pos_longpolling.js"></script>
                 <link rel="stylesheet" href="/pos_longpolling/static/src/css/pos_longpolling.css"/>
+            </xpath>
+        </template>
+
+        <template id="assets_backend" name="pos_longpolling backend_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_longpolling/static/src/js/test_pos.js"></script>
             </xpath>
         </template>
     </data>
