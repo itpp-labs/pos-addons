@@ -264,7 +264,7 @@ odoo.define('pos_longpolling', function(require){
                 div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
                 div.innerHTML = additional_refresh_icon;
                 this.$('.js_synch').append(div);
-            });
+            };
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 var element = self.$('.serv_primary');
                 self.set_poll_status(element, self.pos.bus);
