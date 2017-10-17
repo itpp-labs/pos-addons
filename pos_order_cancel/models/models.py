@@ -47,7 +47,7 @@ class PosOrder(models.Model):
     def _order_fields(self, ui_order):
         order = super(PosOrder, self)._order_fields(ui_order)
         process_canceled_line = partial(self.env['pos.order.line.canceled']._order_cancel_line_fields)
-        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order['canceled_lines']] if ui_order['canceled_lines'] else False
+        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order.get('canceled_lines', [])]
         return order
 
     @api.model
@@ -136,3 +136,9 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
         return super(PosOrderLineCanceled, self).create(values)
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)

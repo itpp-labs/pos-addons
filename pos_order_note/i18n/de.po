@@ -1,0 +1,197 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_order_note
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-14 10:52+0000\n"
+"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/js/order_note.js:301
+#, python-format
+msgid "Add Note for Order"
+msgstr "Bemerkung zu Bestellung"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/js/order_note.js:305
+#, python-format
+msgid "Add Note for Product"
+msgstr "Notiz zu Produkt hinzufügen"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:309
+#, python-format
+msgid "Apply"
+msgstr "Anwenden"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:284
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:306
+#, python-format
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: pos_order_note
+#: model:ir.actions.act_window,help:pos_order_note.pos_product_notes_action
+msgid "Click to define a new notes."
+msgstr "Hier klicken um eine neue Notiz zu erstellen"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_create_uid
+msgid "Created by"
+msgstr "Erstellt durch"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_id
+msgid "ID"
+msgstr "ID"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes___last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert durch"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:181
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:192
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:202
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:217
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:228
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:238
+#, python-format
+msgid "NOTE"
+msgstr "NOTIZ"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:322
+#, python-format
+msgid "Name"
+msgstr "Name"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:264
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_name
+#, python-format
+msgid "Note"
+msgstr "Notiz"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:10
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:27
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:37
+#, python-format
+msgid "Note:"
+msgstr "Notiz:"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_product_product_pos_notes
+#: model:ir.model.fields,field_description:pos_order_note.field_product_template_pos_notes
+#: model:ir.ui.view,arch_db:pos_order_note.view_template_property_form
+msgid "Notes for POS"
+msgstr "Notizen für POS"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:100
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:118
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:132
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:151
+#, python-format
+msgid "ORDER NOTE"
+msgstr "BESTELLUNGSNOTIZ"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:287
+#, python-format
+msgid "Ok"
+msgstr "Ok"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:260
+#, python-format
+msgid "Order Note"
+msgstr "Bestellnotiz"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:280
+#, python-format
+msgid "Other"
+msgstr "Anderes"
+
+#. module: pos_order_note
+#: model:ir.actions.act_window,name:pos_order_note.pos_product_notes_action
+#: model:ir.ui.menu,name:pos_order_note.menu_pos_product_notes
+#: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_form_view
+#: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_tree_view
+msgid "POS Product Notes"
+msgstr "POS Produktnotizen"
+
+#. module: pos_order_note
+#. openerp-web
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:259
+#, python-format
+msgid "Product Note"
+msgstr "Produktnotiz"
+
+#. module: pos_order_note
+#: model:ir.model,name:pos_order_note.model_product_template
+msgid "Product Template"
+msgstr "Produktvorlage"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_number
+msgid "Sequence"
+msgstr "Reihenfolge"
+
+#. module: pos_order_note
+#: model:ir.ui.view,arch_db:pos_order_note.view_template_property_form
+msgid "This note will be displayed on the POS."
+msgstr "Diese Notiz wird am POS angezeigt"
+
+#. module: pos_order_note
+#: model:ir.model,name:pos_order_note.model_pos_product_notes
+msgid "pos.product_notes"
+msgstr "pos.product_notes"

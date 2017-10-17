@@ -22,12 +22,14 @@
         "security/ir.model.access.csv",
         "views/template.xml",
         "views/views.xml",
+        "views/pos_config_view.xml",
     ],
     'qweb': [
         'static/src/xml/cancel_order.xml',
     ],
     "demo": [
-        'data/pos_cancelled_reason_demo.xml'
+        'data/pos_cancelled_reason_demo.xml',
+        'views/assets_demo.xml',
     ],
 
     "post_load": None,
