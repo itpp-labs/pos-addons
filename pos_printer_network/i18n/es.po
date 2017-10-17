@@ -1,0 +1,142 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_printer_network
+# 
+# Translators:
+# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-30 15:22+0000\n"
+"PO-Revision-Date: 2017-09-30 15:22+0000\n"
+"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_printer_network
+#: model:ir.model.fields,help:pos_printer_network.field_restaurant_printer_network_printer
+msgid "Check this box if this printer is Network printer"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:43
+#, python-format
+msgid "IP"
+msgstr ""
+
+#. module: pos_printer_network
+#: model:ir.model.fields,help:pos_printer_network.field_pos_config_receipt_network_printer_ip
+msgid "IP address of the network printer used for receipts"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:42
+#, python-format
+msgid "Name"
+msgstr "Nombre"
+
+#. module: pos_printer_network
+#: model:ir.model.fields,field_description:pos_printer_network.field_restaurant_printer_network_printer
+#: selection:pos.config,receipt_printer_type:0
+msgid "Network Printer"
+msgstr ""
+
+#. module: pos_printer_network
+#: model:ir.model.fields,field_description:pos_printer_network.field_pos_config_receipt_network_printer_ip
+msgid "Network Printer IP"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:38
+#, python-format
+msgid "Network printers"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:243
+#, python-format
+msgid "Offline"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:63
+#, python-format
+msgid "Ok"
+msgstr ""
+
+#. module: pos_printer_network
+#: model:ir.model.fields,field_description:pos_printer_network.field_pos_config_receipt_printer_type
+msgid "Printer Type"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:231
+#, python-format
+msgid "Scale"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:202
+#, python-format
+msgid "Scanner"
+msgstr ""
+
+#. module: pos_printer_network
+#: model:ir.model.fields,help:pos_printer_network.field_pos_config_receipt_printer_type
+msgid "Select the printer type you want to use receipt printing"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:44
+#, python-format
+msgid "Status"
+msgstr "Estatus"
+
+#. module: pos_printer_network
+#: selection:pos.config,receipt_printer_type:0
+msgid "USB Printer"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:54
+#, python-format
+msgid "USB printers"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:21
+#, python-format
+msgid "offline"
+msgstr ""
+
+#. module: pos_printer_network
+#. openerp-web
+#: code:addons/pos_printer_network/static/src/xml/pos_printer_network.xml:24
+#, python-format
+msgid "online"
+msgstr ""
+
+#. module: pos_printer_network
+#: model:ir.model,name:pos_printer_network.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"
+
+#. module: pos_printer_network
+#: model:ir.model,name:pos_printer_network.model_restaurant_printer
+msgid "restaurant.printer"
+msgstr ""

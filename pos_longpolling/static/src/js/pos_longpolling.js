@@ -257,15 +257,14 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            var machines = Object.entries(this.pos.buses);
-            machines.forEach(function(bus){
-                bus = bus[1];
+            for (var key in this.pos.buses){
+                bus = this.pos.buses[key];
                 var additional_refresh_icon = QWeb.render('synch_icon',{widget: this});
                 var div = document.createElement('div');
                 div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
                 div.innerHTML = additional_refresh_icon;
                 this.$('.js_synch').append(div);
-            });
+            };
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 var element = self.$('.serv_primary');
                 self.set_poll_status(element, self.pos.bus);
