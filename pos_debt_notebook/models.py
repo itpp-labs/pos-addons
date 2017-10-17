@@ -357,7 +357,49 @@ class PosCreditUpdate(models.Model):
         default=lambda s: s.env.user.company_id.currency_id,
     )
     balance = fields.Monetary('Balance Update', help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
+    new_balance = fields.Monetary('New Balance', help="Value to set balance to. Used only in Draft state.")
     note = fields.Text('Note')
     date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
 
-    state = fields.Selection([('confirm', 'Confirmed'), ('cancel', 'Canceled')], default='confirm', required=True)
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirmed'),
+        ('cancel', 'Canceled')
+    ], default='draft', required=True)
+    update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
+
+    def get_balance(self_, balance, new_balance):
+        return -balance + new_balance
+
+    def update_balance(self, vals):
+        partner_id = vals.get('partner_id', self.partner_id.id)
+        new_balance = vals.get('new_balance', self.new_balance)
+        state = vals.get('state', self.state) or 'draft'
+        update_type = vals.get('update_type', self.update_type)
+        if (state == 'draft' and update_type == 'new_balance'):
+            credit_balance = self.partner_id.browse(partner_id).credit_balance
+            vals['balance'] = self.get_balance(credit_balance, new_balance)
+
+    @api.model
+    def create(self, vals):
+        self.update_balance(vals)
+        return super(PosCreditUpdate, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self.update_balance(vals)
+        return super(PosCreditUpdate, self).write(vals)
+
+    def switch_to_confirm(self):
+        self.write({'state': 'confirm'})
+
+    def switch_to_cancel(self):
+        self.write({'state': 'cancel'})
+
+    def switch_to_draft(self):
+        self.write({'state': 'draft'})
+
+    def do_confirm(self):
+        active_ids = self._context.get('active_ids')
+        for r in self.env['pos.credit.update'].browse(active_ids):
+            r.switch_to_confirm()
