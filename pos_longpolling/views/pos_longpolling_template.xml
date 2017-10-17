@@ -10,7 +10,7 @@
 
         <template id="assets_backend" name="pos_longpolling backend_assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_longpolling/static/src/js/test_pos.js"></script>
+                <script type="text/javascript" src="/pos_longpolling/static/src/js/test_longpoll_pos.js"></script>
             </xpath>
         </template>
     </data>
