@@ -275,6 +275,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         get_line_diff_hash: function() {
             var custom_notes_ids = [];
             var custom_notes_ids_line = false;
+            var res = _super_orderline.get_line_diff_hash.apply(this,arguments);
             if (this.get_custom_notes()) {
                 this.get_custom_notes().forEach(function(custom_notes) {
                     custom_notes_ids.push(custom_notes.id);
@@ -284,14 +285,14 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             var id = this.uid || this.id;
             if (this.get_note()) {
                 if(this.get_custom_notes()) {
-                    return id + '|' + this.get_note() + '|' + custom_notes_ids_line;
+                    return res + '|' + custom_notes_ids_line;
                 }
-                return _super_orderline.get_line_diff_hash.apply(this,arguments);
+                return res;
             }
             if(this.get_custom_notes()) {
                return id + '|' + custom_notes_ids_line;
             }
-            return _super_orderline.get_line_diff_hash.apply(this,arguments);
+            return res;
         },
         clone: function(){
             var orderline = _super_orderline.clone.call(this);
