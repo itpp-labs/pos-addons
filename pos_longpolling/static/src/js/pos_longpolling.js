@@ -268,7 +268,7 @@ odoo.define('pos_longpolling', function(require){
                     bus = this.pos.buses[key];
                     var element = this.$('.serv_additional_' + bus.bus_id);
                     self.set_poll_status(element, bus);
-                });
+                };
             });
             this.pos.bus.longpolling_connection.set_status(true)
         },

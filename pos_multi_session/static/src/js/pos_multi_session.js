@@ -49,8 +49,10 @@ odoo.define('pos_multi_session', function(require){
             var ms_model = {
                 model: 'pos.multi_session',
                 fields: ['run_ID'],
-                domain: function(self){ return [['id', '=', self.config.multi_session_id[0]]]; },
-                loaded: function(self,current_session){
+                domain: function(self){
+                    return [['id', '=', self.config.multi_session_id[0]]];
+                },
+                loaded: function(self, current_session){
                     self.multi_session_run_ID = current_session[0].run_ID;
             }};
             this.models.splice(
@@ -83,7 +85,7 @@ odoo.define('pos_multi_session', function(require){
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
                 if (self.config.sync_server){
-                    var callback = self.ms_on_update;
+                    callback = self.ms_on_update;
                     self.add_bus('sync_server', self.config.sync_server);
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
                     self.sync_bus = self.get_bus('sync_server');
@@ -282,7 +284,8 @@ odoo.define('pos_multi_session', function(require){
                     if (err) {
                         console.log(err);
                     }
-                    event.preventDefault(); def.reject();
+                    event.preventDefault();
+                    def.reject();
                 });
             return def;
         },
@@ -578,7 +581,9 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = address ? address.serv : self.pos.config.sync_server || '';
+                var temp = address
+                ? address.serv
+                : self.pos.config.sync_server || '';
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message,
