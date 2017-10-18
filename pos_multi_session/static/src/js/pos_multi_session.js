@@ -547,13 +547,24 @@ odoo.define('pos_multi_session', function(require){
         },
         request_sync_all: function(){
             var data = {run_ID: this.pos.multi_session_run_ID};
+//            this.broadcast_message(data)
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
+//            this.broadcast_message(data)
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
+//            if (this.offline_sync_all_timer) {
+//                return this.broadcast_message(data);
+//            }
+//            this.broadcast_message(data)
             return this.send({action: 'update_order', data: data});
+        },
+        broadcast_message: function(data){
+            if (this.pos.buses){
+                this.send({action: 'broadcast_message', data: data}, {serv: ''});
+            }
         },
         enque: function(func){
             var self = this;
@@ -570,7 +581,7 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         _debug_send_number: 0,
-        send: function(message){
+        send: function(message, address){
             var current_send_number = 0;
             if (this.pos.debug){
                 current_send_number = this._debug_send_number++;
@@ -579,7 +590,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = self.pos.config.sync_server || '';
+                var temp = address ? address.serv : self.pos.config.sync_server || '';
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message,

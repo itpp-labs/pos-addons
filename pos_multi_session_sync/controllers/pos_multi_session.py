@@ -19,6 +19,13 @@ class Controller(BusController):
     @odoo.http.route('/pos_multi_session_sync/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message, dbname, user_ID):
 
+        # print "=============================================="
+        # print "multi_session_update"
+        # print multi_session_id
+        # print message
+        # print dbname
+        # print user_ID
+        # print "=============================================="
         phantomtest = request.httprequest.headers.get('phantomtest')
 
         ms = request.env["pos_multi_session_sync.multi_session"]\

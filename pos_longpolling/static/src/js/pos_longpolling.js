@@ -23,6 +23,7 @@ odoo.define('pos_longpolling', function(require){
             if (!this.channel_callbacks){
                 this.channel_callbacks = {};
             }
+            this.ERROR_DELAY = 10000;
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             this.activated = false;
@@ -144,6 +145,7 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.buses = {};
+
             this.bus = bus.bus;
             this.bus.lonpolling_activated = false;
             this.bus.name = 'Default';
