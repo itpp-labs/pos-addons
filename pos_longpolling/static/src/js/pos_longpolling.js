@@ -27,18 +27,7 @@ odoo.define('pos_longpolling', function(require){
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             this.activated = false;
-//            if (this != this.pos.bus){
-//                this.create_icon();
-//            }
         },
-//        create_icon: function(){
-//            var additional_refresh_icon = QWeb.render('synch_icon');
-//            var div = document.createElement('div');
-//            div.className = "js_poll_connected oe_icon oe_red serv_additional_" + this.bus_id;
-//            div.innerHTML = additional_refresh_icon;
-//            this.$('.js_synch').append(div);
-////            this.trigger("change:poll_connection", false);
-//        },
         poll: function() {
             var self = this;
             self.activated = true;

@@ -83,7 +83,6 @@ odoo.define('pos_multi_session', function(require){
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
                 if (self.config.sync_server){
-//                    var channel_name = "pos.multi_session.sync_server";
                     var callback = self.ms_on_update;
                     self.add_bus('sync_server', self.config.sync_server);
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
@@ -547,24 +546,13 @@ odoo.define('pos_multi_session', function(require){
         },
         request_sync_all: function(){
             var data = {run_ID: this.pos.multi_session_run_ID};
-//            this.broadcast_message(data)
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
-//            this.broadcast_message(data)
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-//            if (this.offline_sync_all_timer) {
-//                return this.broadcast_message(data);
-//            }
-//            this.broadcast_message(data)
             return this.send({action: 'update_order', data: data});
-        },
-        broadcast_message: function(data){
-            if (this.pos.buses){
-                this.send({action: 'broadcast_message', data: data}, {serv: ''});
-            }
         },
         enque: function(func){
             var self = this;
