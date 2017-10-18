@@ -18,48 +18,48 @@ odoo.define('pos_order_note.tour', function(require) {
         position: "bottom"
     }, {
         trigger: ".tables .table",
-        content: _t("<p>Click <b>table</b></p>"),
+        content: _t("<p>Click on <b>table</b></p>"),
         position: "bottom"
     }, {
         trigger: ".product-list .product",
-        content: _t("<p>Click product 1</p>"),
+        content: _t("<p>Select the first product in the product list</p>"),
         position: "bottom"
     },
     {
         trigger: ".control-button:has(.fa-tag)",
-        content: _t("<p>Click <b>Note</b> button</p>"),
+        content: _t("<p>Click on <b>Note</b> button</p>"),
         position: "bottom"
     }, {
         trigger: ".product_note #1",
-        content: _t("<p>Click to Predefine note"),
+        content: _t("<p>Click on the first predefined note</p>"),
         position: "bottom"
     }, {
         trigger: ".product_note #2",
-        content: _t("<p>Click to Predefine note"),
+        content: _t("<p>Click on the second predefined note</p>"),
         position: "bottom"
     }, {
         trigger: ".popup-confirm-note .confirm",
-        content: _t("<p>Click confirm button"),
+        content: _t("<p>Click on Confirm button</p>"),
         position: "bottom"
     }, {
         trigger: ".control-button:has(.fa-tag)",
-        content: _t("<p>Click <b>Note</b> button</p>"),
+        content: _t("<p>Click on <b>Note</b> button</p>"),
         position: "bottom"
     }, {
         trigger: ".popup-confirm-note .order_type",
-        content: _t("<p>Click <b>Order Note</b> type</p>"),
+        content: _t("<p>Click on <b>Order Note</b></p>"),
         position: "bottom"
     }, {
         trigger: ".product_note #3",
-        content: _t("<p>Click to Predefine note"),
+        content: _t("<p>Click on predefined note</p>"),
         position: "bottom"
     }, {
         trigger: ".popup-confirm-note .confirm",
-        content: _t("<p>Click confirm button"),
+        content: _t("<p>Click on Confirm button</p>"),
         position: "bottom"
     }, {
         trigger: ".control-buttons .order-submit",
-        content: _t("<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"),
+        content: _t("<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"),
         position: "bottom"
     }
     ]);
