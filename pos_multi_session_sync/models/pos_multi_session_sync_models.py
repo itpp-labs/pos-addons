@@ -144,9 +144,6 @@ class PosMultiSessionSync(models.Model):
         self.ensure_one()
         notifications = []
         channel_name = "pos.multi_session"
-        # print "========================================"
-        # print "broadcast_message"
-        # print message
         for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '!=', self.env.context.get('user_ID')),
                                                                   ('multi_session_ID', '=', self.id)]):
             message_ID = pos.multi_session_message_ID
@@ -154,8 +151,6 @@ class PosMultiSessionSync(models.Model):
             pos.multi_session_message_ID = message_ID
             message['data']['message_ID'] = message_ID
             self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
-        # print pos.pos_ID
-        # print "========================================"
 
         if self.env.context.get('phantomtest') == 'slowConnection':
             _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)

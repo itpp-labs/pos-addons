@@ -83,7 +83,7 @@ odoo.define('pos_multi_session', function(require){
                 var callback = self.ms_on_update;
                 self.bus.add_channel_callback(channel_name, callback, self);
                 if (self.config.sync_server){
-                    var channel_name = "pos.multi_session.sync_server";
+//                    var channel_name = "pos.multi_session.sync_server";
                     var callback = self.ms_on_update;
                     self.add_bus('sync_server', self.config.sync_server);
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
