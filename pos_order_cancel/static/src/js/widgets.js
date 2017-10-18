@@ -68,12 +68,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 },
                 cancel: function() {
                     if (type === 'product') {
-                        var old_quantity = String(orderline.old_quantity);
-                        orderline.set_quantity(orderline.old_quantity);
-                        self.gui.screen_instances.products.numpad.state.set({
-                            buffer: String(0)
-                        });
-                        self.gui.screen_instances.products.numpad.state.appendNewChar(old_quantity);
+                        orderline.cancel_quantity_changes();
                     }
                 }
             });

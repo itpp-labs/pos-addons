@@ -102,6 +102,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             this.was_printed = data.was_printed;
         },
+        cancel_quantity_changes: function() {
+            _super_orderline.cancel_quantity_changes.apply(this, arguments);
+            if (this.was_printed) {
+                this.set_dirty(false);
+            }
+        },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.was_printed = this.was_printed;
