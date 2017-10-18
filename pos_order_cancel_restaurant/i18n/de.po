@@ -1,0 +1,112 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_order_cancel_restaurant
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-14 10:52+0000\n"
+"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+msgid ""
+"Ask cancelation / refund reason for printed at kitchen (i.e. cooked) orders "
+"only"
+msgstr "Begründung für Storno-/Rückvergütungen von Küchenbons verlangen"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+msgid "Ask reason for kitchen orders only"
+msgstr "Begründung nur für Küchenbestellungen verlangen"
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_3
+msgid "Burned"
+msgstr "Verbrannt"
+
+#. module: pos_order_cancel_restaurant
+#. openerp-web
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:30
+#, python-format
+msgid "Destroy Current Order ?"
+msgstr "Aktuelle Bestellung löschen"
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_4
+msgid "Foreign object"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_5
+msgid "Inappropriate roasting degree"
+msgstr "Falsche Garstufe"
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_1
+msgid "Over-salted"
+msgstr "Versalzen"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+msgid "Printed"
+msgstr "Gedruckt"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+msgid ""
+"Product was printed at kitchen printer. Usually it means, that product was "
+"canceled after being cooked."
+msgstr ""
+"Das Produkt ist auf dem Küchendrucker gedruckt worden. Normalerweise "
+"bedeutet das, dass das Produkt nach der Zubereitung storniert wurde."
+
+#. module: pos_order_cancel_restaurant
+#. openerp-web
+#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:8
+#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:19
+#, python-format
+msgid "REASON"
+msgstr "GRUND"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.ui.view,arch_db:pos_order_cancel_restaurant.view_pos_config_form
+msgid "Refunds / Cancellations"
+msgstr "Rückvergütungen/Stornos"
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_6
+msgid "Special requests are ignored"
+msgstr "Spezielle Anforderungen werden ignoriert"
+
+#. module: pos_order_cancel_restaurant
+#: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_2
+msgid "Wrong Temperature"
+msgstr "Falsche Temperatur"
+
+#. module: pos_order_cancel_restaurant
+#. openerp-web
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:31
+#, python-format
+msgid "You will lose any data associated with the current order"
+msgstr "Sie verlieren alle Daten der laufenden Bestellung"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order_line_canceled
+msgid "pos.order.line.canceled"
+msgstr "pos.order.line.canceled"

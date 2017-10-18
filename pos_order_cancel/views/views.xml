@@ -70,6 +70,7 @@
                             <tree string="Canceled Order lines" editable="bottom" create="false" delete="false">
                                 <field name="product_id"/>
                                 <field name="qty"/>
+                                <field name="current_qty"/>
                                 <field name="price_unit" widget="monetary"/>
                                 <field name="discount" widget="monetary"/>
                                 <field name="reason"/>
@@ -150,6 +151,7 @@
                 <field name="price_unit" type="measure"/>
                 <field name="reason"/>
                 <field name="qty" type="measure"/>
+                <field name="current_qty" type="measure"/>
                 <field name="price_subtotal" type="measure"/>
             </pivot>
         </field>
@@ -163,6 +165,7 @@
                 <group col="4">
                     <field name="product_id"/>
                     <field name="qty"/>
+                    <field name="current_qty"/>
                     <field name="price_unit" widget="monetary"/>
                     <field name="discount" widget="monetary"/>
                     <field name="reason"/>
@@ -171,7 +174,7 @@
                     <field name="order_id"/>
                 </group>
                 <group>
-                    <field name="tax_ids"/>
+                    <field name="tax_ids" widget="many2many_tags"/>
                 </group>
             </form>
         </field>
@@ -184,6 +187,7 @@
             <tree string="Canceled Lines" create="false" delete="false">
                 <field name="product_id"/>
                 <field name="qty"/>
+                <field name="current_qty"/>
                 <field name="price_unit" widget="monetary"/>
                 <field name="order_id"/>
                 <field name="reason"/>
@@ -205,9 +209,11 @@
                 <filter string="Today" name="today" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
                 <filter string="This Month" name="thismonth" domain="[('canceled_date','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
                 <filter string="This Year" name="thisyear" domain="[('canceled_date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <filter string="No Negative Refunds" name="no_negative_refunds" domain="[('current_qty','>=',0)]"/>
                 <field name="product_id"/>
                 <field name="user_id"/>
                 <field name="reason"/>
+                <field name="current_qty"/>
                 <group expand="1" string="Group By">
                     <filter string="Users" context="{'group_by':'user_id'}"/>
                     <separator/>

@@ -44,15 +44,16 @@ odoo.define('pos_order_cancel.models', function (require) {
             new_line.reason = false;
             if (this.is_cancelled) {
                 new_line.qty = line.max_quantity;
+                new_line.current_qty = 0;
             } else {
                 if (line.quantity >= 0) {
                     new_line.qty = line.max_quantity - line.quantity;
                 } else {
                     new_line.qty = line.max_quantity;
                 }
+                new_line.current_qty = line.quantity;
                 new_line.canceled_date = this.get_datetime();
             }
-
             new_line.cancelled_id = line.id;
             new_line.user_id = this.pos.get_cashier().id;
             line.cancelled_line = new_line;
@@ -68,6 +69,7 @@ odoo.define('pos_order_cancel.models', function (require) {
         save_canceled_line: function(orderline) {
             if (orderline.cancelled_line && this.is_cancelled) {
                 orderline.cancelled_line.qty = orderline.max_quantity;
+                orderline.cancelled_line.current_qty = 0;
             } else {
                 this.add_cancelled_line(orderline);
             }
@@ -89,8 +91,10 @@ odoo.define('pos_order_cancel.models', function (require) {
             }
             if (line.cancelled_line) {
                 line.cancelled_line.qty = line.max_quantity;
+                line.cancelled_line.current_qty = 0;
                 if (line.quantity >= 0) {
                     line.cancelled_line.qty = line.max_quantity - line.quantity;
+                    line.cancelled_line.current_qty = line.quantity;
                 }
                 line.cancelled_line.user_id = this.pos.get_cashier().id;
                 this.trigger('change:sync');
