@@ -264,9 +264,8 @@ odoo.define('pos_longpolling', function(require){
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 var element = self.$('.serv_primary');
                 self.set_poll_status(element, self.pos.bus);
-                var machines = Object.entries(this.pos.buses);
-                machines.map(function(bus){
-                    bus = bus[1]
+                for (var key in this.pos.buses){
+                    bus = this.pos.buses[key];
                     var element = this.$('.serv_additional_' + bus.bus_id);
                     self.set_poll_status(element, bus);
                 });
