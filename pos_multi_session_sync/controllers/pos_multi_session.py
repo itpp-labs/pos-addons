@@ -20,16 +20,14 @@ class Controller(BusController):
     def multi_session_update(self, multi_session_id, message, dbname, user_ID):
 
         phantomtest = request.httprequest.headers.get('phantomtest')
-        ms = request.env["pos_multi_session_sync.multi_session"]
-        access = request.env['ir.config_parameter'].get_param('pos_longpolling.allow_public')
-        if access:
-            ms = ms.sudo()
-        res = ms.search([('multi_session_ID', '=', int(multi_session_id)),
+        ms_model = request.env["pos_multi_session_sync.multi_session"]
+        allow_public = request.env['ir.config_parameter'].get_param('pos_longpolling.allow_public')
+        if allow_public:
+            ms_model = ms_model.sudo()
+        ms = ms_model.search([('multi_session_ID', '=', int(multi_session_id)),
                              ('dbname', '=', dbname)])
-        if not res:
-            ms = ms.create({'multi_session_ID': int(multi_session_id), 'dbname': dbname})
-        res = ms.with_context(user_ID=user_ID, phantomtest=phantomtest)
-        if access:
-            res = res.sudo()
-        res = res.on_update_message(message)
+        if not ms:
+            ms = ms_model.create({'multi_session_ID': int(multi_session_id), 'dbname': dbname})
+        ms = ms.with_context(user_ID=user_ID, phantomtest=phantomtest)
+        res = ms.on_update_message(message)
         return res

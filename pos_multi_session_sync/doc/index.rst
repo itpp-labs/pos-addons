@@ -25,3 +25,14 @@ To make your second server be able to process 'OPTIONS' method requests, nginx c
                 add_header 'Content-Length' 0;
                 return 204;
         }
+
+In order to configure access to the server from other sources do the following:
+
+* 1 Open menu ``Settings >> Activate the developer mode``
+* 2 Open menu ``Settings >> Parameters >> System Parameters``
+* 3 Click ``[Create]``
+
+    * 3.1 Paste in the field **Key** 'pos_longpolling.allow_public'
+    * 3.1 Paste in the field **Value** '1'
+
+* 4 Click ``[Save]``
