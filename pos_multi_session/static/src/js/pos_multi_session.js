@@ -325,14 +325,14 @@ odoo.define('pos_multi_session', function(require){
             } else if (this.pos.multi_session){
                 this.ms_info.created = this.pos.ms_my_info();
             }
+            if (!this.run_ID) {
+                this.run_ID = this.pos.multi_session_run_ID || 1;
+            }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
             this.bind('change:sync', function(){
                 self.ms_update();
             });
-            if (!this.run_ID) {
-                this.run_ID = this.pos.multi_session_run_ID || 1;
-            }
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
