@@ -8,7 +8,6 @@ odoo.define('pos_longpolling', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-    var core = require('web.core');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -144,7 +143,7 @@ odoo.define('pos_longpolling', function(require){
                 self.bus.add_channel_callback("pos.longpolling", callback, self.bus.longpolling_connection);
                 if (self.config.autostart_longpolling){
                     self.bus.start();
-                };
+                }
             });
         },
         add_bus: function(key, sync_server){
@@ -155,9 +154,8 @@ odoo.define('pos_longpolling', function(require){
         get_bus: function(key){
             if (key){
                 return this.buses[key];
-            } else {
-                return this.bus;
             }
+            return this.bus;
         },
     });
     exports.LongpollingConnection = Backbone.Model.extend({
@@ -220,8 +218,8 @@ odoo.define('pos_longpolling', function(require){
             this.response_status = false;
             var serv_adr = '';
             if (this.pos.config.sync_server){
-                var serv_adr = this.pos.config.sync_server || '';
-            };
+                serv_adr = this.pos.config.sync_server || '';
+            }
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                 if the value is false you need to start the response timer*/
@@ -238,8 +236,8 @@ odoo.define('pos_longpolling', function(require){
         }
     });
     chrome.StatusWidget.include({
-        set_poll_status: function(element, bus) {
-            if (bus.longpolling_connection.status) {
+        set_poll_status: function(element, current_bus) {
+            if (current_bus.longpolling_connection.status) {
                 element.removeClass('oe_red');
                 element.addClass('oe_green');
             } else {
@@ -253,24 +251,28 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            for (var key in this.pos.buses){
-                bus = this.pos.buses[key];
-                var additional_refresh_icon = QWeb.render('synch_icon',{widget: this});
-                var div = document.createElement('div');
-                div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
-                div.innerHTML = additional_refresh_icon;
-                this.$('.js_synch').append(div);
+            if (this.pos.buses){
+                for (var key in this.pos.buses){
+                    bus = this.pos.buses[key];
+                    var additional_refresh_icon = QWeb.render('synch_icon',{widget: this});
+                    var div = document.createElement('div');
+                    div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
+                    div.innerHTML = additional_refresh_icon;
+                    this.$('.js_synch').append(div);
+                }
             };
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 var element = self.$('.serv_primary');
                 self.set_poll_status(element, self.pos.bus);
-                for (var key in this.pos.buses){
-                    bus = this.pos.buses[key];
-                    var element = this.$('.serv_additional_' + bus.bus_id);
-                    self.set_poll_status(element, bus);
-                };
+                if (this.pos.buses){
+                    for (key in this.pos.buses){
+                        bus = this.pos.buses[key];
+                        element = $('.serv_additional_' + bus.bus_id);
+                        self.set_poll_status(element, bus);
+                    }
+                }
             });
-            this.pos.bus.longpolling_connection.set_status(true)
+            this.pos.bus.longpolling_connection.set_status(true);
         },
     });
     return exports;

@@ -49,10 +49,10 @@ odoo.define('pos_multi_session', function(require){
             var ms_model = {
                 model: 'pos.multi_session',
                 fields: ['run_ID'],
-                domain: function(self){
+                domain: function(){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
-                loaded: function(self, current_session){
+                loaded: function(me, current_session){
                     self.multi_session_run_ID = current_session[0].run_ID;
             }};
             this.models.splice(
