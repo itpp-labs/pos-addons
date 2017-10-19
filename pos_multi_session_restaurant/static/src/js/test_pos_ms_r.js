@@ -4,7 +4,9 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     require("pos_multi_session.tour")
     var tour = require("web_tour.tour");
 
-    var steps = tour.tours.open_pos_tour.steps;
+    var steps = tour.tours.tour_pos_multi_session.steps;
+
+    console.log('--------------------------', steps, '------steps--------------------');
 
     var element = steps.find(function(step){
         return step.trigger === ".o_pos_kanban button.oe_kanban_action_button";
@@ -13,7 +15,7 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     steps.splice(steps.indexOf(element) + 1,
     0, {
         content: "click on a table",
-        trigger: ".table > .label:contains('T9')",
+        trigger: ".table",
     });
 
     tour.register('open_pos_ms_r_tour', { test: true, url: '/web?debug=assets#' }, steps);
