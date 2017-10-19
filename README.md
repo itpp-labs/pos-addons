@@ -1,7 +1,7 @@
 Odoo POS addons
 ===============
 
-Odoo (OpenERP) POS addons 
+Odoo POS addons 
 
 List of repositories:
 ---------------------
