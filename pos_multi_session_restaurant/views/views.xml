@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="assets_backend" name="pos_multi_session_restaurant assets" inherit_id="point_of_sale.assets">
+        <template id="pos_ms_restaurant_assets" name="pos_multi_session_restaurant assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js"></script>
+            </xpath>
+        </template>
+
+        <template id="assets_backend" name="pos_multi_session_restaurant assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/test_pos_ms_r.js"></script>
             </xpath>
         </template>
 
