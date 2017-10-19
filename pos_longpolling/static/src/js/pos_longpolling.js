@@ -235,6 +235,26 @@ odoo.define('pos_longpolling', function(require){
             });
         }
     });
+
+
+
+    chrome.Chrome.include({
+        build_widgets: function(){
+            if (Object.keys(this.pos.buses).length){
+                    var element = this.widgets.find(function(w){
+                    return w.name === 'notification';
+                });
+                var index = this.widgets.indexOf(element);
+                this.widgets.splice(index + 1, 0, {
+                    'name':   'AdditionalSynchNotificationWidget',
+                    'widget': AdditionalSynchNotificationWidget,
+                    'append':  '.pos-rightheader',
+                })
+            }
+            this._super();
+        },
+    });
+
     chrome.StatusWidget.include({
         set_poll_status: function(element, current_bus) {
             if (current_bus.longpolling_connection.status) {
@@ -275,5 +295,23 @@ odoo.define('pos_longpolling', function(require){
             this.pos.bus.longpolling_connection.set_status(true);
         },
     });
+
+    var StatusWidget = chrome.StatusWidget;
+    var AdditionalSynchNotificationWidget = StatusWidget.extend({
+        template: 'AdditionalSynchNotificationWidget',
+        start: function(){
+            var self = this;
+            var element = self.$('.serv_additional');
+            if (Object.keys(this.pos.buses).length){
+                for (key in this.pos.buses){
+                        bus = this.pos.buses[key];
+                        self.set_poll_status(element, bus);
+                    }
+            } else {
+                element.addClass('hidden');
+            }
+        },
+    });
+
     return exports;
 });
