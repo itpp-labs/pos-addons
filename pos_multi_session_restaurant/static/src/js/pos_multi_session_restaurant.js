@@ -69,7 +69,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var floor_model = _.find(this.models, function(model){
                 return model.model === 'restaurant.floor';
             });
-            floor_model.domain = function(){
+            floor_model.domain = function(self){
                 var temporary = [['id','in',self.config.floor_ids]];
                 if (self.config.multi_session_id){
                     var ms_floors = _.find(self.multi_session_floors, function(session){
