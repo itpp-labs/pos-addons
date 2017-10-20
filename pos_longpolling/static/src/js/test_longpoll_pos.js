@@ -20,6 +20,6 @@ odoo.define('pos_longpolling.tour', function (require) {
         }
     ];
 
-    tour.register('longpoll_connection_tour', { test: true, url: '/web?debug=assets#' }, steps);
+    tour.register('longpoll_connection_tour', { test: true, url: '/web' }, steps);
 
 });

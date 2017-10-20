@@ -16,6 +16,6 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
         trigger: ".table",
     });
 
-    tour.register('open_pos_ms_r_tour', { test: true, url: '/web?debug=assets#' }, steps);
+    tour.register('open_pos_ms_r_tour', { test: true, url: '/web' }, steps);
 
 });

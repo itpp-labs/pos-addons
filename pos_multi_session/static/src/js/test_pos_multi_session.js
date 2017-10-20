@@ -31,6 +31,6 @@ odoo.define('pos_multi_session.tour', function (require) {
 
     steps = steps.concat(add_product_to_order('Ekomurz.nl'));
 
-    tour.register('tour_pos_multi_session', { test: true, url: '/web?debug=assets#' }, steps);
+    tour.register('tour_pos_multi_session', { test: true, url: '/web' }, steps);
 
 });

@@ -8,7 +8,7 @@ import odoo.tests
 class TestUi(odoo.tests.HttpCase):
 
     def test_longpolling_pos(self):
-        self.phantom_js("/web?debug=assets#",
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('longpoll_connection_tour', 1000)",
+        self.phantom_js("/web",
+                        "odoo.__DEBUG__.services['web_tour.tour'].run('longpoll_connection_tour')",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.longpoll_connection_tour.ready",
                         login="admin")

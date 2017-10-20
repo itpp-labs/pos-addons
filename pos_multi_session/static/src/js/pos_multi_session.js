@@ -549,31 +549,14 @@ odoo.define('pos_multi_session', function(require){
         },
         request_sync_all: function(){
             var data = {run_ID: this.pos.multi_session_run_ID};
-//            this.broadcast_message(data);
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
-//            this.broadcast_message(data);
             this.send({action: 'remove_order', data: data});
         },
         update: function(data){
-//            this.broadcast_message(data);
             return this.send({action: 'update_order', data: data});
         },
-//        broadcast_message: function(data){
-//            var address = {};
-//            if (Object.keys(this.pos.buses).length){
-////                for (var key in this.pos.buses){
-////                    if (this.pos.buses.hasOwnProperty(key)){
-//                        var bus = this.pos.bus;
-//                        address.serv = bus.serv_adr;
-////                        bus.longpolling_connection.send(address);
-//                        bus.poll(address);
-////                        this.send({action: 'broadcast_message', data: data}, address);
-////                    }
-////                }
-//            }
-//        },
         enque: function(func){
             var self = this;
             this.func_queue.push(func);
@@ -612,7 +595,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                if(error.message === 'XmlHttpRequestError ') {
+                if(error.message === 'XmlHttpRequestError ' || error.message === 'XmlHttpRequestError Bad Gateway') {
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.sync_bus.longpolling_connection.network_is_off();
