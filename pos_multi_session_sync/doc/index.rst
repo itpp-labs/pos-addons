@@ -1,5 +1,5 @@
 ===============================
- Multi-session Synchronization
+ POS Multi-session Sync Server
 ===============================
 
 Installation
@@ -7,8 +7,8 @@ Installation
 
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
 
-Usage
-=====
+Separate Sync Server
+--------------------
 
 In case you use second server, there might be an 'Access-Control-Allow-Origin' error. Your web server has to add additional header to response. Configuration for nginx may look as following::
 
@@ -26,13 +26,28 @@ To make your second server be able to process 'OPTIONS' method requests, nginx c
                 return 204;
         }
 
-In order to configure access to the server from other sources do the following:
+In order to configure access to the sync server do the following on a server:
 
-* 1 Open menu ``Settings >> Activate the developer mode``
-* 2 Open menu ``Settings >> Parameters >> System Parameters``
-* 3 Click ``[Create]``
+* `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
+* Open menu ``Settings >> Parameters >> System Parameters``
+* Click ``[Create]``
 
-    * 3.1 Paste in the field **Key** 'pos_longpolling.allow_public'
-    * 3.1 Paste in the field **Value** '1'
+    * Paste in the field **Key** 'pos_longpolling.allow_public'
+    * Paste in the field **Value** '1'
 
-* 4 Click ``[Save]``
+* Click ``[Save]``
+
+Configuration
+=============
+
+Separate sync server
+--------------------
+
+In main server configure sync server:
+
+* Open menu ``Point of Sale``
+* Click ``Configuration >> Point of Sale``
+* Click on a POS belongs to required for syncing Multi-session
+* Click ``[Edit]``
+* Paste an external server url in the field **Sync Server**
+* Click ``[Save]``
