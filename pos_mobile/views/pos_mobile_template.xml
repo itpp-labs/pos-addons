@@ -3,10 +3,13 @@
     <data>
         <template id="pos_assets" name="pos_mobile assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/pos_mobile/static/src/css/swipe_styles.css"/>
-                <script type="text/javascript" src="/pos_mobile/static/lib/swipe.js"></script>
+                <link rel="stylesheet" href="/pos_mobile/static/src/css/swiper.css"/>
+                <link rel="stylesheet" href="/pos_mobile/static/src/css/pos_swiper.css"/>
+                <script type="text/javascript" src="/pos_mobile/static/lib/swiper.js"></script>
                 <script type="text/javascript" src="/pos_mobile/static/src/js/mobile.js"></script>
+                <script type="text/javascript" src="/pos_mobile/static/src/js/gui.js"></script>
                 <script type="text/javascript" src="/pos_mobile/static/src/js/screens.js"></script>
+                <script type="text/javascript" src="/pos_mobile/static/src/js/chrome.js"></script>
             </xpath>
         </template>
         <template id="assets_backend" name="pos_mobile assets" inherit_id="web.assets_backend">

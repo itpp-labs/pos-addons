@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-extend="ProductScreenWidget">
-        <t t-jquery="div[class='product-screen screen']">
-            $(this).addClass('swipe');
-        </t>
-    </t>
-
     <t t-extend="Chrome">
-        <t t-jquery="div[class='subwindow-container-fix screens']">
-            $(this).addClass('swipe').attr('id', 'mySwipe');
+        <t t-jquery="div[class='pos-content']" t-operation="prepend">
+            <div class="swiper-container swiper-container-v">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide order-and-products">
+                        <div class="swiper-container swiper-container-h">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide slide-order"></div>
+                                <div class="swiper-slide slide-products"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide-search"></div>
+                    <div class="swiper-slide under-search">
+                        <div class="swiper-container swiper-container-h">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide slide-categories"></div>
+                                <div class="swiper-slide slide-numpad"></div>
+                                <div class="swiper-slide slide-buttons"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="swiper-slide slide-payment"></div>-->
+                    <!--<div class="swiper-slide slide-clientlist"></div>-->
+                    <!--<div class="swiper-slide slide-receipt"></div>-->
+                    <!--<div class="swiper-slide slide-scale"></div>-->
+                </div>
+            </div>
         </t>
     </t>
 
@@ -18,6 +37,26 @@
             <span class='control-button js-category-switch' t-att-data-category-id="category.id" >
                 <t t-esc="category.name"/>
             </span>
+        </t>
+    </t>
+
+    <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="header[class='rightpane-header']" t-operation="append">
+            <div class="slide-categories-button">
+                <i class='fa fa-th-list'></i>
+            </div>
+            <div class="slide-numpad-button">
+                <i class='fa fa-plus-square-o'></i>
+                <i class='fa fa-minus-square-o'></i>
+            </div>
+        </t>
+        <t t-jquery="div[class='breadcrumbs']" t-operation="before">
+            <div class="slide-order-button">
+                <i class='fa fa-cutlery'></i>
+            </div>
+        </t>
+        <t t-jquery="span[class='search-clear']" t-operation="append">
+            <i class='fa fa-search'></i>
         </t>
     </t>
 

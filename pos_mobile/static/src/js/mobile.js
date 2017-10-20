@@ -2,10 +2,6 @@ odoo.define('pos_mobile.mobile', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
-    var session = require('pos_mobile.session');
-
-
-
 
     var PosModelSuper = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
