@@ -27,7 +27,7 @@ odoo.define('pos_longpolling', function(require){
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             this.activated = false;
         },
-        poll: function() {
+        poll: function(address) {
             var self = this;
             self.activated = true;
             var now = new Date().getTime();
@@ -36,7 +36,10 @@ odoo.define('pos_longpolling', function(require){
             });
             var data = {channels: self.channels, last: self.last, options: options};
             // function is copy-pasted from bus.js but the line below defines a custom server address
-            session.rpc(this.serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
+            serv_adr = address
+                ? address.serv
+                : this.serv_adr || '';
+            session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
                     self.poll();
@@ -213,13 +216,15 @@ odoo.define('pos_longpolling', function(require){
             this.stop_timer();
             this.start_timer(this.pos.config.response_timeout, "response");
         },
-        send: function() {
+        send: function(address) {
             var self = this;
             this.response_status = false;
             var serv_adr = '';
-            if (this.pos.config.sync_server){
-                serv_adr = this.pos.config.sync_server || '';
-            }
+//            if (this.pos.config.sync_server){
+                serv_adr = address
+                    ? address.serv
+                    : this.pos.config.sync_server || '';
+//            }
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                 if the value is false you need to start the response timer*/
@@ -259,11 +264,13 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             var self = this;
             var element = self.$('.serv_additional');
-            if (Object.keys(this.pos.buses).length){
+            if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
-                    bus = this.pos.buses[key];
-                    self.set_poll_status(element, bus);
-                    bus.longpolling_connection.set_status(true);
+                    if (this.pos.buses.hasOwnProperty(key)){
+                        bus = this.pos.buses[key];
+                        self.set_poll_status(element, bus);
+                        bus.longpolling_connection.set_status(true);
+                    }
                 }
             } else {
                 element.addClass('hidden');
