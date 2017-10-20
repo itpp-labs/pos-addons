@@ -241,7 +241,7 @@ odoo.define('pos_longpolling', function(require){
     chrome.Chrome.include({
         build_widgets: function(){
             if (Object.keys(this.pos.buses).length){
-                    var element = this.widgets.find(function(w){
+                    var element = _.find(this.widgets, function(w){
                     return w.name === 'notification';
                 });
                 var index = this.widgets.indexOf(element);

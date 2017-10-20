@@ -8,7 +8,7 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
 
     console.log('--------------------------', steps, '------steps--------------------');
 
-    var element = steps.find(function(step){
+    var element = _.find(steps, function(step){
         return step.trigger === ".o_pos_kanban button.oe_kanban_action_button";
     });
 
