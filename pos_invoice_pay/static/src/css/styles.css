@@ -40,3 +40,26 @@
 .inv-so:hover {
     background: #efefef;
 }
+
+.line-element-hidden {
+    display: none;
+}
+
+.lines-table {
+    width:100%;
+    border: dashed 1px rgb(215,215,215);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: .8em;
+}
+tr.invoice  {
+    border-bottom: 1px dashed rgb(215,215,215);
+}
+tr.sale-order {
+    border-bottom: 1px dashed rgb(215,215,215);
+}
+
+.payment-numpad.invoice {
+    margin-left: 25%;
+}
+

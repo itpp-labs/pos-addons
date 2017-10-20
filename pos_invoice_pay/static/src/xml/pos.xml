@@ -18,7 +18,60 @@
             <td><t t-esc='item.user_id[1]' /></td>
             <td><t t-esc='widget.format_currency(item.amount_total)' /></td>
             <td><t t-esc='item.invoice_status' /></td>
+        </tr>
+    </t>
 
+    <t t-name="SaleOrderLinesHeader">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Ordered Qty</th>
+                <th>Delivered</th>
+                <th>Invoiced</th>
+                <th>Unit Price</th>
+                <th>Taxes</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+    </t>
+
+    <t t-name="SaleOrderLine">
+        <tr class='sale-order-line' t-att-data-id='line.id'>
+            <td><t t-esc='line.product'/></td>
+            <td><t t-esc='line.name'/></td>
+            <td><t t-esc='line.uom_qty'/></td>
+            <td><t t-esc='line.qty_delivered'/></td>
+            <td><t t-esc='line.qty_invoiced'/></td>
+            <td><t t-esc='widget.format_currency(line.total)'/></td>
+            <td><t t-esc='line.tax'/></td>
+            <td><t t-esc='widget.format_currency(line.subtotal)'/></td>
+        </tr>
+    </t>
+
+<t t-name="InvoiceLinesHeader">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Account</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Taxes</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+    </t>
+
+    <t t-name="InvoiceLine">
+        <tr class='sale-order-line' t-att-data-id='line.id'>
+            <td><t t-esc='line.product'/></td>
+            <td><t t-esc='line.name'/></td>
+            <td><t t-esc='line.account'/></td>
+            <td><t t-esc='line.qty'/></td>
+            <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
+            <td><t t-esc='line.tax'/></td>
+            <td><t t-esc='widget.format_currency(line.amount)'/></td>
         </tr>
     </t>
 
@@ -105,6 +158,7 @@
                     <span class='button next oe_hidden highlight'>
 
                         <i class='fa fa-angle-double-right'></i>
+                        Register Payment
                     </span>
                 </section>
                 <section class="full-content">
@@ -168,7 +222,7 @@
                     <section class='paymentlines-container'>
                     </section>
 
-                    <section class='payment-numpad'>
+                    <section class='payment-numpad invoice'>
                     </section>
 
                     <div class='payment-buttons'>
@@ -183,13 +237,13 @@
                                 </t>
                             </span>
                         </div> -->
-                        <t t-if='widget.pos.config.iface_invoicing'>
+                       <!--  <t t-if='widget.pos.config.iface_invoicing'>
                             <t t-if='widget.pos.get_order()'>
                                 <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
                                     <i class='fa fa-file-text-o' /> Invoice
                                 </div>
                             </t>
-                        </t>
+                        </t> -->
                         <t t-if='widget.pos.config.tip_product_id'>
                             <div class='button js_tip'>
                                 <i class='fa fa-heart' /> Tip 
@@ -309,6 +363,8 @@
             
             <div class="pos-center-align"><t t-esc="moment().format('L LT')"/> <t t-esc="order.name"/></div>
             <br />
+            Payment of Invoice <t t-esc="order.invoice_to_pay.number"/><br />
+
             <t t-esc="widget.pos.company.name"/><br />
             Phone: <t t-esc="widget.pos.company.phone || ''"/><br />
             User: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/><br />
