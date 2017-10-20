@@ -36,7 +36,7 @@ odoo.define('pos_longpolling', function(require){
             });
             var data = {channels: self.channels, last: self.last, options: options};
             // function is copy-pasted from bus.js but the line below defines a custom server address
-            serv_adr = address
+            var serv_adr = address
                 ? address.serv
                 : this.serv_adr || '';
             session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
@@ -241,6 +241,26 @@ odoo.define('pos_longpolling', function(require){
         }
     });
 
+    var Status_Widget = chrome.StatusWidget;
+    var AdditionalSynchNotificationWidget = Status_Widget.extend({
+        template: 'AdditionalSynchNotificationWidget',
+        start: function(){
+            var self = this;
+            var element = self.$('.serv_additional');
+            if (this.pos.buses && Object.keys(this.pos.buses).length){
+                for (var key in this.pos.buses){
+                    if (_.has.call(this.pos.buses, 'key'){
+                        bus = this.pos.buses[key];
+                        self.set_poll_status(element, bus);
+                        bus.longpolling_connection.set_status(true);
+                    }
+                }
+            } else {
+                element.addClass('hidden');
+            }
+        },
+    });
+
     chrome.Chrome.include({
         build_widgets: function(){
             if (Object.keys(this.pos.buses).length){
@@ -258,25 +278,6 @@ odoo.define('pos_longpolling', function(require){
         },
     });
 
-    var Status_Widget = chrome.StatusWidget;
-    var AdditionalSynchNotificationWidget = Status_Widget.extend({
-        template: 'AdditionalSynchNotificationWidget',
-        start: function(){
-            var self = this;
-            var element = self.$('.serv_additional');
-            if (this.pos.buses && Object.keys(this.pos.buses).length){
-                for (var key in this.pos.buses){
-                    if (this.pos.buses.hasOwnProperty(key)){
-                        bus = this.pos.buses[key];
-                        self.set_poll_status(element, bus);
-                        bus.longpolling_connection.set_status(true);
-                    }
-                }
-            } else {
-                element.addClass('hidden');
-            }
-        },
-    });
 
     Status_Widget.include({
         set_poll_status: function(element, current_bus) {
