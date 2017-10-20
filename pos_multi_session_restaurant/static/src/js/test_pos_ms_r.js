@@ -1,7 +1,7 @@
 odoo.define('pos_multi_session_restaurant.tour', function (require) {
     "use strict";
 
-    require("pos_multi_session.tour")
+    require("pos_multi_session.tour");
     var tour = require("web_tour.tour");
 
     var steps = tour.tours.tour_pos_multi_session.steps;

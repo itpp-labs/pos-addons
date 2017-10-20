@@ -8,9 +8,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var chrome = require('point_of_sale.chrome');
     var multi_session = require('pos_multi_session');
 
-    var FloorScreenWidget;
+    var FloorScreenWidget = {};
     _.each(gui.Gui.prototype.screen_classes, function(o){
-        if (o.name == 'floors'){
+        if (o.name === 'floors'){
             FloorScreenWidget = o.widget;
             FloorScreenWidget.include({
                 start: function () {
@@ -27,7 +27,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var _t = core._t;
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
-        return el.name == 'splitbill'
+        return el.name === 'splitbill';
     })[0].widget.include({
         pay: function(order,neworder,splitlines){
             this._super(order,neworder,splitlines);
@@ -46,8 +46,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         remove_orderline: function(order_line){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
                 this._super(order_line);
-            }
-            else {
+            } else {
                 order_line.node.parentNode.removeChild(order_line.node);
             }
         }
@@ -60,15 +59,17 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 model: 'pos.multi_session',
                 fields: ['name','floor_ids'],
                 domain: null,
-                loaded: function(self,floors){
-                    self.multi_session_floors = floors;
+                loaded: function(self,floor_set){
+                    self.multi_session_floors = floor_set;
             }};
             this.models.splice(
                 1 + this.models.indexOf(_.find(this.models, function(model){
                     return model.model === 'pos.config';
                 })), 0, ms_model);
-            var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
-            floor_model.domain = function(self, ms_model){
+            var floor_model = _.find(this.models, function(model){
+                return model.model === 'restaurant.floor';
+            });
+            floor_model.domain = function(){
                 var temporary = [['id','in',self.config.floor_ids]];
                 if (self.config.multi_session_id){
                     var ms_floors = _.find(self.multi_session_floors, function(session){
@@ -91,9 +92,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     if (data.transfer) {
                         data.transfer = false;
                         return;
-                    } else {
-                        remove_order_super.apply(self.multi_session, arguments);
                     }
+                    remove_order_super.apply(self.multi_session, arguments);
                  };
             });
         },
@@ -123,16 +123,16 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var old_order = this.get_order();
 
             if (data.uid){
-                order = this.get('orders').find(function(order){
-                    return order.uid == data.uid;
+                order = this.get('orders').find(function(ord){
+                    return ord.uid === data.uid;
                 });
             }
-            if (order && order.table.id != data.table_id) {
+            if (order && order.table.id !== data.table_id) {
                 order.transfer = true;
                 order.destroy({'reason': 'abandon'});
             }
             PosModelSuper.prototype.ms_on_update.apply(this, arguments);
-            if ((order && old_order && old_order.uid != order.uid) || (old_order == null)) {
+            if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
             this.gui.screen_instances.floors.renderElement();
@@ -147,10 +147,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
         },
         ms_on_add_order: function(current_order){
-            if (!current_order){
-                this.trigger('change:orders-count-on-floor-screen');
-            }else{
+            if (current_order){
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
+            }else{
+                this.trigger('change:orders-count-on-floor-screen');
             }
         },
         on_removed_order: function(removed_order, index, reason){
@@ -198,21 +198,20 @@ odoo.define('pos_multi_session_restaurant', function(require){
         get_line_diff_hash: function(){
             if (this.get_note()) {
                 return this.uid + '|' + this.get_note();
-            } else {
-                return '' + this.uid;
             }
+            return String(this.uid);
         },
         /*  There is no need to check the presence of super method.
             Because pos_multi_session_restaurant is loaded later than pos_multi_session.
         */
         apply_ms_data: function(data) {
-            if(data.mp_dirty !== undefined){
+            if(typeof data.mp_dirty !== 'undefined'){
                 this.set_dirty(data.mp_dirty);
             }
-            if(data.mp_skip !== undefined){
+            if(typeof data.mp_skip !== 'undefined'){
                 this.set_skip(data.mp_skip);
             }
-            if(data.note !== undefined){
+            if(typeof data.note !== 'undefined'){
                 this.set_note(data.note);
             }
             OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
