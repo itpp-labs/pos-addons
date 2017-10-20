@@ -249,7 +249,7 @@ odoo.define('pos_longpolling', function(require){
             var element = self.$('.serv_additional');
             if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
-                    if (_.has.call(this.pos.buses, 'key'){
+                    if (_.has(this.pos.buses, 'key')){
                         bus = this.pos.buses[key];
                         self.set_poll_status(element, bus);
                         bus.longpolling_connection.set_status(true);
