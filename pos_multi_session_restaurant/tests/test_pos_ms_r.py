@@ -8,6 +8,6 @@ import odoo.tests
 class TestUi(odoo.tests.HttpCase):
 
     def test_pos_ms_r(self):
-        self.phantom_js("/web?debug=assets#", "odoo.__DEBUG__.services['web_tour.tour'].run('open_pos_ms_r_tour')",
+        self.phantom_js("/web?debug=assets#", "odoo.__DEBUG__.services['web_tour.tour'].run('open_pos_ms_r_tour', 1000)",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.open_pos_ms_r_tour.ready",
                         login="admin")

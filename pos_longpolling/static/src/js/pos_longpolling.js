@@ -236,8 +236,6 @@ odoo.define('pos_longpolling', function(require){
         }
     });
 
-
-
     chrome.Chrome.include({
         build_widgets: function(){
             if (Object.keys(this.pos.buses).length){
@@ -249,13 +247,31 @@ odoo.define('pos_longpolling', function(require){
                     'name':   'AdditionalSynchNotificationWidget',
                     'widget': AdditionalSynchNotificationWidget,
                     'append':  '.pos-rightheader',
-                })
+                });
             }
             this._super();
         },
     });
 
-    chrome.StatusWidget.include({
+    var Status_Widget = chrome.StatusWidget;
+    var AdditionalSynchNotificationWidget = Status_Widget.extend({
+        template: 'AdditionalSynchNotificationWidget',
+        start: function(){
+            var self = this;
+            var element = self.$('.serv_additional');
+            if (Object.keys(this.pos.buses).length){
+                for (var key in this.pos.buses){
+                    bus = this.pos.buses[key];
+                    self.set_poll_status(element, bus);
+                    bus.longpolling_connection.set_status(true);
+                }
+            } else {
+                element.addClass('hidden');
+            }
+        },
+    });
+
+    Status_Widget.include({
         set_poll_status: function(element, current_bus) {
             if (current_bus.longpolling_connection.status) {
                 element.removeClass('oe_red');
@@ -271,45 +287,11 @@ odoo.define('pos_longpolling', function(require){
         start: function(){
             this._super();
             var self = this;
-            if (this.pos.buses){
-                for (var key in this.pos.buses){
-                    bus = this.pos.buses[key];
-                    var additional_refresh_icon = QWeb.render('synch_icon',{widget: this});
-                    var div = document.createElement('div');
-                    div.className = "js_poll_connected oe_icon oe_red serv_additional_" + bus.bus_id;
-                    div.innerHTML = additional_refresh_icon;
-                    this.$('.js_synch').append(div);
-                }
-            };
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 var element = self.$('.serv_primary');
                 self.set_poll_status(element, self.pos.bus);
-                if (this.pos.buses){
-                    for (key in this.pos.buses){
-                        bus = this.pos.buses[key];
-                        element = $('.serv_additional_' + bus.bus_id);
-                        self.set_poll_status(element, bus);
-                    }
-                }
             });
             this.pos.bus.longpolling_connection.set_status(true);
-        },
-    });
-
-    var StatusWidget = chrome.StatusWidget;
-    var AdditionalSynchNotificationWidget = StatusWidget.extend({
-        template: 'AdditionalSynchNotificationWidget',
-        start: function(){
-            var self = this;
-            var element = self.$('.serv_additional');
-            if (Object.keys(this.pos.buses).length){
-                for (key in this.pos.buses){
-                        bus = this.pos.buses[key];
-                        self.set_poll_status(element, bus);
-                    }
-            } else {
-                element.addClass('hidden');
-            }
         },
     });
 

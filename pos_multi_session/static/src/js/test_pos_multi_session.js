@@ -12,7 +12,6 @@ odoo.define('pos_multi_session.tour', function (require) {
         }, {
             content: 'the ' + product_name + ' have been added to the order',
             trigger: '.order .product-name:contains("' + product_name + '")',
-//            run: function () {}, // it's a check
         }];
     }
 
