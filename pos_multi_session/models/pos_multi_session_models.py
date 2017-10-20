@@ -38,7 +38,7 @@ class PosMultiSession(models.Model):
     pos_ids = fields.One2many('pos.config', 'multi_session_id', string='POSes in Multi-session')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
     sync_server = fields.Char('Sync Server', default='')
-    run_ID = fields.Integer(string="Running count",
+    run_ID = fields.Integer(string="Running count", default=1,
                             help="Number of Multi-session starts. "
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")

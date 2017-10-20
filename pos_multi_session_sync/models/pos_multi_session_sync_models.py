@@ -65,7 +65,8 @@ class PosMultiSessionSync(models.Model):
         sequence_number = message['data']['sequence_number']
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
-        run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)]).run_ID or False
+        run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
+                     .run_ID or message['data']['run_ID'] or False
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error'}
         if order:  # order already exists
@@ -168,7 +169,7 @@ class PosMultiSessionSyncOrder(models.Model):
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_ID = fields.Integer(default=0, string='Multi session')
     pos_session_ID = fields.Integer(index=True, default=0, string='POS session')
-    run_ID = fields.Integer(index=True, string="Running count",
+    run_ID = fields.Integer(index=True, string="Running count", default=1,
                             help="Number of Multi-session starts. "
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")

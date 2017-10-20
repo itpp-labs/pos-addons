@@ -40,6 +40,7 @@ class ExternalTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        super(ExternalTestCase, cls).setUpClass()
         # Authenticate
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
         models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(MAIN_URL))
