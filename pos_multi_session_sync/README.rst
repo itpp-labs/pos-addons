@@ -1,10 +1,12 @@
 ===============================
- Multi-session Synchronization
+ POS Multi-session Sync Server
 ===============================
 
 Provides synchronization for POS multi-session.
 
-Has an opportunity of using an external longpolling server.
+Supporting module for "Sync POS orders across multiple sessions" provides synchronization for POS multi-session,
+allows using an separate sync server for data storage and processing.
+Separate sync server synchronization provides uninterrupted synchronization in case of main server is shut down.
 
 Credits
 =======

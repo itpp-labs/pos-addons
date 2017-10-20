@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": """pos_multi_session_sync""",
-    "summary": """Multi-session Synchronization""",
+    "summary": """POS Multi-session Sync Server""",
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
