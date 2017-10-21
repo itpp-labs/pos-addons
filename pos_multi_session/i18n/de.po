@@ -3,13 +3,14 @@
 # * pos_multi_session
 # 
 # Translators:
+# Translation Bot <i18n-bot@it-projects.info>, 2017
 # Ermin Trevisan <trevi@twanda.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-14 10:52+0000\n"
-"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"POT-Creation-Date: 2017-10-20 13:24+0000\n"
+"PO-Revision-Date: 2017-10-20 13:24+0000\n"
 "Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
@@ -24,6 +25,19 @@ msgstr ""
 #, python-format
 msgid ", edited by"
 msgstr ", editiert durch"
+
+#. module: pos_multi_session
+#. openerp-web
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:24
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
+msgstr ""
+"<p>Anklicken, um das POS-System zu starten. Es <b>läuft auf Tablets</b>, "
+"Laptops, oder industrieller Hardware.</p><p>Sobald eine Sitzung gestartet "
+"wurde, funktioniert das System auch ohne Internet-Verbindung.</p>"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_accept_incoming_orders
@@ -115,7 +129,7 @@ msgstr "Neu"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:667
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:686
 #, python-format
 msgid ""
 "No connection to the server. You can create new orders only. It is forbidden"
@@ -148,6 +162,14 @@ msgid "POSes in Multi-session"
 msgstr ""
 
 #. module: pos_multi_session
+#. openerp-web
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:20
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
+"Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
+
+#. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_replace_empty_order
 msgid "Replace empty order"
 msgstr ""
@@ -178,7 +200,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:602
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:621
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
@@ -190,7 +212,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:647
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:666
 #, python-format
 msgid "Warning"
 msgstr ""
