@@ -25,7 +25,29 @@ Docker
 
 * use *-dev* images of `install-odoo <https://github.com/it-projects-llc/install-odoo>`__, e.g. ``itprojectsllc/install-odoo:10.0-dev``
 
+docker network create multi_session_test_network
 
+docker run --network=multi_session_test_network -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db_ms_test postgres:9.5
+
+
+docker run \
+-e DB_PORT_5432_TCP_ADDR=db_ms_test \
+--network=multi_session_test_network \
+-e ODOO_MASTER_PASS=admin \
+-e DATABASE=test_database \
+-e ODOO_DOMAIN=odoo-nginx \
+-v /PATH/TO/pos-addons/:/mnt/addons/it-projects-llc/pos-addons/ \
+-v /PATH/TO/odoo/:/mnt/odoo-source/ \
+--name odoo \
+--link db_ms_test:db \
+-t itprojectsllc/install-odoo:$ODOO_BRANCH-dev -- --workers=1 -d test_database --db-filter test_database
+
+
+docker run \
+-p 8080:80 \
+--name odoo-nginx \
+--network=multi_session_test_network \
+-t itprojectsllc/docker-odoo-nginx
 
 
 Prepare Odoo
@@ -78,5 +100,5 @@ Run tests in Docker
 -------------------
 ::
 
-    docker exec -u odoo -i -t odoo /bin/bash -c "export DATABASE=test_database; cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover external_tests"
+    docker exec -u odoo -i -t odoo /bin/bash -c "cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover -t . -s external_tests"
 
