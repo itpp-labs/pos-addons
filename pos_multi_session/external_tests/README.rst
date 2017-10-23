@@ -50,6 +50,7 @@ Prepare Odoo
 * use database with demo data
 * configure nginx to handle ``/longpolling/poll`` requests
 * Add following System Parameter:
+
   * Key: ``pos_multi_session.allow_external_tests``
   * Value: ``1``
 
