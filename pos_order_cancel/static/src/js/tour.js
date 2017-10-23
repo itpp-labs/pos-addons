@@ -45,7 +45,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
         content: _t("<p>Click remove order button"),
         position: "bottom"
     }, {
-        trigger: ".reason-button[data-id='2']",
+        trigger: ".reason-button[data-id='1']",
         content: _t("<p>Click predefined reason</p>"),
         position: "bottom"
     }, {
