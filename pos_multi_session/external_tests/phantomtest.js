@@ -89,7 +89,7 @@ function PhantomTest() {
     var self = this;
     this.options = JSON.parse(system.args[system.args.length-1]);
     this.inject = this.options.inject || [];
-    this.origin = 'http://localhost';
+    this.origin = 'http://' + this.options.host;
     this.origin += this.options.port ? ':' + this.options.port : '';
 
     // ----------------------------------------------------
@@ -106,7 +106,7 @@ function PhantomTest() {
         this.page.cookieJar = jar;
         this.pages[sname] = this.page;
         jar.addCookie({
-            'domain': 'localhost',
+            'domain': this.options.host,
             'name': 'session_id',
             'value': session.session_id,
         });
