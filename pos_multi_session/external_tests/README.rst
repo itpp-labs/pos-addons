@@ -65,15 +65,15 @@ Run tests
 To run tests, you need to run odoo server and then execute::
 
     cd pos_multi_session
-    DATABASE=test_database python -m unittest discover
+    DATABASE=test_database python -m unittest discover external_tests
 
 To run only one file::
 
-    DATABASE=test_database python -m unittest discover -p test_sync.py
+    DATABASE=test_database python -m unittest discover -s external_tests -p test_sync.py
 
 Run tests in Docker
 -------------------
 ::
 
-    docker exec -u odoo -i -t odoo /bin/bash -c "export DATABASE=test_database; cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover"
+    docker exec -u odoo -i -t odoo /bin/bash -c "export DATABASE=test_database; cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover external_tests"
 
