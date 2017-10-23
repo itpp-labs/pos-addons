@@ -13,7 +13,7 @@ try:
     from openerp.addons.hw_escpos.escpos import escpos
     from openerp.addons.hw_escpos.controllers.main import EscposProxy
     from openerp.addons.hw_escpos.controllers.main import EscposDriver
-    from openerp.addons.hw_escpos.escpos.exceptions import *
+    from openerp.addons.hw_escpos.escpos.exceptions import NoDeviceError, HandleDeviceError, TicketNotPrinted, NoStatusError
     from openerp.addons.hw_escpos.escpos.printer import Network
     import openerp.addons.hw_escpos.controllers.main as hw_escpos_main
 except ImportError:
@@ -44,9 +44,8 @@ class UpdatedEscposDriver(EscposDriver):
                     printer = UpdatedNetwork(p['ip'])
                     printer.close()
                     p['status'] = 'online'
-                except Exception as e:
+                except:
                     p['status'] = 'offline'
-                    self.set_status('error', str(e))
                 if printer:
                     printer.close()
                 network_printers.append({
