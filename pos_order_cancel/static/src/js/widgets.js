@@ -164,7 +164,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         template: 'ReasonCancellationScreenWidget',
         events: {
             'click .reason-line': function (event) {
-                var id = event.currentTarget.getAttribute('data-id')
+                var id = event.currentTarget.getAttribute('data-id');
                 var line = $('.reason-line[data-id="'+parseInt(id)+'"');
                 this.line_select(line, parseInt(id));
             },
