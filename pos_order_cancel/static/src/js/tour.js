@@ -17,41 +17,11 @@ odoo.define('pos_order_cancel.tour', function(require) {
         content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
         position: "bottom"
     }, {
-        trigger: ".product-list .product",
-        content: _t("<p>Click product 1</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".product-list .product:not(:first)",
-        content: _t("<p>Click product 2</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".pads .numpad-backspace",
-        content: _t("<p>Remove orderline</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".reason-button#1",
-        content: _t("<p>Click predefined reason</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".reason-button#3",
-        content: _t("<p>Click predefined reason</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".popup-confirm-cancellation .confirm",
-        content: _t("<p>Click confirm button"),
-        position: "bottom"
-    },{
-        trigger: ".deleteorder-button",
-        content: _t("<p>Click remove order button"),
-        position: "bottom"
-    }, {
-        trigger: ".reason-button#2",
-        content: _t("<p>Click predefined reason</p>"),
-        position: "bottom"
-    }, {
-        trigger: ".popup-confirm-cancellation .confirm",
-        content: _t("<p>Click confirm button"),
-        position: "bottom"
+        content: " Username is visible",
+        trigger: ".username",
+        auto: true,
     }
-    ]);
+
+       ]);
+
 });
