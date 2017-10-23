@@ -41,7 +41,7 @@ Odoo server
 
     self.close_other_tabs();
 
-* in file addons/bus/static/src/js/bus.js replace ::
+* in file ``addons/bus/static/src/js/bus.js`` replace ::
 
       if(typeof Storage !== "undefined"){
           bus.bus = new CrossTabBus();
