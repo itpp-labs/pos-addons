@@ -19,18 +19,23 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="confirm,cancel" />
+                        <button string="Confirm" type="object" name="switch_to_confirm" attrs="{'invisible': [('state', '==', 'confirm')]}"/>
+                        <button string="Cancel" type="object" name="switch_to_cancel" attrs="{'invisible': [('state', '==', 'cancel')]}"/>
+                        <button string="Draft" type="object" name="switch_to_draft" attrs="{'invisible': [('state', '==', 'draft')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
                     </header>
 
                     <sheet>
                         <group>
                             <group>
-                                <field name="partner_id"/>
-                                <field name="date"/>
-                                <field name="balance"/>
-                                <field name="currency_id"/>
-                                <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="note"/>
+                                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="update_type"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="balance" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('update_type', '!=', 'balance_update')]}"/>
+                                <field name="new_balance" attrs="{'invisible': [('update_type', '!=', 'new_balance')], 'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="currency_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                     </sheet>
@@ -69,6 +74,20 @@
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="view_pos_credit_update_search"/>
             <field name="context">{}</field>
+        </record>
+
+        <record id="server_action_pos_credit_update" model="ir.actions.server">
+            <field name="name">Confirm</field>
+            <field name="model_id" ref="point_of_sale.menu_point_config_product"/>
+            <field name="state">code</field>
+            <field name="code">env['pos.credit.update'].do_confirm()</field>
+        </record>
+
+        <record id="option_pos_credit_update" model="ir.values">
+            <field name="name">Confirm</field>
+            <field name="key2">client_action_multi</field>
+            <field name="model">pos.credit.update</field>
+            <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update"/>
         </record>
 
 
