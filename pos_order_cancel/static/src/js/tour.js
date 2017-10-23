@@ -29,11 +29,11 @@ odoo.define('pos_order_cancel.tour', function(require) {
         content: _t("<p>Remove orderline</p>"),
         position: "bottom"
     }, {
-        trigger: ".reason-button#1",
+        trigger: ".reason-button[data-id='1']",
         content: _t("<p>Click predefined reason</p>"),
         position: "bottom"
     }, {
-        trigger: ".reason-button#3",
+        trigger: ".reason-button[data-id='3']",
         content: _t("<p>Click predefined reason</p>"),
         position: "bottom"
     }, {
@@ -45,7 +45,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
         content: _t("<p>Click remove order button"),
         position: "bottom"
     }, {
-        trigger: ".reason-button#2",
+        trigger: ".reason-button[data-id='2']",
         content: _t("<p>Click predefined reason</p>"),
         position: "bottom"
     }, {
