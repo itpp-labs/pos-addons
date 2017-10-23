@@ -120,7 +120,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         click_cancelled_reason: function(e) {
             var self = this;
-            var id = e.currentTarget.id;
+            var id = e.currentTarget.getAttribute('data-id');
             if (id === 'other') {
                 self.gui.show_screen('reason_screen', {type: this.type});
             } else {
@@ -164,8 +164,9 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         template: 'ReasonCancellationScreenWidget',
         events: {
             'click .reason-line': function (event) {
-                var line = $('.reason-line#'+parseInt(event.currentTarget.id));
-                this.line_select(line, parseInt(event.currentTarget.id));
+                var id = event.currentTarget.getAttribute('data-id')
+                var line = $('.reason-line[data-id="'+parseInt(id)+'"');
+                this.line_select(line, parseInt(id));
             },
             'click .reason-back': function () {
                 this.gui.back();
