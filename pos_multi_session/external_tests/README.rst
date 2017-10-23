@@ -37,7 +37,7 @@ Odoo server
 * use ``--db-filter`` it equal to database name
 * use ``--workers=1``
 * configure nginx to handle ``/longpolling/poll`` requests
-* in file addons/point_of_sale/static/src/js/gui.js comment out following line ::
+* in file ``addons/point_of_sale/static/src/js/gui.js`` comment out following line ::
 
     self.close_other_tabs();
 
