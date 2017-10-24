@@ -1,3 +1,8 @@
+`4.4.1`
+-------
+- **FIX:** Superfluous paymentlines at client change.
+- **FIX:** Incorrect order validation.
+
 `4.4.0`
 -------
 
