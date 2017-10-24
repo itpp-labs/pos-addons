@@ -15,12 +15,23 @@ class TestSync(TestCommon):
                 "login": "demo",
             }
         }, [
+            # check admin authentication
             {"session": "admin",
              "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
              },
+            # extra time for demo
             {"session": "demo",
+             "code": """
+                 mstest.wait(function(){
+                 }, 2000)
+            """,
+             },
+            # check demo authentication
+            {"session": "demo",
+             "screenshot": "test-framework-user",
              "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
+            # check admin authentication
             {"session": "admin",
              "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
              },

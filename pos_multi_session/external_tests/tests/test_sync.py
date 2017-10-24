@@ -8,8 +8,8 @@ class TestSync(TestCommon):
         """Simplest case. Sync new order"""
         self.phantom_js_multi({
             # use default settings for sessions (see ./common.py)
+            "demo": {},
             "admin": {},
-            "demo": {}
         }, [
             # initialisation
             {"session": "admin",
@@ -18,6 +18,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -51,6 +59,7 @@ class TestSync(TestCommon):
              },
             # extra time for demo
             {"session": "demo",
+             "screenshot": "before-wait",
              "code": """
                  mstest.wait(function(){
                  }, 5000)
@@ -58,6 +67,7 @@ class TestSync(TestCommon):
              },
             # demo syncs order
             {"session": "demo",
+             "screenshot": "after-wait",
              "code": """
                 mstest.find_order(share.order);
              """,
@@ -84,6 +94,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -203,6 +221,14 @@ class TestSync(TestCommon):
              """,
              "timeout": 35000,
              },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
@@ -318,6 +344,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -447,6 +481,14 @@ class TestSync(TestCommon):
                  console.log('test_31_slow');
                  mstest.remove_all_orders();
              """,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin creates order
             {"session": "admin",
