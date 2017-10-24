@@ -208,7 +208,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }, 30);
             }
 
-            var newPaymentline = new models.Paymentline({},{order: this, cashregister: cashregister, pos: this.pos});
+            var newPaymentline = new models.Paymentline({}, {
+                order: this,
+                cashregister: cashregister,
+                pos: this.pos
+            });
             if (cashregister.journal.debt){
                 newPaymentline.set_amount(this.get_due_debt());
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
@@ -313,12 +317,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
         pay_full_debt: function(){
             var order = this.pos.get_order();
+
             var debtjournal = false;
             _.each(this.pos.cashregisters, function(cashregister) {
                 if (cashregister.journal.debt) {
                     debtjournal = cashregister;
                 }
-
             });
 
             var paymentLines = order.get_paymentlines();
@@ -330,7 +334,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
             }
 
-            var newDebtPaymentline = new models.Paymentline({},{order: order, cashregister: debtjournal, pos: this.pos});
+            var newDebtPaymentline = new models.Paymentline({},{
+                order: order,
+                cashregister: debtjournal,
+                pos: this.pos
+            });
             newDebtPaymentline.set_amount(order.get_client().debt * -1);
             order.paymentlines.add(newDebtPaymentline);
 
