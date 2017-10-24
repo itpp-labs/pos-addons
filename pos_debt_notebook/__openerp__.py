@@ -4,7 +4,7 @@
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'category': 'Point Of Sale',
     "images": ['images/debt_notebook.png'],
-    'version': '4.4.0',
+    'version': '4.4.1',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "apps@it-projects.info",
