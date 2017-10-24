@@ -1,7 +1,7 @@
 `4.4.1`
 -------
-- **FIX:** Superfluous paymentlines at client change.
-- **FIX:** Incorrect order validation.
+**FIX:** Extra Debt payment lines when using "Pay Full Debt" method.
+**FIX:** Incorrect order validation.
 
 `4.4.0`
 -------
