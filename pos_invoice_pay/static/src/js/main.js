@@ -927,40 +927,14 @@ var InvoicePayment = PaymentScreenWidget.extend({
         }
         order.initialize_validation_date();
         if (order.is_to_invoice()) {
-            var invoiced = this.pos.push_and_invoice_order(order);
-            this.invoicing = true;
-
-            invoiced.fail(function(error){
-                self.invoicing = false;
-                if (error.message === 'Missing Customer') {
-                    self.gui.show_popup('confirm',{
-                        'title': _t('Please select the Customer'),
-                        'body': _t('You need to select the customer before you can invoice an order.'),
-                        confirm: function(){
-                            self.gui.show_screen('clientlist');
-                        },
-                    });
-                } else if (error.code < 0) {
-                    self.gui.show_popup('error',{
-                        'title': _t('The order could not be sent'),
-                        'body': _t('Check your internet connection and try again.'),
-                    });
-                } else if (error.code === 200) {
-                    self.gui.show_popup('error-traceback',{
-                        'title': error.data.message || _t("Server Error"),
-                        'body': error.data.debug || _t('The server encountered an error while receiving your order.'),
-                    });
-                } else {
-                    self.gui.show_popup('error',{
-                        'title': _t("Unknown Error"),
-                        'body':  _t("The order could not be sent to the server due to an unknown error"),
-                    });
-                }
-            });
-
-            invoiced.done(function(){
-                self.invoicing = false;
-                self.gui.show_screen('receipt');
+            this.pos.push_order(order).then(function () {
+                self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
+                self.gui.show_screen('invoice_receipt');
+                 new Model('account.invoice').
+                    call('invoice_print', [order.invoice_to_pay.id]).
+                    then(function (action) {
+                self.chrome.do_action(action);
+                });
             });
         } else {
             this.pos.push_order(order).then(function(res) {

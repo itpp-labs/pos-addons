@@ -237,13 +237,13 @@
                                 </t>
                             </span>
                         </div> -->
-                       <!--  <t t-if='widget.pos.config.iface_invoicing'>
+                        <t t-if='widget.pos.config.iface_invoicing'>
                             <t t-if='widget.pos.get_order()'>
                                 <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
                                     <i class='fa fa-file-text-o' /> Invoice
                                 </div>
                             </t>
-                        </t> -->
+                        </t>
                         <t t-if='widget.pos.config.tip_product_id'>
                             <div class='button js_tip'>
                                 <i class='fa fa-heart' /> Tip 

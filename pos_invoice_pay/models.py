@@ -12,7 +12,6 @@ class PosOrder(models.Model):
         res = super(PosOrder, self).create_from_ui(original_orders)
         if invoices_to_pay:
             ids = map(self.process_invoice_payment, invoices_to_pay)
-            res += ids
         return res
 
     @api.model
