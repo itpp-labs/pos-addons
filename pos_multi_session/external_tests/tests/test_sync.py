@@ -401,9 +401,9 @@ class TestSync(TestCommon):
                      synced_order = mstest.get_order();
                      mstest.check_inclusion(share.admin_order, synced_order);
 
-                 }, 10000)
+                 }, 20000)
              """,
-             "timeout": 20000,
+             "timeout": 30000,
              },
             # demo compares order with his initial order
             {"session": "demo",

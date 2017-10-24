@@ -54,7 +54,7 @@ odoo.define('pos_longpolling', function(require){
         },
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
-                callback = _.bind(callback, thisArg);
+                current_callback = _.bind(callback, thisArg);
             }
             if (!this.channel_callbacks){
                 this.channel_callbacks = {};
@@ -199,7 +199,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start_timer: function(time, type){
-            time = Math.round(time * 3600.0);
+            var response_time = Math.round(time * 3600.0);
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
@@ -210,7 +210,7 @@ odoo.define('pos_longpolling', function(require){
                     }
                     self.network_is_off();
                 }
-            }, time * 1000);
+            }, response_time * 1000);
         },
         response_timer: function() {
             this.stop_timer();
@@ -227,7 +227,7 @@ odoo.define('pos_longpolling', function(require){
 //            }
             openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
-                if the value is false you need to start the response timer*/
+                 if the value is false you need to start the response timer*/
                 if (!self.response_status) {
                     self.response_timer();
                 }

@@ -167,13 +167,11 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     debt_dummy_product_id = fields.Many2one(
-        'product.product',
-        string='Dummy Product for Debt',
-        domain=[('available_in_pos', '=', True)],
+        'product.product', string='Dummy Product for Debt', domain=[('available_in_pos', '=', True)],
         help="Dummy product used when a customer pays his debt "
-        "without ordering new products. This is a workaround to the fact "
-        "that Odoo needs to have at least one product on the order to "
-        "validate the transaction.")
+             "without ordering new products. This is a workaround to the fact "
+             "that Odoo needs to have at least one product on the order to "
+             "validate the transaction.")
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']
@@ -251,18 +249,16 @@ class PosConfig(models.Model):
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        config = self
-        config.write({
+        self.write({
             'journal_ids': [(4, debt_journal.id)],
             'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
         })
-
         statement = [(0, 0, {
             'journal_id': debt_journal.id,
             'user_id': user.id,
             'company_id': user.company_id.id
         })]
-        current_session = config.current_session_id
+        current_session = self.current_session_id
         current_session.write({
             'statement_ids': statement,
         })
