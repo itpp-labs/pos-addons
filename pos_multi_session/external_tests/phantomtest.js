@@ -32,7 +32,7 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 * screenshot:
 
   * make screenshot before execution of the code
-  * filename is SESSION-SCREENSHOT-NUM.png
+  * filename is /tmp/SESSION-SCREENSHOT-NUM.png
 
 */
 
@@ -262,7 +262,7 @@ function PhantomTest() {
 
             if (screenshot){
                 console.log('Make screenshot', screenshot);
-                page.render(sname + '-' + screenshot + '-' + i + '.png');
+                page.render('/tmp/' + sname + '-' + screenshot + '-' + i + '.png');
             }
 
             console.log("PhantomTest.runCommands: executing as "+sname+ ": " + code);
