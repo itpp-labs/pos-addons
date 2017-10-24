@@ -81,6 +81,7 @@ Prepare Odoo
 
 Run Odoo
 ========
+if you don't use docker instruction above:
 
 * set ``-d`` (``--database``) parameter
 * use default port
