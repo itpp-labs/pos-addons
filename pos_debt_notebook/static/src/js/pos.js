@@ -375,7 +375,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     ? client.name
                     : _t('Customer')
             );
-            $pay_full_debt.on('click', function() {
+            $pay_full_debt.unbind().on('click', function() {
                 self.pay_full_debt();
             });
             $pay_full_debt.addClass('oe_hidden');
