@@ -73,7 +73,7 @@ Prepare Odoo
       bus.bus = new bus.Bus();
 
 * use database with demo data
-* configure nginx to handle ``/longpolling/poll`` requests
+* configure nginx to handle ``/longpolling/poll`` requests (no needed if you use docker instruction above)
 * Add following System Parameter:
 
   * Key: ``pos_multi_session.allow_external_tests``
