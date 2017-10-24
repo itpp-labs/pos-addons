@@ -104,7 +104,9 @@ Run tests in Docker
 -------------------
 ::
 
-    docker exec -u odoo -i -t odoo /bin/bash -c "cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; python -m unittest discover -t . -s external_tests"
+    docker exec -u odoo -i -t odoo /bin/bash -c "\
+    cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; \
+    python -m unittest discover -t . -s external_tests"
 
 
 Run tests in browser
