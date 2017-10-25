@@ -198,12 +198,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
         get_line_diff_hash: function(){
             var res = OrderlineSuper.prototype.get_line_diff_hash.apply(this, arguments);
             res = res.split('|');
-            if (res.length > 1) {
-                res[0] = this.uid;
-                res.join('|');
-            } else {
-                res = '' + this.uid;
-            }
+            res[0] = this.uid;
+            res = res.join('|');
             return res;
         },
         /*  There is no need to check the presence of super method.
