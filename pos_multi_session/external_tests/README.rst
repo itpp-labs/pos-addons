@@ -41,7 +41,6 @@ Docker
     -v /PATH/TO/pos-addons/:/mnt/addons/it-projects-llc/pos-addons/ \
     -v /PATH/TO/odoo/:/mnt/odoo-source/ \
     --name odoo \
-    --link db_ms_test:db \
     -t itprojectsllc/install-odoo:$ODOO_BRANCH-dev -- --workers=1 -d test_database --db-filter test_database
 
 
