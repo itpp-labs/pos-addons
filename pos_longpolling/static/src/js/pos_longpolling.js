@@ -12,7 +12,8 @@ odoo.define('pos_longpolling', function(require){
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
-    bus.bus.activated = true; // fake value to ignore start_polling call
+    // fake value to ignore start_polling call
+    bus.bus.activated = true;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -43,10 +44,11 @@ odoo.define('pos_longpolling', function(require){
             this.longpolling_connection.send();
         },
         add_channel: function(channel_name, callback, thisArg) {
+            var current_callback = callback;
             if (thisArg){
-                callback = _.bind(callback, thisArg);
+                current_callback = _.bind(callback, thisArg);
             }
-            this.channels[channel_name] = callback;
+            this.channels[channel_name] = current_callback;
             if (this.lonpolling_activated) {
                 this.init_channel(channel_name);
             }
@@ -75,18 +77,18 @@ odoo.define('pos_longpolling', function(require){
         },
         on_notification_do: function (channel, message) {
             var self = this;
-            if (_.isString(channel)) {
-                var channel = JSON.parse(channel);
+            if (_.isString(channel)){
+                var current_channel = JSON.parse(channel);
             }
-            if(Array.isArray(channel) && (channel[1] in self.channels)){
+            if(Array.isArray(current_channel) && current_channel[1] in self.channels){
                 try{
                     self.longpolling_connection.network_is_on();
-                    var callback = self.channels[channel[1]];
+                    var callback = self.channels[current_channel[1]];
                     if (callback) {
                         if (self.debug){
-                            console.log('POS LONGPOLLING', self.config.name, channel[1], JSON.stringify(message));
+                            console.log('POS LONGPOLLING', self.config.name, current_channel[1], JSON.stringify(message));
                         }
-                        callback(message);
+                        return callback(message);
                     }
                 }catch(err){
                     this.chrome.gui.show_popup('error',{
@@ -102,7 +104,8 @@ odoo.define('pos_longpolling', function(require){
             this.pos = pos;
             this.timer = false;
             this.status = false;
-            this.response_status = false; // Is the message "PONG" received from the server
+            // Is the message "PONG" received from the server
+            this.response_status = false;
         },
         network_is_on: function(message) {
             if (message) {
@@ -116,7 +119,7 @@ odoo.define('pos_longpolling', function(require){
             this.set_status(false);
         },
         set_status: function(status) {
-            if (this.status == status) {
+            if (this.status === status) {
                 return;
             }
             this.status = status;
@@ -134,18 +137,18 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start_timer: function(time, type){
-            var time = Math.round(time * 3600.0);
+            var response_time = Math.round(time * 3600.0);
             var self = this;
             this.timer = setTimeout(function() {
-                if (type == "query") {
+                if (type === "query") {
                     self.send();
-                } else if (type == "response") {
+                } else if (type === "response") {
                     if (self.pos.debug){
                         console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
                     }
                     self.network_is_off();
                 }
-            }, time * 1000);
+            }, response_time * 1000);
         },
         response_timer: function() {
             this.stop_timer();
@@ -156,7 +159,7 @@ odoo.define('pos_longpolling', function(require){
             this.response_status = false;
             openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
-                if the value is false you need to start the response timer*/
+                 if the value is false you need to start the response timer*/
                 if (!self.response_status) {
                     self.response_timer();
                 }

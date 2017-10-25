@@ -1,3 +1,9 @@
+`4.4.1`
+-------
+
+**FIX:** Extra Debt payment lines when using "Pay Full Debt" method.
+**FIX:** Incorrect order validation.
+
 `4.4.0`
 -------
 

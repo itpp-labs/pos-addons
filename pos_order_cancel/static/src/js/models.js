@@ -62,8 +62,9 @@ odoo.define('pos_order_cancel.models', function (require) {
         /*  If pos_multi_session is installed then trigger('change:sync') is used to sync
             cancelation data accross all POSes
         */
-        save_reason_cancelled_line: function(orderline, reason) {
+        save_reason_cancelled_line: function(orderline, reason, cancelled_reason_ids) {
             orderline.cancelled_line.reason = reason;
+            orderline.cancelled_line.cancelled_reason_ids = cancelled_reason_ids;
             this.trigger('change:sync');
         },
         save_canceled_line: function(orderline) {
