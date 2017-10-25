@@ -477,8 +477,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
     });
     gui.define_popup({name:'product_notes', widget: ProductNotesPopupWidget});
 
-    var ProducNotesScreenWidget = screens.ScreenWidget.extend({
-        template: 'ProducNotesScreenWidget',
+    var ProductNotesScreenWidget = screens.ScreenWidget.extend({
+        template: 'ProductNotesScreenWidget',
         events: {
             'click .note-line': function (event) {
                 var id = event.currentTarget.getAttribute('data-id');
@@ -552,5 +552,5 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             });
         },
     });
-    gui.define_screen({name:'notes_screen', widget: ProducNotesScreenWidget});
+    gui.define_screen({name:'notes_screen', widget: ProductNotesScreenWidget});
 });
