@@ -268,10 +268,10 @@
                             <t t-foreach="widget.notes.slice(0,8)" t-as="note">
                                 <li>
                                     <t t-if="note.active">
-                                        <div t-attf-id="{{note.id}}" t-attf-class="button active"><t t-esc="note.name"/></div>
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button active"><t t-esc="note.name"/></div>
                                     </t>
                                     <t t-if="!note.active">
-                                        <div t-attf-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div>
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div>
                                     </t>
 
                                 </li>
@@ -293,7 +293,7 @@
     </t>
 
     <t t-name="ProductNotes">
-        <tr class='note-line' t-attf-id='{{note.id}}'>
+        <tr class='note-line' t-attf-data-id='{{note.id}}'>
             <td><t t-esc='note.name' /></td>
         </tr>
     </t>
