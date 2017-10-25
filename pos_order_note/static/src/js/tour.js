@@ -30,11 +30,11 @@ odoo.define('pos_order_note.tour', function(require) {
         content: _t("<p>Click on <b>Note</b> button</p>"),
         position: "bottom"
     }, {
-        trigger: ".product_note #1",
+        trigger: ".product_note [data-id='1']",
         content: _t("<p>Click on the first predefined note</p>"),
         position: "bottom"
     }, {
-        trigger: ".product_note #2",
+        trigger: ".product_note [data-id='2']",
         content: _t("<p>Click on the second predefined note</p>"),
         position: "bottom"
     }, {
@@ -50,7 +50,7 @@ odoo.define('pos_order_note.tour', function(require) {
         content: _t("<p>Click on <b>Order Note</b></p>"),
         position: "bottom"
     }, {
-        trigger: ".product_note #3",
+        trigger: ".product_note [data-id='3']",
         content: _t("<p>Click on predefined note</p>"),
         position: "bottom"
     }, {
