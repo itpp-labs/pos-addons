@@ -18,10 +18,10 @@
                                 <span class="reason-row">
                                     <t t-foreach="buttons" t-as="button">
                                         <t t-if="!button.other">
-                                            <li class="reason-col"><div t-attf-id="{{button.id}}" class="reason-button"><t t-esc="button.name"/></div></li>
+                                            <li class="reason-col"><div t-attf-data-id="{{button.id}}" class="reason-button"><t t-esc="button.name"/></div></li>
                                         </t>
                                         <t t-if="button.other">
-                                            <li class="reason-col other"><div id="other" class="reason-button other-reason">Other</div></li>
+                                            <li class="reason-col other"><div data-id="other" class="reason-button other-reason">Other</div></li>
                                         </t>
                                     </t>
                                 </span>
@@ -45,7 +45,7 @@
     </t>
 
     <t t-name="CancellationReason">
-        <tr class='reason-line' t-attf-id='{{reason.id}}'>
+        <tr class='reason-line' t-attf-data-id='{{reason.id}}'>
             <td><t t-esc='reason.name' /></td>
         </tr>
     </t>
