@@ -277,7 +277,7 @@
                                 </li>
                             </t>
                         </t>
-                        <li><div id="other" class="button other-note">Other</div></li>
+                        <li><div data-id="other" class="button other-note">Other</div></li>
                     </ul>
                 </div>
                 <div class="footer centered">
