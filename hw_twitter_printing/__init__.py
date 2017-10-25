@@ -2,6 +2,7 @@
 import logging
 import threading
 from odoo.tools import config
+import escpos_encoding
 
 
 _logger = logging.getLogger(__name__)
@@ -51,13 +52,15 @@ class MyStreamer(TwythonStreamer):
         self.printer.text(name)
 
         login = '@' + data['user']['screen_name'] + '\n'
-        self.printer.set()
         self.printer.text(login)
 
-        self.printer.set()
         self.printer.text('\n')
-        text = data['text'].encode('utf-8') + '\n'
-        self.printer.text(text)
+        text = data['text'] + '\n'
+        try:
+            text = escpos_encoding.encode_str(text)
+            self.printer.text(text)
+        except:
+            pass
         self.printer.text('\n')
         if 'quoted_status' in data:
             self.printer.text("_______________________________________________\n\n")
@@ -70,7 +73,11 @@ class MyStreamer(TwythonStreamer):
             self.printer.text('\n')
             quoted_text = data['quoted_status']['text'] + '\n'
             self.printer.set(align='right', font='b')
-            self.printer.text(quoted_text)
+            try:
+                quoted_text = escpos_encoding.encode_str(quoted_text)
+                self.printer.text(quoted_text)
+            except:
+                pass
             self.printer.text('\n')
             self.printer.set()
             self.printer.text("_______________________________________________\n\n")

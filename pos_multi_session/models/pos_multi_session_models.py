@@ -129,8 +129,7 @@ class PosMultiSession(models.Model):
         self.ensure_one()
         notifications = []
         channel_name = "pos.multi_session"
-        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'),
-                                                  ('config_id.multi_session_id', '=', self.id)]):
+        for ps in self.env['pos.session'].search([('user_id', '!=', self.env.user.id), ('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)]):
             message_ID = ps.config_id.multi_session_message_ID
             message_ID += 1
             ps.config_id.multi_session_message_ID = message_ID
