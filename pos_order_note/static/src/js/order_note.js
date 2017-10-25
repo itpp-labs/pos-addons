@@ -200,7 +200,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                     var current_line_id = curr.line_id;
 
                     if (res.new) {
-                        var new_exist_change = res.new.find(function(r) {
+                        var new_exist_change = _.find(res.new, function(r) {
                             return r.line_id === current_line_id;
                         });
                         if (new_exist_change && curr.custom_notes) {
@@ -208,7 +208,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
                         }
                     }
                     if (res.cancelled) {
-                        var cancelled_exist_change = res.cancelled.find(function(r) {
+                        var cancelled_exist_change = _.find(res.cancelled, function(r) {
                             return r.line_id === current_line_id;
                         });
                         if ((cancelled_exist_change && curr.old_custom_notes) && (curr.old_custom_notes && curr.old_custom_notes !== curr.custom_notes)) {
@@ -393,7 +393,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             }
             if (custom_notes && custom_notes.length) {
                 custom_notes.forEach(function(note) {
-                    var exist_note = self.notes.find(function(n) {
+                    var exist_note = _.find(self.notes, function(n) {
                         return note.id === n.id;
                     });
                     if (exist_note) {
@@ -419,7 +419,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             }
         },
         get_note_by_id: function(id) {
-            return this.notes.find(function (item) {
+            return _.find(this.notes, function(item) {
                 return item.id === Number(id);
             });
         },
@@ -547,7 +547,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             }
         },
         get_note_by_id: function(id) {
-            return this.notes.find(function (item) {
+            return _.find(this.notes, function(item) {
                 return item.id === Number(id);
             });
         },
