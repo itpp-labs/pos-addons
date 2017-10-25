@@ -438,7 +438,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         },
         click_note_button: function(e) {
             var self = this;
-            var id = e.currentTarget.id;
+            var id = e.currentTarget.getAttribute('data-id');
             if (id === 'other') {
                 self.gui.show_screen('notes_screen');
             } else {
@@ -481,8 +481,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         template: 'ProducNotesScreenWidget',
         events: {
             'click .note-line': function (event) {
-                var id = event.currentTarget.id;
-                var line = $('.note-line#'+parseInt(event.currentTarget.id));
+                var id = event.currentTarget.getAttribute('data-id');
+                var line = $('.note-line#'+parseInt(id));
                 this.set_active_note_status(line, Number(id));
             },
             'click .note-back': function () {
