@@ -65,6 +65,11 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     if (type === 'order') {
                         order.save_canceled_order(reason);
                     }
+                },
+                cancel: function() {
+                    if (type === 'product') {
+                        orderline.cancel_quantity_changes();
+                    }
                 }
             });
         },

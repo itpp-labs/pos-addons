@@ -145,8 +145,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             _super_orderline.initialize.apply(this,arguments);
         },
         set_quantity: function(quantity) {
+            this.old_quantity = this.quantity;
             _super_orderline.set_quantity.apply(this,arguments);
-            if (this.max_quantity < Number(quantity)) {
+            if (this.max_quantity <= Number(quantity)) {
                 this.max_quantity = Number(quantity);
                 this.order.remove_canceled_lines(this);
             } else if(this.max_quantity > Number(quantity)) {
@@ -170,6 +171,14 @@ odoo.define('pos_order_cancel.models', function (require) {
                     this.cancelled_line = cancelled_line[2];
                 }
             }
+        },
+        cancel_quantity_changes: function() {
+            var old_quantity = String(this.old_quantity);
+            this.set_quantity(this.old_quantity);
+            this.pos.gui.screen_instances.products.numpad.state.set({
+                buffer: String(0)
+            });
+            this.pos.gui.screen_instances.products.numpad.state.appendNewChar(old_quantity);
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
