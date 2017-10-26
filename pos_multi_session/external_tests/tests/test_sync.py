@@ -541,7 +541,7 @@ class TestSync(TestCommon):
         ], 120)
 
     def test_32_queue_for_removing(self):
-        """Single POS send remove order request that confused update requests.
+        """Single POS send remove order request that confuses update requests.
         It would raise error 'sync conflicts', if there are no queue for removing an order. For example
         * We send some updates
         * We remove order
