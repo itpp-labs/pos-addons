@@ -403,7 +403,19 @@ odoo.define('pos_multi_session', function(require){
             this.do_ms_remove_order();
         },
         do_ms_remove_order: function(){
-            this.pos.multi_session.remove_order({'uid': this.uid, 'revision_ID': this.revision_ID});
+            var self = this;
+            if (this.enquied){
+                return;
+            }
+            var f = function(){
+                self.enquied=false;
+                return self.pos.multi_session.remove_order({'uid': self.uid, 'revision_ID': self.revision_ID}).done();
+            };
+            if (!this.pos.config.multi_session_id){
+                return;
+            }
+            this.enquied = true;
+            this.pos.multi_session.enque(f);
         },
         export_as_JSON: function(){
             var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
@@ -552,7 +564,7 @@ odoo.define('pos_multi_session', function(require){
             return this.send({'action': 'sync_all', data: data});
         },
         remove_order: function(data){
-            this.send({action: 'remove_order', data: data});
+            return this.send({action: 'remove_order', data: data});
         },
         update: function(data){
             return this.send({action: 'update_order', data: data});

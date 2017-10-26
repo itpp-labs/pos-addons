@@ -539,3 +539,89 @@ class TestSync(TestCommon):
              "code": "console.log('ok');",
              },
         ], 120)
+
+    def test_32_queue_for_removing(self):
+        """Single POS send remove order request that confused update requests.
+        It would raise error 'sync conflicts', if there are no queue for removing an order. For example
+        * We send some updates
+        * We remove order
+        * Updates in queue are reaching a server. Server sets  revision_ID for each update.
+        * Removing order request reach the server without waiting in the queue.
+        * Server return 'error during synchronization', because requests in the queue keep going processing for already deleted order.
+        """
+
+        # current postpone timer for sending updates is 1000 ms
+        # connection_slow delay response to 3000 ms
+
+        self.phantom_js_multi({
+            # use default settings for sessions (see ./common.py)
+            "admin": {},
+        }, [
+            # admin removes orders
+            {"session": "admin",
+             "code": """
+                 console.log('test_32_slow');
+                 mstest.remove_all_orders();
+             """,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # admin creates order
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+                 mstest.print_order();
+                 mstest.wait(function(){
+                 })
+             """,
+             },
+
+            # response for admin requests are delayed for 3 seconds
+            {"session": "admin",
+             "extra": "connection_slow",
+             "code": """
+                 console.log("admin requests are delayed")
+             """,
+             },
+            # admin updates order
+            {"session": "admin",
+             "code": """
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin waits to send update request')
+                 mstest.wait(function(){
+                 }, 1500)
+             """,
+             },
+            # admin remove order
+            {"session": "admin",
+             "code": """
+                 console.log('Admin removes Order')
+                 mstest.remove_all_orders();
+             """,
+             },
+            # admin waits and receives error if queue doesn't work
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.check_revision_error();
+                 }, 10000)
+             """,
+             "timeout": 20000,
+             },
+            # connection is on
+            {"session": "admin",
+             "extra": "connection_on",
+             },
+            # ok
+            {"session": "admin",
+             "screenshot": "test-32-final",
+             "code": "console.log('ok');",
+             },
+        ], 120)
