@@ -32,11 +32,14 @@ odoo.define('pos_order_cancel.models', function (require) {
             var self = this;
             this.is_cancelled = true;
             this.reason = reason;
-            this.orderlines.each(function(orderline){
-                self.save_canceled_line(self.get_last_orderline());
-                self.save_reason_cancelled_line(self.get_last_orderline(), _t("Order Deleting") + "; " + reason, cancelled_reason_ids);
-                self.remove_orderline(self.get_last_orderline());
+            this.orderlines.each(function(line){
+                self.save_canceled_line(line);
+                self.save_reason_cancelled_line(line, _t("Order Deleting") + "; " + reason, cancelled_reason_ids);
             });
+            var lines = this.get_orderlines();
+            while (lines && lines.length) {
+                self.remove_orderline(lines[0]);
+            }
             this.pos.push_order(this).then(function() {
                 self.destroy({'reason':'abandon'});
             });
