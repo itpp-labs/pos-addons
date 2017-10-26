@@ -486,10 +486,6 @@ class TestSync(TestCommon):
             {"session": "admin",
              "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
              },
-            # check demo authentication
-            {"session": "demo",
-             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
-             },
             # admin creates order
             {"session": "admin",
              "code": """
