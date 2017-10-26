@@ -63,7 +63,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                         order.save_reason_cancelled_line(orderline, reason, cancelled_reason_ids);
                     }
                     if (type === 'order') {
-                        order.save_canceled_order(reason);
+                        order.save_canceled_order(reason, cancelled_reason_ids);
                     }
                 },
                 cancel: function() {
@@ -234,7 +234,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 order.save_reason_cancelled_line(orderline, reason, cancelled_reason_ids);
             }
             if (type === 'order') {
-                order.save_canceled_order(reason);
+                order.save_canceled_order(reason, cancelled_reason_ids);
             }
         },
         toggle_save_button: function(){

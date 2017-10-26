@@ -74,7 +74,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             return res;
         },
-        save_canceled_order: function(reason) {
+        save_canceled_order: function(reason, cancelled_reason_ids) {
             _super_order.save_canceled_order.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
