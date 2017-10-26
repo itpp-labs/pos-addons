@@ -26,7 +26,7 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.canceled_lines = [];
             _super_order.initialize.apply(this, arguments);
         },
-        save_canceled_order: function(reason, cancelled_reason_ids) {
+        destroy_and_upload_as_canceled: function(reason, cancelled_reason_ids) {
             reason = reason || '';
             cancelled_reason_ids = cancelled_reason_ids || false;
             var self = this;
