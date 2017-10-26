@@ -145,7 +145,7 @@ class PosMultiSessionSync(models.Model):
         notifications = []
         channel_name = "pos.multi_session"
         for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '!=', self.env.context.get('user_ID')),
-                                                                  ('multi_session_ID', '=', self.id)]):
+                                                                  ('multi_session_ID', '=', self.multi_session_ID)]):
             message_ID = pos.multi_session_message_ID
             message_ID += 1
             pos.multi_session_message_ID = message_ID
@@ -157,6 +157,7 @@ class PosMultiSessionSync(models.Model):
             # commit to update values on DB
             self.env.cr.commit()
             time.sleep(3)
+
         return 1
 
 
