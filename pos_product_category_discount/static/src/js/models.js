@@ -83,41 +83,6 @@ odoo.define('pos_product_category_discount.models', function (require) {
         },
     });
 
-    var OrderlineSuper = models.Orderline;
-    models.Orderline = models.Orderline.extend({
-        initialize: function(attr,options){
-            OrderlineSuper.prototype.initialize.apply(this,arguments);
-            if (this.order && this.order.current_discount_program) {
-                this.apply_product_discount(this.order.current_discount_program[0]);
-            }
-        },
-        apply_product_discount: function(id) {
-            var self = this;
-            var model = new Model('pos.category_discount');
-            var domain = [['discount_program_id', '=', id]];
-            model.call('search_read', [domain]).then(function (result) {
-                result.forEach(function(res) {
-                    if (res.discount_category_id[0] === self.product.pos_categ_id[0]) {
-                        self.discount_program_name = res.discount_program_id[1];
-                        self.set_discount(res.category_discount_pc);
-                    }
-                });
-            });
-        },
-        export_as_JSON: function(){
-            var json = OrderlineSuper.prototype.export_as_JSON.call(this);
-            json.discount_program_name = this.discount_program_name || false;
-            return json;
-        },
-        init_from_JSON: function(json) {
-            OrderlineSuper.prototype.init_from_JSON.apply(this,arguments);
-            this.discount_program_name = json.discount_program_name || false;
-        },
-        get_discount_name: function(){
-            return this.discount_program_name;
-        },
-    });
-
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         remove_all_discounts: function() {
@@ -138,6 +103,38 @@ odoo.define('pos_product_category_discount.models', function (require) {
             OrderSuper.prototype.init_from_JSON.apply(this,arguments);
             this.product_discount = json.product_discount || false;
             this.current_discount_program = json.current_discount_program;
+        },
+    });
+
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
+        initialize: function(attr,options){
+            OrderlineSuper.prototype.initialize.apply(this,arguments);
+            if (this.order && this.order.current_discount_program) {
+                this.apply_product_discount(this.order.current_discount_program[0]);
+            }
+        },
+        apply_product_discount: function(id) {
+            var self = this;
+            var discount_categories = this.pos.get_discount_categories(id);
+            discount_categories.forEach(function(res){
+                if (res.discount_category_id[0] === self.product.pos_categ_id[0]) {
+                    self.discount_program_name = res.discount_program_id[1];
+                    self.set_discount(res.category_discount_pc);
+                }
+            });
+        },
+        export_as_JSON: function(){
+            var json = OrderlineSuper.prototype.export_as_JSON.call(this);
+            json.discount_program_name = this.discount_program_name || false;
+            return json;
+        },
+        init_from_JSON: function(json) {
+            OrderlineSuper.prototype.init_from_JSON.apply(this,arguments);
+            this.discount_program_name = json.discount_program_name || false;
+        },
+        get_discount_name: function(){
+            return this.discount_program_name;
         },
     });
 });
