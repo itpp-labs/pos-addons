@@ -50,7 +50,6 @@ class PosSession(models.Model):
     @api.multi
     def action_pos_session_close(self):
         res = super(PosSession, self).action_pos_session_close()
-        self.config_id.write({'multi_session_message_ID': 1})
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
         if len(active_sessions) == 0:
             self.config_id.multi_session_id.sudo().write({'order_ID': 0})
