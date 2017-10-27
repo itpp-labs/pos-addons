@@ -320,7 +320,7 @@ class TestSync(TestCommon):
                  if (mstest.order_exists(share.order)){
                      console.log('error', 'removed order still exists', share.order.order_num)
                  }
-            }, 15000)
+            }, 20000)
              """,
              "timeout": 25000,
              },
