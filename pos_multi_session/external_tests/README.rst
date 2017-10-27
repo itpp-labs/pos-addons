@@ -132,3 +132,43 @@ You can try repeat test in real browser, though it's not very convenient
         mstest.fill_order();
 
   * etc.
+
+Run tests for separated servers
+===============================
+
+To run tests on separated servers do what is written in previous paragraphs and create one docker more. This docker will process functionality of main server while 'odoo' container will provide synchronization.
+::
+
+    docker run \
+    -e DB_PORT_5432_TCP_ADDR=db_ms_test \
+    --network=multi_session_test_network \
+    -p 8069:8069 \
+    -p 8072:8072 \
+    -e ODOO_MASTER_PASS=admin \
+    -e DATABASE=db_test_odoo_main \
+    -e ODOO_DOMAIN=odoo-nginx \
+    -e ODOO_PORT=8069 \
+    -v /PATH/TO/pos-addons/:/mnt/addons/it-projects-llc/pos-addons/ \
+    -v /PATH/TO/odoo/:/mnt/odoo-source/ \
+    --name odoo-main \
+    -t itprojectsllc/install-odoo:10.0-dev -- --workers=1 -d db_test_odoo_main --db-filter db_test_odoo_main
+
+To install necessary modules and configure them type in address bar localhost:$PORT. Run these sessions strictly in different browsers to prevent data base addressation confusing
+In 'odoo' container set parameter pos_longpolling.allow_public with value '1' like it was for pos_multi_session.allow_external_tests
+Next in 'odoo-nginx' container modify nginx configuration file etc/nginx/nginx.conf as represented below:::
+
+        if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+                add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,X-Debug-Mode';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+        }
+        add_header 'Access-Control-Allow-Origin' * always;
+
+Copy-paste it into the beginning of each ``location { }`` block except ``location ~* /web/static/``
+It makes your second server be able to process 'OPTIONS' method requests and prevent 'Access-Control-Allow-Origin' errors.
+
+Do not forget to restart your 'odoo-nginx' container after all steps.
