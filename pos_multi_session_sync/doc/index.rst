@@ -1,6 +1,6 @@
-===============================
- POS Multi-session Sync Server
-===============================
+============================
+ Sync Server for POS orders
+============================
 
 Installation
 ============
@@ -26,6 +26,11 @@ To make your second server be able to process 'OPTIONS' method requests, nginx c
                 return 204;
         }
 
+Configuration
+=============
+
+Separate Sync Server
+--------------------
 In order to configure access to the sync server do the following on a server:
 
 * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
@@ -37,11 +42,9 @@ In order to configure access to the sync server do the following on a server:
 
 * Click ``[Save]``
 
-Configuration
-=============
 
-Separate sync server
---------------------
+Main server
+-----------
 
 In main server configure sync server:
 

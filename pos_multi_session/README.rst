@@ -2,6 +2,7 @@ Sync POS orders across multiple sessions
 ========================================
 
 The module synchronize orders data between POSes related to a common multi session. Longpolling provides instant updates between POSes in a multi session.
+pos_multi_session_sync is responsible for server part of synchronization processing
 
 All work data is stored on server. Offline POS is only able to create new orders, after connecting a POS back, data will be synchronized.
 

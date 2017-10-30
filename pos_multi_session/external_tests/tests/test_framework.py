@@ -6,14 +6,8 @@ class TestSync(TestCommon):
     def test_10_sessions(self):
         """Check framework"""
         self.phantom_js_multi({
-            "admin": {
-                "url_path": "/pos/web?debug",
-                "login": "admin",
-            },
-            "demo": {
-                "url_path": "/pos/web",
-                "login": "demo",
-            }
+            "admin": {},
+            "demo": {},
         }, [
             # check admin authentication
             {"session": "admin",
@@ -42,10 +36,7 @@ class TestSync(TestCommon):
 
     def test_20_inject(self):
         self.phantom_js_multi({
-            "admin": {
-                "url_path": "/pos/web",
-                "login": "admin",
-            },
+            "admin": {},
         }, [
             {"session": "admin",
              "code": "testInject()?console.log('ok'):console.log('error', 'js in not injected')",

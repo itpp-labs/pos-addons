@@ -1,11 +1,11 @@
-===============================
- POS Multi-session Sync Server
-===============================
+============================
+ Sync Server for POS orders
+============================
 
-Provides synchronization for POS multi-session.
+Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 
 Supporting module for "Sync POS orders across multiple sessions" provides synchronization for POS multi-session,
-allows using an separate sync server for data storage and processing.
+allows using a separate sync server for data storage and processing.
 Separate sync server synchronization provides uninterrupted synchronization in case of main server is shut down.
 
 Credits
@@ -34,4 +34,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 3d61fcb7a23f65862e10115955645f325db33289
+Tested on Odoo 10.0 33a04354eb2b3897035c7206411fa0130b312313
