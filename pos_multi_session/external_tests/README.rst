@@ -154,21 +154,119 @@ To run tests on separated servers do what is written in previous paragraphs and 
     -t itprojectsllc/install-odoo:10.0-dev -- --workers=1 -d db_test_odoo_main --db-filter db_test_odoo_main
 
 To install necessary modules and configure them type in address bar localhost:$PORT. Run these sessions strictly in different browsers to prevent data base addressation confusing
-In 'odoo' container set parameter pos_longpolling.allow_public with value '1' like it was for pos_multi_session.allow_external_tests
+In 'odoo' container set parameter pos_longpolling.allow_public with value '1' like it was for pos_multi_session.allow_external_tests. More detailed instruction of separated servers configuration is provided in module pos_multisession_sync /doc/index.rst
 Next in 'odoo-nginx' container modify nginx configuration file etc/nginx/nginx.conf as represented below:::
 
-        if ($request_method = 'OPTIONS') {
-                add_header 'Access-Control-Allow-Origin' '*';
-                add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-                add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,X-Debug-Mode';
-                add_header 'Access-Control-Max-Age' 1728000;
-                add_header 'Content-Type' 'text/plain; charset=utf-8';
-                add_header 'Content-Length' 0;
-                return 204;
-        }
+    user  nginx;
+
+    worker_rlimit_nofile 1024;
+    worker_processes 1;
+
+    pid        /var/run/nginx.pid;
+    error_log  /var/log/nginx/error.log;
+
+    events {
+      worker_connections 1024;
+    }
+    http {
+      include /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+
+      sendfile on;
+
+      server_tokens on;
+
+      types_hash_max_size 1024;
+      types_hash_bucket_size 512;
+
+      server_names_hash_bucket_size 64;
+      server_names_hash_max_size 512;
+
+      keepalive_timeout  65;
+      tcp_nodelay        on;
+
+      gzip              on;
+      gzip_http_version 1.0;
+      gzip_proxied      any;
+      gzip_min_length   500;
+      gzip_disable      "MSIE [1-6]\.";
+      gzip_types        text/plain text/xml text/css
+                        text/comma-separated-values
+                        text/javascript
+                        application/json
+                        application/xml
+                        application/x-javascript
+                        application/javascript
+                        application/atom+xml;
+
+      proxy_redirect          off;
+
+      proxy_connect_timeout   90;
+      proxy_send_timeout      90;
+      proxy_read_timeout      90;
+      proxy_buffers           32 4k;
+      proxy_buffer_size       8k;
+      proxy_set_header         Host $http_host;
+      proxy_set_header         X-Real-IP $remote_addr;
+      proxy_set_header         X-Forward-For $proxy_add_x_forwarded_for;
+      # when redirecting to https:
+      # proxy_set_header         X-Forwarded-Proto https;
+      proxy_set_header         X-Forwarded-Host $http_host;
+      proxy_headers_hash_bucket_size 64;
+
+      # List of application servers
+      upstream app_servers {
+        server odoo:8069;
+      }
+
+      # Configuration for the server
+      server {
+
+        listen 80 default;
+
+        client_max_body_size 1G;
+
+        add_header              Strict-Transport-Security "max-age=31536000";
         add_header 'Access-Control-Allow-Origin' * always;
 
-Copy-paste it into the beginning of each ``location { }`` block except ``location ~* /web/static/``
-It makes your second server be able to process 'OPTIONS' method requests and prevent 'Access-Control-Allow-Origin' errors.
+       location / {
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,X-Debug-Mode';
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+            }
+          add_header 'Access-Control-Allow-Origin' * always;
+          proxy_pass http://odoo:8069;
+          proxy_read_timeout    6h;
+          proxy_connect_timeout 5s;
+          proxy_redirect        off;
+          #proxy_redirect        http://$host/ https://$host:$server_port/;
+          add_header X-Static no;
+          proxy_buffer_size 64k;
+          proxy_buffering off;
+          proxy_buffers 4 64k;
+          proxy_busy_buffers_size 64k;
+          proxy_intercept_errors on;
+
+        }
+        location /longpolling {
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,X-Debug-Mode';
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+            }
+        add_header 'Access-Control-Allow-Origin' * always;
+        proxy_pass http://odoo:8072;
+        }
+      }
+    }
 
 Do not forget to restart your 'odoo-nginx' container after all steps.
