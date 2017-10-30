@@ -1,8 +1,8 @@
-===============================
- POS Multi-session Sync Server
-===============================
+============================
+ Sync Server for POS orders
+============================
 
-Provides server part of synchronization for POS multi-session.
+Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 
 Supporting module for "Sync POS orders across multiple sessions" provides synchronization for POS multi-session,
 allows using a separate sync server for data storage and processing.

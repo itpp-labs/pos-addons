@@ -41,8 +41,6 @@ class ExternalTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print "================================="
-        print PORT, MAIN_URL
         super(ExternalTestCase, cls).setUpClass()
         # Authenticate
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
