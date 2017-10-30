@@ -37,7 +37,7 @@
     </t>
 
     <t t-name="SaleOrderLine">
-        <tr class='sale-order-line' t-att-data-id='line.id'>
+        <tr t-att-data-id='line.id' t-attf-class='sale-order-line #{line.invoiceble ? "invoiceble" : ""}'>
             <td><t t-esc='line.product'/></td>
             <td><t t-esc='line.name'/></td>
             <td><t t-esc='line.uom_qty'/></td>
@@ -363,7 +363,8 @@
             
             <div class="pos-center-align"><t t-esc="moment().format('L LT')"/> <t t-esc="order.name"/></div>
             <br />
-            Payment of Invoice <t t-esc="order.invoice_to_pay.number"/><br />
+            Payment of Invoice <t t-esc="order.invoice_to_pay.number"/>
+            (<t t-esc="order.invoice_to_pay.origin"/>)<br />
 
             <t t-esc="widget.pos.company.name"/><br />
             Phone: <t t-esc="widget.pos.company.phone || ''"/><br />

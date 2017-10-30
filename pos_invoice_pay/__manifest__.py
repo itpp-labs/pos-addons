@@ -24,6 +24,7 @@
         "data.xml",
         "actions/ir_action_server.xml",
         "actions/base_action_rules.xml",
+        "report/report.xml"
     ],
     "qweb": [
         'static/src/xml/pos.xml'

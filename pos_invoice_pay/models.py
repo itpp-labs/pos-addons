@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, models
+from odoo import api, models, fields
 
 
 class PosOrder(models.Model):
@@ -21,22 +21,33 @@ class PosOrder(models.Model):
             inv_obj = self.env['account.invoice'].search([('id', '=', inv_id)])
             journal_id = statement[2]['journal_id']
             journal = self.env['account.journal'].search([('id', '=', journal_id)])
+            amount = statement[2]['amount']
+            cashier = invoice['data']['user_id']
+            writeoff_acc_id = False
+            payment_difference_handling = 'open'
+
+            if amount > inv_obj.residual:
+                writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
+                payment_difference_handling = 'reconcile'
+
             vals = {
                 'journal_id': journal.id,
                 'payment_method_id': 1,
                 'payment_date': invoice['data']['creation_date'],
                 'communication': invoice['data']['invoice_to_pay']['number'],
-                'invoice_ids': (4, inv_id, None),
+                'invoice_ids': [(4, inv_id, None)],
                 'payment_type': 'inbound',
-                'amount': statement[2]['amount'],
+                'amount': amount,
                 'currency_id': inv_obj.currency_id.id,
                 'partner_id': invoice['data']['invoice_to_pay']['partner_id'][0],
                 'partner_type': 'customer',
+                'payment_difference_handling': payment_difference_handling,
+                'writeoff_account_id': writeoff_acc_id,
+                'paid_by_pos': True,
+                'cashier': cashier
             }
             payment = self.env['account.payment'].create(vals)
             payment.post()
-            credit_aml_id = filter(lambda x: x.credit > 0, payment.move_line_ids)[0]
-            inv_obj.assign_outstanding_credit(credit_aml_id.id)
 
     @api.model
     def process_invoices_creation(self, sale_order_id):
@@ -48,6 +59,13 @@ class PosOrder(models.Model):
             'dbname': self._cr.dbname,
             'uid': self.env.uid
         }
+
+
+class AccountPayment(models.Model):
+    _inherit ='account.payment'
+
+    paid_by_pos = fields.Boolean(default=False)
+    cashier = fields.Many2one('res.users')
 
 
 class AccountInvoice(models.Model):
@@ -76,6 +94,19 @@ class AccountInvoice(models.Model):
             res.append(line)
         return res
 
+    @api.one
+    @api.depends('payment_move_line_ids.amount_residual')
+    def _get_payment_info_JSON(self):
+        if self.payment_move_line_ids:
+            for move in self.payment_move_line_ids:
+                if move.payment_id.cashier:
+                    if move.move_id.ref:
+                        move.move_id.ref = "%s by %s" % (move.move_id.ref, move.payment_id.cashier.name)
+                    else:
+                        move.move_id.name = "%s by %s" % (move.move_id.name, move.payment_id.cashier.name)
+        data = super(AccountInvoice, self)._get_payment_info_JSON()
+        return data
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -99,7 +130,8 @@ class SaleOrder(models.Model):
                 'qty_invoiced': l.qty_invoiced,
                 'tax': l.tax_id.name or ' ',
                 'subtotal': l.price_subtotal,
-                'total': l.price_total
+                'total': l.price_total,
+                'invoiceble': ((l.qty_delivered > 0) or (l.product_id.invoice_policy == 'order'))
             }
             res.append(line)
         return res

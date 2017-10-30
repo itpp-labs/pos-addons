@@ -47,7 +47,7 @@
 
 .lines-table {
     width:100%;
-    border: dashed 1px rgb(215,215,215);
+    border: solid 1px rgb(215,215,215);
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: .8em;
@@ -59,7 +59,14 @@ tr.sale-order {
     border-bottom: 1px dashed rgb(215,215,215);
 }
 
-/*.payment-numpad.invoice {
-    margin-left: 25%;
-}*/
+.pos .client-list tr.sale-order-line {
+    background-color: rgb(247,247,247);
+    border: solid 1px rgb(215,215,215);
+}
+
+.pos .client-list tr.sale-order-line.invoiceble {
+    background-color: rgba(110, 200, 155, 0.5);
+    border: solid 1px rgb(215,215,215);
+
+}
 
