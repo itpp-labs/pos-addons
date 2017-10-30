@@ -41,6 +41,8 @@ class ExternalTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        print "+++++++++++++++++++++++++++++++++++++++++"
+        print 'MAIN_URL', MAIN_URL
         super(ExternalTestCase, cls).setUpClass()
         # Authenticate
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
@@ -104,7 +106,7 @@ class ExternalTestCase(unittest2.TestCase):
         options = {
             # since 10.0 we use odoo with --workers=1 + nginx,
             # and hence we shall not specify port and proxy requests to nginx
-            'port': PORT,
+            # 'port': PORT,
             'db': DATABASE,
             'sessions': sessions,
             'commands': commands,
