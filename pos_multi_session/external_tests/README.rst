@@ -93,7 +93,7 @@ Run tests
 To run tests, you need to run odoo server and then execute::
 
     cd pos_multi_session
-    DATABASE=test_database python -m unittest discover -t . -s external_tests 
+    DATABASE=test_database python -m unittest discover -t . -s external_tests
 
 To run only one file::
 
@@ -106,6 +106,14 @@ Run tests in Docker
     docker exec -u odoo -i -t odoo /bin/bash -c "\
     cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; \
     python -m unittest discover -t . -s external_tests"
+
+Run tests in Docker for separated servers
+-----------------------------------------
+::
+
+    docker exec -u odoo -i -t odoo-main /bin/bash -c "\
+    cd /mnt/addons/it-projects-llc/pos-addons/pos_multi_session; \
+    ODOO_DOMAIN=localhost python -m unittest discover -t . -s external_tests"
 
 
 Run tests in browser
@@ -153,9 +161,24 @@ To run tests on separated servers do what is written in previous paragraphs and 
     --name odoo-main \
     -t itprojectsllc/install-odoo:10.0-dev -- --workers=1 -d db_test_odoo_main --db-filter db_test_odoo_main
 
-To install necessary modules and configure them type in address bar localhost:$PORT. Run these sessions strictly in different browsers to prevent data base addressation confusing
-In 'odoo' container set parameter pos_longpolling.allow_public with value '1' like it was for pos_multi_session.allow_external_tests. More detailed instruction of separated servers configuration is provided in module pos_multisession_sync /doc/index.rst
-Next in 'odoo-nginx' container modify nginx configuration file etc/nginx/nginx.conf as represented below:::
+Main Server
+-----------
+* Open via localhost:8069
+* Install necessary modules
+
+Sync Server
+-----------
+* Run these sessions strictly in different browsers to prevent data base addressation confusing
+* Open via localhost:8080
+* Set parameter ``pos_longpolling.allow_public`` with value '1' like it was for ``pos_multi_session.allow_external_tests``. More detailed instruction of separated servers configuration is provided in module ``pos_multi_session_sync`` ``/doc/index.rst``
+
+odoo-nginx Container
+--------------------
+* Open ``odoo-nginx`` container via::
+
+    docker exec -i -u root -t odoo-nginx /bin/bash
+
+* Modify nginx configuration file ``etc/nginx/nginx.conf`` as represented below::
 
     user  nginx;
 
@@ -269,4 +292,4 @@ Next in 'odoo-nginx' container modify nginx configuration file etc/nginx/nginx.c
       }
     }
 
-Do not forget to restart your 'odoo-nginx' container after all steps.
+* Do not forget to restart your 'odoo-nginx' container after all steps.
