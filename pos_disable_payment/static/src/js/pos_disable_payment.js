@@ -37,7 +37,7 @@ odoo.define('pos_disable_payment', function(require){
                     // it's possible in non-updated odoo that self.cashier if falsy here
                     return;
                 }
-                // At this point this.cashier has no rights settings added by module. 
+                // At this point this.cashier has no rights settings added by module.
                 // Reset cashier to fix it
                 var current_cashier = _.find(self.users, function(user){
                     return user.id === self.cashier.id;
