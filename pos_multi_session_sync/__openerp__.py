@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Multi-session Sync Server""",
-    "summary": """Provides synchronization for POS multi-session.""",
+    "name": """Sync Server for POS orders""",
+    "summary": """Sync orders via main or separate (e.g. local) server""",
+
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
@@ -12,8 +13,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 60.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_longpolling",
