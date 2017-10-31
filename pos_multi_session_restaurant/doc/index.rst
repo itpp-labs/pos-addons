@@ -10,15 +10,17 @@ Installation
 Configuration
 =============
 
+After adding a POS into a multi-session update its floor set, because it might be changed after adding according to a multi-session floors
+
 A floor can be added to a multi-session by two ways:
 
 * Via multi-session form:
 
- * Open ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
-    * Click on a necessary multi-session
-    * In the field ``Restaurant Floors`` chose or add a new floor
+  * Open ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
+  * Click on a necessary multi-session
+  * In the field ``Restaurant Floors`` chose or add a new floor
 
-* Default method: Add floor via ``[[ Point of Sale ]] >> Configuration >> Point of sale`` to a POS that belongs to a necessry multi-session
+* Default method: Add floor via ``[[ Point of Sale ]] >> Configuration >> Point of sale`` to a POS that belongs to a necessary multi-session
 
 Usage
 =====

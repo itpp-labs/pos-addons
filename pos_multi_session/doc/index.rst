@@ -31,7 +31,7 @@ There is a rare case, when you need to clear browser data after installation: if
 Usage
 =====
 
-Several POSes may not be opened in the same browser simultaneously.
+Several POSes can't be opened in the same browser simultaneously.
 After completing previous paragraphs and adding at least two poses in a multi-session:
 
 * Open two or more POSes belong to the multi-session
