@@ -37,8 +37,8 @@ In order to configure access to the sync server do the following on a server:
 * Open menu ``[[ Settings ]] >> Parameters >> System Parameters``
 * Click ``[Create]``
 
-    * Paste in the field **Key** 'pos_longpolling.allow_public'
-    * Paste in the field **Value** '1'
+  * Paste in the field **Key** 'pos_longpolling.allow_public'
+  * Paste in the field **Value** '1'
 
 * Click ``[Save]``
 
