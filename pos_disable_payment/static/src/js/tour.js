@@ -58,8 +58,8 @@ odoo.define('pos_disable_payment.tour', function(require) {
         content: _t("Hidden"),
         trigger: '.pads',
         run: function(){
-            if ($('.numpad-minus').is(":hidden")) {
-                console.log("The button is hidden");
+            if (!$('.numpad-minus').is(":hidden")) {
+                console.log("error", "The button is not hidden");
             }
         }
     }
