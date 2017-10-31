@@ -34,11 +34,11 @@ Separate Sync Server
 In order to configure access to the sync server do the following on a server:
 
 * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
-* Open menu ``Settings >> Parameters >> System Parameters``
+* Open menu ``[[ Settings ]] >> Parameters >> System Parameters``
 * Click ``[Create]``
 
-    * Paste in the field **Key** 'pos_longpolling.allow_public'
-    * Paste in the field **Value** '1'
+  * Paste in the field **Key** 'pos_longpolling.allow_public'
+  * Paste in the field **Value** '1'
 
 * Click ``[Save]``
 
@@ -48,8 +48,7 @@ Main server
 
 In main server configure sync server:
 
-* Open menu ``Point of Sale``
-* Click ``Configuration >> Point of Sale``
+* Open ``[[ Point of Sale ]] >> Configuration >> Point of sale``
 * Click on a POS belongs to required for syncing Multi-session
 * Click ``[Edit]``
 * Paste an external server url in the field **Sync Server**
