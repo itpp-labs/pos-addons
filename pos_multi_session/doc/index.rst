@@ -10,7 +10,7 @@ Installation
 Longpolling
 -----------
 
-Follow instruction of https://www.odoo.com/apps/modules/8.0/pos_longpolling/
+Follow instruction of https://www.odoo.com/apps/modules/10.0/pos_longpolling/
 
 Configuration
 =============
