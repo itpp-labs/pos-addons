@@ -1,14 +1,15 @@
 Sync POS orders across multiple sessions
 ========================================
 
-The module provides instant orders data synchronization between POSes related to a common multi session.
+The module provides instant orders synchronization between POSes related to a common *multi session*.
 
-All work data is stored on server. Module 'Sync Server for POS orders' is responsible for server part of synchronization processing,
-also it's provides a possibility to store data on a separated Sync Server.
-Separate sync server synchronization provides uninterrupted synchronization in case of main server is shut down.
-Longpolling provides instant updates between POSes in a multi session.
-Offline POS is only able to create new orders, after connecting a POS back, data will be synchronized.
-POSes are able to work without synchronization, like without the module.
+Server side of synchronization is handled by module ``pos_multi_session_sync``. The role of *Sync Server* may have same odoo server as well as separate odoo server (e.g. server in local network).
+
+Instant data exchange are made via built-int longpolling feature extended by ``pos_longpolling`` module.
+
+When POS becomes offline, i.e. don't have connectiont *Sync Server*, it is only able to create new orders and not allowed to modify exising orders to avoid synchronization problems.
+
+Some POSes may be configured to work without synchronization. It such case it will work just like without the module.
 
 Credits
 =======
