@@ -9,7 +9,7 @@ Instant data exchange are made via built-int longpolling feature extended by ``p
 
 When POS becomes offline, i.e. don't have connectiont *Sync Server*, it is only able to create new orders and not allowed to modify exising orders to avoid synchronization problems.
 
-Some POSes may be configured to work without synchronization. It such case it will work just like without the module.
+Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
 Credits
 =======

@@ -14,7 +14,7 @@ A floor can be added to a multi-session by two ways:
 
 * Via multi-session form:
 
-    * Open ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
+ * Open ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
     * Click on a necessary multi-session
     * In the field ``Restaurant Floors`` chose or add a new floor
 
