@@ -10,33 +10,21 @@ Installation
 Configuration
 =============
 
-Adding a Floor
---------------
+A floor can be added to a multi-session by two ways:
 
-* Open menu ``Point of Sale``
-* Click ``Configuration >> Floor Plans``
-* Click ``[Create]``
-* Paste a name for a floor in the field **Floor Name**
-* Pick ``Background Color`` in RGB format.
-* Click ``[Save]``
+* Via multi-session form:
 
-Adding a table
---------------
+    * Open ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
+    * Click on a necessary multi-session
+    * In the field ``Restaurant Floors`` chose or add a new floor
 
-* Open menu ``Point of Sale``
-* Click ``Configuration >> Floor Plans``
-* Chose a floor you want to add a table on
-* Click ``[Edit]``
-* In the table click ``[Add an item]`` to add a table on the floor or chose a presence table to modify
-
-    * Paste a table name in the field ``Table Name``
-    * Paste number of seats in the field ``Seats``
-    * Configure a table appearance below or make it on the floor plan after opening a POS session this table belongs to.
-
-* Click ``[Save & Close]`` to save and return to the floor configuration
-* Click ``[Save & New]`` to save and create a new table
+* Default method: Add floor via ``[[ Point of Sale ]] >> Configuration >> Point of sale`` to a POS that belongs to a necessry multi-session
 
 Usage
 =====
 
-After opening a POS it is possible to add or modify tables by clicking a pencil button in the up-right corner below button ``[Close]``
+* Open two or more POSes belongs to the multi-session
+* In the first POS add a product
+* In both POSes you will see the product in order list, note in the line that it was added by the first POS and that the number of the order was changed from ``NEW`` to a number
+* In the second POS click on the line with the product in the order list and click a number on the numpad under orderlist to change quantity of that product
+* In both POSes you will see a changed quantity of the product and that this order line was added by first and changed by the second POSes
