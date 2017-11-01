@@ -58,8 +58,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
         run: function(){
             if (!$('.numpad-minus').css('visibility') === 'hidden') {
                 console.log("error", "The button is not hidden");
-            }
-            else {
+            } else {
                 console.log("Everything is ok");
             }
         }
