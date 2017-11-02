@@ -17,7 +17,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-  The module is not maintained since Odoo 9.0. Unmaintained, use module from OCA instead. E.g.: https://github.com/OCA/partner-contact/tree/11.0/partner_firstname
+  The module is not maintained since Odoo 9.0. Use module from OCA instead, e.g. https://github.com/OCA/partner-contact/tree/11.0/partner_firstname
 
 Further information
 ===================

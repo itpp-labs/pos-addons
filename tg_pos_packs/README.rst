@@ -17,7 +17,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-  The module is not maintained since Odoo 9.0. Unmaintained and has to be rewritten (probably there is already similar solution).
+  The module is not maintained since Odoo 9.0 and has to be rewritten (probably there is already similar solution).
 
 Further information
 ===================

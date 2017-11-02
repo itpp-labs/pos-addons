@@ -17,7 +17,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-  The module is not maintained since Odoo 9.0. Unmaintained, use module from OCA instead. E.g.: https://github.com/OCA/product-attribute/tree/10.0/product_brand
+  The module is not maintained since Odoo 9.0. Use module from OCA instead, e.g. https://github.com/OCA/product-attribute/tree/10.0/product_brand
 
 Further information
 ===================
