@@ -17,7 +17,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-  Not maintained since v.10.0. Module is useful, but may not be compatible with other modules and more general approach is needed
+  The module is not maintained since Odoo 10.0. It's useful, but may not be compatible with other modules and more general approach is needed
 
 Further information
 ===================
