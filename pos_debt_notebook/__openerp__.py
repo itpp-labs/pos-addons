@@ -32,6 +32,6 @@
     ],
     "demo": [
     ],
-    'installable': True,
+    'installable': False,
     'uninstall_hook': 'pre_uninstall',
 }
