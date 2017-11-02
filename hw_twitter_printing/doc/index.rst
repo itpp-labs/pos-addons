@@ -23,3 +23,8 @@ In PosBox
 ---------
 
 * add ``hw_twitter_printing`` module to *server wide modules*. Detailed instruction is here: https://odoo-development.readthedocs.io/en/latest/admin/posbox/administrate-posbox.html#how-to-update-odoo-command-line-options
+
+Gevent
+------
+
+If you face the problem like ``wrap_socket does not accept server_hostname``, try to upgrade ``gevent`` library

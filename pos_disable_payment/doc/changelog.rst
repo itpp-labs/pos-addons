@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.3.0`
+-------
+- NEW: New option "Allow refunds" on user access rights
+
 `2.2.4`
 -------
 - FIX: module didn't work with older odoo version in some context
