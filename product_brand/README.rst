@@ -17,7 +17,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-  Not maintained since v.9.0. Unmaintained, use module from OCA instead.
+  The module is not maintained since Odoo 9.0. Unmaintained, use module from OCA instead.
 
 Further information
 ===================
