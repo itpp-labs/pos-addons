@@ -26,15 +26,19 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.canceled_lines = [];
             _super_order.initialize.apply(this, arguments);
         },
-        save_canceled_order: function(reason) {
+        destroy_and_upload_as_canceled: function(reason, cancelled_reason_ids) {
+            reason = reason || '';
+            cancelled_reason_ids = cancelled_reason_ids || false;
             var self = this;
             this.is_cancelled = true;
             this.reason = reason;
-            this.orderlines.each(function(orderline){
-                self.save_canceled_line(self.get_last_orderline());
-                self.save_reason_cancelled_line(self.get_last_orderline(), _t("Order Deleting"));
-                self.remove_orderline(self.get_last_orderline());
+            this.orderlines.each(function(line){
+                self.save_canceled_line(line);
+                self.save_reason_cancelled_line(line, _t("Order Deleting") + "; " + reason, cancelled_reason_ids);
             });
+            while (this.get_orderlines().length) {
+                self.remove_orderline(this.get_orderlines()[0]);
+            }
             this.pos.push_order(this).then(function() {
                 self.destroy({'reason':'abandon'});
             });
@@ -62,8 +66,9 @@ odoo.define('pos_order_cancel.models', function (require) {
         /*  If pos_multi_session is installed then trigger('change:sync') is used to sync
             cancelation data accross all POSes
         */
-        save_reason_cancelled_line: function(orderline, reason) {
+        save_reason_cancelled_line: function(orderline, reason, cancelled_reason_ids) {
             orderline.cancelled_line.reason = reason;
+            orderline.cancelled_line.cancelled_reason_ids = cancelled_reason_ids;
             this.trigger('change:sync');
         },
         save_canceled_line: function(orderline) {
@@ -144,8 +149,9 @@ odoo.define('pos_order_cancel.models', function (require) {
             _super_orderline.initialize.apply(this,arguments);
         },
         set_quantity: function(quantity) {
+            this.old_quantity = this.quantity;
             _super_orderline.set_quantity.apply(this,arguments);
-            if (this.max_quantity < Number(quantity)) {
+            if (this.max_quantity <= Number(quantity)) {
                 this.max_quantity = Number(quantity);
                 this.order.remove_canceled_lines(this);
             } else if(this.max_quantity > Number(quantity)) {
@@ -169,6 +175,14 @@ odoo.define('pos_order_cancel.models', function (require) {
                     this.cancelled_line = cancelled_line[2];
                 }
             }
+        },
+        cancel_quantity_changes: function() {
+            var old_quantity = String(this.old_quantity);
+            this.set_quantity(this.old_quantity);
+            this.pos.gui.screen_instances.products.numpad.state.set({
+                buffer: String(0)
+            });
+            this.pos.gui.screen_instances.products.numpad.state.appendNewChar(old_quantity);
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);

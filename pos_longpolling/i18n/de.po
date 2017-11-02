@@ -3,14 +3,14 @@
 # * pos_longpolling
 # 
 # Translators:
-# Ermin Trevisan <trevi@twanda.com>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-14 10:52+0000\n"
-"PO-Revision-Date: 2017-10-14 10:52+0000\n"
-"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"POT-Creation-Date: 2017-10-27 14:43+0000\n"
+"PO-Revision-Date: 2017-10-27 14:43+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,13 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_longpolling
-#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_autostart_longpolling
-msgid "Autostart longpolling"
-msgstr ""
-
-#. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:126
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:95
 #, python-format
 msgid "Error"
 msgstr "Fehler"
@@ -59,12 +54,6 @@ msgid ""
 "sent, it will be waiting for response message ('PONG') at this period and if"
 " the message has not been received, the icon turns color to red. Once the "
 "connection is restored, the icon changes its color back to green)"
-msgstr ""
-
-#. module: pos_longpolling
-#: model:ir.model.fields,help:pos_longpolling.field_pos_config_autostart_longpolling
-msgid ""
-"When switched off longpoling will start only when other module start it"
 msgstr ""
 
 #. module: pos_longpolling
