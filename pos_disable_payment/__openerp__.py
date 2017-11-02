@@ -18,5 +18,5 @@
     'demo': [
         'views/assets_demo.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

@@ -10,6 +10,6 @@
     'description': "Add Fiscal Position to POS floor model",
     'data': ['views.xml'],
     'depends': ['base', 'point_of_sale', 'pos_restaurant'],
-    'installable': True,
+    'installable': False,
 
 }

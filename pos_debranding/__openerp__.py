@@ -16,5 +16,5 @@
     'qweb': [
         'static/src/xml/pos_debranding.xml',
     ],
-    'installable': True,
+    'installable': False,
 }
