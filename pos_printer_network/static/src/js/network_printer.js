@@ -11,7 +11,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
     var chrome = require('point_of_sale.chrome');
     var PopupWidget = require('point_of_sale.popups');
     var QWeb = core.qweb;
-    var mixins = requere("web.mixins");
+    var mixins = require("web.mixins");
 
     var _t = core._t;
 
