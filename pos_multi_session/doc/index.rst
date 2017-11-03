@@ -15,27 +15,27 @@ Follow instruction of https://www.odoo.com/apps/modules/10.0/pos_longpolling/
 Configuration
 =============
 
-To create a multi-session follow next steps:
+To create a multi-session follow the steps:
 
 * Open menu ``[[ Point of Sale ]] >> Configuration >> Multi-session Settings``
 * Click ``[Create]``
-* Paste a name for multi-session in the field **Name**
-* Chose POSes you want to add in the multi-session. Theirs previous sessions are have to be closed before adding.
+* Specify a name for multi-session in the **Name** field
+* Choose POSes you want to add in the multi-session. Their previous sessions have to be closed before adding.
 * Click ``[Save]``
 
 Domain switching
 ================
 
-There is a rare case, when you need to clear browser data after installation: if you use this module on a website domain, that was previously used by another database with this module installed. E.g. main_company.example.com was used by ``database1`` and then the domain starts to handle another ``database2``. In that case browser data has to be cleanned on all devices before first use.
+There is a rare case, when you need to clear browser data after installation: if you use this module on a website domain, which was previously used by another database with this module installed (e.g. main_company.example.com was used by ``database1`` and then the domain starts to handle another ``database2``). In that case the browser data has to be cleaned on all devices before first use.
 
 Usage
 =====
 
 Several POSes can't be opened in the same browser simultaneously.
-After completing previous paragraphs and adding at least two poses in a multi-session:
+After completing previous paragraphs and adding at least two poses to a multi-session:
 
-* Open two or more POSes belong to the multi-session
+* Open two or more POSes belonging to the multi-session
 * In the first POS add a product
-* In opened POSes you will see the product in order list, note in the line that it was added by the first POS and that the number of the order was changed from ``NEW`` to a number
-* In the second POS click on the line with the product in the order list and click a number on the numpad under orderlist to change quantity of that product
-* In opened POSes you will see a changed quantity of the product and that this order line was added by first and changed by the second POSes
+* In the opened POSes you will see the product in order list and underline note signifying that it was added by the first POS and the number of the order was changed from ``NEW`` to a number
+* In the second POS click on the orderline and click a number by using numpad to change quantity of that product
+* In opened POSes you will see the changed quantity of the product and information about the orderline was added by the first and changed by the second POSes
