@@ -5,9 +5,9 @@ The module provides instant orders synchronization between POSes related to a co
 
 Server side of synchronization is handled by module ``pos_multi_session_sync``. The role of *Sync Server* may have same odoo server as well as separate odoo server (e.g. server in local network).
 
-Instant data exchange are made via built-int longpolling feature extended by ``pos_longpolling`` module.
+Instant data exchange are made via built-in longpolling feature extended by ``pos_longpolling`` module.
 
-When POS becomes offline, i.e. don't have connectiont *Sync Server*, it is only able to create new orders and not allowed to modify exising orders to avoid synchronization problems.
+When POS becomes offline, i.e. don't have connection to *Sync Server*, it is only able to create new orders and not allowed to modify exising orders to avoid synchronization problems.
 
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
