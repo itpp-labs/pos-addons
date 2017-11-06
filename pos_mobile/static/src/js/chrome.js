@@ -7,6 +7,14 @@ odoo.define('pos_mobile.chrome', function (require) {
     var chrome = require('point_of_sale.chrome');
 
     chrome.Chrome.include({
+        init: function() {
+            this._super();
+            this.pos.ready.done(function(){
+                var categories = $('.rightpane .categories');
+                categories.detach();
+                $('.slide-categories').append(categories);
+            });
+        },
         // This method instantiates all the screens, widgets, etc.
         build_widgets: function() {
             this._super();
@@ -33,6 +41,9 @@ odoo.define('pos_mobile.chrome', function (require) {
                 },
             });
 
+            // remove all events for vertical swiper
+            this.swiperV.destroy(false , false);
+
             // move some widgets and screens from screen block to slide blocks
             var products = $('.rightpane .content-row');
             products.detach();
@@ -42,6 +53,10 @@ odoo.define('pos_mobile.chrome', function (require) {
             order.detach();
             $('.slide-order').append(order);
 
+            var summary = $('.pos.mobile .order-container .summary.clearfix');
+            summary.detach();
+            $('.pos.mobile .order-container').append(summary);
+
             var pads = $('.leftpane .pads');
             pads.detach();
             $('.slide-numpad').append(pads);
@@ -50,26 +65,9 @@ odoo.define('pos_mobile.chrome', function (require) {
             search.detach();
             $('.slide-search').append(search);
 
-            var categories = $('.rightpane .categories');
-            categories.detach();
-            $('.slide-categories').append(categories);
-
-            /* var payment = $('.payment-screen');
-            payment.detach();
-            $('.slide-payment').append(payment);
-
-            var clientlist = $('.clientlist-screen');
-            clientlist.detach();
-            $('.slide-clientlist').append(clientlist);
-
-            var receipt = $('.receipt-screen');
-            receipt.detach();
-            $('.slide-receipt').append(receipt);
-
-            var scale = $('.scale-screen');
-            scale.detach();
-            $('.slide-scale').append(scale); */
-
+            var buttons = $('.control-buttons');
+            buttons.detach();
+            $('.slide-buttons').append(buttons);
         },
     });
 
@@ -90,5 +88,32 @@ odoo.define('pos_mobile.chrome', function (require) {
             this.chrome.swiperH[0].slideTo(0, 0);
         },
     });
+
+    chrome.HeaderButtonWidget.include({
+        renderElement: function(){
+            var self = this;
+            this._super();
+            if(this.action){
+                this.$el.click(function(){
+                    self.change_action();
+                });
+            }
+        },
+        change_action: function() {
+            var cancel_button = '<img src="/pos_mobile/static/src/img/svg/close.svg"/>';
+            var confirm_cancel_button = '<img src="/pos_mobile/static/src/img/svg/confirm.svg"/>';
+            var self = this;
+            if (!this.confirmed_change) {
+                this.$el.text('');
+                this.$el.append(confirm_cancel_button);
+                this.confirmed_change = setTimeout(function(){
+                    self.$el.text('');
+                    self.$el.append(cancel_button);
+                    self.confirmed_change = false;
+                },2000);
+            }
+        },
+    });
+
     return chrome;
 });

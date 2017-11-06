@@ -24,6 +24,7 @@
         "views/pos_mobile_restaurant_template.xml",
     ],
     "qweb": [
+        "static/src/xml/pos.xml",
     ],
     "demo": [
     ],
