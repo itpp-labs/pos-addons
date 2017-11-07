@@ -98,7 +98,7 @@ odoo.define('pos_multi_session', function(require){
                 }
 
                 self.multi_session = new exports.MultiSession(self);
-
+                self.multi_session.request_sync_all();
             });
         },
         ms_my_info: function(){
