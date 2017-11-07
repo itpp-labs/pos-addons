@@ -234,17 +234,34 @@ odoo.define('pos_longpolling', function(require){
     });
 
     var Status_Widget = chrome.StatusWidget;
+    Status_Widget.include({
+        set_poll_status: function(selector, current_bus) {
+            var element = self.$(selector);
+            if (current_bus.longpolling_connection.status) {
+                element.removeClass('oe_red');
+                element.addClass('oe_green');
+            } else {
+                element.removeClass('oe_green');
+                element.addClass('oe_red');
+            }
+        },
+    });
+
     var AdditionalSynchNotificationWidget = Status_Widget.extend({
         template: 'AdditionalSynchNotificationWidget',
         start: function(){
             var self = this;
-            var element = this.$('.serv_additional');
+            var selector = '.serv_additional';
             if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
-                    if (_.has(this.pos.buses, 'key')){
+                    if (_.has(this.pos.buses, key)){
                         bus = this.pos.buses[key];
-                        self.set_poll_status(element, bus);
                         bus.longpolling_connection.set_status(true);
+                        self.set_poll_status(selector, bus);
+                        bus.longpolling_connection.on("change:poll_connection", function(status){
+                            var selector = '.serv_additional';
+                            self.set_poll_status(selector, bus);
+                        });
                     }
                 }
             } else {
@@ -270,26 +287,13 @@ odoo.define('pos_longpolling', function(require){
         },
     });
 
-
-    Status_Widget.include({
-        set_poll_status: function(element, current_bus) {
-            if (current_bus.longpolling_connection.status) {
-                element.removeClass('oe_red');
-                element.addClass('oe_green');
-            } else {
-                element.removeClass('oe_green');
-                element.addClass('oe_red');
-            }
-        },
-    });
-
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                var element = self.$('.serv_primary');
-                self.set_poll_status(element, self.pos.bus);
+                var selector = '.serv_primary';
+                self.set_poll_status(selector, self.pos.bus);
             });
             this.pos.bus.longpolling_connection.set_status(true);
         },
