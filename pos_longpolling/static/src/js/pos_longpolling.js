@@ -19,9 +19,7 @@ odoo.define('pos_longpolling', function(require){
     bus.Bus.include({
         init_bus: function(pos, sync_server){
             this.pos = pos;
-            if (!this.channel_callbacks){
-                this.channel_callbacks = {};
-            }
+            this.channel_callbacks = {};
             this.ERROR_DELAY = 10000;
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
@@ -29,12 +27,12 @@ odoo.define('pos_longpolling', function(require){
         },
         poll: function(address) {
             var self = this;
-            self.activated = true;
+            this.activated = true;
             var now = new Date().getTime();
             var options = _.extend({}, this.options, {
                 bus_inactivity: now - this.get_last_presence(),
             });
-            var data = {channels: self.channels, last: self.last, options: options};
+            var data = {channels: this.channels, last: this.last, options: options};
             // function is copy-pasted from bus.js but the line below defines a custom server address
             var serv_adr = address
                 ? address.serv
@@ -55,9 +53,6 @@ odoo.define('pos_longpolling', function(require){
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
                 callback = _.bind(callback, thisArg);
-            }
-            if (!this.channel_callbacks){
-                this.channel_callbacks = {};
             }
             this.channel_callbacks[channel_name] = callback;
             if (this.lonpolling_activated) {
@@ -243,7 +238,7 @@ odoo.define('pos_longpolling', function(require){
         template: 'AdditionalSynchNotificationWidget',
         start: function(){
             var self = this;
-            var element = self.$('.serv_additional');
+            var element = this.$('.serv_additional');
             if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
                     if (_.has(this.pos.buses, 'key')){
