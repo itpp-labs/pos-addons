@@ -70,17 +70,17 @@ odoo.define('pos_mobile.screens', function (require) {
             this.el.querySelector('.slide-categories-button').addEventListener('click', this.click_categories_slide);
             this.el.querySelector('.slide-numpad-button').addEventListener('click', this.click_numpad_slide);
 
-            // TODO: fix it. don't use renderElement function for append to new block
-            // temporary code
+            var breadcrumbs = $('.window .rightpane .breadcrumbs');
+            if (breadcrumbs.length) {
+                breadcrumbs.detach();
+                $(".slide-categories .breadcrumbs").detach();
+                $(".slide-categories").prepend(breadcrumbs);
+            }
+
             var categories = $('.window .rightpane .categories');
             categories.detach();
-            $('.slide-categories').append(categories);
-            
-            if (categories.length) {
-                categories.detach();
-                $(".slide-categories .categories").detach();
-                $(".slide-categories").append(categories);
-            }
+            $(".slide-categories .categories").detach();
+            $(".slide-categories").append(categories);
         },
         perform_search: function(category, query, buy_result){
             this._super.apply(this, arguments);
@@ -94,6 +94,9 @@ odoo.define('pos_mobile.screens', function (require) {
             var input = parent.querySelector('.searchbox input');
                 input.value = '';
                 input.focus();
+        },
+        get_image_url: function(category){
+            return window.location.origin + '/web/image?model=pos.category&field=image&id='+category.id;
         },
     });
 

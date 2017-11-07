@@ -22,7 +22,6 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_mobile_template.xml",
-        "views/pos_mobile_views.xml"
     ],
     "qweb": [
         "static/src/xml/pos.xml"

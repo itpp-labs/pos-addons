@@ -7,14 +7,6 @@ odoo.define('pos_mobile.chrome', function (require) {
     var chrome = require('point_of_sale.chrome');
 
     chrome.Chrome.include({
-        init: function() {
-            this._super();
-            this.pos.ready.done(function(){
-                var categories = $('.rightpane .categories');
-                categories.detach();
-                $('.slide-categories').append(categories);
-            });
-        },
         // This method instantiates all the screens, widgets, etc.
         build_widgets: function() {
             this._super();
@@ -60,6 +52,10 @@ odoo.define('pos_mobile.chrome', function (require) {
             var pads = $('.leftpane .pads');
             pads.detach();
             $('.slide-numpad').append(pads);
+
+            var breadcrumbs = $('.breadcrumbs');
+            breadcrumbs.detach();
+            $('.slide-categories').prepend(breadcrumbs);
 
             var search = $('.rightpane-header');
             search.detach();

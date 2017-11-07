@@ -39,11 +39,6 @@
                 <img class="plus-square" src="/pos_mobile/static/src/img/svg/plus-square.svg"/>
             </div>
         </t>
-        <t t-jquery="div[class='breadcrumbs']" t-operation="before">
-            <!--<div class="slide-order-button">-->
-                <!--<img src="/pos_mobile/static/src/img/svg/list.svg"/>-->
-            <!--</div>-->
-        </t>
         <t t-jquery="span[class='search-clear']" t-operation="append">
             <i class='fa fa-search'></i>
         </t>
@@ -68,8 +63,15 @@
     </t>
 
     <t t-extend="SynchNotificationWidget">
-        <t t-jquery="i[class='fa fa-fw fa-wifi']" t-operation="replace">
-            <img src="/pos_mobile/static/src/img/svg/wifi.svg"/>
+        <t t-jquery="div[class='js_connected oe_icon oe_green'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_connected oe_icon oe_green">
+                <img src="/pos_mobile/static/src/img/svg/wifi-connect.svg"/>
+            </div>
+        </t>
+        <t t-jquery="div[class='js_disconnected oe_icon oe_red oe_hidden'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_disconnected oe_icon oe_red oe_hidden">
+                <img src="/pos_mobile/static/src/img/svg/wifi-disconnect.svg"/>
+            </div>
         </t>
     </t>
 

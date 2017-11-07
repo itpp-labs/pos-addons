@@ -68,14 +68,18 @@
     border-right: 0px;
     width: initial;
     position: relative;
+    vertical-align: top;
 }
 .pos.mobile .pos-branding .username{
-    font-size:32px;
     margin-right:0px;
     margin-left: 20px;
-    line-height: 96px;
+    line-height: 22px;
     float: left;
     color: #555555;
+    word-wrap: break-word;
+    width: 50px;
+    font-size: 22px;
+    padding-top: 15px;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
@@ -179,6 +183,19 @@
 .pos.mobile .oe_status .oe_icon{
     width:40px;
     height:32px;
+    color: #555555;
+}
+.pos.mobile .oe_status .oe_red,
+.pos.mobile .oe_icon.oe_red {
+    color: rgb(197, 52, 0);
+}
+.pos.mobile .oe_statu .oe_green,
+.pos.mobile .oe_icon.oe_green {
+    color: rgb(94, 185, 55);
+}
+.pos.mobile .oe_status .oe_orange,
+.pos.mobile .oe_icon.oe_orange {
+    color: rgb(239, 153, 65);
 }
 .pos.mobile .oe_status .oe_icon img{
     width:40px;
@@ -440,7 +457,7 @@
 }
 .pos.mobile .breadcrumb:last-child {
     padding-right: 6px;
-    border-right: 2px solid #c5c5c5;
+    border-right: none;
 }
 .pos.mobile .breadcrumb-button {
     padding: 0 18px;
@@ -449,7 +466,7 @@
 .pos.mobile .breadcrumb-button.breadcrumb-home {
     line-height: 100px;
     width: 100px;
-    font-size: 50px;
+    font-size: 80px;
 }
 .pos.mobile .breadcrumb-arrow{
     width: 56px;
@@ -495,15 +512,22 @@
 .pos.mobile .categories {
     height: 100%;
     border-bottom: none;
-    background: white;
-    background: white;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    width: 100%;
 }
 .pos.mobile .categories h4 {
     margin: 18px 10px;
 }
 .pos.mobile .category-list {
     padding: 20px;
-    border-bottom: 2px solid #cecece;
+    border-bottom: none;
+    background: white;
+    text-align: center;
+}
+.pos .category-list-scroller {
+    max-height: 311px;
 }
 /*  d) the category button */
 .pos.mobile .category-button {
@@ -521,13 +545,14 @@
     padding: 10px 24px;
     line-height: 80px;
     padding: 0px;
-    width: 380px;
+    max-width: 300px;
     height: 80px;
     border-radius: 15px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
     border: 2px solid #e8e8e8;
+    width: 100%;
 }
 .pos.mobile .category-simple-button:active{
     color: white;
@@ -556,6 +581,8 @@
 .pos.mobile .category-button .category-img img {
     max-height: 200px;
     max-width:  240px;
+    margin-top: 10px;
+    min-width: 190px;
 }
 .pos.mobile .category-button .category-name {
     line-height: 28px;
@@ -563,12 +590,14 @@
     padding-top: 30px;
 }
 .pos.mobile .category-list.simple {
-    display: block;
+    display: inline-block;
     -webkit-flex-flow: initial;
     flex-flow: initial;
     border-bottom: none;
     background-color: white;
     text-align: center;
+    width: 100%;
+    padding: 0px;
 }
 /*  e) the product */
 .pos.mobile .product {
@@ -697,8 +726,6 @@
 }
 /* b) The payment screen */
 .pos.mobile .payment-numpad {
-    padding: 32px;
-    margin-top: 310px;
     width: 100%;
     max-width: 760px;
 }
@@ -762,7 +789,6 @@
 }
 .pos.mobile .payment-buttons {
     padding: 32px;
-    position: absolute;
     width: 100%;
     display: block;
 }
@@ -862,6 +888,10 @@
     font-size: 30px;
     line-height: 50px;
 }
+.pos.mobile .clientlist-screen  .scrollable-y{
+    overflow: auto !important;
+    overflow-y: auto !important;
+}
 .pos.mobile .clientlist-screen .client-details-left, .pos.mobile .clientlist-screen .client-details-right {
     width: 100%;
     float: none;
@@ -895,7 +925,7 @@
 }
 .pos.mobile .clientlist-screen .edit-buttons {
     right: 32px;
-    top: 20px;
+    top: 0px;
 }
 .pos.mobile .clientlist-screen .edit-buttons .button{
     margin-left: 32px;
@@ -926,6 +956,7 @@
     line-height: 48px;
     margin: 36px 12px;
     width: 680px;
+    margin-top: 40px;
 }
 .pos.mobile .clientlist-screen .searchbox{
     margin-left: -295px;
@@ -941,8 +972,9 @@
     margin-left: 60px;
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    max-height: 700px;
-    min-height: 700px;
+    /*height: 100%!important;
+    max-height: 1000px;
+    min-height: 700px;*/
     border-bottom: 8px solid rgb(110,200,155) !important;
 }
 /*  ********* The OrderWidget  ********* */
@@ -1280,6 +1312,9 @@
     margin: 0 10px;
     color: #808080;
 }
+.pos.mobile .slide-categories {
+    background: white;
+}
 .pos.mobile .slide-numpad-button .minus-square, .pos.mobile .slide-categories-button .category-close-menu {
     display: none;
 }
@@ -1297,7 +1332,11 @@
     margin-left: 30px;
 }
 .pos.mobile .breadcrumbs {
-    display: none;
+    margin-top: 30px;
+    width: 100%;
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 25px;
 }
 .pos.mobile .order-and-products {
     height: 100%;
