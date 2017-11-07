@@ -251,16 +251,15 @@ odoo.define('pos_longpolling', function(require){
         template: 'AdditionalSynchNotificationWidget',
         start: function(){
             var self = this;
-            var selector = '.serv_additional';
+            var element = this.$('.serv_additional');
             if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
                     if (_.has(this.pos.buses, key)){
                         bus = this.pos.buses[key];
                         bus.longpolling_connection.set_status(true);
-                        self.set_poll_status(selector, bus);
+                        self.set_poll_status(element.selector, bus);
                         bus.longpolling_connection.on("change:poll_connection", function(status){
-                            var selector = '.serv_additional';
-                            self.set_poll_status(selector, bus);
+                            self.set_poll_status(element.selector, bus);
                         });
                     }
                 }
