@@ -19,7 +19,6 @@
                         <div class="swiper-container swiper-container-h">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide slide-numpad"></div>
-                                <div class="swiper-slide slide-buttons"></div>
                             </div>
                         </div>
                     </div>

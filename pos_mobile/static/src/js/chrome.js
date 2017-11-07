@@ -54,8 +54,11 @@ odoo.define('pos_mobile.chrome', function (require) {
             $('.slide-search').append(search);
 
             var buttons = $('.control-buttons');
-            buttons.detach();
-            $('.slide-buttons').append(buttons);
+            if (!buttons.hasClass('oe_hidden')) {
+                this.swiperH[1].appendSlide('<div class="swiper-slide slide-buttons"></div>')
+                buttons.detach();
+                $('.slide-buttons').append(buttons);
+            }
         },
     });
 

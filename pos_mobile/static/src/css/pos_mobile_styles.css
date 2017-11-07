@@ -1141,6 +1141,7 @@
     padding: 40px;
     border-radius: 6px 6px 0px 0px;
     border-bottom: solid 2px rgba(60,60,60,0.1);
+    background: white;
 }
 .pos.mobile .popup .body {
     font-size: 36px;
@@ -1154,16 +1155,20 @@
 .pos.mobile .popup .footer{
     height:120px;
     border-top: solid 2px rgba(60,60,60,0.1);
+    background: white;
 }
 .pos.mobile .popup .button{
     width: 220px;
     height: 80px;
     line-height:80px;
-    border-radius: 4px;
     margin-top:20px;
     margin-right:20px;
     font-size:   28px;
-    border: solid px rgba(60,60,60,0.1);
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    border: 2px solid #e8e8e8;
 }
 .pos.mobile .popup .button.icon {
     width: 80px;
@@ -1217,6 +1222,14 @@
 }
 .pos.mobile .popup.popup-selection .selection-item {
     padding: 0px 32px;
+    background: #e8e8e8;
+}
+.pos.mobile .popup.popup-error .title,
+.pos.mobile .popup.popup-error .footer {
+    background: rgba(255, 76, 76, 0.5);
+}
+.pos.mobile .popup.popup-selection .selection-item:nth-child(even) {
+    background: white;
 }
 .pos.mobile .popup.popup-number {
     width: 600px;
