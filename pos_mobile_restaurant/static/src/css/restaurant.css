@@ -157,10 +157,7 @@
 /* ------ FLOOR BUTTON IN THE ORDER SELECTOR ------- */
 
 .pos.mobile .order-button.floor-button {
-    font-size: 32px;
-    min-width: 256px;
-    padding-left: 32px;
-    padding-right: 32px;
+    background: white;
 }
 .pos.mobile .order-button.floor-button .fa{
     font-size: 48px;
