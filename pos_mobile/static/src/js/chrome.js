@@ -16,10 +16,6 @@ odoo.define('pos_mobile.chrome', function (require) {
             // horizontal swiper
             this.swiperH = new Swiper('.swiper-container-h', {
                 spaceBetween: 0,
-                pagination: {
-                    el: '.swiper-pagination-h',
-                    clickable: true,
-                },
             });
 
             // vertical swiper
@@ -27,10 +23,6 @@ odoo.define('pos_mobile.chrome', function (require) {
                 direction: 'vertical',
                 slidesPerView: 'auto',
                 spaceBetween: 0,
-                pagination: {
-                    el: '.swiper-pagination-v',
-                    clickable: true,
-                },
             });
 
             // remove all events for vertical swiper

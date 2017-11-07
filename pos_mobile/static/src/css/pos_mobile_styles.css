@@ -1314,6 +1314,8 @@
 }
 .pos.mobile .slide-categories {
     background: white;
+    width: 100%;
+    height: 100%;
 }
 .pos.mobile .slide-numpad-button .minus-square, .pos.mobile .slide-categories-button .category-close-menu {
     display: none;

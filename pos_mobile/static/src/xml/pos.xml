@@ -15,9 +15,9 @@
                     </div>
                     <div class="slide-search"></div>
                     <div class="swiper-slide under-search">
+                        <div class="slide-categories"></div>
                         <div class="swiper-container swiper-container-h">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide slide-categories"></div>
                                 <div class="swiper-slide slide-numpad"></div>
                                 <div class="swiper-slide slide-buttons"></div>
                             </div>

@@ -23,44 +23,57 @@ odoo.define('pos_mobile.screens', function (require) {
             };
         },
         open_bottom_menu: function() {
+            if (this.current_bottom_slide === "numpad") {
+                $('.slide-categories').hide();
+                $('.order-swiper').removeClass('open-categories-slide');
+
+                $('.under-search .swiper-wrapper').show();
+                $('.order-swiper').addClass('open-numpad-slide');
+
+            } else if (this.current_bottom_slide === "categories") {
+                $('.under-search .swiper-wrapper').hide();
+                $('.order-swiper').removeClass('open-numpad-slide');
+
+                $('.slide-categories').show();
+                $('.order-swiper').addClass('open-categories-slide');
+            }
+
+            // open under search block
+            $('.order-swiper').addClass('swipe-is-open');
             var slider = this.chrome.swiperV;
             slider.slideNext();
-            $('.order-swiper').addClass('swipe-is-open');
         },
         close_bottom_menu: function() {
+            //  close under search block
             var slider = this.chrome.swiperV;
             slider.slidePrev();
-            this.current_bottom_slide = false;
-            $('.order-swiper').removeClass('swipe-is-open');
-            $('.order-swiper').removeClass('open-categories-slide');
+
+            // remove class
             $('.order-swiper').removeClass('open-numpad-slide');
+            $('.order-swiper').removeClass('open-categories-slide');
+            $('.order-swiper').removeClass('swipe-is-open');
+            this.current_bottom_slide = false;
         },
-        // second horizontal swiper contain categories, numpad and buttons slides
         change_categories_slide: function() {
             if (this.current_bottom_slide === "categories") {
                 this.close_bottom_menu();
             } else {
-                this.open_bottom_menu();
-                // go to first slide
-                var slider = this.chrome.swiperH[1];
-                slider.slideTo(0);
-
+                this.close_bottom_menu();
                 this.current_bottom_slide = "categories";
-                $('.order-swiper').removeClass('open-numpad-slide');
-                $('.order-swiper').addClass('open-categories-slide');
+                this.open_bottom_menu();
             }
         },
         change_numpad_slide: function() {
             if (this.current_bottom_slide === "numpad") {
                 this.close_bottom_menu();
             } else {
-                this.open_bottom_menu();
-                // go to second slide
-                var slider = this.chrome.swiperH[1];
-                slider.slideTo(1);
+                this.close_bottom_menu();
                 this.current_bottom_slide = "numpad";
-                $('.order-swiper').removeClass('open-categories-slide');
-                $('.order-swiper').addClass('open-numpad-slide');
+                this.open_bottom_menu();
+
+                // start slide is numpad slide
+                var slider = this.chrome.swiperH[1];
+                slider.slideTo(0);
             }
         },
         renderElement: function(){
