@@ -1,10 +1,10 @@
-=============
- pos_qr_scan
-=============
+==================
+ POS QR Code Scan
+==================
 
-{Put some short introduction first.}
+Scans QR codes in POS
 
-{Then add more detailed description, technical specifications, any other information that could be interested for other developers. Don't forget that Usage instructions is a separated and has to be located in doc/index.rst file.}
+Script used to scan QR codes in 'Chrome' browser may be used only in https websites or for those who uses ``localhost``
 
 Credits
 =======
@@ -24,12 +24,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/{REPO_NAME}/{BRANCH}
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_qr_scan/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo {VERSION} {ODOO_COMMIT_SHA_TO_BE_UPDATED}
+Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06

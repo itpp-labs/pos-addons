@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """pos_qr_scan""",
-    "summary": """{SHORT_DESCRIPTION_OF_THE_MODULE}""",
+    "name": """POS QR Code Scan""",
+    "summary": """Scans QR codes in POS""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],

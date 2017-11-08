@@ -1,16 +1,11 @@
 odoo.define('pos_qr_scan', function(require){
     var exports = {};
 
-    var Backbone = window.Backbone;
-    var core = require('web.core');
-    var models = require('point_of_sale.models');
-    var chrome = require('point_of_sale.chrome');
-    var _t = core._t;
-
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
     var QrButton = screens.QrButton = {};
+
     var QrButton = screens.ActionButtonWidget.extend({
         template: 'QrButton',
         button_click: function(){

@@ -38,3 +38,7 @@
     height: 60px;
     border-top: solid 1px rgba(60,60,60,0.1);
 }
+
+.fa-qrcode:before {
+  content: "\f029";
+}
