@@ -1,0 +1,40 @@
+.popup.popup-qr_scan {
+	height: 90% !important;
+	width: 90% !important;
+	overflow-y: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.video_preview {
+    height: 100%;
+	width: 100%%;
+}
+
+.sidebar {
+  background: #eceff1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.sidebar .body {
+    height: 100%;
+}
+
+.preview-container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+.footer-qr {
+    position: relative !important;
+    bottom: 0;
+    height: 60px;
+    border-top: solid 1px rgba(60,60,60,0.1);
+}

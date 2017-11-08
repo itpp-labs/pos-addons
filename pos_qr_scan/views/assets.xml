@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- POS -->
+        <template id="assets_backend" name="pos_qr_scan assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_qr_scan/static/src/js/qr_scan.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/js/instascan.min.js"></script>
+            </xpath>
+            <xpath expr="//link[@id='pos-stylesheet']" position="after">
+              <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>

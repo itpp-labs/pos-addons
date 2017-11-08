@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="QrButton">
+        <div class='control-button'>
+            <i class='fa fa-tag' /> QR
+        </div>
+    </t>
+
+    <t t-name="QrScanPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-qr_scan">
+                <div class="sidebar">
+                    <div class="title">
+                        <p>QR Scanning</p>
+                    </div>
+                    <div class="body">
+                        <p>Scans:</p>
+                        <p></p>
+
+                    </div>
+                    <div class="footer-qr">
+                        <div class="button cancel">Cancel</div>
+                    </div>
+                </div>
+                <div class="preview-container">
+                    <video id="preview" class="video_preview"></video>
+                    <script type="text/javascript">
+                      let scanner = new Instascan.Scanner({video: document.getElementById('preview')});
+                      scanner.addListener('scan', function (content) {
+                        console.log(content);
+                        var new_scan = document.createElement('a');
+                        var parent_elem = $('.sidebar > .body');
+                        new_scan.setAttribute("href", content);
+                        <!--new_scan.text(content);-->
+                        <!--new_scan.innerHTML('<p>' + content + '</p>');-->
+                        var par = document.createElement("p");
+                        par.innerHTML = content;
+                        new_scan.appendChild(par);
+                        console.log(par);
+                        console.log(parent_elem);
+                        $('.sidebar > .body').append(new_scan);
+                      });
+                      Instascan.Camera.getCameras().then(function (cameras) {
+                        if (cameras.length > 0) {
+                          scanner.start(cameras[0]);
+                        } else {
+                          console.error('No cameras found.');
+                        }
+                      }).catch(function (e) {
+                        console.error(e);
+                      });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!--<t fa-list-alt t-name="OrdersHistoryScreenWidget">-->
+        <!--<div class="orders-list-screen screen">-->
+            <!--<div class="screen-content">-->
+                <!--<section class="top-content">-->
+                    <!--<span class='button back'>-->
+                        <!--<i class='fa fa-angle-double-left'></i>-->
+                        <!--Cancel-->
+                    <!--</span>-->
+                    <!--<span class='searchbox'>-->
+                        <!--<input placeholder='Search Orders' />-->
+                        <!--<span class='search-clear'></span>-->
+                    <!--</span>-->
+                    <!--<span class='searchbox'></span>-->
+                <!--</section>-->
+                <!--<section class="full-content">-->
+                    <!--<div class='window'>-->
+                        <!--<section class='subwindow'>-->
+                            <!--<div class='subwindow-container'>-->
+                                <!--<div class='subwindow-container-fix touch-scrollable scrollable-y'>-->
+                                    <!--<table class='order-list'>-->
+                                        <!--<thead>-->
+                                            <!--<tr>-->
+                                                <!--<th>Order Ref</th>-->
+                                                <!--<th>Receipt Ref</th>-->
+                                                <!--<th>Customer</th>-->
+                                                <!--<th>Order Date</th>-->
+                                                <!--<th>Salesman</th>-->
+                                                <!--<th>Total</th>-->
+                                                <!--<th>Status</th>-->
+                                                <!--<th>Action</th>-->
+                                            <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody class='order-list-contents'>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</section>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</t>-->
+
+</templates>
