@@ -15,7 +15,8 @@
                 <script type="text/javascript" charset="utf-8">
                     <![CDATA[
 
-                    // exclude pos_mobile_restaurant from module list if the url doesn't have parameter "m" in agrs (e.g. /pos/web?m=1 )
+                    // exclude pos_mobile_restaurant from module list.
+                    // odoo.is_mobile is computed at pos_mobile module
                     if (!odoo.is_mobile){
                         odoo._modules.splice(odoo._modules.indexOf('pos_mobile_restaurant'), 1);
                     }
