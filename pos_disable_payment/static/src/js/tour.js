@@ -59,7 +59,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
             if (!$('.numpad-minus').css('visibility') === 'hidden') {
                 console.log("error", "The button is not hidden");
             } else {
-                console.log("Everything is ok");
+                console.log("Refunding feature is blocked as configured");
             }
         }
     }
