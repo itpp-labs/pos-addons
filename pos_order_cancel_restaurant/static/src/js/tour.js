@@ -6,7 +6,6 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
     var tour = require('web_tour.tour');
     var steps = tour.tours.pos_order_cancel_tour.steps;
 
-    var _t = core._t;
 
     for (var position = 0; position < steps.length; position++) {
         if (steps[position].trigger === ".product-list .product") {
@@ -15,7 +14,7 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
                 0,
                 {
                     trigger: ".tables .table",
-                    content: _t("<p>Click <b>table</b></p>"),
+                    content: "<p>Click <b>table</b></p>",
                     position: "bottom"
                 }
             );
