@@ -38,11 +38,11 @@ odoo.define('pos_order_cancel.tour', function(require) {
         position: "bottom"
     }, {
         trigger: ".popup-confirm-cancellation .confirm",
-        content: "<p>Click confirm button",
+        content: "<p>Click confirm button</p>",
         position: "bottom"
     },{
         trigger: ".deleteorder-button",
-        content: "<p>Click remove order button",
+        content: "<p>Click remove order button</p>",
         position: "bottom"
     }, {
         trigger: ".reason-button[data-id='1']",
@@ -50,7 +50,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
         position: "bottom"
     }, {
         trigger: ".popup-confirm-cancellation .confirm",
-        content: "<p>Click confirm button",
+        content: "<p>Click confirm button</p>",
         position: "bottom"
     }
     ]);
