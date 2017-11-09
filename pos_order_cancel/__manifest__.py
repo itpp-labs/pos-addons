@@ -11,7 +11,7 @@
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 490.00,
+    "price": 200.00,
     "currency": "EUR",
 
     "depends": [
@@ -19,6 +19,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/template.xml",
         "views/views.xml",
