@@ -18,7 +18,6 @@ Create Discount Program
 * Specify the fields:
 
   * Name
-  * Number
   * Discount Categories
 
 * Click on ``[Save]``
