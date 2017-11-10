@@ -1,7 +1,8 @@
 odoo.define('pos_mobile_restaurant.screens', function (require) {
     "use strict";
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var screens = require('pos_mobile.screens');
 

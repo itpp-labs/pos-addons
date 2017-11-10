@@ -1,8 +1,9 @@
 odoo.define('pos_mobile_restaurant.floors', function (require) {
     "use strict";
 
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var floors = require('pos_restaurant.floors');
     var chrome = require('pos_mobile_restaurant.chrome');
@@ -38,7 +39,9 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
         //  Different from Original: remove all styles specific for each table
         table_style: function(){
             var table = this.table;
-            function unit(val){ return '' + val + 'px'; }
+            function unit(val){
+                return val + 'px';
+            }
             var style = {};
             if (table.color) {
                 style.background = table.color;

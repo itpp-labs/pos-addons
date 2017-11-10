@@ -14,7 +14,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             var self = this;
 
             // floor swiper
-            this.swiper_floor = new Swiper('.swiper-floor-container', {
+            this.swiper_floor = new window.Swiper('.swiper-floor-container', {
                 slidesPerView: 'auto',
                 initialSlide: 1,
                 resistanceRatio: 0,
