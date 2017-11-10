@@ -28,7 +28,7 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10
+Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
 HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_mobile/
 
@@ -36,4 +36,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 3550a68d968aeacf1b6efd1c96f5c57e5de60bbe
+Tested on Odoo 10.0 a63ecee47ac271b1f0a23528d9d5eab7f63ae528
