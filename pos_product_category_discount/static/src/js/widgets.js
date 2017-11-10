@@ -2,7 +2,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
     "use strict";
 
     var PopupWidget = require('point_of_sale.popups');
-    var models = require('point_of_sale.models');
+    var models = require('pos_product_category_discount.models');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
     var Model = require('web.Model');
@@ -13,105 +13,6 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
 
     var QWeb = core.qweb;
     var _t = core._t;
-
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
-            var partner_model = _.find(this.models, function(model){
-                return model.model === 'res.partner';
-            });
-            partner_model.fields.push('discount_program_id');
-            return PosModelSuper.prototype.initialize.apply(this, arguments);
-        },
-        get_discount_category: function(id) {
-            if (this.config.iface_discount) {
-                var self = this;
-                var model = new Model('pos.category_discount');
-                var domain = [['discount_program_id', '=', id]];
-                var order = this.get_order();
-                model.call('search_read', [domain]).then(function (resultat) {
-                    order.remove_all_discounts();
-                    resultat.forEach(function(item){
-                        self.apply_discount_category(item);
-                    });
-                });
-            } else {
-                return false;
-            }
-        },
-        apply_discount_category: function(discount_program) {
-            var self = this;
-            var order = this.get_order();
-            var lines = order.get_orderlines().filter(function(item) {
-                return item.product.pos_categ_id[0] === discount_program.discount_category_id[0] && item.product.discount_allowed;
-            });
-            lines.forEach(function (item){
-                item.discount = discount_program.category_discount_pc;
-                item.discountStr = discount_program.category_discount_pc;
-                item.discount_program_name = discount_program.discount_program_id[1];
-                order.get_orderline(item.id).set_discount(discount_program.category_discount_pc);
-            });
-            order.current_discount_program = discount_program.discount_category_id;
-        },
-    });
-
-    var OrderlineSuper = models.Orderline;
-    models.Orderline = models.Orderline.extend({
-        initialize: function(attr,options){
-            OrderlineSuper.prototype.initialize.apply(this,arguments);
-            if (this.order && this.order.current_discount_program) {
-                this.apply_product_discount(this.order.current_discount_program[0]);
-            }
-        },
-        apply_product_discount: function(id) {
-            var self = this;
-            var model = new Model('pos.category_discount');
-            var domain = [['discount_program_id', '=', id]];
-            model.call('search_read', [domain]).then(function (result) {
-                result.forEach(function(res) {
-                    if (res.discount_category_id[0] === self.product.pos_categ_id[0]) {
-                        self.discount_program_name = res.discount_program_id[1];
-                        self.set_discount(res.category_discount_pc);
-                    }
-                });
-            });
-        },
-        export_as_JSON: function(){
-            var json = OrderlineSuper.prototype.export_as_JSON.call(this);
-            json.discount_program_name = this.discount_program_name || false;
-            return json;
-        },
-        init_from_JSON: function(json) {
-            OrderlineSuper.prototype.init_from_JSON.apply(this,arguments);
-            this.discount_program_name = json.discount_program_name || false;
-        },
-        get_discount_name: function(){
-            return this.discount_program_name;
-        },
-    });
-
-    var OrderSuper = models.Order;
-    models.Order = models.Order.extend({
-        remove_all_discounts: function() {
-            if (this.pos.config.iface_discount) {
-                this.current_discount_program = false;
-                this.get_orderlines().forEach(function(line){
-                    line.set_discount(false);
-                });
-            }
-        },
-        export_as_JSON: function(){
-            var json = OrderSuper.prototype.export_as_JSON.call(this);
-            json.product_discount = this.product_discount || false;
-            json.current_discount_program = this.current_discount_program;
-            return json;
-        },
-        init_from_JSON: function(json) {
-            OrderSuper.prototype.init_from_JSON.apply(this,arguments);
-            this.product_discount = json.product_discount || false;
-            this.current_discount_program = json.current_discount_program;
-        },
-    });
 
     screens.OrderWidget.include({
         set_value: function(val) {
@@ -216,7 +117,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
                     self.gui.close_popup();
                     if( num_widget.options.confirm ){
                         if (num_widget.input_disc_program) {
-                            self.pos.get_discount_category(num_widget.discount_program_id);
+                            self.pos.set_discount_categories_by_program_id(num_widget.discount_program_id);
                         }
                         num_widget.options.confirm.call(num_widget,num_widget.inputbuffer);
                     }
@@ -366,7 +267,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
             }
         },
         save_changes: function(){
-            this.pos.get_discount_category(this.old_id);
+            this.pos.set_discount_categories_by_program_id(this.old_id);
         },
         toggle_save_button: function(){
             var $button = this.$('.button.next');
@@ -409,7 +310,7 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
             if (this.new_client) {
                 if ((this.has_client_changed() || this.has_discount_program_changed()) &&
                     this.new_client && this.new_client.discount_program_id) {
-                    this.pos.get_discount_category(this.new_client.discount_program_id[0]);
+                    this.pos.set_discount_categories_by_program_id(this.new_client.discount_program_id[0]);
                 }
             } else {
                 this.pos.get_order().remove_all_discounts();
