@@ -14,6 +14,9 @@
             </xpath>
         </template>
         <template id="assets_backend" name="pos_mobile assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_mobile/static/src/js/tour.js"></script>
+            </xpath>
             <xpath expr="//script[@src='/web/static/src/js/services/session.js']" position="before">
                 <script type="text/javascript" charset="utf-8">
 <![CDATA[
