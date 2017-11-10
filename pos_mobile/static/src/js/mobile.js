@@ -9,5 +9,5 @@ odoo.define('pos_mobile.mobile', function (require) {
             this.is_mobile = odoo.is_mobile;
             return PosModelSuper.initialize.call(this, session, attributes);
         },
-    })
+    });
 });

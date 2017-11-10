@@ -1,7 +1,8 @@
 odoo.define('pos_mobile.models', function (require) {
     "use strict";
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var models = require('point_of_sale.models');
 

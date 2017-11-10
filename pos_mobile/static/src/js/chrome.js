@@ -1,7 +1,8 @@
 odoo.define('pos_mobile.chrome', function (require) {
     "use strict";
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var screens = require('pos_mobile.screens');
     var chrome = require('point_of_sale.chrome');
@@ -14,12 +15,12 @@ odoo.define('pos_mobile.chrome', function (require) {
             $('.pos').addClass('mobile');
 
             // horizontal swiper
-            this.swiperH = new Swiper('.swiper-container-h', {
+            this.swiperH = new window.Swiper('.swiper-container-h', {
                 spaceBetween: 0,
             });
 
             // vertical swiper
-            this.swiperV = new Swiper('.swiper-container-v', {
+            this.swiperV = new window.Swiper('.swiper-container-v', {
                 direction: 'vertical',
                 slidesPerView: 'auto',
                 spaceBetween: 0,
@@ -55,7 +56,7 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             var buttons = $('.control-buttons');
             if (!buttons.hasClass('oe_hidden')) {
-                this.swiperH[1].appendSlide('<div class="swiper-slide slide-buttons"></div>')
+                this.swiperH[1].appendSlide('<div class="swiper-slide slide-buttons"></div>');
                 buttons.detach();
                 $('.slide-buttons').append(buttons);
             }

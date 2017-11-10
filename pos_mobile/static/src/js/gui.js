@@ -1,8 +1,9 @@
 odoo.define('pos_mobile.gui', function (require) {
     "use strict";
 
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var gui = require('point_of_sale.gui');
     var chrome = require('pos_mobile.chrome');

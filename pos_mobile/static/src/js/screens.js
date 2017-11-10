@@ -1,7 +1,8 @@
 odoo.define('pos_mobile.screens', function (require) {
     "use strict";
-    if (!odoo.is_mobile)
+    if (!odoo.is_mobile) {
         return;
+    }
 
     var screens = require('point_of_sale.screens');
     var models = require('pos_mobile.models');
@@ -123,9 +124,11 @@ odoo.define('pos_mobile.screens', function (require) {
             var $p = $('span[data-product-id="'+product.id+'"]');
             $($p).animate({
                 'opacity': 0.5,
-            }, 200, function(){ $($p).animate({
-                'opacity': 1,
-            }, 400) } );
+            }, 200, function(){
+                $($p).animate({
+                    'opacity': 1,
+                }, 400);
+            });
             var $pi = $('span[data-product-id="'+product.id+'"] img');
             $($pi).animate({
                 'max-height': '240px',
@@ -134,7 +137,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 $($pi).animate({
                     'max-height': '200px',
                     'min-width': '128px',
-                }, 400)
+                }, 400);
             });
             var order = this.pos.get_order();
             var qty = order.get_quantity_by_product_id(product.id);
