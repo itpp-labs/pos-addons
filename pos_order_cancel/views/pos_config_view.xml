@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record model="ir.ui.view" id="view_pos_config_form">
+    <record model="ir.ui.view" id="pos_config_view_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='features']" position="after">
-                <group name="refunds" string="Refunds / Cancellations" >
-                    <field name="allow_custom_reason"/>
-                </group>
-            </xpath>
+          <xpath expr="//h2[@name='order']" position="before">
+            <h2 name="refunds">Refunds / Cancellations</h2>
+            <div class="row mt16 o_settings_container" id="refunds">
+              <div id="allow_custom_reason" class="col-xs-12 col-md-6 o_setting_box">
+                <div class="o_setting_left_pane">
+                  <field name="allow_custom_reason"/>
+                </div>
+                <div class="o_setting_right_pane">
+                  <label for="allow_custom_reason"/>
+                </div>
+              </div>
+            </div>
+          </xpath>
         </field>
     </record>
 </odoo>
