@@ -977,6 +977,9 @@
     min-height: 700px;*/
     border-bottom: 8px solid rgb(110,200,155) !important;
 }
+.pos.mobile .clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y {
+    min-height: 900px;
+}
 /*  ********* The OrderWidget  ********* */
 .pos.mobile .order{
     padding-bottom: 16px;
