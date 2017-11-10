@@ -28,6 +28,12 @@ odoo.define('pos_mobile.gui', function (require) {
             } else {
                 $('.pos.mobile .window').css({display: 'table'});
             }
+            if (current_screen === 'clientlist') {
+                // automatic define max-height for correct calc the height for
+                // subwindow-container-fix block. The 2 - is height 2px border bottom
+                var new_height = $('.clientlist-screen .full-content').height() - 2;
+                $('.clientlist-screen .subwindow-container-fix').css({'max-height': new_height});
+            }
         }
     });
     return gui;
