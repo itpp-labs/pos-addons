@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- POS -->
+        <template id="assets_backend" name="pos_qr_scan assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_wechat/static/src/js/wechat_pay.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
