@@ -25,27 +25,6 @@
                 </div>
                 <div class="preview-container">
                     <video id="preview" class="video_preview"></video>
-                    <script type="text/javascript">
-                      let scanner = new Instascan.Scanner({video: document.getElementById('preview')});
-                      scanner.addListener('scan', function (content) {
-                        console.log(content);
-                        var new_scan = document.createElement('a');
-                        new_scan.setAttribute("href", content);
-                        var par = document.createElement("p");
-                        par.innerHTML = content;
-                        new_scan.appendChild(par);
-                        $('.sidebar > .body').append(new_scan);
-                      });
-                      Instascan.Camera.getCameras().then(function (cameras) {
-                        if (cameras.length > 0) {
-                          scanner.start(cameras[0]);
-                        } else {
-                          console.error('No cameras found.');
-                        }
-                      }).catch(function (e) {
-                        console.error(e);
-                      });
-                    </script>
                 </div>
             </div>
         </div>
