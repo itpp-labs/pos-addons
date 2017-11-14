@@ -10,7 +10,9 @@ odoo.define('pos_mobile.tour', function(require) {
         }, {
             trigger: '.order .product-name:contains("' + product_name + '")',
             content: 'the ' + product_name + ' have been added to the order',
-            run: function () {}, // it's a check
+            run: function () {
+                // it's a check
+            },
         }];
     }
 
@@ -25,7 +27,7 @@ odoo.define('pos_mobile.tour', function(require) {
     }
 
     function generate_keypad_steps(amount_str, keypad_selector) {
-        var i, steps = [], current_char;
+        var i = 0, steps = [], current_char = false;
         for (i = 0; i < amount_str.length; ++i) {
             current_char = amount_str[i];
             steps.push({
@@ -48,11 +50,15 @@ odoo.define('pos_mobile.tour', function(require) {
         }, {
             trigger: ".js_connecting:visible",
             content: "verify that the order is being sent to the backend",
-            run: function () {}, // it's a check
+            run: function () {
+                // it's a check
+            },
         }, {
             trigger: ".js_connected:visible",
             content: "verify that the order has been succesfully sent to the backend",
-            run: function () {}, // it's a check
+            run: function () {
+                // it's a check
+            },
         }, {
             trigger: '.button.next:visible',
             content: "next order",
@@ -62,7 +68,9 @@ odoo.define('pos_mobile.tour', function(require) {
     var steps = [{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
-        run: function () {}, // it's a check
+        run: function () {
+            // it's a check
+        },
     }];
 
     steps = steps.concat(add_product_to_order('Peaches'));
