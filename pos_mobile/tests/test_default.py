@@ -3,7 +3,7 @@ import odoo.tests
 from odoo.api import Environment
 
 
-@odoo.tests.common.at_install(False)
+@odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
 
@@ -18,11 +18,18 @@ class TestUi(odoo.tests.HttpCase):
         # create new session and open it
         main_pos_config.open_session_cb()
 
-        self.phantom_js("/pos/web?m=1",
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('pos_mobile_tour')",
-                        "odoo.__DEBUG__.services['web_tour.tour'].tours.pos_mobile_tour.ready",
-                        login="admin",
-                        timeout=240)
+        self.phantom_js(
+            '/pos/web?m=1',
+
+            "odoo.__DEBUG__.services['web_tour.tour']"
+            ".run('pos_order_cancel_tour')",
+
+            "odoo.__DEBUG__.services['web_tour.tour']"
+            ".tours.pos_order_cancel_tour.ready",
+
+            login="admin",
+            timeout=240,
+        )
 
         for order in env['pos.order'].search([]):
             self.assertEqual(order.state, 'paid', "Validated order has payment of " + str(order.amount_paid) + " and total of " + str(order.amount_total))
