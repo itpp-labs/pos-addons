@@ -24,6 +24,9 @@ odoo.define('pos_longpolling', function(require){
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             this.activated = false;
+            var callback = this.longpolling_connection.network_is_on;
+            this.add_channel_callback("pos.longpolling", callback, this.longpolling_connection);
+
         },
         poll: function(address) {
             var self = this;
@@ -77,9 +80,9 @@ odoo.define('pos_longpolling', function(require){
             _.each(self.channel_callbacks, function(value, key){
                 self.activate_channel(key);
             });
-            this.start_polling();
             this.lonpolling_activated = true;
-            this.longpolling_connection.send();
+            this.longpolling_connection.send_ping({serv: this.serv_adr});
+            this.start_polling();
             this.activated = true;
         },
         activate_channel: function(channel_name){
@@ -137,8 +140,6 @@ odoo.define('pos_longpolling', function(require){
             this.bus.name = 'Default';
             this.ready.then(function () {
                 self.bus.init_bus(self);
-                var callback = self.bus.longpolling_connection.network_is_on;
-                self.bus.add_channel_callback("pos.longpolling", callback, self.bus.longpolling_connection);
                 if (self.config.autostart_longpolling){
                     self.bus.start();
                 }
@@ -198,7 +199,7 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
-                    self.send();
+                    self.send_ping();
                 } else if (type === "response") {
                     if (self.pos.debug){
                         console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
@@ -211,13 +212,13 @@ odoo.define('pos_longpolling', function(require){
             this.stop_timer();
             this.start_timer(this.pos.config.response_timeout, "response");
         },
-        send: function(address) {
+        send_ping: function(address) {
             var self = this;
             this.response_status = false;
             var serv_adr = address
                 ? address.serv
                 : this.pos.config.sync_server || '';
-            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
                 if (!self.response_status) {

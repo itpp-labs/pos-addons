@@ -324,7 +324,7 @@ odoo.define('pos_multi_session', function(require){
             }
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
-            } else if (this.pos.multi_session){
+            } else if (this.pos.config.multi_session_id){
                 this.ms_info.created = this.pos.ms_my_info();
             }
             if (!this.run_ID) {
