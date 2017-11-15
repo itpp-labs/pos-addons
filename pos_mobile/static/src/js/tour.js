@@ -2,6 +2,7 @@ odoo.define('pos_mobile.tour', function(require) {
 "use strict";
 
     var tour = require('web_tour.tour');
+    var pos = require("point_of_sale.models").PosModel;
 
     function add_product_to_order(product_name) {
         return [{
@@ -78,7 +79,9 @@ odoo.define('pos_mobile.tour', function(require) {
     steps = steps.concat({
         trigger: '.slide-numpad-button',
         content: "Open Numpad Menu",
-        position: 'bottom',
+        run: function () {
+            // it's a check
+        },
     });
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
@@ -92,6 +95,5 @@ odoo.define('pos_mobile.tour', function(require) {
         trigger: ".header-button.confirm",
         content: "confirm closing the frontend",
     }]);
-
-    tour.register('pos_mobile_tour', { test: true, url: '/pos/web?m=1' }, steps);
+    tour.register('pos_mobile_tour', {test: true, url: '/pos/web?m=1' }, steps);
 });
