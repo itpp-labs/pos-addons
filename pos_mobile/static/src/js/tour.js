@@ -17,14 +17,26 @@ odoo.define('pos_mobile.tour', function(require) {
         }];
     }
 
-    function goto_payment_screen_and_select_payment_method() {
+    function cashier_select() {
         return [{
+            trigger: '.modal-dialog.cashier .selection-item',
+            content: 'select first cashier',
+        }];
+    }
+
+    function goto_payment_screen_and_select_payment_method() {
+        var steps = [{
             trigger: '.button.pay',
             content: "go to payment screen",
-        }, {
+        }];
+        if (odoo._modules.indexOf('pos_cashier_select') !== -1) {
+            steps = steps.concat(cashier_select());
+        }
+        steps = steps.concat([{
             trigger: '.paymentmethod:contains("Cash")',
             content: "pay with cash",
-        }];
+        }]);
+        return steps;
     }
 
     function generate_keypad_steps(amount_str, keypad_selector) {
