@@ -298,19 +298,28 @@ models.PosModel = models.PosModel.extend({
             return sale_orders;
         }
         return sale_orders;
+    },
+
+
+    start_invoice_processing: function () {
+        this.add_itp_data = true;
+    },
+
+    stop_invoice_processing: function () {
+        this.add_itp_data = false;
     }
 });
 
 var _super_order = models.Order.prototype;
 models.Order = models.Order.extend({
     export_as_JSON: function () {
-        if (this.invoice_to_pay) {
+        if (this.pos.add_itp_data && this.invoice_to_pay) {
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.invoice_to_pay = this.invoice_to_pay;
             return data;
         }
         return _super_order.export_as_JSON.apply(this, arguments);
-    }
+    },
 });
 
 PosDb.include({
@@ -923,9 +932,10 @@ var InvoicePayment = PaymentScreenWidget.extend({
     },
 
     finalize_validation: function () {
-        var self = this;
-        var order = this.pos.get_order();
+        var self = this,
+            order = this.pos.get_order();
         order.invoice_to_pay = this.pos.selected_invoice;
+        self.pos.start_invoice_processing()
         if (order.is_paid_with_cash() && this.pos.config.iface_cashdrawer) {
             this.pos.proxy.open_cashbox();
         }
@@ -937,13 +947,17 @@ var InvoicePayment = PaymentScreenWidget.extend({
                  new Model('account.invoice').
                     call('invoice_print', [order.invoice_to_pay.id]).
                     then(function (action) {
-                self.chrome.do_action(action);
-                });
+                        self.chrome.do_action(action);
+                        self.pos.stop_invoice_processing()
+
+                    });
             });
         } else {
             this.pos.push_order(order).then(function(res) {
                 self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
                 self.gui.show_screen('invoice_receipt');
+                self.pos.stop_invoice_processing()
+
             });
         }
     },
