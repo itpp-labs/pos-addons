@@ -3,7 +3,10 @@ import odoo.tests
 from odoo.api import Environment
 
 
-@odoo.tests.common.at_install(True)
+# tests is not work when pos_mobile and pos_restaurant was installed,
+# but pos_mobile_restaurant was not installed so need
+# to use post_install
+@odoo.tests.common.at_install(False)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
 

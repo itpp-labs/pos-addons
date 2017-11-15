@@ -74,6 +74,12 @@ odoo.define('pos_mobile.tour', function(require) {
         },
     }];
 
+    steps = steps.concat({
+        content: "Switch to table or make dummy action",
+        trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
+        position: "bottom"
+    });
+
     steps = steps.concat(add_product_to_order('Peaches'));
 
     steps = steps.concat({
