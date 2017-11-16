@@ -6,6 +6,7 @@ odoo.define('pos_category_multi.DB', function (require) {
     PosDB.include({
         category_contains: function(categ_id, product_id) {
             this._super.apply(this, arguments);
+            var product = this.product_by_id[product_id];
             if (product) {
                 var cids = product.pos_category_ids;
                 for (var i = 0; i < cids.length; i++){
@@ -13,7 +14,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                     while (cid && cid !== categ_id){
                         cid = this.category_parent[cid];
                     }
-                    return !!cid;
+                    return Boolean(cid);
                 }
             }
             return false;
@@ -24,7 +25,8 @@ odoo.define('pos_category_multi.DB', function (require) {
                 var cat = cats[j];
                 while (cat) {
                     for (var i = 0; i < category_ids.length; i++) {
-                        if (cat == category_ids[i]) {   // The == is important, ids may be strings
+                        // The == is important, ids may be strings
+                        if (cat == category_ids[i]) {
                             return true;
                         }
                     }
@@ -43,7 +45,9 @@ odoo.define('pos_category_multi.DB', function (require) {
                 var product = products[i];
                 var search_string = this._product_search_string(product);
                 var categ_ids = product.pos_category_ids;
-                if (categ_ids.length == 0) { categ_ids = [this.root_category_id]; }
+                if (categ_ids.length === 0) {
+                    categ_ids = [this.root_category_id];
+                }
                 for (var n = 0; n < categ_ids.length; n++){
                     var categ_id = categ_ids[n];
                     // product.product_tmpl_id = product.product_tmpl_id[0];
