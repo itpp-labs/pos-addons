@@ -27,6 +27,7 @@
     "qweb": [
     ],
     "demo": [
+        "data/pos_order_printer_product_demo.xml",
     ],
 
     "post_load": None,
