@@ -19,6 +19,12 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10/pos_mobile/>`__.
+
+      Thank you for understanding!
+
+      IT-Projects Team.
+
 Further information
 ===================
 
