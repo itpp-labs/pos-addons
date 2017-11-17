@@ -2,7 +2,7 @@
  POS Mobile
 ============
 
-Your Point of Sale in the Mobile Version
+Module applies new css and qweb if system is detected as mobile (implicitely via userAgent or explicitely  m=1 url parameter).
 
 Credits
 =======
@@ -23,7 +23,7 @@ Maintainers
 
       Thank you for understanding!
 
-      `IT-Projects Team <https://www.it-projects.info/team>`__.
+      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
 ===================

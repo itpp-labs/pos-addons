@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Mobile Restaurant""",
+    "name": """POS Mobile UI for Waiters""",
     "summary": """Your Restaurant in the Mobile Version""",
     "category": "Point of Sale",
     # "live_test_URL": "",
@@ -12,8 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 100.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_restaurant",

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Mobile""",
+    "name": """POS Mobile UI""",
     "summary": """Your Point of Sale in the Mobile Version""",
     "category": "Point of Sale",
     # "live_test_URL": "",
@@ -12,8 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 300.00,
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",

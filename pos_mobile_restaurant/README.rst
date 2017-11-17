@@ -2,7 +2,7 @@
  POS Mobile Restaurant
 =======================
 
-Your Restaurant in the Mobile Version
+Based on module pos_mobile. Adds extra styling.
 
 Credits
 =======
