@@ -36,11 +36,11 @@
     "auto_install": False,
     "installable": True,
 
-   "demo_title": "POS Mobile UI",
-   "demo_addons": ["pos_mobile_restaurant"],
-   "demo_addons_hidden": [],
-   "demo_url": "pos-mobile-ui",
-   "demo_summary": "Mobile screen support for POSes and Restaurants"
-   "demo_images": [
-   ]
+    "demo_title": "POS Mobile UI",
+    "demo_addons": ["pos_mobile_restaurant"],
+    "demo_addons_hidden": [],
+    "demo_url": "pos-mobile-ui",
+    "demo_summary": "Mobile screen support for POSes and Restaurants",
+    "demo_images": [
+    ]
 }
