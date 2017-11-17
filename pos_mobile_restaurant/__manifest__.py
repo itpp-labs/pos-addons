@@ -3,7 +3,7 @@
     "name": """POS Mobile UI for Waiters""",
     "summary": """Your Restaurant in the Mobile Version""",
     "category": "Point of Sale",
-    # "live_test_URL": "",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
     "images": [],
     "version": "1.0.0",
     "application": False,
