@@ -157,7 +157,7 @@ odoo.define('pos_longpolling', function(require){
         send: function() {
             var self = this;
             this.response_status = false;
-            openerp.session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+            session.rpc("/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
                 if (!self.response_status) {
