@@ -2,7 +2,7 @@
  POS Mobile
 ============
 
-Module applies new css and qweb if system is detected as mobile (implicitely via userAgent or explicitely  m=1 url parameter).
+Module applies new css and qweb if system is detected as mobile (implicitely via userAgent or explicitely via m=1 url parameter).
 
 Credits
 =======
