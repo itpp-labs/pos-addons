@@ -34,7 +34,7 @@ class ReportSaleDetails(models.AbstractModel):
         unique = []
         total = 0.0
         for p in payments:
-            if ((p.invoice_ids.id not in unique) and (p.invoice_ids.state == 'paid')):
+            if (p.invoice_ids.id not in unique):
                 invoice = p.invoice_ids
                 cashier = p.cashier
 
@@ -43,14 +43,14 @@ class ReportSaleDetails(models.AbstractModel):
                     'so_origin': invoice.origin,
                     'customer': invoice.partner_id.name,
                     'cashier': cashier.name or cashier.partner_id.name,
-                    'amount_total': invoice.amount_total
+                    'amount_total': invoice.amount_total,
+                    'amount': p.amount
                 }
                 res['invoices'].append(data)
                 unique.append(p.invoice_ids.id)
-                total += invoice.amount_total
-
+                total += p.amount
         user_currency = self.env.user.company_id.currency_id
-        res['total_paid'] += user_currency.round(total)
+        res['total_paid'] = user_currency.round(total)
 
         return res
 

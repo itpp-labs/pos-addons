@@ -14,6 +14,7 @@
                             <th>Customer</th>
                             <th>Cashier</th>
                             <th>Amount Total</th>
+                            <th>Paid</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +24,7 @@
                             <td><t t-esc="inv['customer']" /></td>
                             <td><t t-esc="inv['cashier']" /></td>
                             <td><t t-esc="inv['amount_total']" /></td>
+                            <td><t t-esc="inv['amount']"/></td>
                         </tr>
                     </tbody>
                 </table>
