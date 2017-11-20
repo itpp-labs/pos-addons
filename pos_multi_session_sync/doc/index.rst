@@ -118,5 +118,5 @@ Configure sync server in the main server :
 * Open ``[[ Point of Sale ]] >> Configuration >> Point of sale``
 * Click on a POS belonging to Multi-session required for syncing
 * Click ``[Edit]``
-* Specify an external server url in the field **Sync Server**
+* Specify an external server url in the field **Sync Server**. Example of a filled-in field ``//localhost:8080``
 * Click ``[Save]``
