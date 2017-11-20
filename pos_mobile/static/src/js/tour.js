@@ -112,6 +112,9 @@ odoo.define('pos_mobile.tour', function(require) {
     }, {
         trigger: ".header-button.confirm",
         content: "confirm closing the frontend",
+    }, {
+        content: "wait until backend is opened",
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
     }]);
     tour.register('pos_mobile_tour', {test: true, url: '/pos/web?m=1' }, steps);
 });
