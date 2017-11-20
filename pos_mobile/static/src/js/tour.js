@@ -2,7 +2,6 @@ odoo.define('pos_mobile.tour', function(require) {
 "use strict";
 
     var tour = require('web_tour.tour');
-    var pos = require("point_of_sale.models").PosModel;
 
     function add_product_to_order(product_name) {
         return [{
