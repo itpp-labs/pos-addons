@@ -42,5 +42,6 @@
     "demo_url": "pos-mobile-ui",
     "demo_summary": "Mobile screen support for POSes and Restaurants",
     "demo_images": [
+        "images/pos_mobile.png"
     ]
 }
