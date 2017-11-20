@@ -1,0 +1,142 @@
+/*OrdersHistoryScreenWidget*/
+.pos .orders-list-screen .order-list{
+    font-size: 16px;
+    width: 100%;
+    line-height: 40px;
+}
+.pos .orders-list-screen .order-list th,
+.pos .orders-list-screen .order-list td {
+    padding: 0px 8px;
+}
+.pos .orders-list-screen .order-list tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+.pos .orders-list-screen .order-list thead > tr,
+.pos .orders-list-screen .order-list tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.pos .orders-list-screen .order-list tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.pos .orders-list-screen .order-list tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.pos .orders-list-screen .order-list tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+    background: rgb(227, 246, 237);
+}
+.pos .order-line .details {
+    cursor: pointer;
+}
+.pos .order-line .active{
+    color: rgb(120,210,165);
+}
+.pos .order-line .details:active, .pos .order-line .details:hover {
+    color: rgb(120,210,165);
+}
+/*Search Box*/
+.pos .orders-list-screen .searchbox {
+    top: 0px;
+    padding: 8px 3px;
+}
+/*Filters*/
+.pos .orders-list-screen .filters {
+    position: relative;
+    line-height: 32px;
+    font-size: 20px;
+    padding: 14px 13px;
+    background: white;
+}
+.pos .orders-list-screen .filters .active {
+    color: white;
+    background: black;
+    border: 1px solid black;
+}
+.pos .orders-list-screen .filters .button{
+    display: inline-block;
+    position: initial;
+    margin: 12px 0 0;
+}
+/*LinesHistoryScreenWidget*/
+.pos .orderlines-list-screen .orderline-list{
+    font-size: 16px;
+    width: 100%;
+    line-height: initial;
+}
+.pos .orderlines-list-screen .orderline-list th,
+.pos .orderlines-list-screen .orderline-list td {
+    padding: 0px 8px;
+    height: 65px;
+    position: relative;
+}
+.pos .orderlines-list-screen .orderline-list td img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #e6e6e6;
+}
+.pos .orderlines-list-screen .orderline-list tr{
+    transition: all 150ms linear;
+    background: rgb(230,230,230);
+}
+.pos .orderlines-list-screen .orderline-list thead > tr,
+.pos .orderlines-list-screen .orderline-list tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.pos .orderlines-list-screen .orderline-list tr.highlight{
+    transition: all 150ms linear;
+    background: rgb(110,200,155) !important;
+    color: white;
+}
+.pos .orderlines-list-screen .orderline-list tr.lowlight{
+    transition: all 150ms linear;
+    background: rgb(216, 238, 227);
+}
+.pos .orderlines-list-screen .orderline-list tr.lowlight:nth-child(even){
+    transition: all 150ms linear;
+    background: rgb(227, 246, 237);
+}
+.pos .line-line .details {
+    padding: 3px 13px;
+    font-size: 16px;
+    background: rgb(230, 230, 230);
+    border-radius: 3px;
+    border: solid 1px rgb(209, 209, 209);
+    cursor: pointer;
+    transition: all 150ms linear;
+}
+.pos .line-line .details:hover {
+    background: #efefef;
+}
+.pos .line-line .details:active {
+    background: black;
+    border-color: black;
+    color: white;
+}
+.pos .window .order-details-content {
+    height: initial !important;
+    max-height: 300px;
+    background: white;
+}
+.pos .window .order-details {
+    text-align: center;
+}
+.pos .window .order-details .info {
+    display: inline-block;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: left;
+}
+.pos .window .order-details .info div {
+    padding: 5px;
+}
+.pos .window .order-details .info span {
+    font-weight: initial;
+}
