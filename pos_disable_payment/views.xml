@@ -22,6 +22,7 @@
                         <field name="allow_edit_price" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
                         <field name="allow_decrease_amount" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
                         <field name="allow_delete_order_line" attrs="{'invisible':['|',('allow_decrease_amount','=',False),('allow_create_order_line','=',False)]}"/>
+                        <field name="allow_refund" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
                     </group>
             </xpath>
         </field>

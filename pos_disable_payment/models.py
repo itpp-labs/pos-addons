@@ -13,3 +13,4 @@ class PosConfig(models.Model):
     allow_decrease_amount = fields.Boolean('Allow decrease order line', default=True)
     allow_delete_order_line = fields.Boolean('Allow remove order line', default=True)
     allow_create_order_line = fields.Boolean('Allow create order line', default=True)
+    allow_refund = fields.Boolean('Allow refunds', default=True)

@@ -74,8 +74,8 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             return res;
         },
-        save_canceled_order: function(reason) {
-            _super_order.save_canceled_order.apply(this, arguments);
+        destroy_and_upload_as_canceled: function(reason, cancelled_reason_ids) {
+            _super_order.destroy_and_upload_as_canceled.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
             //  Read more about this trigger in pos_order_cancel module

@@ -3,8 +3,8 @@
     "name": """POS Discount Programs""",
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": ["images/dp3.png"],
+    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-product-category-discount?version=10.0',
+    "images": ['images/dp3.png'],
     "version": "1.1.0",
     "application": False,
 
@@ -37,4 +37,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "POS Discount Programs",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-product-category-discount",
+    "demo_summary": "Use predefined discount programs for products in POS",
+    "demo_images": [
+        "images/dp3.png",
+    ]
 }
