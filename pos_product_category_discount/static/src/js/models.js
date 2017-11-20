@@ -79,7 +79,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
                 line.discount_program_name = discount.discount_program_id[1];
                 line.set_discount(discount.category_discount_pc);
             });
-            order.current_discount_program = discount.discount_category_id;
+            order.discount_program_id = discount.discount_program_id[0];
         },
     });
 
@@ -87,7 +87,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
     models.Order = models.Order.extend({
         remove_all_discounts: function() {
             if (this.pos.config.iface_discount) {
-                this.current_discount_program = false;
+                this.discount_program_id = false;
                 this.get_orderlines().forEach(function(line){
                     line.set_discount(false);
                 });
@@ -96,13 +96,13 @@ odoo.define('pos_product_category_discount.models', function (require) {
         export_as_JSON: function(){
             var json = OrderSuper.prototype.export_as_JSON.call(this);
             json.product_discount = this.product_discount || false;
-            json.current_discount_program = this.current_discount_program;
+            json.discount_program_id = this.discount_program_id;
             return json;
         },
         init_from_JSON: function(json) {
             OrderSuper.prototype.init_from_JSON.apply(this,arguments);
             this.product_discount = json.product_discount || false;
-            this.current_discount_program = json.current_discount_program;
+            this.discount_program_id = json.discount_program_id;
         },
     });
 
@@ -110,8 +110,8 @@ odoo.define('pos_product_category_discount.models', function (require) {
     models.Orderline = models.Orderline.extend({
         initialize: function(attr,options){
             OrderlineSuper.prototype.initialize.apply(this,arguments);
-            if (this.order && this.order.current_discount_program) {
-                this.apply_product_discount(this.order.current_discount_program[0]);
+            if (this.order && this.order.discount_program_id && this.product.discount_allowed) {
+                this.apply_product_discount(this.order.discount_program_id);
             }
         },
         apply_product_discount: function(id) {

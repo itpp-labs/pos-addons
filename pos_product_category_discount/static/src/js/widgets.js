@@ -17,6 +17,9 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
     screens.OrderWidget.include({
         apply_discount: function(pc) {
             var order = this.pos.get_order();
+            if (order.input_disc_program) {
+                this.apply_discount_category(order.discount_program_id);
+            }
             if (pc === 0) {
                 order.product_discount = 0;
             }
@@ -92,6 +95,9 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             }
             this._super(val);
         },
+        apply_discount_category: function(discount_program_id) {
+            this.pos.set_discount_categories_by_program_id(discount_program_id);
+        },
     });
 
     PosBaseWidget.include({
@@ -100,15 +106,6 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             this._super(parent,options);
             if (this.gui && this.gui.popup_instances.number) {
                 var num_widget = this.gui.popup_instances.number;
-                this.gui.popup_instances.number.click_confirm = function () {
-                    self.gui.close_popup();
-                    if( num_widget.options.confirm ){
-                        if (num_widget.input_disc_program) {
-                            self.pos.set_discount_categories_by_program_id(num_widget.discount_program_id);
-                        }
-                        num_widget.options.confirm.call(num_widget,num_widget.inputbuffer);
-                    }
-                };
                 this.gui.popup_instances.number.click_numpad = function(event){
                     var newbuf = self.gui.numpad_input(
                         num_widget.inputbuffer,
@@ -121,7 +118,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                         num_widget.inputbuffer = newbuf;
                         num_widget.$('.value').text(this.inputbuffer);
                     }
-                    num_widget.input_disc_program = false;
+                    this.pos.get_order().input_disc_program = false;
                 };
             }
         },
@@ -163,9 +160,10 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 this.current_disc_program = this.get_discount_program_by_id(id);
                 this.discount_program_name = this.current_disc_program.discount_program_name;
                 this.$('.value').text(this.discount_program_name);
-                this.input_disc_program = true;
+                var order = this.pos.get_order();
+                order.input_disc_program = true;
                 this.inputbuffer = '';
-                this.discount_program_id = this.current_disc_program.id;
+                order.discount_program_id = this.current_disc_program.id;
             }
         },
     });
@@ -265,8 +263,11 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             var order = this.pos.get_order();
             if (this.new_client) {
                 if ((this.has_client_changed() || this.has_discount_program_changed()) &&
-                    this.new_client && this.new_client.discount_program_id) {
+                    this.new_client.discount_program_id) {
                     this.pos.set_discount_categories_by_program_id(this.new_client.discount_program_id[0]);
+                }
+                if (!this.new_client.discount_program_id) {
+                    this.pos.get_order().remove_all_discounts();
                 }
             } else {
                 this.pos.get_order().remove_all_discounts();
