@@ -52,8 +52,8 @@ odoo.define('pos_product_category_discount.models', function (require) {
             return PosModelSuper.prototype.initialize.apply(this, arguments);
         },
         get_discount_categories: function(id) {
-            return _.find(this.discount_categories, function(item){
-                return item.discount_program_id === id;
+            return _.filter(this.discount_categories, function(item){
+                return item.discount_program_id[0] === id;
             });
         },
         set_discount_categories_by_program_id: function(id) {
@@ -76,7 +76,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
                 return item.product.pos_categ_id[0] === discount.discount_category_id[0] && item.product.discount_allowed;
             });
             lines.forEach(function (line){
-                item.discount_program_name = discount.discount_program_id[1];
+                line.discount_program_name = discount.discount_program_id[1];
                 line.set_discount(discount.category_discount_pc);
             });
             order.current_discount_program = discount.discount_category_id;

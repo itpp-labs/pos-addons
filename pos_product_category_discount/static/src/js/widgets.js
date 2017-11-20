@@ -1,9 +1,9 @@
-odoo.define('pos_product_category_discount.discount_program', function (require) {
+odoo.define('pos_product_category_discount.widgets', function (require) {
     "use strict";
 
     var PopupWidget = require('point_of_sale.popups');
     var models = require('pos_product_category_discount.models');
-    var screens = require('point_of_sale.screens');
+    var screens = require('pos_discount_base.screens');
     var gui = require('point_of_sale.gui');
     var Model = require('web.Model');
     var Widget = require('web.Widget');
@@ -15,6 +15,44 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
     var _t = core._t;
 
     screens.OrderWidget.include({
+        apply_discount: function(pc) {
+            var order = this.pos.get_order();
+            if (pc === 0) {
+                order.product_discount = 0;
+            }
+            if (pc !== null) {
+                // Product with a prohibited discount
+                var not_discount_product = order.get_orderlines().filter(function(item) {
+                    return item.product.discount_allowed === false;
+                });
+
+                // Common price without discount for product with a prohibited discount
+                var price_without_discount = 0;
+
+                if (not_discount_product) {
+                    not_discount_product.forEach(function(item){
+                    var price = 0;
+                    if (item.discount) {
+                        price = (item.price*(100.0 - item.discount)) / 100.0;
+                    } else {
+                        price = item.price;
+                    }
+                        price_without_discount += price;
+                    });
+                }
+
+                var current_orderline = order.select_orderline()
+                // Discount
+                var discount = - pc / 100.0 * (order.get_total_with_tax() - price_without_discount);
+                order.product_discount = discount;
+                if( discount < 0 ) {
+                    this._super(pc);
+                    current_orderline.price(discount);
+                    current_orderline.trigger('change', current_orderline);
+                    order.trigger('change');
+                }
+            }
+        },
         set_value: function(val) {
             var self = this;
             var order = this.pos.get_order();
@@ -61,6 +99,9 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
                     if (pc === 0) {
                         order.product_discount = 0;
                     }
+
+
+
                     if (pc !== null) {
                         lines.forEach(function (item){
                             if (item.get_product() === product) {
@@ -138,37 +179,6 @@ odoo.define('pos_product_category_discount.discount_program', function (require)
                 };
             }
         },
-    });
-
-    models.load_models({
-        model: 'pos.discount_program',
-        fields: ['discount_program_name', 'discount_program_number', 'id'],
-        domain: function(self){
-            return [['discount_program_active','=',true]];
-        },
-        loaded: function(self,discount_program){
-            var sorting_discount_program = function(idOne, idTwo){
-                return idOne.discount_program_number - idTwo.discount_program_number;
-            };
-            if (discount_program) {
-                self.discount_program = discount_program.sort(sorting_discount_program);
-            }
-        },
-    });
-
-    models.load_models({
-        model:  'product.template',
-        fields: ['discount_allowed','product_variant_id'],
-        loaded: function(self,products){
-            products.forEach(function(item){
-                if (item.product_variant_id) {
-                    var product = self.db.get_product_by_id(item.product_variant_id[0]);
-                    if (product) {
-                        product.discount_allowed = item.discount_allowed;
-                    }
-                }
-            });
-        }
     });
 
     PopupWidget.include({

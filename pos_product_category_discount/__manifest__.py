@@ -16,8 +16,7 @@
     "currency": "EUR",
 
     "depends": [
-        "point_of_sale",
-        "pos_discount",
+        "pos_discount_base",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
