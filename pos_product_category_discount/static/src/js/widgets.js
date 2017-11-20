@@ -40,17 +40,10 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                         price_without_discount += price;
                     });
                 }
-
-                var current_orderline = order.select_orderline()
                 // Discount
                 var discount = - pc / 100.0 * (order.get_total_with_tax() - price_without_discount);
                 order.product_discount = discount;
-                if( discount < 0 ) {
-                    this._super(pc);
-                    current_orderline.price(discount);
-                    current_orderline.trigger('change', current_orderline);
-                    order.trigger('change');
-                }
+                this._super(pc);
             }
         },
         set_value: function(val) {
@@ -84,74 +77,27 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 order.product_discount = false;
             }
         },
+        discount_button_click: function() {
+            var self = this;
+            if (this.pos.discount_program && this.pos.discount_program.length) {
+                this.discount_options.disc_program = this.pos.discount_program.slice(0,4);
+            }
+            this._super();
+        },
+        confirm_discount: function(val) {
+            if (val) {
+                val = Math.round(Math.max(0, Math.min(100, val)));
+            } else {
+                val = null;
+            }
+            this._super(val);
+        },
     });
 
     PosBaseWidget.include({
         init:function(parent,options){
             var self = this;
             this._super(parent,options);
-            if (this.gui && this.gui.screen_instances.products && this.gui.screen_instances.products.action_buttons.discount) {
-                var disc_widget = this.gui.screen_instances.products.action_buttons.discount;
-                disc_widget.apply_discount = function(pc) {
-                    var order = self.pos.get_order();
-                    var lines = order.get_orderlines();
-                    var product = self.pos.db.get_product_by_id(self.pos.config.discount_product_id[0]);
-                    if (pc === 0) {
-                        order.product_discount = 0;
-                    }
-
-
-
-                    if (pc !== null) {
-                        lines.forEach(function (item){
-                            if (item.get_product() === product) {
-                                order.remove_orderline(item);
-                            }
-                        });
-
-                        // Product with a prohibited discount
-                        var not_discount_product = order.get_orderlines().filter(function(item) {
-                            return item.product.discount_allowed === false;
-                        });
-
-                        // Common price without discount for product with a prohibited discount
-                        var price_without_discount = 0;
-
-                        if (not_discount_product) {
-                            not_discount_product.forEach(function(item){
-                                var price = 0;
-                                if (item.discount) {
-                                    price = (item.price*(100.0 - item.discount)) / 100.0;
-                                } else {
-                                    price = item.price;
-                                }
-                                price_without_discount += price;
-                            });
-                        }
-                        // Discount
-                        var discount = - pc / 100.0 * (order.get_total_with_tax() - price_without_discount);
-                        order.product_discount = discount;
-                        if( discount < 0 ) {
-                            order.add_product(product, { price: discount });
-                        }
-                    }
-                };
-                disc_widget.button_click = function () {
-                    self.gui.show_popup('number', {
-                        'title': 'Discount Percentage',
-                        'value': self.pos.config.discount_pc,
-                        'disc_program': self.pos.discount_program.slice(0,4),
-                        'confirm': function (val) {
-                            if (val) {
-                                val = Math.round(Math.max(0, Math.min(100, val)));
-                            } else {
-                                val = null;
-                            }
-                            self.gui.screen_instances.products.action_buttons.discount.apply_discount(val);
-                        },
-                    });
-                };
-            }
             if (this.gui && this.gui.popup_instances.number) {
                 var num_widget = this.gui.popup_instances.number;
                 this.gui.popup_instances.number.click_confirm = function () {

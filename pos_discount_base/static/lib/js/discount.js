@@ -14,7 +14,11 @@ odoo.define('pos_discount_base.screens', function (require) {
                     self.gui.screen_instances.products.order_widget.apply_discount(pc);
                 };
                 disc_widget.button_click = function () {
-                     self.gui.screen_instances.products.order_widget.discount_button_click();
+                    self.gui.screen_instances.products.order_widget.discount_options = {
+                        'title': 'Discount Percentage',
+                        'value': this.pos.config.discount_pc,
+                    };
+                    self.gui.screen_instances.products.order_widget.discount_button_click();
                 };
             }
         },
@@ -36,7 +40,6 @@ odoo.define('pos_discount_base.screens', function (require) {
                     i++;
                 }
             }
-
             // Add discount
             var discount = - pc / 100.0 * order.get_total_with_tax();
 
@@ -48,13 +51,10 @@ odoo.define('pos_discount_base.screens', function (require) {
         // confirm is separate function
         discount_button_click: function() {
             var self = this;
-            this.gui.show_popup('number',{
-                'title': 'Discount Percentage',
-                'value': this.pos.config.discount_pc,
-                'confirm': function(val) {
-                    self.confirm_discount(val);
-                },
-            });
+            this.discount_options.confirm = function(val) {
+                self.confirm_discount(val);
+            };
+            this.gui.show_popup('number', this.discount_options);
         },
         confirm_discount: function(val) {
             val = Math.round(Math.max(0,Math.min(100,val)));
