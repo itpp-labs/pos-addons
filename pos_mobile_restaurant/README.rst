@@ -24,6 +24,7 @@ Maintainers
       Thank you for understanding!
 
       `IT-Projects Team <https://www.it-projects.info/team>`__
+
 Further information
 ===================
 
