@@ -4,7 +4,7 @@
     "summary": """Your Restaurant in the Mobile Version""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
-    "images": [],
+    "images": ["images/pos_mobile_restaurant.png"],
     "version": "1.0.0",
     "application": False,
 
