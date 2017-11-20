@@ -1,34 +1,30 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Discount Programs""",
-    "summary": """Use predefined discount programs for products in POS""",
+    "name": """POS discount base""",
+    "summary": """Technical module in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": ["images/dp3.png"],
-    "version": "1.1.0",
+    # "live_test_URL": "",
+    "images": [],
+    "version": "1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 39.00,
+    "price": 0.00,
     "currency": "EUR",
 
     "depends": [
-        "pos_discount_base",
+        "pos_discount",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/template.xml",
-        "views/view.xml",
-        "security/ir.model.access.csv",
     ],
     "qweb": [
-        "static/src/xml/DiscountProgram.xml",
     ],
     "demo": [
-        "data/pos_product_category_discount_demo.xml",
     ],
 
     "post_load": None,
@@ -36,5 +32,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

@@ -3,7 +3,8 @@
     <data>
         <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
             <xpath expr="//link[last()]" position="after">
-                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/discount_program.js"></script>
+                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/widgets.js"></script>
+                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/models.js"></script>
                 <link rel="stylesheet" href="/pos_product_category_discount/static/src/css/pos.css"/>
             </xpath>
         </template>
