@@ -20,6 +20,7 @@
 
                     </div>
                     <div class="footer-qr">
+                        <div class="button confirm">Ok</div>
                         <div class="button cancel">Cancel</div>
                     </div>
                 </div>

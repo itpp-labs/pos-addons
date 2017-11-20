@@ -8,7 +8,10 @@
 }
 .video_preview {
     height: 100%;
-	width: 100%%;
+	width: 100%;
+}
+.qr-content {
+    width: 100% !important;
 }
 
 .sidebar {

@@ -4,7 +4,6 @@ odoo.define('pos_qr_scan', function(require){
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
-    var Instascan = require('instascan');
 
     var QrButton = screens.ActionButtonWidget.extend({
         template: 'QrButton',
@@ -36,17 +35,22 @@ odoo.define('pos_qr_scan', function(require){
             this.var_scanner.stop();
             this._super(arguments);
         },
+        click_confirm: function(){
+            this.var_scanner.stop();
+            this._super(arguments);
+        },
         start_script: function() {
             this.var_scanner = new Instascan.Scanner({video: document.getElementById('preview')});
             var scanner = this.var_scanner;
             scanner.addListener('scan', function (content) {
                 console.log(content);
                 self.posmodel.smth_new = true;
-                var new_scan = document.createElement('a');
-                new_scan.setAttribute("href", content);
-                var par = document.createElement("p");
-                par.innerHTML = content;
-                new_scan.appendChild(par);
+                var new_scan = document.createElement('div');
+//                new_scan.setAttribute("href", content);
+                new_scan.className = 'button qr-content'
+//                var par = document.createElement("p");
+                new_scan.innerHTML = content;
+//                new_scan.appendChild(par);
                 $('.sidebar > .body').append(new_scan);
                 scanner.stop();
             });
