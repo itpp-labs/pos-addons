@@ -16,12 +16,14 @@ class TestUi(odoo.tests.HttpCase):
         # create new session and open it
         main_pos_config.open_session_cb()
 
+        # From https://github.com/odoo/odoo/blob/11.0/addons/point_of_sale/tests/test_frontend.py#L292-L297
+        #
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         env['ir.module.module'].search([('name', '=', 'pos_mobile_restaurant')], limit=1).state = 'installed'
-        self.registry.cursor().release()
+        self.registry.test_cr.release()
 
         self.phantom_js(
             '/pos/web?m=1',
