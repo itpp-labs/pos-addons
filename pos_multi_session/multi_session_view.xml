@@ -13,6 +13,7 @@
                             <h1><field name="name"/></h1>
                         <group string="Settings">
                             <field name="pos_ids" widget="many2many_tags" domain="[('current_session_state', '!=', 'opened')]" options="{'not_delete': True}"/>
+                            <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
                             <field name="order_ID" readonly="1"/>
                         </group>
                         <group>

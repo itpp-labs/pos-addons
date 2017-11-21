@@ -17,6 +17,7 @@ class PosConfig(models.Model):
     current_session_state = fields.Char(search='_search_current_session_state')
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
+    fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -42,7 +43,7 @@ class PosMultiSession(models.Model):
                             help="Number of Multi-session starts. "
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")
-
+    fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
 
 class PosSession(models.Model):
     _inherit = 'pos.session'

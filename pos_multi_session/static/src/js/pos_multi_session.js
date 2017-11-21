@@ -10,6 +10,7 @@ odoo.define('pos_multi_session', function(require){
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
     var Model = require('web.Model');
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
 
     var _t = core._t;
 
@@ -40,6 +41,24 @@ odoo.define('pos_multi_session', function(require){
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
          */
+    });
+
+    PosBaseWidget.include({
+        init:function(parent,options){
+            var self = this;
+            this._super(parent,options);
+            var is_fiscal_button_click_super = is_fiscal_button_click_super || false;
+            if (!is_fiscal_button_click_super && this.gui && this.gui.screen_instances.products &&
+            this.gui.screen_instances.products.action_buttons.set_fiscal_position) {
+                is_fiscal_button_click_super = true;
+                fiscal_button_click_super = self.gui.screen_instances.products.action_buttons.set_fiscal_position.button_click;
+                self.gui.screen_instances.products.action_buttons.set_fiscal_position.button_click = function() {
+                    fiscal_button_click_super();
+                    console.log('---------------------');
+                };
+
+            }
+        }
     });
 
     var PosModelSuper = models.PosModel;
