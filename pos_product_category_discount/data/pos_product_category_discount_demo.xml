@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="demo_discount_program_1" model="pos.discount_program">
-        <field name="discount_program_name">10% Discount for Fruits and Vegetables</field>
+        <field name="discount_program_name">Discount for Fruits and Vegetables</field>
     </record>
     <record id="demo_discount_program_2" model="pos.discount_program">
         <field name="discount_program_name">Gold Discount for Partner</field>
@@ -34,5 +34,7 @@
     <record id='base.res_partner_1'  model='res.partner'>
         <field name='discount_program_id' ref="demo_discount_program_2"/>
     </record>
+
+
 
 </odoo>
