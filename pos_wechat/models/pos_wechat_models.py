@@ -10,7 +10,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo import api, fields, models
 import json, requests, time
 import json, requests, time
-from wechatpy.utils import check_signature
+# from wechatpy.utils import check_signature
 
 
 class AccountJournal(models.Model):

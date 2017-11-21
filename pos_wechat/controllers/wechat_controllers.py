@@ -1,6 +1,5 @@
 from __future__ import absolute_import, unicode_literals
-import os
-import json, requests, time
+import odoo
 from flask import Flask, request, abort, render_template
 from wechatpy import parse_message, create_reply
 from wechatpy.utils import check_signature
@@ -19,18 +18,11 @@ except ImportError:
 # AES_KEY = request.env['wechat.model'].appSecret
 # TOKEN = request.env['wechat.model'].token
 
-app = Flask(__name__)
-
 
 class Controller(BusController):
 
-    @app.route('/')
-    def index(self):
-        host = request.url_root
-        return render_template('index.html', host=host)
 
-
-    @app.route('/wechat', methods=['GET', 'POST'])
+    @odoo.http.route('/wechat', methods=['GET', 'POST'])
     def wechat(self, **post):
         # sign check all other im model
         AES_KEY = request.env['ir.config_parameter'].get_param('wechat.appSecret')
