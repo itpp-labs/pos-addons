@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Orderline">
+        <t t-jquery="t[t-if*='line.get_discount_str()']" t-operation="after">
+            <t t-if="line.get_absolute_discount_str() and line.get_absolute_discount_str() !== '0'">
+                <li class="info">
+                    With a
+                    <em>
+                        <t t-esc='line.pos.currency.symbol'/><t t-esc="line.get_absolute_discount_str()" />
+                    </em>
+                    discount
+                </li>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery="t[t-if='orderline.get_discount() > 0']" t-operation="after">
+            <t t-if="orderline.get_absolute_discount_str() and orderline.get_absolute_discount_str() !== '0'">
+                <div class="pos-disc-font">
+                    With a <t t-esc='orderline.pos.currency.symbol'/><t t-esc="orderline.get_absolute_discount_str()" /> discount
+                </div>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-set='simple']" t-operation="replace">
+            <t t-set='simple' t-value='line.discount === 0 and line.absolute_discount === 0 and line.unit_name === "Unit(s)" and line.quantity === 1' />
+        </t>
+        <t t-jquery="t[t-if='!simple'] t[t-if='line.discount !== 0']" t-operation="after">
+            <t t-if='line.absolute_discount and line.absolute_discount !== 0'>
+                <line indent='1'><left>Discount: <t t-esc='pos.currency.symbol' /><t t-esc='line.absolute_discount' /></left></line>
+            </t>
+        </t>
+    </t>
+</templates>
