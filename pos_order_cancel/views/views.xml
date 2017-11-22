@@ -236,7 +236,7 @@
         <field name="name">Refund / Cancelation Details</field>
         <field name="res_model">pos.order.line.canceled</field>
         <field name="view_type">form</field>
-        <field name="view_mode">graph,tree,form,pivot</field>
+        <field name="view_mode">tree,graph,form,pivot</field>
         <field name="search_view_id" ref="view_report_cancelations_search"/>
         <field name="context">{'search_default_thismonth':1, 'group_by':[]}</field>
     </record>
