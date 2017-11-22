@@ -93,7 +93,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                         data.transfer = false;
                         return;
                     }
-                    remove_order_super.apply(self.multi_session, arguments);
+                    return remove_order_super.apply(self.multi_session, arguments);
                  };
             });
         },
