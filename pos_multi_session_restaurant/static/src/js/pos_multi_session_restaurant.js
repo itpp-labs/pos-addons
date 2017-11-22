@@ -202,8 +202,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
             }
         },
-        do_ms_remove_order: function(){
-        },
     });
 
     var OrderlineSuper = models.Orderline;
