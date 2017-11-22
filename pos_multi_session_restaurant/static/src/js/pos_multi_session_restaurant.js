@@ -182,14 +182,27 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         do_ms_remove_order: function(){
             if (this.transfer) {
-                this.pos.multi_session.remove_order({
-                    'uid': this.uid,
-                    'revision_ID': this.revision_ID,
-                    'transfer': this.transfer
-                });
+                var self = this;
+                if (this.enquied){
+                    return;
+                }
+                var f = function(){
+                    return this.pos.multi_session.remove_order({
+                        'uid': this.uid,
+                        'revision_ID': this.revision_ID,
+                        'transfer': this.transfer
+                    }).done();
+                };
+                if (!this.pos.config.multi_session_id){
+                    return;
+                }
+                this.enquied = true;
+                this.pos.multi_session.enque(f);
             } else {
                 OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
             }
+        },
+        do_ms_remove_order: function(){
         },
     });
 
