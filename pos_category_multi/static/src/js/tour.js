@@ -15,5 +15,11 @@ odoo.define('pos_category_multi.tour', function(require) {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
         content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
         position: "bottom"
+    }, {
+        trigger: '.o_main_content:has(.loader:hidden)',
+        content: 'waiting for loading to finish',
+        run: function () {
+            // it's a check
+        }
     }]);
 });
