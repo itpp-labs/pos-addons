@@ -7,5 +7,10 @@
                 <script type="text/javascript" src="/pos_cashier_select/static/src/js/main.js"></script>
             </xpath>
         </template>
+        <template id="demo_assets_backend" name="pos_cashier_select demo assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_cashier_select/static/src/js/tour.js"></script>
+            </xpath>
+        </template>
     </data>
 </odoo>
