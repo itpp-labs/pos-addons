@@ -27,6 +27,7 @@
     "qweb": [
     ],
     "demo": [
+        "data/pos_order_printer_product_demo.xml",
     ],
 
     "post_load": None,
@@ -34,5 +35,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
