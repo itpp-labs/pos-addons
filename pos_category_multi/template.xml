@@ -7,5 +7,10 @@
                 <script type="text/javascript" src="/pos_category_multi/static/src/js/models.js"></script>
             </xpath>
         </template>
+        <template id="demo_assets_backend" name="pos_category_multi_backend_assets" inherit_id="web.assets_backend">
+          <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_category_multi/static/src/js/tour.js"></script>
+          </xpath>
+        </template>
     </data>
 </openerp>
