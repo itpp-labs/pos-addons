@@ -25,8 +25,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                 var cat = cats[j];
                 while (cat) {
                     for (var i = 0; i < category_ids.length; i++) {
-                        // The == is important, ids may be strings
-                        if (cat == category_ids[i]) {
+                        if (String(cat) === String(category_ids[i])) {
                             return true;
                         }
                     }
@@ -56,7 +55,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                     }
                     stored_categories[categ_id].push(product.id);
 
-                    if(this.category_search_string[categ_id] === undefined){
+                    if(typeof this.category_search_string[categ_id] === "undefined"){
                         this.category_search_string[categ_id] = '';
                     }
                     this.category_search_string[categ_id] += search_string;
@@ -70,7 +69,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                         }
                         stored_categories[ancestor].push(product.id);
 
-                        if( this.category_search_string[ancestor] === undefined){
+                        if(typeof this.category_search_string[ancestor] === "undefined"){
                             this.category_search_string[ancestor] = '';
                         }
                         this.category_search_string[ancestor] += search_string;
