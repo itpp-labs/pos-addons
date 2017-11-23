@@ -24,7 +24,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
         content: "Click to edit user",
         position: "bottom"
     }, {
-        trigger: 'a[href="#notebook_page_80"]',
+        trigger: '.nav-tabs a:contains("Point of Sale")',
         content: "Move on <b>Point of Sale</b> tab",
         position: "top"
     }, {
