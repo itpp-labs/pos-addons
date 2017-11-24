@@ -1,8 +1,8 @@
-================
- POS WeChat Pay
-================
+===================
+ WeChat API Server
+===================
 
-Payments in POS via WeChat
+Payments via WeChat
 
 Credits
 =======
@@ -22,9 +22,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/misc-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_qr_scan/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/wechat/
 
 Usage instructions: `<doc/index.rst>`_
 

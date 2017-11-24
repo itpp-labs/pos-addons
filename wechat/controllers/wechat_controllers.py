@@ -18,7 +18,7 @@ import hashlib
 class WechatController(odoo.http.Controller):
 
     @odoo.http.route('/wechat', methods=['GET', 'POST'], auth='public')
-    def wechat(self, **post):
+    def wechatCheckSignature(self, **post):
         # sign check all other im model
         print('entered--------------')
         # AES_KEY = request.env['ir.config_parameter'].get_param('wechat.appSecret')
@@ -41,16 +41,13 @@ class WechatController(odoo.http.Controller):
         print('DATA',request.httprequest.get_data())
         try:
             # request.env['wechat.server'].check_signature(post)
-            print('try_check_signature--------------')
-            check_signature(TOKEN, signature, timestamp, nonce)
+            check_signature(TOKEN, signature, timestamp, nonce) # Find information about that
         except InvalidSignatureException:
             print('except-request-------------')
             # return request.render("website.403")
             reply = create_reply('Sorry, request doesnt work')
             return reply.render()
         if request.httprequest.method == 'GET':
-            print('if-echo_str-------------')
-
             echo_str = post.get('echostr', '')
             args_list = [TOKEN, timestamp, nonce]
             print(args_list)
@@ -68,7 +65,7 @@ class WechatController(odoo.http.Controller):
                 # self.write('fail ... ')
             return echo_str
 
-        # POST request
+        # At that moment i don't know is this code below would be needed, so i leave it here for a wile
         if encrypt_type == 'raw':
             # plaintext mode
             print('if-encrypt_type == "raw"-------------')

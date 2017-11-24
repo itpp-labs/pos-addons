@@ -1,7 +1,7 @@
 {
-    "name": """POS WeChat Pay""",
-    "summary": """Payments in POS via WeChat""",
-    "category": "Point of Sale",
+    "name": """WeChat API Server""",
+    "summary": """WeChat API requests handler""",
+    "category": "Purchases",
     # "live_test_url": "",
     "images": [],
     "version": "1.0.0",
@@ -14,14 +14,9 @@
     # "price": 9.00,
     # "currency": "EUR",
 
-    "depends": [
-        "point_of_sale", "pos_qr_scan",
-    ],
+    "depends": [],
     "external_dependencies": {"python": [], "bin": []},
-    "data": [
-        "views/assets.xml",
-        "views/views.xml",
-    ],
+    "data": [],
     "qweb": [],
 
     "auto_install": False,
