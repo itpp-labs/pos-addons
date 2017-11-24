@@ -53,7 +53,9 @@ odoo.define('pos_multi_session', function(require){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
                 loaded: function(me, current_session){
-                    self.multi_session_run_ID = current_session[0].run_ID;
+                    if (self.config.multi_session_id) {
+                        self.multi_session_run_ID = current_session[0].run_ID;
+                    }
             }};
             this.models.splice(
                 this.models.indexOf(_.find(this.models, function(model){
