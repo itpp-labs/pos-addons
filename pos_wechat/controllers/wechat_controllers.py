@@ -69,7 +69,7 @@ class WechatController(odoo.http.Controller):
 
             crypto = WeChatCrypto(TOKEN, AES_KEY, APPID)
             try:
-                print 'inside try of encrypting'
+                print('inside try of encrypting')
                 msg = crypto.decrypt_message(
                     request.data,
                     msg_signature,
@@ -78,15 +78,15 @@ class WechatController(odoo.http.Controller):
                 )
             except (InvalidSignatureException, InvalidAppIdException):
                 # return request.render("website.403")
-                print 'inside except of encrypting'
+                print('inside except of encrypting')
                 reply = create_reply('Sorry, request doesnt work')
                 return reply.render()
             else:
-                print 'inside else of encrypting'
+                print('inside else of encrypting')
                 msg = parse_message(msg)
                 if msg.type == 'text':
                     reply = create_reply(msg.content, msg)
                 else:
                     reply = create_reply('Sorry, can not handle this for now', msg)
-                print msg
+                print(msg)
                 return crypto.encrypt_message(reply.render(), nonce, timestamp)
