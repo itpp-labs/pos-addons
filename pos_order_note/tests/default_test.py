@@ -8,7 +8,7 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded_and_added_note_to_order(self):
         self.phantom_js(
-            '/web?debug=assets',
+            '/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".run('pos_order_note_tour')",
