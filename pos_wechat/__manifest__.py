@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS WeChat Pay""",
     "summary": """Payments in POS via WeChat""",
