@@ -26,15 +26,18 @@ odoo.define('pos_longpolling', function(require){
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
             this.activated = false;
+            var callback = this.longpolling_connection.network_is_on;
+            this.add_channel_callback("pos.longpolling", callback, this.longpolling_connection);
+
         },
         poll: function(address) {
             var self = this;
-            self.activated = true;
+            this.activated = true;
             var now = new Date().getTime();
             var options = _.extend({}, this.options, {
                 bus_inactivity: now - this.get_last_presence(),
             });
-            var data = {channels: self.channels, last: self.last, options: options};
+            var data = {channels: this.channels, last: this.last, options: options};
             // function is copy-pasted from bus.js but the line below defines a custom server address
             var serv_adr = address
                 ? address.serv
@@ -44,8 +47,11 @@ odoo.define('pos_longpolling', function(require){
                 if(!self.stop){
                     self.poll();
                 }
-
+                //difference with original
+                self.longpolling_connection.network_is_on();
             }, function(unused, e) {
+                //difference with original
+                self.longpolling_connection.network_is_off();
                 // no error popup if request is interrupted or fails for any reason
                 e.preventDefault();
                 // random delay to avoid massive longpolling
@@ -82,9 +88,9 @@ odoo.define('pos_longpolling', function(require){
             _.each(self.channel_callbacks, function(value, key){
                 self.activate_channel(key);
             });
-            this.start_polling();
             this.lonpolling_activated = true;
-            this.longpolling_connection.send();
+            this.longpolling_connection.send_ping({serv: this.serv_adr});
+            this.start_polling();
             this.activated = true;
         },
         activate_channel: function(channel_name){
@@ -142,8 +148,6 @@ odoo.define('pos_longpolling', function(require){
             this.bus.name = 'Default';
             this.ready.then(function () {
                 self.bus.init_bus(self);
-                var callback = self.bus.longpolling_connection.network_is_on;
-                self.bus.add_channel_callback("pos.longpolling", callback, self.bus.longpolling_connection);
                 if (self.config.autostart_longpolling){
                     self.bus.start();
                 }
@@ -203,7 +207,7 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
-                    self.send();
+                    self.send_ping();
                 } else if (type === "response") {
                     if (self.pos.debug){
                         console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
@@ -216,13 +220,13 @@ odoo.define('pos_longpolling', function(require){
             this.stop_timer();
             this.start_timer(this.pos.config.response_timeout, "response");
         },
-        send: function(address) {
+        send_ping: function(address) {
             var self = this;
             this.response_status = false;
             var serv_adr = address
                 ? address.serv
                 : this.pos.config.sync_server || '';
-            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id}).then(function(){
+            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
                 if (!self.response_status) {
@@ -239,17 +243,38 @@ odoo.define('pos_longpolling', function(require){
     });
 
     var Status_Widget = chrome.StatusWidget;
+    Status_Widget.include({
+        set_poll_status: function(selector, current_bus) {
+            if (current_bus.activated) {
+                if (current_bus.longpolling_connection.status) {
+                    this.set_icon_class(selector, 'oe_green');
+                } else {
+                    this.set_icon_class(selector, 'oe_red');
+                }
+            } else {
+                this.set_icon_class(selector, 'oe_gray');
+            }
+        },
+        set_icon_class: function(selector, new_class) {
+            var element = self.$(selector);
+            element.removeClass('oe_red oe_green oe_gray').addClass(new_class);
+        },
+    });
+
     var AdditionalSynchNotificationWidget = Status_Widget.extend({
         template: 'AdditionalSynchNotificationWidget',
         start: function(){
             var self = this;
-            var element = self.$('.serv_additional');
+            var element = this.$('.serv_additional');
             if (this.pos.buses && Object.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
-                    if (_.has(this.pos.buses, 'key')){
+                    if (_.has(this.pos.buses, key)){
                         bus = this.pos.buses[key];
-                        self.set_poll_status(element, bus);
                         bus.longpolling_connection.set_status(true);
+                        self.set_poll_status(element.selector, bus);
+                        bus.longpolling_connection.on("change:poll_connection", function(status){
+                            self.set_poll_status(element.selector, bus);
+                        });
                     }
                 }
             } else {
@@ -275,26 +300,13 @@ odoo.define('pos_longpolling', function(require){
         },
     });
 
-
-    Status_Widget.include({
-        set_poll_status: function(element, current_bus) {
-            if (current_bus.longpolling_connection.status) {
-                element.removeClass('oe_red');
-                element.addClass('oe_green');
-            } else {
-                element.removeClass('oe_green');
-                element.addClass('oe_red');
-            }
-        },
-    });
-
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
+            var selector = '.serv_primary';
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                var element = self.$('.serv_primary');
-                self.set_poll_status(element, self.pos.bus);
+                self.set_poll_status(selector, self.pos.bus);
             });
             this.pos.bus.longpolling_connection.set_status(true);
         },

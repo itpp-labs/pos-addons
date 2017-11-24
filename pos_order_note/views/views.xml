@@ -20,7 +20,6 @@
                 <form string="POS Product Notes">
                     <sheet>
                         <group>
-                            <field name="number" required="1"/>
                             <field name="name" required="1"/>
                         </group>
                     </sheet>
@@ -33,7 +32,7 @@
             <field name="model">pos.product_notes</field>
             <field name="arch" type="xml">
                 <tree string="POS Product Notes">
-                    <field name="number"/>
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                 </tree>
             </field>

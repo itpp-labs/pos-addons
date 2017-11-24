@@ -4,9 +4,8 @@
 
 Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 
-Supporting module for "Sync POS orders across multiple sessions" provides synchronization for POS multi-session,
-allows using a separate sync server for data storage and processing.
-Separate sync server synchronization provides uninterrupted synchronization in case of main server is shut down.
+The module is used for `Sync POS orders across multiple sessions <https://apps.odoo.com/apps/modules/10.0/pos_multi_session>`__. It provides the synchronization for POS multi-session and allows to use a separate sync server for data storage and processing.
+Separate sync server provides uninterrupted synchronization in case of main server is shut down.
 
 Credits
 =======

@@ -74,8 +74,8 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             return res;
         },
-        save_canceled_order: function(reason) {
-            _super_order.save_canceled_order.apply(this, arguments);
+        destroy_and_upload_as_canceled: function(reason, cancelled_reason_ids) {
+            _super_order.destroy_and_upload_as_canceled.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
             //  Read more about this trigger in pos_order_cancel module
@@ -101,6 +101,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
             this.was_printed = data.was_printed;
+        },
+        cancel_quantity_changes: function() {
+            _super_orderline.cancel_quantity_changes.apply(this, arguments);
+            if (this.was_printed) {
+                this.set_dirty(false);
+            }
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);

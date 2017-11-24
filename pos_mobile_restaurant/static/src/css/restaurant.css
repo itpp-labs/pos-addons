@@ -1,0 +1,295 @@
+/* --- Restaurant for Mobile Specific CSS --- */
+
+.pos.mobile .screen .screen-content-flexbox {
+    margin:     0px auto;
+    text-align: left;
+    height:     100%;
+    overflow:   hidden;
+    position:   relative;
+    display:    -webkit-flex;
+    -webkit-flex-flow:  column nowrap;
+    flex-flow:  column nowrap;
+}
+
+/* ------ FLOOR SELECTOR ------- */
+
+.pos.mobile .floor-selector {
+    line-height: 96px;
+    font-size: 36px;
+    display: block;
+}
+.pos.mobile .floor-selector .button {
+    border: none;
+    display: block;
+    -webkit-flex: none;
+    flex: none;
+    background: #67aeff;
+    margin-bottom: 10px;
+}
+.pos.mobile .floor-selector .button.active {
+    background: #6EC89B;
+}
+.pos.mobile .floor-selector .button:hover {
+    background: #6EC89B;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+.pos.mobile .floor-selector .title {
+    display: block;
+    font-size: 50px;
+    line-height: 91px;
+}
+/* ------ FLOOR MAP ------- */
+
+.pos.mobile .floor-map {
+    box-shadow: initial;
+}
+.pos.mobile .floor-map .tables {
+    overflow-y: auto;
+    max-width: 900px;
+    max-height: initial;
+    float: right;
+}
+.pos.mobile .floor-map .table{
+    font-size: 36px;
+    border-radius: 6px;
+    box-shadow: 0px 6px rgba(0,0,0,0.07);
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
+}
+.pos.mobile .floor-map .table .table-cover {
+    border-radius: 0px 0px 6px 6px;
+}
+.pos.mobile .floor-map .table .table-cover.full {
+    border-radius: 6px 6px 6px 6px;
+}
+.pos.mobile .floor-map .table .table-seats {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 32px;
+    border-radius: 50%;
+    margin-left: -20px;
+    margin-bottom: 8px;
+}
+.pos.mobile .floor-map .table .label {
+    bottom: 10px;
+}
+.pos.mobile .floor-map .edit-button.editing {
+    display: none;
+}
+.pos.mobile .floor-map .edit-bar {
+    right: 80px;
+    margin: 16px;
+    line-height: 68px;
+    border-radius: 10px;
+    font-size: 40px;
+}
+.pos.mobile .floor-map .edit-bar .edit-button {
+    width: 64px;
+    margin-right: -8px;
+    border-right: solid 2px rgba(0,0,0,0.2);
+}
+.pos.mobile .floor-map .edit-bar .color-picker {
+    left: -212px;
+    top: 80px;
+    width: 360px;
+    height: 360px;
+    border-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color {
+    width: 120px;
+    height: 120px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.tl {  border-top-left-radius: 6px; }
+.pos.mobile .floor-map .edit-bar .color-picker .color.tr {  border-top-right-radius: 6px; }
+.pos.mobile .floor-map .edit-bar .color-picker .color.bl {  border-bottom-left-radius: 6px; }
+.pos.mobile .floor-map .edit-bar .color-picker .color.br {  border-bottom-right-radius: 6px; }
+
+.pos.mobile .floor-map .edit-bar .close-picker {
+    margin-left: -32px;
+    margin-bottom: -32px;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    font-size: 40px;
+    border-radius: 32px;
+}
+.pos.mobile .floor-map .table.selected .table-handle {
+    width: 96px;
+    height: 96px;
+    border-radius: 48px;
+    margin-left: -48px;
+    margin-top:  -48px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+}
+.pos.mobile .floor-map .table.selected .table-handle:hover {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    margin-left: -60px;
+    margin-top: -60px;
+}
+.pos.mobile .floor-map .table .order-count {
+    width: 40px;
+    margin-top: 2px;
+    margin-left: -20px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    font-size: 32px;
+}
+.pos.mobile .floor-map .empty-floor {
+    width: 800px;
+    height: 80px;
+    font-size: 36px;
+}
+.pos.mobile .floor-map .empty-floor i {
+    padding: 12px 14px 6px;
+    margin: 0px 6px;
+    border-radius: 6px;
+}
+
+/* ------ FLOOR BUTTON IN THE ORDER SELECTOR ------- */
+
+.pos.mobile .order-button.floor-button {
+    background: white;
+}
+.pos.mobile .order-button.floor-button .fa{
+    font-size: 48px;
+}
+/* ------ ORDER LINE STATUS ------- */
+
+.pos.mobile .order .orderline.dirty {
+    border-left: solid 12px #6EC89B;
+    padding-left: 18px;
+}
+.pos.mobile .order .orderline.skip {
+    border-left: solid 12px #7F82AC;
+    padding-left: 18px;
+}
+
+
+/* ------ ORDER NOTES ------- */
+
+.pos.mobile .order .orderline-note {
+    margin: 16px;
+}
+.pos.mobile .orderline-note .fa {
+    margin-right: 8px;
+}
+
+/* ------ FLOOR SWIPER ------- */
+.pos.mobile .swiper-floor-container {
+    height: 100%;
+}
+.pos.mobile .slide-floor-menu {
+    min-width: 100px;
+	width: 70%;
+	max-width: 640px;
+	background-color: #2C8DFB;
+	color: #fff;
+	overflow-y: auto;
+}
+/* ------ FLOR MAP BUTTON MENU ------- */
+.pos.mobile .slide-floor-map .menu-button {
+    position: absolute;
+    top: 0px; left: 0px;
+    padding: 15px;
+    cursor: pointer;
+    -webkit-transition: .3s;
+    transition: .3s;
+    background-color: #2C8DFB;
+    z-index: 1;
+}
+.pos.mobile .slide-floor-map .bar {
+    position: relative;
+    display: block;
+    width: 80px;
+    height: 7px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 20px;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(1) {
+    margin-top: 0px;
+}
+.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(3) {
+    margin-bottom: 0px;
+}
+.pos.mobile .slide-floor-map .cross .bar:nth-of-type(1) {
+    -webkit-transform: translateY(30px) rotate(-45deg);
+    -ms-transform: translateY(30px) rotate(-45deg);
+    transform: translateY(30px) rotate(-45deg);
+}
+.pos.mobile .slide-floor-map .cross .bar:nth-of-type(2) {
+    opacity: 0;
+}
+.pos.mobile .slide-floor-map .cross .bar:nth-of-type(3) {
+    -webkit-transform: translateY(-26px) rotate(45deg);
+    -ms-transform: translateY(-26px) rotate(45deg);
+    transform: translateY(-26px) rotate(45deg);
+}
+/* ---- SPLITBILL ---- */
+.pos.mobile .splitbill-screen .orderline.selected .product-name,
+.pos.mobile .splitbill-screen .orderline.selected .price {
+    color: white;
+}
+.pos.mobile .splitbill-screen .left-content {
+    width: 60%;
+}
+.pos.mobile .splitbill-screen .right-content {
+    width: 40%;
+    left: 60%;
+}
+
+/*Order Button*/
+.pos.mobile .control-button.order-submit {
+    padding: initial;
+    width: initial;
+    height: initial;
+    border-radius: initial;
+    box-shadow: none;
+    background: initial;
+    font-weight: initial;
+    border: none;
+}
+.pos.mobile .rightpane-header .order-submit {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    line-height: 150px;
+    font-size: 115px;
+    cursor: pointer;
+    margin: 0 10px;
+    color: #808080;
+}
+.pos.mobile .order-submit img {
+    width: 86px;
+}
+.pos.mobile .rightpane-header .order-submit {
+    margin-left: 30px;
+}
+.pos.mobile .control-button.order-submit.highlight {
+    border: initial!important;
+    background: initial!important;
+}
+.pos.mobile .control-button.order-submit .not-active {
+    display: inline-block;
+}
+.pos.mobile .control-button.order-submit .active {
+    display: none;
+}
+.pos.mobile .control-button.order-submit.highlight .not-active {
+    display: none;
+}
+.pos.mobile .control-button.order-submit.highlight .active {
+    display: inline-block;
+}

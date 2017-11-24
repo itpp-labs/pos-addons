@@ -3,8 +3,9 @@
     'name': 'POS Debt & Credit notebook',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'category': 'Point Of Sale',
+    'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=10.0',
     "images": ['images/debt_notebook.png'],
-    'version': '4.4.0',
+    'version': '4.4.1',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "apps@it-projects.info",
@@ -34,4 +35,15 @@
     ],
     'installable': True,
     'uninstall_hook': 'pre_uninstall',
+
+    "demo_title": "POS Debt/Credit Notebook",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-debt-notebook",
+    "demo_summary": "Comfortable sales for your regular customers.",
+    "demo_images": [
+        "images/debt_notebook.png",
+    ]
 }

@@ -3,6 +3,11 @@
 Updates
 =======
 
+`4.0.0`
+-------
+- REF: Server side of synnchronization is moved to the separate module ``pos_multi_session_sync``
+- NEW: Allow to make synnchronization via local server
+
 `3.1.0`
 -------
 

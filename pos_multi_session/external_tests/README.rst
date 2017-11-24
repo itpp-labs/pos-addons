@@ -170,7 +170,7 @@ Sync Server Configuration
 * Run this session strictly in a different with the previous session browser to prevent data base addressation confusing
 * Open via localhost:8080
 * Configure sync server according to instructions provided in module ``pos_multi_session_sync`` ``/doc/index.rst`` ``Configuration/Separate Sync Server``
-* Set parameter ``pos_longpolling.allow_public`` with value '1' like it was for ``pos_multi_session.allow_external_tests``.
+* Set parameter ``pos_multi_session.allow_external_tests`` with value '1' like it was for ``pos_longpolling.allow_public``.
 
 odoo-main-nginx Container Configuration
 ---------------------------------------
