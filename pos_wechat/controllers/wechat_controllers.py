@@ -7,6 +7,7 @@ from wechatpy.exceptions import (
     InvalidSignatureException,
     InvalidAppIdException,
 )
+import hashlib
 
 # set token or get from environments
 # APPID = request.env['wechat.model'].appId
@@ -36,6 +37,8 @@ class WechatController(odoo.http.Controller):
         print('nonce:', nonce)
         print('encrypt_type:', encrypt_type)
         print('msg_signature:', msg_signature)
+        print('METHOD', request.httprequest.method)
+        print('DATA',request.httprequest.get_data())
         try:
             # request.env['wechat.server'].check_signature(post)
             print('try_check_signature--------------')
@@ -45,9 +48,24 @@ class WechatController(odoo.http.Controller):
             # return request.render("website.403")
             reply = create_reply('Sorry, request doesnt work')
             return reply.render()
-        if request.method == 'GET':
+        if request.httprequest.method == 'GET':
             print('if-echo_str-------------')
+
             echo_str = post.get('echostr', '')
+            args_list = [TOKEN, timestamp, nonce]
+            print(args_list)
+            args_list.sort()
+            # sha1
+            tmp_str = ''.join(args_list)
+            hashcode = hashlib.sha1(tmp_str.encode('utf-8')).hexdigest()
+            # if success return echostr to wechat
+            print('hashcode', hashcode)
+            if hashcode == signature:
+                print("true")
+                # self.write(echo_str)
+            else:
+                print("false")
+                # self.write('fail ... ')
             return echo_str
 
         # POST request
