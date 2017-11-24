@@ -87,14 +87,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 }
                 self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
                 self.config.floor_ids = self.multi_session.floor_ids;
-                var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
-                self.multi_session.remove_order = function(data) {
-                    if (data.transfer) {
-                        data.transfer = false;
-                        return;
-                    }
-                    return remove_order_super.apply(self.multi_session, arguments);
-                 };
             });
         },
         add_new_order: function(){
@@ -180,12 +172,11 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.ms_update();
             }
         },
-        do_ms_remove_order: function(){
+        ms_remove_order: function() {
             if (this.transfer) {
-                this.transfer = false;
-            } else {
-                OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
+                return;
             }
+            return OrderSuper.prototype.ms_remove_order.call(this, arguments);
         },
     });
 
