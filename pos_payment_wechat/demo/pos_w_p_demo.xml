@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--<record id="wechat_journal" model="account.journal">-->
+        <!--<field name="name">Wechat - Test</field>-->
+        <!--<field name="code">TWC</field>-->
+        <!--<field name="type">bank</field>-->
+        <!--<field name="default_debit_account_id" ref="bnk"/>-->
+        <!--<field name="default_credit_account_id" ref="bnk"/>-->
+        <!--<field name="wechat_payment">True</field>-->
+    <!--</record>-->
+</odoo>
