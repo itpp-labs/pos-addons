@@ -31,17 +31,16 @@ odoo.define('pos_discount_total', function(require) {
             var order = this.pos.get_order();
             if (order.get_selected_orderline()){
                 return this._super(val);
-            } else {
-                if (!this.discount_summary_selected) {
-                    return this._super(val);
-                }
-                var mode = this.numpad_state.get('mode');
-                if (mode ==='discount'){
-                    var current_order = this.pos.get('selectedOrder');
-                    _.each(current_order.orderlines.models, function (model, index){
-                        model.set_discount(val);
-                    });
-                }
+            }
+            if (!this.discount_summary_selected) {
+                return this._super(val);
+            }
+            var mode = this.numpad_state.get('mode');
+            if (mode ==='discount'){
+                var current_order = this.pos.get('selectedOrder');
+                _.each(current_order.orderlines.models, function (model, index){
+                    model.set_discount(val);
+                });
             }
         },
         renderElement:function(scrollbottom){
