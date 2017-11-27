@@ -54,6 +54,9 @@ odoo.define('pos_absolute_discount.screens', function(require){
                 $('.discount-mode').removeClass('selected-absolute-discount-mode');
                 $('.discount-mode').removeClass('discount-mode');
             }
+            if (this.gui.screen_instances.products) {
+                this.gui.screen_instances.products.order_widget.absolute_discount_active = false;
+            }
         },
     });
 

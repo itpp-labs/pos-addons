@@ -8,5 +8,10 @@
                 <link rel="stylesheet" href="/pos_orderline_absolute_discount/static/src/css/pos_styles.css"/>
             </xpath>
         </template>
+        <template id="demo_assets_backend" name="pos_orderline_absolute_discount demo assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_orderline_absolute_discount/static/src/js/tour.js"></script>
+            </xpath>
+        </template>
     </data>
 </odoo>

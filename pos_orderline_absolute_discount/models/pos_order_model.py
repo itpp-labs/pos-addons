@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class PosOrderLine(models.Model):
             fpos = line.order_id.fiscal_position_id
             tax_ids_after_fiscal_position = fpos.map_tax(line.tax_ids, line.product_id, line.order_id.partner_id) if fpos else line.tax_ids
             if line.absolute_discount:
-                price = line.price_unit - line.absolute_discount
+                price = line.price_unit - line.absolute_discount / line.qty
             else:
                 price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
 
@@ -32,7 +32,7 @@ class PosOrderLine(models.Model):
         if self.product_id and self.absolute_discount:
             if not self.order_id.pricelist_id:
                 raise UserError(_('You have to select a pricelist in the sale form !'))
-            price = self.price_unit - self.absolute_discount
+            price = self.price_unit - self.absolute_discount / self.qty
             self.price_subtotal = self.price_subtotal_incl = price * self.qty
             if (self.product_id.taxes_id):
                 taxes = self.product_id.taxes_id.compute_all(price, self.order_id.pricelist_id.currency_id, self.qty, product=self.product_id, partner=False)
