@@ -4,7 +4,6 @@ odoo.define('pos_absolute_discount.models', function(require){
     var utils = require('web.utils');
 
     var round_pr = utils.round_precision;
-    var round_di = utils.round_decimals;
 
 
     var _super_orderline = models.Orderline.prototype;
@@ -27,6 +26,8 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         // sets a absolute discount
         set_absolute_discount: function (discount) {
+            var rounding = this.pos.currency.rounding;
+            discount = round_pr(discount, rounding);
             if (this.get_discount()) {
                 this.set_discount(0);
             }
@@ -43,12 +44,12 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         set_quantity: function(quantity){
             var self = this;
-             _super_orderline.set_quantity.call(this, quantity);
-             var absolute_discount = this.get_absolute_discount();
-             if(quantity !== 'remove' && absolute_discount){
+            var absolute_discount = this.get_absolute_discount() / this.quantity;
+            _super_orderline.set_quantity.call(this, quantity);
+            if(quantity !== 'remove' && absolute_discount){
                 var qty = parseFloat(quantity) || 0;
                 this.set_absolute_discount(absolute_discount * qty);
-             }
+            }
         },
         clone: function(){
             var res = _super_orderline.clone.apply(this, arguments);
@@ -117,11 +118,6 @@ odoo.define('pos_absolute_discount.models', function(require){
     });
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
-        export_for_printing: function(){
-            var receipt = _super_order.export_for_printing.apply(this, arguments);
-            receipt.total_discount = this.get_total_discount() || this.get_total_absolute_discount();
-            return receipt;
-        },
         add_product: function(product, options){
             _super_order.add_product.apply(this, arguments);
             var line = this.get_selected_orderline();
@@ -131,9 +127,12 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         get_total_absolute_discount: function() {
             return round_pr(this.orderlines.reduce((function(sum, orderLine) {
-                return sum + ((orderLine.get_unit_price() - orderLine.get_absolute_discount()) * orderLine.get_quantity());
+                return sum + orderLine.get_absolute_discount();
             }), 0), this.pos.currency.rounding);
         },
+        get_total_discount: function() {
+            return _super_order.get_total_discount.apply(this, arguments) + this.get_total_absolute_discount();
+        }
     });
     var _super_numpad = models.NumpadState.prototype;
     models.NumpadState = models.NumpadState.extend({
