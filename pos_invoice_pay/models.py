@@ -79,17 +79,18 @@ class AccountInvoice(models.Model):
     def get_invoice_lines_for_pos(self, invoice_ids):
         res = []
         invoice_lines = self.env['account.invoice.line'].search([('invoice_id', 'in', invoice_ids)])
-        for inv in invoice_lines:
+        for l in invoice_lines:
             line = {
-                'invoice_id': inv.invoice_id.id,
-                'id': inv.id,
-                'name': inv.name,
-                'account': inv.account_id.name,
-                'product': inv.product_id.name,
-                'price_unit': inv.price_unit,
-                'qty': inv.quantity,
-                'tax': inv.invoice_line_tax_ids.name or ' ',
-                'amount': inv.price_subtotal
+                'invoice_id': l.invoice_id.id,
+                'id': l.id,
+                'name': l.name,
+                'account': l.account_id.name,
+                'product': l.product_id.name,
+                'price_unit': l.price_unit,
+                'qty': l.quantity,
+                'tax': l.invoice_line_tax_ids.name or ' ',
+                'discount': l.discount,
+                'amount': l.price_subtotal
             }
             res.append(line)
         return res
@@ -129,6 +130,7 @@ class SaleOrder(models.Model):
                 'qty_delivered': l.qty_delivered,
                 'qty_invoiced': l.qty_invoiced,
                 'tax': l.tax_id.name or ' ',
+                'discount': l.discount,
                 'subtotal': l.price_subtotal,
                 'total': l.price_total,
                 'invoiceble': ((l.qty_delivered > 0) or (l.product_id.invoice_policy == 'order'))

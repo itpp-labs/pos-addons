@@ -31,6 +31,7 @@
                 <th>Invoiced</th>
                 <th>Unit Price</th>
                 <th>Taxes</th>
+                <th>Discount(%)</th>
                 <th>Subtotal</th>
             </tr>
         </thead>
@@ -45,6 +46,7 @@
             <td><t t-esc='line.qty_invoiced'/></td>
             <td><t t-esc='widget.format_currency(line.total)'/></td>
             <td><t t-esc='line.tax'/></td>
+            <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.subtotal)'/></td>
         </tr>
     </t>
@@ -58,6 +60,7 @@
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Taxes</th>
+                <th>Discount(%)</th>
                 <th>Amount</th>
             </tr>
         </thead>
@@ -71,6 +74,7 @@
             <td><t t-esc='line.qty'/></td>
             <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
             <td><t t-esc='line.tax'/></td>
+            <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.amount)'/></td>
         </tr>
     </t>
@@ -226,17 +230,6 @@
                     </section>
 
                     <div class='payment-buttons'>
-<!--                         <div class='button js_set_customer'>
-                            <i class='fa fa-user' /> 
-                            <span class='js_customer_name'> 
-                                <t t-if="widget.pos.get_client()">
-                                    <t t-esc="widget.pos.get_client().name" />
-                                </t>
-                                <t t-if="!widget.pos.get_client()">
-                                    Customer
-                                </t>
-                            </span>
-                        </div> -->
                         <t t-if='widget.pos.config.iface_invoicing'>
                             <t t-if='widget.pos.get_order()'>
                                 <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
@@ -265,7 +258,7 @@
             <div class='paymentlines-empty'>
                 <div class='total'>
                     <t t-esc="widget.format_currency(widget.get_invoice_residual())"/>            
-  </div>
+                </div>
                 <div class='message'>
                     Please select a payment method. 
                 </div>
@@ -297,8 +290,8 @@
                                 <td class='col-due'> <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_due(line))' /> </td>
                                 <td class='col-tendered edit'> 
                                     <t t-esc='widget.inputbuffer' />
-                                    <!-- <t t-esc='line.get_amount()' /> -->
-                                </td>
+<!--                                     <t t-esc='line.get_amount()' />
+ -->                                </td>
                                 <t t-if='order.get_change(line)'>
                                     <td class='col-change highlight' > 
                                         <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_change(line))' />
@@ -376,7 +369,7 @@
                 </div>
                 <br />
             </t>
-            <table class='receipt-orderlines'>
+            <!-- <table class='receipt-orderlines'>
                 <colgroup>
                     <col width='50%' />
                     <col width='25%' />
@@ -399,7 +392,7 @@
                     </td>
                 </tr>
             </table>
-            <br />
+            <br /> -->
             <table class='receipt-total'>
                 <tr>
                     <td>Subtotal:</td>
