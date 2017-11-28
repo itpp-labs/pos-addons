@@ -609,7 +609,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                if(error.data.type === "xhrerror") {
+                if(error.data.type === "xhrerror" || (error.data.name && error.data.name.search('NotFound'))) {
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.sync_bus.longpolling_connection.network_is_off();
