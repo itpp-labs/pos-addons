@@ -2,10 +2,13 @@
  POS Discount base
 ===================
 
-Technical module in POS.
+Technical module that applies some refactoring on built-in ``pos_discount`` module to allow easily extend its methods.
 
-The standard Discount module in pos_discount/static/src/js/discount.js does not allow you to override the functions of this module.
-This module duplicate the 'button_click' function from DiscountButton widget to new function from OrderWidget and allows you to redefine them.
+More details:
+
+* method ``button_click`` is moved to OrderWidget with new name ``discount_button_click``.
+* callback on confirming discount is a new method ``confirm_discount`` in OrderWidget 
+* method ``apply_discount`` is moved to OrderWidget with the same name.
 
 Credits
 =======
