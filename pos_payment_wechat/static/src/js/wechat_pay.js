@@ -7,7 +7,7 @@ odoo.define('pos_payment_wechat', function(require){
 
     models.load_models({
         model: 'account.journal',
-        fields: ['id','name','wechat_payment','smth_new_from_qr'],
+        fields: ['id','name','wechat_payment'],
 //        domain: function(self){
 //            return [['pos_config_id','=',self.config.id]]; // TODO how to determine journals of selected pos ?
 //        },
@@ -16,24 +16,31 @@ odoo.define('pos_payment_wechat', function(require){
                 _.each(journals, function(jr){
                     if ( cr.journal.id === jr.id )
                         cr.journal.wechat_payment = jr.wechat_payment;
-                        cr.journal.smth_new_from_qr = jr.smth_new_from_qr || false;
                 });
             });
         },
     });
 
+    var OrderSuper = models.Order;
+    models.Order = models.Order.extend({
+    check_auth_code: function() {
+        var code = this.auth_code;
+        if (code && Number.isInteger(+code) &&
+            code.length === 18 &&
+            +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
+            return true;
+        }
+        return false;
+    },
+    });
+
     screens.PaymentScreenWidget.include({
         click_paymentmethods: function(id) {
             var cashregister = this.get_journal(id);
-            if (cashregister.journal.smth_new_from_qr) {
-                this._super(id);
-            } else {
+            if (cashregister.journal.wechat_payment && !this.pos.get_order().check_auth_code()) {
                 this.gui.show_popup('qr_scan');
-                if (this.pos.smth_new) {
-                    this._super(id);
-                } else {
-                    return;
-                }
+            } else {
+                this._super(id);
             }
         },
         get_journal: function(id) {
@@ -46,8 +53,6 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return cashregister
         },
-
-
     })
 
 

@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='type']" position="after">
-                <field name="wechat_payment" attrs="{'invisible':[('type', '!=', 'bank')]}"/>
+                <!--<field name="wechat_payment" attrs="{'invisible':[('type', '!=', 'bank')]}"/>-->
+                <field name="wechat_payment"/>
             </xpath>
         </field>
     </record>

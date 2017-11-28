@@ -31,28 +31,34 @@ odoo.define('pos_qr_scan', function(require){
             this._super(options);
             this.start_script();
         },
-        click_cancel: function(){
+        click_cancel: function() {
             this.var_scanner.stop();
             this._super(arguments);
         },
-        click_confirm: function(){
+        click_confirm: function() {
             this.var_scanner.stop();
             this._super(arguments);
+        },
+        add_button: function(content) {
+            var new_scan = document.createElement('div');
+            new_scan.className = 'button qr-content'
+            new_scan.innerHTML = content;
+            $('.sidebar > .body').append(new_scan);
         },
         start_script: function() {
             this.var_scanner = new Instascan.Scanner({video: document.getElementById('preview')});
             var scanner = this.var_scanner;
+            var qr_scan_popup = self.posmodel.gui.popup_instances.qr_scan;
+            if (self.posmodel.get_order().auth_code) {
+                var old_content = self.posmodel.get_order().auth_code;
+                qr_scan_popup.add_button(old_content);
+            }
             scanner.addListener('scan', function (content) {
                 console.log(content);
-                self.posmodel.smth_new = true;
-                var new_scan = document.createElement('div');
-//                new_scan.setAttribute("href", content);
-                new_scan.className = 'button qr-content'
-//                var par = document.createElement("p");
-                new_scan.innerHTML = content;
-//                new_scan.appendChild(par);
-                $('.sidebar > .body').append(new_scan);
+                qr_scan_popup.add_button(content);
+                self.posmodel.get_order().auth_code = content;
                 scanner.stop();
+                qr_scan_popup.click_cancel();
             });
             Instascan.Camera.getCameras().then(function (cameras) {
                 if (cameras.length > 0) {
