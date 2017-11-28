@@ -78,7 +78,7 @@ odoo.define('pos_choosing_cashier', function(require){
         },
 
         payment: function () {
-            // This method has been added to encapsulate the original widget's logic 
+            // This method has been added to encapsulate the original widget's logic
             // just to make code more clean and readable
             var self = this;
             var order = self.pos.get_order();
