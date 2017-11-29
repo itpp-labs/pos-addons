@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_disable_payment
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
@@ -30,8 +30,8 @@ msgstr "Die Erzeugung von Bestellzeilen erlauben"
 
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_decrease_amount
-msgid "Allow decrease order line"
-msgstr ""
+msgid "Allow decrease quantity on order line"
+msgstr "Das Reduzieren von Mengen einer Bestellzeile erlauben"
 
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_discount
