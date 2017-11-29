@@ -29,7 +29,6 @@ class WechatConfiguration(models.Model):
 
     @api.multi
     def getAccessToken(self):
-        print('in getAccessToken')
         if not self.token_validity:
             self.createVals()
         if self.token_validity < time.time():
@@ -39,16 +38,12 @@ class WechatConfiguration(models.Model):
                 appId, appSecret)
             response = requests.get(url)
             access_token = json.loads(response.text)['access_token']
-            # self.token_validity = time.time() + 7000
-            # self.access_token = access_token
             self.write({'token_validity': time.time() + 7000, 'access_token': access_token})
-            print('=======', self.access_token, self.token_validity)
         else:
             access_token = self.access_token
         return access_token
 
     def getIpList(self):
-        print('in getIpList')
         token = self.getAccessToken()
         url = "https://api.wechat.com/cgi-bin/getcallbackip?access_token=%s" % token
         response = requests.get(url)
@@ -58,21 +53,13 @@ class WechatConfiguration(models.Model):
         arrA = []
         data = message['data']
         for key in data:
-            print(key, data[key])
             if data[key]:
                 arrA.append(str(key) + '=' + str(data[key]))
-        # for attr, value in data.__dict__.items():
-        #     print(attr, value)
-        #     if value:
-        #         arrA.append(attr + '=' + value)
-        print(arrA)
         arrA.sort()
-        print(arrA)
         return arrA
 
     def getRandomNumberGeneration(self, message):
         data = self.sortData(message)
-        print(data)
         strA = ' & '.join(data)
         return hashlib.sha256(strA.encode('utf-8')).hexdigest().upper()
 

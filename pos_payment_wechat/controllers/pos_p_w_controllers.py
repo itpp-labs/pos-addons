@@ -19,7 +19,6 @@ class Controller(BusController):
 
     @odoo.http.route('/wechat/test', type="json", auth="public")
     def testAccessToken(self, message):
-        print('entered------------------')
         order_id = '{0:06}'.format(message['data']['order_id'])
         cashier_id = '{0:05}'.format(message['data']['cashier_id'])
         session_id = '{0:05}'.format(message['data']['session_id'])
@@ -30,7 +29,6 @@ class Controller(BusController):
         out_trade_no = str(time.time()).replace('.', '') \
                        + '{0:010}'.format(random.randint(1, 9999999999)) \
                        + '{0:010}'.format(random.randint(1, 9999999999))
-        print('================================')
         wcc = request.env['wechat.config']
         if not wcc:
             wcc = wcc.create({
@@ -38,14 +36,10 @@ class Controller(BusController):
                 'access_token': 'test'
             })
         wcc.getAccessToken()
-        div = '|||'
-        print(appid, div, mch_id, div, out_trade_no)
-        print('================================')
 
     @odoo.http.route('/wechat/payment', type="json", auth="public")
     def micropay(self, message):
         data = message['data']
-        print('entered-micropay-----------------')
         data['order_id'] = '{0:06}'.format(message['data']['order_id'])
         data['cashier_id'] = '{0:05}'.format(message['data']['cashier_id'])
         data['session_id'] = '{0:05}'.format(message['data']['session_id'])
@@ -57,7 +51,6 @@ class Controller(BusController):
         data['out_trade_no'] = str(time.time()).replace('.', '') \
             + '{0:010}'.format(random.randint(1, 9999999999)) \
             + '{0:010}'.format(random.randint(1, 9999999999))
-        print('================================')
         wcc = request.env['wechat.config']
         if not wcc:
             wcc = wcc.create({
@@ -84,3 +77,8 @@ class Controller(BusController):
         print(post)
         r = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/micropay", data=post)
         print(r)
+        print(r.status_code)
+        print(r.headers)
+        print(r.headers['content-type'])
+        print(r.encoding)
+        print(r.text)
