@@ -3,8 +3,18 @@ odoo.define('pos_payment_wechat', function(require){
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
+    var session = require('web.session');
 
 
+    var exports = {};
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            var self = this;
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            this.wechat = new exports.WechatPayment(this);
+        },
+    });
     models.load_models({
         model: 'account.journal',
         fields: ['id','name','wechat_payment'],
@@ -53,7 +63,71 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return cashregister
         },
-    })
+    });
 
-
+    exports.WechatPayment = Backbone.Model.extend({
+        initialize: function(pos){
+            var self = this;
+            this.pos = pos;
+        },
+        send_test: function(){
+            var data = {};
+            var pos = this.pos;
+            data.pos_id = pos.config.id;
+            data.cashier_id = pos.config.id;
+            data.order_id = pos.config.id;
+            data.session_id = pos.pos_session.id;
+            return this.send({data: data}, "/wechat/test");
+        },
+        send_payment: function(){
+            var data = {};
+            var pos = this.pos;
+            data.pos_id = pos.config.id;
+            data.cashier_id = pos.config.id;
+            data.order_id = pos.config.id;
+            data.session_id = pos.pos_session.id;
+            data.order_short = [];
+            _.each(this.pos.get_order().get_orderlines(), function(line){
+                return data.order_short.push(line.product.display_name);
+            })
+            data.total_fee = Math.round(pos.get_order().get_total_with_tax());
+            data.auth_code = pos.get_order().auth_code;
+            return this.send({data: data}, "/wechat/payment");
+        },
+        send: function(message, address){
+            var current_send_number = 0;
+            if (this.pos.debug){
+                current_send_number = this._debug_send_number++;
+                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
+            }
+            var self = this;
+            var send_it = function () {
+                return session.rpc(address, {
+                    message: message,
+                });
+            };
+            return send_it().fail(function (error, e) {
+                if (self.pos.debug){
+                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
+                }
+                this.show_warning();
+            }).done(function(res){
+                if (self.pos.debug){
+                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                }
+            });
+        },
+        warning: function(warning_message){
+            console.info('warning', warning_message);
+            this.pos.chrome.gui.show_popup('error',{
+                'title': _t('Warning'),
+                'body': warning_message,
+            });
+        },
+        show_warning: function(){
+            var warning_message = _t("Some problems have happened. TEST");
+            this.warning(warning_message);
+        }
+    });
+    return exports;
 });
