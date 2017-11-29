@@ -43,6 +43,21 @@ odoo.define('pos_multi_session', function(require){
          */
     });
 
+    PosBaseWidget.include({
+        init:function(parent,options){
+            var self = this;
+            this._super(parent,options);
+            if (this.gui && this.gui.popup_instances && this.gui.popup_instances.selection &&
+             this.gui.popup_instances.selection.click_item && !this.gui.popup_instances.selection.click_item_super){
+                this.gui.popup_instances.selection.click_item_super = this.gui.popup_instances.selection.click_item;
+                this.gui.popup_instances.selection.click_item = function(event) {
+                    this.gui.popup_instances.selection.click_item_super(event);
+                    this.pos.get_order().trigger('change:sync');
+                }
+            }
+        }
+    });
+
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
