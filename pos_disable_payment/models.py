@@ -2,7 +2,7 @@
 from odoo import fields, models, api
 
 
-class PosConfig(models.Model):
+class ResUsers(models.Model):
     _inherit = 'res.users'
 
     allow_payments = fields.Boolean('Allow payments', default=True)
