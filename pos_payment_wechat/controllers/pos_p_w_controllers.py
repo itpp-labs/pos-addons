@@ -1,12 +1,11 @@
-import datetime, time
+import time
 import random
 import logging
-import json
+import requests
 import odoo
 from odoo.http import request
-from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
+
 _logger = logging.getLogger(__name__)
-import requests
 
 try:
     from odoo.addons.bus.controllers.main import BusController
@@ -37,7 +36,7 @@ class Controller(BusController):
             })
         wcc.getAccessToken()
 
-    @odoo.http.route('/wechat/payment', type="json", auth="public")
+    @odoo.http.route('/wechat/payment_commence', type="json", auth="public")
     def micropay(self, message):
         data = message['data']
         data['order_id'] = '{0:06}'.format(message['data']['order_id'])
@@ -58,7 +57,8 @@ class Controller(BusController):
                 'access_token': ''
             })
         # data['total_fee'] = message['data']['total_fee']
-        data['spbill_create_ip'] = wcc.getIpList()[1]
+        data['spbill_create_ip'] = wcc.getIpList()[0]
+        print(wcc.getIpList())
         # data['auth_code'] = message['data']['auth_code']
         #
         # device_info =
@@ -75,10 +75,33 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data)
         print(post)
-        r = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/micropay", data=post)
+        r = requests.post("https://api.mch.weixin.qq.com/pay/micropay", data=post)
         print(r)
         print(r.status_code)
         print(r.headers)
         print(r.headers['content-type'])
         print(r.encoding)
-        print(r.text)
+        # print(r.text)
+        time.sleep(4)
+    #     return request.redirect('/wechat/payment_query')
+    #
+    # @odoo.http.route('/wechat/payment_query', type="json", auth="public")
+    # def queryOrderApi(self, message):
+        data_qa = {}
+        data_qa['appid'] = data['appid']
+        data_qa['mch_id'] = data['mch_id']
+        data_qa['out_trade_no'] = data['out_trade_no']
+        data_qa['nonce_str'] = data['nonce_str']
+        data_qa['sign'] = data['sign']
+        if hasattr(data, 'sign_type'):
+            data_qa['sign_type'] = data['sign_type']
+
+        post = wcc.makeXmlPost(data_qa)
+        print(post)
+        r = requests.post("https://api.mch.weixin.qq.com/pay/orderquery", data=post)
+        print(r)
+        print(r.status_code)
+        print(r.headers)
+        print(r.headers['content-type'])
+        print(r.encoding)
+        # print(r.text)

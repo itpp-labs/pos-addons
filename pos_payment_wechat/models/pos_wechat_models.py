@@ -29,6 +29,7 @@ class WechatConfiguration(models.Model):
 
     @api.multi
     def getAccessToken(self):
+        print('inside getAccessToken!!!!!!!!!!!', self.token_validity < time.time())
         if not self.token_validity:
             self.createVals()
         if self.token_validity < time.time():
@@ -65,7 +66,8 @@ class WechatConfiguration(models.Model):
 
     def makeXmlPost(self, data):
         xml_str = ['<xml>']
-        for key in data:
+        for key in sorted(data):
             if data[key]:
                 xml_str.append('<' + str(key) + '>' + str(data[key]) + '</' + str(key) + '>')
+        xml_str.append('</xml>')
         return '\n'.join(xml_str)

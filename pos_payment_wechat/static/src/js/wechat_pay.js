@@ -15,6 +15,7 @@ odoo.define('pos_payment_wechat', function(require){
             this.wechat = new exports.WechatPayment(this);
         },
     });
+
     models.load_models({
         model: 'account.journal',
         fields: ['id','name','wechat_payment'],
@@ -33,15 +34,15 @@ odoo.define('pos_payment_wechat', function(require){
 
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
-    check_auth_code: function() {
-        var code = this.auth_code;
-        if (code && Number.isInteger(+code) &&
-            code.length === 18 &&
-            +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
-            return true;
-        }
-        return false;
-    },
+        check_auth_code: function() {
+            var code = this.auth_code;
+            if (code && Number.isInteger(+code) &&
+                code.length === 18 &&
+                +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
+                return true;
+            }
+            return false;
+        },
     });
 
     screens.PaymentScreenWidget.include({
@@ -79,7 +80,7 @@ odoo.define('pos_payment_wechat', function(require){
             data.session_id = pos.pos_session.id;
             return this.send({data: data}, "/wechat/test");
         },
-        send_payment: function(){
+        send_payment: function(au_c){
             var data = {};
             var pos = this.pos;
             data.pos_id = pos.config.id;
@@ -91,8 +92,8 @@ odoo.define('pos_payment_wechat', function(require){
                 return data.order_short.push(line.product.display_name);
             })
             data.total_fee = Math.round(pos.get_order().get_total_with_tax());
-            data.auth_code = pos.get_order().auth_code;
-            return this.send({data: data}, "/wechat/payment");
+            data.auth_code = pos.get_order().auth_code || au_c;
+            return this.send({data: data}, "/wechat/payment_commence");
         },
         send: function(message, address){
             var current_send_number = 0;
