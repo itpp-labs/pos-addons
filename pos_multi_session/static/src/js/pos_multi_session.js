@@ -43,24 +43,6 @@ odoo.define('pos_multi_session', function(require){
          */
     });
 
-    PosBaseWidget.include({
-        init:function(parent,options){
-            var self = this;
-            this._super(parent,options);
-            var is_fiscal_button_click_super = is_fiscal_button_click_super || false;
-            if (!is_fiscal_button_click_super && this.gui && this.gui.screen_instances.products &&
-            this.gui.screen_instances.products.action_buttons.set_fiscal_position) {
-                is_fiscal_button_click_super = true;
-                fiscal_button_click_super = self.gui.screen_instances.products.action_buttons.set_fiscal_position.button_click;
-                self.gui.screen_instances.products.action_buttons.set_fiscal_position.button_click = function() {
-                    fiscal_button_click_super();
-                    console.log('---------------------');
-                };
-
-            }
-        }
-    });
-
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
@@ -414,6 +396,14 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_info = data.ms_info;
             this.revision_ID = data.revision_ID;
+            if (data.fiscal_position_id) {
+                this.set_fiscal_position(data.fiscal_position_id);
+            }
+        },
+        set_fiscal_position: function(id) {
+            this.fiscal_position = _.find(this.pos.fiscal_positions, function(fp) {
+                return fp.id === id;
+            });
         },
         ms_remove_order: function(){
             if (!this.ms_check()){
