@@ -449,6 +449,19 @@
     padding: 20px;
     text-align: center;
 }
+.pos.mobile .current-order-qty {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: red;
+    color: white;
+    line-height: 30px;
+    min-width: 30px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
+}
 /*  a) the product list navigation bar */
 .pos.mobile .breadcrumb{
     line-height: 96px;
