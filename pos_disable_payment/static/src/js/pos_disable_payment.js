@@ -52,11 +52,16 @@ odoo.define('pos_disable_payment', function(require){
         }
     });
 
-    chrome.Chrome.include({
-        init: function(){
-            this._super.apply(this, arguments);
+
+    chrome.OrderSelectorWidget.include({
+        start: function () {
             this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this);
             this.pos.bind('change:cashier', this.check_allow_delete_order, this);
+            return this._super();
+        },
+        renderElement: function(){
+            this._super();
+            this.check_allow_delete_order();
         },
         check_allow_delete_order: function(){
             var user = this.pos.cashier || this.pos.user;
@@ -70,24 +75,14 @@ odoo.define('pos_disable_payment', function(require){
                 }
             }
         },
-        loading_hide: function(){
-            this._super();
-            //extra checks on init
-            this.check_allow_delete_order();
-        }
-    });
-    chrome.OrderSelectorWidget.include({
-        renderElement: function(){
-            this._super();
-            this.chrome.check_allow_delete_order();
-        }
     });
 
     screens.OrderWidget.include({
         bind_order_events: function(){
             this._super();
-            var order = this.pos.get('selectedOrder');
-            order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
+            var order_selector = this.chrome.widget.order_selector;
+            var order = this.pos.get_order();
+                order.orderlines.bind('add remove', order_selector.check_allow_delete_order, order_selector);
         },
         orderline_change: function(line) {
             this._super(line);
@@ -131,19 +126,15 @@ odoo.define('pos_disable_payment', function(require){
         }
     });
 
-    // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
         start: function () {
-            this._super();
-            this.checkPayAllowed();
-            this.checkCreateOrderLine();
-            this.checkDiscountButton();
-        },
-        renderElement: function () {
-            this._super();
-            this.pos.bind('change:cashier', this.checkPayAllowed, this);
             this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
-            this.pos.bind('change:cashier', this.checkDiscountButton, this);
+            return this._super();
+        },
+        // As it's renderd without it's child element at startup, we cannot use renderElement
+        show: function(reset){
+            this._super(reset);
+            this.checkCreateOrderLine();
         },
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
@@ -154,61 +145,31 @@ odoo.define('pos_disable_payment', function(require){
                 $('.numpad').hide();
                 $('.rightpane').hide();
             }
+        }
+    });
+    screens.ActionpadWidget.include({
+        start: function () {
+            this.pos.bind('change:cashier', this.checkPayAllowed, this);
+            return this._super();
+        },
+        renderElement: function(){
+            this._super();
+            this.checkPayAllowed();
         },
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                this.actionpad.$('.pay').removeClass('disable');
+                this.$('.pay').removeClass('disable');
             }else{
-                this.actionpad.$('.pay').addClass('disable');
+                this.$('.pay').addClass('disable');
             }
         },
-        checkDiscountButton: function() {
-            var user = this.pos.cashier || this.pos.user;
-            if (user.allow_discount) {
-                this.$('.control-buttons .js_discount').removeClass('disable');
-            }else{
-                this.$('.control-buttons .js_discount').addClass('disable');
-            }
-        }
-    });
-    screens.ScreenWidget.include({
-        renderElement: function () {
-            this._super();
-            var user = this.pos.cashier || this.pos.user;
-            if (user.allow_payments) {
-                $('.pay').removeClass('disable');
-            }else{
-                $('.pay').addClass('disable');
-            }
-            if (user.allow_create_order_line) {
-                $('.numpad').show();
-                $('.rightpane').show();
-            }else{
-                $('.numpad').hide();
-                $('.rightpane').hide();
-            }
-        }
-    });
-    screens.ActionpadWidget.include({
-        renderElement: function () {
-            this._super();
-            var user = this.pos.cashier || this.pos.user;
-            if (user.allow_payments) {
-                $('.pay').removeClass('disable');
-            }else{
-                $('.pay').addClass('disable');
-            }
-        }
     });
     screens.NumpadWidget.include({
-        init: function () {
-            this._super.apply(this, arguments);
+        start: function () {
             this.pos.bind('change:cashier', this.check_access, this);
-        },
-        renderElement: function(){
-            this._super();
             this.check_access();
+            return this._super();
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
