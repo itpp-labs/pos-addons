@@ -7,6 +7,7 @@ Updates
 -------
 - REF: Server side of synnchronization is moved to the separate module ``pos_multi_session_sync``
 - NEW: Allow to make synnchronization via local server
+- NEW: Fiscal position synnchronization
 
 `3.1.0`
 -------

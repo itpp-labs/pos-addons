@@ -13,6 +13,8 @@
                             <h1><field name="name"/></h1>
                         <group string="Settings">
                             <field name="pos_ids" widget="many2many_tags" domain="[('current_session_state', '!=', 'opened')]" options="{'not_delete': True}"/>
+                            <field name="sync_server"/>
+                            <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
                             <field name="order_ID" readonly="1"/>
                         </group>
                         <group>
@@ -30,7 +32,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_pos_ms_settings" name="Multi-session Settings" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
+        <menuitem id="menu_pos_ms_settings" name="Multi-sessions" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
 
     </data>
 </odoo>
