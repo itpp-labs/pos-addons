@@ -11,6 +11,7 @@ odoo.define('pos_multi_session', function(require){
     var longpolling = require('pos_longpolling');
     var Model = require('web.Model');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var gui = require('point_of_sale.gui');
 
     var _t = core._t;
 
@@ -318,6 +319,13 @@ odoo.define('pos_multi_session', function(require){
         },
     });
 
+    gui.Gui.include({
+        _close: function() {
+            this.closing = true;
+            this._super();
+        }
+    });
+
     var is_first_order = true;
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
@@ -568,6 +576,9 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
+                if (self.pos.gui.closing) {
+                    return;
+                }
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
