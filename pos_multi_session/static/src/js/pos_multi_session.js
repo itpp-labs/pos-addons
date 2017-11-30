@@ -10,6 +10,8 @@ odoo.define('pos_multi_session', function(require){
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
     var Model = require('web.Model');
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var gui = require('point_of_sale.gui');
 
     var _t = core._t;
 
@@ -28,6 +30,15 @@ odoo.define('pos_multi_session', function(require){
                 return this._super(order_line);
             }
         }
+    });
+    screens.set_fiscal_position_button.include({
+        button_click: function() {
+            var self = this;
+            this._super(event);
+            this.gui.current_popup.$(".selection-item").click(function(){
+                self.pos.get_order().trigger('change:sync');
+            });
+        },
     });
     screens.ReceiptScreenWidget.extend({
         finish_order: function() {
@@ -53,7 +64,9 @@ odoo.define('pos_multi_session', function(require){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
                 loaded: function(me, current_session){
-                    self.multi_session_run_ID = current_session[0].run_ID;
+                    if (self.config.multi_session_id) {
+                        self.multi_session_run_ID = current_session[0].run_ID;
+                    }
             }};
             this.models.splice(
                 this.models.indexOf(_.find(this.models, function(model){
@@ -98,7 +111,7 @@ odoo.define('pos_multi_session', function(require){
                 }
 
                 self.multi_session = new exports.MultiSession(self);
-
+                self.multi_session.request_sync_all();
             });
         },
         ms_my_info: function(){
@@ -302,6 +315,13 @@ odoo.define('pos_multi_session', function(require){
         },
     });
 
+    gui.Gui.include({
+        _close: function() {
+            this.closing = true;
+            this._super();
+        }
+    });
+
     var is_first_order = true;
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
@@ -324,7 +344,7 @@ odoo.define('pos_multi_session', function(require){
             }
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
-            } else if (this.pos.multi_session){
+            } else if (this.pos.config.multi_session_id){
                 this.ms_info.created = this.pos.ms_my_info();
             }
             if (!this.run_ID) {
@@ -395,6 +415,14 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_info = data.ms_info;
             this.revision_ID = data.revision_ID;
+            if (data.fiscal_position_id) {
+                this.set_fiscal_position(data.fiscal_position_id);
+            }
+        },
+        set_fiscal_position: function(id) {
+            this.fiscal_position = _.find(this.pos.fiscal_positions, function(fp) {
+                return fp.id === id;
+            });
         },
         ms_remove_order: function(){
             if (!this.ms_check()){
@@ -544,6 +572,9 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
+                if (self.pos.gui.closing) {
+                    return;
+                }
                 if (status) {
                     if (self.offline_sync_all_timer) {
                         clearInterval(self.offline_sync_all_timer);
@@ -607,7 +638,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                if(error.data.type === "xhrerror") {
+                if(error.data.type === "xhrerror" || (error.data.name && error.data.name.search('NotFound'))) {
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.sync_bus.longpolling_connection.network_is_off();

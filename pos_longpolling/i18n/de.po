@@ -4,14 +4,13 @@
 # 
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-20 13:24+0000\n"
-"PO-Revision-Date: 2017-10-20 13:24+0000\n"
-"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"POT-Creation-Date: 2017-10-27 14:43+0000\n"
+"PO-Revision-Date: 2017-10-27 14:43+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,25 +20,7 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:14
-#, python-format
-msgid ""
-"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
-msgstr ""
-"<p>Anklicken, um das POS-System zu starten. Es <b>läuft auf Tablets</b>, "
-"Laptops, oder industrieller Hardware.</p><p>Sobald eine Sitzung gestartet "
-"wurde, funktioniert das System auch ohne Internet-Verbindung.</p>"
-
-#. module: pos_longpolling
-#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_autostart_longpolling
-msgid "Autostart longpolling"
-msgstr ""
-
-#. module: pos_longpolling
-#. openerp-web
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:122
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:95
 #, python-format
 msgid "Error"
 msgstr "Fehler"
@@ -53,14 +34,6 @@ msgstr "Longpolling"
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_query_timeout
 msgid "Query timeout"
 msgstr "Zeitüberschreitung Abfrage"
-
-#. module: pos_longpolling
-#. openerp-web
-#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:10
-#, python-format
-msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr ""
-"Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
 
 #. module: pos_longpolling
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_response_timeout
@@ -81,12 +54,6 @@ msgid ""
 "sent, it will be waiting for response message ('PONG') at this period and if"
 " the message has not been received, the icon turns color to red. Once the "
 "connection is restored, the icon changes its color back to green)"
-msgstr ""
-
-#. module: pos_longpolling
-#: model:ir.model.fields,help:pos_longpolling.field_pos_config_autostart_longpolling
-msgid ""
-"When switched off longpoling will start only when other module start it"
 msgstr ""
 
 #. module: pos_longpolling

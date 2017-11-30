@@ -3,19 +3,20 @@
     "name": """POS Advanced Order Notes""",
     "summary": """Set predefined notes for separate product or entire order""",
     "category": "Point of Sale",
-    "images": ['images/pos_order_note_main.png'],
-    "version": "1.0.0",
+    # "live_test_url": "",
+    "images": ["images/pos_order_note_main.png"],
+    "version": "1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
     "price": 69.00,
     "currency": "EUR",
 
     "depends": [
-        "pos_restaurant",
+        "pos_restaurant_base",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
@@ -23,10 +24,12 @@
         "views/views.xml",
         "views/template.xml",
     ],
-    'qweb': [
+    "qweb": [
         "static/src/xml/order_note.xml",
     ],
-    "demo": [],
+    "demo": [
+        "data/pos_product_notes_demo.xml",
+    ],
 
     "post_load": None,
     "pre_init_hook": None,

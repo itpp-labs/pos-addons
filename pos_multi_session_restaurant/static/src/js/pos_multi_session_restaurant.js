@@ -87,14 +87,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 }
                 self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
                 self.config.floor_ids = self.multi_session.floor_ids;
-                var remove_order_super = Object.getPrototypeOf(self.multi_session).remove_order;
-                self.multi_session.remove_order = function(data) {
-                    if (data.transfer) {
-                        data.transfer = false;
-                        return;
-                    }
-                    remove_order_super.apply(self.multi_session, arguments);
-                 };
             });
         },
         add_new_order: function(){
@@ -180,26 +172,22 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.ms_update();
             }
         },
-        do_ms_remove_order: function(){
+        ms_remove_order: function() {
             if (this.transfer) {
-                this.pos.multi_session.remove_order({
-                    'uid': this.uid,
-                    'revision_ID': this.revision_ID,
-                    'transfer': this.transfer
-                });
-            } else {
-                OrderSuper.prototype.do_ms_remove_order.apply(this, arguments);
+                return;
             }
+            return OrderSuper.prototype.ms_remove_order.call(this, arguments);
         },
     });
 
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
         get_line_diff_hash: function(){
-            if (this.get_note()) {
-                return this.uid + '|' + this.get_note();
-            }
-            return String(this.uid);
+            var res = OrderlineSuper.prototype.get_line_diff_hash.apply(this, arguments);
+            res = res.split('|');
+            res[0] = this.uid;
+            res = res.join('|');
+            return res;
         },
         /*  There is no need to check the presence of super method.
             Because pos_multi_session_restaurant is loaded later than pos_multi_session.
