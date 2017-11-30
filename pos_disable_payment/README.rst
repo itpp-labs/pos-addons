@@ -1,3 +1,4 @@
+=======================
 Disable payments in POS
 =======================
 
@@ -11,7 +12,7 @@ Module allows directly in user settings:
 * disable edit price button
 * disable remove order line
 * disable refunds
-  
+
 Credits
 =======
 
