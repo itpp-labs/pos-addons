@@ -54,7 +54,7 @@ odoo.define('pos_multi_session', function(require){
                 this.gui.popup_instances.selection.click_item = function(event) {
                     this.gui.popup_instances.selection.click_item_super(event);
                     this.pos.get_order().trigger('change:sync');
-                }
+                };
             }
         }
     });

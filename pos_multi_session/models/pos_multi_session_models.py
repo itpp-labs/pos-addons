@@ -45,6 +45,7 @@ class PosMultiSession(models.Model):
                                  "It's used to prevent synchronization of old orders")
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
 
+
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
