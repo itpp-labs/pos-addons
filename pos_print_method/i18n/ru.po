@@ -1,0 +1,103 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_print_method
+# 
+# Translators:
+# Dinar <gabbasov@it-projects.info>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-24 09:02+0000\n"
+"PO-Revision-Date: 2017-11-24 09:02+0000\n"
+"Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
+"Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:25
+#, python-format
+msgid "<p>Click <b>Fruits and Vegetables</b> category.</p>"
+msgstr "<p>Нажмите на категорию <b>Фрукты и Овощи</b></p>"
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:37
+#, python-format
+msgid "<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"
+msgstr ""
+"<p>Нажмите на кнопку <b>Заказ</b>чтобы распечатать на <b>Кухне</b></p>"
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:21
+#, python-format
+msgid "<p>Click <b>table</b></p>"
+msgstr "<p>Нажмите на <b>стол</b></p>"
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:29
+#, python-format
+msgid "<p>Click product 1</p>"
+msgstr ""
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:33
+#, python-format
+msgid "<p>Click product 2</p>"
+msgstr ""
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:17
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
+msgstr ""
+
+#. module: pos_print_method
+#: selection:restaurant.printer,printer_method_name:0
+msgid "Order"
+msgstr "Заказ"
+
+#. module: pos_print_method
+#: selection:restaurant.printer,printer_method_name:0
+msgid "Order Line"
+msgstr "Линия в заказе"
+
+#. module: pos_print_method
+#: model:ir.model.fields,help:pos_print_method.field_restaurant_printer_printer_method_name
+msgid ""
+"Order: Print entire order on one receipt (default odoo method). \n"
+"\n"
+" Order Line: Print each order line on separate receipts"
+msgstr ""
+"Заказ: Печать всего заказа на одном чеке ​​(метод по умолчанию в Odoo). \n"
+"\n"
+" Строка заказа: Печать каждой строки заказа в отдельных чеках"
+
+#. module: pos_print_method
+#: model:ir.model.fields,field_description:pos_print_method.field_restaurant_printer_printer_method_name
+msgid "Print Method"
+msgstr "Метод Печати"
+
+#. module: pos_print_method
+#. openerp-web
+#: code:addons/pos_print_method/static/src/js/tour.js:13
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
+
+#. module: pos_print_method
+#: model:ir.model,name:pos_print_method.model_restaurant_printer
+msgid "restaurant.printer"
+msgstr ""
