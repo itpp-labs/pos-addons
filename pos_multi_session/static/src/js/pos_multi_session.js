@@ -33,19 +33,11 @@ odoo.define('pos_multi_session', function(require){
     });
     screens.set_fiscal_position_button.include({
         button_click: function() {
-            var order = this.pos.get_order()
-            var old_fp = false;
-            if (order.fiscal_position) {
-                old_fp = order.fiscal_position.id;
-            }
-            if (!this.gui.popup_instances.selection.click_item_super) {
-                this.gui.popup_instances.selection.click_item_super = this.gui.popup_instances.selection.click_item;
-            }
+            var self = this;
             this._super(event);
-            this.gui.current_popup.click_item = function(event) {
-                this.gui.popup_instances.selection.click_item_super(event);
-                this.pos.get_order().trigger('change:sync');
-            };
+            this.gui.current_popup.$(".selection-item").click(function(){
+                self.pos.get_order().trigger('change:sync');
+            });
         },
     });
     screens.ReceiptScreenWidget.extend({
