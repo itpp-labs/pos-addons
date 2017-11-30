@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.1.1`
+------
+
+- **FIX:** ability to work in offline mode
+
 `1.1.0`
 ______
 
