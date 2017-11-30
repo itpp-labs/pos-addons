@@ -5,20 +5,6 @@ odoo.define('pos_product_category_discount.models', function (require) {
     var Model = require('web.Model');
 
     models.load_models({
-        model:  'product.template',
-        fields: ['discount_allowed','product_variant_id'],
-        loaded: function(self,products){
-            products.forEach(function(item){
-                if (item.product_variant_id) {
-                    var product = self.db.get_product_by_id(item.product_variant_id[0]);
-                    if (product) {
-                        product.discount_allowed = item.discount_allowed;
-                    }
-                }
-            });
-        }
-    });
-    models.load_models({
         model: 'pos.discount_program',
         fields: [],
         domain: function(self){
@@ -50,6 +36,13 @@ odoo.define('pos_product_category_discount.models', function (require) {
             });
             partner_model.fields.push('discount_program_id');
             return PosModelSuper.prototype.initialize.apply(this, arguments);
+        },
+        load_server_data: function(){
+            var product_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
+            product_model.fields.push('discount_allowed');
+            return PosModelSuper.prototype.load_server_data.apply(this, arguments);
         },
         get_discount_categories: function(id) {
             return _.filter(this.discount_categories, function(item){
