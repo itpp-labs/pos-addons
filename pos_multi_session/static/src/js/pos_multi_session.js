@@ -31,6 +31,23 @@ odoo.define('pos_multi_session', function(require){
             }
         }
     });
+    screens.set_fiscal_position_button.include({
+        button_click: function() {
+            var order = this.pos.get_order()
+            var old_fp = false;
+            if (order.fiscal_position) {
+                old_fp = order.fiscal_position.id;
+            }
+            if (!this.gui.popup_instances.selection.click_item_super) {
+                this.gui.popup_instances.selection.click_item_super = this.gui.popup_instances.selection.click_item;
+            }
+            this._super(event);
+            this.gui.current_popup.click_item = function(event) {
+                this.gui.popup_instances.selection.click_item_super(event);
+                this.pos.get_order().trigger('change:sync');
+            };
+        },
+    });
     screens.ReceiptScreenWidget.extend({
         finish_order: function() {
             if (!this._locked) {
@@ -42,21 +59,6 @@ odoo.define('pos_multi_session', function(require){
             this.pos.get('selectedOrder').destroy({'reason': 'finishOrder'});
         }
          */
-    });
-
-    PosBaseWidget.include({
-        init:function(parent,options){
-            var self = this;
-            this._super(parent,options);
-            if (this.gui && this.gui.popup_instances && this.gui.popup_instances.selection &&
-             this.gui.popup_instances.selection.click_item && !this.gui.popup_instances.selection.click_item_super){
-                this.gui.popup_instances.selection.click_item_super = this.gui.popup_instances.selection.click_item;
-                this.gui.popup_instances.selection.click_item = function(event) {
-                    this.gui.popup_instances.selection.click_item_super(event);
-                    this.pos.get_order().trigger('change:sync');
-                };
-            }
-        }
     });
 
     var PosModelSuper = models.PosModel;
