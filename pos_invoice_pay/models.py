@@ -11,7 +11,7 @@ class PosOrder(models.Model):
         original_orders = [o for o in orders if o not in invoices_to_pay]
         res = super(PosOrder, self).create_from_ui(original_orders)
         if invoices_to_pay:
-            ids = map(self.process_invoice_payment, invoices_to_pay)
+            map(self.process_invoice_payment, invoices_to_pay)
         return res
 
     @api.model
@@ -62,7 +62,7 @@ class PosOrder(models.Model):
 
 
 class AccountPayment(models.Model):
-    _inherit ='account.payment'
+    _inherit = 'account.payment'
 
     paid_by_pos = fields.Boolean(default=False)
     cashier = fields.Many2one('res.users')
@@ -95,7 +95,6 @@ class AccountInvoice(models.Model):
             res.append(line)
         return res
 
-    @api.one
     @api.depends('payment_move_line_ids.amount_residual')
     def _get_payment_info_JSON(self):
         if self.payment_move_line_ids:

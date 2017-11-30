@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from odoo import api, fields, models
 
 
@@ -13,11 +14,11 @@ class ReportSaleDetails(models.AbstractModel):
         if date_start:
             date_start = fields.Datetime.from_string(date_start)
         else:
-            date_start = today
+            date_start = datetime.date.today()
         if date_stop:
             date_stop = fields.Datetime.from_string(date_stop)
         else:
-            date_stop = today + timedelta(days=1, seconds=-1)
+            date_stop = datetime.date.today() + datetime.timedelta(days=1, seconds=-1)
 
         date_stop = max(date_stop, date_start)
 
@@ -54,4 +55,3 @@ class ReportSaleDetails(models.AbstractModel):
         res['total_paid'] = user_currency.round(total)
 
         return res
-
