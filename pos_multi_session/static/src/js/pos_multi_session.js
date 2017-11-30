@@ -70,7 +70,9 @@ odoo.define('pos_multi_session', function(require){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
                 loaded: function(me, current_session){
-                    self.multi_session_run_ID = current_session[0].run_ID;
+                    if (self.config.multi_session_id) {
+                        self.multi_session_run_ID = current_session[0].run_ID;
+                    }
             }};
             this.models.splice(
                 this.models.indexOf(_.find(this.models, function(model){
@@ -642,7 +644,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                if(error.data.type === "xhrerror") {
+                if(error.data.type === "xhrerror" || (error.data.name && error.data.name.search('NotFound'))) {
                     self.client_online = false;
                     e.preventDefault();
                     self.pos.sync_bus.longpolling_connection.network_is_off();

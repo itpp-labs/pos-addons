@@ -19,7 +19,9 @@ odoo.define('pos_longpolling', function(require){
     bus.Bus.include({
         init_bus: function(pos, sync_server){
             this.pos = pos;
-            this.channel_callbacks = {};
+            if (!this.channel_callbacks){
+                this.channel_callbacks = {};
+            }
             this.ERROR_DELAY = 10000;
             this.serv_adr = sync_server || '';
             this.longpolling_connection = new exports.LongpollingConnection(this.pos);
@@ -59,6 +61,9 @@ odoo.define('pos_longpolling', function(require){
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
                 callback = _.bind(callback, thisArg);
+            }
+            if (!this.channel_callbacks){
+                this.channel_callbacks = {};
             }
             this.channel_callbacks[channel_name] = callback;
             if (this.lonpolling_activated) {
