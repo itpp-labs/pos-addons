@@ -32,7 +32,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_pos_ms_settings" name="Multi-session Settings" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
+        <menuitem id="menu_pos_ms_settings" name="Multi-sessions" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
 
     </data>
 </odoo>
