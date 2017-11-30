@@ -114,7 +114,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("4.34"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("10"));
 
     steps = steps.concat(finish_order());
 
