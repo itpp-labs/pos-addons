@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Chrome">
+        <t t-jquery="div[class='pos-content']" t-operation="prepend">
+            <div class="swiper-order-container swiper-container swiper-container-v">
+                <div class="order-swiper swiper-wrapper">
+                    <div class="swiper-slide order-and-products">
+                        <div class="swiper-container swiper-container-h">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide slide-order"></div>
+                                <div class="swiper-slide slide-products"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-search"></div>
+                    <div class="swiper-slide under-search">
+                        <div class="slide-categories"></div>
+                        <div class="swiper-container swiper-container-h">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide slide-numpad"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="header[class='rightpane-header']" t-operation="append">
+            <div class="slide-categories-button">
+                <img class="category-open-menu" src="/pos_mobile/static/src/img/svg/menu-closed.svg"/>
+                <img class="category-close-menu" src="/pos_mobile/static/src/img/svg/menu-opened.svg"/>
+            </div>
+            <div class="slide-numpad-button">
+                <img class="minus-square" src="/pos_mobile/static/src/img/svg/minus-square.svg"/>
+                <img class="plus-square" src="/pos_mobile/static/src/img/svg/plus-square.svg"/>
+            </div>
+        </t>
+        <t t-jquery="span[class='search-clear']" t-operation="append">
+            <i class='fa fa-search'></i>
+        </t>
+        <t t-jquery="div[class='searchbox'] input" t-operation="replace">
+            <input/>
+        </t>
+    </t>
+
+    <t t-extend="ActionpadWidget">
+        <t t-jquery="i[class='fa fa-user']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+        </t>
+    </t>
+
+    <t t-extend="OrderSelectorWidget">
+        <t t-jquery="i[class='fa fa-plus']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/plus.svg"/>
+        </t>
+        <t t-jquery="i[class='fa fa-minus']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/minus.svg"/>
+        </t>
+    </t>
+
+    <t t-extend="SynchNotificationWidget">
+        <t t-jquery="div[class='js_connected oe_icon oe_green'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_connected oe_icon oe_green">
+                <img src="/pos_mobile/static/src/img/svg/wifi-connect.svg"/>
+            </div>
+        </t>
+        <t t-jquery="div[class='js_disconnected oe_icon oe_red oe_hidden'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_disconnected oe_icon oe_red oe_hidden">
+                <img src="/pos_mobile/static/src/img/svg/wifi-disconnect.svg"/>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="HeaderButtonWidget">
+        <t t-jquery="t[t-esc='widget.label']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/close.svg"/>
+            <img src="/pos_mobile/static/src/img/svg/confirm.svg"/>
+        </t>
+    </t>
+
+    <t t-extend="SaleDetailsButton">
+        <t t-jquery="i[class='fa fa-fw fa-print']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/printer.svg"/>
+        </t>
+    </t>
+
+</templates>
