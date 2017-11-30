@@ -147,7 +147,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             }
         },
         get_discount_program_by_id: function(id) {
-            return this.options.disc_program.find(function (item) {
+            return _.find(this.options.disc_program, function (item) {
                 return item.id === Number(id);
             });
         },

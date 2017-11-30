@@ -11,16 +11,19 @@ class TestUi(odoo.tests.HttpCase):
         # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
         env = Environment(self.registry.test_cr, self.uid, {})
 
-        # get exist pos_config
         main_pos_config = env.ref('point_of_sale.pos_config_main')
 
-        main_pos_config.write({'iface_discount': True})
+        main_pos_config.write({
+            'iface_discount': True,
+        })
         main_pos_config.discount_product_id = env.ref('point_of_sale.boni_orange')
+
         main_pos_config.open_session_cb()
 
+        env['ir.module.module'].search([('name', '=', 'pos_product_category_discount')], limit=1).state = 'installed'
 
         self.phantom_js(
-            '/web?debug=assets',
+            '/pos/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".run('pos_product_category_discount_tour')",
