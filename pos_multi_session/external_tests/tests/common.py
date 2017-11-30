@@ -11,7 +11,7 @@ class TestCommon(ExternalTestCase):
 
     def phantom_js_multi(self, sessions, commands, timeout=60, **kw):
         for sname, sdata in sessions.items():
-            sdata.setdefault('url_path', "/pos/web?debug=assets")
+            sdata.setdefault('url_path', "/pos/web")
             sdata.setdefault('ready', "$('.loader:hidden').length")
             sdata.setdefault('timeout', 60)
             sdata.setdefault('login', sname)
