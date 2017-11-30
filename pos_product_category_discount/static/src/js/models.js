@@ -30,14 +30,12 @@ odoo.define('pos_product_category_discount.models', function (require) {
     });
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
+        load_server_data: function() {
             var partner_model = _.find(this.models, function(model){
                 return model.model === 'res.partner';
             });
             partner_model.fields.push('discount_program_id');
-            return PosModelSuper.prototype.initialize.apply(this, arguments);
-        },
-        load_server_data: function(){
+
             var product_model = _.find(this.models, function(model){
                 return model.model === 'product.product';
             });
