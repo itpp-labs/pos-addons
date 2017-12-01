@@ -76,8 +76,6 @@
 
     <t t-extend="HeaderButtonWidget">
         <t t-jquery="t[t-esc='widget.label']" t-operation="replace">
-            <img src="/pos_mobile/static/src/img/svg/close.svg"/>
-            <img src="/pos_mobile/static/src/img/svg/confirm.svg"/>
         </t>
     </t>
 

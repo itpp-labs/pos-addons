@@ -61,6 +61,10 @@
     height: 96px;
     background: white;
     border-bottom: solid 3px rgb(196, 196, 196);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 }
 /*  a) The left part of the top-bar */
 
@@ -69,23 +73,27 @@
     width: initial;
     position: relative;
     vertical-align: top;
+    display: block;
+    float: left;
 }
 .pos.mobile .pos-branding .username{
-    margin-right:0px;
     margin-left: 20px;
-    line-height: 22px;
+    margin-right: 20px;
+    line-height: 104px;
     float: left;
     color: #555555;
-    word-wrap: break-word;
-    width: 50px;
-    font-size: 22px;
-    padding-top: 15px;
+    /*word-wrap: break-word;*/
+    width: initial;
+    font-size: 26px;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
-    display: table-cell;
+    display: block;
     position: relative;
-    left: 20px;
+    left: 0px;
+    right: 0px;
+    float: right;
+    width: 100%;
 }
 .pos.mobile .pos-rightheader > * {
     border-right: 0px;
@@ -162,6 +170,10 @@
     border-left: 2px solid #292929;
     line-height: 96px;
     color: #555555;
+    position: absolute;
+    right: 0;
+    padding: 0px;
+    width: 80px;
 }
 .pos.mobile .pos-rightheader .header-button img{
     padding: 10px;
@@ -174,11 +186,12 @@
 }
 /*  c) The notifications indicator */
 .pos.mobile .oe_status{
-    display: inline-block;
-    float: left;
     padding: 28px;
     line-height: 40px;
     font-size: 40px;
+    float: right;
+    display: block;
+    margin-right: 80px;
 }
 .pos.mobile .oe_status .oe_icon{
     width:40px;

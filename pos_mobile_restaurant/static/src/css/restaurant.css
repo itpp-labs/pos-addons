@@ -158,6 +158,10 @@
 
 .pos.mobile .order-button.floor-button {
     background: white;
+    word-wrap: break-word;
+    width: 150px;
+    line-height: initial;
+    font-size: smaller;
 }
 .pos.mobile .order-button.floor-button .fa{
     font-size: 48px;
