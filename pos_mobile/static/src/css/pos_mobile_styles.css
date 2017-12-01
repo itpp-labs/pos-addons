@@ -449,6 +449,19 @@
     padding: 20px;
     text-align: center;
 }
+.pos.mobile .current-order-qty {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: red;
+    color: white;
+    line-height: 30px;
+    min-width: 30px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
+}
 /*  a) the product list navigation bar */
 .pos.mobile .breadcrumb{
     line-height: 96px;
@@ -659,13 +672,12 @@
 /* a) Generic Screen Layout Constructs */
 .pos.mobile .screen .screen-content{
     max-width: 2048px;
-    background: #f7f7f7;
+    background: white;
 }
-
 .pos.mobile .screen .top-content{
     background: white;
     height: 128px;
-    border-bottom: dashed 2px rgb(215,215,215);
+    border-bottom: dashed 2px rgb(110,110,110);
 }
 .pos.mobile .screen .top-content .button {
     line-height: 64px;
@@ -727,18 +739,25 @@
 /* b) The payment screen */
 .pos.mobile .payment-numpad {
     width: 100%;
-    max-width: 760px;
+    max-width: 635px;
+    padding: 0px;
+    margin: 0px;
+    float: right;
 }
 .pos.mobile .payment-numpad .numpad {
     border: none;
     border-radius: 8px;
     width: 100% !important;
     max-width: initial;
-    margin-left: 5px;
+    margin: 0px;
+    margin-top: 15px;
 }
 .pos.mobile .payment-numpad .numpad button {
-    width: 160px;
-    height: 160px;
+    width: 145px;
+    height: 135px;
+    font-size: 50px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 22px -14px black;
 }
 .pos.mobile .payment-numpad .numpad button:first-child {
     border-top-left-radius: 8px;
@@ -746,10 +765,15 @@
 .pos.mobile .payment-numpad .numpad button:nth-child(16) {
     border-bottom-left-radius: 8px;
 }
+.pos.mobile .paymentlines {
+    margin-bottom: 20px;
+}
 .pos.mobile .paymentlines-container {
     padding: 0px;
-    border-bottom: dashed 2px gainsboro;
-    min-height: 308px;
+    border-bottom: dashed 2px rgb(110,110,110);
+    max-height: 556px;
+    overflow: hidden !important;
+    overflow-y: auto !important;
 }
 .pos.mobile .paymentlines .controls {
     width: 80px;
@@ -792,21 +816,58 @@
     width: 100%;
     display: block;
 }
+.pos.mobile .payment-screen .left-content{
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 375px;
+}
+.pos.mobile .payment-screen .left-content.pc40{
+    right: initial;
+    border-bottom: dashed 2px rgb(175,175,175);
+}
+.pos.mobile .payment-screen .right-content{
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 1440px;
+}
+.pos.mobile .payment-screen .right-content.pc60{
+    left: initial;
+}
+.pos.mobile .payment-screen .payment-buttons{
+    padding: 0px;
+    display: block;
+    float: left;
+    max-width: 380px;
+    width: 100%;
+}
 .pos.mobile .payment-screen .payment-buttons .button {
-    line-height: 146px;
+    line-height: 130px;
     font-size: 32px;
     padding: 0px 16px;
     border: 2px solid #e8e8e8;
-    border-radius: 15px;
-    margin: 10px;
+    border-radius: 8px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    text-align: left;
+    padding-left: 135px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+.pos.mobile .payment-screen .payment-buttons i {
+    text-align: center;
 }
 .pos.mobile .payment-screen .payment-buttons .button:first-child {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-top-width: 2px;
+    margin-top: 20px;
 }
 .pos.mobile .payment-screen .payment-buttons .button:last-child {
     border-bottom-left-radius: 6px;
@@ -830,6 +891,9 @@
     padding: 48px 0px 36px;
     font-size: 128px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
+}
+.pos.mobile .payment-screen .paymentlines-empty {
+    margin-bottom: 20px;
 }
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
@@ -1076,7 +1140,10 @@
 }
 .pos.mobile .paymentmethods {
     margin: 15px;
-    margin-top: 55px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
 }
 .pos.mobile .paymentmethods .button {
     line-height: 90px;
@@ -1087,6 +1154,11 @@
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 400px;
+    margin-left:30px;
+    margin-right: 30px;
 }
 .pos.mobile .paymentmethods .button:first-child {
     border-top-width: 2px;
@@ -1097,6 +1169,7 @@
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
+
 /*  ********* The ActionBarWidget  ********* */
 
 .pos.mobile .pos-actionbar{

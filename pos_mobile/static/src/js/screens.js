@@ -117,9 +117,11 @@ odoo.define('pos_mobile.screens', function (require) {
     screens.ProductScreenWidget.include({
         click_product: function(product) {
             this._super.apply(this, arguments);
-            // adds click effect
-            if ($('.product-count')) {
-                $('.product-count').remove();
+            var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+            var order = this.pos.get_order();
+            var qty = order.get_quantity_by_product_id(product.id);
+            if (qty) {
+                $qty.html(qty);
             }
             var $p = $('span[data-product-id="'+product.id+'"]');
             $($p).animate({
@@ -138,16 +140,6 @@ odoo.define('pos_mobile.screens', function (require) {
                     'max-height': '200px',
                     'min-width': '128px',
                 }, 400);
-            });
-            var order = this.pos.get_order();
-            var qty = order.get_quantity_by_product_id(product.id);
-            $p.append('<span class="product-count">'+qty+'</span>');
-            var count = $($p.children()[2]);
-            count.animate({
-                'font-size': '150px',
-                'top': '-40%',
-            }, 400, function(){
-                count.remove();
             });
         },
     });
@@ -177,6 +169,22 @@ odoo.define('pos_mobile.screens', function (require) {
             var summary = $('.pos.mobile .order-container .summary.clearfix');
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
+        },
+        change_selected_order: function() {
+            this._super();
+            var order = this.pos.get_order();
+            if (order) {
+                // update the products qty for current order
+                var products = this.pos.gui.screen_instances.products.product_list_widget.product_list
+                products.forEach(function(product){
+                    var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+                    var qty = order.get_quantity_by_product_id(product.id);
+                    $qty.html('');
+                    if (qty) {
+                        $qty.html(qty);
+                    }
+                });
+            }
         },
     });
     return screens;
