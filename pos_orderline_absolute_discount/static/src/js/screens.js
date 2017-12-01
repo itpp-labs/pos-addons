@@ -34,7 +34,7 @@ odoo.define('pos_absolute_discount.screens', function(require){
             var mode = this.numpad_state.get('mode');
             if (order.get_selected_orderline() && mode === 'discount') {
                 if (this.absolute_discount_active) {
-                    order.get_selected_orderline().set_absolute_discount(val);
+                    order.get_selected_orderline().set_absolute_discount(Number(val));
                 } else {
                     order.get_selected_orderline().set_discount(val);
                 }

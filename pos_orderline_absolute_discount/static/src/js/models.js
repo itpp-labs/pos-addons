@@ -4,7 +4,7 @@ odoo.define('pos_absolute_discount.models', function(require){
     var utils = require('web.utils');
 
     var round_pr = utils.round_precision;
-
+    var round_di = utils.round_decimals;
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
@@ -26,8 +26,6 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         // sets a absolute discount
         set_absolute_discount: function (discount) {
-            var rounding = this.pos.currency.rounding;
-            discount = round_pr(discount, rounding);
             if (this.get_discount()) {
                 this.set_discount(0);
             }
@@ -41,15 +39,6 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         get_absolute_discount_str: function(){
             return this.absolute_discountStr;
-        },
-        set_quantity: function(quantity){
-            var self = this;
-            var absolute_discount = this.get_absolute_discount() / this.quantity;
-            _super_orderline.set_quantity.call(this, quantity);
-            if(quantity !== 'remove' && absolute_discount){
-                var qty = parseFloat(quantity) || 0;
-                this.set_absolute_discount(absolute_discount * qty);
-            }
         },
         clone: function(){
             var res = _super_orderline.clone.apply(this, arguments);
@@ -81,14 +70,14 @@ odoo.define('pos_absolute_discount.models', function(require){
         get_base_price: function(){
             var rounding = this.pos.currency.rounding;
             if (this.get_absolute_discount()) {
-                return round_pr(((this.get_unit_price() * this.get_quantity()) - this.get_absolute_discount()), rounding);
+                return round_pr((this.get_unit_price() - this.get_absolute_discount()) * this.get_quantity(), rounding);
             }
             return _super_orderline.get_base_price.apply(this, arguments);
         },
         get_all_prices: function(){
             var res = _super_orderline.get_all_prices.apply(this, arguments);
             if (this.get_absolute_discount()) {
-                var price_unit = this.get_unit_price() - (this.get_absolute_discount() / this.get_quantity());
+                var price_unit = this.get_unit_price() - this.get_absolute_discount();
                 var taxtotal = 0;
 
                 var product = this.get_product();
@@ -115,6 +104,48 @@ odoo.define('pos_absolute_discount.models', function(require){
             }
             return res;
         },
+        get_display_price_without_discount: function() {
+            if (this.pos.config.iface_tax_included) {
+                return this.get_price_with_tax_without_discount();
+            }
+            return this.get_price_without_discount();
+        },
+        // get orderline price without discount
+        get_price_without_discount: function(){
+            var rounding = this.pos.currency.rounding;
+            return round_pr(this.get_unit_price() * this.get_quantity(), rounding);
+        },
+        get_price_with_tax_without_discount: function(){
+            return this.get_all_prices_without_discounts().priceWithTax;
+        },
+        get_all_prices_without_discounts: function(){
+            var price_unit = this.get_unit_price();
+            var taxtotal = 0;
+
+            var product = this.get_product();
+            var taxes_ids = product.taxes_id;
+            var taxes = this.pos.taxes;
+            var taxdetail = {};
+            var product_taxes = [];
+
+            _(taxes_ids).each(function(el){
+                product_taxes.push(_.detect(taxes, function(t){
+                    return t.id === el;
+                }));
+            });
+
+            var all_taxes = this.compute_all(product_taxes, price_unit, this.get_quantity(), this.pos.currency.rounding);
+            _(all_taxes.taxes).each(function(tax) {
+                taxtotal += tax.amount;
+                taxdetail[tax.id] = tax.amount;
+            });
+            return {
+                priceWithTax: all_taxes.total_included,
+                priceWithoutTax: all_taxes.total_excluded,
+                tax: taxtotal,
+                taxDetails: taxdetail
+            };
+        },
     });
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
@@ -127,7 +158,7 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         get_total_absolute_discount: function() {
             return round_pr(this.orderlines.reduce((function(sum, orderLine) {
-                return sum + orderLine.get_absolute_discount();
+                return sum + (orderLine.get_absolute_discount() * orderLine.get_quantity());
             }), 0), this.pos.currency.rounding);
         },
         get_total_discount: function() {
