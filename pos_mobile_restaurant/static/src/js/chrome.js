@@ -52,6 +52,25 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             var order_button = $('.control-button.order-submit');
             order_button.detach();
             $(".swiper-order-container .slide-search .searchbox").prepend(order_button);
+
+            // add a div for specific control buttons
+            $('.slide-numpad .pads').prepend("<div class='top-control-buttons'></div>");
+
+            var guests = $('.control-button.order-guests');
+            var discount = $('.control-button.js_discount');
+            var note = $('.control-button.order-note');
+
+            guests.detach();
+            discount.detach();
+            note.detach();
+
+            $('.top-control-buttons').append(guests);
+            $('.top-control-buttons').append(discount);
+            $('.top-control-buttons').append(note);
+
+            var action_buttons = $('.control-button.order-printbill');
+            action_buttons.detach();
+            $('.slide-numpad .actionpad').prepend(action_buttons);
         },
     });
 

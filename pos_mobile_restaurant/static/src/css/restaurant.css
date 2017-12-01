@@ -293,3 +293,56 @@
 .pos.mobile .control-button.order-submit.highlight .active {
     display: inline-block;
 }
+.pos.mobile .control-button.order-printbill {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+    height: 93px;
+    line-height: 93px;
+    max-width: calc(100% - 5px);
+}
+/* --------------------- Numpad ------------------------ */
+.pos.mobile .subwindow-container-fix.pads {
+    width: 100%;
+}
+.pos.mobile .actionpad .button.pay {
+    height: 210px;
+}
+.pos.mobile .top-control-buttons {
+    margin: 0px;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    max-width: initial;
+    width: 100%;
+}
+.pos.mobile .top-control-buttons .control-button {
+    width: calc(100%/3 - 15px);
+    margin: 5px;
+    flex-grow: 3;
+    height: 93px;
+    line-height: 93px;
+}
+.pos.mobile .actionpad, .pos.mobile .numpad {
+    margin-top: 0px;
+}
+.pos.mobile .actionpad {
+    max-width: initial;
+    width: calc(100%/3 - 10px);
+}
+.pos.mobile .slide-numpad .numpad {
+    width: 66%;
+    max-width: initial;
+}
+.pos.mobile .slide-numpad .numpad button {
+    width: calc(25% - 10px);
+}
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 705px)!important;
+}
+.pos.mobile .under-search {
+    max-height: 705px;
+}
+
