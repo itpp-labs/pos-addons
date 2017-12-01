@@ -10,7 +10,6 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
 
     floors.FloorScreenWidget.include({
         click_floor_button: function(event,$el){
-            console.log($el);
             this._super(event,$el);
             this.chrome.menuButton.trigger('click');
         },
