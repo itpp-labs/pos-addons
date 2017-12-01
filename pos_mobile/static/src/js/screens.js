@@ -22,16 +22,6 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.renderElement();
                 self.chrome.swiperH[0].slideTo(1);
             };
-            var categories = $('.window .rightpane .categories');
-            categories.detach();
-            $(".slide-categories .categories").detach();
-            $(".slide-categories").append(categories);
-
-            // keyup event for mobile device
-            $('.slide-search  .searchbox input').on('keyup input',function(event){
-                var query = this.value;
-                console.log(query);
-            });
         },
         open_bottom_menu: function() {
             if (this.current_bottom_slide === "numpad") {
