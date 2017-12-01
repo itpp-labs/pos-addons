@@ -90,14 +90,14 @@
     <t t-extend="Product">
         <t t-jquery="div[class='product-name']" t-operation="after">
             <t t-set="order" t-value="widget.pos.get_order()"/>
-            <t t-if="order">
-                <t t-set="qty" t-value="order.get_quantity_by_product_id(product.id)"/>
-                <div class="current-order-qty">
+            <div class="current-order-qty">
+                <t t-if="order">
+                    <t t-set="qty" t-value="order.get_quantity_by_product_id(product.id)"/>
                     <t t-if="qty != 0">
                         <t t-esc="qty"/>
                     </t>
-                </div>
-            </t>
+                </t>
+            </div>
         </t>
     </t>
 
