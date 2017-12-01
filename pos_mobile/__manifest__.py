@@ -3,7 +3,7 @@
     "name": """POS Mobile UI""",
     "summary": """Your Point of Sale in the Mobile Version""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
     "images": ["images/pos_mobile.png"],
     "version": "1.0.0",
     "application": False,
@@ -34,7 +34,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "POS Mobile UI",
     "demo_addons": ["pos_mobile_restaurant"],
