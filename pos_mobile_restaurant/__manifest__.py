@@ -33,6 +33,6 @@
     "pre_init_hook": None,
     "post_init_hook": None,
 
-    "auto_install": False,
+    "auto_install": True,
     "installable": True,
 }
