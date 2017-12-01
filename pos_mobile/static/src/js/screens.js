@@ -175,7 +175,7 @@ odoo.define('pos_mobile.screens', function (require) {
             var order = this.pos.get_order();
             if (order) {
                 // update the products qty for current order
-                var products = this.pos.gui.screen_instances.products.product_list_widget.product_list
+                var products = this.pos.gui.screen_instances.products.product_list_widget.product_list;
                 products.forEach(function(product){
                     var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
                     var qty = order.get_quantity_by_product_id(product.id);
