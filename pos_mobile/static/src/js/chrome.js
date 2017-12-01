@@ -60,6 +60,9 @@ odoo.define('pos_mobile.chrome', function (require) {
                 buttons.detach();
                 $('.slide-buttons').append(buttons);
             }
+
+            // element before the closing button in top header
+            $($('.js_connected')[0]).css({'margin-right': '70px'});
         },
     });
 

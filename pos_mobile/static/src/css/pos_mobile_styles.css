@@ -162,7 +162,6 @@
 /*  c) The session buttons */
 .pos.mobile .pos-rightheader .header-button{
     display: inline-block;
-    float: left;
     height: 96px;
     padding-left: 32px;
     padding-right: 32px;
@@ -191,7 +190,8 @@
     font-size: 40px;
     float: right;
     display: block;
-    margin-right: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .pos.mobile .oe_status .oe_icon{
     width:40px;
