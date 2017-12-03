@@ -3,14 +3,14 @@
 # * pos_order_note
 # 
 # Translators:
-# Dinar <gabbasov@it-projects.info>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 09:02+0000\n"
-"PO-Revision-Date: 2017-11-24 09:02+0000\n"
-"Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
+"POT-Creation-Date: 2017-12-01 15:56+0000\n"
+"PO-Revision-Date: 2017-12-01 15:56+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
 "Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,14 +24,14 @@ msgstr ""
 #: code:addons/pos_order_note/static/src/js/tour.js:46
 #, python-format
 msgid "<p>Click on <b>Note</b> button</p>"
-msgstr "<p>Нажмите на кнопку <b>Заметка</b></p>"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/js/tour.js:50
 #, python-format
 msgid "<p>Click on <b>Order Note</b></p>"
-msgstr "<p>Нажмите на кнопку <b>Заметка Заказа</b></p>"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
@@ -40,8 +40,6 @@ msgstr "<p>Нажмите на кнопку <b>Заметка Заказа</b></
 msgid ""
 "<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"
 msgstr ""
-"<p>Нажмите на кнопку <b>Заказ</b>чтобы отправить заказ на </b>Кухонный "
-"принтер</b></p>"
 
 #. module: pos_order_note
 #. openerp-web
@@ -101,21 +99,21 @@ msgstr ""
 #: code:addons/pos_order_note/static/src/js/order_note.js:325
 #, python-format
 msgid "Add Note for Order"
-msgstr "Добавить заметку для Заказа"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/js/order_note.js:329
 #, python-format
 msgid "Add Note for Product"
-msgstr "Добавить заметку для Продукта"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:309
 #, python-format
 msgid "Apply"
-msgstr "Применить"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
@@ -123,12 +121,12 @@ msgstr "Применить"
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:306
 #, python-format
 msgid "Cancel"
-msgstr "Отменить"
+msgstr ""
 
 #. module: pos_order_note
 #: model:ir.actions.act_window,help:pos_order_note.pos_product_notes_action
 msgid "Click to define a new notes."
-msgstr "Нажмите, чтобы определить новые заметки."
+msgstr ""
 
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_create_uid
@@ -143,7 +141,7 @@ msgstr ""
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_display_name
 msgid "Display Name"
-msgstr "Отображаемое Имя"
+msgstr ""
 
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_id
@@ -175,7 +173,7 @@ msgstr ""
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:238
 #, python-format
 msgid "NOTE"
-msgstr "ЗАМЕТКА"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
@@ -216,7 +214,7 @@ msgstr ""
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:151
 #, python-format
 msgid "ORDER NOTE"
-msgstr "ЗАМЕТКА ЗАКАЗА"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
@@ -269,12 +267,12 @@ msgstr ""
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_sequence
 msgid "Sequence"
-msgstr "Порядок"
+msgstr ""
 
 #. module: pos_order_note
 #: model:ir.ui.view,arch_db:pos_order_note.view_template_property_form
 msgid "This note will be displayed on the POS."
-msgstr "Эта заметка будет отображаться в POS."
+msgstr ""
 
 #. module: pos_order_note
 #: model:ir.model,name:pos_order_note.model_pos_product_notes
