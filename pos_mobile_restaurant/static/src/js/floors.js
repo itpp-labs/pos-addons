@@ -15,16 +15,12 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
         },
         renderElement: function(){
             this._super();
-
-            // TODO: fix it. don't use renderElement function for append to new block
-            // temporary code
             var floor_selector = $('.window .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();
                 $(".slide-floor-menu .floor-selector").detach();
                 $(".slide-floor-menu").append(floor_selector);
             }
-
             var floor_map = $('.window .floor-map');
             if (floor_map.length){
                 floor_map.detach();

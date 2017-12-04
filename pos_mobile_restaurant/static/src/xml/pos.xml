@@ -45,4 +45,12 @@
         </t>
     </t>
 
+    <t t-extend="ActionpadWidget">
+        <t t-jquery="div[class='actionpad']" t-operation="prepend">
+            <t t-if="widget.pos.config.iface_printbill">
+                <t t-call="PrintBillButton"/>
+            </t>
+        </t>
+    </t>
+
 </templates>

@@ -68,9 +68,9 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             $('.top-control-buttons').append(discount);
             $('.top-control-buttons').append(note);
 
-            var action_buttons = $('.control-button.order-printbill');
-            action_buttons.detach();
-            $('.slide-numpad .actionpad').prepend(action_buttons);
+            /* The new Printbill Button in ActionpadWidget, delete the old button */
+            var printbill = $('.slide-buttons .control-button.order-printbill');
+            printbill.remove();
         },
     });
 
