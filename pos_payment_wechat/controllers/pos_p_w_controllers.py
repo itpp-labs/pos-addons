@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import time
 import random
 import logging
@@ -75,14 +76,18 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data)
         print(post)
-        r = requests.post("https://api.mch.weixin.qq.com/pay/micropay", data=post)
-        print(r)
-        print(r.status_code)
-        print(r.headers)
-        print(r.headers['content-type'])
-        print(r.encoding)
-        # print(r.text)
-        time.sleep(4)
+        r1 = requests.post("https://api.mch.weixin.qq.com/pay/micropay", data=post)
+        print(r1)
+        print(r1.status_code)
+        print(r1.headers)
+        print(r1.headers['content-type'])
+        print(r1.encoding)
+        message = {}
+        message['resp1'] = r1
+        message['text1'] = r1.text
+        message['encode_text1'] = r1.text.encode('utf-8')
+        # print(r1.text.encode('utf-8'))
+        time.sleep(5)
     #     return request.redirect('/wechat/payment_query')
     #
     # @odoo.http.route('/wechat/payment_query', type="json", auth="public")
@@ -98,10 +103,18 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data_qa)
         print(post)
-        r = requests.post("https://api.mch.weixin.qq.com/pay/orderquery", data=post)
-        print(r)
-        print(r.status_code)
-        print(r.headers)
-        print(r.headers['content-type'])
-        print(r.encoding)
-        # print(r.text)
+        r2 = requests.post("https://api.mch.weixin.qq.com/pay/orderquery", data=post)
+        print(r2)
+        print(r2.status_code)
+        print(r2.headers)
+        print(r2.headers['content-type'])
+        print(r2.encoding)
+        message['resp2'] = r2
+        message['text2'] = r2.text
+        message['encode_text2'] = r2.text.encode('ISO-8859-1')
+        # with open('txt.txt', 'w+') as fil:
+        #     fil.write(r1.text, r2.text)
+        # print(r2.text.encode('utf-8'))
+        for each_unicode_character in r2.text.encode('utf-8').decode('utf-8'):
+            print(each_unicode_character)
+        return message

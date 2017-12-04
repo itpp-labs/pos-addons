@@ -93,7 +93,10 @@ odoo.define('pos_payment_wechat', function(require){
             })
             data.total_fee = Math.round(pos.get_order().get_total_with_tax());
             data.auth_code = pos.get_order().auth_code || au_c;
-            return this.send({data: data}, "/wechat/payment_commence");
+            return this.send({data: data}, "/wechat/payment_commence")
+//            .always(function(res){
+//                console.log(res);
+//            });
         },
         send: function(message, address){
             var current_send_number = 0;
@@ -112,10 +115,13 @@ odoo.define('pos_payment_wechat', function(require){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
                 this.show_warning();
-            }).done(function(res){
+            }).always(function(res){
+                console.log(res);
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                console.lo
                 }
+                console.log('test')
             });
         },
         warning: function(warning_message){
