@@ -85,6 +85,18 @@
         </t>
     </t>
 
+    <t t-extend="NumpadWidget">
+        <t t-jquery="button[class='input-button numpad-backspace'] img" t-operation="replace">
+            <img style="pointer-events: none;" src="/pos_mobile/static/src/img/backspace.png" width="60" height="51" />
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreen-Numpad">
+        <t t-jquery="button[class='input-button numpad-backspace'] img" t-operation="replace">
+            <img style="pointer-events: none;" src="/pos_mobile/static/src/img/backspace.png" width="72" height="63" />
+        </t>
+    </t>
+
     <t t-extend="Product">
         <t t-jquery="div[class='product-name']" t-operation="after">
             <t t-set="order" t-value="widget.pos.get_order()"/>
