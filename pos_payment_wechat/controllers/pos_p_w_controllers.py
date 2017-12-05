@@ -17,6 +17,27 @@ except ImportError:
 
 class Controller(BusController):
 
+    @odoo.http.route('/wechat/getsignkey', type="json", auth="public")
+    def getSignKey(self, message):
+        data = {}
+        data['mch_id'] = request.env['ir.config_parameter'].get_param('wechat.mchId')
+        wcc = request.env['wechat.config']
+        data['nonce_str'] = (wcc.getRandomNumberGeneration(message))[:32]
+        post = wcc.makeXmlPost(data)
+        r1 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/getsignkey", data=post)
+        print(r1)
+        print(r1.status_code)
+        print(r1.headers)
+        print(r1.headers['content-type'])
+        print(r1.text)
+        # print(r1.mch_id)
+        # print(r1.sandbox_signkey)
+        for key in r1:
+            print(key, '----')
+        message = {}
+        message['resp1'] = r1
+        return message
+
     @odoo.http.route('/wechat/test', type="json", auth="public")
     def testAccessToken(self, message):
         order_id = '{0:06}'.format(message['data']['order_id'])
@@ -39,25 +60,26 @@ class Controller(BusController):
 
     @odoo.http.route('/wechat/payment_commence', type="json", auth="public")
     def micropay(self, message):
-        data = message['data']
-        data['order_id'] = '{0:06}'.format(message['data']['order_id'])
-        data['cashier_id'] = '{0:05}'.format(message['data']['cashier_id'])
-        data['session_id'] = '{0:05}'.format(message['data']['session_id'])
-
+        # data = message['data']
+        # data['order_id'] = '{0:06}'.format(message['data']['order_id'])
+        # data['cashier_id'] = '{0:05}'.format(message['data']['cashier_id'])
+        # data['session_id'] = '{0:05}'.format(message['data']['session_id'])
+        data = {}
+        data['auth_code'] = message['data']['auth_code']
         data['appid'] = request.env['ir.config_parameter'].get_param('wechat.appId')
         data['mch_id'] = request.env['ir.config_parameter'].get_param('wechat.mchId')
         data['body'] = message['data']['order_short']
 
-        data['out_trade_no'] = str(time.time()).replace('.', '') \
+        data['out_trade_no'] = (str(time.time()).replace('.', '') \
             + '{0:010}'.format(random.randint(1, 9999999999)) \
-            + '{0:010}'.format(random.randint(1, 9999999999))
+            + '{0:010}'.format(random.randint(1, 9999999999)))[:32]
         wcc = request.env['wechat.config']
         if not wcc:
             wcc = wcc.create({
                 'token_validity': 1,
                 'access_token': ''
             })
-        # data['total_fee'] = message['data']['total_fee']
+        data['total_fee'] = message['data']['total_fee']
         data['spbill_create_ip'] = wcc.getIpList()[0]
         print(wcc.getIpList())
         # data['auth_code'] = message['data']['auth_code']
@@ -71,12 +93,12 @@ class Controller(BusController):
         # limit_pay =
         # scene_info =
         #
-        data['nonce_str'] = wcc.getRandomNumberGeneration(message)
-        data['sign'] = wcc.getRandomNumberGeneration(message)
+        data['nonce_str'] = (wcc.getRandomNumberGeneration(message))[:32]
+        data['sign'] = (wcc.getRandomNumberGeneration(message))[:32]
 
         post = wcc.makeXmlPost(data)
         print(post)
-        r1 = requests.post("https://api.mch.weixin.qq.com/pay/micropay", data=post)
+        r1 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/micropay", data=post)
         print(r1)
         print(r1.status_code)
         print(r1.headers)
@@ -84,8 +106,7 @@ class Controller(BusController):
         print(r1.encoding)
         message = {}
         message['resp1'] = r1
-        message['text1'] = r1.text
-        message['encode_text1'] = r1.text.encode('utf-8')
+        message['encode_text1'] = r1.text.encode('iso-8859-1').decode('utf-8')
         # print(r1.text.encode('utf-8'))
         time.sleep(5)
     #     return request.redirect('/wechat/payment_query')
@@ -103,18 +124,19 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data_qa)
         print(post)
-        r2 = requests.post("https://api.mch.weixin.qq.com/pay/orderquery", data=post)
+        r2 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/orderquery", data=post)
         print(r2)
         print(r2.status_code)
         print(r2.headers)
         print(r2.headers['content-type'])
         print(r2.encoding)
         message['resp2'] = r2
-        message['text2'] = r2.text
-        message['encode_text2'] = r2.text.encode('ISO-8859-1')
+        message['encode_text2'] = r2.text.encode('iso-8859-1').decode('utf-8')
         # with open('txt.txt', 'w+') as fil:
         #     fil.write(r1.text, r2.text)
         # print(r2.text.encode('utf-8'))
-        for each_unicode_character in r2.text.encode('utf-8').decode('utf-8'):
-            print(each_unicode_character)
+        # for each_unicode_character in r2.text.encode('utf-8').decode('utf-8'):
+        #     print(each_unicode_character)
+        # print(message['encode_text1'])
+        # print(message['encode_text2'])
         return message

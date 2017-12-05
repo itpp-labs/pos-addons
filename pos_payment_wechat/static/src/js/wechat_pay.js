@@ -80,6 +80,10 @@ odoo.define('pos_payment_wechat', function(require){
             data.session_id = pos.pos_session.id;
             return this.send({data: data}, "/wechat/test");
         },
+        send_get_key: function(au_c){
+            var data = {};
+            return this.send({data: data}, "/wechat/getsignkey")
+        },
         send_payment: function(au_c){
             var data = {};
             var pos = this.pos;
