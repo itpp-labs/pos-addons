@@ -4,6 +4,7 @@ import random
 import logging
 import requests
 import odoo
+import json
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -23,33 +24,31 @@ class Controller(BusController):
         data['mch_id'] = request.env['ir.config_parameter'].get_param('wechat.mchId')
         wcc = request.env['wechat.config']
         data['nonce_str'] = (wcc.getRandomNumberGeneration(message))[:32]
+        data['sign'] = data['nonce_str']
         post = wcc.makeXmlPost(data)
-        r1 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/getsignkey", data=post)
+        print(post)
+        url = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey"
+        r1 = requests.post(url, data=post)
         print(r1)
         print(r1.status_code)
         print(r1.headers)
         print(r1.headers['content-type'])
-        print(r1.text)
+        print(r1.text, len(r1.text))
+        print(r1.content, len(r1.content))
+        print(r1.iter_content)
+
         # print(r1.mch_id)
         # print(r1.sandbox_signkey)
-        for key in r1:
+        for key in r1.text:
             print(key, '----')
+        for key in r1.content:
+            print(key, '====')
         message = {}
-        message['resp1'] = r1
+        message['resp1'] = r1.text
         return message
 
     @odoo.http.route('/wechat/test', type="json", auth="public")
     def testAccessToken(self, message):
-        order_id = '{0:06}'.format(message['data']['order_id'])
-        cashier_id = '{0:05}'.format(message['data']['cashier_id'])
-        session_id = '{0:05}'.format(message['data']['session_id'])
-
-        appid = request.env['ir.config_parameter'].get_param('wechat.appId')
-        mch_id = request.env['ir.config_parameter'].get_param('wechat.mchId')
-
-        out_trade_no = str(time.time()).replace('.', '') \
-                       + '{0:010}'.format(random.randint(1, 9999999999)) \
-                       + '{0:010}'.format(random.randint(1, 9999999999))
         wcc = request.env['wechat.config']
         if not wcc:
             wcc = wcc.create({
@@ -98,7 +97,7 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data)
         print(post)
-        r1 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/micropay", data=post)
+        r1 = requests.post("https://api.mch.weixin.qq.com/sandboxnew/pay/micropay", data=post)
         print(r1)
         print(r1.status_code)
         print(r1.headers)
@@ -124,7 +123,7 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data_qa)
         print(post)
-        r2 = requests.post("https://api.mch.weixin.qq.com/sandbox/pay/orderquery", data=post)
+        r2 = requests.post("https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery", data=post)
         print(r2)
         print(r2.status_code)
         print(r2.headers)
