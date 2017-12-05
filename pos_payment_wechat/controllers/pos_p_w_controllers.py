@@ -24,7 +24,9 @@ class Controller(BusController):
         data['mch_id'] = request.env['ir.config_parameter'].get_param('wechat.mchId')
         wcc = request.env['wechat.config']
         data['nonce_str'] = (wcc.getRandomNumberGeneration(message))[:32]
-        data['sign'] = data['nonce_str']
+        data['sign'] = (str(time.time()).replace('.', '')
+                        + '{0:010}'.format(random.randint(1, 9999999999))
+                        + '{0:010}'.format(random.randint(1, 9999999999)))[:32]
         post = wcc.makeXmlPost(data)
         print(post)
         url = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey"
@@ -33,16 +35,10 @@ class Controller(BusController):
         print(r1.status_code)
         print(r1.headers)
         print(r1.headers['content-type'])
-        print(r1.text, len(r1.text))
-        print(r1.content, len(r1.content))
         print(r1.iter_content)
 
         # print(r1.mch_id)
         # print(r1.sandbox_signkey)
-        for key in r1.text:
-            print(key, '----')
-        for key in r1.content:
-            print(key, '====')
         message = {}
         message['resp1'] = r1.text
         return message
@@ -105,7 +101,8 @@ class Controller(BusController):
         print(r1.encoding)
         message = {}
         message['resp1'] = r1
-        message['encode_text1'] = r1.text.encode('iso-8859-1').decode('utf-8')
+        message['resp_text'] = r1.text
+        # message['encode_text1'] = r1.text.encode('iso-8859-1').decode('utf-8')
         # print(r1.text.encode('utf-8'))
         time.sleep(5)
     #     return request.redirect('/wechat/payment_query')
@@ -130,7 +127,8 @@ class Controller(BusController):
         print(r2.headers['content-type'])
         print(r2.encoding)
         message['resp2'] = r2
-        message['encode_text2'] = r2.text.encode('iso-8859-1').decode('utf-8')
+        message['resp_text'] = r2.text
+        # message['encode_text2'] = r2.text.encode('iso-8859-1').decode('utf-8')
         # with open('txt.txt', 'w+') as fil:
         #     fil.write(r1.text, r2.text)
         # print(r2.text.encode('utf-8'))
