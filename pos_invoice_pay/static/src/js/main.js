@@ -988,8 +988,7 @@ var InvoicePayment = PaymentScreenWidget.extend({
     order_is_valid: function () {
         var order = this.pos.get_order(),
             plines = order.get_paymentlines(),
-            i = 0,
-            sum = 0;
+            i = 0;
         if (plines.length === 0) {
             this.gui.show_popup('error', {
                 'title': _t('Zero payment amount.'),
@@ -997,17 +996,27 @@ var InvoicePayment = PaymentScreenWidget.extend({
             });
             return false;
         }
-        sum = _.reduce(plines, function (accum, pline) {
-            accum += pline.get_amount();
-            return accum;
-        }, 0);
-        if (sum <= 0) {
-            this.gui.show_popup('error',{
-                'title': _t('Wrong payment amount.'),
-                'body': _t('You can not validate the order with zero or negative payment amount.'),
-            });
-            return false;
+        for (i = 0; i < plines.length; i++) {
+            if (plines[i].get_amount() <= 0) {
+                this.gui.show_popup('error',{
+                    'title': _t('Wrong payment amount.'),
+                    'body': _t('You can only create positive payments.'),
+                });
+                return false;
+            }
         }
+
+        // sum = _.reduce(plines, function (accum, pline) {
+        //     accum += pline.get_amount();
+        //     return accum;
+        // }, 0);
+        // if (sum <= 0) {
+        //     this.gui.show_popup('error',{
+        //         'title': _t('Wrong payment amount.'),
+        //         'body': _t('You can not validate the order with zero or negative payment amount.'),
+        //     });
+        //     return false;
+        // }
         return true;
     }
 });
