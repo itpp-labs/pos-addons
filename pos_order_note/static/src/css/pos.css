@@ -170,3 +170,16 @@
 .pos.mobile .notelist-screen .top-content .button.next {
     font-size: 35px;
 }
+.pos.mobile .order-note-line {
+    margin-right: 30px;
+    margin-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: solid 4px;
+}
+.pos.mobile .order-note-line .entry.note{
+    font-size: 30px;
+}
+.pos.mobile .order-note-line .label {
+    font-size: 40px;
+}

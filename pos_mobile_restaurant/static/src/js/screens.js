@@ -9,7 +9,6 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
     screens.ProductScreenWidget.include({
         start: function(){
             this._super();
-
             var order = this.order_widget.$el;
             order.detach();
             $('.slide-order').append(order);
@@ -24,6 +23,18 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
             this.$('.order-printbill').click(function(){
                 self.gui.screen_instances.products.action_buttons.print_bill.button_click();
             });
+        }
+    });
+
+    screens.OrderWidget.include({
+        renderElement: function(scrollbottom){
+            this._super();
+            /* If POS Order Note was installed */
+            var order_note = $('.slide-order .order-note-line');
+            if (order_note.length) {
+                order_note.detach();
+                $('.slide-order .order-scroller').append(order_note);
+            }
         }
     });
 
