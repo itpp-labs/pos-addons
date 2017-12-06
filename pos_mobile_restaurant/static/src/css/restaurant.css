@@ -349,11 +349,6 @@
 .pos.mobile .under-search {
     max-height: 705px;
 }
-.pos.mobile .top-control-buttons .control-button:hover, .pos.mobile .control-button.order-printbill:hover {
-    background: #6EC89B;
-    color: white;
-    border-color: transparent;
-}
 .pos.mobile .top-control-buttons .control-button:active, .pos.mobile .control-button.order-printbill:active {
     background: black;
     color: white;

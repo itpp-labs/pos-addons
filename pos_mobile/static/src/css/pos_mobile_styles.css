@@ -410,7 +410,7 @@
 .pos.mobile .mode-button {
     font-size: 40px;
 }
-.pos.mobile .numpad button:hover {
+.pos.mobile .numpad button:active {
     background: #6EC89B;
     color: white;
     border-color: transparent;
