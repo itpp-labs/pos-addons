@@ -119,7 +119,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     return ord.uid === data.uid;
                 });
             }
-            if (order && order.table && order.table.id != data.table_id) {
+            if (order && order.table && order.table.id !== data.table_id) {
                 order.transfer = true;
                 order.destroy({'reason': 'abandon'});
             }
