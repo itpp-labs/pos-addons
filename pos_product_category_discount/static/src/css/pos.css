@@ -244,3 +244,19 @@
 .pos.mobile .modal-dialog .popup.popup-discount .footer .button{
     font-size: 40px;
 }
+.pos.mobile .modal-dialog .popup.popup-discount button:active, .pos.mobile .modal-dialog .popup.popup-discount .button:active {
+    background: #555555;
+    color: white;
+}
+/*Mobile ScreenWidget*/
+.pos.mobile .discountlist-screen .discount-list{
+    font-size: 35px;
+    line-height: 60px;
+}
+.pos.mobile .discountlist-screen .discount-list th,
+.pos.mobile .discountlist-screen .discount-list td {
+    padding: 8px !important;
+}
+.pos.mobile .discountlist-screen .top-content .button.next {
+    font-size: 35px!important;
+}
