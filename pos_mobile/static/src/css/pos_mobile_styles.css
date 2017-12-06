@@ -691,7 +691,7 @@
 .pos.mobile .screen .top-content .button {
     line-height: 64px;
     padding: 6px 26px;
-    font-size: 35px;
+    font-size: 35px !important;
     margin: 24px;
     border: 2px solid #e8e8e8;
     border-radius: 15px;
@@ -847,9 +847,9 @@
 .pos.mobile .payment-screen .payment-buttons{
     padding: 0px;
     display: block;
-    float: left;
     max-width: 380px;
     width: 100%;
+    padding-right: 5px;
 }
 .pos.mobile .payment-screen .payment-buttons .button {
     line-height: 130px;
@@ -903,6 +903,15 @@
 }
 .pos.mobile .payment-screen .paymentlines-empty {
     margin-bottom: 20px;
+}
+.pos.mobile .paymentmethods-container {
+    border-bottom: dashed 3px rgb(188,188,188);
+    max-height: 375px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.pos.mobile .payment-screen .payment-numpad {
+    max-width: calc(100% - 380px);
 }
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
