@@ -913,6 +913,9 @@
 .pos.mobile .payment-screen .payment-numpad {
     max-width: calc(100% - 380px);
 }
+.pos.mobile .payment-screen .left-content {
+    display: none;
+}
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
     line-height: 80px;
