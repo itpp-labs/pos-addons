@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.1`
+------
+
+- **NEW:** Support the POS Mobile UI for Waiters module
+
 `1.1.1`
 ------
 
