@@ -62,7 +62,7 @@ odoo.define('pos_mobile.chrome', function (require) {
             }
 
             // element before the closing button in top header
-            $($('.js_connected')[0]).css({'margin-right': '70px'});
+            $($('.pos-rightheader .oe_status')[0]).css({'margin-right': '70px'});
         },
     });
 
