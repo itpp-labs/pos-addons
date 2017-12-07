@@ -6,11 +6,12 @@ odoo.define('pos_product_available.PosModel', function(require){
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
-            var partner_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            var partner_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
             partner_model.fields.push('qty_available');
-            
             return _super_posmodel.initialize.call(this, session, attributes);
-        },
+        }
     });
 
     var PosModelSuper = models.PosModel;
@@ -56,6 +57,6 @@ odoo.define('pos_product_available.PosModel', function(require){
             }
 
             return invoiced;
-        },
+        }
     });
 });
