@@ -23,6 +23,7 @@
         "views/template.xml",
         "views/pos_order_view.xml",
         "views/pos_config_view.xml",
+        "views/report_saledetails.xml",
     ],
     "qweb": [
         "static/src/xml/pos.xml",
