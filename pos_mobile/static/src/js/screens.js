@@ -158,6 +158,20 @@ odoo.define('pos_mobile.screens', function (require) {
         partner_icon_url: function(id){
             return '/web/image?model=res.partner&id='+id+'&field=image_medium';
         },
+        show: function(){
+            this._super();
+            var self = this;
+            var search_timeout = null;
+            this.$('.searchbox input').on('keydown',function(event){
+                clearTimeout(search_timeout);
+
+                var searchbox = this;
+
+                search_timeout = setTimeout(function(){
+                    self.perform_search(searchbox.value, event.which === 13);
+                },70);
+            });
+        }
     });
 
     screens.NumpadWidget.include({
