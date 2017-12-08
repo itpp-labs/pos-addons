@@ -2,7 +2,9 @@ odoo.define('pos_absolute_discount.models', function(require){
 
     var models = require('point_of_sale.models');
     var utils = require('web.utils');
+    var core = require('web.core');
 
+    var _t = core._t;
     var round_pr = utils.round_precision;
     var round_di = utils.round_decimals;
 
@@ -26,6 +28,17 @@ odoo.define('pos_absolute_discount.models', function(require){
         },
         // sets a absolute discount
         set_absolute_discount: function (discount) {
+            var self = this;
+            if (this.price < discount) {
+                this.pos.gui.screen_instances.products.numpad.state.set({
+                    buffer: this.get_absolute_discount_str() || String(0)
+                });
+                return this.pos.gui.show_popup('error',{
+                    'title': _t("Warning"),
+                    'body': _t("It is not allowed to create a credit by discount: " + discount + self.pos.currency.symbol + '. \r\n' +
+                    "The discount value should not be higher than unit price " + self.price + self.pos.currency.symbol),
+                });
+            }
             if (this.get_discount()) {
                 this.set_discount(0);
             }
