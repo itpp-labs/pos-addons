@@ -1405,7 +1405,15 @@
     width: 100%;
     height: 100%;
 }
-.pos.mobile .order-selector, .pos.mobile .orders.touch-scrollable{
+.pos.mobile .order-selector {
+    display: flex;
+    float: left;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+.pos.mobile .orders.touch-scrollable{
     display: inline-block;
     float: left;
 }
