@@ -5,13 +5,11 @@
         <t t-jquery="div[class='pos-content']" t-operation="prepend">
             <div class="swiper-floor-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide slide-floor-menu"></div>
+                    <div class="swiper-slide slide-floor-menu">
+                        <span class="title">Extended function</span>
+                    </div>
                     <div class="swiper-slide slide-floor-map">
-                        <div class="menu-button">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -20,7 +18,11 @@
 
     <t t-extend="FloorScreenWidget">
         <t t-jquery="div[class='floor-selector']" t-operation="prepend">
-            <span class="title">FLOORS</span>
+            <div class="menu-button">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
         </t>
     </t>
 

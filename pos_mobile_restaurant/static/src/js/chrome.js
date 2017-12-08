@@ -25,29 +25,16 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             this.swiper_floor.destroy(false , false);
 
             // event for menu button
-            this.menuButton = $('.slide-floor-map .menu-button');
+            this.menuButton = $('.menu-button');
             this.menu_is_opened = false;
 
             this.menuButton.click(function(){
-                var slider = self.swiper_floor;
-                if (self.menu_is_opened) {
-                    slider.slideNext();
-                    self.menuButton.removeClass('cross');
-                    self.menu_is_opened = false;
-                } else {
-                    slider.slidePrev();
-                    self.menuButton.addClass('cross');
-                    self.menu_is_opened = true;
-                }
+                self.menu_button_click();
             });
 
-            var floor_selector = $('.floor-selector');
-            floor_selector.detach();
-            $(".slide-floor-menu").append(floor_selector);
-
-            var floor_map = $('.floor-map');
-            floor_map.detach();
-            $(".slide-floor-map").append(floor_map);
+            var floor_flexbox = $('.floor-screen .screen-content-flexbox');
+            floor_flexbox.detach();
+            $(".slide-floor-map").append(floor_flexbox);
 
             var order_button = $('.control-button.order-submit');
             order_button.detach();
@@ -68,10 +55,22 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             $('.top-control-buttons').append(discount);
             $('.top-control-buttons').append(note);
 
-            /* The new Printbill Button in ActionpadWidget, delete the old button */
+            /* The new Printbill Button in ActionpadWidget, delete the old Printbill button */
             var printbill = $('.slide-buttons .control-button.order-printbill');
             printbill.remove();
         },
+        menu_button_click: function() {
+            var slider = this.swiper_floor;
+            if (this.menu_is_opened) {
+                slider.slideNext();
+                this.menuButton.removeClass('cross');
+                this.menu_is_opened = false;
+            } else {
+                slider.slidePrev();
+                this.menuButton.addClass('cross');
+                this.menu_is_opened = true;
+            }
+        }
     });
 
     return chrome;
