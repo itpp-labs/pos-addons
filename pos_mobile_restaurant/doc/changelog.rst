@@ -2,9 +2,9 @@
 -------
 
 - **NEW:** Floor screen interface
-- **NEW:** Functional area optimization
+- **NEW:** Functional part optimization
 - **NEW:** Compatibility with pos_order_note, pos_order_cancel, pos_product_category_discount
-- **NEW:** Filtration of products and partners in real-time
+- **NEW:** Ability to filter the products and partners in real-time
 
 `1.0.0`
 -------
