@@ -4,7 +4,7 @@
     "summary": """Use multiple POS for handling orders""",
     "category": "Point Of Sale",
     "images": ["images/pos-multi-session.png"],
-    "version": "3.1.0",
+    "version": "4.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
@@ -16,7 +16,7 @@
 
     "depends": [
         "pos_disable_payment",
-        "pos_longpolling",
+        "pos_multi_session_sync"
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
