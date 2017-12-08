@@ -22,6 +22,16 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.renderElement();
                 self.chrome.swiperH[0].slideTo(1);
             };
+            var search_timeout = null;
+            this.search_handler = function(event){
+                if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
+                    clearTimeout(search_timeout);
+                    var searchbox = this;
+                    search_timeout = setTimeout(function(){
+                        self.perform_search(self.category, searchbox.value, event.which === 13);
+                    },70);
+                }
+            };
         },
         open_bottom_menu: function() {
             if (this.current_bottom_slide === "numpad") {
@@ -117,9 +127,11 @@ odoo.define('pos_mobile.screens', function (require) {
     screens.ProductScreenWidget.include({
         click_product: function(product) {
             this._super.apply(this, arguments);
-            // adds click effect
-            if ($('.product-count')) {
-                $('.product-count').remove();
+            var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+            var order = this.pos.get_order();
+            var qty = order.get_quantity_by_product_id(product.id);
+            if (qty) {
+                $qty.html(qty);
             }
             var $p = $('span[data-product-id="'+product.id+'"]');
             $($p).animate({
@@ -139,16 +151,6 @@ odoo.define('pos_mobile.screens', function (require) {
                     'min-width': '128px',
                 }, 400);
             });
-            var order = this.pos.get_order();
-            var qty = order.get_quantity_by_product_id(product.id);
-            $p.append('<span class="product-count">'+qty+'</span>');
-            var count = $($p.children()[2]);
-            count.animate({
-                'font-size': '150px',
-                'top': '-40%',
-            }, 400, function(){
-                count.remove();
-            });
         },
     });
 
@@ -156,6 +158,20 @@ odoo.define('pos_mobile.screens', function (require) {
         partner_icon_url: function(id){
             return '/web/image?model=res.partner&id='+id+'&field=image_medium';
         },
+        show: function(){
+            this._super();
+            var self = this;
+            var search_timeout = null;
+            this.$('.searchbox input').on('keydown',function(event){
+                clearTimeout(search_timeout);
+
+                var searchbox = this;
+
+                search_timeout = setTimeout(function(){
+                    self.perform_search(searchbox.value, event.which === 13);
+                },70);
+            });
+        }
     });
 
     screens.NumpadWidget.include({
@@ -171,6 +187,15 @@ odoo.define('pos_mobile.screens', function (require) {
         },
     });
 
+    screens.PaymentScreenWidget.include({
+        renderElement: function(){
+            this._super();
+             var payment_method = $(".payment-screen .paymentmethods-container");
+            payment_method.detach();
+            $('.payment-screen .paymentlines-container').after(payment_method);
+        }
+    });
+
     screens.OrderWidget.include({
         renderElement: function(scrollbottom){
             this._super(scrollbottom);
@@ -178,6 +203,29 @@ odoo.define('pos_mobile.screens', function (require) {
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
         },
+        change_selected_order: function() {
+            this._super();
+            var order = this.pos.get_order();
+            if (order) {
+                // update the products qty for current order
+                var products = this.pos.gui.screen_instances.products.product_list_widget.product_list;
+                products.forEach(function(product){
+                    var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+                    var qty = order.get_quantity_by_product_id(product.id);
+                    $qty.html('');
+                    if (qty) {
+                        $qty.html(qty);
+                    }
+                });
+                this.scroll_to_selected_order();
+            }
+        },
+        scroll_to_selected_order: function() {
+            var orders = this.pos.get('orders');
+            var selected_order = this.pos.get_order();
+            var width = orders.indexOf(selected_order);
+            $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
+        }
     });
     return screens;
 });

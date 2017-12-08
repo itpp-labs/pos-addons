@@ -60,6 +60,9 @@ odoo.define('pos_mobile.chrome', function (require) {
                 buttons.detach();
                 $('.slide-buttons').append(buttons);
             }
+
+            // element before the closing button in top header
+            $($('.pos-rightheader .oe_status')[0]).css({'margin-right': '70px'});
         },
     });
 
@@ -78,29 +81,31 @@ odoo.define('pos_mobile.chrome', function (require) {
         deleteorder_click_handler: function(event, $el) {
             this._super(event,$el);
             this.chrome.swiperH[0].slideTo(0, 0);
+            this.pos.gui.screen_instances.products.order_widget.scroll_to_selected_order();
         },
     });
 
     chrome.HeaderButtonWidget.include({
+        confirm_img: '<img src="/pos_mobile/static/src/img/svg/confirm.svg"/>',
+        cancel_img: '<img src="/pos_mobile/static/src/img/svg/close.svg"/>',
         renderElement: function(){
             var self = this;
             this._super();
             if(this.action){
+                this.$el.append(this.cancel_img);
                 this.$el.click(function(){
                     self.change_action();
                 });
             }
         },
         change_action: function() {
-            var cancel_button = '<img src="/pos_mobile/static/src/img/svg/close.svg"/>';
-            var confirm_cancel_button = '<img src="/pos_mobile/static/src/img/svg/confirm.svg"/>';
             var self = this;
             if (!this.confirmed_change) {
                 this.$el.text('');
-                this.$el.append(confirm_cancel_button);
+                this.$el.append(self.confirm_img);
                 this.confirmed_change = setTimeout(function(){
                     self.$el.text('');
-                    self.$el.append(cancel_button);
+                    self.$el.append(self.cancel_img);
                     self.confirmed_change = false;
                 },2000);
             }
