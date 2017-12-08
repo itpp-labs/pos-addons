@@ -1,0 +1,135 @@
+odoo.define('pos_product_category_discount.models', function (require) {
+    "use strict";
+
+    var models = require('point_of_sale.models');
+    var Model = require('web.Model');
+
+    models.load_models({
+        model: 'pos.discount_program',
+        fields: [],
+        domain: function(self){
+            return [['discount_program_active','=',true]];
+        },
+        loaded: function(self,discount_program){
+            var sorting_discount_program = function(idOne, idTwo){
+                return idOne.discount_program_number - idTwo.discount_program_number;
+            };
+            if (discount_program) {
+                self.discount_program = discount_program.sort(sorting_discount_program);
+            }
+        },
+    });
+    models.load_models({
+        model: 'pos.category_discount',
+        fields: [],
+        loaded: function(self,category_discount){
+            if (category_discount) {
+                self.discount_categories = category_discount;
+            }
+        },
+    });
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        load_server_data: function() {
+            var partner_model = _.find(this.models, function(model){
+                return model.model === 'res.partner';
+            });
+            partner_model.fields.push('discount_program_id');
+
+            var product_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
+            product_model.fields.push('discount_allowed');
+            return PosModelSuper.prototype.load_server_data.apply(this, arguments);
+        },
+        get_discount_categories: function(id) {
+            return _.filter(this.discount_categories, function(item){
+                return item.discount_program_id[0] === id;
+            });
+        },
+        set_discount_categories_by_program_id: function(id) {
+            if (this.config.iface_discount) {
+                var self = this;
+                var discount_categories = this.get_discount_categories(id);
+                var order = this.get_order();
+                if (discount_categories) {
+                    order.remove_all_discounts();
+                    discount_categories.forEach(function(discount) {
+                        self.apply_discount_category(discount);
+                    });
+                }
+            }
+        },
+        apply_discount_category: function(discount) {
+            var self = this;
+            var order = this.get_order();
+            var lines = order.get_orderlines().filter(function(item) {
+                if (item.product.pos_category_ids) {
+                    return item.product.pos_category_ids.indexOf(discount.discount_category_id[0]) !== -1 && item.product.discount_allowed;
+                }
+                return item.product.pos_categ_id[0] === discount.discount_category_id[0] && item.product.discount_allowed;
+            });
+            lines.forEach(function (line){
+                line.discount_program_name = discount.discount_program_id[1];
+                line.set_discount(discount.category_discount_pc);
+            });
+            order.discount_program_id = discount.discount_program_id[0];
+        },
+    });
+
+    var OrderSuper = models.Order;
+    models.Order = models.Order.extend({
+        remove_all_discounts: function() {
+            if (this.pos.config.iface_discount) {
+                this.discount_program_id = false;
+                this.get_orderlines().forEach(function(line){
+                    line.set_discount(false);
+                });
+            }
+        },
+        export_as_JSON: function(){
+            var json = OrderSuper.prototype.export_as_JSON.call(this);
+            json.product_discount = this.product_discount || false;
+            json.discount_program_id = this.discount_program_id;
+            return json;
+        },
+        init_from_JSON: function(json) {
+            OrderSuper.prototype.init_from_JSON.apply(this,arguments);
+            this.product_discount = json.product_discount || false;
+            this.discount_program_id = json.discount_program_id;
+        },
+    });
+
+    var OrderlineSuper = models.Orderline;
+    models.Orderline = models.Orderline.extend({
+        initialize: function(attr,options){
+            OrderlineSuper.prototype.initialize.apply(this,arguments);
+            if (this.order && this.order.discount_program_id && this.product.discount_allowed) {
+                this.apply_product_discount(this.order.discount_program_id);
+            }
+        },
+        apply_product_discount: function(id) {
+            var self = this;
+            var discount_categories = this.pos.get_discount_categories(id);
+            discount_categories.forEach(function(res){
+                if ((self.product.pos_category_ids && self.product.pos_category_ids.indexOf(res.discount_category_id[0]) !== -1) ||
+                (self.product.pos_categ_id && res.discount_category_id[0] === self.product.pos_categ_id[0])) {
+                    self.discount_program_name = res.discount_program_id[1];
+                    self.set_discount(res.category_discount_pc);
+                }
+            });
+        },
+        export_as_JSON: function(){
+            var json = OrderlineSuper.prototype.export_as_JSON.call(this);
+            json.discount_program_name = this.discount_program_name || false;
+            return json;
+        },
+        init_from_JSON: function(json) {
+            OrderlineSuper.prototype.init_from_JSON.apply(this,arguments);
+            this.discount_program_name = json.discount_program_name || false;
+        },
+        get_discount_name: function(){
+            return this.discount_program_name;
+        },
+    });
+});

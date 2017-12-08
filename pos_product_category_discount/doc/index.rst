@@ -50,4 +50,3 @@ Usage
 * Select any discount program
 * Click on ``[Apply]``
 * See discounts applied to corresponding order lines
-

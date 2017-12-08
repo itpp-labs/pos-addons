@@ -125,7 +125,8 @@ window.mstest = {
     },
     check_revision_error: function(){
         warning_message = 'There is a conflict during synchronization, try your action again';
-        if ($('.modal .in').text() == warning_message)
+        if ($('.popup-error > p.body').text().indexOf(warning_message) !== -1){
             console.log('error', warning_message);
+        }
     },
 };
