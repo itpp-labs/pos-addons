@@ -193,8 +193,15 @@ odoo.define('pos_mobile.screens', function (require) {
                         $qty.html(qty);
                     }
                 });
+                this.scroll_to_selected_order();
             }
         },
+        scroll_to_selected_order: function() {
+            var orders = this.pos.get('orders');
+            var selected_order = this.pos.get_order();
+            var width = orders.indexOf(selected_order);
+            $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
+        }
     });
     return screens;
 });

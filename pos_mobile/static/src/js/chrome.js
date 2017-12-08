@@ -81,6 +81,7 @@ odoo.define('pos_mobile.chrome', function (require) {
         deleteorder_click_handler: function(event, $el) {
             this._super(event,$el);
             this.chrome.swiperH[0].slideTo(0, 0);
+            this.pos.gui.screen_instances.products.order_widget.scroll_to_selected_order();
         },
     });
 
