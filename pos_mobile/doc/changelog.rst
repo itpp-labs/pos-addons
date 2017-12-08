@@ -2,7 +2,7 @@
 -------
 
 - **NEW:** Payment screen interface
-- **NEW:** Counter quantity of products for the current order
+- **NEW:** Quantity indicator of products added to the current order
 - **NEW:** Order list scrolling
 
 `1.0.0`
