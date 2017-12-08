@@ -36,7 +36,8 @@ class Controller(BusController):
         print(r1.headers)
         print(r1.headers['content-type'])
         print(r1.iter_content)
-
+        print(len(r1.text))
+        print(len(r1.content))
         # print(r1.mch_id)
         # print(r1.sandbox_signkey)
         message = {}
@@ -99,9 +100,12 @@ class Controller(BusController):
         print(r1.headers)
         print(r1.headers['content-type'])
         print(r1.encoding)
+        print(len(r1.text))
+        print(len(r1.content))
         message = {}
         message['resp1'] = r1
-        message['resp_text'] = r1.text
+        message['resp_text1'] = r1.text
+        message['resp_cont1'] = r1.content
         # message['encode_text1'] = r1.text.encode('iso-8859-1').decode('utf-8')
         # print(r1.text.encode('utf-8'))
         time.sleep(5)
@@ -126,8 +130,11 @@ class Controller(BusController):
         print(r2.headers)
         print(r2.headers['content-type'])
         print(r2.encoding)
+        print(len(r2.text))
+        print(len(r2.content))
         message['resp2'] = r2
-        message['resp_text'] = r2.text
+        message['resp_text2'] = r2.text
+        message['resp_cont2'] = r2.content
         # message['encode_text2'] = r2.text.encode('iso-8859-1').decode('utf-8')
         # with open('txt.txt', 'w+') as fil:
         #     fil.write(r1.text, r2.text)
