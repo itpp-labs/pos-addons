@@ -42,7 +42,7 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
                 var selected_order = this.pos.get_order();
                 var width = orders.indexOf(selected_order);
                 var floor_button_width = $('.pos-rightheader .floor-button').width() + 50;
-                $('.pos-rightheader .orders.touch-scrollable').scrollLeft(floor_button_width + 105 * width);
+                $('.pos-rightheader .orders.touch-scrollable').scrollLeft(floor_button_width + (105 * width));
             } else {
                 this._super();
             }
