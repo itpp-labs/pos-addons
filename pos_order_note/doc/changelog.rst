@@ -1,3 +1,8 @@
+`1.1.1`
+-------
+
+- **NEW:** Support the POS Mobile UI for Waiters module
+
 `1.0.1`
 -------
 

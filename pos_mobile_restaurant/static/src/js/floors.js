@@ -9,30 +9,23 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
     var chrome = require('pos_mobile_restaurant.chrome');
 
     floors.FloorScreenWidget.include({
-        click_floor_button: function(event,$el){
-            console.log($el);
-            this._super(event,$el);
-            this.chrome.menuButton.trigger('click');
-        },
         renderElement: function(){
             this._super();
+            var self = this;
+            var floor_flexbox = $('.window .floor-screen .screen-content-flexbox');
+            if (floor_flexbox.length) {
+                floor_flexbox.detach();
+                $('.swiper-slide .screen-content-flexbox').remove();
+                $(".slide-floor-map").append(floor_flexbox);
 
-            // TODO: fix it. don't use renderElement function for append to new block
-            // temporary code
-            var floor_selector = $('.window .floor-selector');
-            if (floor_selector.length) {
-                floor_selector.detach();
-                $(".slide-floor-menu .floor-selector").detach();
-                $(".slide-floor-menu").append(floor_selector);
+                // menu button
+                this.pos.chrome.menuButton = $('.swiper-slide .menu-button');
+                this.pos.chrome.menu_is_opened = false;
+                this.pos.chrome.menuButton.click(function(){
+                    self.pos.chrome.menu_button_click();
+                });
             }
-
-            var floor_map = $('.window .floor-map');
-            if (floor_map.length){
-                floor_map.detach();
-                $(".slide-floor-map .floor-map").detach();
-                $(".slide-floor-map").append(floor_map);
-            }
-        },
+        }
     });
 
     floors.TableWidget.include({

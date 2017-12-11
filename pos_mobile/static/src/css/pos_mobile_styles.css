@@ -61,6 +61,10 @@
     height: 96px;
     background: white;
     border-bottom: solid 3px rgb(196, 196, 196);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 }
 /*  a) The left part of the top-bar */
 
@@ -69,23 +73,27 @@
     width: initial;
     position: relative;
     vertical-align: top;
+    display: block;
+    float: left;
 }
 .pos.mobile .pos-branding .username{
-    margin-right:0px;
     margin-left: 20px;
-    line-height: 22px;
+    margin-right: 20px;
+    line-height: 104px;
     float: left;
     color: #555555;
-    word-wrap: break-word;
-    width: 50px;
-    font-size: 22px;
-    padding-top: 15px;
+    /*word-wrap: break-word;*/
+    width: initial;
+    font-size: 20px;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
-    display: table-cell;
+    display: block;
     position: relative;
-    left: 20px;
+    left: 0px;
+    right: 0px;
+    float: right;
+    width: 100%;
 }
 .pos.mobile .pos-rightheader > * {
     border-right: 0px;
@@ -154,7 +162,6 @@
 /*  c) The session buttons */
 .pos.mobile .pos-rightheader .header-button{
     display: inline-block;
-    float: left;
     height: 96px;
     padding-left: 32px;
     padding-right: 32px;
@@ -162,6 +169,10 @@
     border-left: 2px solid #292929;
     line-height: 96px;
     color: #555555;
+    position: absolute;
+    right: 0;
+    padding: 0px;
+    width: 80px;
 }
 .pos.mobile .pos-rightheader .header-button img{
     padding: 10px;
@@ -174,11 +185,13 @@
 }
 /*  c) The notifications indicator */
 .pos.mobile .oe_status{
-    display: inline-block;
-    float: left;
     padding: 28px;
     line-height: 40px;
     font-size: 40px;
+    float: right;
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .pos.mobile .oe_status .oe_icon{
     width:40px;
@@ -241,7 +254,7 @@
     margin-bottom: -12px;
 }
 .pos.mobile .control-button {
-    font-size: 28px;
+    font-size: 40px;
     margin: 15px;
     padding: 10px 24px;
     line-height: 80px;
@@ -385,10 +398,6 @@
     background: #6EC89B;
     border-color: transparent;
 }
-.pos.mobile .numpad-backspace img {
-    height: 42px;
-    width: 48px;
-}
 .pos.mobile .numpad button:nth-child(4) {
     border-top-right-radius: 15px;
 }
@@ -399,9 +408,9 @@
     font-size: 48px;
 }
 .pos.mobile .mode-button {
-    font-size: 28px;
+    font-size: 40px;
 }
-.pos.mobile .numpad button:hover {
+.pos.mobile .numpad button:active {
     background: #6EC89B;
     color: white;
     border-color: transparent;
@@ -448,6 +457,19 @@
 .pos.mobile .product-list {
     padding: 20px;
     text-align: center;
+}
+.pos.mobile .current-order-qty {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: red;
+    color: white;
+    line-height: 30px;
+    min-width: 30px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
 }
 /*  a) the product list navigation bar */
 .pos.mobile .breadcrumb{
@@ -572,7 +594,7 @@
     -webkit-transition-property: background, border;
     -webkit-transition-duration: 0.2s;
     -webkit-transition-timing-function: ease-out;
-    transition: 0.order-scroller2s;
+    transition: 0.2s;
 }
 .pos.mobile .category-button .category-img {
     width: 240px;
@@ -659,18 +681,17 @@
 /* a) Generic Screen Layout Constructs */
 .pos.mobile .screen .screen-content{
     max-width: 2048px;
-    background: #f7f7f7;
+    background: white;
 }
-
 .pos.mobile .screen .top-content{
     background: white;
     height: 128px;
-    border-bottom: dashed 2px rgb(215,215,215);
+    border-bottom: dashed 2px rgb(110,110,110);
 }
 .pos.mobile .screen .top-content .button {
     line-height: 64px;
     padding: 6px 26px;
-    font-size: 35px;
+    font-size: 35px !important;
     margin: 24px;
     border: 2px solid #e8e8e8;
     border-radius: 15px;
@@ -727,18 +748,25 @@
 /* b) The payment screen */
 .pos.mobile .payment-numpad {
     width: 100%;
-    max-width: 760px;
+    max-width: 635px;
+    padding: 0px;
+    margin: 0px;
+    float: right;
 }
 .pos.mobile .payment-numpad .numpad {
     border: none;
     border-radius: 8px;
     width: 100% !important;
     max-width: initial;
-    margin-left: 5px;
+    margin: 0px;
+    margin-top: 15px;
 }
 .pos.mobile .payment-numpad .numpad button {
-    width: 160px;
-    height: 160px;
+    width: 145px;
+    height: 135px;
+    font-size: 50px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 22px -14px black;
 }
 .pos.mobile .payment-numpad .numpad button:first-child {
     border-top-left-radius: 8px;
@@ -746,10 +774,15 @@
 .pos.mobile .payment-numpad .numpad button:nth-child(16) {
     border-bottom-left-radius: 8px;
 }
+.pos.mobile .paymentlines {
+    margin-bottom: 20px;
+}
 .pos.mobile .paymentlines-container {
     padding: 0px;
-    border-bottom: dashed 2px gainsboro;
-    min-height: 308px;
+    border-bottom: dashed 2px rgb(110,110,110);
+    max-height: 556px;
+    overflow: hidden !important;
+    overflow-y: auto !important;
 }
 .pos.mobile .paymentlines .controls {
     width: 80px;
@@ -792,21 +825,58 @@
     width: 100%;
     display: block;
 }
+.pos.mobile .payment-screen .left-content{
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 375px;
+}
+.pos.mobile .payment-screen .left-content.pc40{
+    right: initial;
+    border-bottom: dashed 2px rgb(175,175,175);
+}
+.pos.mobile .payment-screen .right-content{
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 1440px;
+}
+.pos.mobile .payment-screen .right-content.pc60{
+    left: initial;
+}
+.pos.mobile .payment-screen .payment-buttons{
+    padding: 0px;
+    display: block;
+    max-width: 380px;
+    width: 100%;
+    padding-right: 5px;
+}
 .pos.mobile .payment-screen .payment-buttons .button {
-    line-height: 146px;
+    line-height: 130px;
     font-size: 32px;
     padding: 0px 16px;
     border: 2px solid #e8e8e8;
-    border-radius: 15px;
-    margin: 10px;
+    border-radius: 8px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    text-align: left;
+    padding-left: 135px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+.pos.mobile .payment-screen .payment-buttons i {
+    text-align: center;
 }
 .pos.mobile .payment-screen .payment-buttons .button:first-child {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-top-width: 2px;
+    margin-top: 20px;
 }
 .pos.mobile .payment-screen .payment-buttons .button:last-child {
     border-bottom-left-radius: 6px;
@@ -830,6 +900,21 @@
     padding: 48px 0px 36px;
     font-size: 128px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
+}
+.pos.mobile .payment-screen .paymentlines-empty {
+    margin-bottom: 20px;
+}
+.pos.mobile .paymentmethods-container {
+    border-bottom: dashed 3px rgb(188,188,188);
+    max-height: 375px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.pos.mobile .payment-screen .payment-numpad {
+    max-width: calc(100% - 380px);
+}
+.pos.mobile .payment-screen .left-content {
+    display: none;
 }
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
@@ -1076,7 +1161,10 @@
 }
 .pos.mobile .paymentmethods {
     margin: 15px;
-    margin-top: 55px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
 }
 .pos.mobile .paymentmethods .button {
     line-height: 90px;
@@ -1087,6 +1175,11 @@
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 400px;
+    margin-left:30px;
+    margin-right: 30px;
 }
 .pos.mobile .paymentmethods .button:first-child {
     border-top-width: 2px;
@@ -1097,6 +1190,7 @@
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
+
 /*  ********* The ActionBarWidget  ********* */
 
 .pos.mobile .pos-actionbar{
@@ -1311,7 +1405,15 @@
     width: 100%;
     height: 100%;
 }
-.pos.mobile .order-selector, .pos.mobile .orders.touch-scrollable{
+.pos.mobile .order-selector {
+    display: flex;
+    float: left;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+.pos.mobile .orders.touch-scrollable{
     display: inline-block;
     float: left;
 }

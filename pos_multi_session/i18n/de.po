@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-27 14:43+0000\n"
-"PO-Revision-Date: 2017-10-27 14:43+0000\n"
+"POT-Creation-Date: 2017-12-08 18:44+0000\n"
+"PO-Revision-Date: 2017-12-08 18:44+0000\n"
 "Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
@@ -27,19 +27,30 @@ msgid ", edited by"
 msgstr ", editiert durch"
 
 #. module: pos_multi_session
+#. openerp-web
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:24
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
+msgstr ""
+"<p>Anklicken, um das POS-System zu starten. Es <b>läuft auf Tablets</b>, "
+"Laptops, oder industrieller Hardware.</p><p>Sobald eine Sitzung gestartet "
+"wurde, funktioniert das System auch ohne Internet-Verbindung.</p>"
+
+#. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_accept_incoming_orders
 msgid "Accept incoming orders"
 msgstr "Eingehende Bestellungen annehmen"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_create_uid
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_create_uid
 msgid "Created by"
 msgstr "Erstellt durch"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_create_date
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_create_date
 msgid "Created on"
 msgstr "Erstellt am"
 
@@ -54,20 +65,9 @@ msgid "Deactivate empty order"
 msgstr "Leere Bestellung deaktivieren"
 
 #. module: pos_multi_session
-#: selection:pos.multi_session.order,state:0
-msgid "Deleted"
-msgstr "Gelöscht"
-
-#. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_display_name
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_display_name
 msgid "Display Name"
 msgstr "Anzeigename"
-
-#. module: pos_multi_session
-#: selection:pos.multi_session.order,state:0
-msgid "Draft"
-msgstr "Entwurf"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config_multi_session_replace_empty_order
@@ -77,38 +77,29 @@ msgstr ""
 "anderen POS kommt"
 
 #. module: pos_multi_session
+#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_fiscal_position_ids
+msgid "Fiscal Positions"
+msgstr ""
+
+#. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_id
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_id
 msgid "ID"
 msgstr "ID"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session___last_update
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order___last_update
 msgid "Last Modified on"
 msgstr "Zuletzt geändert am"
 
 #. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_write_uid
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_write_uid
 msgid "Last Updated by"
 msgstr "Zuletzt aktualisiert durch"
 
 #. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_write_date
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_write_date
 msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
-
-#. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_message_ID
-msgid "Last sent message number"
-msgstr "Nummer der zuletzt gesendeten Nachricht"
-
-#. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_multi_session_id
-msgid "Multi session"
-msgstr "Multi-Sitzung"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_id
@@ -119,12 +110,8 @@ msgid "Multi-session"
 msgstr "Multi-Sitzung"
 
 #. module: pos_multi_session
-#: model:ir.ui.menu,name:pos_multi_session.menu_pos_ms_settings
-msgid "Multi-session Settings"
-msgstr "Multi-Sitzungseinstellungen"
-
-#. module: pos_multi_session
 #: model:ir.actions.act_window,name:pos_multi_session.action_multi_session_form
+#: model:ir.ui.menu,name:pos_multi_session.menu_pos_ms_settings
 msgid "Multi-sessions"
 msgstr "Multi-Sitzungen"
 
@@ -143,7 +130,7 @@ msgstr "Neu"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:627
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:737
 #, python-format
 msgid ""
 "No connection to the server. You can create new orders only. It is forbidden"
@@ -153,29 +140,17 @@ msgstr ""
 " Ändern von bestehenden Bestellungen ist nicht erlaubt."
 
 #. module: pos_multi_session
-#: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session_order_revision_ID
-msgid "Number of updates received from clients"
+#: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session_run_ID
+msgid ""
+"Number of Multi-session starts. It's incremented each time the last session "
+"in Multi-session is closed. It's used to prevent synchronization of old "
+"orders"
 msgstr ""
-
-#. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_order
-msgid "Order JSON format"
-msgstr "Bestellung JSON-Format"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_ID
 msgid "Order number"
 msgstr "Bestellnummer"
-
-#. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_order_uid
-msgid "Order uid"
-msgstr "Bestellung-UID"
-
-#. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_ids
-msgid "Orders"
-msgstr "Bestellungen"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config_multi_session_deactivate_empty_order
@@ -188,14 +163,22 @@ msgid "POSes in Multi-session"
 msgstr ""
 
 #. module: pos_multi_session
+#. openerp-web
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:20
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
+"Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
+
+#. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_replace_empty_order
 msgid "Replace empty order"
 msgstr ""
 
 #. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_revision_ID
-msgid "Revision"
-msgstr "Revision"
+#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_run_ID
+msgid "Running count"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config_multi_session_id
@@ -211,13 +194,14 @@ msgid "Settings"
 msgstr ""
 
 #. module: pos_multi_session
-#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_order_state
-msgid "State"
-msgstr "Status"
+#: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_sync_server
+#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_sync_server
+msgid "Sync Server"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:562
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:671
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
@@ -228,13 +212,8 @@ msgid "To remove or add a POS to multi-session close its session first"
 msgstr ""
 
 #. module: pos_multi_session
-#: selection:pos.multi_session.order,state:0
-msgid "Unpaid and removed"
-msgstr "Unbezahlt und entfernt"
-
-#. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:607
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:717
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -261,11 +240,6 @@ msgstr "pos.config"
 #: model:ir.model,name:pos_multi_session.model_pos_multi_session
 msgid "pos.multi_session"
 msgstr "pos.multi_session"
-
-#. module: pos_multi_session
-#: model:ir.model,name:pos_multi_session.model_pos_multi_session_order
-msgid "pos.multi_session.order"
-msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model,name:pos_multi_session.model_pos_session

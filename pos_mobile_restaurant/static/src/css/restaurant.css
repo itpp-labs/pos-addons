@@ -1,44 +1,17 @@
-/* --- Restaurant for Mobile Specific CSS --- */
-
-.pos.mobile .screen .screen-content-flexbox {
-    margin:     0px auto;
-    text-align: left;
-    height:     100%;
-    overflow:   hidden;
-    position:   relative;
-    display:    -webkit-flex;
-    -webkit-flex-flow:  column nowrap;
-    flex-flow:  column nowrap;
-}
-
 /* ------ FLOOR SELECTOR ------- */
 
 .pos.mobile .floor-selector {
-    line-height: 96px;
-    font-size: 36px;
-    display: block;
+    line-height: 80px;
+    font-size: 30px;
 }
-.pos.mobile .floor-selector .button {
-    border: none;
-    display: block;
-    -webkit-flex: none;
-    flex: none;
-    background: #67aeff;
-    margin-bottom: 10px;
-}
-.pos.mobile .floor-selector .button.active {
-    background: #6EC89B;
-}
-.pos.mobile .floor-selector .button:hover {
-    background: #6EC89B;
-    -webkit-transition: .3s;
-    transition: .3s;
-}
-.pos.mobile .floor-selector .title {
+
+.pos.mobile .slide-floor-menu .title {
     display: block;
     font-size: 50px;
-    line-height: 91px;
+    line-height: 80px;
+    text-align: center;
 }
+
 /* ------ FLOOR MAP ------- */
 
 .pos.mobile .floor-map {
@@ -46,9 +19,11 @@
 }
 .pos.mobile .floor-map .tables {
     overflow-y: auto;
-    max-width: 900px;
+    max-width: 880px;
     max-height: initial;
-    float: right;
+    float: none;
+    margin-left: 88px;
+    border: none!important;
 }
 .pos.mobile .floor-map .table{
     font-size: 36px;
@@ -158,6 +133,11 @@
 
 .pos.mobile .order-button.floor-button {
     background: white;
+    word-wrap: break-word;
+    white-space: normal;
+    width: 150px;
+    line-height: initial;
+    font-size: smaller;
 }
 .pos.mobile .order-button.floor-button .fa{
     font-size: 48px;
@@ -197,9 +177,9 @@
 }
 /* ------ FLOR MAP BUTTON MENU ------- */
 .pos.mobile .slide-floor-map .menu-button {
-    position: absolute;
+    position: initial;
     top: 0px; left: 0px;
-    padding: 15px;
+    padding: 9px;
     cursor: pointer;
     -webkit-transition: .3s;
     transition: .3s;
@@ -292,4 +272,74 @@
 }
 .pos.mobile .control-button.order-submit.highlight .active {
     display: inline-block;
+}
+.pos.mobile .control-button.order-printbill {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+    height: 93px;
+    line-height: 93px;
+    max-width: calc(100% - 5px);
+}
+/* --------------------- Numpad ------------------------ */
+.pos.mobile .subwindow-container-fix.pads {
+    width: 100%;
+}
+.pos.mobile .actionpad .button.pay {
+    height: 210px;
+}
+.pos.mobile .top-control-buttons {
+    margin: 0px;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    max-width: initial;
+    width: 100%;
+}
+.pos.mobile .top-control-buttons .control-button {
+    width: calc(100%/3 - 15px);
+    margin: 5px;
+    flex-grow: 3;
+    height: 93px;
+    line-height: 93px;
+}
+.pos.mobile .actionpad, .pos.mobile .numpad {
+    margin-top: 0px;
+}
+.pos.mobile .actionpad {
+    max-width: initial;
+    width: calc(100%/3 - 10px);
+}
+.pos.mobile .slide-numpad .numpad {
+    width: 66%;
+    max-width: initial;
+}
+.pos.mobile .slide-numpad .numpad button {
+    width: calc(25% - 10px);
+}
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 705px)!important;
+}
+.pos.mobile .under-search {
+    max-height: 705px;
+}
+.pos.mobile .top-control-buttons .control-button:active, .pos.mobile .control-button.order-printbill:active {
+    background: black;
+    color: white;
+    border-color: transparent;
+}
+
+/* --- Restaurant for Mobile Specific CSS --- */
+
+.pos.mobile .screen-content-flexbox {
+    margin:     0px auto;
+    text-align: left;
+    height:     100%;
+    overflow:   hidden;
+    position:   relative;
+    display:    -webkit-flex;
+    -webkit-flex-flow:  column nowrap;
+    flex-flow:  column nowrap;
 }
