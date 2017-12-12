@@ -14,7 +14,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             var self = this;
 
             // floor swiper
-            this.swiper_floor = new window.Swiper('.swiper-floor-container', {
+            this.swiper_floor = new window.Swiper('.swiper-container-floor', {
                 slidesPerView: 'auto',
                 initialSlide: 1,
                 resistanceRatio: 0,
@@ -38,7 +38,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             var order_button = $('.control-button.order-submit');
             order_button.detach();
-            $(".swiper-order-container .slide-search .searchbox").prepend(order_button);
+            $(".mobile-search-bar .searchbox").prepend(order_button);
 
             // add a div for specific control buttons
             $('.slide-numpad .pads').prepend("<div class='top-control-buttons'></div>");

@@ -3,13 +3,12 @@
 
     <t t-extend="Chrome">
         <t t-jquery="div[class='pos-content']" t-operation="prepend">
-            <div class="swiper-floor-container">
+            <div class="swiper-container-floor">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide slide-floor-menu">
                         <span class="title">Extended function</span>
                     </div>
                     <div class="swiper-slide slide-floor-map">
-
                     </div>
                 </div>
             </div>

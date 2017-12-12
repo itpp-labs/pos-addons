@@ -252,6 +252,9 @@
 .pos.mobile .control-buttons {
     padding: 16px 32px 0px 22px;
     margin-bottom: -12px;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 .pos.mobile .control-button {
     font-size: 40px;
@@ -1441,6 +1444,9 @@
 .pos.mobile .slide-categories-button img,
 .pos.mobile .slide-order-button img {
     width: 86px;
+}
+.pos.mobile .swiper-container-numpad {
+    background: white;
 }
 .pos.mobile .slide-numpad {
     overflow-y: auto;

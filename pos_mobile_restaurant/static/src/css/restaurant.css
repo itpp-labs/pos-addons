@@ -164,7 +164,7 @@
 }
 
 /* ------ FLOOR SWIPER ------- */
-.pos.mobile .swiper-floor-container {
+.pos.mobile .swiper-container-floor {
     height: 100%;
 }
 .pos.mobile .slide-floor-menu {
