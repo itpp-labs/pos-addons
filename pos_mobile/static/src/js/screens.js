@@ -20,7 +20,7 @@ odoo.define('pos_mobile.screens', function (require) {
             this.switch_category_handler = function(event){
                 self.set_category(self.pos.db.get_category_by_id(Number(this.dataset.categoryId)));
                 self.renderElement();
-                self.chrome.swiperH[0].slideTo(1);
+                self.chrome.swiper_order.slideTo(1);
             };
             var search_timeout = null;
             this.search_handler = function(event){
@@ -35,34 +35,27 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         open_bottom_menu: function() {
             if (this.current_bottom_slide === "numpad") {
-                $('.slide-categories').hide();
-                $('.order-swiper').removeClass('open-categories-slide');
+                $('.mobile-categories').hide();
+                $('.mobile-order-container').removeClass('open-categories-slide');
 
-                $('.under-search .swiper-wrapper').show();
-                $('.order-swiper').addClass('open-numpad-slide');
+                $('.mobile-search-bar-menu .swiper-container-numpad').show();
+                $('.mobile-order-container').addClass('open-numpad-slide');
 
             } else if (this.current_bottom_slide === "categories") {
-                $('.under-search .swiper-wrapper').hide();
-                $('.order-swiper').removeClass('open-numpad-slide');
+                $('.mobile-search-bar-menu .swiper-container-numpad').hide();
+                $('.mobile-order-container').removeClass('open-numpad-slide');
 
-                $('.slide-categories').show();
-                $('.order-swiper').addClass('open-categories-slide');
+                $('.mobile-categories').show();
+                $('.mobile-order-container').addClass('open-categories-slide');
             }
-
-            // open under search block
-            $('.order-swiper').addClass('swipe-is-open');
-            var slider = this.chrome.swiperV;
-            slider.slideNext();
+            // open mobile-search-bar-menu
+            $('.mobile-order-container').addClass('swipe-is-open');
         },
         close_bottom_menu: function() {
-            //  close under search block
-            var slider = this.chrome.swiperV;
-            slider.slidePrev();
-
             // remove class
-            $('.order-swiper').removeClass('open-numpad-slide');
-            $('.order-swiper').removeClass('open-categories-slide');
-            $('.order-swiper').removeClass('swipe-is-open');
+            $('.mobile-order-container').removeClass('open-numpad-slide');
+            $('.mobile-order-container').removeClass('open-categories-slide');
+            $('.mobile-order-container').removeClass('swipe-is-open');
             this.current_bottom_slide = false;
         },
         change_categories_slide: function() {
@@ -81,9 +74,8 @@ odoo.define('pos_mobile.screens', function (require) {
                 this.close_bottom_menu();
                 this.current_bottom_slide = "numpad";
                 this.open_bottom_menu();
-
                 // start slide is numpad slide
-                var slider = this.chrome.swiperH[1];
+                var slider = this.chrome.swiper_numpad;
                 slider.slideTo(0);
             }
         },
@@ -97,24 +89,24 @@ odoo.define('pos_mobile.screens', function (require) {
             var breadcrumbs = $('.window .rightpane .breadcrumbs');
             if (breadcrumbs.length) {
                 breadcrumbs.detach();
-                $(".slide-categories .breadcrumbs").detach();
-                $(".slide-categories").prepend(breadcrumbs);
+                $(".mobile-categories .breadcrumbs").detach();
+                $(".mobile-categories").prepend(breadcrumbs);
             }
 
             var categories = $('.window .rightpane .categories');
             categories.detach();
-            $(".slide-categories .categories").detach();
-            $(".slide-categories").append(categories);
+            $(".mobile-categories .categories").detach();
+            $(".mobile-categories").append(categories);
         },
         perform_search: function(category, query, buy_result){
             this._super.apply(this, arguments);
             if (query) {
-                this.chrome.swiperH[0].slideTo(1);
+                this.chrome.swiper_order.slideTo(1);
             }
         },
         clear_search: function(){
             this._super();
-            var parent = $(".pos.mobile .swiper-container .rightpane-header")[0];
+            var parent = $(".pos.mobile .mobile-order-container .rightpane-header")[0];
             var input = parent.querySelector('.searchbox input');
                 input.value = '';
                 input.focus();

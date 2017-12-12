@@ -14,20 +14,13 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             $('.pos').addClass('mobile');
 
-            // horizontal swiper
-            this.swiperH = new window.Swiper('.swiper-container-h', {
+            this.swiper_order = new window.Swiper(".swiper-container-order", {
                 spaceBetween: 0,
             });
 
-            // vertical swiper
-            this.swiperV = new window.Swiper('.swiper-container-v', {
-                direction: 'vertical',
-                slidesPerView: 'auto',
+            this.swiper_numpad = new window.Swiper(".swiper-container-numpad", {
                 spaceBetween: 0,
             });
-
-            // remove all events for vertical swiper
-            this.swiperV.destroy(false , false);
 
             // move some widgets and screens from screen block to slide blocks
             var products = $('.rightpane .content-row');
@@ -48,15 +41,15 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             var breadcrumbs = $('.breadcrumbs');
             breadcrumbs.detach();
-            $('.slide-categories').prepend(breadcrumbs);
+            $('.mobile-categories').prepend(breadcrumbs);
 
             var search = $('.rightpane-header');
             search.detach();
-            $('.slide-search').append(search);
+            $('.mobile-search-bar').append(search);
 
             var buttons = $('.control-buttons');
             if (!buttons.hasClass('oe_hidden')) {
-                this.swiperH[1].appendSlide('<div class="swiper-slide slide-buttons"></div>');
+                this.swiper_numpad.appendSlide('<div class="swiper-slide slide-buttons"></div>');
                 buttons.detach();
                 $('.slide-buttons').append(buttons);
             }
@@ -71,16 +64,16 @@ odoo.define('pos_mobile.chrome', function (require) {
             this._super(event,$el);
             var order = this.get_order_by_uid($el.data('uid'));
             if (order) {
-                this.chrome.swiperH[0].slideTo(0, 0);
+                this.chrome.swiper_order.slideTo(0, 0);
             }
         },
         neworder_click_handler: function(event, $el) {
             this._super(event,$el);
-            this.chrome.swiperH[0].slideTo(0, 0);
+            this.chrome.swiper_order.slideTo(0, 0);
         },
         deleteorder_click_handler: function(event, $el) {
             this._super(event,$el);
-            this.chrome.swiperH[0].slideTo(0, 0);
+            this.chrome.swiper_order.slideTo(0, 0);
             this.pos.gui.screen_instances.products.order_widget.scroll_to_selected_order();
         },
     });

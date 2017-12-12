@@ -1401,8 +1401,7 @@
     font-size: 28px;
 }
 /*  ********* Styles for pos with swiper ********* */
-.pos.mobile .screen, .swiper-container {
-    width: 100%;
+.pos.mobile .mobile-order-container, .pos.mobile .swiper-container-order {
     height: 100%;
 }
 .pos.mobile .order-selector {
@@ -1430,7 +1429,7 @@
     margin: 0 10px;
     color: #808080;
 }
-.pos.mobile .slide-categories {
+.pos.mobile .mobile-categories {
     background: white;
     width: 100%;
     height: 100%;
@@ -1447,6 +1446,7 @@
     overflow-y: auto;
     height: 100%;
     background: white;
+    border-bottom: 6px solid white;
 }
 .pos.mobile .rightpane-header .slide-order-button{
     margin-left: 30px;
@@ -1466,21 +1466,17 @@
     -o-transition: 0.5s;
     transition: 0.5s;
 }
-.pos.mobile .slide-search {
+.pos.mobile .mobile-search-bar {
     height: 150px;
     border-top: 2px solid #e8e8e8;
     border-bottom: 2px solid #e8e8e8;
 }
-.pos.mobile .under-search {
+.pos.mobile .mobile-search-bar-menu {
     max-height:650px;
     height: 100%;
 }
 .pos.mobile .slide-buttons {
     background: white;
-}
-.pos.mobile .swipe-is-open {
-    transform: translate3d(0px, 0px, 0px) !important;
-    transition: 0.3s !important;
 }
 /* New size for order-and-products blocks */
 .pos.mobile .swipe-is-open .order-and-products{
