@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
     "images": ["images/pos_mobile.png"],
-    "version": "1.1.0",
+    "version": "1.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
