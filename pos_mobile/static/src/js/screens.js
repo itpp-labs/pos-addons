@@ -197,10 +197,19 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         change_selected_order: function() {
             this._super();
+            this.change_product_qty();
+            this.scroll_to_selected_order();
+        },
+        change_product_qty: function(product_id) {
             var order = this.pos.get_order();
             if (order) {
                 // update the products qty for current order
                 var products = this.pos.gui.screen_instances.products.product_list_widget.product_list;
+
+                // if the product_id is exist then update only this product
+                if (product_id) {
+                    products = [this.pos.db.get_product_by_id(product_id)];
+                }
                 products.forEach(function(product){
                     var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
                     var qty = order.get_quantity_by_product_id(product.id);
@@ -209,7 +218,6 @@ odoo.define('pos_mobile.screens', function (require) {
                         $qty.html(qty);
                     }
                 });
-                this.scroll_to_selected_order();
             }
         },
         scroll_to_selected_order: function() {
