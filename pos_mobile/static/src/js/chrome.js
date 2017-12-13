@@ -56,6 +56,8 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             // element before the closing button in top header
             $($('.pos-rightheader .oe_status')[0]).css({'margin-right': '70px'});
+
+            this.gui.screen_instances.products.order_widget.change_orderlist();
         },
     });
 
@@ -70,11 +72,13 @@ odoo.define('pos_mobile.chrome', function (require) {
         neworder_click_handler: function(event, $el) {
             this._super(event,$el);
             this.chrome.swiper_order.slideTo(0, 0);
+            this.gui.screen_instances.products.order_widget.change_orderlist();
         },
         deleteorder_click_handler: function(event, $el) {
             this._super(event,$el);
             this.chrome.swiper_order.slideTo(0, 0);
             this.pos.gui.screen_instances.products.order_widget.scroll_to_selected_order();
+            this.gui.screen_instances.products.order_widget.change_orderlist();
         },
     });
 
@@ -104,6 +108,15 @@ odoo.define('pos_mobile.chrome', function (require) {
             }
         },
     });
+
+    chrome.UsernameWidget.include({
+        renderElement: function(){
+            this._super();
+            if (this.gui.screen_instances && this.gui.screen_instances.products && this.gui.screen_instances.products.order_widget) {
+                this.gui.screen_instances.products.order_widget.change_orderlist();
+            }
+        },
+     });
 
     return chrome;
 });

@@ -199,6 +199,7 @@ odoo.define('pos_mobile.screens', function (require) {
             this._super();
             this.change_product_qty();
             this.scroll_to_selected_order();
+            this.change_orderlist();
         },
         change_product_qty: function(product_id) {
             var order = this.pos.get_order();
@@ -225,6 +226,17 @@ odoo.define('pos_mobile.screens', function (require) {
             var selected_order = this.pos.get_order();
             var width = orders.indexOf(selected_order);
             $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
+        },
+        change_orderlist: function() {
+            var width = 0;
+            var header_width = $('.pos.mobile .pos-rightheader').width();
+            $('.pos.mobile .pos-rightheader').children().each(function(index, el) {
+                if (!$(el).hasClass('order-selector')) {
+                    width += $(el).width();
+                    width = width + 3;
+                }
+            });
+            $('.pos.mobile .order-selector').css({'max-width': header_width - width - 70});
         }
     });
     return screens;
