@@ -8,6 +8,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
 
     tour.register('pos_order_cancel_tour', {
         url: "/web",
+        test: true,
     }, [{
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
         content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
