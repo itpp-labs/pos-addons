@@ -36,7 +36,7 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
         },
         destroy: function() {
             if(this.$el && this.$el.hasClass('table')) {
-                return
+                return;
             }
             this._super();
         }
