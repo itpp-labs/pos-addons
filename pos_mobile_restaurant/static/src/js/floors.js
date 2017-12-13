@@ -9,22 +9,12 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
     var chrome = require('pos_mobile_restaurant.chrome');
 
     floors.FloorScreenWidget.include({
-        renderElement: function(){
-            this._super();
-            var self = this;
-            var floor_flexbox = $('.window .floor-screen .screen-content-flexbox');
-            if (floor_flexbox.length) {
-                floor_flexbox.detach();
-                $('.swiper-slide .screen-content-flexbox').remove();
-                $(".slide-floor-map").append(floor_flexbox);
-
-                // menu button
-                this.pos.chrome.menuButton = $('.swiper-slide .menu-button');
-                this.pos.chrome.menu_is_opened = false;
-                this.pos.chrome.menuButton.click(function(){
-                    self.pos.chrome.menu_button_click();
-                });
-            }
+        click_floor_button: function(event,$el){
+            this._super(event,$el);
+            var id = $el.data('id');
+            var floor = this.pos.floors_by_id[id];
+            var slide = $('div[data-id='+id+'][id=slide-floor]').index();
+            this.chrome.swiper_floors.slideTo(slide);
         }
     });
 
@@ -44,6 +34,12 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
             }
             return style;
         },
+        destroy: function() {
+            if(this.$el && this.$el.hasClass('table')) {
+                return
+            }
+            this._super();
+        }
     });
 
     return floors;
