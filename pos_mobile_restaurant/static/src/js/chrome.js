@@ -42,6 +42,10 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                 self.rerender_floors(id, index, true);
             });
 
+            var order_button = $('.control-button.order-submit');
+            order_button.detach();
+            $(".mobile-order-container .mobile-search-bar .searchbox").prepend(order_button);
+
             // show first floor
             this.change_current_floor(this.pos.floors[0].id);
 
