@@ -46,7 +46,8 @@
 
     <t t-extend="ActionpadWidget">
         <t t-jquery="i[class='fa fa-user']" t-operation="replace">
-            <t t-if="!widget.pos.get_client()">
+            <t t-set="order" t-value="widget.pos.get_order()"/>
+            <t t-if="order and !order.get_client()">
                 <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
             </t>
         </t>
