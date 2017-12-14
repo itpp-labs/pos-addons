@@ -12,14 +12,11 @@
                         <label for="name" class="oe_edit_only"/>
                             <h1><field name="name"/></h1>
                         <group string="Settings">
+                            <strong colspan="2" class="oe_edit_only" style="color: #f38b13;">To remove or add a POS to multi-session close its session first </strong>
                             <field name="pos_ids" widget="many2many_tags" domain="[('current_session_state', '!=', 'opened')]" options="{'not_delete': True}"/>
                             <field name="sync_server"/>
                             <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
                             <field name="order_ID" readonly="1"/>
-                        </group>
-                        <group>
-                        <p class="oe_edit_only"> To remove or add a POS to multi-session close its session first </p>
-                        </group>
                     </sheet>
                 </form>
             </field>
