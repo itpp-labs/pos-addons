@@ -54,7 +54,9 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             $(".mobile-order-container .mobile-search-bar .searchbox").prepend(order_button);
 
             // show first floor
-            this.change_current_floor(this.pos.floors[0].id);
+            if (this.pos.floors.length) {
+                this.change_current_floor(this.pos.floors[0].id);
+            }
 
             // add a div for specific control buttons
             $('.slide-numpad .pads').prepend("<div class='top-control-buttons'></div>");
