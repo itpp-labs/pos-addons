@@ -4,7 +4,9 @@
 
 Based on module pos_mobile. Adds extra styling.
 
-Added a new feature for the ability to set the number of guests for empty table.
+Additionally:
+
+* On clicking empty table: ask for number of guests
 
 Credits
 =======
