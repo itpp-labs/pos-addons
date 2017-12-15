@@ -16,13 +16,13 @@ odoo.define('pos_mobile.gui', function (require) {
             this.change_screen_type(current_screen_name);
         },
         change_screen_type: function(current_screen) {
-            var swiper_order_container = $('.swiper-order-container');
+            var order_container = $('.mobile-order-container');
             if (current_screen === "products") {
-                swiper_order_container.addClass('mobile-active-screen');
-                swiper_order_container.css({display:''});
+                order_container.addClass('mobile-active-screen');
+                order_container.css({display:''});
             } else {
-                swiper_order_container.removeClass('mobile-active-screen');
-                swiper_order_container.css({display:'none'});
+                order_container.removeClass('mobile-active-screen');
+                order_container.css({display:'none'});
             }
             if ($('.mobile-active-screen').length) {
                 $('.pos.mobile .window').css({display: 'none'});
@@ -34,6 +34,10 @@ odoo.define('pos_mobile.gui', function (require) {
                 // subwindow-container-fix block. The 2 - is height 2px border bottom
                 var new_height = $('.clientlist-screen .full-content').height() - 2;
                 $('.clientlist-screen .subwindow-container-fix').css({'max-height': new_height});
+            } else if (current_screen === 'payment') {
+                var height = $('.payment-screen .right-content').height();
+                var paymentmethods = $('.payment-screen .paymentmethods-container').height();
+                $('.paymentlines-container').css({height: height - paymentmethods - 600});
             }
         }
     });

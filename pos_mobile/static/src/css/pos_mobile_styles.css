@@ -252,6 +252,9 @@
 .pos.mobile .control-buttons {
     padding: 16px 32px 0px 22px;
     margin-bottom: -12px;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 .pos.mobile .control-button {
     font-size: 40px;
@@ -715,6 +718,7 @@
 }
 .pos.mobile .screen .top-content .button.next{
     font-size: inherit;
+
 }
 .pos.mobile .screen .left-content{
     top: 128px;
@@ -780,7 +784,8 @@
 .pos.mobile .paymentlines-container {
     padding: 0px;
     border-bottom: dashed 2px rgb(110,110,110);
-    max-height: 556px;
+    max-height: initial;
+    height: 562px;
     overflow: hidden !important;
     overflow-y: auto !important;
 }
@@ -795,15 +800,16 @@
     border-radius: 6px;
 }
 .pos.mobile .paymentline{
-    font-size: 44px;
+    font-size: 35px;
 }
 .pos.mobile .paymentline.selected {
     font-size: 35px;
 }
 .pos.mobile .paymentline.selected .edit {
-    outline: 6px blue;
-    box-shadow: 0px 0px 0px 6px #6EC89B;
+    outline: 1px blue;
+    box-shadow: 0px 0px 0px 1px #6EC89B;
     border-radius: 6px;
+    color: #555555;
 }
 .pos.mobile .paymentline > *{
     padding: 16px 24px;
@@ -839,10 +845,11 @@
     width: 100%;
     display: block;
     position: relative;
-    max-height: 1440px;
+    max-height: 1537px;
 }
 .pos.mobile .payment-screen .right-content.pc60{
     left: initial;
+    height: 100%;
 }
 .pos.mobile .payment-screen .payment-buttons{
     padding: 0px;
@@ -916,6 +923,14 @@
 .pos.mobile .payment-screen .left-content {
     display: none;
 }
+.pos.mobile .payment-screen .paymentlines-empty .message {
+    font-weight: bold;
+    font-size: 30px;
+}
+.pos.mobile .payment-screen .paymentlines-empty .total {
+    padding-bottom: 0;
+    padding-top: 0;
+}
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
     line-height: 80px;
@@ -972,6 +987,19 @@
 .pos.mobile .clientlist-screen .client-list{
     font-size: 30px;
     line-height: 50px;
+}
+.pos.mobile .clientlist-screen .top-content{
+    text-align: left;
+    margin-left: 15px;
+    margin-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: auto;
+}
+pos.mobile .clientlist-screen .top-content .button {
+    margin: 0px;
+    position: relative;
+    display: inline-block;
 }
 .pos.mobile .clientlist-screen  .scrollable-y{
     overflow: auto !important;
@@ -1044,8 +1072,13 @@
     margin-top: 40px;
 }
 .pos.mobile .clientlist-screen .searchbox{
-    margin-left: -295px;
+    margin-left: 0px;
     margin-top:0px;
+    position: relative;
+    display: inline-block;
+    right: 0px;
+    float: initial;
+    left: 0;
 }
 .pos.mobile .clientlist-screen .searchbox input{
     width: 275px;
@@ -1054,7 +1087,11 @@
     font-size: 35px;
 }
 .pos.mobile .clientlist-screen .button.new-customer {
-    margin-left: 60px;
+    margin-left: 0px;
+    left: 0;
+}
+.pos.mobile .clientlist-screen .button.next {
+    margin-left: 15px;
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
     /*height: 100%!important;
@@ -1064,6 +1101,13 @@
 }
 .pos.mobile .clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y {
     min-height: 900px;
+}
+.pos.mobile .clientlist-screen .button {
+    display: inline-block;
+    position: relative;
+}
+ .pos.mobile .clientlist-screen .top-content .button.back {
+    margin-left: 0px;
 }
 /*  ********* The OrderWidget  ********* */
 .pos.mobile .order{
@@ -1170,7 +1214,7 @@
     line-height: 90px;
     font-size: 32px;
     border: 2px solid #e8e8e8;
-    border-radius: 15px;
+    border-radius: 5px;
     margin: 10px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
@@ -1183,12 +1227,12 @@
 }
 .pos.mobile .paymentmethods .button:first-child {
     border-top-width: 2px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .pos.mobile .paymentmethods .button:last-child {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 /*  ********* The ActionBarWidget  ********* */
@@ -1401,14 +1445,13 @@
     font-size: 28px;
 }
 /*  ********* Styles for pos with swiper ********* */
-.pos.mobile .screen, .swiper-container {
-    width: 100%;
+.pos.mobile .mobile-order-container, .pos.mobile .swiper-container-order {
     height: 100%;
 }
 .pos.mobile .order-selector {
     display: flex;
     float: left;
-    max-width: 500px;
+    max-width: 674px;
     white-space: nowrap;
     overflow: hidden;
     overflow-x: scroll;
@@ -1430,7 +1473,7 @@
     margin: 0 10px;
     color: #808080;
 }
-.pos.mobile .slide-categories {
+.pos.mobile .mobile-categories {
     background: white;
     width: 100%;
     height: 100%;
@@ -1443,10 +1486,14 @@
 .pos.mobile .slide-order-button img {
     width: 86px;
 }
+.pos.mobile .swiper-container-numpad {
+    background: white;
+}
 .pos.mobile .slide-numpad {
     overflow-y: auto;
     height: 100%;
     background: white;
+    border-bottom: 6px solid white;
 }
 .pos.mobile .rightpane-header .slide-order-button{
     margin-left: 30px;
@@ -1466,21 +1513,17 @@
     -o-transition: 0.5s;
     transition: 0.5s;
 }
-.pos.mobile .slide-search {
+.pos.mobile .mobile-search-bar {
     height: 150px;
     border-top: 2px solid #e8e8e8;
     border-bottom: 2px solid #e8e8e8;
 }
-.pos.mobile .under-search {
+.pos.mobile .mobile-search-bar-menu {
     max-height:650px;
     height: 100%;
 }
 .pos.mobile .slide-buttons {
     background: white;
-}
-.pos.mobile .swipe-is-open {
-    transform: translate3d(0px, 0px, 0px) !important;
-    transition: 0.3s !important;
 }
 /* New size for order-and-products blocks */
 .pos.mobile .swipe-is-open .order-and-products{

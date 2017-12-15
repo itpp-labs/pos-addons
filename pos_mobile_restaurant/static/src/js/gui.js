@@ -10,7 +10,7 @@ odoo.define('pos_mobile_restaurant.gui', function (require) {
 
     gui.Gui.include({
         change_screen_type: function(current_screen) {
-            var swiper_floor_container = $('.swiper-floor-container');
+            var swiper_floor_container = $('.swiper-container-floor-screen');
             if (current_screen === "floors") {
                 swiper_floor_container.addClass('mobile-active-screen');
                 swiper_floor_container.css({display:''});

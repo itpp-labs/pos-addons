@@ -4,7 +4,9 @@
     line-height: 80px;
     font-size: 30px;
 }
-
+.pos.mobile .slide-floor-menu {
+    z-index: 10;
+}
 .pos.mobile .slide-floor-menu .title {
     display: block;
     font-size: 50px;
@@ -164,19 +166,19 @@
 }
 
 /* ------ FLOOR SWIPER ------- */
-.pos.mobile .swiper-floor-container {
+.pos.mobile .swiper-container-floor-screen {
     height: 100%;
 }
 .pos.mobile .slide-floor-menu {
     min-width: 100px;
 	width: 70%;
-	max-width: 640px;
+	max-width: 641px;
 	background-color: #2C8DFB;
 	color: #fff;
 	overflow-y: auto;
 }
 /* ------ FLOR MAP BUTTON MENU ------- */
-.pos.mobile .slide-floor-map .menu-button {
+.pos.mobile .mobile-floor-selector .menu-button {
     position: initial;
     top: 0px; left: 0px;
     padding: 9px;
@@ -185,8 +187,9 @@
     transition: .3s;
     background-color: #2C8DFB;
     z-index: 1;
+    margin-bottom: -1px;
 }
-.pos.mobile .slide-floor-map .bar {
+.pos.mobile .mobile-floor-selector .bar {
     position: relative;
     display: block;
     width: 80px;
@@ -197,21 +200,21 @@
     -webkit-transition: .3s;
     transition: .3s;
 }
-.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(1) {
+.pos.mobile .mobile-floor-selector .menu-button .bar:nth-of-type(1) {
     margin-top: 0px;
 }
-.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(3) {
+.pos.mobile .mobile-floor-selector .menu-button .bar:nth-of-type(3) {
     margin-bottom: 0px;
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(1) {
+.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(1) {
     -webkit-transform: translateY(30px) rotate(-45deg);
     -ms-transform: translateY(30px) rotate(-45deg);
     transform: translateY(30px) rotate(-45deg);
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(2) {
+.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(2) {
     opacity: 0;
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(3) {
+.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(3) {
     -webkit-transform: translateY(-26px) rotate(45deg);
     -ms-transform: translateY(-26px) rotate(45deg);
     transform: translateY(-26px) rotate(45deg);
@@ -332,7 +335,6 @@
 }
 
 /* --- Restaurant for Mobile Specific CSS --- */
-
 .pos.mobile .screen-content-flexbox {
     margin:     0px auto;
     text-align: left;
@@ -342,4 +344,7 @@
     display:    -webkit-flex;
     -webkit-flex-flow:  column nowrap;
     flex-flow:  column nowrap;
+}
+.pos.mobile .swiper-container-map {
+    height: 100%;
 }

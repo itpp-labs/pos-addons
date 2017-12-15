@@ -1,3 +1,10 @@
+`1.2.0`
+-------
+
+- **FIX:** Compatibility with IOS 11.2
+- **NEW:** Swiping for Floor screen
+- **NEW:** Possibility set number of guests
+
 `1.1.0`
 -------
 

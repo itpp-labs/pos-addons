@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
     "images": ["images/pos_mobile_restaurant.png"],
-    "version": "1.1.0",
+    "version": "1.2.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -22,6 +22,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_mobile_restaurant_template.xml",
+        "views/pos_mobile_restaurant_view.xml",
     ],
     "qweb": [
         "static/src/xml/pos.xml",

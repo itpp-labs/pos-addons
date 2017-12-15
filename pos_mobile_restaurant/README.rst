@@ -4,6 +4,10 @@
 
 Based on module pos_mobile. Adds extra styling.
 
+Additionally:
+
+* On clicking empty table: ask for number of guests
+
 Credits
 =======
 
