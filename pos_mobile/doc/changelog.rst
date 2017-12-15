@@ -2,6 +2,8 @@
 -------
 
 - **FIX:** Compatibility with IOS 11.2
+- **FIX:** Quantity indicator of products in real-time
+- **FIX:** Payment screen interface and ClientList screen interface
 
 `1.1.0`
 -------

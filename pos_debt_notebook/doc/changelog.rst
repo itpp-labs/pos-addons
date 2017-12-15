@@ -1,3 +1,8 @@
+`4.4.2`
+-------
+
+**ADD:** Compatibility with Pos Mobile
+
 `4.4.1`
 -------
 
