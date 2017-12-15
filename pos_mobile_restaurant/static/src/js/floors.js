@@ -22,6 +22,12 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
     });
 
     floors.TableWidget.include({
+        click_handler: function(){
+            // if it's not slide transition then it's click
+            if (!this.pos.chrome.floors_slide_transition) {
+                this._super();
+            }
+        },
         //  Different from Original: remove all styles specific for each table
         table_style: function(){
             var table = this.table;

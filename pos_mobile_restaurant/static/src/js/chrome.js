@@ -13,6 +13,8 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             this._super();
             var self = this;
 
+            this.floors_slide_transition = false;
+
             // floor screen swiper
             this.swiper_floor_screen = new window.Swiper('.swiper-container-floor-screen', {
                 slidesPerView: 'auto',
@@ -24,13 +26,18 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             // remove all events for floor swiper
             this.swiper_floor_screen.destroy(false , false);
 
-            // floors swiper (you can to use the 'resistanceRatio: 0, slideToClickedSlide: true' parameters)
+            // floors swiper (you can to use the 'resistanceRatio: 0 parameter)
             // read more about it http://idangero.us/swiper/api/#parameters
             this.swiper_floors = new window.Swiper('.swiper-container-map');
+
+            this.swiper_floors.on('setTransition', function() {
+                self.floors_slide_transition = true;
+            });
 
             // Event will be fired after transition to another slide
             this.swiper_floors.on('transitionEnd', function() {
                 self.change_current_floor();
+                self.floors_slide_transition = false;
             });
 
             var floor_selector = $('.floor-screen .floor-selector');
