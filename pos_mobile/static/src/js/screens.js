@@ -233,7 +233,7 @@ odoo.define('pos_mobile.screens', function (require) {
             $('.pos.mobile .pos-rightheader').children().each(function(index, el) {
                 if (!$(el).hasClass('order-selector')) {
                     width += $(el).width();
-                    width = width + 3;
+                    width += 3;
                 }
             });
             $('.pos.mobile .order-selector').css({'max-width': header_width - width - 70});
