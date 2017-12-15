@@ -784,7 +784,7 @@
 .pos.mobile .paymentlines-container {
     padding: 0px;
     border-bottom: dashed 2px rgb(110,110,110);
-    max-height: 562px;
+    max-height: initial;
     height: 562px;
     overflow: hidden !important;
     overflow-y: auto !important;
@@ -849,6 +849,7 @@
 }
 .pos.mobile .payment-screen .right-content.pc60{
     left: initial;
+    height: 100%;
 }
 .pos.mobile .payment-screen .payment-buttons{
     padding: 0px;
@@ -913,7 +914,6 @@
 .pos.mobile .paymentmethods-container {
     border-bottom: dashed 3px rgb(188,188,188);
     max-height: 375px;
-    height: 375px;
     overflow: hidden;
     overflow-y: auto;
 }

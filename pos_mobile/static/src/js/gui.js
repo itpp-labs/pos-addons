@@ -34,6 +34,10 @@ odoo.define('pos_mobile.gui', function (require) {
                 // subwindow-container-fix block. The 2 - is height 2px border bottom
                 var new_height = $('.clientlist-screen .full-content').height() - 2;
                 $('.clientlist-screen .subwindow-container-fix').css({'max-height': new_height});
+            } else if (current_screen === 'payment') {
+                var height = $('.payment-screen .right-content').height();
+                var paymentmethods = $('.payment-screen .paymentmethods-container').height();
+                $('.paymentlines-container').css({height: height - paymentmethods - 600});
             }
         }
     });
