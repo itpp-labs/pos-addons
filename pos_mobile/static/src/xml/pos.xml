@@ -44,9 +44,25 @@
         </t>
     </t>
 
+    <t t-extend="PaymentScreen-Paymentlines">
+         <t t-jquery="t[t-if='!paymentlines.length']" t-operation="replace">
+            <div class='paymentlines-empty'>
+                <div class='total'>
+                    <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                </div>
+                <div class='message'>
+                    Please select a payment method.
+                </div>
+            </div>
+         </t>
+    </t>
+
     <t t-extend="ActionpadWidget">
         <t t-jquery="i[class='fa fa-user']" t-operation="replace">
             <t t-set="order" t-value="widget.pos.get_order()"/>
+            <t t-if="!order">
+                <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+            </t>
             <t t-if="order and !order.get_client()">
                 <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
             </t>
