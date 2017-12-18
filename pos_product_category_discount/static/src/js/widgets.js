@@ -118,7 +118,9 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                         num_widget.inputbuffer = newbuf;
                         num_widget.$('.value').text(this.inputbuffer);
                     }
-                    this.pos.get_order().input_disc_program = false;
+                    if (this.pos.get_order()) {
+                        this.pos.get_order().input_disc_program = false;
+                    }
                 };
             }
         },
