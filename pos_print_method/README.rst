@@ -13,6 +13,10 @@ Contributors
 
 Sponsors
 --------
+* `Sinomate <http://sinomate.net/>`__
+
+Maintainers
+-----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
