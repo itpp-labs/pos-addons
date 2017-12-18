@@ -1157,6 +1157,10 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .summary .line .discount .value{
     float: none;
 }
+.pos.mobile .summary .line .fiscal{
+    display: inline-block;
+    margin-left:10px;
+}
 /*______________________________________________________*/
 .pos.mobile .submit-kitchen-button {
     padding: 24px 40px;
