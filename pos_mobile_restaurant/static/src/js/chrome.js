@@ -45,9 +45,11 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             $(".mobile-floor-selector").append(floor_selector);
 
             // floors
-            this.pos.config.floor_ids.forEach(function(id, index){
-                self.rerender_floors(id, index, true);
-            });
+            if (this.pos.floors) {
+                this.pos.floors.forEach(function(floor, index){
+                    self.rerender_floors(floor.id, index, true);
+                });
+            }
 
             var order_button = $('.control-button.order-submit');
             order_button.detach();
