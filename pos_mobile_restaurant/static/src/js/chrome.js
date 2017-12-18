@@ -46,7 +46,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             // floors
             if (this.pos.floors) {
-                this.pos.floors.forEach(function(floor, index){
+                _.each(this.pos.floors, function(floor, index){
                     self.rerender_floors(floor.id, index, true);
                 });
             }
