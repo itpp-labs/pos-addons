@@ -21,8 +21,8 @@
 }
 .pos.mobile .floor-map .tables {
     overflow-y: auto;
-    max-width: 880px;
-    max-height: initial;
+    max-width: 900px;
+    max-height: calc(100% - 150px);
     float: none;
     margin-left: 88px;
     border: none!important;
