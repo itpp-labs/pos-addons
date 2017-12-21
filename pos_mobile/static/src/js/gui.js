@@ -37,7 +37,9 @@ odoo.define('pos_mobile.gui', function (require) {
             } else if (current_screen === 'payment') {
                 var height = $('.payment-screen .right-content').height();
                 var paymentmethods = $('.payment-screen .paymentmethods-container').height();
-                $('.paymentlines-container').css({height: height - paymentmethods - 600});
+                var numpad = $('.payment-screen .payment-numpad').height();
+                // automatic define height. 150 the size of the indentation from the bottom block
+                $('.paymentlines-container').css({height: height - paymentmethods - numpad - 150});
             }
         }
     });

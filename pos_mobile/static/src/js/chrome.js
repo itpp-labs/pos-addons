@@ -54,6 +54,10 @@ odoo.define('pos_mobile.chrome', function (require) {
                 $('.slide-buttons').append(buttons);
             }
 
+            var payment_method = $(".payment-screen .paymentmethods-container");
+            payment_method.detach();
+            $('.payment-screen .paymentlines-container').after(payment_method);
+
             // element before the closing button in top header
             $($('.pos-rightheader .oe_status')[0]).css({'margin-right': '70px'});
 

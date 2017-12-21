@@ -21,12 +21,26 @@
     </t>
 
     <t t-extend="FloorScreenWidget">
+        <t t-jquery="div[class='floor-map']" t-operation="prepend">
+            <t t-if='widget.pos.floors.length == 1'>
+                <div class="menu-button">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </t>
+        </t>
         <t t-jquery="div[class='floor-selector']" t-operation="prepend">
-            <div class="menu-button">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
+            <t t-if='widget.pos.floors.length > 1'>
+                <div class="menu-button">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </t>
+        </t>
+        <t t-jquery="div[class='tables']">
+            $(this).addClass('touch-scrollable scrollable-y');
         </t>
     </t>
 
