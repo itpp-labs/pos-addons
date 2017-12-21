@@ -8,9 +8,9 @@ odoo.define('pos_qr_login.chrome', function (require) {
             this._super();
             var self = this;
             this.gui.current_popup.cashiers = true;
-            if (block) {
-                this.gui.current_popup.block = true;
-            }
+            // if (block) {
+            //     this.gui.current_popup.block = true;
+            // }
             this.gui.current_popup.renderElement();
             this.gui.current_popup.$(".exit").click(function(){
                 self.gui.show_popup('block', {
