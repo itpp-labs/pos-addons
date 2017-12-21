@@ -52,7 +52,7 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
                 The pos_mobile_restaurant module adds scroll to table view, so we need to remove the 'drag' event
                 to make it work.
 
-                TODO: Make without remove events
+                TODO: Make it without removing events
             */
             this._super();
             this.$el.off('dragstart');
