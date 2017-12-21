@@ -11,6 +11,48 @@ When POS becomes offline, i.e. don't have connection to *Sync Server*, it is onl
 
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
+Modules compatibility
+---------------------
+
+For the compalibility of `pos_multi_session <https://www.odoo.com/apps/modules/10.0/pos_multi_session/>`__ module with other modules that add additional data to the Order or Orderline JS model, it is necessary to use the ``apply_ms_data`` function in these models.
+
+.. code-block:: ruby
+
+    apply_ms_data: function(data) {
+        if (_super_order.apply_ms_data) {
+            _super_order.apply_ms_data.apply(this, arguments);
+        }
+        this.first_new_variable = data.first_new_variable;
+        this.second_new_variable = data.second_new_variable;
+        // etc ...
+    }
+
+This function allows you to synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
+
+It is necessary to check the presence of the super method for the function, in order to be able to inherit the ``apply_ms_data`` function in other modules without specifying ``require`` of the `pos_multi_session <https://www.odoo.com/apps/modules/10.0/pos_multi_session/>`__ module (without adding in dependencies in the manifest).
+
+At the time of loading, the super method may not exist. So, if the js file is loaded first, among all inherited, then there is no super method and it is not called, if the file is not the first, then the super method is already created by other modules, and we inherit this function.
+
+The following is an example of using this function in the `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__ module pos_order_note module to synchronize new data:
+
+.. code-block:: ruby
+
+    var _super_order = models.Order.prototype;
+    models.Order = models.Order.extend({
+	    apply_ms_data: function(data) {
+            if (_super_order.apply_ms_data) {
+                _super_order.apply_ms_data.apply(this, arguments);
+            }
+            this.note = data.note;
+            this.old_note = data.old_note;
+            this.custom_notes = data.custom_notes;
+            this.old_custom_notes = data.old_custom_notes;
+            this.pos.gui.screen_instances.products.order_widget.renderElement(true);
+        },
+    });
+
+In the ``pos_order_note module``, this function allows you to synchronize all notes to an order across all POSes and updates OrderWidget to display this data.
+
 Credits
 =======
 
