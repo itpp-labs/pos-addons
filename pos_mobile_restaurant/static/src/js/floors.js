@@ -43,23 +43,17 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
             }
             this._super();
         },
-        /*
-         The 'drag' evets in original code was added because on touch devices it is sometimes
-         not easy to click, especially on small elements. You have to touch and
-         release the screen without moving your finger.
-
-         But the table selection screen don't hides overflow in mobile version and we cannot to use
-         the scrolling when touch a table.
-
-         TODO: Make without remove events
-         */
-        update_click_handlers: function(editing){
-            this._super(editing);
-            if (!editing) {
-                this.$el.off('dragend');
-            }
-        },
         renderElement: function(){
+            /*
+                The 'drag' evets in original code was added because on touch devices it is sometimes
+                not easy to click, especially on small elements. You have to touch and
+                release the screen without moving your finger.
+
+                The pos_mobile_restaurant module adds scroll to table view, so we need to remove the 'drag' event
+                to make it work.
+
+                TODO: Make without remove events
+            */
             this._super();
             this.$el.off('dragstart');
             this.$el.off('drag');
