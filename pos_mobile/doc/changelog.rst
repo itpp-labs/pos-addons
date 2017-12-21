@@ -1,3 +1,8 @@
+`1.1.2`
+-------
+
+- **FIX:** Correct scrolling on the Payment screen on IOS
+
 `1.1.1`
 -------
 

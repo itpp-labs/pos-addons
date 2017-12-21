@@ -1,3 +1,8 @@
+`1.2.1`
+-------
+
+- **FIX:** Scrolling the tables on a floor screen on IOS
+
 `1.2.0`
 -------
 

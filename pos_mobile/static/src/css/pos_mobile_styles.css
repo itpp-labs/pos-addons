@@ -788,6 +788,11 @@
     height: 562px;
     overflow: hidden !important;
     overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch!important;
+}
+.pos.mobile .paymentlines-container .delete-button{
+    padding: 0px;
+    line-height: 65px;
 }
 .pos.mobile .paymentlines .controls {
     width: 80px;
@@ -914,8 +919,8 @@
 .pos.mobile .paymentmethods-container {
     border-bottom: dashed 3px rgb(188,188,188);
     max-height: 375px;
-    overflow: hidden;
-    overflow-y: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: auto!important;
 }
 .pos.mobile .payment-screen .payment-numpad {
     max-width: calc(100% - 380px);
@@ -995,6 +1000,7 @@
     white-space: nowrap;
     overflow: hidden;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch !important;
 }
 pos.mobile .clientlist-screen .top-content .button {
     margin: 0px;
@@ -1156,6 +1162,10 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .summary .line .discount .value{
     float: none;
+}
+.pos.mobile .summary .line .fiscal{
+    display: inline-block;
+    margin-left:10px;
 }
 /*______________________________________________________*/
 .pos.mobile .submit-kitchen-button {
@@ -1453,8 +1463,9 @@ pos.mobile .clientlist-screen .top-content .button {
     float: left;
     max-width: 674px;
     white-space: nowrap;
-    overflow: hidden;
-    overflow-x: scroll;
+	overflow-y: hidden;
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 .pos.mobile .orders.touch-scrollable{
     display: inline-block;

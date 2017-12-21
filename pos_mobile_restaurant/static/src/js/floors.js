@@ -22,12 +22,6 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
     });
 
     floors.TableWidget.include({
-        click_handler: function(){
-            // if it's not slide transition then it's click
-            if (!this.pos.chrome.floors_slide_transition) {
-                this._super();
-            }
-        },
         //  Different from Original: remove all styles specific for each table
         table_style: function(){
             var table = this.table;
@@ -48,6 +42,22 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
                 return;
             }
             this._super();
+        },
+        renderElement: function(){
+            /*
+                The 'drag' events in original code was added because on touch devices it is sometimes
+                not easy to click, especially on small elements. You have to touch and
+                release the screen without moving your finger.
+
+                The pos_mobile_restaurant module adds scroll to table view, so we need to remove the 'drag' event
+                to make it work.
+
+                TODO: Make it without removing events
+            */
+            this._super();
+            this.$el.off('dragstart');
+            this.$el.off('drag');
+            this.$el.off('dragend');
         }
     });
 
