@@ -67,7 +67,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                            ? order.get_total_discount()
                            : 0;
             if (this.el.querySelector('.summary .total .discount .value')) {
-                if (order.product_discount) {
+                if (order && order.product_discount) {
                     discount -= order.product_discount;
                 }
                 this.el.querySelector('.summary .total .discount .value').textContent = this.format_currency(discount);
