@@ -45,7 +45,7 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
         },
         renderElement: function(){
             /*
-                The 'drag' evets in original code was added because on touch devices it is sometimes
+                The 'drag' events in original code was added because on touch devices it is sometimes
                 not easy to click, especially on small elements. You have to touch and
                 release the screen without moving your finger.
 
