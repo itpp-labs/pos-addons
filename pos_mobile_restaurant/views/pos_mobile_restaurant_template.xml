@@ -24,6 +24,9 @@
                     ]]>
                 </script>
             </xpath>
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_mobile_restaurant/static/src/js/tour.js"></script>
+            </xpath>
         </template>
     </data>
 </odoo>

@@ -44,6 +44,15 @@
         </t>
     </t>
 
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery="div[class='paymentmethods-container']">
+            $(this).addClass('touch-scrollable scrollable-y');
+        </t>
+        <t t-jquery="section[class='paymentlines-container']">
+            $(this).addClass('touch-scrollable scrollable-y');
+        </t>
+    </t>
+
     <t t-extend="PaymentScreen-Paymentlines">
          <t t-jquery="t[t-if='!paymentlines.length']" t-operation="replace">
             <div class='paymentlines-empty'>
@@ -75,6 +84,15 @@
         </t>
         <t t-jquery="i[class='fa fa-minus']" t-operation="replace">
             <img src="/pos_mobile/static/src/img/svg/minus.svg"/>
+        </t>
+        <t t-jquery="div[class='order-selector']">
+            $(this).addClass('touch-scrollable');
+        </t>
+    </t>
+
+    <t t-extend="ClientListScreenWidget">
+        <t t-jquery="section[class='top-content']">
+            $(this).addClass('touch-scrollable');
         </t>
     </t>
 
