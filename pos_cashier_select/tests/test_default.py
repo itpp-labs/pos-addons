@@ -14,7 +14,6 @@ class TestUi(odoo.tests.HttpCase):
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         env['ir.module.module'].search([('name', '=', 'pos_cashier_select')], limit=1).state = 'installed'
-        self.registry.cursor().release()
 
         self.phantom_js(
             '/web',
