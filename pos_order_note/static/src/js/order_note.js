@@ -14,21 +14,6 @@ odoo.define('pos_cancel_order.order_note', function (require) {
     var _t = core._t;
 
     models.load_models({
-        model:  'product.template',
-        fields: ['pos_notes','product_variant_id'],
-        loaded: function(self,products){
-            products.forEach(function(item){
-                if (item.product_variant_id) {
-                    var product = self.db.get_product_by_id(item.product_variant_id[0]);
-                    if (product) {
-                        product.note = item.pos_notes;
-                    }
-                }
-            });
-        }
-    });
-
-    models.load_models({
         model: 'pos.product_notes',
         fields: ['name', 'sequence'],
         loaded: function(self,product_notes){
@@ -40,6 +25,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             }
         },
     });
+
+    models.load_fields('product.product',['pos_notes']);
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
@@ -241,8 +228,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
     models.Orderline = models.Orderline.extend({
         initialize: function(attr,options){
             _super_orderline.initialize.apply(this,arguments);
-            if (this.product.note && !this.note) {
-                this.set_note(this.product.note);
+            if (this.product.pos_notes && !this.note) {
+                this.set_note(this.product.pos_notes);
             }
         },
         set_custom_notes: function(notes) {
