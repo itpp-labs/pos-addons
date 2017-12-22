@@ -9,14 +9,32 @@ odoo.define('pos_qr_login.popups', function (require) {
 
     var BlockPopupWidget = PopupWidget.extend({
         template: 'BlockPopupWidget',
-        show: function(options){
+        show: function (options) {
             var self = this;
             this._super(options);
             this.renderElement();
             this.$('.fa-lock').click(function(){
                 self.click_unlock();
             });
+            this.pos.barcode_reader.set_action_callback({
+                'cashier': _.bind(self.barcode_cashier_action, self)
+            });
         },
+        barcode_cashier_action: function (code) {
+            var self = this,
+                users = this.pos.users;
+            for (var i = 0, len = users.length; i < len; i++) {
+                if(users[i].barcode === code.code){
+                    this.pos.set_cashier(users[i]);
+                    this.chrome.widget.username.renderElement();
+                    this.gui.close_popup();                    
+                    return true;
+                }
+            }
+            this.barcode_error_action(code);
+            return false;
+        },
+
         click_unlock: function() {
             this.gui.close_popup();
             this.gui.show_popup('selection_with_pass', {
@@ -27,6 +45,7 @@ odoo.define('pos_qr_login.popups', function (require) {
             //     this.options.confirm.call(self);
             // }
         },
+
         get_list: function () {
             var list = [];
             for (var i = 0; i < this.pos.users.length; i++) {
@@ -52,6 +71,7 @@ odoo.define('pos_qr_login.popups', function (require) {
             this.is_selected = options.is_selected || function (item) { return false; };
             this.renderElement();
         },
+
         click_item: function(event) {
             var self = this;
                 var item = this.list[parseInt($(event.target).data('item-index'))];

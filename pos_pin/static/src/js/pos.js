@@ -2,6 +2,9 @@ odoo.define('pos_pin.pos', function (require) {
     "use strict";
 
     var gui = require('point_of_sale.gui');
+    var core = require('web.core');
+    
+    var _t = core._t;
 
     gui.Gui.include({
         sudo_custom: function(options) {
