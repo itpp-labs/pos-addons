@@ -17,18 +17,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         initialize: function (session, attributes) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
-            var partner_model = _.find(this.models, function(model){
-                return model.model === 'res.partner';
-            });
-            partner_model.fields.push('debt_type', 'debt', 'debt_limit');
-            var journal_model = _.find(this.models, function(model){
-                return model.model === 'account.journal';
-            });
-            journal_model.fields.push('debt');
-            var product_model = _.find(this.models, function(model){
-                return model.model === 'product.product';
-            });
-            product_model.fields.push('credit_product');
+            models.load_fields("res.partner",['debt_type', 'debt', 'debt_limit'])
+            models.load_fields('account.journal',['debt'])
+            models.load_fields('product.product',['credit_product'])
             return _super_posmodel.initialize.apply(this, arguments);
         },
         _save_to_server: function (orders, options) {
