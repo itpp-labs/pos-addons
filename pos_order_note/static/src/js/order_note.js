@@ -26,16 +26,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         },
     });
 
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-        load_server_data: function(){
-            var product_model = _.find(this.models, function(model){
-                return model.model === 'product.product';
-            });
-            product_model.fields.push('pos_notes');
-            return PosModelSuper.prototype.load_server_data.apply(this, arguments);
-        }
-    });
+    models.load_fields('product.product',['pos_notes']);
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
