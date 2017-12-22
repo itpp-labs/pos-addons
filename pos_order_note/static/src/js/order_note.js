@@ -264,7 +264,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             var custom_notes_ids_line = false;
             var res = _super_orderline.get_line_diff_hash.apply(this,arguments);
             if (this.get_custom_notes()) {
-                this.get_custom_notes().forEach(function(custom_notes) {
+                _.each(this.get_custom_notes(), function(custom_notes) {
                     custom_notes_ids.push(custom_notes.id);
                 });
                 custom_notes_ids_line = custom_notes_ids.join('');

@@ -18,14 +18,31 @@
 
 .pos.mobile .floor-map {
     box-shadow: initial;
+    position: relative;
 }
 .pos.mobile .floor-map .tables {
-    overflow-y: auto;
-    max-width: 880px;
-    max-height: initial;
+    max-width: 900px;
+
+    max-height: 90%;
+    max-height: -webkit-calc(100% - 150px);
+    max-height: -moz-calc(100% - 150px);
+    max-height: calc(100% - 150px);
+
     float: none;
     margin-left: 88px;
     border: none!important;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+
+    -webkit-overflow-scrolling: auto !important;
+}
+.pos.mobile .scrollable-y {
+    position: relative;
 }
 .pos.mobile .floor-map .table{
     font-size: 36px;
@@ -178,8 +195,8 @@
 	overflow-y: auto;
 }
 /* ------ FLOR MAP BUTTON MENU ------- */
-.pos.mobile .mobile-floor-selector .menu-button {
-    position: initial;
+.pos.mobile .swiper-container-floor-screen .menu-button {
+    position: absolute;
     top: 0px; left: 0px;
     padding: 9px;
     cursor: pointer;
@@ -188,8 +205,12 @@
     background-color: #2C8DFB;
     z-index: 1;
     margin-bottom: -1px;
+    width: 80px;
 }
-.pos.mobile .mobile-floor-selector .bar {
+.pos.mobile .floor-selector .menu-button {
+    position: initial;
+}
+.pos.mobile .swiper-container-floor-screen .bar {
     position: relative;
     display: block;
     width: 80px;
@@ -200,21 +221,21 @@
     -webkit-transition: .3s;
     transition: .3s;
 }
-.pos.mobile .mobile-floor-selector .menu-button .bar:nth-of-type(1) {
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(1) {
     margin-top: 0px;
 }
-.pos.mobile .mobile-floor-selector .menu-button .bar:nth-of-type(3) {
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(3) {
     margin-bottom: 0px;
 }
-.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(1) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(1) {
     -webkit-transform: translateY(30px) rotate(-45deg);
     -ms-transform: translateY(30px) rotate(-45deg);
     transform: translateY(30px) rotate(-45deg);
 }
-.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(2) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(2) {
     opacity: 0;
 }
-.pos.mobile .mobile-floor-selector .cross .bar:nth-of-type(3) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(3) {
     -webkit-transform: translateY(-26px) rotate(45deg);
     -ms-transform: translateY(-26px) rotate(45deg);
     transform: translateY(-26px) rotate(45deg);
