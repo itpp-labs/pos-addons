@@ -14,41 +14,43 @@ Some POSes may be configured to work without synchronization. In such case it wi
 Modules compatibility
 ---------------------
 
-For the compalibility of `pos_multi_session <https://www.odoo.com/apps/modules/10.0/pos_multi_session/>`__ module with other modules that add additional data to the Order or Orderline JS model, it is necessary to use the ``apply_ms_data`` function in these models.
+Some modules may not be compatible. It happens when a module adds additional data to the ``Order`` or ``Orderline`` JS model. In such cases it is necessary to add ``apply_ms_data`` methods to corresponding models.
 
-.. code-block:: ruby
-
-    /*  It is necessary to check the presence of the super method for the function,
-        in order to be able to inherit the ``apply_ms_data`` function in other modules
-        without specifying "require" of the "pos_multi_session" module (without adding in
-        dependencies in the manifest).
-
-        At the time of loading, the super method may not exist. So, if the js file is loaded
-        first, among all inherited, then there is no super method and it is not called,
-        if the file is not the first, then the super method is already created by other modules,
-        and we inherit this function.
-    */
+.. code-block:: js
 
     apply_ms_data: function(data) {
-        // This function for compatibility with the module `pos_multi_session <https://www.odoo.com/apps/modules/10.0/pos_multi_session/>`__
-        if (_super_order.apply_ms_data) {
+        // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+        /*
+        It is necessary to check the presence of the super method
+        in order to be able to inherit the apply_ms_data
+        without calling require('pos_multi_session') 
+        and without adding pos_multi_session in dependencies in the manifest.
+
+        At the time of loading, the super method may not exist. So, if the js file is loaded
+        first among all inherited, then there is no super method and it is not called.
+        If the file is not the first, then the super method is already created by other modules,
+        and we call super method.
+        */
+        if (_super_order.apply_ms_data) {
             _super_order.apply_ms_data.apply(this, arguments);
         }
         this.first_new_variable = data.first_new_variable;
         this.second_new_variable = data.second_new_variable;
         // etc ...
+        
+        /* Call renderElement direclty or trigger corresponding event if you need to rerender something after updating */
     }
 
-This function allows you to synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
+The example above synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
 
-The following is an example of using this function in the `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__ module pos_order_note module to synchronize new data:
+The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__:
 
-.. code-block:: ruby
+.. code-block:: js
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         apply_ms_data: function(data) {
-            // This function for compatibility with the module `pos_multi_session <https://www.odoo.com/apps/modules/10.0/pos_multi_session/>`__
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
@@ -56,11 +58,10 @@ The following is an example of using this function in the `pos_order_note <https
             this.old_note = data.old_note;
             this.custom_notes = data.custom_notes;
             this.old_custom_notes = data.old_custom_notes;
+            // rerender Order Widget after updating data
             this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
     });
-
-In the ``pos_order_note module``, this function allows you to synchronize all notes to an order across all POSes and updates OrderWidget to display this data.
 
 Credits
 =======
