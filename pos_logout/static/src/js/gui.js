@@ -1,4 +1,4 @@
-odoo.define('pos_qr_login.gui', function (require) {
+odoo.define('pos_logout.gui', function (require) {
     "use strict";
 
     var gui = require('point_of_sale.gui');

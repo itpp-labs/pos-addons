@@ -8,6 +8,7 @@
 }
 .pos .modal-dialog.block {
     background-color: rgba(85,0,0,0.5);
+    cursor: pointer;    
 }
 .pos .modal-dialog.block .popup-selection{
     background-color: initial;
@@ -21,5 +22,4 @@
 }
 .pos .modal-dialog.block .popup-selection i {
     font-size: 150px;
-    cursor: pointer;
 }

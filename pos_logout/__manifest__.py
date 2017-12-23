@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS QR Login""",
-    "summary": """POS QR Login""",
+    "name": """Unlock POS by scanning barcode""",
+    "summary": """Unlock POS by scanning barcode""",
     "category": "Point of Sale",
     # "live_test_url":
     "images": [],
@@ -20,7 +20,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "views/pos_qr_login_template.xml",
+        "views/pos_logout.xml",
     ],
     "qweb": [
         "static/src/xml/pos.xml"

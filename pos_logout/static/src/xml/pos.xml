@@ -8,13 +8,13 @@
                 </span>
             </t>
         </t>
-        <t t-jquery='div[class="button cancel"]' t-operation="replace">
+        <!-- <t t-jquery='div[class="button cancel"]' t-operation="replace">
             <t t-if="!widget.block">
                 <div class="button cancel">
                     Cancel
                 </div>
             </t>
-        </t>
+        </t> -->
     </t>
 
     <t t-name="BlockPopupWidget">

@@ -1,4 +1,4 @@
-odoo.define('pos_qr_login.chrome', function (require) {
+odoo.define('pos_logout.chrome', function (require) {
     "use strict";
 
     var chrome = require('point_of_sale.chrome');
