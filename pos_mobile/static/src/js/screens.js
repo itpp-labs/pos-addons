@@ -27,6 +27,10 @@ odoo.define('pos_mobile.screens', function (require) {
                 if (self.current_bottom_slide) {
                     self.close_bottom_menu();
                 }
+//                $('.pos.mobile').css({
+//                    'height': '50%'
+//                });
+                $('body').scrollTop(0);
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
                     clearTimeout(search_timeout);
                     var searchbox = this;
@@ -138,12 +142,12 @@ odoo.define('pos_mobile.screens', function (require) {
             });
             var $pi = $('span[data-product-id="'+product.id+'"] img');
             $($pi).animate({
-                'max-height': '240px',
-                'min-width': '200px',
+                'height': '220px',
+                'width': '220px',
             }, 200, function(){
                 $($pi).animate({
-                    'max-height': '200px',
-                    'min-width': '128px',
+                    'height': '185px',
+                    'width': '185px',
                 }, 400);
             });
         },
