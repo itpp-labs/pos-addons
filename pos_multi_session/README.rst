@@ -14,7 +14,7 @@ Some POSes may be configured to work without synchronization. In such case it wi
 Modules compatibility
 ---------------------
 
-Some modules may not be compatible. It happens when a module adds additional data to the ``Order`` or ``Orderline`` JS model. In such cases it is necessary to add ``apply_ms_data`` methods to corresponding models.
+Some modules may not be compatible. It happens when a module adds additional data to the ``Order`` or ``Orderline`` JS model. In such cases it is necessary to add ``apply_ms_data`` and extend ``export_as_JSON``, ``init_from_JSON`` methods in corresponding models.
 
 .. code-block:: js
 
@@ -51,7 +51,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
         // import new data from JSON
         this.first_new_variable = json.first_new_variable;
         this.second_new_variable = json.second_new_variable;
-        _super_order.init_from_JSON.call(this, json);
+        return _super_order.init_from_JSON.call(this, json);
     }
 
 The example above synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
@@ -87,7 +87,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
             this.old_note = json.old_note;
             this.custom_notes = json.custom_notes;
             this.old_custom_notes = json.old_custom_notes;
-            _super_order.init_from_JSON.call(this, json);
+            return _super_order.init_from_JSON.call(this, json);
         }
     });
 
