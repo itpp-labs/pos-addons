@@ -651,17 +651,19 @@
 .pos.mobile .product .product-img img {
     max-height: 200px;
     max-width: 220px;
-    min-width: 128px;
+    width: 185px;
+    height: 185px;
+    vertical-align: top;
 }
 .pos.mobile .product .price-tag {
-    top: 4px;
-    right: 4px;
+    top: 0px;
+    right: 0px;
     line-height: 26px;
     padding: 4px 10px;
     border-radius: 4px;
 }
 .pos.mobile .product .product-name {
-    line-height: 28px;
+    line-height: 20px;
     padding: 6px;
     padding-top:30px;
     text-align: left;
@@ -850,11 +852,10 @@
     width: 100%;
     display: block;
     position: relative;
-    max-height: 1537px;
 }
 .pos.mobile .payment-screen .right-content.pc60{
     left: initial;
-    height: 100%;
+    height: calc(100% - 128px);
 }
 .pos.mobile .payment-screen .payment-buttons{
     padding: 0px;
