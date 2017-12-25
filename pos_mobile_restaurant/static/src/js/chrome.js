@@ -58,7 +58,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             $(".mobile-order-container .mobile-search-bar .searchbox").prepend(order_button);
 
             // show first floor
-            if (this.pos.floors.length) {
+            if (this.pos.floors && this.pos.floors.length) {
                 this.change_current_floor(this.pos.floors[0].id);
             }
 
@@ -105,6 +105,9 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
         },
         // set or change current order
         change_current_floor: function(id) {
+            if (!this.pos.floors || !this.pos.floors.length) {
+                return false;
+            }
             var self = this;
 
             var active_floor = $('.slide-floor.swiper-slide-active');
