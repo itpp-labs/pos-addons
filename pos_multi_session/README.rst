@@ -39,6 +39,19 @@ Some modules may not be compatible. It happens when a module adds additional dat
         // etc ...
         
         /* Call renderElement direclty or trigger corresponding event if you need to rerender something after updating */
+    },
+    export_as_JSON: function() {
+        // export new data as JSON
+        var data = _super_order.export_as_JSON.apply(this, arguments);
+        data.first_new_variable = this.first_new_variable;
+        data.second_new_variable = this.second_new_variable;
+        return data;
+    },
+    init_from_JSON: function(json) {
+        // import new data from JSON
+        this.first_new_variable = json.first_new_variable;
+        this.second_new_variable = json.second_new_variable;
+        _super_order.init_from_JSON.call(this, json);
     }
 
 The example above synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
@@ -61,6 +74,21 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
             // rerender Order Widget after updating data
             this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
+        export_as_JSON: function() {
+            var data = _super_order.export_as_JSON.apply(this, arguments);
+            data.note = this.note;
+            data.old_note = this.old_note;
+            data.custom_notes = this.custom_notes;
+            data.old_custom_notes = this.old_custom_notes;
+            return data;
+        },
+        init_from_JSON: function(json) {
+            this.note = json.note;
+            this.old_note = json.old_note;
+            this.custom_notes = json.custom_notes;
+            this.old_custom_notes = json.old_custom_notes;
+            _super_order.init_from_JSON.call(this, json);
+        }
     });
 
 Credits
@@ -70,6 +98,7 @@ Contributors
 ------------
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------
