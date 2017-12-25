@@ -119,6 +119,9 @@ class ResPartner(models.Model):
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
         help='The partner is not allowed to have a debt more than this value')
+    duty_credits = fields.Float( 
+        string='Duty credits', default=0,
+        help='Special credits for inner purchases')
 
     def _get_date_formats(self, report):
 
@@ -275,6 +278,11 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
+    cash_out = fields.Boolean(string='Allow to cash out these credits')
+    expiration_date = fields.Datetime(string='Expiration date')
+    categories_ids = fields.One2many('product.category', string='Product categories',
+                                     help='Product categories that may be paid with this type of credits'
+                                          'if length is zero all categories')
 
 
 class PosConfiguration(models.TransientModel):
