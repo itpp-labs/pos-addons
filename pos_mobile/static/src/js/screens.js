@@ -24,6 +24,9 @@ odoo.define('pos_mobile.screens', function (require) {
             };
             var search_timeout = null;
             this.search_handler = function(event){
+                if (self.current_bottom_slide) {
+                    self.close_bottom_menu();
+                }
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
                     clearTimeout(search_timeout);
                     var searchbox = this;
