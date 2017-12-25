@@ -119,8 +119,8 @@ class ResPartner(models.Model):
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
         help='The partner is not allowed to have a debt more than this value')
-    duty_credits = fields.Float( 
-        string='Duty credits', default=0,
+    inner_credit_accounts = fields.One2many(
+        'res.partner.account', string='Inner credit accounts', default=0,
         help='Special credits for inner purchases')
 
     def _get_date_formats(self, report):
@@ -165,6 +165,16 @@ class ResPartner(models.Model):
             del partner['debt_limit']
         return super(ResPartner, self).create_from_ui(partner)
 
+
+class PartnersAccount(models.Model):
+    _name = 'res.partner.account'
+
+    account_journal = fields.Many2one('account.journal')
+    balance = fields.Float(
+        string='Duty credits', default=0,
+        help='Special credits for inner purchases')
+    account_owner_id = fields.Many2one(
+        'res.partner', string='Account owner')
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'
@@ -279,10 +289,10 @@ class AccountJournal(models.Model):
 
     debt = fields.Boolean(string='Debt Payment Method')
     cash_out = fields.Boolean(string='Allow to cash out these credits')
-    expiration_date = fields.Datetime(string='Expiration date')
-    categories_ids = fields.One2many('product.category', string='Product categories',
+    categories_ids = fields.Many2one('product.category', string='Product categories',
                                      help='Product categories that may be paid with this type of credits'
-                                          'if length is zero all categories')
+                                          'all categories if length is zero')
+    # expiration_date = fields.Datetime(string='Expiration date')
 
 
 class PosConfiguration(models.TransientModel):
