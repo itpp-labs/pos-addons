@@ -257,7 +257,7 @@
     overflow-y: auto;
 }
 .pos.mobile .control-button {
-    font-size: 40px;
+    font-size: 48px;
     margin: 15px;
     padding: 10px 24px;
     line-height: 80px;
@@ -274,11 +274,18 @@
     margin-right: 8px;
 }
 .pos.mobile .control-button .control-button-number {
-    height: 56px;
-    line-height: 56px;
-    width: 56px;
-    margin-left: -32px;
+    height: 48px;
+    line-height: 48px;
+    width: 48px;
+    margin-left: 0px;
     margin-right: 8px;
+    margin-bottom: 13px;
+    border-radius: 10px;
+    border: 3px solid rgb(85, 85, 85);
+    background: initial;
+    color: rgb(85, 85, 85);
+    font-size: 40px;
+    font-weight: initial;
 }
 .pos.mobile .control-button.highlight,
 .pos.mobile .button.highlight {
@@ -336,14 +343,14 @@
 }
 .pos.mobile .actionpad .button.pay {
     height: 315px;
+    font-size: 48px;
 }
 .pos.mobile .actionpad .button.pay .pay-circle {
-    font-size: 64px;
-    line-height: 108px;
+    font-size: 47px;
+    line-height: 84px;
     padding-top: 12px;
-    width: 120px;
-    border-radius: 60px;
-    margin-bottom: 20px;
+    width: 96px;
+    border-radius: 50%;
     background: #dbdbdb;
     color: #555555;
 }
@@ -352,15 +359,17 @@
     left: 6px;
 }
 .pos.mobile .actionpad .button.set-customer{
-    padding-left: 80px;
+    padding-left: 90px;
     padding-right: 80px;
     height: 98px;
     margin-bottom: 10px;
     position: relative;
+    font-size: 48px;
 }
 .pos .actionpad .button.set-customer.decentered {
-    padding-left: 40px;
+    padding-left: 5px;
     padding-right: 5px;
+    font-size: 35px;
 }
 .pos.mobile .actionpad .button .fa-user {
     left: 26px;
@@ -373,7 +382,7 @@
 .pos.mobile .actionpad .button.set-customer img{
     width: 50px;
     position: absolute;
-    left: 30px;
+    left: 25px;
     top: 20px;
 }
 /*  ********* The Numpad ********* */
@@ -411,7 +420,7 @@
     font-size: 48px;
 }
 .pos.mobile .mode-button {
-    font-size: 40px;
+    font-size: 48px;
 }
 .pos.mobile .numpad button:active {
     background: #6EC89B;
@@ -460,6 +469,9 @@
 .pos.mobile .product-list {
     padding: 20px;
     text-align: center;
+}
+.pos.mobile .product-list.iOSkeyboard {
+
 }
 .pos.mobile .current-order-qty {
     position: absolute;
@@ -1491,7 +1503,7 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .slide-numpad-button img,
 .pos.mobile .slide-categories-button img,
 .pos.mobile .slide-order-button img {
-    width: 86px;
+    width: 75px;
 }
 .pos.mobile .swiper-container-numpad {
     background: white;

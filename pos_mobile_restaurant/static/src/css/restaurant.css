@@ -307,6 +307,12 @@
     line-height: 93px;
     max-width: calc(100% - 5px);
 }
+.pos.mobile .control-button.order-note {
+    position: relative;
+}
+.pos.mobile .control-button.order-note img {
+    width: 40px;
+}
 /* --------------------- Numpad ------------------------ */
 .pos.mobile .subwindow-container-fix.pads {
     width: 100%;
