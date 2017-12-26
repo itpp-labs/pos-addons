@@ -288,7 +288,7 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
-    cash_out = fields.Boolean(string='Allow to cash out these credits')
+    cash_out = fields.Boolean(string='Allow to cash out these credits', default=False)
     categories_ids = fields.Many2one('product.category', string='Product categories',
                                      help='Product categories that may be paid with this type of credits'
                                           'all categories if length is zero')
@@ -381,6 +381,7 @@ class PosCreditUpdate(models.Model):
         ('cancel', 'Canceled')
     ], default='draft', required=True)
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
+    journal_ID = fields.Integer(string='Appropriate journal id')
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance

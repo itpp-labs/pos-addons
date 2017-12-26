@@ -22,7 +22,7 @@ class PosDebtReport(models.Model):
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
 
-    jornals_ids = fields.Many2many('account.journal', string='Journals', readonly=True)
+    journal_ids = fields.Many2many('account.journal', string='Journals', readonly=True)
 
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
     credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
