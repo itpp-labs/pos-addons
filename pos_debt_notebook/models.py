@@ -152,6 +152,7 @@ class PartnersAccount(models.Model):
     account_owner_id = fields.Many2one(
         'res.partner', string='Account owner')
 
+
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
@@ -254,9 +255,24 @@ class PosConfig(models.Model):
         return
 
     @api.multi
+    def init_partners_accounts(self):
+        partners = self.env['res.partner'].search([('customer', '=', True)])
+        journals = self.journal_ids.search([('debt', '=', True)])
+        account = self.env['res.partner.credit_balance']
+        for part in partners:
+            for journal in journals:
+                if not account.search([('account_journal', '=', journal.id), ('account_owner_id', '=', part.id)]):
+                    account.create({
+                        'account_journal': journal.id,
+                        'balance': 0,
+                        'account_owner_id': part.id
+                    })
+
+    @api.multi
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_debt_journal()
+        self.init_partners_accounts()
         return res
 
 
@@ -290,6 +306,7 @@ class AccountJournal(models.Model):
     # def write(self, vals):
     #     self.check_access_to_debt_limit(vals)
     #     return super(AccountJournal, self).write(vals)
+
 
 class PosConfiguration(models.TransientModel):
     _inherit = 'pos.config.settings'

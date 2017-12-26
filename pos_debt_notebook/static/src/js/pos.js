@@ -12,13 +12,29 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _t = core._t;
     var round_pr = utils.round_precision;
 
+    models.load_models({
+        model: 'res.partner.credit_balance',
+        fields: ['balance', 'account_journal', 'account_owner_id'],
+        domain: null,
+        loaded: function(self, accs){
+            _.each(self.partners, function(part){
+                part.accounts = [];
+                _.find(accs, function(ac){
+                    if(part.id === ac.account_owner_id[0]){
+                        part.accounts.push(ac);
+                    }
+                });
+            });
+        },
+    });
+
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
-            models.load_fields("res.partner",['debt_type', 'debt', 'debt_limit'])
-            models.load_fields('account.journal',['debt'])
+            models.load_fields("res.partner",['debt_type', 'debt'])
+            models.load_fields('account.journal',['debt', 'debt_limit'])
             models.load_fields('product.product',['credit_product'])
             return _super_posmodel.initialize.apply(this, arguments);
         },
