@@ -21,7 +21,6 @@ class PosDebtReport(models.Model):
     config_id = fields.Many2one('pos.config', string='POS', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
-
     journal_id = fields.Many2one('account.journal', string='Journals', readonly=True)
 
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
@@ -51,7 +50,12 @@ class PosDebtReport(models.Model):
                     session.config_id as config_id,
                     o.company_id as company_id,
                     pricelist.currency_id as currency_id,
-                    o.product_list as product_list
+                    o.product_list as product_list,
+                    
+                    journal.debt as journal_debt,
+                    journal.categories_ids as journal_categories_ids, 
+                    journal.debt_limit as journal_debt_limit,
+                    journal.credits_via_discount as journal_credits_via_discount
 
                 FROM account_bank_statement_line as st_line
                     LEFT JOIN account_bank_statement st ON (st.id=st_line.statement_id)
@@ -85,7 +89,12 @@ class PosDebtReport(models.Model):
                     session.config_id as config_id,
                     o.company_id as company_id,
                     pricelist.currency_id as currency_id,
-                    o.product_list as product_list
+                    o.product_list as product_list,
+                    
+                    journal.debt as journal_debt,
+                    journal.categories_ids as journal_categories_ids, 
+                    journal.debt_limit as journal_debt_limit,
+                    journal.credits_via_discount as journal_credits_via_discount
 
                 FROM pos_order_line as pos_line
                     LEFT JOIN product_product pp ON (pp.id=pos_line.product_id)
@@ -95,8 +104,9 @@ class PosDebtReport(models.Model):
 
                     LEFT JOIN pos_session session ON (session.id=o.session_id)
                     LEFT JOIN product_pricelist pricelist ON (pricelist.id=o.pricelist_id)
+                    LEFT JOIN account_journal journal ON (journal.id=o.sale_journal)
                 WHERE
-                    pt.credit_product=true
+                    journal.debt=true
                     AND o.state IN ('paid','done')
 
                 )
@@ -118,14 +128,20 @@ class PosDebtReport(models.Model):
                     NULL::integer as config_id,
                     inv.company_id as company_id,
                     inv.currency_id as currency_id,
-                    '' as product_list
+                    '' as product_list,
 
-                FROM account_invoice_line as inv_line
+                    journal.debt as journal_debt,
+                    journal.categories_ids as journal_categories_ids, 
+                    journal.debt_limit as journal_debt_limit,
+                    journal.credits_via_discount as journal_credits_via_discount
+                    
+                FROM account_invoice_line as inv_line 
                     LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
                     LEFT JOIN product_template pt ON (pt.id=pp.product_tmpl_id)
                     LEFT JOIN account_invoice inv ON (inv.id=inv_line.invoice_id)
+                    LEFT JOIN account_journal journal ON (journal.id=inv.journal_id)
                 WHERE
-                    pt.credit_product=true
+                    journal.debt=true
                     AND inv.state in ('paid')
                 )
                 UNION ALL
@@ -146,8 +162,14 @@ class PosDebtReport(models.Model):
                     NULL::integer as config_id,
                     record.company_id as company_id,
                     record.currency_id as currency_id,
-                    record.note as product_list
-
+                    record.note as product_list,
+                    record.journal_id as journal_id,
+                    
+                    journal.debt as journal_debt,
+                    journal.categories_ids as journal_categories_ids, 
+                    journal.debt_limit as journal_debt_limit,
+                    journal.credits_via_discount as journal_credits_via_discount
+                    
                 FROM pos_credit_update as record
                 WHERE
                     record.state in ('confirm')
