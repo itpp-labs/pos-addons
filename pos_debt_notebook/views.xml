@@ -13,7 +13,6 @@
             <field name="debt_type" invisible="1"/>
             <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
             <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
-            <field name="debt_limit"/>
             <field name="debt_company" attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"/>
             <field name="credit_balance_company" attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"/>
         </xpath>
@@ -29,7 +28,6 @@
             <field name="debt_type" invisible="1"/>
             <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
             <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
-            <field name="debt_limit"/>
         </xpath>
     </field>
 </record>
@@ -60,6 +58,9 @@
     <field name="arch" type="xml">
         <field name="journal_user" position="after">
             <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
+            <field name="cash_out"/>
+            <field name="categories_ids"/>
+            <field name="debt_limit"/>
         </field>
     </field>
 </record>
