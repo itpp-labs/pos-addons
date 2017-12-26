@@ -170,6 +170,10 @@ odoo.define('pos_mobile.screens', function (require) {
                     self.perform_search(searchbox.value, event.which === 13);
                 },70);
             });
+            // new the 'next' button position
+            var next_button = this.$('.next');
+            next_button.detach();
+            this.$('.new-customer').after(next_button);
         }
     });
 
