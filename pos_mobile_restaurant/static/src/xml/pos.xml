@@ -73,4 +73,10 @@
         </t>
     </t>
 
+    <t t-extend="OrderlineNoteButton">
+        <t t-jquery="i[class='fa fa-tag']" t-operation="replace">
+            <img src="/pos_mobile_restaurant/static/src/img/svg/note.svg"/>
+        </t>
+    </t>
+
 </templates>
