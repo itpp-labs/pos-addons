@@ -111,8 +111,8 @@ class ResPartner(models.Model):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
-    inner_credit_accounts = fields.One2many(
-        'res.partner.account', 'account_owner_id', string='Inner credit accounts',
+    credit_balance_ids = fields.One2many(
+        'res.partner.credit_balance', 'account_owner_id', string='Inner credit accounts',
         help='Special credits for inner purchases')
 
     def _get_date_formats(self, report):
@@ -135,22 +135,6 @@ class ResPartner(models.Model):
         for partner in self:
             partner.debt_type = debt_type
 
-    def check_access_to_debt_limit(self, vals):
-        debt_limit = vals.get('debt_limit')
-        if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
-                not self.env.user.has_group('point_of_sale.group_pos_manager')):
-            raise UserError(_('Only POS managers can change a debt limit value!'))
-
-    @api.model
-    def create(self, vals):
-        self.check_access_to_debt_limit(vals)
-        return super(ResPartner, self).create(vals)
-
-    @api.multi
-    def write(self, vals):
-        self.check_access_to_debt_limit(vals)
-        return super(ResPartner, self).write(vals)
-
     @api.model
     def create_from_ui(self, partner):
         if partner.get('debt_limit') is False:
@@ -159,7 +143,7 @@ class ResPartner(models.Model):
 
 
 class PartnersAccount(models.Model):
-    _name = 'res.partner.account'
+    _name = 'res.partner.credit_balance'
 
     account_journal = fields.Many2one('account.journal')
     balance = fields.Float(
@@ -279,22 +263,31 @@ class PosConfig(models.Model):
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    @api.model
-    def _default_debt_limit(self):
-        debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
-        return float(debt_limit)
-
     debt = fields.Boolean(string='Debt Payment Method')
-    account_ids = fields.One2many('res.partner.account', 'account_journal')
     cash_out = fields.Boolean(string='Allow to cash out these credits', default=False)
-    categories_ids = fields.Many2one('product.category', string='Product categories',
-                                     help='Product categories that may be paid with this type of credits'
-                                          'all categories if length is zero')
+    categories_ids = fields.Many2many('product.category', string='Product categories',
+                                      help='Product categories that may be paid with this type of credits'
+                                           'all categories if length is zero')
     debt_limit = fields.Float(
-        string='Max Debt', digits=dp.get_precision('Account'), default=_default_debt_limit,
+        string='Max Debt', digits=dp.get_precision('Account'), default=0,
         help='The partner is not allowed to have a debt more than this value')
     # expiration_date = fields.Datetime(string='Expiration date')
 
+    # def check_access_to_debt_limit(self, vals):
+    #     debt_limit = vals.get('debt_limit')
+    #     if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
+    #             not self.env.user.has_group('point_of_sale.group_pos_manager')):
+    #         raise UserError(_('Only POS managers can change a debt limit value!'))
+    #
+    # @api.model
+    # def create(self, vals):
+    #     self.check_access_to_debt_limit(vals)
+    #     return super(AccountJournal, self).create(vals)
+    #
+    # @api.multi
+    # def write(self, vals):
+    #     self.check_access_to_debt_limit(vals)
+    #     return super(AccountJournal, self).write(vals)
 
 class PosConfiguration(models.TransientModel):
     _inherit = 'pos.config.settings'
@@ -382,7 +375,7 @@ class PosCreditUpdate(models.Model):
         ('cancel', 'Canceled')
     ], default='draft', required=True)
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
-    journal_ID = fields.Integer(string='Appropriate journal id')
+    journal_id = fields.Many2one('account.journal', string='Appropriate journal id')
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
