@@ -52,10 +52,7 @@ class PosDebtReport(models.Model):
                     pricelist.currency_id as currency_id,
                     o.product_list as product_list,
                     
-                    journal.debt as journal_debt,
-                    journal.categories_ids as journal_categories_ids, 
-                    journal.debt_limit as journal_debt_limit,
-                    journal.credits_via_discount as journal_credits_via_discount
+                    st.journal_id as journal_id
 
                 FROM account_bank_statement_line as st_line
                     LEFT JOIN account_bank_statement st ON (st.id=st_line.statement_id)
@@ -91,10 +88,7 @@ class PosDebtReport(models.Model):
                     pricelist.currency_id as currency_id,
                     o.product_list as product_list,
                     
-                    journal.debt as journal_debt,
-                    journal.categories_ids as journal_categories_ids, 
-                    journal.debt_limit as journal_debt_limit,
-                    journal.credits_via_discount as journal_credits_via_discount
+                    o.sale_journal as journal_id
 
                 FROM pos_order_line as pos_line
                     LEFT JOIN product_product pp ON (pp.id=pos_line.product_id)
@@ -130,10 +124,7 @@ class PosDebtReport(models.Model):
                     inv.currency_id as currency_id,
                     '' as product_list,
 
-                    journal.debt as journal_debt,
-                    journal.categories_ids as journal_categories_ids, 
-                    journal.debt_limit as journal_debt_limit,
-                    journal.credits_via_discount as journal_credits_via_discount
+                    inv.journal_id as journal_id
                     
                 FROM account_invoice_line as inv_line 
                     LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
@@ -163,13 +154,8 @@ class PosDebtReport(models.Model):
                     record.company_id as company_id,
                     record.currency_id as currency_id,
                     record.note as product_list,
-                    record.journal_id as journal_id,
-                    
-                    journal.debt as journal_debt,
-                    journal.categories_ids as journal_categories_ids, 
-                    journal.debt_limit as journal_debt_limit,
-                    journal.credits_via_discount as journal_credits_via_discount
-                    
+                    record.journal_id as journal_id
+                                        
                 FROM pos_credit_update as record
                 WHERE
                     record.state in ('confirm')
