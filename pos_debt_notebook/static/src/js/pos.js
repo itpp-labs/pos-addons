@@ -34,7 +34,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
             models.load_fields("res.partner",['debt_type', 'debt'])
-            models.load_fields('account.journal',['debt', 'debt_limit'])
+            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','cash_out'])
             models.load_fields('product.product',['credit_product'])
             return _super_posmodel.initialize.apply(this, arguments);
         },
@@ -292,7 +292,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (client && debt_amount > 0 && client.debt + debt_amount > client.debt_limit) {
+            if (client && debt_amount > 0 && this.exceeding_debts_check()) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')
@@ -308,8 +308,34 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
+            if(currentOrder.validation_date){
+                var paymentlines = currentOrder.get_paymentlines();
+                var accounts = client.accounts
+                _.each(paymentlines, function(pl){
+                    var journal = _.find(accounts, function(acc){
+                        return acc.account_journal[0] === pl.cashregister.journal_id[0];
+                    });
+                    if(journal){
+                        journal.balance += pl.amount;
+                    }
+                });
+            }
         },
-
+        exceeding_debts_check: function(){
+            var order = this.pos.get_order(),
+            paymentlines = order.get_paymentlines();
+            var accounts = this.pos.get_client().accounts
+            var flag = false;
+            _.each(paymentlines, function(pl){
+                var journal = _.find(accounts, function(acc){
+                    return acc.account_journal[0] === pl.cashregister.journal_id[0];
+                });
+                if(journal && journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
+                    flag = true;
+                }
+            });
+            return flag;
+        },
         debt_change_check: function () {
             var order = this.pos.get_order(),
                 paymentlines = order.get_paymentlines(),
