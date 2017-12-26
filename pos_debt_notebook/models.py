@@ -271,6 +271,8 @@ class AccountJournal(models.Model):
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=0,
         help='The partner is not allowed to have a debt more than this value')
+    credits_via_discount = fields.Boolean(
+        default=False, string='Discount product on applying this payment method')
     # expiration_date = fields.Datetime(string='Expiration date')
 
     # def check_access_to_debt_limit(self, vals):
