@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.1.1`
+-------
+- FIX: Floor rendering error in case if POS without any floors
+
 `2.1.0`
 -------
 - IMP: POSes in Multi-session have one common floor set. Unsynchronized POSes may have its own floor set.
