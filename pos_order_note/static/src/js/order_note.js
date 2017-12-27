@@ -469,7 +469,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         events: {
             'click .note-line': function (event) {
                 var id = event.currentTarget.getAttribute('data-id');
-                var line = $('.note-line[data-id="'+parseInt(id)+'"');
+                var line = $('.note-list-contents').find(".note-line[data-id='" +parseInt(id)+"']");
                 this.set_active_note_status(line, Number(id));
             },
             'click .note-back': function () {
