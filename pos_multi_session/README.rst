@@ -54,7 +54,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
         return _super_order.init_from_JSON.call(this, json);
     }
 
-The example above synchronize ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
+The example above synchronizes ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
 
 The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__:
 
