@@ -31,7 +31,7 @@ There is a rare case, when you need to clear browser data after installation: if
 Modules compatibility
 =====================
 
-The pos_multi_session is compatible with all IT-Projects modules. It may not be compatible with other third-party modules that add additional data to Order or Orderline js model. For such cases we provide developer instruction how to add compatibility (available in README file).
+The ``pos_multi_session`` is compatible with all IT-Projects` modules. It may not be compatible with other third-party modules that add additional data to Order or Orderline js model. For such cases we provide developer instruction how to add compatibility (available in README.rst file).
 
 Usage
 =====
