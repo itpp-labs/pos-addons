@@ -53,6 +53,19 @@ class ResPartner(models.Model):
             r.credit_balance_company = -r.debt_company
 
     @api.multi
+    def compute_debts_by_journals(self, partner_id):
+        account_journal = self.env['account.journal'].search([('debt', '=', True)])
+        res_journals = dict((id, {id: 0}) for id in account_journal.ids)
+        res = {}
+        res_journal = self.env['report.pos.debt'].read_group(
+            [('partner_id', '=', partner_id), ('journal_id', 'in', account_journal.ids)],
+            ['journal_id', 'balance'],
+            'journal_id')
+        for d in res_journal:
+            res[d['journal_id'][0]] = d
+        return res
+
+    @api.multi
     def debt_history(self, limit=0):
         """
         Get debt details
@@ -89,10 +102,10 @@ class ResPartner(models.Model):
                 for r2 in records:
                     r2['date'] = self._get_date_formats(r2['date'])
                 data['history'] = records
+            data['debts'] = self.compute_debts_by_journals(r.id)
             data['records_count'] = self.env['report.pos.debt'].search_count(domain)
             data['partner_id'] = r.id
             res.append(data)
-
         return res
 
     debt = fields.Float(
