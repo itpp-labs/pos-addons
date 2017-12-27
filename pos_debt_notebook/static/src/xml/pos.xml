@@ -8,20 +8,22 @@
 
     <t t-extend="ClientDetails">
         <t t-jquery=".client-details-right" t-operation="append">
-            <t t-set="debt_style_class">detail client-debt #{acc.balance gt 0 and 'positive' or acc.balance lt 0 and 'negative' or 'empty'}</t>
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Debts:</span>
             </div>
-            <t t-foreach="partner.accounts" t-as="acc">
-                <div t-if="partner.debt_type == 'debt'" class="client-detail">
-                <!--<div t-if="partner.debt_type == 'debt' and acc.balance!=0" class="client-detail">-->
-                    <span t-attf-class="#{debt_style_class}">
-                        <t t-esc='acc.account_journal[1]'/>
-                    </span>
-                    <span t-attf-class="debt_style_class">
-                        <t t-esc='widget.format_currency(acc.balance)'/>
-                    </span>
-                </div>
+            <t t-if="partner.debts">
+                <t t-foreach="partner.debts" t-as="deb">
+                    <t t-set="debt_style_class">detail client-debt #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}</t>
+                    <div t-if="partner.debt_type == 'debt'" class="client-detail">
+                    <!--<div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">-->
+                        <span t-attf-class="#{debt_style_class}">
+                            <t t-esc='deb'/>
+                        </span>
+                        <span t-attf-class="debt_style_class">
+                            <t t-esc='widget.format_currency(deb.balance)'/>
+                        </span>
+                    </div>
+                </t>
             </t>
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Total Debt</span>
@@ -30,7 +32,7 @@
                 </span>
             </div>
             <div t-if="partner.debt_type == 'credit'" class="client-detail">
-                <span class='label'>Credit</span>
+                <span class='label'>Total Credit</span>
                 <span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
                     <t t-esc='widget.format_currency(- partner.debt)'/>
                 </span>

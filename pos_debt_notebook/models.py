@@ -55,7 +55,6 @@ class ResPartner(models.Model):
     @api.multi
     def compute_debts_by_journals(self, partner_id):
         account_journal = self.env['account.journal'].search([('debt', '=', True)])
-        res_journals = dict((id, {id: 0}) for id in account_journal.ids)
         res = {}
         res_journal = self.env['report.pos.debt'].read_group(
             [('partner_id', '=', partner_id), ('journal_id', 'in', account_journal.ids)],
@@ -124,9 +123,6 @@ class ResPartner(models.Model):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
-    credit_balance_ids = fields.One2many(
-        'res.partner.credit_balance', 'account_owner_id', string='Inner credit accounts',
-        help='Special credits for inner purchases')
 
     def _get_date_formats(self, report):
 
@@ -153,17 +149,6 @@ class ResPartner(models.Model):
         if partner.get('debt_limit') is False:
             del partner['debt_limit']
         return super(ResPartner, self).create_from_ui(partner)
-
-
-class PartnersAccount(models.Model):
-    _name = 'res.partner.credit_balance'
-
-    account_journal = fields.Many2one('account.journal')
-    balance = fields.Float(
-        string='Duty credits', default=0,
-        help='Special credits for inner purchases')
-    account_owner_id = fields.Many2one(
-        'res.partner', string='Account owner')
 
 
 class PosConfig(models.Model):
@@ -268,24 +253,9 @@ class PosConfig(models.Model):
         return
 
     @api.multi
-    def init_partners_accounts(self):
-        partners = self.env['res.partner'].search([('customer', '=', True)])
-        journals = self.journal_ids.search([('debt', '=', True)])
-        account = self.env['res.partner.credit_balance']
-        for part in partners:
-            for journal in journals:
-                if not account.search([('account_journal', '=', journal.id), ('account_owner_id', '=', part.id)]):
-                    account.create({
-                        'account_journal': journal.id,
-                        'balance': 0,
-                        'account_owner_id': part.id
-                    })
-
-    @api.multi
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_debt_journal()
-        self.init_partners_accounts()
         return res
 
 
