@@ -136,6 +136,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             for (var i = 0; i < debts.length; i++) {
                     var partner = this.db.get_partner_by_id(debts[i].partner_id);
                     partner.debt = debts[i].debt;
+                    partner.debts = debts[i].debts;
                     partner.records_count = debts[i].records_count;
                     partner.history = debts[i].history;
                 }
@@ -308,28 +309,24 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
-            if(currentOrder.validation_date){
-                var paymentlines = currentOrder.get_paymentlines();
-                var accounts = client.accounts
-                _.each(paymentlines, function(pl){
-                    var journal = _.find(accounts, function(acc){
-                        return acc.account_journal[0] === pl.cashregister.journal_id[0];
-                    });
-                    if(journal){
-                        journal.balance += pl.amount;
-                    }
-                });
-            }
+//            if(currentOrder.validation_date){
+//                var paymentlines = currentOrder.get_paymentlines();
+//                var accounts = client.accounts
+//                _.each(paymentlines, function(pl){
+//                    var journal = deb[pl.cashregister.journal_id[0]]
+//                    if(journal){
+//                        journal.balance += pl.amount;
+//                    }
+//                });
+//            }
         },
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines();
-            var accounts = this.pos.get_client().accounts
+            var debts = this.pos.get_client().debts
             var flag = false;
             _.each(paymentlines, function(pl){
-                var journal = _.find(accounts, function(acc){
-                    return acc.account_journal[0] === pl.cashregister.journal_id[0];
-                });
+                var journal = debts[pl.cashregister.journal_id[0]]
                 if(journal && journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
                     flag = true;
                 }
