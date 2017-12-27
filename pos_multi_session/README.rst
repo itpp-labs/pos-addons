@@ -91,6 +91,31 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
         }
     });
 
+    var _super_orderline = models.Orderline.prototype;
+    models.Orderline = models.Orderline.extend({
+        apply_ms_data: function(data) {
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+            if (_super_orderline.apply_ms_data) {
+                _super_orderline.apply_ms_data.apply(this, arguments);
+            }
+            this.custom_notes = data.custom_notes;
+            this.old_custom_notes = data.old_custom_notes;
+            // rerender Orderline Widget after updating data
+            this.trigger('change', this);
+        },
+        export_as_JSON: function() {
+            var data = _super_orderline.export_as_JSON.apply(this, arguments);
+            data.custom_notes = this.custom_notes;
+            data.old_custom_notes = this.old_custom_notes;
+            return data;
+        },
+        init_from_JSON: function(json) {
+            this.custom_notes = json.custom_notes;
+            this.old_custom_notes = json.old_custom_notes;
+            return _super_orderline.init_from_JSON.call(this, json);
+        }
+    });
+
 Credits
 =======
 
