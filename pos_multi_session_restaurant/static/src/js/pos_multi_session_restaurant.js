@@ -127,7 +127,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
-            this.gui.screen_instances.floors.renderElement();
+            if (this.gui.screen_instances.floors){
+                this.gui.screen_instances.floors.renderElement();
+            }
         },
         ms_do_update: function(order, data){
             PosModelSuper.prototype.ms_do_update.apply(this, arguments);
@@ -135,7 +137,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
                 order.trigger('change');
-                this.gui.screen_instances.floors.renderElement();
+                if (this.gui.screen_instances.floors){
+                    this.gui.screen_instances.floors.renderElement();
+                }
             }
         },
         ms_on_add_order: function(current_order){
