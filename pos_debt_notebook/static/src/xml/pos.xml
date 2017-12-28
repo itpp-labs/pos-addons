@@ -6,25 +6,41 @@
         </button>
     </t>
 
+    <t t-name="CreditList">
+        <t t-foreach="debts" t-as="deb">
+            <!--<div t-if="partner.debt_type == 'debt'" class="client-detail">-->
+            <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
+                <span t-attf-class="client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                    <t t-if='deb.journal_id'>
+                        <t t-esc="deb.journal_id[1]"/>
+                    </t>
+                </span>
+                <span t-attf-class="client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                    <t t-esc='widget.format_currency(deb.balance)'/>
+                </span>
+            </div>
+            <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
+                <span t-attf-class="client-credit #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                    <t t-if='deb.journal_id'>
+                        <t t-esc="deb.journal_id[1]"/>
+                    </t>
+                </span>
+                <span t-attf-class="client-credit #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                    <t t-esc='widget.format_currency(deb.balance)'/>
+                </span>
+            </div>
+        </t>
+    </t>
+
     <t t-extend="ClientDetails">
         <t t-jquery=".client-details-right" t-operation="append">
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Debts:</span>
             </div>
-            <t t-if="partner.debts">
-                <t t-foreach="partner.debts" t-as="deb">
-                    <t t-set="debt_style_class">detail client-debt #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}</t>
-                    <div t-if="partner.debt_type == 'debt'" class="client-detail">
-                    <!--<div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">-->
-                        <span t-attf-class="#{debt_style_class}">
-                            <t t-esc='deb'/>
-                        </span>
-                        <span t-attf-class="debt_style_class">
-                            <t t-esc='widget.format_currency(deb.balance)'/>
-                        </span>
-                    </div>
-                </t>
-            </t>
+            <div class="credit_list">
+                <t t-set="debts" t-value="partner.debts"/>
+                <t t-if="debts" t-call="CreditList"/>
+            </div>
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Total Debt</span>
                 <span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">

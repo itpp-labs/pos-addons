@@ -54,7 +54,7 @@ class ResPartner(models.Model):
     @api.multi
     def compute_debts_by_journals(self, partner_id):
         account_journal = self.env['account.journal'].search([('debt', '=', True)])
-        res = {}
+        res = dict((id, {'balance': 0}) for id in account_journal.ids)
         res_journal = self.env['report.pos.debt'].read_group(
             [('partner_id', '=', partner_id), ('journal_id', 'in', account_journal.ids)],
             ['journal_id', 'balance'],

@@ -311,7 +311,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var flag = false;
             _.each(paymentlines, function(pl){
                 var journal = debts[pl.cashregister.journal_id[0]]
-                if(journal && journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
+                if(journal && Math.abs(journal.balance) + pl.amount > pl.cashregister.journal.debt_limit){
                     flag = true;
                 }
             });
@@ -444,8 +444,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.debt_history_limit_increment = 10;
         },
         line_select: function(event,$line,id){
-            this.pos._load_debts(id, 0, {});
             this._super(event,$line,id);
+            this.pos.reload_debts(id, 0, {"postpone": false});
         },
         update_debt_history: function (partner_ids){
             var self = this;
@@ -462,6 +462,18 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             var customers = this.pos.db.get_partners_sorted(1000);
             this.render_list(customers);
+            _.each(partner_ids, function(id){
+                var partner = self.pos.db.get_partner_by_id(id);
+                var debts = Object.values(partner.debts)
+                if(partner.debts){
+                    var credit_lines_html = QWeb.render('CreditList', {
+                        partner: partner,
+                        debts: debts,
+                        widget: self
+                    });
+                $('div.credit_list').html(credit_lines_html);
+                }
+            })
         },
         render_list: function(partners){
             var debt_type = partners && partners.length
