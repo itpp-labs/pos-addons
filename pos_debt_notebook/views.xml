@@ -9,20 +9,18 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//field[@name='barcode']" position="after">
-            <field name="debt_type" invisible="1"/>
-            <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
-            <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
-            <field name="debt_company" attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"/>
-            <field name="credit_balance_company" attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"/>
-        </xpath>
         <xpath expr="//button[@class='oe_stat_button']" position="after">
             <button class="oe_stat_button" type="action" name="%(pos_debt_notebook.action_report_pos_debt_all)d"
                 context="{'group_by':'journal_id'}"
-                attrs="{'invisible': [('customer', '=', False)]}"
                 icon="fa-money">
                 <div class="o_form_field o_stat_info">
-                    <span class="o_stat_text">Debts/Credits</span>
+                    <field name="debt_type" invisible="1"/>
+                    <field name="debt" attrs="{'invisible': ['|', ('debt_type', '!=', 'debt'),('is_company', '=', False)]}" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="credit_balance" attrs="{'invisible': ['|', ('debt_type', '!=', 'credit'),('is_company', '=', False)]}" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="debt_company" attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', True)]}" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="credit_balance_company" attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', True)]}" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <span attrs="{'invisible': [('debt_type', '=', 'debt')]}" class="o_stat_text">Debts </span>
+                    <span attrs="{'invisible': [('debt_type', '=', 'credit')]}" class="o_stat_text">Credits </span>
                 </div>
             </button>
         </xpath>
