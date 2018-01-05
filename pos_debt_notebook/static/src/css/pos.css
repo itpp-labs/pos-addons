@@ -81,6 +81,11 @@
     top: 0;
     right: 0;
     left: 0;
-    padding-left: 26px;
-    padding-right: 14px;
+    padding-left: 0;
+    padding-right: 0;
+    height: initial;
+}
+.pos.mobile .clientlist-screen .top-content #client_list_header_buttons span {
+    margin-left: 0;
+    margin-right: 0;
 }
