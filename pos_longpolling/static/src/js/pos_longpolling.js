@@ -193,7 +193,7 @@ odoo.define('pos_longpolling', function(require){
         },
         update_timer: function(){
             this.stop_timer();
-            this.start_timer(this.pos.config.query_timeout, 'query');
+            this.start_timer(this.pos.config.longpolling_max_silence_timeout, 'query');
         },
         stop_timer: function(){
             var self = this;
@@ -218,7 +218,7 @@ odoo.define('pos_longpolling', function(require){
         },
         response_timer: function() {
             this.stop_timer();
-            this.start_timer(this.pos.config.response_timeout, "response");
+            this.start_timer(this.pos.config.longpolling_pong_timeout, "response");
         },
         send_ping: function(address) {
             var self = this;
