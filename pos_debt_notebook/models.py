@@ -325,7 +325,8 @@ class Product(models.Model):
 
     _inherit = 'product.template'
 
-    credit_product = fields.Boolean('Credit Product', default=False, help="This product is used to buy Credits (pay for debts).")
+    credit_product = fields.Many2one('account.journal', string='Journal Credit Product',
+                                     help="This product is used to buy Credits (pay for debts).")
 
 
 class PosOrder(models.Model):

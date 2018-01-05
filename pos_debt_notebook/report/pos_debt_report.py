@@ -24,9 +24,11 @@ class PosDebtReport(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journals', readonly=True)
 
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
-    credit_product = fields.Boolean('Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
+    credit_product = fields.Many2one('account.journal', string='Journal Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
     balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
     product_list = fields.Text('Product List', readonly=True)
+                    # false as credit_product,
+                    # false as credit_product,
 
     @api.model_cr
     def init(self):
@@ -41,7 +43,6 @@ class PosDebtReport(models.Model):
                     NULL::integer as update_id,
                     -st_line.amount as balance,
                     st.state as state,
-                    false as credit_product,
 
                     o.date_order as date,
                     o.partner_id as partner_id,
@@ -77,7 +78,6 @@ class PosDebtReport(models.Model):
                         WHEN 'paid' THEN 'open'
                         ELSE o.state
                     END as state,
-                    true as credit_product,
 
                     o.date_order as date,
                     o.partner_id as partner_id,
@@ -102,7 +102,7 @@ class PosDebtReport(models.Model):
                 WHERE
                     journal.debt=true
                     AND o.state IN ('paid','done')
-
+                    AND pt.credit_product=journal.id
                 )
                 UNION ALL
                 (
@@ -113,8 +113,7 @@ class PosDebtReport(models.Model):
                     NULL::integer as update_id,
                     inv_line.price_subtotal as balance,
                     'confirm' as state,
-                    true as credit_product,
-
+                    
                     inv.date_invoice as date,
                     inv.partner_id as partner_id,
                     inv.user_id as user_id,
@@ -134,6 +133,7 @@ class PosDebtReport(models.Model):
                 WHERE
                     journal.debt=true
                     AND inv.state in ('paid')
+                    AND pt.credit_product=journal.id
                 )
                 UNION ALL
                 (
@@ -144,7 +144,6 @@ class PosDebtReport(models.Model):
                     record.id as update_id,
                     record.balance as balance,
                     record.state as state,
-                    false as credit_product,
 
                     record.date as date,
                     record.partner_id as partner_id,

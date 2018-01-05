@@ -15,9 +15,10 @@ class PosCreditInvoices(models.TransientModel):
     product_id = fields.Many2one(
         'product.product',
         'Credit Product',
-        domain="[('credit_product', '=', True)]",
-        context="{'default_credit_product': True}",
-        default=_default_product_id,
+        # domain="[('credit_product', 'in', True)]",
+        domain="[('credit_product', '=', partner_id)]",
+        # context="{'default_credit_product': True}",
+        # default=_default_product_id,
         required="True",
         help="This product will be used on creating invoices."
     )
