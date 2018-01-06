@@ -24,11 +24,9 @@ class PosDebtReport(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journals', readonly=True)
 
     state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
-    credit_product = fields.Many2one('account.journal', string='Journal Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
+    credit_product = fields.Boolean(string='Journal Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
     balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
     product_list = fields.Text('Product List', readonly=True)
-                    # false as credit_product,
-                    # false as credit_product,
 
     @api.model_cr
     def init(self):
@@ -43,6 +41,7 @@ class PosDebtReport(models.Model):
                     NULL::integer as update_id,
                     -st_line.amount as balance,
                     st.state as state,
+                    false as credit_product,
 
                     o.date_order as date,
                     o.partner_id as partner_id,
@@ -78,7 +77,8 @@ class PosDebtReport(models.Model):
                         WHEN 'paid' THEN 'open'
                         ELSE o.state
                     END as state,
-
+                    true as credit_product,
+                    
                     o.date_order as date,
                     o.partner_id as partner_id,
                     o.user_id as user_id,
@@ -88,7 +88,7 @@ class PosDebtReport(models.Model):
                     pricelist.currency_id as currency_id,
                     o.product_list as product_list,
                     
-                    o.sale_journal as journal_id
+                    pt.credit_product as journal_id
 
                 FROM pos_order_line as pos_line
                     LEFT JOIN product_product pp ON (pp.id=pos_line.product_id)
@@ -98,11 +98,10 @@ class PosDebtReport(models.Model):
 
                     LEFT JOIN pos_session session ON (session.id=o.session_id)
                     LEFT JOIN product_pricelist pricelist ON (pricelist.id=o.pricelist_id)
-                    LEFT JOIN account_journal journal ON (journal.id=o.sale_journal)
+                    LEFT JOIN account_journal journal ON (journal.id=pt.credit_product)
                 WHERE
                     journal.debt=true
                     AND o.state IN ('paid','done')
-                    AND pt.credit_product=journal.id
                 )
                 UNION ALL
                 (
@@ -113,6 +112,7 @@ class PosDebtReport(models.Model):
                     NULL::integer as update_id,
                     inv_line.price_subtotal as balance,
                     'confirm' as state,
+                    true as credit_product,
                     
                     inv.date_invoice as date,
                     inv.partner_id as partner_id,
@@ -123,17 +123,16 @@ class PosDebtReport(models.Model):
                     inv.currency_id as currency_id,
                     '' as product_list,
 
-                    inv.journal_id as journal_id
+                    pt.credit_product as journal_id
                     
                 FROM account_invoice_line as inv_line 
                     LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
                     LEFT JOIN product_template pt ON (pt.id=pp.product_tmpl_id)
                     LEFT JOIN account_invoice inv ON (inv.id=inv_line.invoice_id)
-                    LEFT JOIN account_journal journal ON (journal.id=inv.journal_id)
+                    LEFT JOIN account_journal journal ON (journal.id=pt.credit_product)
                 WHERE
                     journal.debt=true
                     AND inv.state in ('paid')
-                    AND pt.credit_product=journal.id
                 )
                 UNION ALL
                 (
@@ -144,6 +143,7 @@ class PosDebtReport(models.Model):
                     record.id as update_id,
                     record.balance as balance,
                     record.state as state,
+                    false as credit_product,
 
                     record.date as date,
                     record.partner_id as partner_id,

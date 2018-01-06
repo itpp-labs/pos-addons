@@ -311,7 +311,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var flag = false;
             _.each(paymentlines, function(pl){
                 var journal = debts[pl.cashregister.journal_id[0]]
-                if(journal && Math.abs(journal.balance) + pl.amount > pl.cashregister.journal.debt_limit){
+                if(journal && -journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
                     flag = true;
                 }
             });
