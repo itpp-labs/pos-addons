@@ -293,16 +293,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
-//            if(currentOrder.validation_date){
-//                var paymentlines = currentOrder.get_paymentlines();
-//                var accounts = client.accounts
-//                _.each(paymentlines, function(pl){
-//                    var journal = deb[pl.cashregister.journal_id[0]]
-//                    if(journal){
-//                        journal.balance += pl.amount;
-//                    }
-//                });
-//            }
         },
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
