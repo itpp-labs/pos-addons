@@ -247,12 +247,14 @@
 }
 .pos.mobile .splitbill-screen .left-content {
     width: 60%;
+    height: calc(100% - 120px);
+    float: left;
 }
 .pos.mobile .splitbill-screen .right-content {
     width: 40%;
-    left: 60%;
+    float: right;
+    left: 0%;
 }
-
 /*Order Button*/
 .pos.mobile .control-button.order-submit {
     padding: initial;
