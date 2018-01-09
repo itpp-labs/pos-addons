@@ -67,14 +67,22 @@
     </t>
 
     <t t-extend="ActionpadWidget">
-        <t t-jquery="i[class='fa fa-user']" t-operation="replace">
-            <t t-set="order" t-value="widget.pos.get_order()"/>
-            <t t-if="!order">
-                <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
-            </t>
-            <t t-if="order and !order.get_client()">
-                <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
-            </t>
+        <t t-jquery="button[t-attf-class*='button set-customer']" t-operation="replace">
+            <button t-attf-class='button set-customer #{ ( widget.pos.get_client() and widget.pos.get_client().name.length) ? "decentered" : "" }' >
+                <t t-set="order" t-value="widget.pos.get_order()"/>
+                <t t-if="!order">
+                    <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+                </t>
+                <t t-if="order and !order.get_client()">
+                    <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+                </t>
+                <t t-if="widget.pos.get_client()">
+                    <t t-esc="widget.pos.get_client().name" />
+                </t>
+                <t t-if="!widget.pos.get_client()">
+                    Customer
+                </t>
+            </button>
         </t>
     </t>
 

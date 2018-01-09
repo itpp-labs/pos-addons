@@ -22,13 +22,29 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.renderElement();
                 self.chrome.swiper_order.slideTo(1);
             };
+            this.touch_searchbox = function(event) {
+                // specific styles for the iOS platform
+                var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+                if (iOS) {
+                    if (event.type === "focusout") {
+                        $('.slide-products .product-list').removeClass('iOSkeyboard');
+                    } else if (event.type === "focus" && $('.searchbox input').val()) {
+                        $('.slide-products .product-list').addClass('iOSkeyboard');
+                    }
+                }
+            };
             var search_timeout = null;
             this.search_handler = function(event){
+                if (self.current_bottom_slide) {
+                    self.close_bottom_menu();
+                }
+                $('body').scrollTop(0);
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
                     clearTimeout(search_timeout);
                     var searchbox = this;
                     search_timeout = setTimeout(function(){
                         self.perform_search(self.category, searchbox.value, event.which === 13);
+                        $('.slide-products .product-list').addClass('iOSkeyboard');
                     },70);
                 }
             };
@@ -86,6 +102,9 @@ odoo.define('pos_mobile.screens', function (require) {
             this.el.querySelector('.slide-categories-button').addEventListener('click', this.click_categories_slide);
             this.el.querySelector('.slide-numpad-button').addEventListener('click', this.click_numpad_slide);
 
+            $('.searchbox input').on("focusout", self.touch_searchbox);
+            $('.searchbox input').on("focus input", self.touch_searchbox);
+
             var breadcrumbs = $('.window .rightpane .breadcrumbs');
             if (breadcrumbs.length) {
                 breadcrumbs.detach();
@@ -135,12 +154,12 @@ odoo.define('pos_mobile.screens', function (require) {
             });
             var $pi = $('span[data-product-id="'+product.id+'"] img');
             $($pi).animate({
-                'max-height': '240px',
-                'min-width': '200px',
+                'height': '220px',
+                'width': '220px',
             }, 200, function(){
                 $($pi).animate({
-                    'max-height': '200px',
-                    'min-width': '128px',
+                    'height': '185px',
+                    'width': '185px',
                 }, 400);
             });
         },
@@ -163,6 +182,10 @@ odoo.define('pos_mobile.screens', function (require) {
                     self.perform_search(searchbox.value, event.which === 13);
                 },70);
             });
+            // new the 'next' button position
+            var next_button = this.$('.next');
+            next_button.detach();
+            this.$('.new-customer').after(next_button);
         }
     });
 
