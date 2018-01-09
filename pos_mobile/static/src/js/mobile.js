@@ -8,6 +8,9 @@ odoo.define('pos_mobile.mobile', function (require) {
         initialize: function (session, attributes) {
             this.is_mobile = odoo.is_mobile;
             this.iOS = (/(iPad|iPhone|iPod)/g).test(navigator.userAgent);
+            if (this.iOS) {
+                $("body").addClass("ios");
+            }
             return PosModelSuper.initialize.call(this, session, attributes);
         },
     });
