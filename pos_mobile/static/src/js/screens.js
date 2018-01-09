@@ -11,6 +11,9 @@ odoo.define('pos_mobile.screens', function (require) {
         init: function(parent, options){
             this._super(parent,options);
             var self = this;
+            var max_height = top.innerHeight;
+            var min_height = top.innerHeight;
+
             this.click_categories_slide = function(event){
                 self.change_categories_slide();
             };
@@ -23,12 +26,13 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.chrome.swiper_order.slideTo(1);
             };
             this.touch_searchbox = function(event) {
-                // specific styles for the iOS platform
+                // specific styles for the iOS platform, since version iOS 11.0 is not work
+                // TODO: Fix for iOS 11.0
                 if (self.pos.iOS) {
                     if (event.type === "focusout") {
-                        $('.slide-products .product-list').removeClass('iOSkeyboard');
-                    } else if (event.type === "focus" && $('.searchbox input').val()) {
-                        $('.slide-products .product-list').addClass('iOSkeyboard');
+                        $('.pos.mobile').css({
+                            height: max_height
+                        });
                     }
                 }
             };
@@ -37,9 +41,19 @@ odoo.define('pos_mobile.screens', function (require) {
                 if (self.current_bottom_slide) {
                     self.close_bottom_menu();
                 }
-                // specific styles for the iOS platform (temporary style)
-                $('body').scrollTop(0);
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
+                    // specific styles for the iOS platform, since version iOS 11.0 is not work
+                    // TODO: Fix for iOS 11.0
+                    if (self.pos.iOS) {
+                        $('body').scrollTop(0);
+                        if (min_height >= top.innerHeight) {
+                            min_height = top.innerHeight;
+                        }
+                        $('.pos.mobile').css({
+                            height: min_height
+                        });
+                    }
+
                     clearTimeout(search_timeout);
                     var searchbox = this;
                     search_timeout = setTimeout(function(){

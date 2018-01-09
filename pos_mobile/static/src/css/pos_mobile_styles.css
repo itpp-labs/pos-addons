@@ -1,4 +1,10 @@
 /*===================Common styles for mobile version=============================*/
+body {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    margin: 0;
+}
 .pos.mobile textarea {
     font-size: 38px;
     padding: 20px;
@@ -469,9 +475,6 @@
 .pos.mobile .product-list {
     padding: 20px;
     text-align: center;
-}
-.pos.mobile .product-list.iOSkeyboard {
-
 }
 .pos.mobile .current-order-qty {
     position: absolute;
