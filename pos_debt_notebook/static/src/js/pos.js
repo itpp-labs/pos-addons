@@ -17,9 +17,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         initialize: function (session, attributes) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
-            models.load_fields("res.partner",['debt_type', 'debt'])
-            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out'])
-            models.load_fields('product.product',['credit_product'])
+            models.load_fields("res.partner",['debt_type', 'debt']);
+            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out']);
+            models.load_fields('product.product',['credit_product']);
             return _super_posmodel.initialize.apply(this, arguments);
         },
         _save_to_server: function (orders, options) {
@@ -297,10 +297,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines();
-            var debts = this.pos.get_client().debts
+            var debts = this.pos.get_client().debts;
             var flag = false;
             _.each(paymentlines, function(pl){
-                var journal = debts[pl.cashregister.journal_id[0]]
+                var journal = debts[pl.cashregister.journal_id[0]];
                 if(journal && -journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
                     flag = true;
                 }
@@ -312,50 +312,46 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 paymentlines = order.get_paymentlines(),
                 flag = false;
             for (var i = 0; i < paymentlines.length; i++) {
-                var cashregister = paymentlines[i].cashregister;
-                var journal = cashregister.journal;
-                var change = order.get_change(paymentlines[i])
-                if (change > 0 && journal.debt && !journal.pos_cash_out){
+                var journal = paymentlines[i].cashregister.journal;
+                if (order.get_change(paymentlines[i]) > 0 && journal.debt && !journal.pos_cash_out){
                     flag = true;
-                } else if (change > 0 && journal.debt && journal.pos_cash_out){
-                    console.log(order)
-                    var cash_out_product = this.pos.db.get_product_by_id(this.pos.config.cash_out_dummy_product_id[0]);
-                    var options = {
-                        'quantity': 1,
-                        'price': change
-                    };
-                    order.add_product(cash_out_product, options);
-                    order.add_paymentline(cashregister);
                 }
             }
             return flag;
         },
         pay_full_debt: function(){
+            var self = this;
             var order = this.pos.get_order();
-
-            var debtjournal = false;
-            _.each(this.pos.cashregisters, function(cashregister) {
-                if (cashregister.journal.debt) {
-                    debtjournal = cashregister;
-                }
-            });
+            if (order && !order.orderlines.length && this.pos.config.debt_dummy_product_id){
+                order.add_product(
+                    this.pos.db.get_product_by_id(this.pos.config.debt_dummy_product_id[0]),
+                    {'price': 0}
+                );
+            }
 
             var paymentLines = order.get_paymentlines();
             if (paymentLines.length) {
-                _.each(paymentLines.models, function(paymentLine) {
+                _.each(paymentLines, function(paymentLine) {
                     if (paymentLine.cashregister.journal.debt){
                         paymentLine.destroy();
                     }
                 });
             }
 
-            var newDebtPaymentline = new models.Paymentline({},{
-                order: order,
-                cashregister: debtjournal,
-                pos: this.pos
+            var debts = order.get_client().debts;
+            _.each(debts, function(debt) {
+                if (debt.balance < 0) {
+                    var newDebtPaymentline = new models.Paymentline({},{
+                        pos: self.pos,
+                        order: order,
+                        cashregister: _.find(self.pos.cashregisters, function(cr){
+                            return cr.journal_id[0] === debt.journal_id[0];
+                        })
+                    });
+                    newDebtPaymentline.set_amount(debt.balance);
+                    order.paymentlines.add(newDebtPaymentline);
+                }
             });
-            newDebtPaymentline.set_amount(order.get_client().debt * -1);
-            order.paymentlines.add(newDebtPaymentline);
 
             this.render_paymentlines();
         },
@@ -465,7 +461,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.render_list(customers);
             _.each(partner_ids, function(id){
                 var partner = self.pos.db.get_partner_by_id(id);
-                var debts = Object.values(partner.debts)
+                var debts = Object.values(partner.debts);
                 if(partner.debts){
                     var credit_lines_html = QWeb.render('CreditList', {
                         partner: partner,
@@ -474,7 +470,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     });
                 $('div.credit_list').html(credit_lines_html);
                 }
-            })
+            });
         },
         render_list: function(partners){
             var debt_type = partners && partners.length

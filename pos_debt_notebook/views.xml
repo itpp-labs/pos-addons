@@ -87,7 +87,6 @@
     <field name="arch" type="xml">
         <field name="currency_id" position="after">
             <field name="debt_dummy_product_id"/>
-            <field name="cash_out_dummy_product_id"/>
         </field>
     </field>
 </record>
