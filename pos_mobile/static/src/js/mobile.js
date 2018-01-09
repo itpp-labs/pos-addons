@@ -7,12 +7,7 @@ odoo.define('pos_mobile.mobile', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             this.is_mobile = odoo.is_mobile;
-//            $('body').css({
-//                height: '100%',
-//                width: '100%',
-//                position: 'fixed',
-//                margin: 0
-//            });
+            this.iOS = (/(iPad|iPhone|iPod)/g).test(navigator.userAgent);
             return PosModelSuper.initialize.call(this, session, attributes);
         },
     });

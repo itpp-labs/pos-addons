@@ -24,8 +24,7 @@ odoo.define('pos_mobile.screens', function (require) {
             };
             this.touch_searchbox = function(event) {
                 // specific styles for the iOS platform
-                var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-                if (iOS) {
+                if (self.pos.iOS) {
                     if (event.type === "focusout") {
                         $('.slide-products .product-list').removeClass('iOSkeyboard');
                     } else if (event.type === "focus" && $('.searchbox input').val()) {
@@ -38,6 +37,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 if (self.current_bottom_slide) {
                     self.close_bottom_menu();
                 }
+                // specific styles for the iOS platform (temporary style)
                 $('body').scrollTop(0);
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
                     clearTimeout(search_timeout);
