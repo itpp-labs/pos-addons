@@ -72,7 +72,7 @@
     <field name="arch" type="xml">
         <field name="journal_user" position="after">
             <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
-            <field name="cash_out"/>
+            <field name="pos_cash_out"/>
             <field name="categories_ids"/>
             <field name="debt_limit"/>
             <field name="credits_via_discount"/>
@@ -87,6 +87,7 @@
     <field name="arch" type="xml">
         <field name="currency_id" position="after">
             <field name="debt_dummy_product_id"/>
+            <field name="cash_out_dummy_product_id"/>
         </field>
     </field>
 </record>

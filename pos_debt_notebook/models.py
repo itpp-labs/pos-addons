@@ -159,6 +159,11 @@ class PosConfig(models.Model):
              "without ordering new products. This is a workaround to the fact "
              "that Odoo needs to have at least one product on the order to "
              "validate the transaction.")
+    cash_out_dummy_product_id = fields.Many2one(
+        'product.product', string='Dummy Product for Cashing Out', domain=[('available_in_pos', '=', True)],
+        help="Dummy product used when a customer cashing out his credits "
+             "with or without ordering new products. This is a workaround to the fact "
+             "that Odoo needs to have at least one product on the order to validate the transaction.")
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']
@@ -239,6 +244,7 @@ class PosConfig(models.Model):
         self.write({
             'journal_ids': [(4, debt_journal.id)],
             'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
+            'cash_out_dummy_product_id': self.env.ref('pos_debt_notebook.product_cash_out').id,
         })
         statement = [(0, 0, {
             'journal_id': debt_journal.id,
@@ -262,7 +268,7 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
-    cash_out = fields.Boolean(string='Allow to cash out these credits', default=False)
+    pos_cash_out = fields.Boolean(string='Allow to cash out these credits', default=True)
     categories_ids = fields.Many2many('product.category', string='Product categories',
                                       help='Product categories that may be paid with this type of credits'
                                            'all categories if length is zero')
@@ -272,22 +278,6 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Discount product on applying this payment method')
     # expiration_date = fields.Datetime(string='Expiration date')
-
-    # def check_access_to_debt_limit(self, vals):
-    #     debt_limit = vals.get('debt_limit')
-    #     if ('debt_limit' in vals and self._default_debt_limit() != debt_limit and
-    #             not self.env.user.has_group('point_of_sale.group_pos_manager')):
-    #         raise UserError(_('Only POS managers can change a debt limit value!'))
-    #
-    # @api.model
-    # def create(self, vals):
-    #     self.check_access_to_debt_limit(vals)
-    #     return super(AccountJournal, self).create(vals)
-    #
-    # @api.multi
-    # def write(self, vals):
-    #     self.check_access_to_debt_limit(vals)
-    #     return super(AccountJournal, self).write(vals)
 
 
 class PosConfiguration(models.TransientModel):

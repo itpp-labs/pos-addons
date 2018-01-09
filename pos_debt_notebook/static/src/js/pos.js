@@ -18,7 +18,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
             models.load_fields("res.partner",['debt_type', 'debt'])
-            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','cash_out'])
+            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out'])
             models.load_fields('product.product',['credit_product'])
             return _super_posmodel.initialize.apply(this, arguments);
         },
@@ -286,7 +286,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             if (this.debt_change_check()) {
                 this.gui.show_popup('error', {
-                    'title': _t('Unable to return the change with a debt payment method'),
+                    'title': _t('Unable to return the change or cash out with the debt payment method'),
                     'body': _t('Please enter the exact or lower debt amount than the cost of the order.')
                 });
                 return;
@@ -312,13 +312,24 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 paymentlines = order.get_paymentlines(),
                 flag = false;
             for (var i = 0; i < paymentlines.length; i++) {
-                if (paymentlines[i].cashregister.journal.debt && order.get_change(paymentlines[i]) > 0) {
+                var cashregister = paymentlines[i].cashregister;
+                var journal = cashregister.journal;
+                var change = order.get_change(paymentlines[i])
+                if (change > 0 && journal.debt && !journal.pos_cash_out){
                     flag = true;
+                } else if (change > 0 && journal.debt && journal.pos_cash_out){
+                    console.log(order)
+                    var cash_out_product = this.pos.db.get_product_by_id(this.pos.config.cash_out_dummy_product_id[0]);
+                    var options = {
+                        'quantity': 1,
+                        'price': change
+                    };
+                    order.add_product(cash_out_product, options);
+                    order.add_paymentline(cashregister);
                 }
             }
             return flag;
         },
-
         pay_full_debt: function(){
             var order = this.pos.get_order();
 
