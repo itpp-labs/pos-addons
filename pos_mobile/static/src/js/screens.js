@@ -26,7 +26,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.chrome.swiper_order.slideTo(1);
             };
             this.touch_searchbox = function(event) {
-                // specific styles for the iOS platform, since version iOS 11.0 is not work
+                // specific styles for the iOS platform, it doesn't work since version iOS 11.0
                 // TODO: Fix for iOS 11.0
                 if (self.pos.iOS) {
                     if (event.type === "focusout") {
@@ -42,7 +42,7 @@ odoo.define('pos_mobile.screens', function (require) {
                     self.close_bottom_menu();
                 }
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
-                    // specific styles for the iOS platform, since version iOS 11.0 is not work
+                    // specific styles for the iOS platform, it doesn't work since version iOS 11.0
                     // TODO: Fix for iOS 11.0
                     if (self.pos.iOS) {
                         $('body').scrollTop(0);
