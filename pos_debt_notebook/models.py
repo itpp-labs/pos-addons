@@ -262,13 +262,14 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
-    pos_cash_out = fields.Boolean(string='Allow to cash out these credits', default=True)
+    pos_cash_out = fields.Boolean(string='Allow to cash out credits', default=False,
+                                  help='Partner can exchange credits to cash in POS')
     categories_ids = fields.Many2many('product.category', string='Product categories',
-                                      help='Product categories that may be paid with this type of credits'
-                                           'all categories if length is zero')
+                                      help='Product categories that may be paid with this type of credits.'
+                                           'All categories may be paid if length is zero')
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='The partner is not allowed to have a debt more than this value')
+        help='Partners is not allowed to have a debt more than this value')
     credits_via_discount = fields.Boolean(
         default=False, string='Discount product on applying this payment method')
     # expiration_date = fields.Datetime(string='Expiration date')

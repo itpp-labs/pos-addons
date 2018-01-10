@@ -8,7 +8,6 @@
 
     <t t-name="CreditList">
         <t t-foreach="debts" t-as="deb">
-            <!--<div t-if="partner.debt_type == 'debt'" class="client-detail">-->
             <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
                 <span t-attf-class="client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
                     <t t-if='deb.journal_id'>

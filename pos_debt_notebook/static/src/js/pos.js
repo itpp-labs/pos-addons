@@ -462,8 +462,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             _.each(partner_ids, function(id){
                 var partner = self.pos.db.get_partner_by_id(id);
                 var debts = Object.values(partner.debts);
+                var credit_lines_html = '';
                 if(partner.debts){
-                    var credit_lines_html = QWeb.render('CreditList', {
+                    credit_lines_html = QWeb.render('CreditList', {
                         partner: partner,
                         debts: debts,
                         widget: self
@@ -629,8 +630,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             var $show_customers = $('#show_customers');
             var $show_debt_history = $('#show_debt_history');
-            if (this.pos.get_order().get_client() || this.new_client) {
+            var client = this.pos.get_order().get_client();
+            if (client || this.new_client) {
                 $show_debt_history.removeClass('oe_hidden');
+                this.pos.reload_debts(client.id, 0, {"postpone": false});
             }
             $show_customers.off().on('click', function () {
                 $('.client-list').removeClass('oe_hidden');
