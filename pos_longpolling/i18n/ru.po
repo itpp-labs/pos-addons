@@ -31,17 +31,17 @@ msgid "Longpolling"
 msgstr "Longpolling"
 
 #. module: pos_longpolling
-#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_query_timeout
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_longpolling_max_silence_timeout
 msgid "Query timeout"
 msgstr "Время запроса"
 
 #. module: pos_longpolling
-#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_response_timeout
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_longpolling_pong_timeout
 msgid "Response timeout"
 msgstr "Время ответа"
 
 #. module: pos_longpolling
-#: model:ir.model.fields,help:pos_longpolling.field_pos_config_query_timeout
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config_longpolling_max_silence_timeout
 msgid ""
 "Waiting period for any message from poll (if we have not received a message "
 "at this period, poll will send message ('PING') to check the connection)"
@@ -51,7 +51,7 @@ msgstr ""
 "соединение)"
 
 #. module: pos_longpolling
-#: model:ir.model.fields,help:pos_longpolling.field_pos_config_response_timeout
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config_longpolling_pong_timeout
 msgid ""
 "Waiting period for response message (i.e. once message from poll has been "
 "sent, it will be waiting for response message ('PONG') at this period and if"

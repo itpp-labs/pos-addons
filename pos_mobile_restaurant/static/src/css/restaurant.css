@@ -22,24 +22,18 @@
 }
 .pos.mobile .floor-map .tables {
     max-width: 900px;
+    margin: initial;
+    margin-left: 88px;
 
     max-height: 90%;
     max-height: -webkit-calc(100% - 150px);
     max-height: -moz-calc(100% - 150px);
     max-height: calc(100% - 150px);
 
-    float: none;
-    margin-left: 88px;
-    border: none!important;
-
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 100%;
+    border-radius: initial;
+    border: initial;
     height: 100%;
-
-    -webkit-overflow-scrolling: auto !important;
+    float: none;
 }
 .pos.mobile .scrollable-y {
     position: relative;
