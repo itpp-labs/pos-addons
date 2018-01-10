@@ -45,7 +45,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
                     // specific styles for the iOS platform
                     if (self.pos.iOS) {
-                        if (window.pageYOffset != 0) {
+                        if (window.pageYOffset !== 0) {
                             min_height = max_height - window.pageYOffset;
                         }
                         $('body').scrollTop(0);
