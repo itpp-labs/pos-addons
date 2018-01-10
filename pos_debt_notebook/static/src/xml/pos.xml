@@ -136,21 +136,22 @@
         </t>
     </t>
 
-    <t t-extend="ClientDetailsEdit">
-        <t t-jquery=".client-details-left" t-operation="append">
-            <div class='client-detail'>
-                <span class='label label_nowrap'>Max Debt *</span>
-                <input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
-                <!--<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
-                This construction will not work after the user's POS right are changed -->
-            </div>
-        </t>
-        <t t-jquery=".client-details-box" t-operation="append">
-            <div class='client-detail-notice'>
-                * Some fields are editable only for POS managers.
-            </div>
-        </t>
-    </t>
+    <!--Commented for a whie-->
+    <!--<t t-extend="ClientDetailsEdit">-->
+        <!--<t t-jquery=".client-details-left" t-operation="append">-->
+            <!--<div class='client-detail'>-->
+                <!--<span class='label label_nowrap'>Max Debt *</span>-->
+                <!--<input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>-->
+                <!--&lt;!&ndash;<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>-->
+                <!--This construction will not work after the user's POS right are changed &ndash;&gt;-->
+            <!--</div>-->
+        <!--</t>-->
+        <!--<t t-jquery=".client-details-box" t-operation="append">-->
+            <!--<div class='client-detail-notice'>-->
+                <!--* Some fields are editable only for POS managers.-->
+            <!--</div>-->
+        <!--</t>-->
+    <!--</t>-->
 
     <t t-name="DebtHistoryLine">
         <tr>

@@ -18,8 +18,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
             models.load_fields("res.partner",['debt_type', 'debt']);
-            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out']);
-            models.load_fields('product.product',['credit_product']);
+            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out','categories_ids']);
+            models.load_fields('product.product',['credit_product','categ_id']);
             return _super_posmodel.initialize.apply(this, arguments);
         },
         _save_to_server: function (orders, options) {
@@ -291,13 +291,54 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
+            if (this.debt_journal_restricted_categories_check()) {
+                this.gui.show_popup('error', {
+                    'title': _t('Unable to validate with the debt payment method'),
+                    'body': _t('It is not allowed to buy these category of products with the chosen payment method, try to increase amount of not debt payment method')
+                });
+                return;
+            }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
+        debt_journal_restricted_categories_check: function(){
+            var self = this;
+            var order = this.pos.get_order(),
+            paymentlines = order.get_paymentlines(),
+            orderlines = order.get_orderlines();
+            var is_restrictions = false;
+            is_restrictions = _.filter(paymentlines, function(pl){
+                return pl.cashregister.journal.categories_ids.length > 0;
+            });
+            if (is_restrictions){
+                var flag = false;
+                is_restrictions = _.map(is_restrictions, function(r){
+                    return r.cashregister.journal.categories_ids;
+                });
+                _.each(is_restrictions, function(re){
+                    var sum_pr = 0;
+                    var sum_pl = 0;
+                    _.each(orderlines, function(ol) {
+                        if (_.contains(re, ol.product.categ_id[0])) {
+                            sum_pr += ol.price * ol.quantity;
+                        }
+                    });
+                    _.each(paymentlines, function(pl) {
+                        if (_.intersection(pl.cashregister.journal.categories_ids, re)) {
+                            sum_pl += pl.amount;
+                        }
+                    });
+                    if (round_pr(order.get_total_with_tax() - sum_pr, self.pos.currency.rounding) < sum_pl){
+                        flag = true;
+                    }
+                });
+            }
+            return flag;
+        },
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
-            paymentlines = order.get_paymentlines();
-            var debts = this.pos.get_client().debts;
+            paymentlines = order.get_paymentlines(),
+            debts = this.pos.get_client().debts;
             var flag = false;
             _.each(paymentlines, function(pl){
                 var journal = debts[pl.cashregister.journal_id[0]];
@@ -442,6 +483,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         line_select: function(event,$line,id){
             this._super(event,$line,id);
+            // reload debts calls render_list which select a line of an active client, next line prevent client line reselection
+            this.old_client = this.pos.db.get_partner_by_id(id);
             this.pos.reload_debts(id, 0, {"postpone": false});
         },
         update_debt_history: function (partner_ids){
@@ -455,11 +498,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $('.client-detail .detail.client-debt').text(debt);
             }
             _.each(partner_ids, function(id){
-                self.partner_cache.clear_node(id);
-            });
-            var customers = this.pos.db.get_partners_sorted(1000);
-            this.render_list(customers);
-            _.each(partner_ids, function(id){
                 var partner = self.pos.db.get_partner_by_id(id);
                 var debts = Object.values(partner.debts);
                 var credit_lines_html = '';
@@ -472,6 +510,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $('div.credit_list').html(credit_lines_html);
                 }
             });
+            _.each(partner_ids, function(id){
+                self.partner_cache.clear_node(id);
+            });
+            var customers = this.pos.db.get_partners_sorted(1000);
+            this.render_list(customers);
         },
         render_list: function(partners){
             var debt_type = partners && partners.length
@@ -483,6 +526,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.$('#client-list-debt').remove();
             }
             this._super(partners);
+            this.old_client =this.pos.get_client();
         },
         render_debt_history: function(partner){
             var self = this;

@@ -265,8 +265,7 @@ class AccountJournal(models.Model):
     pos_cash_out = fields.Boolean(string='Allow to cash out credits', default=False,
                                   help='Partner can exchange credits to cash in POS')
     categories_ids = fields.Many2many('product.category', string='Product categories',
-                                      help='Product categories that may be paid with this type of credits.'
-                                           'All categories may be paid if length is zero')
+                                      help='Restricted product categories that can not be paid with this credits.')
     debt_limit = fields.Float(
         string='Max Debt', digits=dp.get_precision('Account'), default=0,
         help='Partners is not allowed to have a debt more than this value')
