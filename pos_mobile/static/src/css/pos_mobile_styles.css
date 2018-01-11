@@ -1,4 +1,10 @@
 /*===================Common styles for mobile version=============================*/
+.ios {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    margin: 0;
+}
 .pos.mobile textarea {
     font-size: 38px;
     padding: 20px;
@@ -469,9 +475,6 @@
 .pos.mobile .product-list {
     padding: 20px;
     text-align: center;
-}
-.pos.mobile .product-list.iOSkeyboard {
-
 }
 .pos.mobile .current-order-qty {
     position: absolute;
@@ -1202,7 +1205,7 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .splitbill-screen .order-info {
     margin-bottom:40px;
     padding: 40px 0px;
-    font-size: 128px;
+    font-size: 100px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
     border-bottom: dashed 2px rgb(215,215,215);
 }
@@ -1252,7 +1255,9 @@ pos.mobile .clientlist-screen .top-content .button {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-
+.pos.mobile .splitbill-screen .left-content{
+    border-right: 0px;
+}
 /*  ********* The ActionBarWidget  ********* */
 
 .pos.mobile .pos-actionbar{

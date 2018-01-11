@@ -11,6 +11,10 @@ odoo.define('pos_mobile.screens', function (require) {
         init: function(parent, options){
             this._super(parent,options);
             var self = this;
+
+            this.max_height = $('body').height();
+            this.min_height = $('body').height();
+
             this.click_categories_slide = function(event){
                 self.change_categories_slide();
             };
@@ -23,23 +27,29 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.chrome.swiper_order.slideTo(1);
             };
             this.touch_searchbox = function(event) {
+                if (self.current_bottom_slide) {
+                    self.close_bottom_menu();
+                    if (self.pos.iOS) {
+                        self.iOSkeyboard();
+                    }
+                }
                 // specific styles for the iOS platform
-                var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-                if (iOS) {
+                if (self.pos.iOS) {
                     if (event.type === "focusout") {
-                        $('.slide-products .product-list').removeClass('iOSkeyboard');
-                    } else if (event.type === "focus" && $('.searchbox input').val()) {
-                        $('.slide-products .product-list').addClass('iOSkeyboard');
+                        $('.pos.mobile').css({
+                            height: self.max_height
+                        });
                     }
                 }
             };
+
             var search_timeout = null;
             this.search_handler = function(event){
-                if (self.current_bottom_slide) {
-                    self.close_bottom_menu();
-                }
-                $('body').scrollTop(0);
                 if(event.type === "keypress" || event.type === "keydown" || event.keyCode === 46 || event.keyCode === 8){
+                    // specific styles for the iOS platform
+                    if (self.pos.iOS) {
+                        self.iOSkeyboard();
+                    }
                     clearTimeout(search_timeout);
                     var searchbox = this;
                     search_timeout = setTimeout(function(){
@@ -48,6 +58,15 @@ odoo.define('pos_mobile.screens', function (require) {
                     },70);
                 }
             };
+        },
+        iOSkeyboard: function() {
+            if (window.pageYOffset !== 0 && this.min_height > this.max_height - window.pageYOffset) {
+                this.min_height = this.max_height - window.pageYOffset;
+            }
+            $('body').scrollTop(0);
+            $('.pos.mobile').css({
+                height: this.min_height
+            });
         },
         open_bottom_menu: function() {
             if (this.current_bottom_slide === "numpad") {
