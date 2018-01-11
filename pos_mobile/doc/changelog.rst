@@ -1,3 +1,8 @@
+`1.1.3`
+-------
+
+- **FIX:** Serachbox issue for iOS version 11.0 and higher
+
 `1.1.2`
 -------
 
