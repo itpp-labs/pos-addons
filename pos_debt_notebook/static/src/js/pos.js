@@ -301,6 +301,30 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
+        order_is_valid: function(force_validation) {
+            var validity = this._super(force_validation);
+            if (!validity) {
+                return false;
+            }
+            var self = this;
+            var order = this.pos.get_order(),
+            paymentlines = order.get_paymentlines(),
+            order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding);
+            var disc_credits = _.filter(paymentlines, function(pl){
+                return pl.cashregister.journal.credits_via_discount === true;
+            });
+            if (disc_credits.length && order_total) {
+                var sum = _.reduce(disc_credits, function(memo, num){
+                    return memo + num.amount;
+                }, 0);
+                var percentage = ( sum / order_total ) * 100;
+                var orderlines = order.get_orderlines();
+                _.each(orderlines, function(ol){
+                    ol.set_discount(percentage);
+                });
+            }
+            return validity;
+        },
         debt_journal_restricted_categories_check: function(){
             var self = this;
             var order = this.pos.get_order(),
@@ -324,11 +348,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         }
                     });
                     _.each(paymentlines, function(pl) {
-                        if (_.intersection(pl.cashregister.journal.categories_ids, re)) {
+                        if (_.intersection(pl.cashregister.journal.categories_ids, re).length) {
                             sum_pl += pl.amount;
                         }
                     });
-                    if (round_pr(order.get_total_with_tax() - sum_pr, self.pos.currency.rounding) < sum_pl){
+                    if (sum_pr && round_pr(order.get_total_with_tax() - sum_pr, self.pos.currency.rounding) < sum_pl){
                         flag = true;
                     }
                 });
