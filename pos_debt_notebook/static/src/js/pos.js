@@ -301,11 +301,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
         },
-        order_is_valid: function(force_validation) {
-            var validity = this._super(force_validation);
-            if (!validity) {
-                return false;
-            }
+        finalize_validation: function() {
             var self = this;
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
@@ -323,7 +319,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     ol.set_discount(percentage);
                 });
             }
-            return validity;
+            this._super();
         },
         debt_journal_restricted_categories_check: function(){
             var self = this;
