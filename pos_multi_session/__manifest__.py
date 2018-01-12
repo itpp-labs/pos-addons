@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 {
     "name": """Sync POS orders across multiple sessions""",
     "summary": """Use multiple POS for handling orders""",
@@ -36,5 +36,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

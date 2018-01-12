@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 import odoo
 from odoo.tests.common import TransactionCase

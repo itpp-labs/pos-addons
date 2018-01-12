@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 {
     "name": """Sync Server for POS orders""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
@@ -32,5 +32,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
