@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 {
     "name": """POS Longpolling""",
     "summary": """Technical module implement instant updates in POS""",
@@ -33,5 +33,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
