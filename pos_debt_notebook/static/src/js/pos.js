@@ -329,7 +329,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
-            order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding);
+            order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding),
+            partner = this.pos.get_client();
             var disc_credits = _.filter(paymentlines, function(pl){
                 return pl.cashregister.journal.credits_via_discount === true;
             });
@@ -344,6 +345,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
             }
             this._super();
+            var deb = {};
+            _.each(paymentlines, function(pl){
+                deb = _.find(partner.debts, function(d){
+                    return d.journal_id[0] === pl.cashregister.journal.id;
+                });
+                deb.balance += - pl.amount;
+            });
+            partner.debt = _.reduce(partner.debts, function(memo, d){
+                return memo + d.balance;
+            }, 0);
+            if(partner.debt_type == 'debt'){
+                partner.debt = - partner.debt;
+            }
         },
         debt_journal_restricted_categories_check: function(){
             var self = this;
@@ -570,7 +584,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.$('#client-list-debt').remove();
             }
             this._super(partners);
-            this.old_client =this.pos.get_client();
+//            this.old_client =this.pos.get_client();
         },
         render_debt_history: function(partner){
             var self = this;
