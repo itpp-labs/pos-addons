@@ -15,12 +15,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
+            var self = this;
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
             models.load_fields("res.partner",['debt_type', 'debt']);
             models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out','categories_ids']);
             models.load_fields('product.product',['credit_product','categ_id']);
-            return _super_posmodel.initialize.apply(this, arguments);
+            _super_posmodel.initialize.apply(this, arguments);
+            this.ready.then(function () {
+                var partner_ids = _.map(self.partners, function(p){
+                    return p.id;
+                });
+                self.reload_debts(partner_ids, 0, {"postpone": false});
+            });
         },
         _save_to_server: function (orders, options) {
             var self = this;
@@ -101,8 +108,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             // allow to do next call
                             request_finished.resolve();
                         }).fail(function () {
-                            // make request again
-                            self.reload_debts(load_partner_ids, 0, {"postpone": true, "shadow": false});
+                            // make request again, Timeout is set to allow properly work in offline mode
+                            setTimeout(_.bind(self.reload_debts, self,
+                                load_partner_ids, 0, {"postpone": true, "shadow": false}), 3000);
                         });
                         return request_finished;
                     });
@@ -520,7 +528,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         line_select: function(event,$line,id){
             this._super(event,$line,id);
             // reload debts calls render_list which select a line of an active client, next line prevent client line reselection
-            this.old_client = this.pos.db.get_partner_by_id(id);
+//            this.old_client = this.pos.db.get_partner_by_id(id); TODO: how to realise that correctly?
             this.pos.reload_debts(id, 0, {"postpone": false});
         },
         update_debt_history: function (partner_ids){

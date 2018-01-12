@@ -4,6 +4,7 @@
 **ADD:** Cash out feature
 **ADD:** Multiple debit credit accounts
 **ADD:** Smart button with debts/credits on a customer view
+**ADD:** Credits via discount
 
 `4.4.2`
 -------
