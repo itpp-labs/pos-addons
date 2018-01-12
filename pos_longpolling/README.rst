@@ -2,7 +2,7 @@
  POS Longpolling
 =================
 
-Technical module implement instant updates in POS
+Technical module to implement instant updates in POS
 
 Credits
 =======

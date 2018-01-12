@@ -1,7 +1,7 @@
 
 {
     "name": """POS Longpolling""",
-    "summary": """Technical module implement instant updates in POS""",
+    "summary": """Technical module to implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "1.1.1",
