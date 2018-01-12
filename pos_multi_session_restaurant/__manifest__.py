@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 {
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",
@@ -34,7 +34,7 @@
     "post_init_hook": None,
 
     "auto_install": True,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Sync restaurant orders",
     "demo_addons": [
