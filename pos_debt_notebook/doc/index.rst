@@ -17,8 +17,7 @@ Debt Journal
 * open POS
 * add usual products
 * select Customer
-*	click on Set Customer
-*	set Max Debt value and Save the changes
+*	set Max Debt value 
 * on payment screen use "Debt Journal" to pay
 
 Pay Full Debt button
