@@ -64,30 +64,27 @@
     </field>
 </record>
 
-<record id="view_pos_config_form" model="ir.ui.view">
-    <field name="name">pos.payment.terminal.config.form</field>
-    <field name="model">pos.config</field>
-    <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
-    <field name="arch" type="xml">
-        <field name="currency_id" position="after">
-            <field name="debt_dummy_product_id"/>
-        </field>
-    </field>
-</record>
-
 <record id="pos_config_view_form" model="ir.ui.view">
     <field name="name">pos.config.form.view</field>
     <field name="model">pos.config</field>
     <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
     <field name="arch" type="xml">
+        <xpath expr="//div[@id='payment_methods']" position="after">
+            <div class="col-xs-12 col-md-6 o_setting_box">
+                <div class="o_setting_right_pane">
+                    <label for="debt_dummy_product_id"/>
+                    <div class="content-group mt16">
+                        <field name='debt_dummy_product_id'/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
         <xpath expr="//div[@id='iface_invoicing']" position="before">
             <div class="col-xs-12 col-md-6 o_setting_box">
                 <div class="o_setting_right_pane">
                     <label for="debt_type"/>
-                    <div class="content-group">
-                        <div class="mt16">
-                            <field name='debt_type' class="o_light_label" widget="radio"/>
-                        </div>
+                    <div class="content-group mt16">
+                        <field name='debt_type' class="o_light_label" widget="radio"/>
                     </div>
                 </div>
             </div>
