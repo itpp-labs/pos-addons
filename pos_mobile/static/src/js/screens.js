@@ -239,9 +239,19 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         change_selected_order: function() {
             this._super();
+            // go to slide of order
+            this.pos.chrome.swiper_order.slideTo(0, 0);
+            // close bottom menu after open new order
+            if (this.getParent() && this.getParent().product_categories_widget) {
+                this.getParent().product_categories_widget.close_bottom_menu();
+            }
             this.change_product_qty();
             this.scroll_to_selected_order();
             this.change_orderlist();
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            this.change_product_qty(line.product.id);
         },
         change_product_qty: function(product_id) {
             var order = this.pos.get_order();
