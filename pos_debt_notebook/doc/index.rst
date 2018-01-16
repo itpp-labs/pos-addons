@@ -17,13 +17,14 @@ Debt Journal
 * open POS
 * add usual products
 * select Customer
-*	set Max Debt value 
 * on payment screen use "Debt Journal" to pay
 
 Pay Full Debt button
 --------------------
-Pay full debt button is using when Customer has unpaid debt (Max Debt value).
-If you click on this button, then to the amount of payment for the product will add the amount of unpaid debt.
+The button appears when you select Customer who has unpaid debt (red amount). You see this on top of Customer's card.
+If you click this button, then you will be taken to the payment page.
+Also this button is displayed on the payment page. If you click this button, then the amount of unpaid debt will be added to the payment amount for the product.
+
 
 
 Credit Products
