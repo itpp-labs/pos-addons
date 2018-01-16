@@ -355,7 +355,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             partner.debt = _.reduce(partner.debts, function(memo, d){
                 return memo + d.balance;
             }, 0);
-            if(partner.debt_type == 'debt'){
+            if(partner.debt_type === 'debt'){
                 partner.debt = - partner.debt;
             }
         },
@@ -557,7 +557,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             _.each(partner_ids, function(id){
                 var partner = self.pos.db.get_partner_by_id(id);
-                var debts = Object.values(partner.debts);
+                var debts = _.values(partner.debts);
                 var credit_lines_html = '';
                 if(partner.debts){
                     credit_lines_html = QWeb.render('CreditList', {
