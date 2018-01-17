@@ -21,11 +21,12 @@ Debt Journal
 
 Pay Full Debt button
 --------------------
-The button appears when you select Customer who has unpaid debt (red amount). You see this on top of Customer's card.
-If you click this button, then you will be taken to the payment page.
-Also this button is displayed on the payment page. If you click this button, then the amount of unpaid debt will be added to the payment amount for the product.
-
-
+The button appears when you select Customer who has unpaid debt (red amount). You see this button in 2 places: 
+ * At the top of the Customer's card.
+ * On the payment page
+You can use these buttons in 2 cases:
+ * If you click on the button on the Customer's card then unpaid debt will be added to the payment amount for the product immediatly.
+ * If you don't use the button on the Customer's card  you can  use another Pay Full Debt button on the payment page.
 
 Credit Products
 ---------------
