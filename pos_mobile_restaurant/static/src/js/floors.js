@@ -26,15 +26,9 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
 
             $(".floor-map").on('touchstart', function() {
                 touch = true;
-            })
+            });
             $(".floor-map").on('touchend', function() {
                 touch = false;
-            });
-            $(".tables").on('scroll', function(){
-                var parent = $(this).parent();
-                parent.addClass('scrolling');
-                clearTimeout(timer);
-                runTimer(parent);
             });
             // hide the scrollbar when the scrolling and touchend is finished
             var runTimer = function(element) {
@@ -45,7 +39,13 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
                         element.removeClass('scrolling');
                     }
                 }, 250);
-            }
+            };
+            $(".tables").on('scroll', function(){
+                var parent = $(this).parent();
+                parent.addClass('scrolling');
+                clearTimeout(timer);
+                runTimer(parent);
+            });
         }
     });
 
