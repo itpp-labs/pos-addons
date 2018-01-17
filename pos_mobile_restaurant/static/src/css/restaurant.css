@@ -34,6 +34,8 @@
     border: initial;
     height: 100%;
     float: none;
+
+    margin-top: 15px;
 }
 .pos.mobile .scrollable-y {
     position: relative;
@@ -381,12 +383,9 @@
     background: transparent;
 }
 .pos.mobile .floor-map *::-webkit-scrollbar-thumb {
-    display: none;
+    background: transparent;
 }
 .pos.mobile .floor-map.scrolling *::-webkit-scrollbar-thumb {
-    display: initial;
-    transition: display .5s ease;
-    -webkit-transition: display .5s ease;
-    -moz-transition: display .5s ease;
-    -o-transition: display .5s ease;
+    border-radius: 2px;
+    background: #393939;
 }
