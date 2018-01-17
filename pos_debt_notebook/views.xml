@@ -23,10 +23,10 @@
                            attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"/>
                     <field name="credit_balance_company" widget='monetary' options="{'currency_field': 'currency_id'}"
                            attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"/>
-                    <span attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-danger">Debts </span>
-                    <span attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-success">Debts </span>
-                    <span attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-success">Credits </span>
-                    <span attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-danger">Credits </span>
+                    <span attrs="{'invisible': ['|', ('debt', '&lt;', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-danger">Debts </span>
+                    <span attrs="{'invisible': ['|', ('debt', '&gt;=', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-success">Debts </span>
+                    <span attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-success">Credits </span>
+                    <span attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-danger">Credits </span>
                 </div>
             </button>
         </xpath>
