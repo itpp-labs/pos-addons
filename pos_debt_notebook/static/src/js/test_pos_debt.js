@@ -53,6 +53,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             trigger: '.button.pay',
             content: _t("Open the payment screen"),
         }, {
+            extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             content: _t("Click the payment method"),
         }, {

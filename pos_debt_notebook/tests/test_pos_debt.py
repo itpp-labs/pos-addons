@@ -1,4 +1,5 @@
 import odoo.tests
+from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -6,9 +7,10 @@ import odoo.tests
 class TestUi(odoo.tests.HttpCase):
 
     def test_pos_debt(self):
-        partner = self.env['res.partner'].search([('id', '=', 9)])
-        partner.write({
-            'debt_limit': 100,
+        env = Environment(self.registry.test_cr, self.uid, {})
+        view_partner_form_debt = env.ref('pos_debt_notebook.view_partner_form_debt')
+        view_partner_form_debt.write({
+            'debt_limit': 50,
         })
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
