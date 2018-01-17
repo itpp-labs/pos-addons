@@ -63,9 +63,9 @@ odoo.define('pos_disable_payment', function(require){
             if (order) {
                  // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (!user.allow_delete_order && order.orderlines.length > 0) {
-                    this.$('.deleteorder-button').hide();
+                    this.$('.deleteorder-button').addClass('disable');
                 } else {
-                    this.$('.deleteorder-button').show();
+                    this.$('.deleteorder-button').removeClass('disable');
                 }
             }
         },
@@ -100,7 +100,7 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide();
+                this.actionpad.$('.pay').addClass('disable');
             }
         },
         renderElement: function () {
@@ -111,19 +111,19 @@ odoo.define('pos_disable_payment', function(require){
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_create_order_line) {
-                $('.numpad').show();
-                $('.rightpane').show();
+                $('.numpad').removeClass('disable');
+                $('.rightpane').removeClass('disable');
             }else{
-                $('.numpad').hide();
-                $('.rightpane').hide();
+                $('.numpad').addClass('disable');
+                $('.rightpane').addClass('disable');
             }
         },
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                this.actionpad.$('.pay').show();
+                this.actionpad.$('.pay').removeClass('disable');
             }else{
-                this.actionpad.$('.pay').hide();
+                this.actionpad.$('.pay').addClass('disable');
             }
         }
     });
@@ -132,16 +132,16 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').show();
+                $('.pay').removeClass('disable');
             }else{
-                $('.pay').hide();
+                $('.pay').addClass('disable');
             }
             if (user.allow_create_order_line) {
-                $('.numpad').show();
-                $('.rightpane').show();
+                $('.numpad').removeClass('disable');
+                $('.rightpane').removeClass('disable');
             }else{
-                $('.numpad').hide();
-                $('.rightpane').hide();
+                $('.numpad').addClass('disable');
+                $('.rightpane').addClass('disable');
             }
         }
     });
@@ -150,9 +150,9 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').show();
+                $('.pay').removeClass('disable');
             }else{
-                $('.pay').hide();
+                $('.pay').addClass('disable');
             }
         }
     });
@@ -168,23 +168,27 @@ odoo.define('pos_disable_payment', function(require){
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_discount) {
-                this.$el.find("[data-mode='discount']").css('visibility', 'visible');
+                this.$el.find("[data-mode='discount']").removeClass('disable');
             }else{
-                this.$el.find("[data-mode='discount']").css('visibility', 'hidden');
+                this.$el.find("[data-mode='discount']").addClass('disable');
             }
             if (user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").css('visibility', 'visible');
+                this.$el.find("[data-mode='price']").removeClass('disable');
             }else{
-                this.$el.find("[data-mode='price']").css('visibility', 'hidden');
+                this.$el.find("[data-mode='price']").addClass('disable');
             }
             if (user.allow_refund) {
-                this.$el.find('.numpad-minus').css('visibility', 'visible');
+                this.$el.find('.numpad-minus').removeClass('disable');
             }else{
-                this.$el.find('.numpad-minus').css('visibility', 'hidden');
+                this.$el.find('.numpad-minus').addClass('disable');
+            }
+            if (user.allow_delete_order_line) {
+                this.$el.find('.numpad-backspace').removeClass('disable');
+            }else{
+                this.$el.find('.numpad-backspace').addClass('disable');
             }
         }
     });
-
 
     screens.NumpadWidget.include({
         clickDeleteLastChar: function(){
