@@ -1,4 +1,5 @@
 odoo.define('pos_disable_payment', function(require){
+
 "use strict";
 
     var chrome = require('point_of_sale.chrome');
@@ -111,11 +112,11 @@ odoo.define('pos_disable_payment', function(require){
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_create_order_line) {
-                $('.numpad').removeClass('disable');
-                $('.rightpane').removeClass('disable');
+                $('.numpad').show();
+                $('.rightpane').show();
             }else{
-                $('.numpad').addClass('disable');
-                $('.rightpane').addClass('disable');
+                $('.numpad').hide();
+                $('.rightpane').hide();
             }
         },
         checkPayAllowed: function () {
@@ -137,11 +138,11 @@ odoo.define('pos_disable_payment', function(require){
                 $('.pay').addClass('disable');
             }
             if (user.allow_create_order_line) {
-                $('.numpad').removeClass('disable');
-                $('.rightpane').removeClass('disable');
+                $('.numpad').show();
+                $('.rightpane').show();
             }else{
-                $('.numpad').addClass('disable');
-                $('.rightpane').addClass('disable');
+                $('.numpad').hide();
+                $('.rightpane').hide();
             }
         }
     });
