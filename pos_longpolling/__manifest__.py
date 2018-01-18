@@ -1,4 +1,3 @@
-
 {
     "name": """POS Longpolling""",
     "summary": """Technical module to implement instant updates in POS""",

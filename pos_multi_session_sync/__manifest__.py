@@ -1,4 +1,3 @@
-
 {
     "name": """Sync Server for POS orders""",
     "summary": """Sync orders via main or separate (e.g. local) server""",

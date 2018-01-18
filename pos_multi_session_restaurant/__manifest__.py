@@ -1,4 +1,3 @@
-
 {
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",

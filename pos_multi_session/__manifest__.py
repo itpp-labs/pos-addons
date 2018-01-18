@@ -1,4 +1,3 @@
-
 {
     "name": """Sync POS orders across multiple sessions""",
     "summary": """Use multiple POS for handling orders""",

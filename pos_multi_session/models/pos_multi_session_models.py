@@ -1,4 +1,3 @@
-
 import logging
 from odoo import api
 from odoo import fields

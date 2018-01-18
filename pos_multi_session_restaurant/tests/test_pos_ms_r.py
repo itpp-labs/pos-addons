@@ -1,5 +1,3 @@
-
-
 import odoo.tests
 
 

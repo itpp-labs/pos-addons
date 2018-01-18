@@ -1,5 +1,3 @@
-
-
 import odoo
 from odoo.tests.common import TransactionCase
 # from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
