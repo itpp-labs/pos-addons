@@ -1573,3 +1573,6 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .mobile-active-screen {
     display: block;
 }
+.pos.mobile .disable {
+    box-shadow: 0px 0px 0px 0px transparent!important;
+}
