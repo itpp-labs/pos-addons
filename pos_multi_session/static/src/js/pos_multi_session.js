@@ -290,8 +290,7 @@ odoo.define('pos_multi_session', function(require){
                 }, {
                     timeout: 3000,
                     shadow: true,
-                })
-                .then(function(partners){
+                }).then(function(partners){
                      // check if the partners we got were real updates
                     if (self.db.add_partners(partners)) {
                         def.resolve();
