@@ -67,7 +67,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
         }];
     }
 
-    var steps = []
+    var steps = [];
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(add_product_to_order('Miscellaneous'));
     steps = steps.concat(set_customer('Agrolait'));

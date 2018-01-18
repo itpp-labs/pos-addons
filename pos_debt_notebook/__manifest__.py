@@ -1,4 +1,3 @@
-
 {
     'name': 'POS Debt & Credit notebook',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
