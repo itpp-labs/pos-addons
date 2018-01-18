@@ -162,6 +162,37 @@ class ResPartner(models.Model):
         return super(ResPartner, self).create_from_ui(partner)
 
 
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    debt_type = fields.Selection([
+        ('debt', 'Display Debt'),
+        ('credit', 'Display Credit')
+    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
+                                                'In both cases debt will be red, credit - green')
+    debt_limit = fields.Float(
+        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
+        help='Default value for new Customers')
+
+    @api.multi
+    def set_values(self):
+        super(ResConfigSettings, self).set_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        for record in self:
+            config_parameters.set_param("pos_debt_notebook.debt_type", record.debt_type)
+            config_parameters.set_param("pos_debt_notebook.debt_limit", str(record.debt_limit))
+
+    @api.multi
+    def get_values(self):
+        res = super(ResConfigSettings, self).get_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        res.update(
+            debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
+            debt_limit=config_parameters.get_param("pos_debt_notebook.debt_limit", default=0)
+        )
+        return res
+
+
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
@@ -171,14 +202,6 @@ class PosConfig(models.Model):
              "without ordering new products. This is a workaround to the fact "
              "that Odoo needs to have at least one product on the order to "
              "validate the transaction.")
-    debt_type = fields.Selection([
-        ('debt', 'Display Debt'),
-        ('credit', 'Display Credit')
-    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
-                                                'In both cases debt will be red, credit - green')
-    debt_limit = fields.Float(
-        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='Default value for new Customers')
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']
@@ -275,24 +298,6 @@ class PosConfig(models.Model):
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_debt_journal()
-        return res
-
-    @api.multi
-    def set_values(self):
-        super(PosConfig, self).set_values()
-        config_parameters = self.env["ir.config_parameter"].sudo()
-        for record in self:
-            config_parameters.set_param("pos_debt_notebook.debt_type", record.debt_type)
-            config_parameters.set_param("pos_debt_notebook.debt_limit", str(record.debt_limit))
-
-    @api.multi
-    def get_values(self):
-        res = super(PosConfig, self).get_values()
-        config_parameters = self.env["ir.config_parameter"].sudo()
-        res.update(
-            debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
-            debt_limit=config_parameters.get_param("pos_debt_notebook.debt_limit", default=0)
-        )
         return res
 
 

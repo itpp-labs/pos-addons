@@ -53,6 +53,9 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             trigger: '.button.pay',
             content: _t("Open the payment screen"),
         }, {
+            content: "Choose Administrator like a cashier or make a dummy action",
+            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")'
+        }, {
             extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             content: _t("Click the payment method"),
