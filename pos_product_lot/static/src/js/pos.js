@@ -4,7 +4,7 @@ odoo.define('pos_product_lot.PosLot', function(require) {
 var models = require('point_of_sale.models');
 var PosDB = require('point_of_sale.DB');
 var screens = require('point_of_sale.screens');
-var Model = require('web.Model');
+var rpc = require('web.rpc');
 
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {
@@ -142,15 +142,11 @@ function geByClass(searchClass, node, tag) {
 
             // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
             // then we want to notify the user that we are waiting on something )
-            var ppModel = new Model('product.product');
-            return ppModel.call('split_lot_from_ui',
-                [[], records],
-                {'context': {'location': self.config.stock_location_id[0]}},
-                {
-                    shadow: true,
-                    timeout: timeout
-                }
-            ).then(function () {
+            return rpc.query({
+                model: 'product.product',
+                method: 'split_lot_from_ui',
+                args: [[], records],
+            }).then(function () {
                 _.each(records, function (r) {
                     self.db.remove_split_lot(r.id);
                 });

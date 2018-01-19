@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models
 
 
@@ -50,6 +49,6 @@ class ProductProduct(models.Model):
             'location_dest_id': destination_location_id,
             'company_id': lot.lot_product_id.company_id.id,
         })
-        cons_move_id.action_done()
-        prod_move_id.action_done()
+        cons_move_id._action_done()
+        prod_move_id._action_done()
         return True
