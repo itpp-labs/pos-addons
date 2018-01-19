@@ -103,7 +103,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
                         self._load_debts(load_partner_ids, limit, options).then(function (data) {
                             // success
-                            self._on_load_debts(data, options);
+                            self._on_load_debts(data);
                         }).always(function(){
                             // allow to do next call
                             request_finished.resolve();
@@ -121,7 +121,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         _load_debts: function(partner_ids, limit, options){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
         },
-        _on_load_debts: function(debts, options){
+        _on_load_debts: function(debts){
             var partner_ids = _.map(debts, function(debt){
                 return debt.partner_id;
             });
@@ -132,9 +132,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     partner.records_count = debts[i].records_count;
                     partner.history = debts[i].history;
                 }
-                if (!options.line_selection){
-                    this.trigger('updateDebtHistory', partner_ids);
-                }
+                this.trigger('updateDebtHistory', partner_ids);
         }
     });
 
@@ -545,9 +543,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         line_select: function(event,$line,id){
             this._super(event,$line,id);
-            // reload debts calls render_list which select a line of an active client, next line prevent client line reselection
-//            this.old_client = this.pos.db.get_partner_by_id(id); TODO: how to realise that correctly?
-            this.pos.reload_debts(id, 0, {"postpone": false, line_selection: true});
+            this.selected_line = arguments;
+            this.pos.reload_debts(id, 0, {"postpone": false});
         },
         update_debt_history: function (partner_ids){
             var self = this;
@@ -587,8 +584,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             } else if (debt_type === 'credit') {
                 this.$('#client-list-debt').remove();
             }
+            if (this.selected_line && this.selected_line[2]){
+                this.old_client = this.pos.db.get_partner_by_id(this.selected_line[2]);
+            }
             this._super(partners);
-//            this.old_client =this.pos.get_client();
+            this.old_client = this.pos.get_client();
+            this.selected_line_customer_id = false;
         },
         render_debt_history: function(partner){
             var self = this;
