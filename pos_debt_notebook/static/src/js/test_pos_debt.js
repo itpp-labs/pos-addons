@@ -20,7 +20,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             position: "bottom"
         }, {
             content: 'waiting for loading to finish',
-            trigger: '.neworder-button > .fa-plus',
+            trigger: '.order-button.neworder-button',
         }];
     }
 
