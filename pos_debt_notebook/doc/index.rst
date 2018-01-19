@@ -22,12 +22,12 @@ Debt Journal
 Pay Full Debt button
 --------------------
 
-The button appears when you select Customer who has unpaid debt (red amount). You see this button in 2 places: 
+The button appears when you select Customer which has unpaid debt (red amount). You can see this button in 2 places: 
 
 * At the top of the Customer's form.
 * On the payment page
  
-If you click the button  ``[Pay Full Debt]`` then unpaid debt will be added to the payment amount for the product.
+When you click ``[Pay Full Debt]`` button, debt amount will be added to the payment list with negative sign. That negative amount has to be covered by normal payment (e.g. by cash). After that the Customer will have zero debt value.
 
 Credit Products
 ---------------
