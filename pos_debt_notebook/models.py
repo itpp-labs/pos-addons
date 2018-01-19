@@ -180,7 +180,7 @@ class ResConfigSettings(models.TransientModel):
         config_parameters = self.env["ir.config_parameter"].sudo()
         for record in self:
             config_parameters.set_param("pos_debt_notebook.debt_type", record.debt_type)
-            config_parameters.set_param("pos_debt_notebook.debt_limit", str(record.debt_limit))
+            config_parameters.set_param("pos_debt_notebook.debt_limit", record.debt_limit)
 
     @api.multi
     def get_values(self):
@@ -188,7 +188,7 @@ class ResConfigSettings(models.TransientModel):
         config_parameters = self.env["ir.config_parameter"].sudo()
         res.update(
             debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
-            debt_limit=config_parameters.get_param("pos_debt_notebook.debt_limit", default=0)
+            debt_limit=float(config_parameters.get_param("pos_debt_notebook.debt_limit", default=0))
         )
         return res
 
