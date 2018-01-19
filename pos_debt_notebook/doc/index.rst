@@ -27,10 +27,7 @@ The button appears when you select Customer who has unpaid debt (red amount). Yo
 * At the top of the Customer's form.
 * On the payment page
  
-You can use these buttons in 2 cases:
-
-* If you click on the button on the Customer's form then unpaid debt will be added to the payment amount for the product immediately.
-* If you don't use the button on the Customer's form  you can  use another ``[Pay Full Debt]`` button on the payment page. If you click on the button then unpaid debt will be added to the payment amount for the product.
+* If you click on the button  ``[Pay Full Debt]`` then unpaid debt will be added to the payment amount for the product.
 
 Credit Products
 ---------------
