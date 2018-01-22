@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'POS Debt & Credit notebook',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
@@ -33,7 +32,7 @@
     ],
     "demo": [
     ],
-    'installable': False,
+    'installable': True,
     'uninstall_hook': 'pre_uninstall',
 
     "demo_title": "POS Debt/Credit Notebook",
