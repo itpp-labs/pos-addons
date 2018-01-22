@@ -6,6 +6,7 @@
                 <link rel="stylesheet" href="/pos_mobile/static/src/css/swiper.css"/>
                 <link rel="stylesheet" href="/pos_mobile/static/src/css/pos_mobile_styles.css"/>
                 <script type="text/javascript" src="/pos_mobile/static/lib/swiper.js"></script>
+                <script type="text/javascript" src="/pos_mobile/static/lib/jquery.slimscroll.js"></script>
                 <script type="text/javascript" src="/pos_mobile/static/src/js/mobile.js"></script>
                 <script type="text/javascript" src="/pos_mobile/static/src/js/models.js"></script>
                 <script type="text/javascript" src="/pos_mobile/static/src/js/gui.js"></script>

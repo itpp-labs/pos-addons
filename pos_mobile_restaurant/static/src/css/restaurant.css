@@ -23,7 +23,6 @@
 .pos.mobile .floor-map .tables {
     max-width: 900px;
     margin: initial;
-    margin-left: 88px;
 
     max-height: 90%;
     max-height: -webkit-calc(100% - 150px);
@@ -36,6 +35,11 @@
     float: none;
 
     margin-top: 15px;
+    overflow: hidden!important;
+}
+.ios .pos.mobile .floor-map .tables {
+    margin-left: 88px;
+    overflow: auto!important;
 }
 .pos.mobile .scrollable-y {
     position: relative;
@@ -383,9 +387,11 @@
     background: transparent;
 }
 .pos.mobile .floor-map *::-webkit-scrollbar-thumb {
-    background: transparent;
-}
-.pos.mobile .floor-map.scrolling *::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background: #393939;
+}
+.pos.mobile .floor-map .slimScrollDiv {
+    max-width: 900px;
+    margin: initial;
+    margin-left: 88px;
 }
