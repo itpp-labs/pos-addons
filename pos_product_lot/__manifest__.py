@@ -11,6 +11,7 @@
     'depends': ['product_lot', 'pos_product_available'],
     'data': [
         'data.xml',
+        'data/pos_product_lot_demo.xml',
     ],
     'qweb': [
         'static/src/xml/pos.xml',

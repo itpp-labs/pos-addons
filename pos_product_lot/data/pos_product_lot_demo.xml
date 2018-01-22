@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Resource: product.product -->
+    <record id="box" model="product.product">
+        <field name="available_in_pos">True</field>
+        <field name="list_price">10</field>
+        <field name="name">Box</field>
+        <field name="to_weight">True</field>
+        <field name="type">product</field>
+        <field name="is_lot">True</field>
+        <field name="lot_qty">2</field>
+        <field name="lot_product_id" ref="point_of_sale.boni_orange"/>
+        <field name="uom_id" ref="product.product_uom_kgm" />
+        <field name="uom_po_id" ref="product.product_uom_kgm" />
+    </record>
+
+    <record id="point_of_sale.boni_orange" model="product.product">
+        <field name="type">product</field>
+    </record>
+</odoo>
