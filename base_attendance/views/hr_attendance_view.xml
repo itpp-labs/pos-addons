@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- views -->
+
+    <record id="view_attendance_tree" model="ir.ui.view">
+        <field name="name">res.partner.attendance.tree</field>
+        <field name="model">res.partner.attendance</field>
+        <field name="arch" type="xml">
+            <tree string="Partner attendances">
+                <field name="partner_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_form" model="ir.ui.view">
+        <field name="name">res.partner.attendance.form</field>
+        <field name="model">res.partner.attendance</field>
+        <field name="arch" type="xml">
+            <form string="Partner attendances">
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="check_in"/>
+                        <field name="check_out"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_filter" model="ir.ui.view">
+        <field name="name">hr_partner_attendance_view_filter</field>
+        <field name="model">res.partner.attendance</field>
+        <field name="arch" type="xml">
+            <search string="Hr Attendance Search">
+                <field name="partner_id"/>
+                <!--<field name="department_id"/>-->
+                <filter name="today" string="Today" domain="[('check_in', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)),('check_in', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]" />
+                <filter string="Current Month" domain="[('check_in', '&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]" />
+                <separator/>
+                <filter string="No Check Out" domain="[('check_out', '=', False)]" />
+                <separator/>
+                <!--<filter string="My Attendances" domain="[('employee_id.user_id.id', '=', uid)]" />-->
+                <group expand="0" string="Group By">
+                    <filter name="Partner" string="Partner" context="{'group_by':'partner_id'}"/>
+                    <separator/>
+                    <filter name="groupby_name" string="Month" context="{'group_by':'check_in'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_pivot" model="ir.ui.view">
+        <field name="name">res.partner.attendance.pivot</field>
+        <field name="model">res.partner.attendance</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance">
+                <field name="partner_id" type="row"/>
+                <field name="check_in" type="col"/>
+                <field name="worked_hours" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_graph" model="ir.ui.view">
+        <field name="name">res.partner.attendance.graph</field>
+        <field name="model">res.partner.attendance</field>
+        <field name="arch" type="xml">
+            <graph string="Attendance">
+                <field name="partner_id"/>
+                <field name="check_in"/>
+                <field name="worked_hours" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- actions -->
+
+    <record id="hr_attendance_action" model="ir.actions.act_window">
+        <field name="name">Attendances</field>
+        <field name="res_model">res.partner.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_today":1}</field>
+        <field name="search_view_id" ref="hr_attendance_view_filter" />
+        <field name="help" type="html">
+            <p>The attendance records of your partners will be displayed here.</p>
+            <p>Please make sure you're using the correct filter if you expected to see any.</p>
+        </field>
+    </record>
+
+    <record id="hr_attendance_action_graph" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">res.partner.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id"></field>  <!-- force empty -->
+    </record>
+
+    <record id="hr_attendance_action_graph_filtered" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">res.partner.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="context">{
+            'search_default_department_id': [active_id],
+            'default_department_id': active_id}
+        </field>
+        <field name="view_id"></field>  <!-- force empty -->
+    </record>
+
+    <record id="hr_attendance_action_kiosk_mode" model="ir.actions.client">
+        <field name="name">Attendances</field>
+        <field name="tag">hr_attendance_kiosk_mode</field>
+        <field name="target">fullscreen</field>
+    </record>
+
+    <record id="hr_attendance_action_greeting_message" model="ir.actions.client">
+        <field name="name">Message</field>
+        <field name="tag">base_attendance_greeting_message</field>
+    </record>
+
+    <!--Partner kanban view specifically for hr_partner_attendance (to check in/out) -->
+    <record id="res_partner_attendance_view" model="ir.ui.view">
+        <field name="name">res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_attendance_kanban" create="false">
+                <templates>
+                    <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('res.partner', 'image_medium', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <div id="textbox">
+                                <div class="col-xs-11" style="padding:0px">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div><div class="col-xs-1" style="padding:0px">
+                                    <field name="attendance_state" widget="hr_attendance_kanban_presence_indicator"/>
+                                </div>
+                            </div>
+                            <ul>
+                                <li t-if="record.parent_id.raw_value and !record.function.raw_value"><field name="parent_id"/></li>
+                                <li t-if="!record.parent_id.raw_value and record.function.raw_value"><field name="function"/></li>
+                                <li t-if="record.parent_id.raw_value and record.function.raw_value"><field name="function"/> at <field name="parent_id"/></li>
+                                <li t-if="record.city.raw_value and !record.country_id.raw_value"><field name="city"/></li>
+                                <li t-if="!record.city.raw_value and record.country_id.raw_value"><field name="country_id"/></li>
+                                <li t-if="record.city.raw_value and record.country_id.raw_value"><field name="city"/>, <field name="country_id"/></li>
+                                <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="res_partner_kanban_view">
+        <field name="name">res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//strong[contains(@class, 'oe_partner_heading')]" position="replace">
+                <div class="col-xs-11" style="padding:0px">
+                    <strong><field name="name"/></strong>
+                </div>
+                <div class="col-xs-1" style="padding:0px">
+                    <field name="attendance_state" widget="hr_attendance_kanban_presence_indicator"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_action_kanban_view" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="res_partner_attendance_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+                Create a few partners to be able to select an employee here and perform his check in / check out.
+            </p>
+            <p>
+                To create partner go to the Partners menu.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_partner_form_inherit_base_attendance" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <field name="name" position="replace">
+            <div id="textbox">
+                <field name="attendance_state" widget="hr_attendance_form_presence_indicator"/>
+                <field name="name" placeholder="Partner's Name"/>
+            </div>
+            </field>
+            <page name="sales_purchases" position="after">
+                <page name='attendance_information' string="Attendance information">
+                    <group name="container_row_2">
+                        <group string="Attendance information" name="sale">
+                            <field name="barcode"/>
+                            <field name="pin"/>
+                            <!--<field name="manual_attendance" groups="hr_attendance.group_hr_attendance_user"/>-->
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <!-- Menus -->
+
+    <menuitem id="menu_hr_attendance_root" name="Attendances" sequence="90" groups="hr.group_hr_attendance" web_icon="base_attendance,static/description/icon.png"/>
+
+    <menuitem id="menu_hr_attendance_manage_attendances" name="Manage Attendances" parent="menu_hr_attendance_root" sequence="20" groups="base_attendance.group_hr_attendance_user"/>
+
+    <menuitem id="menu_hr_attendance_view_attendances" name="Attendances" parent="menu_hr_attendance_manage_attendances" sequence="10" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action"/>
+
+    <menuitem id="menu_hr_attendance_view_partners_kanban" name="Partners" parent="menu_hr_attendance_manage_attendances" sequence="15" groups="base_attendance.group_hr_attendance_user" action="base.action_partner_customer_form"/>
+
+    <menuitem id="menu_hr_attendance_kiosk_mode" name="Kiosk Mode" parent="menu_hr_attendance_manage_attendances" sequence="20" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_kiosk_mode"/>
+
+    <menuitem id="menu_hr_attendance_report" name="Reports" parent="menu_hr_attendance_root" sequence="30" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_graph"/>
+</odoo>
