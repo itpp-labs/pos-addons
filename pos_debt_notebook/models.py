@@ -272,7 +272,6 @@ class AccountJournal(models.Model):
         help='Partners is not allowed to have a debt more than this value')
     credits_via_discount = fields.Boolean(
         default=False, string='Discount product on applying this payment method')
-    # expiration_date = fields.Datetime(string='Expiration date')
 
 
 class PosConfiguration(models.TransientModel):
