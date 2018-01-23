@@ -30,7 +30,6 @@
         'views/res_config_view.xml',
     ],
     'demo': [
-        'data/hr_attendance_demo.xml'
     ],
     'qweb': [
         "static/src/xml/attendance.xml",

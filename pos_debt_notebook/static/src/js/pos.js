@@ -589,7 +589,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this._super(partners);
             this.old_client = this.pos.get_client();
-            this.selected_line_customer_id = false;
+            this.selected_line = false;
         },
         render_debt_history: function(partner){
             var self = this;

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import models, fields, api
 from datetime import datetime
 from pytz import timezone
 import pytz
@@ -87,6 +86,7 @@ class ResPartner(models.Model):
             'invoice_id',
             'balance',
             'product_list',
+            'journal_id',
         ]
         for r in self:
             domain = [('partner_id', '=', r.id)]
@@ -99,6 +99,7 @@ class ResPartner(models.Model):
                 )
                 for r2 in records:
                     r2['date'] = self._get_date_formats(r2['date'])
+                    r2['journal_code'] = self.env['account.journal'].search([('id', '=', r2['journal_id'][0])]).code
                 data['history'] = records
             data['debts'] = self.compute_debts_by_journals(r.id)
             data['records_count'] = self.env['report.pos.debt'].search_count(domain)

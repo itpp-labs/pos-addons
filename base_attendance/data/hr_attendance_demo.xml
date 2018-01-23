@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="True">
-        <record id="base.res_partner_address_31" model="res.partner">
-            <field name="pin">0000</field>
-            <field name="barcode">456</field>
-        </record>
-    </data>
-</odoo>

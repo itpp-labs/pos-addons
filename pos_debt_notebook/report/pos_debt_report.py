@@ -51,7 +51,7 @@ class PosDebtReport(models.Model):
                     o.company_id as company_id,
                     pricelist.currency_id as currency_id,
                     o.product_list as product_list,
-                    
+
                     st.journal_id as journal_id
 
                 FROM account_bank_statement_line as st_line
@@ -78,7 +78,7 @@ class PosDebtReport(models.Model):
                         ELSE o.state
                     END as state,
                     true as credit_product,
-                    
+
                     o.date_order as date,
                     o.partner_id as partner_id,
                     o.user_id as user_id,
@@ -87,7 +87,7 @@ class PosDebtReport(models.Model):
                     o.company_id as company_id,
                     pricelist.currency_id as currency_id,
                     o.product_list as product_list,
-                    
+
                     pt.credit_product as journal_id
 
                 FROM pos_order_line as pos_line
@@ -113,7 +113,7 @@ class PosDebtReport(models.Model):
                     inv_line.price_subtotal as balance,
                     'confirm' as state,
                     true as credit_product,
-                    
+
                     inv.date_invoice as date,
                     inv.partner_id as partner_id,
                     inv.user_id as user_id,
@@ -124,8 +124,8 @@ class PosDebtReport(models.Model):
                     '' as product_list,
 
                     pt.credit_product as journal_id
-                    
-                FROM account_invoice_line as inv_line 
+
+                FROM account_invoice_line as inv_line
                     LEFT JOIN product_product pp ON (pp.id=inv_line.product_id)
                     LEFT JOIN product_template pt ON (pt.id=pp.product_tmpl_id)
                     LEFT JOIN account_invoice inv ON (inv.id=inv_line.invoice_id)
@@ -154,7 +154,7 @@ class PosDebtReport(models.Model):
                     record.currency_id as currency_id,
                     record.note as product_list,
                     record.journal_id as journal_id
-                                        
+
                 FROM pos_credit_update as record
                 WHERE
                     record.state in ('confirm')

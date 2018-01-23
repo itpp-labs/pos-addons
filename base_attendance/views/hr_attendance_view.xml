@@ -32,18 +32,16 @@
     </record>
 
     <record id="hr_attendance_view_filter" model="ir.ui.view">
-        <field name="name">hr_partner_attendance_view_filter</field>
+        <field name="name">res_partner_attendance_view_filter</field>
         <field name="model">res.partner.attendance</field>
         <field name="arch" type="xml">
             <search string="Hr Attendance Search">
                 <field name="partner_id"/>
-                <!--<field name="department_id"/>-->
                 <filter name="today" string="Today" domain="[('check_in', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)),('check_in', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]" />
                 <filter string="Current Month" domain="[('check_in', '&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]" />
                 <separator/>
                 <filter string="No Check Out" domain="[('check_out', '=', False)]" />
                 <separator/>
-                <!--<filter string="My Attendances" domain="[('employee_id.user_id.id', '=', uid)]" />-->
                 <group expand="0" string="Group By">
                     <filter name="Partner" string="Partner" context="{'group_by':'partner_id'}"/>
                     <separator/>
@@ -213,7 +211,7 @@
                         <group string="Attendance information" name="sale">
                             <field name="barcode"/>
                             <field name="pin"/>
-                            <!--<field name="manual_attendance" groups="hr_attendance.group_hr_attendance_user"/>-->
+                            <!--<field name="manual_attendance"/>-->
                         </group>
                     </group>
                 </page>

@@ -36,6 +36,8 @@ class HrPartner(models.Model):
     _sql_constraints = [('barcode_uniq', 'unique (barcode)',
                          "The Badge ID must be unique, this one is already assigned to another employee.")]
 
+    # To get access to the "My Attendances" menu partner should have an account and be a user
+
     # @api.multi
     # def _compute_manual_attendance(self):
     #     for partner in self:
