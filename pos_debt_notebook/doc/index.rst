@@ -27,7 +27,7 @@ The button appears when you select Customer which has unpaid debt (red amount). 
 * At the top of the Customer's form
 * On the payment page
  
-When you click ``[Pay Full Debt]`` button, the debt amount will be added to the payment list with negative sign. This negative amount has to be covered by normal payment (e.g. by cash). After that the Customer will have zero debt value.
+When you click ``[Pay Full Debt]`` button, the debt amount will be added to the payment list with negative sign. That negative amount has to be covered by normal payment (e.g. by cash). After that the Customer will have zero debt value.
 
 Credit Products
 ---------------
