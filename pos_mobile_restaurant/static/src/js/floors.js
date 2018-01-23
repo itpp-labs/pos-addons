@@ -18,16 +18,6 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
             var floor = this.pos.floors_by_id[id];
             var slide = $('div[data-id='+id+'][id=slide-floor]').index();
             this.chrome.swiper_floors.slideTo(slide);
-        },
-        renderElement: function(){
-            this._super();
-            // add scrollBar like iOS scrollBar
-            if (!this.pos.iOS) {
-                $('.tables').slimScroll({
-                    height: '100%',
-                    size: '6px',
-                });
-            }
         }
     });
 

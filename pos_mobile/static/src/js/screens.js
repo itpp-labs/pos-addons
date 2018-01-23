@@ -137,6 +137,9 @@ odoo.define('pos_mobile.screens', function (require) {
             categories.detach();
             $(".mobile-categories .categories").detach();
             $(".mobile-categories").append(categories);
+            if (!this.pos.iOS) {
+                $('.product-list-scroller').niceScroll();
+            }
         },
         perform_search: function(category, query, buy_result){
             this._super.apply(this, arguments);
@@ -191,6 +194,10 @@ odoo.define('pos_mobile.screens', function (require) {
         partner_icon_url: function(id){
             return '/web/image?model=res.partner&id='+id+'&field=image_medium';
         },
+        renderElement: function() {
+            this._super();
+            $('.clientlist-screen .touch-scrollable').niceScroll();
+        },
         show: function(){
             this._super();
             var self = this;
@@ -239,6 +246,9 @@ odoo.define('pos_mobile.screens', function (require) {
             var summary = $('.pos.mobile .order-container .summary.clearfix');
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
+            if (!this.pos.iOS) {
+                $('.order-scroller').niceScroll();
+            }
         },
         change_selected_order: function() {
             this._super();

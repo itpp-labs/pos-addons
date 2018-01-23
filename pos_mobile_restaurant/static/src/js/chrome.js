@@ -102,6 +102,10 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             var floor_map = $('.floor-screen .floor-map');
             floor_map.detach();
             $($(".swiper-container-map .swiper-wrapper .slide-floor")[index]).append(floor_map);
+
+            if (!this.pos.iOS) {
+                $('.swiper-container-map .swiper-wrapper .slide-floor .tables').niceScroll();
+            }
         },
         // set or change current order
         change_current_floor: function(id) {
@@ -136,6 +140,10 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             // close left menu
             this.swiper_floor_screen.slideTo(1);
+
+            if (!this.pos.iOS) {
+                $('.swiper-container-map .swiper-wrapper .slide-floor .tables').niceScroll();
+            }
         }
     });
 
