@@ -7,13 +7,15 @@ class ProductProduct(models.Model):
     # lot product fields
     is_lot = fields.Boolean(string='Lot of products', default=False)
     lot_qty = fields.Integer(string='Quantity products in Lot')
-    lot_product_id = fields.Many2one('product.product', 'Product in lot')  # In fact is one2one
+    lot_product_id = fields.Many2one('product.product', 'Product in lot', domain=[('lot_id', '=', False)])  # In fact is one2one
+    lot_id = fields.One2many('product.product', 'lot_product_id')
+
     # normal product fields
-    lot_id = fields.Many2one('product.product', compute="_compute_get_lot_id", string='Used in Lot')
+    compute_lot_id = fields.Many2one('product.product', compute="_compute_get_lot_id", string='Used in Lot')
 
     def _compute_get_lot_id(self):
         for i in self:
-            i.lot_id = self.env['product.product'].search([('lot_product_id', '=', i.id)])
+            i.compute_lot_id = i.lot_id
 
     def button_split_lot(self):
         return self._split_lot()

@@ -11,7 +11,7 @@
                         <field name="is_lot"/>
                         <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_product_id"/>
                         <field attrs="{'invisible':[('is_lot','=',False)]}" name="lot_qty"/>
-                        <field attrs="{'invisible':[('is_lot','=',True)]}" name="lot_id"/>
+                        <field attrs="{'invisible':[('is_lot','=',True)]}" name="compute_lot_id"/>
                         <button  attrs="{'invisible':[('is_lot','=',False)]}" class="oe_inline" string="Split lot"  name="button_split_lot" type="object"/>
                     </group>
                 </xpath>
