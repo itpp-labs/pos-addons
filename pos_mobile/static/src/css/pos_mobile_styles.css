@@ -952,6 +952,9 @@
     padding-bottom: 0;
     padding-top: 0;
 }
+.pos.mobile .payment-screen .touch-scrollable{
+    overflow: hidden!important;
+}
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
     line-height: 80px;
@@ -1117,6 +1120,12 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
     border-bottom: 8px solid rgb(110,200,155) !important;
+    overflow: hidden!important;
+}
+.ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
+    overflow: hidden!important;
+    overflow-y: auto!important;
+    -webkit-overflow-scrolling: touch!important;
 }
 .pos.mobile .clientlist-screen .button {
     display: inline-block;
@@ -1476,9 +1485,6 @@ pos.mobile .clientlist-screen .top-content .button {
     float: left;
     max-width: 674px;
     white-space: nowrap;
-	overflow-y: hidden;
-	overflow-x: scroll;
-	-webkit-overflow-scrolling: touch;
 }
 .pos.mobile .orders.touch-scrollable{
     display: inline-block;

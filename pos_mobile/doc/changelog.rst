@@ -1,3 +1,8 @@
+`1.1.4`
+-------
+
+- **NEW:** Touch scrolling for Android
+
 `1.1.3`
 -------
 
