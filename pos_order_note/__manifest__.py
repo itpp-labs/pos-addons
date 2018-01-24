@@ -3,7 +3,7 @@
     "name": """POS Advanced Order Notes""",
     "summary": """Set predefined notes for separate product or entire order""",
     "category": "Point of Sale",
-    # "live_test_url": "",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-note?version=11.0",
     "images": ["images/pos_order_note_main.png"],
     "version": "1.0.1",
     "application": False,
@@ -12,7 +12,7 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 69.00,
+    "price": 34.00,
     "currency": "EUR",
 
     "depends": [
@@ -37,4 +37,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "POS Advanced Order Notes",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-order-note",
+    "demo_summary": "Set predefined notes for separate product or entire order",
+    "demo_images": [
+        "images/pos_order_note_main.png",
+    ]
 }
