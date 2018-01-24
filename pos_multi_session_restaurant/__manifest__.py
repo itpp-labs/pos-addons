@@ -11,7 +11,7 @@
     "support": "apps@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "LGPL-3",
-    "price": 140.00,
+    "price": 30.00,
     "currency": "EUR",
 
     "depends": [
