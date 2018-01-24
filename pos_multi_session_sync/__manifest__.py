@@ -2,7 +2,7 @@
     "name": """Sync Server for POS orders""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
     "category": "Point of Sale",
-    # "live_test_URL": "",
+    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": [],
     "version": "1.0.0",
     "application": False,
