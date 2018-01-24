@@ -14,7 +14,9 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
     template: 'HrAttendanceGreetingMessage',
 
     events: {
-        "click .o_hr_attendance_button_dismiss": function() { this.do_action(this.next_action, {clear_breadcrumbs: true}); },
+        "click .o_hr_attendance_button_dismiss": function() {
+            this.do_action(this.next_action, {clear_breadcrumbs: true});
+        },
     },
 
     init: function(parent, action) {
@@ -43,8 +45,8 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
         }
         this.attendance = action.attendance;
         // check in/out times displayed in the greeting message template.
-        this.attendance.check_in_time = (new Date((new Date(this.attendance.check_in)).valueOf() - (new Date()).getTimezoneOffset()*60*1000)).toTimeString().slice(0,8);
-        this.attendance.check_out_time = this.attendance.check_out && (new Date((new Date(this.attendance.check_out)).valueOf() - (new Date()).getTimezoneOffset()*60*1000)).toTimeString().slice(0,8);
+        this.attendance.check_in_time = (new Date((new Date(this.attendance.check_in)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000))).toTimeString().slice(0,8);
+        this.attendance.check_out_time = this.attendance.check_out && (new Date((new Date(this.attendance.check_out)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000))).toTimeString().slice(0,8);
         this.previous_attendance_change_date = action.previous_attendance_change_date;
         this.partner_name = action.partner_name;
     },
@@ -59,7 +61,7 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
 
     welcome_message: function() {
         var self = this;
-        var now = new Date((new Date(this.attendance.check_in)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
+        var now = new Date((new Date(this.attendance.check_in)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000));
         this.return_to_main_menu = setTimeout( function() {
             self.do_action(self.next_action, {clear_breadcrumbs: true});
         }, 5000);
@@ -84,26 +86,24 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
             this.$('.o_hr_attendance_message_message').append(_t("Good night"));
         }
         if(this.previous_attendance_change_date){
-            var last_check_out_date = new Date((new Date(this.previous_attendance_change_date)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
+            var last_check_out_date = new Date((new Date(this.previous_attendance_change_date)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000));
             if(now.valueOf() - last_check_out_date.valueOf() > 1000*60*60*24*7){
                 this.$('.o_hr_attendance_random_message').html(_t("Glad to have you back, it's been a while!"));
-            } else {
-                if(Math.random() < 0.02){
-                    this.$('.o_hr_attendance_random_message').html(_t("If a job is worth doing, it is worth doing well!"));
-                }
+            } else if(Math.random() < 0.02){
+                this.$('.o_hr_attendance_random_message').html(_t("If a job is worth doing, it is worth doing well!"));
             }
         }
     },
 
     farewell_message: function() {
         var self = this;
-        var now = new Date((new Date(this.attendance.check_out)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
+        var now = new Date((new Date(this.attendance.check_out)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000));
         this.return_to_main_menu = setTimeout( function() {
             self.do_action(self.next_action, {clear_breadcrumbs: true});
         }, 5000);
 
         if(this.previous_attendance_change_date){
-            var last_check_in_date = new Date((new Date(this.previous_attendance_change_date)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
+            var last_check_in_date = new Date((new Date(this.previous_attendance_change_date)).valueOf() - ((new Date()).getTimezoneOffset()*60*1000));
             if(now.valueOf() - last_check_in_date.valueOf() > 1000*60*60*12){
                 this.$('.o_hr_attendance_warning_message').append(_t("Warning! Last check in was over 12 hours ago.<br/>If this isn't right, please contact Human Resources."));
                 clearTimeout(this.return_to_main_menu);
@@ -124,13 +124,12 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
             }
         } else if (now.getHours() < 17) {
             this.$('.o_hr_attendance_message_message').append(_t("Have a good afternoon"));
+        } else if (now.getHours() < 18 && Math.random() < 0.2) {
+            this.$('.o_hr_attendance_message_message').append(_t("Early to bed and early to rise, makes a man healthy, wealthy and wise"));
         } else {
-            if (now.getHours() < 18 && Math.random() < 0.2) {
-                this.$('.o_hr_attendance_message_message').append(_t("Early to bed and early to rise, makes a man healthy, wealthy and wise"));
-            } else {
-                this.$('.o_hr_attendance_message_message').append(_t("Have a good evening"));
-            }
+            this.$('.o_hr_attendance_message_message').append(_t("Have a good evening"));
         }
+
     },
 
     on_barcode_scanned: function(barcode) {

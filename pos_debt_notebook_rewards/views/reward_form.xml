@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--<record id="view_pos_credit_update_reward_tree" model="ir.ui.view">-->
-        <!--<field name="name">pos.credit.update.reward.tree</field>-->
-        <!--<field name="model">pos.credit.update.reward</field>-->
-        <!--<field name="arch" type="xml">-->
-            <!--<tree>-->
-                <!--<field name="partner_id"/>-->
-                <!--<field name="date"/>-->
-                <!--<field name="balance"/>-->
-                <!--<field name="note"/>-->
-                <!--<field name="attendance_ids"/>-->
-            <!--</tree>-->
-        <!--</field>-->
-    <!--</record>-->
+    <record id="view_pos_credit_update_rewards_tree" model="ir.ui.view">
+        <field name="name">pos.credit.update.rewards.tree</field>
+        <field name="model">pos.credit.update.rewards</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="company_id"/>
+                <field name="currency_id"/>
+                <field name="attendance_ids"/>
+                <field name="state"/>
+                <field name="id"/>
+            </tree>
+        </field>
+    </record>
 
     <record id="view_pos_credit_update_rewards_form" model="ir.ui.view">
         <field name="name">pos.credit.update.rewards.form</field>
@@ -31,12 +33,11 @@
                         <group>
                             <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="balance" readonly="1"/>
                             <field name="currency_id"  readonly="1"/>
                             <field name="reward_type"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <!--<field name="company_id" groups="base.group_multi_company"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
-                            <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="attendance_ids"  readonly="1"/>
+                            <!--<field name="balance" readonly="1"/>-->
+                            <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                 </sheet>

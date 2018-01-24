@@ -28,30 +28,9 @@ class HrPartner(models.Model):
     last_attendance_id = fields.Many2one('res.partner.attendance', compute='_compute_last_attendance_id')
     attendance_state = fields.Selection(string="Attendance", compute='_compute_attendance_state',
                                         selection=[('checked_out', "Checked out"), ('checked_in', "Checked in")])
-    # manual_attendance = fields.Boolean(string='Manual Attendance', compute='_compute_manual_attendance',
-    #                                    inverse='_inverse_manual_attendance',
-    #                                    help='The employee will have access to the "My Attendances" menu '
-    #                                         'to check in and out from his session')
 
     _sql_constraints = [('barcode_uniq', 'unique (barcode)',
                          "The Badge ID must be unique, this one is already assigned to another employee.")]
-
-    # To get access to the "My Attendances" menu partner should have an account and be a user
-
-    # @api.multi
-    # def _compute_manual_attendance(self):
-    #     for partner in self:
-    #         partner.manual_attendance = partner.user_id.has_group('hr.group_hr_attendance') if partner.user_id else False
-
-    # @api.multi
-    # def _inverse_manual_attendance(self):
-    #     manual_attendance_group = self.env.ref('hr.group_hr_attendance')
-    #     for partner in self:
-    #         if partner.user_id:
-    #             if partner.manual_attendance:
-    #                 manual_attendance_group.users = [(4, partner.user_id.id, 0)]
-    #             else:
-    #                 manual_attendance_group.users = [(3, partner.user_id.id, 0)]
 
     @api.depends('partners_attendance_ids')
     def _compute_last_attendance_id(self):
