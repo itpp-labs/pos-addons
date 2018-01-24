@@ -10,19 +10,25 @@ odoo.define('pos_product_available.PosModel', function(require){
             models.load_fields('product.product',['qty_available']);
 //  pos_cache caches 'product.product' model and removes it from the models, what leads to incorrect product quantity displaying.
 //  for compatibility added a new 'product.product' model with the only field 'qty_available' to prevent incorrect displaying
-            models.load_models({
-                model: 'product.product',
-                fields: ['qty_available'],
-                domain: [['sale_ok','=',true],['available_in_pos','=',true]],
-                loaded: function(self, products){
-                    self.product_quantities = products;
-                },
-            });
             PosModelSuper.initialize.call(this, session, attributes);
-            this.ready.then(function () {
-                _.each(self.product_quantities, function(prod){
-                    _.extend(self.db.get_product_by_id(prod.id), prod);
+            if (!_.find(this.models, function(model){
+                return model.model === 'product.product';
+            })){
+                models.load_models({
+                    model: 'product.product',
+                    fields: ['qty_available'],
+                    domain: [['sale_ok','=',true],['available_in_pos','=',true]],
+                    loaded: function(_self, products){
+                        self.product_quantities = products;
+                    },
                 });
+            }
+            this.ready.then(function () {
+                if (self.product_quantities) {
+                    _.each(self.product_quantities, function(prod){
+                        _.extend(self.db.get_product_by_id(prod.id), prod);
+                    });
+                }
             });
         },
         refresh_qty_available:function(product){
