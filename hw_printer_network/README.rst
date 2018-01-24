@@ -13,6 +13,7 @@ Credits
 Contributors
 ------------
 * Dinar Gabbasov <gabbasov@it-projects.info>
+* Tom Blauwendraat <tom@sunflowerweb.nl>
 
 Sponsors
 --------
