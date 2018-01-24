@@ -20,15 +20,5 @@ odoo.define('pos_mobile.models', function (require) {
         },
     });
 
-    var _super_orderline = models.Orderline.prototype;
-    models.Orderline = models.Orderline.extend({
-        set_quantity: function(quantity){
-            _super_orderline.set_quantity.call(this, quantity);
-            var self = this;
-            if (this.pos.get_order()) {
-                self.pos.gui.screen_instances.products.order_widget.change_product_qty(self.product.id);
-            }
-        },
-    });
     return models;
 });

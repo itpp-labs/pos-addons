@@ -34,6 +34,8 @@
     border: initial;
     height: 100%;
     float: none;
+
+    margin-top: 15px;
 }
 .pos.mobile .scrollable-y {
     position: relative;
@@ -370,4 +372,20 @@
 }
 .pos.mobile .swiper-container-map {
     height: 100%;
+}
+/*  ********* The Webkit Scrollbar  ********* */
+.pos.mobile .floor-map *::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-track {
+    border-left: solid 4px transparent;
+    background: transparent;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+.pos.mobile .floor-map.scrolling *::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #393939;
 }

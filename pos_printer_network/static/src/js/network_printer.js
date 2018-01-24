@@ -134,30 +134,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             if (this.pos.config.receipt_printer_type === "network_printer") {
                 this.pos.receipt_printer_is_usb = false;
             }
-            var connect = false;
-            if (this.pos.receipt_printer_is_usb) {
-                connect = this._super(url, options);
-            } else {
-                var try_real_hard_to_connect = function(new_url, retries, done) {
-                    done = done || new $.Deferred();
-                    $.ajax({
-                        url: new_url + '/hw_proxy/without_usb',
-                        method: 'GET',
-                        timeout: 1000,
-                    }).done(function(){
-                        done.resolve(new_url);
-                    }).fail(function(){
-                        if(retries > 0){
-                            try_real_hard_to_connect(new_url,retries-1,done);
-                        }else{
-                            done.reject();
-                        }
-                    });
-                    return done;
-                };
-                connect = try_real_hard_to_connect(url,3);
-            }
-            return connect.done(function(){
+            return this._super(url, options).done(function(){
                 self.send_network_printers_to_pos_box(url, self.network_printers);
             });
         },
