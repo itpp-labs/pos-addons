@@ -26,28 +26,52 @@ var KioskConfirm = Widget.extend({
                 }
             });
         },
-        'click .o_hr_attendance_pin_pad_button_0': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 0); },
-        'click .o_hr_attendance_pin_pad_button_1': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 1); },
-        'click .o_hr_attendance_pin_pad_button_2': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 2); },
-        'click .o_hr_attendance_pin_pad_button_3': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 3); },
-        'click .o_hr_attendance_pin_pad_button_4': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 4); },
-        'click .o_hr_attendance_pin_pad_button_5': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 5); },
-        'click .o_hr_attendance_pin_pad_button_6': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 6); },
-        'click .o_hr_attendance_pin_pad_button_7': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 7); },
-        'click .o_hr_attendance_pin_pad_button_8': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 8); },
-        'click .o_hr_attendance_pin_pad_button_9': function() { this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 9); },
-        'click .o_hr_attendance_pin_pad_button_C': function() { this.$('.o_hr_attendance_PINbox').val(''); },
+        'click .o_hr_attendance_pin_pad_button_0': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 0);
+        },
+        'click .o_hr_attendance_pin_pad_button_1': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 1);
+        },
+        'click .o_hr_attendance_pin_pad_button_2': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 2);
+        },
+        'click .o_hr_attendance_pin_pad_button_3': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 3);
+        },
+        'click .o_hr_attendance_pin_pad_button_4': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 4);
+        },
+        'click .o_hr_attendance_pin_pad_button_5': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 5);
+        },
+        'click .o_hr_attendance_pin_pad_button_6': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 6);
+        },
+        'click .o_hr_attendance_pin_pad_button_7': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 7);
+        },
+        'click .o_hr_attendance_pin_pad_button_8': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 8);
+        },
+        'click .o_hr_attendance_pin_pad_button_9': function() {
+            this.$('.o_hr_attendance_PINbox').val(this.$('.o_hr_attendance_PINbox').val() + 9);
+        },
+        'click .o_hr_attendance_pin_pad_button_C': function() {
+            this.$('.o_hr_attendance_PINbox').val('');
+        },
         'click .o_hr_attendance_pin_pad_button_ok': function() {
             var self = this;
             this.$('.o_hr_attendance_pin_pad_button_ok').attr("disabled", "disabled");
             var hr_partner = new Model('res.partner');
-            hr_partner.call('attendance_manual', [[this.partner_id], this.next_action, this.$('.o_hr_attendance_PINbox').val()])
-            .then(function(result) {
+            hr_partner.call('attendance_manual', [[this.partner_id], this.next_action, this.$('.o_hr_attendance_PINbox').val()]).
+            then(function(result) {
                 if (result.action) {
                     self.do_action(result.action);
                 } else if (result.warning) {
                     self.do_warn(result.warning);
-                    setTimeout( function() { self.$('.o_hr_attendance_pin_pad_button_ok').removeAttr("disabled"); }, 500);
+                    setTimeout( function() {
+                        self.$('.o_hr_attendance_pin_pad_button_ok').removeAttr("disabled");
+                    }, 500);
                 }
             });
         },
@@ -73,7 +97,9 @@ var KioskConfirm = Widget.extend({
     },
 
     start_clock: function () {
-        this.clock_start = setInterval(function() {this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));}, 500);
+        this.clock_start = setInterval(function() {
+            this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));
+        }, 500);
         // First clock refresh before interval to avoid delay
         this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));
     },

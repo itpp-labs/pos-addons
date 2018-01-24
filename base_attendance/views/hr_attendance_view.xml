@@ -165,6 +165,7 @@
         <field name="name">res.partner.kanban</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="priority">99</field>
         <field name="arch" type="xml">
             <xpath expr="//strong[contains(@class, 'oe_partner_heading')]" position="replace">
                 <div class="col-xs-11" style="padding:0px">
@@ -197,7 +198,7 @@
         <field name="name">res.partner.form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="priority">10</field>
+        <field name="priority">99</field>
         <field name="arch" type="xml">
             <field name="name" position="replace">
             <div id="textbox">

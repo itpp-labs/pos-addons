@@ -1,8 +1,8 @@
-==================================================
- Rewards for shifts in POS Debt & Credit notebook
-==================================================
+========================
+ HR Partners Attendance
+========================
 
-Rewards for shifts in POS Debt & Credit notebook
+Process partners attendance
 
 Credits
 =======
@@ -19,7 +19,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_rewards/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/base_attendance/>`__.
 
       Thank you for understanding!
 
@@ -28,9 +28,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos_addons/10.0
+Demo: http://runbot.it-projects.info/demo/misc-addons/10.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_rewards/
+HTML Description: https://apps.odoo.com/apps/modules/10.0/base_attendance/
 
 Usage instructions: `<doc/index.rst>`_
 

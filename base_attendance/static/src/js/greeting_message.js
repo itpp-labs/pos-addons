@@ -38,7 +38,7 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
 
         this.next_action = action.next_action || 'base_attendance.hr_attendance_action_my_attendances';
         // no listening to barcode scans if we aren't coming from the kiosk mode (and thus not going back to it with next_action)
-        if (this.next_action != 'base_attendance.hr_attendance_action_kiosk_mode' && this.next_action.tag != 'hr_attendance_kiosk_mode') {
+        if (this.next_action !== 'base_attendance.hr_attendance_action_kiosk_mode' && this.next_action.tag !== 'hr_attendance_kiosk_mode') {
             this.stop_listening();
         }
         this.attendance = action.attendance;
@@ -51,14 +51,18 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
 
     start: function() {
         if (this.attendance) {
-            this.attendance.check_out ? this.farewell_message() : this.welcome_message();
+            this.attendance.check_out
+            ? this.farewell_message()
+            : this.welcome_message();
         }
     },
 
     welcome_message: function() {
         var self = this;
         var now = new Date((new Date(this.attendance.check_in)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
-        this.return_to_main_menu = setTimeout( function() { self.do_action(self.next_action, {clear_breadcrumbs: true}); }, 5000);
+        this.return_to_main_menu = setTimeout( function() {
+            self.do_action(self.next_action, {clear_breadcrumbs: true});
+        }, 5000);
 
         if (now.getHours() < 5) {
             this.$('.o_hr_attendance_message_message').append(_t("Good night"));
@@ -94,7 +98,9 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
     farewell_message: function() {
         var self = this;
         var now = new Date((new Date(this.attendance.check_out)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
-        this.return_to_main_menu = setTimeout( function() { self.do_action(self.next_action, {clear_breadcrumbs: true}); }, 5000);
+        this.return_to_main_menu = setTimeout( function() {
+            self.do_action(self.next_action, {clear_breadcrumbs: true});
+        }, 5000);
 
         if(this.previous_attendance_change_date){
             var last_check_in_date = new Date((new Date(this.previous_attendance_change_date)).valueOf() - (new Date()).getTimezoneOffset()*60*1000);
@@ -129,12 +135,13 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
 
     on_barcode_scanned: function(barcode) {
         var self = this;
-        if (this.return_to_main_menu) {  // in case of multiple scans in the greeting message view, delete the timer, a new one will be created.
+        if (this.return_to_main_menu) {
+            // in case of multiple scans in the greeting message view, delete the timer, a new one will be created.
             clearTimeout(this.return_to_main_menu);
         }
         var res_partner = new Model('res.partner');
-        res_partner.call('attendance_scan', [barcode, ])
-            .then(function (result) {
+        res_partner.call('attendance_scan', [barcode, ]).
+            then(function (result) {
                 if (result.action) {
                     self.do_action(result.action);
                 } else if (result.warning) {

@@ -13,7 +13,9 @@ var _t = core._t;
 
 var KioskMode = Widget.extend(BarcodeHandlerMixin, {
     events: {
-        "click .o_hr_attendance_button_partners": function(){ this.do_action('base_attendance.res_partner_action_kanban_view'); },
+        "click .o_hr_attendance_button_partners": function(){
+            this.do_action('base_attendance.res_partner_action_kanban_view');
+        },
     },
 
     init: function (parent, action) {
@@ -27,12 +29,12 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
         var self = this;
         self.session = Session;
         var res_company = new Model('res.company');
-        res_company.query(['name'])
-           .filter([['id', '=', self.session.company_id]])
-           .all()
-           .then(function (companies){
+        res_company.query(['name']).
+           filter([['id', '=', self.session.company_id]]).
+           all().
+           then(function (companies){
                 self.company_name = companies[0].name;
-                self.company_image_url = self.session.url('/web/image', {model: 'res.company', id: self.session.company_id, field: 'logo',})
+                self.company_image_url = self.session.url('/web/image', {model: 'res.company', id: self.session.company_id, field: 'logo',});
                 self.$el.html(QWeb.render("HrAttendanceKioskMode", {widget: self}));
                 self.start_clock();
             });
@@ -42,8 +44,8 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
     on_barcode_scanned: function(barcode) {
         var self = this;
         var hr_employee = new Model('res.partner');
-        hr_employee.call('attendance_scan', [barcode, ])
-            .then(function (result) {
+        hr_employee.call('attendance_scan', [barcode, ]).
+            then(function (result) {
                 if (result.action) {
                     self.do_action(result.action);
                 } else if (result.warning) {
@@ -53,7 +55,9 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
     },
 
     start_clock: function() {
-        this.clock_start = setInterval(function() {this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));}, 500);
+        this.clock_start = setInterval(function() {
+            this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));
+        }, 500);
         // First clock refresh before interval to avoid delay
         this.$(".o_hr_attendance_clock").text(new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}));
     },

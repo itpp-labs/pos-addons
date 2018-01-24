@@ -19,8 +19,8 @@ var FormPresenceIndicator = form_common.AbstractField.extend({
         return this._super();
     },
     render_value: function() {
-        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_green", this.get_value() == 'checked_in');
-        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.get_value() == 'checked_out');
+        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_green", this.get_value() === 'checked_in');
+        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.get_value() === 'checked_out');
     },
     display_field: function() {
         this.$el.html(QWeb.render("PresenceIndicator"));
@@ -33,13 +33,14 @@ var KanbanPresenceIndicator = kanban_widgets.AbstractField.extend({
     },
     start: function() {
         this.display_field();
-        this.render_value(); // doesn't get called automatically in kanban_widgets.AbstractField
+        // doesn't get called automatically in kanban_widgets.AbstractField
+        this.render_value();
         this.$el.tooltip({title: _t("employee presence<br/>green: checked in<br/>red: checked out"), trigger: 'hover'});
         return this._super();
     },
     render_value: function() {
-        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_green", this.field.raw_value == 'checked_in');
-        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.field.raw_value == 'checked_out');
+        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_green", this.field.raw_value === 'checked_in');
+        this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.field.raw_value === 'checked_out');
     },
     display_field: function() {
         this.$el.html(QWeb.render("PresenceIndicator"));
