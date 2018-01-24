@@ -77,7 +77,7 @@ odoo.define('pos_product_available.tour', function (require) {
     function check_quantity() {
         return [{
             content: 'check quantity',
-            extra_trigger: '.product-list .product[data-product-id="60"] .qty-tag.not-available:contains("-1")',
+            extra_trigger: '.product-list .product:contains("Zucchini") .qty-tag.not-available:contains("-1")',
             trigger: '.order-button.selected',
         }];
     }
