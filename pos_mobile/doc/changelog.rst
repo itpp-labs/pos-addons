@@ -1,7 +1,7 @@
 `1.1.4`
 -------
 
-- **NEW:** Scrollbar for Android
+- **NEW:** Touch scrolling for Android
 
 `1.1.3`
 -------
