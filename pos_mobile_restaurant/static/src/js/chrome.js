@@ -98,14 +98,10 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             floor_widget.floor = this.pos.floors_by_id[id];
             this.swiper_floors.appendSlide('<div class="swiper-slide slide-floor" id="slide-floor" data-id='+id+'></div>');
             floor_widget.renderElement();
-
             var floor_map = $('.floor-screen .floor-map');
             floor_map.detach();
             $($(".swiper-container-map .swiper-wrapper .slide-floor")[index]).append(floor_map);
-
-            if (!this.pos.iOS) {
-                $('.swiper-container-map .swiper-wrapper .slide-floor .tables').niceScroll();
-            }
+            this.rerender_floors_scrolling();
         },
         // set or change current order
         change_current_floor: function(id) {
@@ -119,7 +115,6 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             this.gui.screen_instances.floors.floor = this.pos.floors_by_id[floor_id];
             this.gui.screen_instances.floors.renderElement();
-
             var floor_map = $('.floor-screen .floor-map');
             floor_map.detach();
             $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
@@ -129,6 +124,8 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                 floor_selector.detach();
                 $(".mobile-floor-selector .floor-selector").replaceWith(floor_selector);
             }
+
+            this.rerender_floors_scrolling();
 
             // event for menu button
             this.menuButton = $('.menu-button');
@@ -140,9 +137,14 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             // close left menu
             this.swiper_floor_screen.slideTo(1);
-
+        },
+        rerender_floors_scrolling: function(){
             if (!this.pos.iOS) {
-                $('.swiper-container-map .swiper-wrapper .slide-floor .tables').niceScroll();
+                $('.floor-scroll').remove();
+                $('.tables').niceScroll({
+                    horizrailenabled: false,
+                    scrollCLass: 'floor-scroll',
+                });
             }
         }
     });

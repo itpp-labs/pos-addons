@@ -42,12 +42,20 @@ odoo.define('pos_mobile.gui', function (require) {
                     'height': new_height,
                     'max-height': new_max_height
                 });
+                if (!this.pos.iOS) {
+                    $('.clientlist-screen .nicescroll-rails').remove();
+                    $('.clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y').niceScroll();
+                }
             } else if (current_screen === 'payment') {
                 var height = $('.payment-screen .right-content').height();
                 var paymentmethods = $('.payment-screen .paymentmethods-container').height();
                 var numpad = $('.payment-screen .payment-numpad').height();
                 // automatic define height. 20 the size of the indentation from the bottom block
                 $('.paymentlines-container').css({height: height - paymentmethods - numpad - 20});
+                $('.payment-screen .nicescroll-rails').remove();
+                $('.payment-screen .touch-scrollable').niceScroll({
+                    horizrailenabled: false,
+                });
             }
         }
     });
