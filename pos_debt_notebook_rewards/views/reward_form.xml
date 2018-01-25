@@ -93,7 +93,7 @@
     </record>
 
 
-    <menuitem id="menu_pos_credit_update_rewards" name="Reward Credit Updates" action="action_pos_credit_update_rewards" parent="point_of_sale.menu_point_config_product" groups="point_of_sale.group_pos_manager" sequence="100"/>
+    <menuitem id="menu_pos_credit_update_rewards" name="Reward Credit Updates" action="action_pos_credit_update_rewards" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="base_attendance.group_hr_attendance_manager" sequence="100"/>
 
 
 </odoo>

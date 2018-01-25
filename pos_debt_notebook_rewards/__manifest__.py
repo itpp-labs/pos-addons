@@ -22,6 +22,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         'views/reward_form.xml',
+        'security/ir.model.access.csv',
     ],
     "qweb": [
     ],

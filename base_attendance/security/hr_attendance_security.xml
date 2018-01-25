@@ -29,13 +29,7 @@
     <record id="hr.group_hr_attendance" model="res.groups">
         <field name="name">Manual Attendance</field>
         <field name="category_id" ref="base.module_category_hr_attendance"/>
-        <field name="comment">The user will gain access to the human resources attendance menu, enabling him to manage his own attendance.</field>
-    </record>
-
-    <record id="group_hr_attendance_use_pin" model="res.groups">
-        <field name="name">Enable PIN use</field>
-        <field name="category_id" ref="base.module_category_hidden"/>
-        <field name="comment">The user will have to enter his PIN to check in and out manually at the company screen.</field>
+        <field name="comment">The user will gain access to the human resources attendance menu, enabling him to manage partners attendance.</field>
     </record>
 
     <data noupdate="1">   
@@ -46,17 +40,6 @@
             <field name="domain_force">[(1,'=',1)]</field>
             <field name="groups" eval="[(4,ref('base_attendance.group_hr_attendance_user'))]"/>
         </record>
-
-        <!--<record id="hr_attendance_rule_attendance_employee" model="ir.rule">-->
-            <!--<field name="name">user: modify own attendance only</field>-->
-            <!--<field name="model_id" ref="model_res_partner_attendance"/>-->
-            <!--<field name="domain_force">[('employee_id.user_id','=',user.id)]</field>-->
-            <!--<field name="perm_read" eval="0"/>-->
-            <!--<field name="perm_write" eval="1"/>-->
-            <!--<field name="perm_create" eval="1"/>-->
-            <!--<field name="perm_unlink" eval="0"/>-->
-            <!--<field name="groups" eval="[(4,ref('base.group_user'))]"/>-->
-        <!--</record>-->
 
     </data>
 </odoo>
