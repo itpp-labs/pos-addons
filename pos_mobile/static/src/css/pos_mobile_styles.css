@@ -495,6 +495,7 @@
     line-height: 96px;
     height: 96px;
     min-width: 96px;
+    float: right;
 }
 .pos.mobile .breadcrumb:last-child {
     padding-right: 6px;
@@ -511,6 +512,7 @@
 }
 .pos.mobile .breadcrumb-arrow{
     width: 56px;
+    transform: scale(-1, 1);
 }
 .pos.mobile .breadcrumb-homeimg {
     width: 54px;
