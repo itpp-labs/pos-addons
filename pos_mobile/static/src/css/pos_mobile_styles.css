@@ -91,6 +91,7 @@
     /*word-wrap: break-word;*/
     width: initial;
     font-size: 20px;
+    white-space: nowrap;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
