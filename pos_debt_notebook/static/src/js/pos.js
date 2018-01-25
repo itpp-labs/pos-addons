@@ -348,7 +348,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (partner) {
                 var deb = {};
                 _.each(paymentlines, function(pl){
-                    deb = partner && partner.debts_.find(_.values(partner.debts), function(d){
+                    deb = _.find(_.values(partner.debts), function(d){
                         return d.journal_id[0] === pl.cashregister.journal.id;
                     });
                     if(deb && deb.balance){
