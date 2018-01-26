@@ -2,14 +2,14 @@
  Pay Sale Orders & Invoices over POS
 =====================================
 
-
+The module allows to handle the payment process for Sale Orders/Invoices over POS
 
 Credits
 =======
 
 Contributors
 ------------
-* losev@it-projects.info
+* `Artyom Losev <https://it-projects.info/team/ArtyomLosev>`__
 
 Sponsors
 --------
@@ -18,6 +18,12 @@ Sponsors
 Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
+
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/website_multi_company_sale/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
 ===================
