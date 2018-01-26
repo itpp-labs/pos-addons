@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Invoice Pay""",
-    "summary": """Paying invoiceable Sales Orders and confirmed Invoies over Point of Sale""",
-    "category": "pos",
-    "images": [],
+    "name": """Pay Sale Orders & Invoices over POS""",
+    "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
+    "category": "Point of Sale",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
+    "images": ["images/pos_invoice_pay_main.png"],
     "version": "1.0.0",
     "application": False,
 
@@ -11,6 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info",
     "license": "LGPL-3",
+    "price": 89.00,
+    "currency": "EUR",
 
     "depends": [
         "account",
@@ -38,4 +41,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "Pay Sale Orders & Invoices over POS",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "website-multi-company",
+    "demo_summary": "Handle the payment process for Sale Orders/Invoices over Point of Sale",
+    "demo_images": [
+        "images/pos_invoice_pay_main.png",
+    ]
 }

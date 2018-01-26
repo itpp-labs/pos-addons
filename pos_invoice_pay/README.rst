@@ -1,6 +1,6 @@
-====================
- POS Invoice Pay
-====================
+=====================================
+ Pay Sale Orders & Invoices over POS
+=====================================
 
 
 
@@ -24,7 +24,7 @@ Further information
 
 Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_cashier_select/
+HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_invoice_pay/
 
 Usage instructions: `<doc/index.rst>`__
 
