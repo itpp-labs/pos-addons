@@ -1,3 +1,10 @@
+`1.1.5`
+-------
+
+- **FIX:** Second part of Name is hidden when name has a space
+- **IMP:** Don't enter to category when it's empty
+- **IMP:** Show categories from right to left
+
 `1.1.4`
 -------
 
