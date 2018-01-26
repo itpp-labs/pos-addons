@@ -338,29 +338,36 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var sum = _.reduce(disc_credits, function(memo, num){
                     return memo + num.amount;
                 }, 0);
-                var percentage = ( sum / order_total ) * 100;
+                var percentage = round_pr(( sum / order_total ) * 100, self.pos.currency.rounding);
                 var orderlines = order.get_orderlines();
                 _.each(orderlines, function(ol){
                     ol.set_discount(percentage);
                 });
-            }
-            this._super();
-            if (partner) {
-                var deb = {};
-                _.each(paymentlines, function(pl){
-                    deb = partner && partner.debts_.find(_.values(partner.debts), function(d){
-                        return d.journal_id[0] === pl.cashregister.journal.id;
+//              copy-paste of super
+                this._super();
+                // end of copy-paste
+//                _.each(disc_credits, function(pl){
+//                    pl.amount = 0;
+//                });
+                if (partner) {
+                    var deb = {};
+                    _.each(paymentlines, function(pl){
+                        deb = _.find(_.values(partner.debts), function(d){
+                            return d.journal_id[0] === pl.cashregister.journal.id;
+                        });
+                        if(deb && deb.balance){
+                            deb.balance -= pl.amount;
+                        }
                     });
-                    if(deb && deb.balance){
-                        deb.balance -= pl.amount;
+                    partner.debt = _.reduce(partner.debts, function(memo, d){
+                        return memo + d.balance;
+                    }, 0);
+                    if(partner.debt_type === 'debt'){
+                        partner.debt = - partner.debt;
                     }
-                });
-                partner.debt = _.reduce(partner.debts, function(memo, d){
-                    return memo + d.balance;
-                }, 0);
-                if(partner.debt_type === 'debt'){
-                    partner.debt = - partner.debt;
                 }
+            } else {
+                this._super();
             }
         },
         debt_journal_restricted_categories_check: function(){
@@ -524,6 +531,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             }
         }
+    });
+
+    gui.Gui.prototype.screen_classes.filter(function(el) {
+        return el.name === 'receipt';
+    })[0].widget.include({
+        render_receipt: function() {
+            var order = this.pos.get_order();
+            _.map(_.filter(order.get_paymentlines(), function(pl){
+                return pl.cashregister.journal.credits_via_discount === true;
+            }), function(pl){
+                pl.amount = 0;
+            });
+
+            this._super();
+        },
     });
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
