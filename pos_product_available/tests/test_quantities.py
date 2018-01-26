@@ -22,4 +22,4 @@ class TestUi(odoo.tests.HttpCase):
         self.phantom_js("/web",
                         "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_product_available', 1000)",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_product_available.ready",
-                        login="admin")
+                        login="admin", timeout=200)
