@@ -617,6 +617,16 @@
     -webkit-transition-timing-function: ease-out;
     transition: 0.2s;
 }
+.pos.mobile .category-simple-button.active {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
+}
 .pos.mobile .category-button .category-img {
     width: 240px;
     height: 200px;
