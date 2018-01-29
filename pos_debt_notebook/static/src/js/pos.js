@@ -315,7 +315,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var restricted_categories = this.debt_journal_restricted_categories_check()
+            var restricted_categories = this.debt_journal_restricted_categories_check();
             if (restricted_categories.length) {
                 this.gui.show_popup('error', {
                     'title': _t('Unable to validate with the debt payment method'),
@@ -395,7 +395,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             _.each(paymentlines, function(pl) {
                 allowed_categories = pl.cashregister.journal.category_ids;
                 if ( allowed_categories.length > 0) {
-                    restricted_categories.push(_.difference(all_categories, allowed_categories))
+                    restricted_categories.push(_.difference(all_categories, allowed_categories));
                 }
             });
             var violations = [];
