@@ -2,7 +2,6 @@
 from odoo import models, fields, api
 from datetime import datetime
 from pytz import timezone
-from copy import deepcopy
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -266,14 +265,14 @@ class AccountJournal(models.Model):
     debt = fields.Boolean(string='Debt Payment Method')
     pos_cash_out = fields.Boolean(string='Allow to cash out credits', default=False,
                                   help='Partner can exchange credits to cash in POS')
-    categories_ids = fields.Many2many('product.category', string='Product categories',
-                                      help='Restricted product categories that can not be paid with this credits.')
-    debt_limit = fields.Float(
-        string='Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='Partners is not allowed to have a debt more than this value')
+    category_ids = fields.Many2many('pos.category', string='POS product categories',
+                                    help='POS product categories that can be paid with this credits.'
+                                         'If the field is empty then all categories may be purchased with this journal')
+    debt_limit = fields.Float(string='Max Debt', digits=dp.get_precision('Account'), default=0,
+                              help='Partners is not allowed to have a debt more than this value')
     credits_via_discount = fields.Boolean(
-        default=False, string='Discount method',
-        help='Discount a product on applying this payment method')
+        default=False, string='Zero transactions on credit payments',
+        help='Discount the order (mostly 100%) when user pay via this type of credits')
 
 
 class PosConfiguration(models.TransientModel):
@@ -329,32 +328,23 @@ class PosOrder(models.Model):
                 product_list.append('%s(%s * %s) + ' % (o_line.product_id.name, o_line.qty, o_line.price_unit))
             order.product_list = ''.join(product_list).strip(' + ')
 
-
-class PosOrderDebt(models.Model):
-    _inherit = "pos.order"
-
     @api.model
     def _process_order(self, pos_order):
         credit_updates = []
-        print pos_order
-        for payments in pos_order['statement_ids']:
-            journal = self.env['account.journal'].search([('id', '=', payments[2]['journal_id'])])
+        for payment in pos_order['statement_ids']:
+            journal = self.env['account.journal'].search([('id', '=', payment[2]['journal_id'])])
             if journal.credits_via_discount:
-                amount = float(payments[2]['amount'])
-                credit_updates.append({'journal_id': payments[2]['journal_id'],
+                amount = float(payment[2]['amount'])
+                credit_updates.append({'journal_id': payment[2]['journal_id'],
                                        'balance': -amount,
                                        'partner_id': pos_order['partner_id'],
                                        'update_type': 'balance_update'})
-                payments[2]['amount'] = 0
+                payment[2]['amount'] = 0
         for update in credit_updates:
             entry = self.env['pos.credit.update'].create(update)
-            entry.balance = update['balance']
             entry.switch_to_confirm()
-        print credit_updates
 
-        res = super(PosOrderDebt, self)._process_order(pos_order)
-        map(lambda p: self.env['pos.credit.update'].create(p), credit_updates)
-        return res
+        return super(PosOrder, self)._process_order(pos_order)
 
 
 class PosCreditUpdate(models.Model):

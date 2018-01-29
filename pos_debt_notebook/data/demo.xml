@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="demo_pos_config_settings_credit" model="pos.config.settings">
+            <field name="debt_type">credit</field>
+        </record>
+
+        <record id="demo_account_journal_credits" model="account.journal">
+            <field name="name">Credit</field>
+            <field name="code">XCRED</field>
+            <field name="debt">True</field>
+            <field name="type">cash</field>
+            <field name="journal_user">True</field>
+        </record>
+
+        <record id="demo_account_journal_credits_fruits"  model="account.journal">
+            <field name="name">Fruit Credit</field>
+            <field name="code">FCRED</field>
+            <field name="debt">True</field>
+            <field name="type">cash</field>
+            <field name="journal_user">True</field>
+            <field name="category_ids" eval="[(6, 0, [ref('point_of_sale.fruits_vegetables')])]"/>
+        </record>
+
+        <record id="demo_account_journal_credits_via_discounts"  model="account.journal">
+            <field name="name">Discount Credit</field>
+            <field name="code">DCRED</field>
+            <field name="debt">True</field>
+            <field name="type">cash</field>
+            <field name="journal_user">True</field>
+            <field name="credits_via_discount">True</field>
+        </record>
+
+    </data>
+</openerp>

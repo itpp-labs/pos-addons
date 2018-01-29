@@ -32,6 +32,7 @@
         'static/src/xml/pos.xml',
     ],
     "demo": [
+        'data/demo.xml',
     ],
     'installable': True,
     'uninstall_hook': 'pre_uninstall',

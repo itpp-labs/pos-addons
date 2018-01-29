@@ -19,8 +19,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
             models.load_fields("res.partner",['debt_type', 'debt']);
-            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out','categories_ids']);
-            models.load_fields('product.product',['credit_product','categ_id']);
+            models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out','category_ids']);
+            models.load_fields('product.product',['credit_product']);
             _super_posmodel.initialize.apply(this, arguments);
             this.ready.then(function () {
                 var partner_ids = _.map(self.partners, function(p){
@@ -315,10 +315,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (this.debt_journal_restricted_categories_check()) {
+            var restricted_categories = this.debt_journal_restricted_categories_check()
+            if (restricted_categories.length) {
                 this.gui.show_popup('error', {
                     'title': _t('Unable to validate with the debt payment method'),
-                    'body': _t('It is not allowed to buy these category of products with the chosen payment method, try to increase amount of not debt payment method')
+                    'body': _t(this.restricted_categories_message(restricted_categories)),
                 });
                 return;
             }
@@ -343,12 +344,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 _.each(orderlines, function(ol){
                     ol.set_discount(percentage);
                 });
-//              copy-paste of super
                 this._super();
-                // end of copy-paste
-//                _.each(disc_credits, function(pl){
-//                    pl.amount = 0;
-//                });
                 if (partner) {
                     var deb = {};
                     _.each(paymentlines, function(pl){
@@ -370,39 +366,60 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this._super();
             }
         },
+        restricted_categories_message: function(restricted_categories) {
+            var self = this;
+            var body = [];
+            var categ_name = '';
+            var journals = '';
+            _.each(restricted_categories, function(categ) {
+                categ_name = self.pos.db.get_category_by_id(categ).name;
+                journals = _.map(_.filter(self.pos.cashregisters, function(x){
+                    return x.journal.category_ids.length > 0 && !_.contains(x.journal.category_ids, categ);
+                }), function(cr){
+                    return cr.journal_id[1];
+                });
+                body.push(self.pos.db.get_category_by_id(categ).name + ' with ' + journals.toString() + ' ');
+            });
+            return 'It is not allowed to buy ' + _.uniq(body).toString();
+        },
         debt_journal_restricted_categories_check: function(){
             var self = this;
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
             orderlines = order.get_orderlines();
-            var is_restrictions = false;
-            is_restrictions = _.filter(paymentlines, function(pl){
-                return pl.cashregister.journal.categories_ids.length > 0;
+            var all_categories = _.map(_.values(this.pos.db.category_by_id), function(r){
+                return r.id;
             });
-            if (is_restrictions){
-                var flag = false;
-                is_restrictions = _.map(is_restrictions, function(r){
-                    return r.cashregister.journal.categories_ids;
-                });
-                _.each(is_restrictions, function(re){
+            var restricted_categories = [];
+            var allowed_categories = false;
+            _.each(paymentlines, function(pl) {
+                allowed_categories = pl.cashregister.journal.category_ids;
+                if ( allowed_categories.length > 0) {
+                    restricted_categories.push(_.difference(all_categories, allowed_categories))
+                }
+            });
+            var violations = [];
+            if (restricted_categories){
+                restricted_categories = _.flatten(restricted_categories);
+                _.each(restricted_categories, function(re){
                     var sum_pr = 0;
                     var sum_pl = 0;
                     _.each(orderlines, function(ol) {
-                        if (_.contains(re, ol.product.categ_id[0])) {
+                        if (ol.product.pos_categ_id && re === ol.product.pos_categ_id[0]) {
                             sum_pr += ol.price * ol.quantity;
                         }
                     });
                     _.each(paymentlines, function(pl) {
-                        if (_.intersection(pl.cashregister.journal.categories_ids, re).length) {
+                        if (!_.contains(pl.cashregister.journal.category_ids, re)) {
                             sum_pl += pl.amount;
                         }
                     });
                     if (sum_pr && round_pr(order.get_total_with_tax() - sum_pr, self.pos.currency.rounding) < sum_pl){
-                        flag = true;
+                        violations.push(re);
                     }
                 });
             }
-            return flag;
+            return violations;
         },
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
