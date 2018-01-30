@@ -39,6 +39,10 @@ odoo.define('pos_order_cancel.models', function (require) {
             while (this.get_orderlines().length) {
                 self.remove_orderline(this.get_orderlines()[0]);
             }
+            this.upload_order_as_canceled();
+        },
+        upload_order_as_canceled: function() {
+            var self = this;
             this.pos.push_order(this).then(function() {
                 self.destroy({'reason':'abandon'});
             });

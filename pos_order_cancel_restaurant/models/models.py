@@ -10,8 +10,15 @@ class PosConfig(models.Model):
     auto_send_to_kitchen = fields.Boolean(string="Automatically Sent to the Kitchen",
                                           help="Automatically Sent to the Kitchen after cancelation / refund of the orderline (if the line was sent earlier)",
                                           dafault=False)
+    save_canceled_orders = fields.Boolean(string="Save canceled / refunded order", default=True,
+                                          help="Save canceled / refunded orders in BackEnd")
 
 class PosOrderLineCanceled(models.Model):
     _inherit = "pos.order.line.canceled"
 
     was_printed = fields.Boolean("Printed", default=False, readonly=True, help="Product was printed at kitchen printer. Usually it means, that product was canceled after being cooked.")
+
+
+class PosOrder(models.Model):
+    _inherit = "pos.order"
+    save_canceled_orders = fields.Boolean(related='config_id.save_canceled_orders', store=True)
