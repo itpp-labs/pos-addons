@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='refunds']" position="inside">
                 <field name="kitchen_canceled_only"/>
+                <field name="auto_send_to_kitchen"/>
             </xpath>
         </field>
     </record>

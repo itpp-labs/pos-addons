@@ -174,11 +174,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 this.line_select(line, parseInt(id));
             },
             'click .reason-back': function () {
-                var type = this.get_type();
-                if (type === 'product') {
-                    var order = this.pos.get_order();
-                    var line = order.get_selected_orderline().cancel_quantity_changes();
-                }
+                this.cancel_changes();
                 this.gui.back();
             },
             'click .reason-next': function () {
@@ -240,6 +236,13 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
             if (type === 'order') {
                 order.destroy_and_upload_as_canceled(reason, cancelled_reason_ids);
+            }
+        },
+        cancel_changes: function() {
+            var type = this.get_type();
+            if (type === 'product') {
+                var order = this.pos.get_order();
+                var line = order.get_selected_orderline().cancel_quantity_changes();
             }
         },
         toggle_save_button: function(){
