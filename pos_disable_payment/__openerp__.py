@@ -8,7 +8,9 @@
     'category': 'Point Of Sale',
     "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
-    'depends': ['point_of_sale'],
+    'depends': [
+        'pos_discount'
+    ],
     'images': ['images/pos_payment_access.png'],
     "price": 40.00,
     "currency": "EUR",

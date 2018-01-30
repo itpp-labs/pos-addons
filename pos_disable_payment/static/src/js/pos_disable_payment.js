@@ -93,21 +93,17 @@ odoo.define('pos_disable_payment', function(require){
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
-        init: function () {
-            var self = this;
-            this._super.apply(this, arguments);
-        },
         start: function () {
             this._super();
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').addClass('disable');
-            }
+            this.checkPayAllowed();
+            this.checkCreateOrderLine();
+            this.checkDiscountButton();
         },
         renderElement: function () {
             this._super();
             this.pos.bind('change:cashier', this.checkPayAllowed, this);
             this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
+            this.pos.bind('change:cashier', this.checkDiscountButton, this);
         },
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
@@ -125,6 +121,14 @@ odoo.define('pos_disable_payment', function(require){
                 this.actionpad.$('.pay').removeClass('disable');
             }else{
                 this.actionpad.$('.pay').addClass('disable');
+            }
+        },
+        checkDiscountButton: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_discount) {
+                this.$('.control-buttons .js_discount').removeClass('disable');
+            }else{
+                this.$('.control-buttons .js_discount').addClass('disable');
             }
         }
     });
