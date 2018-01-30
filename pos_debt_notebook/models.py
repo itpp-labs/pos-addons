@@ -226,7 +226,7 @@ class PosConfig(models.Model):
                                                ('debt', '=', True),
                                                ])
         if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
-            if not account_obj.search([('code', '=', 'XCRD'), ('company_id', '=', user.company_id.id)]):
+            if not journal_obj.search([('code', '=', 'XCRD')]):
                 self.create_journal({'sequence_name': 'Account Default Credit Journal ',
                                      'prefix': 'CRD ',
                                      'user': user,
@@ -242,7 +242,7 @@ class PosConfig(models.Model):
                                      'write_statement': True,
                                      'debt_dummy_product_id': False,
                                      })
-            if not account_obj.search([('code', '=', 'DCRD'), ('company_id', '=', user.company_id.id)]):
+            if not journal_obj.search([('code', '=', 'DCRD')]):
                 allowed_category = self.env['pos.category'].search([('name', '=', 'Fruits and Vegetables')])
                 self.create_journal({'sequence_name': 'Account Default Credit via Discounts Journal ',
                                      'prefix': 'CRD ',
@@ -259,7 +259,7 @@ class PosConfig(models.Model):
                                      'write_statement': True,
                                      'debt_dummy_product_id': False,
                                      })
-            if not account_obj.search([('code', '=', 'FCRD'), ('company_id', '=', user.company_id.id)]):
+            if not journal_obj.search([('code', '=', 'FCRD')]):
                 self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
                                      'prefix': 'CRD ',
                                      'user': user,
@@ -424,10 +424,18 @@ class PosOrder(models.Model):
             journal = self.env['account.journal'].search([('id', '=', payment[2]['journal_id'])])
             if journal.credits_via_discount:
                 amount = float(payment[2]['amount'])
+                product_list = list()
+                for o_line in pos_order['lines']:
+                    o_line = o_line[2]
+                    name = self.env['product.product'].search([('id', '=', o_line['product_id'])]).name
+                    product_list.append('%s(%s * %s) + ' % (name, o_line['qty'], o_line['price_unit']))
+                product_list = ''.join(product_list).strip(' + ')
                 credit_updates.append({'journal_id': payment[2]['journal_id'],
                                        'balance': -amount,
                                        'partner_id': pos_order['partner_id'],
-                                       'update_type': 'balance_update'})
+                                       'update_type': 'balance_update',
+                                       'note': product_list,
+                                       })
                 payment[2]['amount'] = 0
         for update in credit_updates:
             entry = self.env['pos.credit.update'].create(update)

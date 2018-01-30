@@ -394,12 +394,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var allowed_categories = false;
             _.each(paymentlines, function(pl) {
                 allowed_categories = pl.cashregister.journal.category_ids;
-                if ( allowed_categories.length > 0) {
+                if ( allowed_categories && allowed_categories.length > 0) {
                     restricted_categories.push(_.difference(all_categories, allowed_categories));
                 }
             });
             var violations = [];
-            if (restricted_categories){
+            if (restricted_categories.length){
                 restricted_categories = _.flatten(restricted_categories);
                 _.each(restricted_categories, function(re){
                     var sum_pr = 0;
