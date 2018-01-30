@@ -21,7 +21,7 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
     init: function (parent, action) {
         // Note: BarcodeHandlerMixin.init calls this._super.init, so there's no need to do it here.
         // Yet, "_super" must be present in a function for the class mechanism to replace it with the actual parent method.
-        this._super;
+        var init_super = this._super;
         BarcodeHandlerMixin.init.apply(this, arguments);
     },
 
