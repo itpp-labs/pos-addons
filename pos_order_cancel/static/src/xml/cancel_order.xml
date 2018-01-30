@@ -31,7 +31,7 @@
                     </ul>
                 </div>
                 <div class="footer centered">
-                <t t-if="widget.pos.config.allow_custom_reason">
+                <t t-if="widget.pos.config.allow_custom_reason || widget.pos.config.allow_cancel_deletion">
                     <div class="button cancel">
                         Cancel
                     </div>
@@ -54,10 +54,12 @@
         <div class="reasonlist-screen screen">
             <div class="screen-content">
                 <section class="top-content">
-                    <span class='button back reason-back'>
-                        <i class='fa fa-angle-double-left'></i>
-                        Cancel
-                    </span>
+                    <t t-if="widget.pos.config.allow_custom_reason || widget.pos.config.allow_cancel_deletion">
+                        <span class='button back reason-back'>
+                            <i class='fa fa-angle-double-left'></i>
+                            Cancel
+                        </span>
+                    </t>
                     <span class='reason-next button next oe_hidden highlight'>
                         Apply
                         <i class='fa fa-angle-double-right'></i>

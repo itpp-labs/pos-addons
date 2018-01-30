@@ -148,3 +148,4 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
+    allow_cancel_deletion = fields.Boolean(string="Allow Cancel of the Deletion", help="When not active, user will be able to select predefined reasons only, without the possibility of canceling deletions", default=True)
