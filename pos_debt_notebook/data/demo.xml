@@ -2,17 +2,8 @@
 <openerp>
     <data>
 
-        <!--<record id="demo_pos_config_settings_credit" model="pos.config.settings">-->
-            <!--<field name="debt_type">credit</field>-->
-        <!--</record>-->
-
-        <!--<function model="pos.config.settings" name="debt_type">-->
-            <!--<function eval="[[('debt_type', '=', 'credit')]]" model="pos.config.settings" name="debt_type"/>-->
-        <!--</function>-->
-
-        <!--<record model="pos.config.settings" id="demo_pos_config_settings">-->
-            <!--<field name="debt_type" eval="credit"/>-->
-        <!--</record>-->
+        <!--Set field debt to 'credit' in model pos.config.settings via get_default_debt_type-->
+        <function model="ir.config_parameter" name="set_param" eval="('pos_debt_notebook.debt_type', 'credit', ['base.group_system'])" />
 
     </data>
 </openerp>
