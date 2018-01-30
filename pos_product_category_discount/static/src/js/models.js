@@ -83,7 +83,9 @@ odoo.define('pos_product_category_discount.models', function (require) {
             if (this.pos.config.iface_discount) {
                 this.discount_program_id = false;
                 this.get_orderlines().forEach(function(line){
-                    line.set_discount(false);
+                    if (line.discount_program_name) {
+                        line.set_discount(false);
+                    }
                 });
             }
         },
