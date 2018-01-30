@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """HR Partners Attendance""",
+    "name": """Partners Attendance""",
     "summary": """Manage partners attendances""",
-    "category": "Human Resources",
+    "category": "Extra Tools",
     # "live_test_url": "",
     "images": [],
     "version": "1.0.0",

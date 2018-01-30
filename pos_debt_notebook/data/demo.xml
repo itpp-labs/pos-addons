@@ -2,40 +2,17 @@
 <openerp>
     <data>
 
-        <record id="demo_account_journal_credits" model="account.journal">
-            <field name="name">Credit</field>
-            <field name="code">XCRED</field>
-            <field name="debt">True</field>
-            <field name="type">cash</field>
-            <field name="journal_user">True</field>
-        </record>
+        <!--<record id="demo_pos_config_settings_credit" model="pos.config.settings">-->
+            <!--<field name="debt_type">credit</field>-->
+        <!--</record>-->
 
-        <record id="demo_account_journal_credits_fruits"  model="account.journal">
-            <field name="name">Credits (Fruits &amp; Vegetables only)</field>
-            <field name="code">FCRED</field>
-            <field name="debt">True</field>
-            <field name="type">cash</field>
-            <field name="journal_user">True</field>
-            <field name="category_ids" eval="[(6, 0, [ref('point_of_sale.fruits_vegetables')])]"/>
-        </record>
+        <!--<function model="pos.config.settings" name="debt_type">-->
+            <!--<function eval="[[('debt_type', '=', 'credit')]]" model="pos.config.settings" name="debt_type"/>-->
+        <!--</function>-->
 
-        <record id="demo_account_journal_credits_via_discounts"  model="account.journal">
-            <field name="name">Discount Credit</field>
-            <field name="code">DCRED</field>
-            <field name="debt">True</field>
-            <field name="type">cash</field>
-            <field name="journal_user">True</field>
-            <field name="credits_via_discount">True</field>
-        </record>
-
-        <!--Standart demo cash method is not created if there are some demo journals already-->
-        <record id="demo_account_journal_cash"  model="account.journal">
-            <field name="name">Cash</field>
-            <field name="code">DECSH</field>
-            <field name="debt">False</field>
-            <field name="type">cash</field>
-            <field name="journal_user">True</field>
-        </record>
+        <!--<record model="pos.config.settings" id="demo_pos_config_settings">-->
+            <!--<field name="debt_type" eval="credit"/>-->
+        <!--</record>-->
 
     </data>
 </openerp>

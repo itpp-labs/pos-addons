@@ -206,36 +206,71 @@ class PosConfig(models.Model):
             })
             debt_journal = debt_journal_inactive
         else:
-            new_sequence = self.env['ir.sequence'].create({
-                'name': 'Account Default Debt Journal ' + str(user.company_id.id),
-                'padding': 3,
-                'prefix': 'DEBT ' + str(user.company_id.id),
-            })
-            self.env['ir.model.data'].create({
-                'name': 'journal_sequence' + str(new_sequence.id),
-                'model': 'ir.sequence',
-                'module': 'pos_debt_notebook',
-                'res_id': new_sequence.id,
-                'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
-            })
-            debt_journal = journal_obj.create({
-                'name': 'Debt Journal',
-                'code': 'TDEBT',
-                'type': 'cash',
-                'debt': True,
-                'journal_user': True,
-                'sequence_id': new_sequence.id,
-                'company_id': user.company_id.id,
-                'default_debit_account_id': debt_account.id,
-                'default_credit_account_id': debt_account.id,
-            })
-            self.env['ir.model.data'].create({
-                'name': 'debt_journal_' + str(debt_journal.id),
-                'model': 'account.journal',
-                'module': 'pos_debt_notebook',
-                'res_id': int(debt_journal.id),
-                'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
-            })
+            self.create_journal({'sequence_name': 'Account Default Debt Journal ',
+                                 'prefix': 'DEBT ',
+                                 'user': user,
+                                 'noupdate': True,
+                                 'journal_name': 'Debt Journal',
+                                 'code': 'TDEBT',
+                                 'type': 'cash',
+                                 'debt': True,
+                                 'journal_user': True,
+                                 'debt_account': debt_account,
+                                 'credits_via_discount': False,
+                                 'write_statement': False,
+                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
+                                 })
+            debt_journal = journal_obj.search([('code', '=', 'TDEBT'),
+                                               ('company_id', '=', user.company_id.id),
+                                               ('debt', '=', True),
+                                               ])
+        if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
+            self.create_journal({'sequence_name': 'Account Default Credit Journal ',
+                                 'prefix': 'CRD ',
+                                 'user': user,
+                                 'noupdate': True,
+                                 'journal_name': 'Credits',
+                                 'code': 'XCRD',
+                                 'type': 'cash',
+                                 'debt': True,
+                                 'journal_user': True,
+                                 'debt_account': debt_account,
+                                 'credits_via_discount': False,
+                                 'category_ids': False,
+                                 'write_statement': True,
+                                 'debt_dummy_product_id': False,
+                                 })
+            allowed_category = self.env['pos.category'].search([('name', '=', 'Fruits and Vegetables')])
+            self.create_journal({'sequence_name': 'Account Default Credit via Discounts Journal ',
+                                 'prefix': 'CRD ',
+                                 'user': user,
+                                 'noupdate': True,
+                                 'journal_name': 'Credits (via discounts)',
+                                 'code': 'DCRD',
+                                 'type': 'cash',
+                                 'debt': True,
+                                 'journal_user': True,
+                                 'debt_account': debt_account,
+                                 'credits_via_discount': True,
+                                 'category_ids': False,
+                                 'write_statement': True,
+                                 'debt_dummy_product_id': False,
+                                 })
+            self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
+                                 'prefix': 'CRD ',
+                                 'user': user,
+                                 'noupdate': True,
+                                 'journal_name': 'Credits (Fruits & Vegetables only)',
+                                 'code': 'FCRD',
+                                 'type': 'cash',
+                                 'debt': True,
+                                 'journal_user': True,
+                                 'debt_account': debt_account,
+                                 'credits_via_discount': False,
+                                 'category_ids': [(6, 0, allowed_category.ids)],
+                                 'write_statement': True,
+                                 'debt_dummy_product_id': False,
+                                 })
 
         self.write({
             'journal_ids': [(4, debt_journal.id)],
@@ -251,6 +286,56 @@ class PosConfig(models.Model):
             'statement_ids': statement,
         })
         return
+
+    def create_journal(self, vals):
+        user = vals['user']
+        debt_account = vals['debt_account']
+        new_sequence = self.env['ir.sequence'].create({
+            'name': vals['sequence_name'] + str(user.company_id.id),
+            'padding': 3,
+            'prefix': vals['prefix'] + str(user.company_id.id),
+        })
+        self.env['ir.model.data'].create({
+            'name': 'journal_sequence' + str(new_sequence.id),
+            'model': 'ir.sequence',
+            'module': 'pos_debt_notebook',
+            'res_id': new_sequence.id,
+            'noupdate': vals['noupdate'],  # If it's False, target record (res_id) will be removed while module update
+        })
+        debt_journal = self.env['account.journal'].create({
+            'name': vals['journal_name'],
+            'code': vals['code'],
+            'type': vals['type'],
+            'debt': vals['debt'],
+            'journal_user': vals['journal_user'],
+            'sequence_id': new_sequence.id,
+            'company_id': user.company_id.id,
+            'default_debit_account_id': debt_account.id,
+            'default_credit_account_id': debt_account.id,
+            'credits_via_discount': vals['credits_via_discount'],
+            'category_ids': vals['category_ids'],
+        })
+        self.env['ir.model.data'].create({
+            'name': 'debt_journal_' + str(debt_journal.id),
+            'model': 'account.journal',
+            'module': 'pos_debt_notebook',
+            'res_id': int(debt_journal.id),
+            'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
+        })
+        if vals['write_statement']:
+            self.write({
+                'journal_ids': [(4, debt_journal.id)],
+                'debt_dummy_product_id': vals['debt_dummy_product_id'],
+            })
+            statement = [(0, 0, {
+                'journal_id': debt_journal.id,
+                'user_id': user.id,
+                'company_id': user.company_id.id
+            })]
+            current_session = self.current_session_id
+            current_session.write({
+                'statement_ids': statement,
+            })
 
     @api.multi
     def open_session_cb(self):

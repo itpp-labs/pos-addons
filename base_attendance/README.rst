@@ -1,8 +1,10 @@
-========================
- HR Partners Attendance
-========================
+=====================
+ Partners Attendance
+=====================
 
-Process partners attendance
+Process partners attendance.
+
+The module is copy-pasted from hr_attendance and modified to work with res.partners records.
 
 Credits
 =======
