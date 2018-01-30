@@ -151,10 +151,10 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 active_reasons_name.push(item.name);
                 cancelled_reason_ids.push(item.id);
             });
-            if(this.pos.config.allow_custom_reason || active_reasons_name.length>0){
+            var reason = this.$('.popup-confirm-cancellation textarea').val();
+            if(active_reasons_name.length > 0 || reason) {
                 this.gui.close_popup();
                 if( this.options.confirm ){
-                    var reason = this.$('.popup-confirm-cancellation textarea').val();
                     if (reason) {
                         reason += "; ";
                     }
