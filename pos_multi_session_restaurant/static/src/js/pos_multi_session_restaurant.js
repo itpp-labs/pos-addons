@@ -49,8 +49,37 @@ odoo.define('pos_multi_session_restaurant', function(require){
             } else {
                 order_line.node.parentNode.removeChild(order_line.node);
             }
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            this.check_kitchen_access(line);
+        },
+        click_line: function(orderline, event) {
+            this._super(orderline, event);
+            this.check_kitchen_access(orderline);
+        },
+        check_kitchen_access: function(line){
+            var user = this.pos.cashier || this.pos.user;
+            var need_check = false;
+            if (!user.allow_decrease_amount) {
+                if (user.allow_decrease_kitchen_only) {
+                    need_check = true;
+                } else {
+                    return true;
+                }
+            }
+            var state =  this.getParent().numpad.state;
+            if (need_check && line.mp_dirty === false) {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                state.changeMode('discount');
+            } else {
+                $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                state.changeMode('quantity');
+            }
         }
     });
+
+    models.load_fields("res.users",['allow_decrease_kitchen_only']);
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -209,4 +238,5 @@ odoo.define('pos_multi_session_restaurant', function(require){
             OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
         },
     });
+
 });
