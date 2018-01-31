@@ -9,6 +9,7 @@
                 <group name="refunds" string="Refunds / Cancellations" >
                     <field name="allow_custom_reason"/>
                     <field name="allow_cancel_deletion" attrs="{'invisible': [('allow_custom_reason', '=', True)]}"/>
+                    <field name="show_popup_change_quantity"/>
                 </group>
             </xpath>
         </field>

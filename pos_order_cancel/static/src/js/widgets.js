@@ -85,6 +85,28 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
     });
 
+    screens.NumpadWidget.include({
+        clickDeleteLastChar: function() {
+            var self = this;
+            var mode = this.state.get('mode');
+            if (this.pos.config.show_popup_change_quantity && mode === 'quantity') {
+                this.gui.show_popup('number',{
+                    'title': _t('Quantity of Cancellation'),
+                    'value': 1,
+                    'confirm': function(value) {
+                        var order = self.pos.get_order();
+                        var current_line = order.get_selected_orderline();
+                        order.ask_cancel_reason = true;
+                        var new_qty = current_line.quantity - value;
+                        current_line.set_quantity(new_qty);
+                    }
+                });
+            } else {
+                return this.state.deleteLastChar();
+            }
+        }
+    });
+
     var ConfirmCancellationPopupWidget = PopupWidget.extend({
         template: 'ConfirmCancellationPopupWidget',
         show: function(options){

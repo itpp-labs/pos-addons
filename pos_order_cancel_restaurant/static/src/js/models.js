@@ -8,7 +8,6 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     var QWeb = core.qweb;
     var _t = core._t;
 
-
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         add_cancelled_line: function(line) {
