@@ -551,21 +551,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     });
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
-        return el.name === 'receipt';
-    })[0].widget.include({
-        render_receipt: function() {
-            var order = this.pos.get_order();
-            _.map(_.filter(order.get_paymentlines(), function(pl){
-                return pl.cashregister.journal.credits_via_discount === true;
-            }), function(pl){
-                pl.amount = 0;
-            });
-
-            this._super();
-        },
-    });
-
-    gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name === 'clientlist';
     })[0].widget.include({
         init: function(parent, options){
