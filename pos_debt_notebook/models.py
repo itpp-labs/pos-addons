@@ -137,7 +137,7 @@ class ResPartner(models.Model):
         user_tz = timezone(self.env.user.tz)
         final = utc_tz.astimezone(user_tz)
 
-        return final.strftime(fmt)
+        return final.strftime(fmt.encode('utf-8'))
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
