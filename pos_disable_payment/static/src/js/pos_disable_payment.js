@@ -88,7 +88,20 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
-        }
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            if (line && line.quantity <= 0) {
+                if (user.allow_delete_order_line) {
+                    $('.numpad-backspace').removeClass('disable');
+                } else{
+                    $('.numpad-backspace').addClass('disable');
+                }
+            } else {
+                $('.numpad-backspace').removeClass('disable');
+            }
+        },
     });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
@@ -172,6 +185,11 @@ odoo.define('pos_disable_payment', function(require){
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            var orderline = false;
+            if (order) {
+                orderline = order.get_selected_orderline();
+            }
             if (user.allow_discount) {
                 this.$el.find("[data-mode='discount']").removeClass('disable');
             }else{
@@ -187,10 +205,12 @@ odoo.define('pos_disable_payment', function(require){
             }else{
                 this.$el.find('.numpad-minus').addClass('disable');
             }
-            if (user.allow_delete_order_line) {
-                this.$el.find('.numpad-backspace').removeClass('disable');
-            }else{
-                this.$el.find('.numpad-backspace').addClass('disable');
+            if (orderline && orderline.quantity <= 0) {
+                if (user.allow_delete_order_liner) {
+                    this.$el.find('.numpad-backspace').removeClass('disable');
+                }else{
+                    this.$el.find('.numpad-backspace').addClass('disable');
+                }
             }
         }
     });
