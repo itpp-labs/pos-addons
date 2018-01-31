@@ -13,6 +13,7 @@ class PosConfig(models.Model):
     save_canceled_orders = fields.Boolean(string="Save canceled / refunded order", default=True,
                                           help="Save canceled / refunded orders in BackEnd")
 
+
 class PosOrderLineCanceled(models.Model):
     _inherit = "pos.order.line.canceled"
 
