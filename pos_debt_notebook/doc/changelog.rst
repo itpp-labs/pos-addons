@@ -1,7 +1,7 @@
 `4.4.3`
 -------
 
-**FIX:** Debt history for Chinese localization
+**FIX:** Compatibility with Chinese localization
 
 `4.4.2`
 -------
