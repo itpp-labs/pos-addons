@@ -1,3 +1,8 @@
+`4.4.3`
+-------
+
+**FIX:** Compatibility with Chinese localization
+
 `4.4.2`
 -------
 
