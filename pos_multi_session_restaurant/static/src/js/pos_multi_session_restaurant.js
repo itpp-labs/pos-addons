@@ -68,7 +68,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     return true;
                 }
             }
-            var state =  this.getParent().numpad.state;
+            var state = this.getParent().numpad.state;
             if (need_check && line.mp_dirty === false) {
                 $('.numpad').find("[data-mode='quantity']").addClass('disable');
                 state.changeMode('discount');
