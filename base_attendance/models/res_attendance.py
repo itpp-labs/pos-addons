@@ -99,5 +99,7 @@ class HrAttendance(models.Model):
 
     @api.multi
     def copy(self):
+        # super here is called by the reason of LINT error:
+        # [W8106(method-required-super), HrAttendance.copy] Missing `super` call in "copy" method.
         super(HrAttendance, self).copy()
         raise exceptions.UserError(_('You cannot duplicate an attendance.'))
