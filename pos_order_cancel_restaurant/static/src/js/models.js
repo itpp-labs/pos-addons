@@ -122,6 +122,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 _super_order.change_cancelled_quantity.apply(this, arguments);
             }
         },
+        get_order_floor: function() {
+            if (this.table && this.table.floor) {
+                return this.table.floor.name;
+            }
+            return false;
+        }
     });
 
     var _super_orderline = models.Orderline.prototype;
@@ -146,7 +152,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
         init_from_JSON: function(json) {
             this.was_printed = json.was_printed;
             _super_orderline.init_from_JSON.call(this, json);
-        },
+        }
     });
     return models;
 });

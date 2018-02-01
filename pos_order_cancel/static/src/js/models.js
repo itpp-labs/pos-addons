@@ -64,6 +64,7 @@ odoo.define('pos_order_cancel.models', function (require) {
             }
             new_line.cancelled_id = line.id;
             new_line.user_id = this.pos.get_cashier().id;
+            new_line.user_name = this.pos.get_cashier().name;
             line.cancelled_line = new_line;
             this.canceled_lines.push([0, 0, new_line]);
         },
@@ -73,6 +74,7 @@ odoo.define('pos_order_cancel.models', function (require) {
         save_reason_cancelled_line: function(orderline, reason, cancelled_reason_ids) {
             orderline.cancelled_line.reason = reason;
             orderline.cancelled_line.cancelled_reason_ids = cancelled_reason_ids;
+            orderline.trigger('change', orderline);
             this.trigger('change:sync');
         },
         save_canceled_line: function(orderline) {
@@ -106,6 +108,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                     line.cancelled_line.current_qty = line.quantity;
                 }
                 line.cancelled_line.user_id = this.pos.get_cashier().id;
+                line.cancelled_line.user_name = this.pos.get_cashier().name;
                 this.trigger('change:sync');
             } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.ask_cancel_reason) {
                 this.save_canceled_line(line);
@@ -118,6 +121,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                     return l[2].id !== line.cancelled_line.id;
                 });
                 line.cancelled_line = false;
+                line.trigger('change', line);
                 this.trigger('change:sync');
             }
         },
@@ -198,7 +202,7 @@ odoo.define('pos_order_cancel.models', function (require) {
             this.max_quantity = json.max_quantity;
             this.cancelled_line = json.cancelled_line;
             _super_orderline.init_from_JSON.call(this, json);
-        },
+        }
     });
     return models;
 });
