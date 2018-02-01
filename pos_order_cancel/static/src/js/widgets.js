@@ -164,6 +164,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             }
         },
         click_confirm: function(){
+            var self = this;
             var active_reasons = this.options.reasons.filter(function(item) {
                 return item.active === true;
             });
@@ -182,6 +183,14 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                     }
                     this.options.confirm.call(this, reason + active_reasons_name.join("; "), cancelled_reason_ids);
                 }
+            } else {
+                this.gui.show_popup('error',{
+                    'title': _t('Warning'),
+                    'body': _t('Indicate the reason for cancellation.'),
+                    'cancel': function() {
+                        self.gui.screen_instances.products.order_widget.show_popup(self.type);
+                    }
+                });
             }
         },
     });
