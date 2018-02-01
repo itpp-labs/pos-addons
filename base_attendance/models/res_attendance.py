@@ -23,13 +23,13 @@ class HrAttendance(models.Model):
         result = []
         for attendance in self:
             if not attendance.check_out:
-                result.append((attendance.id, _("%(empl_name)s from %(check_in)s") % {
-                    'empl_name': attendance.partner_id.name,
+                result.append((attendance.id, _("%(partner_name)s from %(check_in)s") % {
+                    'partner_name': attendance.partner_id.name,
                     'check_in': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_in))),
                 }))
             else:
-                result.append((attendance.id, _("%(empl_name)s from %(check_in)s to %(check_out)s") % {
-                    'empl_name': attendance.partner_id.name,
+                result.append((attendance.id, _("%(partner_name)s from %(check_in)s to %(check_out)s") % {
+                    'partner_name': attendance.partner_id.name,
                     'check_in': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_in))),
                     'check_out': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_out))),
                 }))
@@ -66,8 +66,8 @@ class HrAttendance(models.Model):
                 ('id', '!=', attendance.id),
             ], order='check_in desc', limit=1)
             if last_attendance_before_check_in and last_attendance_before_check_in.check_out and last_attendance_before_check_in.check_out > attendance.check_in:
-                raise exceptions.ValidationError(_("Cannot create new attendance record for %(empl_name)s, the partner was already checked in on %(datetime)s") % {
-                    'empl_name': attendance.partner_id.name,
+                raise exceptions.ValidationError(_("Cannot create new attendance record for %(partner_name)s, the partner was already checked in on %(datetime)s") % {
+                    'partner_name': attendance.partner_id.name,
                     'datetime': fields.Datetime.to_string(fields.Datetime.context_timestamp(self, fields.Datetime.from_string(attendance.check_in))),
                 })
 
@@ -79,8 +79,8 @@ class HrAttendance(models.Model):
                     ('id', '!=', attendance.id),
                 ])
                 if no_check_out_attendances:
-                    raise exceptions.ValidationError(_("Cannot create new attendance record for %(empl_name)s, the partner hasn't checked out since %(datetime)s") % {
-                        'empl_name': attendance.partner_id.name,
+                    raise exceptions.ValidationError(_("Cannot create new attendance record for %(partner_name)s, the partner hasn't checked out since %(datetime)s") % {
+                        'partner_name': attendance.partner_id.name,
                         'datetime': fields.Datetime.to_string(fields.Datetime.context_timestamp(self, fields.Datetime.from_string(no_check_out_attendances.check_in))),
                     })
             else:
@@ -92,8 +92,8 @@ class HrAttendance(models.Model):
                     ('id', '!=', attendance.id),
                 ], order='check_in desc', limit=1)
                 if last_attendance_before_check_out and last_attendance_before_check_in != last_attendance_before_check_out:
-                    raise exceptions.ValidationError(_("Cannot create new attendance record for %(empl_name)s, the partner was already checked in on %(datetime)s") % {
-                        'empl_name': attendance.partner.name,
+                    raise exceptions.ValidationError(_("Cannot create new attendance record for %(partner_name)s, the partner was already checked in on %(datetime)s") % {
+                        'partner_name': attendance.partner.name,
                         'datetime': fields.Datetime.to_string(fields.Datetime.context_timestamp(self, fields.Datetime.from_string(last_attendance_before_check_out.check_in))),
                     })
 
