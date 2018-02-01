@@ -62,6 +62,11 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                 this.change_current_floor(this.pos.floors[0].id);
             }
 
+            // for compatibility with pos_multi_session_restaurant
+            this.pos.bind('change:orders-count-on-floor-screen', function () {
+                self.change_current_floor();
+            });
+
             // add a div for specific control buttons
             $('.slide-numpad .pads').prepend("<div class='top-control-buttons'></div>");
 
