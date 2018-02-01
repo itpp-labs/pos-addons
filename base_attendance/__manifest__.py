@@ -16,16 +16,15 @@
     # "currency": "EUR",
 
     "depends": [
-        'hr',
         'report',
         'barcodes'
     ],
     "external_dependencies": {"python": [], "bin": []},
     'data': [
-        'security/hr_attendance_security.xml',
+        'security/res_attendance_security.xml',
         'security/ir.model.access.csv',
         'views/web_asset_backend_template.xml',
-        'views/hr_attendance_view.xml',
+        'views/res_attendance_view.xml',
         'report/res_partner_badge.xml',
         'views/res_config_view.xml',
     ],

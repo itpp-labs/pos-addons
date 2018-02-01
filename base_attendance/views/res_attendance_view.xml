@@ -35,7 +35,7 @@
         <field name="name">res_partner_attendance_view_filter</field>
         <field name="model">res.partner.attendance</field>
         <field name="arch" type="xml">
-            <search string="Hr Attendance Search">
+            <search string="Partner Attendance Search">
                 <field name="partner_id"/>
                 <filter name="today" string="Today" domain="[('check_in', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)),('check_in', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]" />
                 <filter string="Current Month" domain="[('check_in', '&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]" />
@@ -222,9 +222,9 @@
 
     <!-- Menus -->
 
-    <menuitem id="menu_hr_attendance_root" name="Attendances" sequence="90" groups="hr.group_hr_attendance" web_icon="base_attendance,static/description/icon.png"/>
+    <menuitem id="menu_base_attendance_root" name="Attendances" sequence="90" groups="group_res_attendance" web_icon="base_attendance,static/description/icon.png"/>
 
-    <menuitem id="menu_hr_attendance_manage_attendances" name="Manage Attendances" parent="menu_hr_attendance_root" sequence="20" groups="base_attendance.group_hr_attendance_user"/>
+    <menuitem id="menu_hr_attendance_manage_attendances" name="Manage Attendances" parent="menu_base_attendance_root" sequence="20" groups="base_attendance.group_res_attendance"/>
 
     <menuitem id="menu_hr_attendance_view_attendances" name="Attendances" parent="menu_hr_attendance_manage_attendances" sequence="10" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action"/>
 
@@ -232,5 +232,5 @@
 
     <menuitem id="menu_hr_attendance_kiosk_mode" name="Kiosk Mode" parent="menu_hr_attendance_manage_attendances" sequence="20" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_kiosk_mode"/>
 
-    <menuitem id="menu_hr_attendance_report" name="Reports" parent="menu_hr_attendance_root" sequence="30" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_graph"/>
+    <menuitem id="menu_hr_attendance_report" name="Reports" parent="menu_base_attendance_root" sequence="30" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_graph"/>
 </odoo>

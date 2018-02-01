@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from . import hr_attendance
-from . import hr_partner
+from . import res_attendance
+from . import res_partner
 from . import res_config
