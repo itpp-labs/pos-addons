@@ -61,7 +61,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         check_kitchen_access: function(line){
             var user = this.pos.cashier || this.pos.user;
             var need_check = false;
-            if (user.allow_decrease_amount) {
+            if (!user.allow_decrease_amount) {
                 if (user.allow_decrease_kitchen_only) {
                     need_check = true;
                 } else {
@@ -71,7 +71,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var state = this.getParent().numpad.state;
             if (need_check && line.mp_dirty === false) {
                 $('.numpad').find("[data-mode='quantity']").addClass('disable');
-                state.changeMode('discount');
+                if (user.allow_discount) {
+                    state.changeMode('discount');
+                } else if (user.allow_edit_price) {
+                    state.changeMode('price');
+                } else {
+                    state.changeMode("");
+                }
             } else {
                 $('.numpad').find("[data-mode='quantity']").removeClass('disable');
                 if (state.get('mode') !== 'quantity') {
