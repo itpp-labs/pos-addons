@@ -91,7 +91,7 @@
     <t t-extend="Orderline">
         <t t-jquery="ul[class='info-list']" t-operation="append">
             <t t-if="line.cancelled_line">
-                <li class="info">
+                <li class="info cancellation-info">
                     <t t-esc="line.cancelled_line.qty" /><t t-esc="line.product.uom_id[1]" /> Cancel by <t t-esc="line.cancelled_line.user_name" />
                 </li>
             </t>
