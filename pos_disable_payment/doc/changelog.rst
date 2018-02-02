@@ -3,6 +3,11 @@
 Updates
 =======
 
+`2.4.1`
+-------
+- FIX: The discount button is not disabled
+- IMP: The delete button of line is disabled if qty of line < = 0
+
 `2.4.0`
 -------
 - NEW: Set disabled button as non-clickable instead of hiding

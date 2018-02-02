@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.2.0`
+-------
+- IMP: New option allow change Qty for kitchen orders
+
 `2.1.1`
 -------
 - FIX: Floor rendering error in case if POS without any floors

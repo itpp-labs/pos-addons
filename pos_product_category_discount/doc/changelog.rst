@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.2`
+------
+
+- **FIX:** The percentage discount information can be removed.
+
 `1.2.1`
 ------
 
