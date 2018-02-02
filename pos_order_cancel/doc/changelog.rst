@@ -1,10 +1,9 @@
 `1.1.0`
 -------
 
-- **NEW:** Option Allow Cancel of the Deletion
-- **NEW:** Option Show popup for change quantity
-- **NEW:** Option Show the cancellation information in the order
-- **FIX:** Indication of the reason for cancellation is required
+- **NEW:** Option to cancel the delete action
+- **NEW:** Option to specify quantity of canceled products
+- **NEW:** Option to display cancellation information in order in POS
 
 `1.0.0`
 -------
