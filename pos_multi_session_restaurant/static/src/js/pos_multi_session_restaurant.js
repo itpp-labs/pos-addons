@@ -64,9 +64,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (!user.allow_decrease_amount) {
                 if (user.allow_decrease_kitchen_only) {
                     return true;
-                } else {
-                    need_check = true;
                 }
+                need_check = true;
             }
             var state = this.getParent().numpad.state;
             if (need_check && line.mp_dirty === false) {
