@@ -1,8 +1,8 @@
 `1.1.0`
 -------
 
-- **NEW:** Automatically Sent to the Kitchen after cancelation / refund of the orderline (if the line was sent earlier)
-- **NEW:** Ability not to store orders on the server
+- **NEW:** Option to send order to the kitchen immediately after cancelation / refund the orderline (if the line was sent before)
+- **NEW:** Option to select if the orders need to be stored on the server or not
 
 `1.0.0`
 -------
