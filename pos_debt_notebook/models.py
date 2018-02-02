@@ -313,7 +313,6 @@ class PosConfig(models.Model):
                              'write_statement': True,
                              'debt_dummy_product_id': False,
                              })
-        allowed_category = self.env['pos.category'].search([('name', '=', 'Fruits and Vegetables')])
         self.create_journal({'sequence_name': 'Account Default Credit via Discounts Journal ',
                              'prefix': 'CRD ',
                              'user': user,
@@ -329,6 +328,7 @@ class PosConfig(models.Model):
                              'write_statement': True,
                              'debt_dummy_product_id': False,
                              })
+        allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
                              'prefix': 'CRD ',
                              'user': user,
@@ -340,7 +340,7 @@ class PosConfig(models.Model):
                              'journal_user': True,
                              'debt_account': debt_account,
                              'credits_via_discount': False,
-                             'category_ids': [(6, 0, allowed_category.ids)],
+                             'category_ids': [(6, 0, [allowed_category])],
                              'write_statement': True,
                              'debt_dummy_product_id': False,
                              })
