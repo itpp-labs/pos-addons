@@ -11,6 +11,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.multi
+    @api.depends('report_pos_debt_ids')
     def _compute_debt(self):
         domain = [('partner_id', 'in', self.ids)]
         fields = ['partner_id', 'balance']
@@ -27,6 +28,7 @@ class ResPartner(models.Model):
             r.credit_balance = -r.debt
 
     @api.multi
+    @api.depends('report_pos_debt_ids')
     def _compute_debt_company(self):
         partners = self.filtered(lambda r: len(r.child_ids))
         if not partners:
@@ -123,6 +125,8 @@ class ResPartner(models.Model):
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
     ])
+    report_pos_debt_ids = fields.One2many('pos.credit.update', 'partner_id',
+                                          help='Technical field for proper recomputations of computed fields')
 
     def _get_date_formats(self, report):
 
