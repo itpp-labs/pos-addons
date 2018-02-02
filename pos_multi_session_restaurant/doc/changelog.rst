@@ -5,7 +5,7 @@ Updates
 
 `2.2.0`
 -------
-- IMP: New option allow change Qty for kitchen orders
+- IMP: New option to disable changing Qty for orders sent to kitchen
 
 `2.1.1`
 -------
