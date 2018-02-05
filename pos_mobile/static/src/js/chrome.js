@@ -101,5 +101,13 @@ odoo.define('pos_mobile.chrome', function (require) {
         },
      });
 
+    chrome.OrderSelectorWidget.include({
+        renderElement: function(){
+            this._super();
+            $('.pos-topheader .nicescroll-rails').remove();
+            this.$('.orders').niceScroll();
+        }
+    });
+
     return chrome;
 });

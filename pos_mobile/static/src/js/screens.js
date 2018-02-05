@@ -127,16 +127,36 @@ odoo.define('pos_mobile.screens', function (require) {
                 self.reset_category();
             });
             var breadcrumbs = $('.window .rightpane .breadcrumbs');
-            if (breadcrumbs.length) {
-                breadcrumbs.detach();
-                $(".mobile-categories .breadcrumbs").detach();
-                $(".mobile-categories").prepend(breadcrumbs);
+            var active_category_id = $( ".categories .active").data( "category-id" );
+            $('.categories span').removeClass('active');
+            if (this.category && this.category.child_id && !this.category.child_id.length) {
+                if (active_category_id === this.category.id) {
+                    if (this.category.parent_id) {
+                        this.set_category(this.pos.db.get_category_by_id(this.category.parent_id[0]));
+                        this.renderElement();
+                    } else {
+                        this.reset_category();
+                    }
+                } else {
+                    $('.categories span[data-category-id='+ this.category.id + ']').addClass('active');
+                }
+            } else {
+                if (breadcrumbs.length) {
+                    breadcrumbs.detach();
+                    $(".mobile-categories .breadcrumbs").detach();
+                    $(".mobile-categories").prepend(breadcrumbs);
+                }
+                var categories = $('.window .rightpane .categories');
+                categories.detach();
+                $(".mobile-categories .categories").detach();
+                $(".mobile-categories").append(categories);
             }
 
-            var categories = $('.window .rightpane .categories');
-            categories.detach();
-            $(".mobile-categories .categories").detach();
-            $(".mobile-categories").append(categories);
+            if (!this.pos.iOS) {
+                $('.product-list-scroller').niceScroll({
+                    horizrailenabled: false,
+                });
+            }
         },
         perform_search: function(category, query, buy_result){
             this._super.apply(this, arguments);
@@ -154,7 +174,7 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         get_image_url: function(category){
             return window.location.origin + '/web/image?model=pos.category&field=image&id='+category.id;
-        },
+        }
     });
 
     screens.ProductScreenWidget.include({
@@ -239,6 +259,11 @@ odoo.define('pos_mobile.screens', function (require) {
             var summary = $('.pos.mobile .order-container .summary.clearfix');
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
+            if (!this.pos.iOS) {
+                $('.order-scroller').niceScroll({
+                    horizrailenabled: false,
+                });
+            }
         },
         change_selected_order: function() {
             this._super();

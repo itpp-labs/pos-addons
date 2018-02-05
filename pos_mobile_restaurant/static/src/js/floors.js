@@ -18,34 +18,6 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
             var floor = this.pos.floors_by_id[id];
             var slide = $('div[data-id='+id+'][id=slide-floor]').index();
             this.chrome.swiper_floors.slideTo(slide);
-        },
-        renderElement: function(){
-            var touch = false;
-            var timer = false;
-            this._super();
-
-            $(".floor-map").on('touchstart', function() {
-                touch = true;
-            });
-            $(".floor-map").on('touchend', function() {
-                touch = false;
-            });
-            // hide the scrollbar when the scrolling and touchend is finished
-            var runTimer = function(element) {
-                timer = setTimeout(function() {
-                    if (touch) {
-                        runTimer(element);
-                    } else {
-                        element.removeClass('scrolling');
-                    }
-                }, 250);
-            };
-            $(".tables").on('scroll', function(){
-                var parent = $(this).parent();
-                parent.addClass('scrolling');
-                clearTimeout(timer);
-                runTimer(parent);
-            });
         }
     });
 

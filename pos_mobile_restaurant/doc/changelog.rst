@@ -1,3 +1,8 @@
+`1.2.3`
+-------
+
+- **NEW:** Scrollbar in Floor screen for Android
+
 `1.2.2`
 -------
 
