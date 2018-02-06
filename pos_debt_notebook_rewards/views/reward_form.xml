@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_pos_credit_update_rewards_tree" model="ir.ui.view">
-        <field name="name">pos.credit.update.rewards.tree</field>
-        <field name="model">pos.credit.update.rewards</field>
+    <record id="view_pos_credit_update_reward_tree" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.tree</field>
+        <field name="model">pos.credit.update.reward</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="partner_id"/>
                 <field name="user_id"/>
                 <field name="company_id"/>
                 <field name="currency_id"/>
+                <field name="journal_id"/>
                 <field name="attendance_ids"/>
                 <field name="state"/>
                 <field name="id"/>
@@ -16,9 +17,9 @@
         </field>
     </record>
 
-    <record id="view_pos_credit_update_rewards_form" model="ir.ui.view">
-        <field name="name">pos.credit.update.rewards.form</field>
-        <field name="model">pos.credit.update.rewards</field>
+    <record id="view_pos_credit_update_reward_form" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.form</field>
+        <field name="model">pos.credit.update.reward</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -34,9 +35,14 @@
                             <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="currency_id"  readonly="1"/>
-                            <field name="reward_type"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="attendance_ids"  readonly="1"/>
-                            <!--<field name="balance" readonly="1"/>-->
+                            <field name="reward_type_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="journal_id"  readonly="1"/>
+                            <field name="attendance_ids"  attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   widget="many2many_tags"
+                                   options="{'no_create': True}"
+                                   domain="[('partner_id', '=', partner_id),
+                                            ('reward_ids', '=', False)]">
+                            </field>
                             <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
@@ -45,9 +51,9 @@
         </field>
     </record>
 
-    <record id="view_pos_credit_update_rewards_search" model="ir.ui.view">
-        <field name="name">pos.credit.update.rewards.search</field>
-        <field name="model">pos.credit.update.rewards</field>
+    <record id="view_pos_credit_update_reward_search" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.search</field>
+        <field name="model">pos.credit.update.reward</field>
         <field name="arch" type="xml">
             <search>
                 <field name="date"/>
@@ -69,31 +75,30 @@
         </field>
     </record>
 
-    <record id="action_pos_credit_update_rewards" model="ir.actions.act_window">
+    <record id="action_pos_credit_update_reward" model="ir.actions.act_window">
         <field name="name">Reward Credit Updates</field>
-        <field name="res_model">pos.credit.update.rewards</field>
+        <field name="res_model">pos.credit.update.reward</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_pos_credit_update_rewards_search"/>
+        <field name="search_view_id" ref="view_pos_credit_update_reward_search"/>
         <field name="context">{}</field>
     </record>
 
-    <record id="server_action_pos_credit_update_rewards" model="ir.actions.server">
+    <record id="server_action_pos_credit_update_reward" model="ir.actions.server">
         <field name="name">Confirm</field>
         <field name="model_id" ref="point_of_sale.menu_point_config_product"/>
         <field name="state">code</field>
-        <field name="code">env['pos.credit.update.rewards'].do_confirm()</field>
+        <field name="code">env['pos.credit.update.reward'].do_confirm()</field>
     </record>
 
-    <record id="option_pos_credit_update_rewards" model="ir.values">
+    <record id="option_pos_credit_update_reward" model="ir.values">
         <field name="name">Confirm</field>
         <field name="key2">client_action_multi</field>
-        <field name="model">pos.credit.update.rewards</field>
-        <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update_rewards"/>
+        <field name="model">pos.credit.update.reward</field>
+        <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update_reward"/>
     </record>
 
-
-    <menuitem id="menu_pos_credit_update_rewards" name="Reward Credit Updates" action="action_pos_credit_update_rewards" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="base_attendance.group_res_attendance" sequence="100"/>
+    <menuitem id="menu_pos_credit_update_reward" name="Attendance Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="base_attendance.group_res_attendance" sequence="100"/>
 
 
 </odoo>

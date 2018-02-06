@@ -198,7 +198,7 @@ class PosConfig(models.Model):
             })
 
         debt_journal_inactive = journal_obj.search([
-            ('code', '=', 'TDEBT'),
+            ('code', '=', 'TCRED'),
             ('company_id', '=', user.company_id.id),
             ('debt', '=', False),
         ])
@@ -207,15 +207,21 @@ class PosConfig(models.Model):
                 'debt': True,
                 'default_debit_account_id': debt_account.id,
                 'default_credit_account_id': debt_account.id,
+                'credits_via_discount': False,
+                'category_ids': False,
+                'write_statement': False,
+                'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
+                'debt_limit': 1000,
+                'pos_cash_out': True,
             })
             debt_journal = debt_journal_inactive
         else:
-            debt_journal = self.create_journal({'sequence_name': 'Account Default Debt Journal ',
-                                                'prefix': 'DEBT ',
+            debt_journal = self.create_journal({'sequence_name': 'Account Default Credit Journal ',
+                                                'prefix': 'CRED ',
                                                 'user': user,
                                                 'noupdate': True,
-                                                'journal_name': 'Debt Journal',
-                                                'code': 'TDEBT',
+                                                'journal_name': 'Credits',
+                                                'code': 'TCRED',
                                                 'type': 'cash',
                                                 'debt': True,
                                                 'journal_user': True,
@@ -224,6 +230,8 @@ class PosConfig(models.Model):
                                                 'category_ids': False,
                                                 'write_statement': False,
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
+                                                'debt_limit': 1000,
+                                                'pos_cash_out': True,
                                                 })
         if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
             self.create_demo_debt_journals(user, debt_account)
@@ -269,8 +277,10 @@ class PosConfig(models.Model):
             'company_id': user.company_id.id,
             'default_debit_account_id': debt_account.id,
             'default_credit_account_id': debt_account.id,
-            'credits_via_discount': vals['credits_via_discount'],
+            'debt_limit': vals['debt_limit'],
             'category_ids': vals['category_ids'],
+            'pos_cash_out': vals['pos_cash_out'],
+            'credits_via_discount': vals['credits_via_discount'],
         })
         self.env['ir.model.data'].create({
             'name': 'debt_journal_' + str(debt_journal.id),
@@ -302,21 +312,6 @@ class PosConfig(models.Model):
         return res
 
     def create_demo_debt_journals(self, user, debt_account):
-        self.create_journal({'sequence_name': 'Account Default Credit Journal ',
-                             'prefix': 'CRD ',
-                             'user': user,
-                             'noupdate': True,
-                             'journal_name': 'Credits',
-                             'code': 'XCRD',
-                             'type': 'cash',
-                             'debt': True,
-                             'journal_user': True,
-                             'debt_account': debt_account,
-                             'credits_via_discount': False,
-                             'category_ids': False,
-                             'write_statement': True,
-                             'debt_dummy_product_id': False,
-                             })
         self.create_journal({'sequence_name': 'Account Default Credit via Discounts Journal ',
                              'prefix': 'CRD ',
                              'user': user,
@@ -331,6 +326,8 @@ class PosConfig(models.Model):
                              'category_ids': False,
                              'write_statement': True,
                              'debt_dummy_product_id': False,
+                             'debt_limit': 1000,
+                             'pos_cash_out': False,
                              })
         allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
@@ -347,6 +344,8 @@ class PosConfig(models.Model):
                              'category_ids': [(6, 0, [allowed_category])],
                              'write_statement': True,
                              'debt_dummy_product_id': False,
+                             'debt_limit': 1000,
+                             'pos_cash_out': True,
                              })
 
 
@@ -479,7 +478,7 @@ class PosCreditUpdate(models.Model):
         ('cancel', 'Canceled')
     ], default='draft', required=True)
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
-    journal_id = fields.Many2one('account.journal', string='Appropriate journal id')
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True)
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance

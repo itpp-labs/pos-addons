@@ -13,8 +13,8 @@ class TestReward(TransactionCase):
         self.pos_config = self.env['pos.config']
         self.res_partner = self.env['res.partner']
         self.test_partner = self.res_partner.search([('name', '=', 'David Simpson')])
-        self.pcu_reward_model = self.env['pos.credit.update.rewards']
-        self.p_debt_reward = self.env['pos.debt.reward']
+        self.reward_model = self.env['pos.credit.update.reward']
+        self.reward_type_model = self.env['pos.debt.reward.type']
         self.user = self.env.user
         self.debt_account = self.env['account.account']
         self.journal = self.env['account.journal']
@@ -43,7 +43,7 @@ class TestReward(TransactionCase):
             'write_statement': True,
             'debt_dummy_product_id': False,
             })
-        self.p_debt_reward = self.p_debt_reward.create({
+        self.reward_type = self.reward_type_model.create({
             'name': 'test_reward',
             'journal_id': self.journal.id,
             'amount': 100,
@@ -53,25 +53,10 @@ class TestReward(TransactionCase):
             'check_in': time.strftime('%Y-%m-10 9:00'),
             'check_out': time.strftime('%Y-%m-10 10:00'),
         })
-        self.pcu_reward = self.pcu_reward_model.create({
+        self.pcu_reward = self.reward_model.create({
             'partner_id': self.test_partner.id,
             'update_type': 'balance_update',
-            'reward_type': self.p_debt_reward.id
+            'reward_type_id': self.reward_type.id
         })
         self.pcu_reward.switch_to_confirm()
         self.assertEqual(self.test_partner.credit_balance, self.pcu_reward.balance)
-
-        # Sure that next reward will be for the unpaid attendance, not for the both
-
-        self.test_attend_1 = self.attendance.create({
-            'partner_id': self.test_partner.id,
-            'check_in': time.strftime('%Y-%m-10 10:00'),
-            'check_out': time.strftime('%Y-%m-10 11:-00'),
-        })
-        self.pcu_reward = self.pcu_reward_model.create({
-            'partner_id': self.test_partner.id,
-            'update_type': 'balance_update',
-            'reward_type': self.p_debt_reward.id
-        })
-        self.pcu_reward.switch_to_confirm()
-        self.assertEqual(self.test_partner.credit_balance, 2*self.p_debt_reward.amount)

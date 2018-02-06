@@ -8,6 +8,7 @@
                     <field name="partner_id"/>
                     <field name="date"/>
                     <field name="balance"/>
+                    <field name="journal_id"/>
                     <field name="note"/>
                 </tree>
             </field>
@@ -31,6 +32,7 @@
                                 <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="update_type"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="balance" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('update_type', '!=', 'balance_update')]}"/>
                                 <field name="new_balance" attrs="{'invisible': [('update_type', '!=', 'new_balance')], 'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="currency_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>

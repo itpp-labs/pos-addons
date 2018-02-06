@@ -198,6 +198,27 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             return data;
         },
+        get_summary_for_cashregister: function(cashregister) {
+            var self = this;
+            return _.reduce(this.paymentlines.models, function(memo, pl){
+                if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+                    return memo + pl.amount - self.get_change(pl);
+                }
+                return memo;
+            }, 0);
+        },
+        get_summary_for_categories: function(category_list) {
+            var self = this;
+            return _.reduce(this.orderlines.models, function(memo, ol){
+                category_list = _.union(category_list, _.flatten(_.map(category_list, function(cl){
+                    return self.pos.db.get_category_childs_ids(cl)
+                })));
+                if (_.contains(category_list, ol.product.pos_categ_id[0])) {
+                    return memo + ol.get_display_price();
+                }
+                return memo;
+            }, 0)
+        },
         add_paymentline: function(cashregister) {
             this.assert_editable();
             var self = this;
@@ -214,7 +235,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 pos: this.pos
             });
             if (cashregister.journal.debt){
-                newPaymentline.set_amount(this.get_due_debt());
+                var category_list = cashregister.journal.category_ids;
+                if (category_list) {
+                    //already tendered amount for this journal
+                    var sum_pl = this.get_summary_for_cashregister(cashregister)
+                    //required summary
+                    var sum_prod = this.get_summary_for_categories(category_list)
+                    newPaymentline.set_amount(Math.max(Math.min(sum_prod - sum_pl, this.get_due()), 0));
+                } else{
+                    newPaymentline.set_amount(this.get_due_debt());
+                }
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
                 newPaymentline.set_amount(this.get_due());
             }
@@ -315,11 +345,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var restricted_categories = this.debt_journal_restricted_categories_check();
-            if (restricted_categories.length) {
+            var violations = this.debt_journal_restricted_categories_check();
+            if (violations.length) {
                 this.gui.show_popup('error', {
                     'title': _t('Unable to validate with the debt payment method'),
-                    'body': _t(this.restricted_categories_message(restricted_categories)),
+                    'body': _t(this.restricted_categories_message(violations)),
                 });
                 return;
             }
@@ -366,56 +396,42 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this._super();
             }
         },
-        restricted_categories_message: function(restricted_categories) {
+        restricted_categories_message: function(cashregisters) {
             var self = this;
             var body = [];
-            var categ_name = '';
-            var journals = '';
-            _.each(restricted_categories, function(categ) {
-                categ_name = self.pos.db.get_category_by_id(categ).name;
-                journals = _.map(_.filter(self.pos.cashregisters, function(x){
-                    return x.journal.category_ids.length > 0 && !_.contains(x.journal.category_ids, categ);
-                }), function(cr){
-                    return cr.journal_id[1];
+            var categ_names = '';
+            _.each(cashregisters, function(cr) {
+                var journal = cr.journal;
+                _.each(journal.category_ids, function(categ) {
+                    categ_names += self.pos.db.get_category_by_id(categ).name + ' ';
                 });
-                body.push(self.pos.db.get_category_by_id(categ).name + ' with ' + journals.toString() + ' ');
+                body.push(categ_names + ' with ' + cr.journal_id[1] + ' ');
             });
-            return 'It is not allowed to buy ' + _.uniq(body).toString();
+            return 'You may only buy ' + body.toString();
         },
         debt_journal_restricted_categories_check: function(){
             var self = this;
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
             orderlines = order.get_orderlines();
-            var all_categories = _.map(_.values(this.pos.db.category_by_id), function(r){
-                return r.id;
-            });
-            var restricted_categories = [];
-            var allowed_categories = false;
-            _.each(paymentlines, function(pl) {
-                allowed_categories = pl.cashregister.journal.category_ids;
-                if ( allowed_categories && allowed_categories.length > 0) {
-                    restricted_categories.push(_.difference(all_categories, allowed_categories));
-                }
+            var paymentlines_with_restrictions = _.filter(paymentlines, function(pl){
+                return pl.cashregister.journal.category_ids.length > 0
             });
             var violations = [];
-            if (restricted_categories.length){
-                restricted_categories = _.flatten(restricted_categories);
-                _.each(restricted_categories, function(re){
-                    var sum_pr = 0;
-                    var sum_pl = 0;
-                    _.each(orderlines, function(ol) {
-                        if (ol.product.pos_categ_id && re === ol.product.pos_categ_id[0]) {
-                            sum_pr += ol.price * ol.quantity;
-                        }
-                    });
-                    _.each(paymentlines, function(pl) {
-                        if (!_.contains(pl.cashregister.journal.category_ids, re)) {
-                            sum_pl += pl.amount;
-                        }
-                    });
-                    if (sum_pr && round_pr(order.get_total_with_tax() - sum_pr, self.pos.currency.rounding) < sum_pl){
-                        violations.push(re);
+            if (paymentlines_with_restrictions) {
+                var cashregisters = _.uniq(_.map(paymentlines_with_restrictions, function(pcr){
+                    return pcr.cashregister;
+                }));
+                var sum_pl = 0,
+                sum_prod = 0;
+                _.each(cashregisters, function(cr){
+                    var journal = cr.journal;
+                    //summary paid by each journal
+                    sum_pl = order.get_summary_for_cashregister(cr)
+                    //summary allowed to pay
+                    sum_prod = order.get_summary_for_categories(journal.category_ids)
+                    if (sum_pl > sum_prod) {
+                        violations.push(cr);
                     }
                 });
             }
