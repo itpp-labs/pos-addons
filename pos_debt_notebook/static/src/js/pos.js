@@ -211,13 +211,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             return _.reduce(this.orderlines.models, function(memo, ol){
                 category_list = _.union(category_list, _.flatten(_.map(category_list, function(cl){
-                    return self.pos.db.get_category_childs_ids(cl)
+                    return self.pos.db.get_category_childs_ids(cl);
                 })));
                 if (_.contains(category_list, ol.product.pos_categ_id[0])) {
                     return memo + ol.get_display_price();
                 }
                 return memo;
-            }, 0)
+            }, 0);
         },
         add_paymentline: function(cashregister) {
             this.assert_editable();
@@ -238,9 +238,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var category_list = cashregister.journal.category_ids;
                 if (category_list) {
                     //already tendered amount for this journal
-                    var sum_pl = this.get_summary_for_cashregister(cashregister)
+                    var sum_pl = this.get_summary_for_cashregister(cashregister);
                     //required summary
-                    var sum_prod = this.get_summary_for_categories(category_list)
+                    var sum_prod = this.get_summary_for_categories(category_list);
                     newPaymentline.set_amount(Math.max(Math.min(sum_prod - sum_pl, this.get_due()), 0));
                 } else{
                     newPaymentline.set_amount(this.get_due_debt());
@@ -415,7 +415,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             paymentlines = order.get_paymentlines(),
             orderlines = order.get_orderlines();
             var paymentlines_with_restrictions = _.filter(paymentlines, function(pl){
-                return pl.cashregister.journal.category_ids.length > 0
+                return pl.cashregister.journal.category_ids.length > 0;
             });
             var violations = [];
             if (paymentlines_with_restrictions) {
@@ -427,9 +427,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 _.each(cashregisters, function(cr){
                     var journal = cr.journal;
                     //summary paid by each journal
-                    sum_pl = order.get_summary_for_cashregister(cr)
+                    sum_pl = order.get_summary_for_cashregister(cr);
                     //summary allowed to pay
-                    sum_prod = order.get_summary_for_categories(journal.category_ids)
+                    sum_prod = order.get_summary_for_categories(journal.category_ids);
                     if (sum_pl > sum_prod) {
                         violations.push(cr);
                     }

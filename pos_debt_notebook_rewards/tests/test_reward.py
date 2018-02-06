@@ -14,7 +14,7 @@ class TestReward(TransactionCase):
         self.res_partner = self.env['res.partner']
         self.test_partner = self.res_partner.search([('name', '=', 'David Simpson')])
         self.reward_model = self.env['pos.credit.update.reward']
-        self.reward_type_model = self.env['pos.debt.reward.type']
+        self.reward_type_model = self.env['pos.credit.update.reward.type']
         self.user = self.env.user
         self.debt_account = self.env['account.account']
         self.journal = self.env['account.journal']
@@ -33,7 +33,7 @@ class TestReward(TransactionCase):
             'user': self.user,
             'noupdate': True,
             'journal_name': 'Test Credit Journal',
-            'code': 'TSTJ',
+            'code': 'TSTR',
             'type': 'cash',
             'debt': True,
             'journal_user': True,
@@ -42,6 +42,8 @@ class TestReward(TransactionCase):
             'category_ids': False,
             'write_statement': True,
             'debt_dummy_product_id': False,
+            'debt_limit': 0,
+            'pos_cash_out': True,
             })
         self.reward_type = self.reward_type_model.create({
             'name': 'test_reward',
@@ -56,7 +58,7 @@ class TestReward(TransactionCase):
         self.pcu_reward = self.reward_model.create({
             'partner_id': self.test_partner.id,
             'update_type': 'balance_update',
-            'reward_type_id': self.reward_type.id
+            'reward_type_id': self.reward_type.id,
         })
         self.pcu_reward.switch_to_confirm()
         self.assertEqual(self.test_partner.credit_balance, self.pcu_reward.balance)

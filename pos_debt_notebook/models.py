@@ -448,8 +448,9 @@ class PosOrder(models.Model):
 class PosCreditUpdate(models.Model):
     _name = 'pos.credit.update'
     _description = "Manual Credit Updates"
+    _inherit = ['mail.thread']
 
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True, track_visiblity='always')
     user_id = fields.Many2one(
         'res.users',
         string='Salesperson',
@@ -467,7 +468,8 @@ class PosCreditUpdate(models.Model):
         string='Currency',
         default=lambda s: s.env.user.company_id.currency_id,
     )
-    balance = fields.Monetary('Balance Update', help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
+    balance = fields.Monetary('Balance Update', track_visiblity='always',
+                              help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
     new_balance = fields.Monetary('New Balance', help="Value to set balance to. Used only in Draft state.")
     note = fields.Text('Note')
     date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
@@ -476,7 +478,7 @@ class PosCreditUpdate(models.Model):
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
         ('cancel', 'Canceled')
-    ], default='draft', required=True)
+    ], default='draft', required=True, track_visiblity='always')
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True)
 
