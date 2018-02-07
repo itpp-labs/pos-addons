@@ -7,15 +7,12 @@ odoo.define('base_attendance.tour', function (require) {
 
     function partner_check_in_out(partner, color) {
         return [{
-            extra_trigger: '.o_hr_attendance_button_partners:contains("Select Partner")',
+            extra_trigger: '.o_hr_attendance_kiosk_mode_container',
             trigger: '.o_hr_attendance_button_partners:contains("Select Partner")',
             content: 'Click Select Partner button',
         }, {
             trigger: '.oe_kanban_global_click.o_kanban_record:contains(' + partner + ') ' +
             '.oe_hr_attendance_status.fa.fa-user.oe_hr_attendance_status_' + color,
-            content: 'Select Partner',
-        }, {
-            trigger: '.oe_kanban_global_click.o_kanban_record:contains(' + partner + ')',
             content: 'Select Partner',
         }, {
             trigger: '.fa.btn-primary.o_hr_attendance_sign_in_out_icon.fa-sign-out.fa-sign-out',
