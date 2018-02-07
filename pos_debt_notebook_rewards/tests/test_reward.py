@@ -64,8 +64,23 @@ class TestReward(TransactionCase):
         self.pcu_reward.switch_to_confirm()
         # check that partners balance was properly updated
         self.assertEqual(self.test_partner.credit_balance, self.pcu_reward.balance)
-        # sure that attendance was set correctly
-        self.assertEqual(self.pcu_reward.attendance_ids.id, self.test_attend.id)
         # check journal update correctness
         self.assertEqual(self.test_partner.compute_debts_by_journals(self.test_partner.id)[self.journal.id]['balance'],
                          self.reward_type.amount)
+
+        # sure that attendance was set correctly
+        self.assertEqual(self.pcu_reward.attendance_ids.id, self.test_attend.id)
+        self.test_attend_2 = self.attendance.create({
+            'partner_id': self.test_partner.id,
+            'check_in': time.strftime('%Y-%m-10 10:00'),
+            'check_out': time.strftime('%Y-%m-10 11:00'),
+        })
+        self.pcu_reward_2 = self.reward_model.create({
+            'partner_id': self.test_partner.id,
+            'update_type': 'balance_update',
+            'reward_type_id': self.reward_type.id,
+        })
+        self.pcu_reward_2._onchange_partner()
+
+        self.assertEqual(len(self.pcu_reward_2.attendance_ids), 1)
+        self.assertEqual(self.pcu_reward_2.attendance_ids.id, self.test_attend_2.id)
