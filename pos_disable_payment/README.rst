@@ -20,7 +20,7 @@ Contributors
 ------------
 * Ivan Yelizariev <yelizariev@it-projects.info>
 * Ilmir Karamov <karamov@it-projects.info>
-* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* Dinar Gabbasov <gabbasov@it-projects.info>
 
 Sponsors
 --------
