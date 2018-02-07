@@ -148,6 +148,6 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
-    allow_cancel_deletion = fields.Boolean(string="Allow Cancel of the Deletion", help="When not active, user will be able to select predefined reasons only, without the possibility of canceling deletions", default=True)
-    show_popup_change_quantity = fields.Boolean(string="Show popup for change quantity", help="Show popup for change quantity of cancellation products")
-    show_cancel_info = fields.Boolean(string="Show the cancellation information in the order", default=False, help="Displaying the cancellation information of product in order in POS")
+    allow_cancel_deletion = fields.Boolean(string="Cancel the deletion", help="When not active, a user will have to select predefined reasons without the possibility to cancel this action", default=True)
+    show_popup_change_quantity = fields.Boolean(string="Specify Quantity to Cancel", help="Allow to specify a quantity for products to cancel")
+    show_cancel_info = fields.Boolean(string="Display the Cancellation Information", default=False, help="Display the information of canceled products in order in POS (format: Qty - User - Table)")
