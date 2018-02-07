@@ -55,10 +55,10 @@ class PosCreditUpdateReward(models.Model):
         return self.credit_update_id.switch_to_draft()
 
     def update_vals_with_journal(self, vals):
-        if hasattr(vals, 'reward_type_id'):
+        if 'reward_type_id' in vals:
             reward_type_id = vals['reward_type_id']
         else:
-            reward_type_id = self.reward_type_id
+            reward_type_id = self.reward_type_id.id
         vals['journal_id'] = self.env['pos.credit.update.reward.type'] \
             .search([('id', '=', reward_type_id)]).journal_id.id
         return vals
