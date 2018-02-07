@@ -22,7 +22,6 @@ class PosCreditUpdateReward(models.Model):
         'pos.credit.update.reward.type',
         string='Reward type',
         required=True)
-    note = fields.Text(default='Reward for an attendance')
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
@@ -33,6 +32,7 @@ class PosCreditUpdateReward(models.Model):
     @api.onchange('reward_type_id')
     def _onchange_reward_type(self):
         self.journal_id = self.reward_type_id.journal_id.id
+        self.note = self.reward_type_id.name
 
     @api.model
     def create(self, vals):
@@ -67,7 +67,8 @@ class RewardType(models.Model):
 
     name = fields.Char('Name', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,
-                                 help='journal to convert hours to credits in it')
+                                 help='journal to convert hours to credits in it',
+                                 domain="[('journal_user', '=', 1)]")
     amount = fields.Float('Reward amount', help='A coefficient to transfer shifts to credits', default=0)
 
 

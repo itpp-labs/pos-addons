@@ -21,7 +21,7 @@ odoo.define('base_attendance.tour', function (require) {
             trigger: 'button:contains("ok")',
             content: 'Validate',
         }];
-    };
+    }
 
     var steps = [{
             trigger: 'a.oe_menu_toggler:contains("Attendance")',

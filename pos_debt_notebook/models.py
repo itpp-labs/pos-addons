@@ -230,7 +230,7 @@ class PosConfig(models.Model):
                                                 'category_ids': False,
                                                 'write_statement': False,
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
-                                                'debt_limit': 1000,
+                                                'debt_limit': 0,
                                                 'pos_cash_out': True,
                                                 })
         if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
@@ -352,7 +352,7 @@ class PosConfig(models.Model):
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    debt = fields.Boolean(string='Debt Payment Method')
+    debt = fields.Boolean(string='Credit Journal')
     pos_cash_out = fields.Boolean(string='Allow to cash out credits', default=False,
                                   help='Partner can exchange credits to cash in POS')
     category_ids = fields.Many2many('pos.category', string='POS product categories',

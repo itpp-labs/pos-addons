@@ -70,13 +70,15 @@
     <field name="model">account.journal</field>
     <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
     <field name="arch" type="xml">
-        <field name="journal_user" position="after">
-            <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
-            <field name="pos_cash_out" attrs="{'invisible': [('debt', '!=', True)]}"/>
-            <field name="category_ids" attrs="{'invisible': [('debt', '!=', True)]}"/>
-            <field name="debt_limit" attrs="{'invisible': [('debt', '!=', True)]}"/>
-            <field name="credits_via_discount" attrs="{'invisible': [('debt', '!=', True)]}"/>
-        </field>
+        <xpath expr="//notebook[last()]/page[last()]" position="inside">
+            <group string="Credits">
+                <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
+                <field name="pos_cash_out" attrs="{'invisible': [('debt', '!=', True)]}"/>
+                <field name="category_ids" attrs="{'invisible': [('debt', '!=', True)]}" widget="many2many_tags"/>
+                <field name="debt_limit" attrs="{'invisible': [('debt', '!=', True)]}"/>
+                <field name="credits_via_discount" attrs="{'invisible': [('debt', '!=', True)]}" string="Zero transactions"/>
+            </group>
+        </xpath>
     </field>
 </record>
 

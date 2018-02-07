@@ -6,29 +6,35 @@
         </button>
     </t>
 
+    <t t-name="CreditLine">
+        <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
+            <th><span t-attf-class="notbold client-debt">
+                <t t-if='deb.journal_id'>
+                    <t t-esc="deb.journal_id[1]"/>
+                </t>
+            </span></th>
+            <th><span t-attf-class="notbold client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                <t t-esc='widget.format_currency(deb.balance)'/>
+            </span></th>
+        </div>
+        <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
+            <th><span t-attf-class="notbold client-credit">
+                <t t-if='deb.journal_id'>
+                    <t t-esc="deb.journal_id[1]"/>
+                </t>
+            </span></th>
+            <th><span t-attf-class="notbold client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
+                <t t-esc='widget.format_currency(deb.balance)'/>
+            </span></th>
+        </div>
+    </t>
+
     <t t-name="CreditList">
-        <t t-foreach="_.values(debts)" t-as="deb">
-            <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
-                <span t-attf-class="client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
-                    <t t-if='deb.journal_id'>
-                        <t t-esc="deb.journal_id[1]"/>
-                    </t>
-                </span>
-                <span t-attf-class="client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
-                    <t t-esc='widget.format_currency(deb.balance)'/>
-                </span>
-            </div>
-            <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
-                <span t-attf-class="client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
-                    <t t-if='deb.journal_id'>
-                        <t t-esc="deb.journal_id[1]"/>
-                    </t>
-                </span>
-                <span t-attf-class="client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
-                    <t t-esc='widget.format_currency(deb.balance)'/>
-                </span>
-            </div>
-        </t>
+        <table>
+            <t t-foreach="_.values(debts)" t-as="deb">
+                <tr><t t-call="CreditLine"/></tr>
+            </t>
+        </table>
     </t>
 
     <t t-extend="ClientDetails">
@@ -36,7 +42,7 @@
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Debts:</span>
             </div>
-            <div class="credit_list">
+            <div class="credit_list client-detail">
                 <t t-set="debts" t-value="partner.debts"/>
                 <t t-if="debts" t-call="CreditList"/>
             </div>
@@ -66,6 +72,17 @@
             </span>
             <span t-attf-class="client-credit #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'negative' : ''}">
                 <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+            </span>
+        </t>
+    </t>
+
+    <t t-name="CreditNote">
+        <t t-if="debt != 0">
+            <span t-attf-class="client-debt #{(widget.pos.get_client() and debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'positive' : ''}">
+                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'debt' ? ' [Debt: ' + (Math.round(debt * 100) / 100).toString() + ']': '')"/>
+            </span>
+            <span t-attf-class="client-credit #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''}">
+                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'credit' ? ' [Credit: ' + (- Math.round(debt * 100) / 100).toString() + ']': '')"/>
             </span>
         </t>
     </t>
@@ -104,7 +121,6 @@
         <t t-jquery="table.client-list tr" t-operation="append">
             <th id="client-list-debt">Debt</th>
             <th id="client-list-credit">Credit</th>
-            <th>Max Debt</th>
         </t>
         <t t-jquery="table.client-list" t-operation="after">
             <table id="debt_history" class='client-list oe_hidden'>
@@ -136,23 +152,6 @@
             </td>
         </t>
     </t>
-
-    <!--Commented for a whie-->
-    <!--<t t-extend="ClientDetailsEdit">-->
-        <!--<t t-jquery=".client-details-left" t-operation="append">-->
-            <!--<div class='client-detail'>-->
-                <!--<span class='label label_nowrap'>Max Debt *</span>-->
-                <!--<input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>-->
-                <!--&lt;!&ndash;<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>-->
-                <!--This construction will not work after the user's POS right are changed &ndash;&gt;-->
-            <!--</div>-->
-        <!--</t>-->
-        <!--<t t-jquery=".client-details-box" t-operation="append">-->
-            <!--<div class='client-detail-notice'>-->
-                <!--* Some fields are editable only for POS managers.-->
-            <!--</div>-->
-        <!--</t>-->
-    <!--</t>-->
 
     <t t-name="DebtHistoryLine">
         <tr>
@@ -201,6 +200,6 @@
             </div>
 
         </t>
-
     </t>
+
 </templates>

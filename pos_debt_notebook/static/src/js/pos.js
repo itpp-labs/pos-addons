@@ -234,17 +234,27 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 cashregister: cashregister,
                 pos: this.pos
             });
-            if (cashregister.journal.debt){
+            if (cashregister.journal.debt && this.get_client()){
                 var category_list = cashregister.journal.category_ids;
-                if (category_list) {
-                    //already tendered amount for this journal
-                    var sum_pl = this.get_summary_for_cashregister(cashregister);
+                var partner_balance = this.pos.get_client().debts[journal.id].balance
+                var amount = this.get_due();
+                //already tendered amount for this journal
+                var sum_pl = this.get_summary_for_cashregister(cashregister);
+                if (this.get_due_debt() < 0) {
+                    amount = this.get_due_debt();
+                } else if (category_list.length) {
                     //required summary
                     var sum_prod = this.get_summary_for_categories(category_list);
-                    newPaymentline.set_amount(Math.max(Math.min(sum_prod - sum_pl, this.get_due()), 0));
-                } else{
-                    newPaymentline.set_amount(this.get_due_debt());
+                    amount = Math.max(Math.min(
+                        sum_prod - sum_pl,
+                        amount,
+                        journal.debt_limit - sum_pl + partner_balance), 0);
+                } else {
+                    amount = Math.max(Math.min(
+                        amount,
+                        journal.debt_limit - sum_pl + partner_balance), 0);
                 }
+                newPaymentline.set_amount(amount)
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
                 newPaymentline.set_amount(this.get_due());
             }
@@ -440,12 +450,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         exceeding_debts_check: function(){
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
-            debts = this.pos.get_client().debts;
-            var flag = false;
+            debts = this.pos.get_client().debts,
+            flag = false;
             _.each(paymentlines, function(pl){
-                var journal = debts[pl.cashregister.journal_id[0]];
-                if(journal && -journal.balance + pl.amount > pl.cashregister.journal.debt_limit){
-                    flag = true;
+                var cr = pl.cashregister;
+                if (cr.journal.debt) {
+                    var debt_limit = cr.journal.debt_limit;
+                    var sum_pl = order.get_summary_for_cashregister(cr)
+                    if (sum_pl > debt_limit) {
+                        flag = true;
+                    }
                 }
             });
             return flag;
@@ -529,10 +543,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var client = this.pos.get_client();
             var debt = 0;
+            var deb_type = 1;
             if (client) {
                 debt = Math.round(client.debt * 100) / 100;
                 if (client.debt_type === 'credit') {
                     debt = - debt;
+                    deb_type = -1;
                 }
             }
             var $js_customer_name = this.$('.js_customer_name');
@@ -562,8 +578,30 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + debt + ']</span>');
                     }
                 }
+                var $paymentmethods = this.$('.paymentmethods');
+                if (client.debts && $paymentmethods.children()) {
+                    _.each($paymentmethods.children(), function(pm) {
+                        var pm_id = pm.dataset.id;
+                        var credit_line_html = ''
+                        if (client.debts[pm_id]) {
+                            var credit_line_html = QWeb.render('CreditNote', {
+                                debt: deb_type * client.debts[pm_id].balance,
+                                widget: self
+                            });
+                        }
+                        var prev_debt = _.filter(pm.children, function(c){
+                           return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit')
+                        })
+                        if (prev_debt){
+                            _.map(prev_debt, function(pd){
+                                pd.remove()
+                            });
+                        }
+                        pm.innerHTML += credit_line_html;
+                    });
+                }
             }
-        }
+        },
     });
 
     gui.Gui.prototype.screen_classes.filter(function(el) {

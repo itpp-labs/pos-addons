@@ -62,6 +62,7 @@
                 <separator/>
                 <field name="partner_id"/>
                 <field name="user_id"/>
+                <field name="journal_id"/>
                 <group expand="1" string="Group By">
                     <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
                     <filter string="Customer" context="{'group_by':'partner_id'}"/>

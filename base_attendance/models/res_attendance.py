@@ -28,7 +28,10 @@ class HrAttendance(models.Model):
                     'check_in': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_in))),
                 }))
             else:
-                result.append((attendance.id, _("%(partner_name)s from %(check_in)s to %(check_out)s") % {
+                int_worked_hours = int(attendance.worked_hours)
+                worked_time = "%02dh:%02dm" % (int_worked_hours, (attendance.worked_hours - int_worked_hours) * 60)
+                result.append((attendance.id, _("%(worked_time)s by %(partner_name)s from %(check_in)s to %(check_out)s") % {
+                    'worked_time': worked_time,
                     'partner_name': attendance.partner_id.name,
                     'check_in': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_in))),
                     'check_out': fields.Datetime.to_string(fields.Datetime.context_timestamp(attendance, fields.Datetime.from_string(attendance.check_out))),
