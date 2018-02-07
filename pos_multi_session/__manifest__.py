@@ -37,7 +37,7 @@
 
     "auto_install": False,
     "installable": True,
-    
+
     "demo_title": "Sync POS orders across multiple sessions",
     "demo_addons": [
         "pos_disable_payment",
