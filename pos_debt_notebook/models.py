@@ -348,7 +348,7 @@ class PosConfig(models.Model):
                              'write_statement': True,
                              'debt_dummy_product_id': False,
                              'debt_limit': 1000,
-                             'pos_cash_out': True,
+                             'pos_cash_out': False,
                              })
 
 

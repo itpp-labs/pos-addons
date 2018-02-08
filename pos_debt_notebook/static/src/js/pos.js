@@ -341,10 +341,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (client && debt_amount > 0 && this.exceeding_debts_check()) {
+            var exceeding_debts = this.exceeding_debts_check()
+            if (client && debt_amount > 0 && exceeding_debts) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
-                    'body': _t('You cannot sell products on credit to the customer, because his max debt value will be exceeded.')
+                    'body': _t('You cannot sell products on credit journal ' + exceeding_debts + ' to the customer because its max debt value will be exceeded.')
                 });
                 return;
             }
@@ -438,8 +439,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var journal = cr.journal;
                     //summary paid by each journal
                     sum_pl = order.get_summary_for_cashregister(cr);
+                    sum_pl = round_pr(sum_pl, self.pos.currency.rounding)
                     //summary allowed to pay
                     sum_prod = order.get_summary_for_categories(journal.category_ids);
+                    sum_prod = round_pr(sum_prod, self.pos.currency.rounding)
                     if (sum_pl > sum_prod) {
                         violations.push(cr);
                     }
@@ -458,7 +461,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var debt_limit = cr.journal.debt_limit;
                     var sum_pl = order.get_summary_for_cashregister(cr);
                     if (sum_pl > debt_limit) {
-                        flag = true;
+                        flag = cr.journal_id[1];
                     }
                 }
             });
