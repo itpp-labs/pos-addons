@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="group_res_attendance" model="res.groups">
-        <field name="name">Attendances</field>
+        <field name="name">Manual Attendances</field>
         <field name="category_id" ref="base.module_category_hr_attendance"/>
         <field name="comment">The user will gain access to the attendances menu, enabling him to manage partners attendance.</field>
     </record>

@@ -35,6 +35,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_pos_credit_update_reward_type" name="Reward Types" action="action_pos_credit_update_reward_type" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="base_attendance.group_res_attendance" sequence="100"/>
+    <menuitem id="menu_pos_credit_update_reward_type" name="Reward Types" action="action_pos_credit_update_reward_type" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="base_attendance.group_hr_attendance_manager" sequence="100"/>
 
 </odoo>

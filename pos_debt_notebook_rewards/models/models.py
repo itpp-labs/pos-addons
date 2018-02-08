@@ -68,7 +68,7 @@ class RewardType(models.Model):
     name = fields.Char('Name', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,
                                  help='journal to convert hours to credits in it',
-                                 domain="[('journal_user', '=', 1)]")
+                                 domain="[('debt', '=', True)]")
     amount = fields.Float('Reward amount', help='A coefficient to transfer shifts to credits', default=0)
 
 

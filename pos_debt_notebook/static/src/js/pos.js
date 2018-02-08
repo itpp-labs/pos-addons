@@ -236,7 +236,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             if (cashregister.journal.debt && this.get_client()){
                 var category_list = cashregister.journal.category_ids;
-                var partner_balance = this.pos.get_client().debts[journal.id].balance
+                var partner_balance = this.pos.get_client().debts[journal.id].balance;
                 var amount = this.get_due();
                 //already tendered amount for this journal
                 var sum_pl = this.get_summary_for_cashregister(cashregister);
@@ -254,7 +254,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         amount,
                         journal.debt_limit - sum_pl + partner_balance), 0);
                 }
-                newPaymentline.set_amount(amount)
+                newPaymentline.set_amount(amount);
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
                 newPaymentline.set_amount(this.get_due());
             }
@@ -456,7 +456,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var cr = pl.cashregister;
                 if (cr.journal.debt) {
                     var debt_limit = cr.journal.debt_limit;
-                    var sum_pl = order.get_summary_for_cashregister(cr)
+                    var sum_pl = order.get_summary_for_cashregister(cr);
                     if (sum_pl > debt_limit) {
                         flag = true;
                     }
@@ -582,19 +582,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 if (client.debts && $paymentmethods.children()) {
                     _.each($paymentmethods.children(), function(pm) {
                         var pm_id = pm.dataset.id;
-                        var credit_line_html = ''
+                        var credit_line_html = '';
                         if (client.debts[pm_id]) {
-                            var credit_line_html = QWeb.render('CreditNote', {
+                            credit_line_html = QWeb.render('CreditNote', {
                                 debt: deb_type * client.debts[pm_id].balance,
                                 widget: self
                             });
                         }
                         var prev_debt = _.filter(pm.children, function(c){
-                           return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit')
-                        })
+                           return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit');
+                        });
                         if (prev_debt){
                             _.map(prev_debt, function(pd){
-                                pd.remove()
+                                pd.remove();
                             });
                         }
                         pm.innerHTML += credit_line_html;

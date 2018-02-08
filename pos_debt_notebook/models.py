@@ -197,6 +197,11 @@ class PosConfig(models.Model):
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
+        default_debt_limit = 0
+        if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
+            self.create_demo_debt_journals(user, debt_account)
+            default_debt_limit = 1000
+
         debt_journal_inactive = journal_obj.search([
             ('code', '=', 'TCRED'),
             ('company_id', '=', user.company_id.id),
@@ -211,7 +216,7 @@ class PosConfig(models.Model):
                 'category_ids': False,
                 'write_statement': False,
                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
-                'debt_limit': 1000,
+                'debt_limit': default_debt_limit,
                 'pos_cash_out': True,
             })
             debt_journal = debt_journal_inactive
@@ -230,11 +235,9 @@ class PosConfig(models.Model):
                                                 'category_ids': False,
                                                 'write_statement': False,
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
-                                                'debt_limit': 0,
+                                                'debt_limit': default_debt_limit,
                                                 'pos_cash_out': True,
                                                 })
-        if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
-            self.create_demo_debt_journals(user, debt_account)
         self.write({
             'journal_ids': [(4, debt_journal.id)],
             'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
