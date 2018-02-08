@@ -42,6 +42,9 @@
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label'>Debts:</span>
             </div>
+            <div t-if="partner.debt_type == 'credit'" class="client-detail">
+                <span class='label'>Credits:</span>
+            </div>
             <div class="credit_list client-detail">
                 <t t-set="debts" t-value="partner.debts"/>
                 <t t-if="debts" t-call="CreditList"/>

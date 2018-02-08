@@ -144,7 +144,7 @@ class ResPartner(models.Model):
         return final.strftime(fmt.encode('utf-8'))
 
     def _compute_debt_type(self):
-        debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
+        debt_type = self.env["ir.config_parameter"].sudo().get_param("pos_debt_notebook.debt_type", default='debt')
         for partner in self:
             partner.debt_type = debt_type
 
