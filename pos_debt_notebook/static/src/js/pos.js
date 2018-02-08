@@ -287,8 +287,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return memo + o.amount;
                 },0);
                 result = this.get_total_paid() - this.get_total_with_tax() - sum;
-            } else if (paymentline.cashregister.journal.credits_via_discount){
-                result = 0;
             }
             return result;
         },

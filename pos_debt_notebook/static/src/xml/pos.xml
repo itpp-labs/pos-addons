@@ -8,33 +8,31 @@
 
     <t t-name="CreditLine">
         <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
-            <th><span t-attf-class="notbold client-debt">
+            <span t-attf-class="label notbold client-debt">
                 <t t-if='deb.journal_id'>
                     <t t-esc="deb.journal_id[1]"/>
                 </t>
-            </span></th>
-            <th><span t-attf-class="notbold client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+            </span>
+            <span t-attf-class="detail client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
                 <t t-esc='widget.format_currency(deb.balance)'/>
-            </span></th>
+            </span>
         </div>
         <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
-            <th><span t-attf-class="notbold client-credit">
+            <span t-attf-class="label notbold detail client-credit">
                 <t t-if='deb.journal_id'>
                     <t t-esc="deb.journal_id[1]"/>
                 </t>
-            </span></th>
-            <th><span t-attf-class="notbold client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
+            </span>
+            <span t-attf-class="detail client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
                 <t t-esc='widget.format_currency(deb.balance)'/>
-            </span></th>
+            </span>
         </div>
     </t>
 
     <t t-name="CreditList">
-        <table>
-            <t t-foreach="_.values(debts)" t-as="deb">
-                <tr><t t-call="CreditLine"/></tr>
-            </t>
-        </table>
+        <t t-foreach="_.values(debts)" t-as="deb">
+            <t t-call="CreditLine"/>
+        </t>
     </t>
 
     <t t-extend="ClientDetails">
