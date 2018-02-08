@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <!--Set field debt to 'credit' in model pos.config.settings via get_default_debt_type-->
+        <function model="ir.config_parameter" name="set_param" eval="('pos_debt_notebook.debt_type', 'credit', ['base.group_system'])" />
+
+    </data>
+</openerp>
