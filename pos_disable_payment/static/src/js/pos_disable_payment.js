@@ -12,7 +12,7 @@ odoo.define('pos_disable_payment', function(require){
 
     models.load_models({
         model:  'res.users',
-        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line','allow_refund'],
+        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
                 var user = _.find(self.users, function(el){
@@ -101,7 +101,38 @@ odoo.define('pos_disable_payment', function(require){
             } else {
                 $('.numpad-backspace').removeClass('disable');
             }
+            this.check_kitchen_access(line);
         },
+        click_line: function(orderline, event) {
+            this._super(orderline, event);
+            this.check_kitchen_access(orderline);
+        },
+        check_kitchen_access: function(line){
+            var user = this.pos.cashier || this.pos.user;
+            var need_check = false;
+            if (!user.allow_decrease_amount) {
+                if (user.allow_decrease_kitchen_only) {
+                    return true;
+                }
+                need_check = true;
+            }
+            var state = this.getParent().numpad.state;
+            if (need_check && line.mp_dirty === false) {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                if (user.allow_discount) {
+                    state.changeMode('discount');
+                } else if (user.allow_edit_price) {
+                    state.changeMode('price');
+                } else {
+                    state.changeMode("");
+                }
+            } else {
+                $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                if (state.get('mode') !== 'quantity') {
+                    state.changeMode('quantity');
+                }
+            }
+        }
     });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
