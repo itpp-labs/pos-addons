@@ -127,7 +127,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                 floor_map.detach();
                 $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
             }
-            
+            // replace floor selector
             var floor_selector = $('.floor-screen .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();
