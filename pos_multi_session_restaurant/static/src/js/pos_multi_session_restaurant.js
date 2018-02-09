@@ -204,32 +204,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         save_changes_data: function() {
             var self = this;
-            var tables = this.floor.tables;
-
-            var collection = [];
-            tables.forEach(function(table) {
-                collection.push({
-                    'floor': {
-                        'background_color': table.floor.background_color,
-                        'name': table.floor.name,
-                        'sequence': table.floor.sequence,
-                    },
-                    'name': table.name,
-                    'height': table.height,
-                    'position_h': table.position_h,
-                    'position_v': table.position_v,
-                    'seats': table.seats,
-                    'shape': table.shape,
-                    'width': table.width,
-                    'order_count': self.pos.get_table_orders(table).length,
-                    'customer_count': self.pos.get_customer_count(table),
-                    'fill': Math.min(1,Math.max(0,self.pos.get_customer_count(table) / table.seats)),
-                    'notifications': self.get_notifications(table),
-                });
-            });
+            var collection = this.get_current_data();
             this.saved_data = JSON.stringify(collection);
         },
         compare_data: function() {
+            var collection = this.get_current_data();
+            return this.saved_data === JSON.stringify(collection);
+        },
+        get_current_data: function(){
             var self = this;
             var tables = this.floor.tables;
 
@@ -254,7 +236,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     'notifications': self.get_notifications(table),
                 });
             });
-            return this.saved_data === JSON.stringify(collection);
+            return collection;
         },
         get_notifications: function(table){
             var orders = this.pos.get_table_orders(table);
