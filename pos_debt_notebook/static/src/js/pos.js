@@ -579,28 +579,28 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + debt + ']</span>');
                     }
                 }
-                var $paymentmethods = this.$('.paymentmethods');
-                if (client.debts && $paymentmethods.children()) {
-                    _.each($paymentmethods.children(), function(pm) {
-                        var pm_id = pm.dataset.id;
-                        var credit_line_html = '';
-                        if (client.debts[pm_id]) {
-                            credit_line_html = QWeb.render('CreditNote', {
-                                debt: deb_type * client.debts[pm_id].balance,
-                                widget: self
-                            });
-                        }
-                        var prev_debt = _.filter(pm.children, function(c){
-                           return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit');
+            }
+            var $paymentmethods = this.$('.paymentmethods');
+            if (client && client.debts && $paymentmethods.children()) {
+                _.each($paymentmethods.children(), function(pm) {
+                    var pm_id = pm.dataset.id;
+                    var credit_line_html = '';
+                    if (client.debts[pm_id]) {
+                        credit_line_html = QWeb.render('CreditNote', {
+                            debt: deb_type * client.debts[pm_id].balance,
+                            widget: self
                         });
-                        if (prev_debt){
-                            _.map(prev_debt, function(pd){
-                                pd.remove();
-                            });
-                        }
-                        pm.innerHTML += credit_line_html;
+                    }
+                    var prev_debt = _.filter(pm.children, function(c){
+                       return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit');
                     });
-                }
+                    if (prev_debt){
+                        _.map(prev_debt, function(pd){
+                            pd.remove();
+                        });
+                    }
+                    pm.innerHTML += credit_line_html;
+                });
             }
         },
     });
