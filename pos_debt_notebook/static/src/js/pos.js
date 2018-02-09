@@ -378,7 +378,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var sum = _.reduce(disc_credits, function(memo, num){
                     return memo + num.amount;
                 }, 0);
-                var percentage = round_pr(( sum / order_total ) * 100, self.pos.currency.rounding);
+                var percentage = ( sum / order_total ) * 100;
                 var orderlines = order.get_orderlines();
                 _.each(orderlines, function(ol){
                     ol.set_discount(percentage);
