@@ -14,8 +14,7 @@
         <record id="rule_new_order" model="base.action.rule">
             <field name="name">Notify POS about Orders updates (on new order).</field>
             <field name="model_id" ref="point_of_sale.model_pos_order"/>
-            <field name="kind">on_create</field>
-            <field name="act_user_id" ref="base.user_root"/>
+            <field name="kind">on_create_or_write</field>
             <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_orders_updates')])]"/>
         </record>
 

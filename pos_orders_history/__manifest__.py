@@ -16,7 +16,6 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_restaurant",
         "base_action_rule",
         "pos_longpolling",
     ],

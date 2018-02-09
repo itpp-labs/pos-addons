@@ -35,7 +35,7 @@
 .pos .order-line .active{
     color: rgb(120,210,165);
 }
-.pos .order-line .details:active, .pos .order-line .details:hover {
+.pos .order-line:active, .pos .order-line:hover {
     color: rgb(120,210,165);
 }
 /*Search Box*/
@@ -139,4 +139,78 @@
 }
 .pos .window .order-details .info span {
     font-weight: initial;
+}
+
+.lines-table {
+    width: 100%;
+    border: 1px solid rgb(200,200,200);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.line-element-hidden {
+    display: none;
+}
+
+.pos .line-line td:first-child {
+    padding-left: 3px;
+    padding-bottom: 2px;
+    padding-top: 1px;
+}
+
+.line_image {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid rgba(125,125,125,0.3);
+    text-align: center;
+}
+
+.line_image img {
+    width: 100%;
+    height: 100%;
+}
+
+#hw_button {
+    right: 9em;
+}
+
+.popup.popup-textinput.pos_history_edit_popup .pos_history_edit_container {
+    padding-left: 1.5em;
+    text-align: left;
+    border-bottom: 3px solid #6EC89B;
+
+}
+
+.popup.popup-textinput.pos_history_edit_popup .pos_history_edit_container p {
+    display: inline-block;
+}
+
+tr.order-line {
+    border-bottom:1px dashed rgb(200, 200, 200);
+}
+
+#edit-partner {
+    padding: 0px;
+    color: rgb(85, 85, 85);
+}
+
+.popup.popup-selection.pos_history_partners {
+    height: 455px;
+}
+
+.searchbox.pos_history_partners input {
+    padding-left: 38px;
+    width: 235px;
+    background: url(../img/search.png) no-repeat 15px;
+    background-color: white;
+}
+
+.search-clear.pos_history_partners {
+    top: -1px;
+}
+
+body > div.o_main_content > div.o_content > div > div.popups > div:nth-child(13) > div > div:nth-child(2) > span{
+    position: relative;
 }
