@@ -12,14 +12,14 @@ class HrPartner(models.Model):
     def _default_random_pin(self):
         return ("".join(choice(digits) for i in range(4)))
 
-    def _default_random_barcode(self):
-        barcode = None
-        while not barcode or self.env['res.partner'].search([('barcode', '=', barcode)]):
-            barcode = "".join(choice(digits) for i in range(8))
-        return barcode
+    # def _default_random_barcode(self):
+    #     barcode = None
+    #     while not barcode or self.env['res.partner'].search([('barcode', '=', barcode)]):
+    #         barcode = "".join(choice(digits) for i in range(8))
+    #     return barcode
 
-    barcode = fields.Char(string="Badge ID", help="ID used for partner identification.",
-                          default=_default_random_barcode, copy=False)
+    # barcode = fields.Char(string="Badge ID", help="ID used for partner identification.",
+    #                       default=_default_random_barcode, copy=False)
     pin = fields.Char(string="PIN", default=_default_random_pin,
                       help="PIN used to Check In/Out in Kiosk Mode (if enabled in Configuration).", copy=False)
 
@@ -29,8 +29,8 @@ class HrPartner(models.Model):
     attendance_state = fields.Selection(string="Attendance", compute='_compute_attendance_state',
                                         selection=[('checked_out', "Checked out"), ('checked_in', "Checked in")])
 
-    _sql_constraints = [('barcode_uniq', 'unique (barcode)',
-                         "The Badge ID must be unique, this one is already assigned to another employee.")]
+    # _sql_constraints = [('barcode_uniq', 'unique (barcode)',
+    #                      "The Badge ID must be unique, this one is already assigned to another employee.")]
 
     @api.depends('partners_attendance_ids')
     def _compute_last_attendance_id(self):
@@ -112,7 +112,8 @@ class HrPartner(models.Model):
             Overridden here because we need to have different default values
             for barcode and pin for every partner.
         """
-        if column_name not in ["barcode", "pin"]:
+        # if column_name not in ["barcode", "pin"]:
+        if column_name not in ["pin"]:
             super(HrPartner, self)._init_column(column_name)
         else:
             default_compute = self._fields[column_name].default
