@@ -89,6 +89,9 @@ odoo.define('pos_multi_session', function(require){
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
             this.ready.then(function () {
+                if (self.getUrlParameter('stringify-logs') === "1") {
+                    self.stringify_logs = true;
+                }
                 if (!self.config.multi_session_id){
                     return;
                 }
@@ -123,6 +126,20 @@ odoo.define('pos_multi_session', function(require){
                 self.multi_session = new exports.MultiSession(self);
                 self.multi_session.request_sync_all();
             });
+        },
+        getUrlParameter: function(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
         },
         ms_my_info: function(){
             var user = this.cashier || this.user;
@@ -167,7 +184,11 @@ odoo.define('pos_multi_session', function(require){
             var action = '';
             try{
                 if (this.debug){
-                    console.log('MS', this.config.name, 'on_update:', JSON.stringify(message));
+                    var logs = message;
+                    if (this.stringify_logs) {
+                        logs = JSON.stringify(logs);
+                    }
+                    console.log('MS', this.config.name, 'on_update:', logs);
                 }
                 action = message.action;
                 data = message.data || {};
@@ -686,8 +707,12 @@ odoo.define('pos_multi_session', function(require){
         send: function(message, address){
             var current_send_number = 0;
             if (this.pos.debug){
+                var logs = message;
+                if (this.pos.stringify_logs) {
+                    logs = JSON.stringify(logs);
+                }
                 current_send_number = this._debug_send_number++;
-                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
+                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', logs);
             }
             var self = this;
             message.data.pos_id = this.pos.config.id;
@@ -722,7 +747,11 @@ odoo.define('pos_multi_session', function(require){
                 }
             }).done(function(res){
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
+                    var logs_res = res;
+                    if (self.pos.stringify_logs) {
+                        logs_res = JSON.stringify(logs_res);
+                    }
+                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', logs_res);
                 }
                 var server_orders_uid = [];
                 self.client_online = true;
