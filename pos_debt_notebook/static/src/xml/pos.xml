@@ -49,15 +49,15 @@
             </div>
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
                 <span class='label increased_width'>Total Debt</span>
-                <span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
+                <b><span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
                     <t t-esc='widget.format_currency(partner.debt)'/>
-                </span>
+                </span></b>
             </div>
             <div t-if="partner.debt_type == 'credit'" class="client-detail">
                 <span class='label increased_width'>Total Credit</span>
-                <span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
+                <b><span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
                     <t t-esc='widget.format_currency(- partner.debt)'/>
-                </span>
+                </span></b>
             </div>
         </t>
         <t t-jquery=".client-details-box" t-operation="after">
