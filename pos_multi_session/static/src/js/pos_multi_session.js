@@ -672,14 +672,16 @@ odoo.define('pos_multi_session', function(require){
                 }
             });
         },
-        request_sync_all: function(){
+        request_sync_all: function(uid){
             if (this.on_syncing) {
                 return;
             }
+            var order_uid = uid || false;
             var self = this;
             this.on_syncing = true;
             var data = {run_ID: this.pos.multi_session_run_ID};
-            return this.send({'action': 'sync_all', data: data}).always(function(){
+            var message = {'action': 'sync_all', data: data, 'uid': order_uid};
+            return this.send(message).always(function(){
                 self.on_syncing = false;
             });
         },
@@ -759,9 +761,10 @@ odoo.define('pos_multi_session', function(require){
                 if (res.action === "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
                     self.warning(warning_message);
-                    self.request_sync_all();
+                    self.request_sync_all(res.order_uid);
                 }
                 if (res.action === 'sync_all') {
+
                     res.orders.forEach(function (item) {
                         self.pos.ms_on_update(item, true);
                         server_orders_uid.push(item.data.uid);
@@ -772,6 +775,14 @@ odoo.define('pos_multi_session', function(require){
                         self.pos.pos_session.sequence_number = res.order_ID;
                     }
                     self.destroy_removed_orders(server_orders_uid);
+                }
+                if (res.action === 'sync_order') {
+                    self.pos.ms_on_update(res.orders, true);
+                    self.pos.pos_session.order_ID = res.order_ID;
+
+                    if (res.order_ID !== 0) {
+                        self.pos.pos_session.sequence_number = res.order_ID;
+                    }
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
