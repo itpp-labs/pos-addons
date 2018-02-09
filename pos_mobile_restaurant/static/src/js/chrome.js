@@ -121,9 +121,10 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             this.gui.screen_instances.floors.floor = this.pos.floors_by_id[floor_id];
             this.gui.screen_instances.floors.renderElement();
             var floor_map = $('.floor-screen .floor-map');
-            floor_map.detach();
-            $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
-
+            if (floor_map.length) {
+                floor_map.detach();
+                $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
+            }
             var floor_selector = $('.floor-screen .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();
