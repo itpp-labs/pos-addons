@@ -204,8 +204,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         save_changes_data: function() {
             var self = this;
-            var floors = this.pos.floors;
-            var tables = this.floor.tables
+            var tables = this.floor.tables;
 
             var collection = [];
             tables.forEach(function(table) {
@@ -232,8 +231,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         compare_data: function() {
             var self = this;
-            var floors = this.pos.floors;
-            var tables = this.floor.tables
+            var tables = this.floor.tables;
 
             var collection = [];
             tables.forEach(function(table) {
@@ -266,7 +264,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     notifications.printing = true;
                     break;
                 } else if (orders[i].hasSkippedChanges()) {
-                    notifications.skipped  = true;
+                    notifications.skipped = true;
                 }
             }
             return notifications;
