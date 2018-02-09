@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",
     "category": "Point of Sale",
-    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session-restaurant?version=10.0',
+    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": ['images/s2.png'],
     "version": "2.1.0",
     "application": False,
@@ -12,7 +11,7 @@
     "support": "apps@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "LGPL-3",
-    "price": 140.00,
+    "price": 30.00,
     "currency": "EUR",
 
     "depends": [
@@ -34,16 +33,5 @@
     "post_init_hook": None,
 
     "auto_install": True,
-    "installable": False,
-
-    "demo_title": "Sync restaurant orders",
-    "demo_addons": [
-    ],
-    "demo_addons_hidden": [
-    ],
-    "demo_url": "pos-multi-session-restaurant",
-    "demo_summary": "Staff get order details immediately after waiter taps on tablet",
-    "demo_images": [
-        "images/s2.png",
-    ]
+    "installable": True,
 }

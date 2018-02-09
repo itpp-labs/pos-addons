@@ -28,7 +28,7 @@
         <record model="ir.ui.view" id="to_pos_config_inherit_form">
             <field name="name">to.pos.config.inherit.form</field>
             <field name="model">pos.config</field>
-            <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
+            <field name="inherit_id" ref="pos_restaurant.pos_config_view_form_inherit_restaurant"></field>
             <field name="priority" eval="99" />
             <field name="arch" type="xml">
                 <data>

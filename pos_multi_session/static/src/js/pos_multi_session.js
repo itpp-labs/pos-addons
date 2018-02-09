@@ -9,7 +9,7 @@ odoo.define('pos_multi_session', function(require){
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var gui = require('point_of_sale.gui');
 
@@ -282,22 +282,25 @@ odoo.define('pos_multi_session', function(require){
             var fields = _.find(this.models,function(model){
                 return model.model === 'res.partner';
             }).fields;
-            new Model('res.partner').
-                query(fields).
-                filter([['id','=',partner_id]]).
-                all({'timeout':3000, 'shadow': true}).
-                then(function(partners){
+            var domain = [['id','=',partner_id]];
+            rpc.query({
+                    model: 'res.partner',
+                    method: 'search_read',
+                    args: [domain, fields],
+                }, {
+                    timeout: 3000,
+                    shadow: true,
+                }).then(function(partners){
                      // check if the partners we got were real updates
                     if (self.db.add_partners(partners)) {
                         def.resolve();
                     } else {
                         def.reject();
                     }
-                }, function(err,event){
+                }, function(type,err){
                     if (err) {
                         console.log(err);
                     }
-                    event.preventDefault();
                     def.reject();
                 });
             return def;
@@ -635,7 +638,7 @@ odoo.define('pos_multi_session', function(require){
                 var temp = address
                 ? address.serv
                 : self.pos.config.sync_server || '';
-                return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
+                return session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message,
                     dbname: session.db,
