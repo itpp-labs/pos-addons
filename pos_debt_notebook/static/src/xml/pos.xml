@@ -203,4 +203,14 @@
         </t>
     </t>
 
+    <t t-name="ValidationButton">
+        <div class="bottom-left-content">
+            <div class="button autopay">
+                <span>
+                    <i class='fa fa-angle-double-right'></i>
+                </span>
+            </div>
+        </div>
+    </t>
+
 </templates>

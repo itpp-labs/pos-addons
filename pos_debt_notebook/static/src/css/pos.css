@@ -92,4 +92,42 @@
 
 .notbold{
     font-weight:normal !important;
-}​
+}
+
+.screen-content .bottom-left-content,
+ .bottom-left-content {
+    height: 170px;
+    width: 170px;
+    margin: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-right: dashed 1px rgb(215,215,215);
+}
+
+.screen .bottom-left-content .button.autopay {
+    width: 100%;
+    height: 100%;
+    line-height: 32px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 3px;
+    border: solid 1px rgb(209, 209, 209);
+    cursor: pointer;
+}
+
+.bottom-left-content .alert{
+    background-color: #FF6347;
+    border-color: #bce8f1;
+    pointer-events: none;
+}
+
+.bottom-left-content .validate{
+    background: rgb(110,200,155);
+    color: white;
+    border: solid 1px rgb(110,200,155);
+}
+
+.hidden {
+    display: none;
+}

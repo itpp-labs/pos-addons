@@ -76,6 +76,7 @@
                 <field name="pos_cash_out" attrs="{'invisible': [('debt', '!=', True)]}"/>
                 <field name="category_ids" attrs="{'invisible': [('debt', '!=', True)]}" widget="many2many_tags"/>
                 <field name="debt_limit" attrs="{'invisible': [('debt', '!=', True)]}"/>
+                <field name="credits_autopay" attrs="{'invisible': [('debt', '!=', True)]}"/>
                 <field name="credits_via_discount" attrs="{'invisible': [('debt', '!=', True)]}" string="Zero transactions"/>
             </group>
         </xpath>
