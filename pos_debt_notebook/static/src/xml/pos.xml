@@ -8,9 +8,9 @@
 
     <t t-name="CreditLine">
         <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
-            <span t-attf-class="label notbold client-debt">
+            <span t-attf-class="label increased_width notbold client-debt">
                 <t t-if='deb.journal_id'>
-                    <t t-esc="deb.journal_id[1]"/>
+                    <t t-esc="deb.journal_id[1].substring(0, deb.journal_id[1].lastIndexOf(' '))"/>
                 </t>
             </span>
             <span t-attf-class="detail client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
@@ -18,9 +18,9 @@
             </span>
         </div>
         <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
-            <span t-attf-class="label notbold detail client-credit">
+            <span t-attf-class="label increased_width notbold detail client-credit">
                 <t t-if='deb.journal_id'>
-                    <t t-esc="deb.journal_id[1]"/>
+                    <t t-esc="deb.journal_id[1].substring(0, deb.journal_id[1].lastIndexOf(' '))"/>
                 </t>
             </span>
             <span t-attf-class="detail client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
@@ -48,13 +48,13 @@
                 <t t-if="debts" t-call="CreditList"/>
             </div>
             <div t-if="partner.debt_type == 'debt'" class="client-detail">
-                <span class='label'>Total Debt</span>
+                <span class='label increased_width'>Total Debt</span>
                 <span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
                     <t t-esc='widget.format_currency(partner.debt)'/>
                 </span>
             </div>
             <div t-if="partner.debt_type == 'credit'" class="client-detail">
-                <span class='label'>Total Credit</span>
+                <span class='label increased_width'>Total Credit</span>
                 <span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
                     <t t-esc='widget.format_currency(- partner.debt)'/>
                 </span>
