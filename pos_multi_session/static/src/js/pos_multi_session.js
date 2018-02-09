@@ -17,6 +17,16 @@ odoo.define('pos_multi_session', function(require){
 
 
     screens.OrderWidget.include({
+        renderElement: function(scrollbottom){
+            var order  = this.pos.get_order();
+            if (!order) {
+                return;
+            }
+            if (this.pos.debug) {
+                console.log("renderElement of OrderWidget");
+            }
+            this._super(scrollbottom);
+        },
         rerender_orderline: function(order_line){
             if (order_line.node && order_line.node.parentNode) {
                 return this._super(order_line);
@@ -307,12 +317,62 @@ odoo.define('pos_multi_session', function(require){
     chrome.OrderSelectorWidget.include({
         init: function(parent,options) {
             this._super(parent,options);
+            this.saved_data = false;
             this.pos.get('orders').bind('change:update_new_order', this.renderElement,this );
         },
         destroy: function(){
             this.pos.get('orders').unbind('change:update_new_order', this.renderElement, this);
             this._super();
         },
+        renderElement: function(){
+            var self = this;
+            if (this.compare_data()) {
+                return false;
+            }
+            if (this.pos.debug) {
+                console.log("renderElement of OrderSelectorWidget");
+            }
+            this._super();
+            this.save_changes_data();
+        },
+        save_changes_data: function() {
+            var orders = this.pos.get_order_list();
+            var collection = [];
+            var current_order = this.pos.get_order();
+            var selected = false;
+            orders.forEach(function(order) {
+                if (current_order && current_order.uid === order.uid) {
+                    selected = true;
+                } else {
+                    selected = false;
+                }
+                collection.push({
+                    'sequence_number': order.sequence_number,
+                    'new_order': order.new_order,
+                    'selected': selected
+                });
+            });
+            this.saved_data = JSON.stringify(collection);
+        },
+        compare_data: function() {
+            var orders = this.pos.get_order_list();
+            var collection = [];
+            var current_order = this.pos.get_order();
+            var selected = false;
+            orders.forEach(function(order) {
+                if (current_order && current_order.uid === order.uid) {
+                    selected = true;
+                } else {
+                    selected = false;
+                }
+                collection.push({
+                    'sequence_number': order.sequence_number,
+                    'new_order': order.new_order,
+                    'selected': selected
+                });
+            });
+            return this.saved_data === JSON.stringify(collection);
+        }
     });
 
     gui.Gui.include({
