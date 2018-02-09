@@ -18,7 +18,7 @@ odoo.define('pos_multi_session', function(require){
 
     screens.OrderWidget.include({
         renderElement: function(scrollbottom){
-            var order  = this.pos.get_order();
+            var order = this.pos.get_order();
             if (!order) {
                 return;
             }
