@@ -458,7 +458,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 if (cr.journal.debt) {
                     var debt_limit = cr.journal.debt_limit;
                     var sum_pl = order.get_summary_for_cashregister(cr);
-                    if (sum_pl > debt_limit) {
+                    var balance = pl.order.get_client().debts[cr.journal.id].balance;
+                    if (sum_pl > debt_limit + balance) {
                         flag = cr.journal_id[1];
                     }
                 }

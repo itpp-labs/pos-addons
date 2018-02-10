@@ -483,7 +483,7 @@ class PosCreditUpdate(models.Model):
         ('cancel', 'Canceled')
     ], default='draft', required=True, track_visiblity='always')
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
-    journal_id = fields.Many2one('account.journal', string='Journal', required=True)
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
