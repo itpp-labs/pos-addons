@@ -88,10 +88,10 @@ odoo.define('pos_multi_session', function(require){
             }
             this.multi_session = false;
             this.ms_syncing_in_progress = false;
+            if (this.getUrlParameter('stringify-logs') === "1") {
+                this.stringify_logs = true;
+            }
             this.ready.then(function () {
-                if (self.getUrlParameter('stringify-logs') === "1") {
-                    self.stringify_logs = true;
-                }
                 if (!self.config.multi_session_id){
                     return;
                 }
