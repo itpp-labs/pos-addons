@@ -2,8 +2,10 @@
 from openerp import http
 import logging
 import time
+import socket
+import subprocess
+import threading
 import traceback
-from ast import literal_eval
 
 
 _logger = logging.getLogger(__name__)
@@ -13,51 +15,91 @@ try:
     from openerp.addons.hw_escpos.escpos import escpos
     from openerp.addons.hw_escpos.controllers.main import EscposProxy
     from openerp.addons.hw_escpos.controllers.main import EscposDriver
-    from openerp.addons.hw_escpos.escpos.exceptions import NoDeviceError, HandleDeviceError, TicketNotPrinted, NoStatusError
     from openerp.addons.hw_escpos.escpos.printer import Network
-    import openerp.addons.hw_escpos.controllers.main as hw_escpos_main
+    import openerp.addons.hw_proxy.controllers.main as hw_proxy
 except ImportError:
     EscposProxy = object
+    EscposDriver = object
 
 
-class UpdatedEscposDriver(EscposDriver):
-
-    def __init__(self):
-        self.network_printers = False
-        self.usb_printer_active = False
-        self.run_network_connection()
-        super(UpdatedEscposDriver, self).__init__()
-
-    def run_network_connection(self):
-        while self.network_printers and len(self.network_printers) > 0:
-            driver.network_printers = self.connected_network_printers(self.network_printers)
-            time.sleep(5)
-
-    def connected_network_printers(self, printers):
-        printer = False
-        if printers and len(printers) > 0:
-            network_printers = []
-            for p in printers:
-                if type(p) is str:
-                    p = literal_eval(p)
-                try:
-                    printer = UpdatedNetwork(p['ip'])
-                    printer.close()
-                    p['status'] = 'online'
-                except:
-                    p['status'] = 'offline'
-                if printer:
-                    printer.close()
-                network_printers.append({
-                    'ip': str(p['ip']),
-                    'status': str(p['status']),
-                    'name': str(p['name'])
-                })
-            return network_printers
-        return printers
+class PingProcess(threading.Thread):
+    def __init__(self, ip):
+        self.stdout = None
+        self.stderr = None
+        threading.Thread.__init__(self)
+        self.status = 'offline'
+        self.ip = ip
+        self.stop = False
 
     def run(self):
-        printer = None
+        while not self.stop:
+            child = subprocess.Popen(
+                ["ping", "-c1", "-w5", self.ip],
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            child.communicate()
+            self.status = 'offline' if child.returncode else 'online'
+            time.sleep(1)
+
+    def get_status(self):
+        return self.status
+
+    def __del__(self):
+        self.stop = True
+
+
+class EscposNetworkDriver(EscposDriver):
+
+    def __init__(self):
+        self.network_printers = []
+        self.ping_processes = {}
+        self.printer_objects = {}
+        super(EscposNetworkDriver, self).__init__()
+
+    def get_network_printer(self, ip, name=None):
+        found_printer = False
+        for printer in self.network_printers:
+            if printer['ip'] == ip:
+                found_printer = True
+                if name:
+                    printer['name'] = name
+                if printer['status'] == 'online':
+                    printer_object = self.printer_objects.get(ip, None)
+                    if not printer_object:
+                        try:
+                            printer_object = Network(ip)
+                            self.printer_objects[ip] = printer_object
+                        except socket.error:
+                            pass
+                    return printer
+        if not found_printer:
+            self.add_network_printer(ip, name)
+        return None
+
+    def add_network_printer(self, ip, name=None):
+        printer = dict(
+            ip=ip,
+            status='offline',
+            name=name or 'Unnamed printer'
+        )
+        self.network_printers.append(printer)  # dont return because offline
+        self.start_pinging(ip)
+
+    def start_pinging(self, ip):
+        pinger = PingProcess(ip)
+        self.ping_processes[ip] = pinger
+        pinger.start()
+
+    def update_driver_status(self):
+        count = len([p for p in self.network_printers if p.get('status', None) == 'online'])
+        if count:
+            self.set_status('connected', '{} printer(s) Connected'.format(count))
+        else:
+            self.set_status('disconnected', 'Disconnected')
+
+    def run(self):
         if not escpos:
             _logger.error('ESC/POS cannot initialize, please verify system dependencies.')
             return
@@ -65,56 +107,39 @@ class UpdatedEscposDriver(EscposDriver):
             try:
                 error = True
                 timestamp, task, data = self.queue.get(True)
-                printer = None
-                if len(task) == 2:
-                    if task[0] == 'network_xml_receipt':
-                        if timestamp >= time.time() - 1 * 60 * 60:
-                            network_printer_proxy = task[1]
-                            # print in network printer
-                            printer = UpdatedNetwork(network_printer_proxy)
-                            printer.receipt(data)
-                else:
-                    if self.usb_printer_active:
-                        printer = self.get_escpos_printer()
-                    elif self.network_printers:
-                        self.set_status('connected', 'Connected')
-                if printer is None:
-                    if self.usb_printer_active is False:
-                        if self.network_printers:
-                            self.set_status('connected', 'Connected')
-                        else:
-                            if task != 'status':
-                                self.queue.put((timestamp, task, data))
-                    elif self.usb_printer_active is True:
-                        if task != 'status':
-                            self.queue.put((timestamp, task, data))
+                if task == 'xml_receipt':
                     error = False
-                    time.sleep(5)
-                    continue
-                elif task == 'receipt':
-                    if timestamp >= time.time() - 1 * 60 * 60:
-                        self.print_receipt_body(printer, data)
-                        printer.cut()
-                elif task == 'xml_receipt':
-                    if timestamp >= time.time() - 1 * 60 * 60:
-                        printer.receipt(data)
-                elif task == 'cashbox':
-                    if timestamp >= time.time() - 12:
-                        self.open_cashbox(printer)
+                    if timestamp >= (time.time() - 1 * 60 * 60):
+                        receipt, network_printer_ip = data
+                        printer_info = self.get_network_printer(network_printer_ip)
+                        printer = self.printer_objects.get(network_printer_ip, None)
+                        if printer_info and printer_info['status'] == 'online' and printer:
+                            _logger.info('Printing XML receipt on printer %s...', network_printer_ip)
+                            try:
+                                printer.receipt(receipt)
+                            except socket.error:
+                                printer.open()
+                                printer.receipt(receipt)
+                            _logger.info('Done printing XML receipt on printer %s', network_printer_ip)
+                        else:
+                            _logger.error('xml_receipt: printer offline!')
+                            # TODO: do something with the missed order?
                 elif task == 'printstatus':
-                    self.print_status(printer)
-                elif task == 'status':
                     pass
+                elif task == 'status':
+                    error = False
+                    for printer in self.network_printers:
+                        ip = printer['ip']
+                        pinger = self.ping_processes.get(ip, None)
+                        if pinger and pinger.isAlive():
+                            status = pinger.get_status()
+                            if status != printer['status']:
+                                # todo: use a lock?
+                                printer['status'] = status
+                                self.update_driver_status()
+                        else:
+                            self.start_pinging(ip)
                 error = False
-
-            except NoDeviceError as e:
-                _logger.error("No device found %s" % str(e))
-            except HandleDeviceError as e:
-                _logger.error("Impossible to handle the device due to previous error %s" % str(e))
-            except TicketNotPrinted as e:
-                _logger.error("The ticket does not seems to have been fully printed %s" % str(e))
-            except NoStatusError as e:
-                _logger.error("Impossible to get the status of the printer %s" % str(e))
             except Exception as e:
                 self.set_status('error', str(e))
                 errmsg = str(e) + '\n' + '-'*60+'\n' + traceback.format_exc() + '-'*60 + '\n'
@@ -122,48 +147,36 @@ class UpdatedEscposDriver(EscposDriver):
             finally:
                 if error:
                     self.queue.put((timestamp, task, data))
-                if printer:
-                    printer.close()
 
 
-driver = UpdatedEscposDriver()
-hw_escpos_main.driver = driver
-driver.push_task('printstatus')
+# Separate instance, mainloop and queue for network printers
+# original driver runs in parallel and deals with USB printers
+network_driver = EscposNetworkDriver()
+
+hw_proxy.drivers['escpos_network'] = network_driver
+
+# this will also start the message handling loop
+network_driver.push_task('printstatus')
 
 
 class UpdatedEscposProxy(EscposProxy):
     @http.route('/hw_proxy/print_xml_receipt', type='json', auth='none', cors='*')
     def print_xml_receipt(self, receipt, proxy=None):
         if proxy:
-            driver.push_task(['network_xml_receipt', proxy], receipt)
+            network_driver.push_task('xml_receipt', (receipt, proxy))
         else:
             super(UpdatedEscposProxy, self).print_xml_receipt(receipt)
 
     @http.route('/hw_proxy/network_printers', type='json', auth='none', cors='*')
-    def networ_printers(self, network_printers=None):
-        network_printers = list(set([str(e) for e in network_printers]))
-        for i in range(len(network_printers)):
-            network_printers[i] = literal_eval(network_printers[i])
-        driver.network_printers = network_printers
-        driver.run_network_connection()
+    def network_printers(self, network_printers=None):
+        for printer in network_printers:
+            network_driver.get_network_printer(printer['ip'], name=printer['name'])
 
     @http.route('/hw_proxy/status_network_printers', type='json', auth='none', cors='*')
-    def networ_printers_status(self):
-        return driver.network_printers
+    def network_printers_status(self):
+        return network_driver.network_printers
 
     @http.route('/hw_proxy/without_usb', type='http', auth='none', cors='*')
     def without_usb(self):
-        driver.usb_printer_active = False
+        """ Old pos_printer_network module expects this to work """
         return "ping"
-
-    @http.route('/hw_proxy/hello', type='http', auth='none', cors='*')
-    def hello(self):
-        driver.usb_printer_active = True
-        return super(UpdatedEscposProxy, self).hello()
-
-
-class UpdatedNetwork(Network):
-    def close(self):
-        """ Close TCP connection """
-        if self.device:
-            self.device.close()

@@ -1,3 +1,13 @@
+`1.2.3`
+-------
+
+- **NEW:** Scrollbar in Floor screen for Android
+
+`1.2.2`
+-------
+
+- **IMP:** Scrolling type for IOS
+
 `1.2.1`
 -------
 
