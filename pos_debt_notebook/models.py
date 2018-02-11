@@ -499,7 +499,7 @@ class PosCreditUpdate(models.Model):
                               help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
     new_balance = fields.Monetary('New Balance', help="Value to set balance to. Used only in Draft state.")
     note = fields.Text('Note')
-    date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
+    date = fields.Datetime(string='Date', default=fields.Datetime.now, required=True)
 
     state = fields.Selection([
         ('draft', 'Draft'),
