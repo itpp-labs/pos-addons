@@ -520,7 +520,7 @@ odoo.define('pos_multi_session', function(require){
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
                     var order_lines = line.order.orderlines;
                     // to rerender line
-                    order_lines.trigger('change', order_lines);
+                    order_lines.trigger('change', line);
                     line.order.trigger('change:sync');
                 }
             });

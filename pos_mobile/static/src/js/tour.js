@@ -118,5 +118,5 @@ odoo.define('pos_mobile.tour', function(require) {
             // no need to click on trigger
         },
     }]);
-    tour.register('pos_mobile_tour', {test: true, url: '/pos/web?debug=assets&m=1' }, steps);
+    tour.register('pos_mobile_tour', {test: true, url: '/pos/web?m=1' }, steps);
 });
