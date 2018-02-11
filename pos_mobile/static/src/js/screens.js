@@ -123,18 +123,40 @@ odoo.define('pos_mobile.screens', function (require) {
 
             $('.searchbox input').on("focusout", self.touch_searchbox);
             $('.searchbox input').on("focus input", self.touch_searchbox);
-
+            $('.searchbox').click(function(){
+                self.reset_category();
+            });
             var breadcrumbs = $('.window .rightpane .breadcrumbs');
-            if (breadcrumbs.length) {
-                breadcrumbs.detach();
-                $(".mobile-categories .breadcrumbs").detach();
-                $(".mobile-categories").prepend(breadcrumbs);
+            var active_category_id = $( ".categories .active").data( "category-id" );
+            $('.categories span').removeClass('active');
+            if (this.category && this.category.child_id && !this.category.child_id.length) {
+                if (active_category_id === this.category.id) {
+                    if (this.category.parent_id) {
+                        this.set_category(this.pos.db.get_category_by_id(this.category.parent_id[0]));
+                        this.renderElement();
+                    } else {
+                        this.reset_category();
+                    }
+                } else {
+                    $('.categories span[data-category-id='+ this.category.id + ']').addClass('active');
+                }
+            } else {
+                if (breadcrumbs.length) {
+                    breadcrumbs.detach();
+                    $(".mobile-categories .breadcrumbs").detach();
+                    $(".mobile-categories").prepend(breadcrumbs);
+                }
+                var categories = $('.window .rightpane .categories');
+                categories.detach();
+                $(".mobile-categories .categories").detach();
+                $(".mobile-categories").append(categories);
             }
 
-            var categories = $('.window .rightpane .categories');
-            categories.detach();
-            $(".mobile-categories .categories").detach();
-            $(".mobile-categories").append(categories);
+            if (!this.pos.iOS) {
+                $('.product-list-scroller').niceScroll({
+                    horizrailenabled: false,
+                });
+            }
         },
         perform_search: function(category, query, buy_result){
             this._super.apply(this, arguments);
@@ -144,6 +166,7 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         clear_search: function(){
             this._super();
+            this.reset_category();
             var parent = $(".pos.mobile .mobile-order-container .rightpane-header")[0];
             var input = parent.querySelector('.searchbox input');
                 input.value = '';
@@ -151,7 +174,7 @@ odoo.define('pos_mobile.screens', function (require) {
         },
         get_image_url: function(category){
             return window.location.origin + '/web/image?model=pos.category&field=image&id='+category.id;
-        },
+        }
     });
 
     screens.ProductScreenWidget.include({
@@ -236,12 +259,27 @@ odoo.define('pos_mobile.screens', function (require) {
             var summary = $('.pos.mobile .order-container .summary.clearfix');
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
+            if (!this.pos.iOS) {
+                $('.order-scroller').niceScroll({
+                    horizrailenabled: false,
+                });
+            }
         },
         change_selected_order: function() {
             this._super();
+            // go to slide of order
+            this.pos.chrome.swiper_order.slideTo(0, 0);
+            // close bottom menu after open new order
+            if (this.getParent() && this.getParent().product_categories_widget) {
+                this.getParent().product_categories_widget.close_bottom_menu();
+            }
             this.change_product_qty();
             this.scroll_to_selected_order();
             this.change_orderlist();
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            this.change_product_qty(line.product.id);
         },
         change_product_qty: function(product_id) {
             var order = this.pos.get_order();

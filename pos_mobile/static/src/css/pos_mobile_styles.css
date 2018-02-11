@@ -91,6 +91,7 @@
     /*word-wrap: break-word;*/
     width: initial;
     font-size: 20px;
+    white-space: nowrap;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
@@ -494,6 +495,7 @@
     line-height: 96px;
     height: 96px;
     min-width: 96px;
+    float: right;
 }
 .pos.mobile .breadcrumb:last-child {
     padding-right: 6px;
@@ -510,6 +512,7 @@
 }
 .pos.mobile .breadcrumb-arrow{
     width: 56px;
+    transform: scale(-1, 1);
 }
 .pos.mobile .breadcrumb-homeimg {
     width: 54px;
@@ -567,7 +570,7 @@
     text-align: center;
 }
 .pos .category-list-scroller {
-    max-height: 311px;
+    max-height: 342px;
 }
 /*  d) the category button */
 .pos.mobile .category-button {
@@ -605,6 +608,16 @@
     transition: 0.2s;
 }
 .pos.mobile .category-simple-button:hover {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
+}
+.pos.mobile .category-simple-button.active {
     color: white;
     background: black;
     border-color: black;
@@ -952,6 +965,9 @@
     padding-bottom: 0;
     padding-top: 0;
 }
+.pos.mobile .payment-screen .touch-scrollable{
+    overflow: hidden!important;
+}
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
     line-height: 80px;
@@ -1117,6 +1133,12 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
     border-bottom: 8px solid rgb(110,200,155) !important;
+    overflow: hidden!important;
+}
+.ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
+    overflow: hidden!important;
+    overflow-y: auto!important;
+    -webkit-overflow-scrolling: touch!important;
 }
 .pos.mobile .clientlist-screen .button {
     display: inline-block;
@@ -1476,9 +1498,6 @@ pos.mobile .clientlist-screen .top-content .button {
     float: left;
     max-width: 674px;
     white-space: nowrap;
-	overflow-y: hidden;
-	overflow-x: scroll;
-	-webkit-overflow-scrolling: touch;
 }
 .pos.mobile .orders.touch-scrollable{
     display: inline-block;
@@ -1572,4 +1591,7 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .mobile-active-screen {
     display: block;
+}
+.pos.mobile .disable {
+    box-shadow: 0px 0px 0px 0px transparent!important;
 }

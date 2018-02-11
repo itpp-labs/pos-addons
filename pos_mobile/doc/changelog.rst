@@ -1,3 +1,15 @@
+`1.1.5`
+-------
+
+- **FIX:** Issue when user name has a space
+- **IMP:** No need to move to category when it doesn't have subcategory
+- **IMP:** Show categories from right to left
+
+`1.1.4`
+-------
+
+- **NEW:** Touch scrolling for Android
+
 `1.1.3`
 -------
 

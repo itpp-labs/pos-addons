@@ -133,7 +133,7 @@ class ResPartner(models.Model):
         user_tz = timezone(self.env.user.tz)
         final = utc_tz.astimezone(user_tz)
 
-        return final.strftime(fmt)
+        return final.strftime(fmt.encode('utf-8'))
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
@@ -195,7 +195,6 @@ class PosConfig(models.Model):
                 'code': 'XDEBT',
                 'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
                 'company_id': user.company_id.id,
-                'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
             self.env['ir.model.data'].create({
                 'name': 'debt_account_for_company' + str(user.company_id.id),

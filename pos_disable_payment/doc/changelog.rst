@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.4.0`
+-------
+- NEW: Set disabled button as non-clickable instead of hiding
+
 `2.3.0`
 -------
 - NEW: New option "Allow refunds" on user access rights

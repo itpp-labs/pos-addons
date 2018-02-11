@@ -11,7 +11,8 @@ class TestCommon(ExternalTestCase):
 
     def phantom_js_multi(self, sessions, commands, timeout=60, **kw):
         for sname, sdata in sessions.items():
-            sdata.setdefault('url_path', "/pos/web?debug=assets&dummy=%s" % sname)
+            # see description of following commit for understanding dummy parameter (in short, we don't know exactly why it's needed): https://github.com/yelizariev/pos-addons/commit/93f218151a1c4c8ca427ddfa9ceaafb290d39f33
+            sdata.setdefault('url_path', "/pos/web?dummy=%s" % sname)
             sdata.setdefault('ready', "$('.loader:hidden').length")
             sdata.setdefault('timeout', 60)
             sdata.setdefault('login', sname)
