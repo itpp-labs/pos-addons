@@ -688,6 +688,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     debt_history[i].total_balance = sign * Math.round(total_balance * 100) / 100;
                     total_balance += debt_history[i].balance;
                 }
+                var cashregisters = _.filter(self.pos.cashregisters, function(cr){
+                    return cr.journal.debt;
+                });
+                _.each(cashregisters, function(cr){
+                    var journal_id = cr.journal.id;
+                    var total_journal = partner.debts[journal_id].balance
+                    for (var i = 0; i < debt_history.length; i++) {
+                        if (debt_history[i].journal_id[0] === journal_id) {
+                            debt_history[i].total_journal = Math.round(total_journal * 100) / 100;
+                            total_journal -= debt_history[i].balance;
+                        }
+                    }
+                });
                 for (var y = 0; y < debt_history.length; y++) {
                     var debt_history_line_html = QWeb.render('DebtHistoryLine', {
                         partner: partner,
