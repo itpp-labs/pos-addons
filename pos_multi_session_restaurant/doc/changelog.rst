@@ -7,6 +7,10 @@ Updates
 -------
 - IMP: New option to disable changing Qty for orders sent to kitchen
 
+`2.1.2`
+-------
+- **IMP:** Refactoring the code to fix a slow POS synchronization
+
 `2.1.1`
 -------
 - FIX: Floor rendering error in case if POS without any floors

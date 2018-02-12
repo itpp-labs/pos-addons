@@ -113,6 +113,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             if (!this.pos.floors || !this.pos.floors.length) {
                 return false;
             }
+
             var self = this;
 
             var active_floor = $('.slide-floor.swiper-slide-active');
@@ -120,10 +121,13 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             this.gui.screen_instances.floors.floor = this.pos.floors_by_id[floor_id];
             this.gui.screen_instances.floors.renderElement();
-            var floor_map = $('.floor-screen .floor-map');
-            floor_map.detach();
-            $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
 
+            var floor_map = $('.floor-screen .floor-map');
+            if (floor_map.length) {
+                floor_map.detach();
+                $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
+            }
+            // replace floor selector
             var floor_selector = $('.floor-screen .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();

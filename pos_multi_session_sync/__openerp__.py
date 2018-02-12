@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "1.0.0",
+    "version": "10.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
