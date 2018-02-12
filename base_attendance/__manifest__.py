@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Partners Attendance""",
-    "summary": """Manage partners attendances""",
+    "name": """Partner Attendances""",
+    "summary": """Manage partner attendances""",
     "category": "Extra Tools",
     # "live_test_url": "",
     "images": [],
