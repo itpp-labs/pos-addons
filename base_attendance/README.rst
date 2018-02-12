@@ -1,5 +1,5 @@
 =====================
- Partners Attendance
+ Partner Attendances
 =====================
 
 Process partners attendance.
