@@ -35,7 +35,7 @@ Credit Products
 * Instead of using Debt Journal, customer can purchase *Credits* via *Credit Products*
 * When you create *Credit product*, don't forget to set **Credit Product** field
 * *Credit products* can be sold via POS and via invoices (including eCommerce). The later requires `another module <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_sync/>`_ to notify POS about eCommerce sales, otherwise POS will get updates about invoices only after POS reloading.
-* Note. Taxes on purchasing *Credit Products* are not supported. Taxes are applied on purchasings normal products.
+* Note. Taxes on purchasing *Credit Products* are supported for purchasing via invoices (including eCommerce), but not for sales via POS. For taxed Credit Products in invoices only untaxed amount is added to credit amount.
 
 Manual Credit Updates
 ---------------------
