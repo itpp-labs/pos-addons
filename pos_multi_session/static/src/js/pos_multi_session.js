@@ -687,6 +687,21 @@ odoo.define('pos_multi_session', function(require){
                 self.on_syncing = false;
             });
         },
+        sync_all: function(data) {
+            var server_orders_uid = [];
+            var self = this;
+            data.orders.forEach(function (item) {
+                self.pos.ms_on_update(item, true);
+                server_orders_uid.push(item.data.uid);
+            });
+
+            this.pos.pos_session.order_ID = data.order_ID;
+
+            if (data.order_ID !== 0) {
+                this.pos.pos_session.sequence_number = data.order_ID;
+            }
+            this.destroy_removed_orders(server_orders_uid);
+        },
         remove_order: function(data){
             return this.send({action: 'remove_order', data: data});
         },
@@ -757,7 +772,6 @@ odoo.define('pos_multi_session', function(require){
                     }
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', logs_res);
                 }
-                var server_orders_uid = [];
                 self.client_online = true;
 
                 if (res.action === "revision_error") {
@@ -766,17 +780,7 @@ odoo.define('pos_multi_session', function(require){
                     self.request_sync_all(res.order_uid);
                 }
                 if (res.action === 'sync_all') {
-
-                    res.orders.forEach(function (item) {
-                        self.pos.ms_on_update(item, true);
-                        server_orders_uid.push(item.data.uid);
-                    });
-                    self.pos.pos_session.order_ID = res.order_ID;
-
-                    if (res.order_ID !== 0) {
-                        self.pos.pos_session.sequence_number = res.order_ID;
-                    }
-                    self.destroy_removed_orders(server_orders_uid);
+                    self.sync_all(res);
                 }
                 if (res.action === 'sync_order') {
                     self.pos.ms_on_update(res.orders, true);
