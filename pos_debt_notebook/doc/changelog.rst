@@ -7,6 +7,11 @@
 **ADD:** Credits via discount
 **FIX:** Debt history for Chinese localization
 
+`4.4.3`
+-------
+
+**FIX:** Compatibility with Chinese localization
+
 `4.4.2`
 -------
 

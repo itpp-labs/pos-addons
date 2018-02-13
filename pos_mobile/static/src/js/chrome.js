@@ -65,27 +65,6 @@ odoo.define('pos_mobile.chrome', function (require) {
         },
     });
 
-    chrome.OrderSelectorWidget.include({
-        order_click_handler: function(event,$el) {
-            this._super(event,$el);
-            var order = this.get_order_by_uid($el.data('uid'));
-            if (order) {
-                this.chrome.swiper_order.slideTo(0, 0);
-            }
-        },
-        neworder_click_handler: function(event, $el) {
-            this._super(event,$el);
-            this.chrome.swiper_order.slideTo(0, 0);
-            this.gui.screen_instances.products.order_widget.change_orderlist();
-        },
-        deleteorder_click_handler: function(event, $el) {
-            this._super(event,$el);
-            this.chrome.swiper_order.slideTo(0, 0);
-            this.pos.gui.screen_instances.products.order_widget.scroll_to_selected_order();
-            this.gui.screen_instances.products.order_widget.change_orderlist();
-        },
-    });
-
     chrome.HeaderButtonWidget.include({
         confirm_img: '<img src="/pos_mobile/static/src/img/svg/confirm.svg"/>',
         cancel_img: '<img src="/pos_mobile/static/src/img/svg/close.svg"/>',
@@ -121,6 +100,14 @@ odoo.define('pos_mobile.chrome', function (require) {
             }
         },
      });
+
+    chrome.OrderSelectorWidget.include({
+        renderElement: function(){
+            this._super();
+            $('.pos-topheader .nicescroll-rails').remove();
+            this.$('.orders').niceScroll();
+        }
+    });
 
     return chrome;
 });

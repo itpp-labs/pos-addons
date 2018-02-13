@@ -128,6 +128,6 @@
     border: solid 1px rgb(110,200,155);
 }
 
-.hidden {
-    display: none;
+.pos .increased_width.label{
+    width: 150px !important;
 }

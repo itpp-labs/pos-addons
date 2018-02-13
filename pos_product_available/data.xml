@@ -9,5 +9,10 @@
               <link rel="stylesheet" href="/pos_product_available/static/src/css/pos.css"/>
           </xpath>
         </template>
+        <template id="assets_backend_web" name="pos_product_available_backend_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_product_available/static/src/js/test_pos_quantities.js"></script>
+            </xpath>
+        </template>
     </data>
 </openerp>

@@ -187,7 +187,6 @@ class PosConfig(models.Model):
                 'code': 'XDEBT',
                 'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
                 'company_id': user.company_id.id,
-                'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
             self.env['ir.model.data'].create({
                 'name': 'debt_account_for_company' + str(user.company_id.id),
@@ -484,9 +483,9 @@ class PosCreditUpdate(models.Model):
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
         ('cancel', 'Canceled')
-    ], default='draft', required=True, track_visiblity='always')
+    ], default='draft', required=True, track_visibility='always')
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
-    journal_id = fields.Many2one('account.journal', string='Journal', required=True)
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance

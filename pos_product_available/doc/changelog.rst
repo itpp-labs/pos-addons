@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.4`
+-------
+
+- [FIX] incorrect products quantity numbers with pos_cache module.
+
 `1.0.3`
 -------
 

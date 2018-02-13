@@ -393,7 +393,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var sum = _.reduce(disc_credits, function(memo, num){
                     return memo + num.amount;
                 }, 0);
-                var percentage = round_pr(( sum / order_total ) * 100, self.pos.currency.rounding);
+                var percentage = ( sum / order_total ) * 100;
                 var orderlines = order.get_orderlines();
                 _.each(orderlines, function(ol){
                     ol.set_discount(percentage);
@@ -745,14 +745,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             _.each(partner_ids, function(id){
                 var partner = self.pos.db.get_partner_by_id(id);
                 var debts = _.values(partner.debts);
-                var credit_lines_html = '';
                 if(partner.debts){
+                    var credit_lines_html = '';
                     credit_lines_html = QWeb.render('CreditList', {
                         partner: partner,
                         debts: debts,
                         widget: self
                     });
-                $('div.credit_list').html(credit_lines_html);
+                    $('div.credit_list').html(credit_lines_html);
                 }
             });
             _.each(partner_ids, function(id){
