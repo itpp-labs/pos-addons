@@ -23,14 +23,15 @@ odoo.define('pos_restaurant.print_method', function (require) {
     models.Order = models.Order.extend({
         print_order_receipt: function(printer, changes) {
             var self = this;
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
             if ( changes.new.length > 0 || changes.cancelled.length > 0) {
                 if (printer.config.printer_method_name === 'separate_receipt') {
-
-                    function delay(ms) {
-                        var d = $.Deferred();
-                        setTimeout(function(){ d.resolve(); }, ms);
-                        return d.promise();
-                    }
 
                     var q = $.when();
 
