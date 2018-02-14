@@ -959,10 +959,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (random <= 0.01) {
                 element = $(".icon-wrapper-2");
             }
-            element.parents('.thumb-up-popup').css({
-                "line-height": document.documentElement.clientHeight + "px",
-            });
-            var k = 50;
+            var k = 60;
             element.css({
                 "zoom": k * (Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight)/80) + '%'
             });
