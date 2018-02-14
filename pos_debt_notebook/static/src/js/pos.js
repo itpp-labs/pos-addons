@@ -7,6 +7,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var gui = require('point_of_sale.gui');
     var utils = require('web.utils');
     var Model = require('web.DataModel');
+    var PopupWidget = require('point_of_sale.popups');
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -136,8 +137,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.trigger('updateDebtHistory', partner_ids);
         },
         thumb_up_animation: function(){
-            // TODO animation script
-            console.log('like');
+            this.gui.show_popup('thumb-up');
         }
     });
 
@@ -702,11 +702,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
         },
         click_next: function() {
-            if (this.pos.get_order().autopay_like){
-                this.pos.thumb_up_animation();
+            if (this.pos.get_order().autopay_like) {
                 this.pos.get_order().autopay_like = false;
+                this._super();
+                this.pos.thumb_up_animation();
+            } else {
+                this._super();
             }
-            this._super();
         },
     });
 
@@ -946,4 +948,35 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
         }
     });
+
+    var ThumbUpPopupWidget = PopupWidget.extend({
+        template: 'ThumbUpPopupWidget',
+        show: function(options){
+            this._super(options);
+            var self = this;
+            var random = Math.random();
+            var element = $(".icon-wrapper");
+            if (random <= 0.01) {
+                element = $(".icon-wrapper-2");
+            }
+            element.parents('.thumb-up-popup').css({
+                "line-height": document.documentElement.clientHeight + "px",
+            });
+            var k = 50;
+            element.css({
+                "zoom": k * (Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight)/80) + '%'
+            });
+
+            element.show();
+            element.addClass("anim");
+
+            setTimeout(function() {
+                element.removeClass("anim");
+                element.hide();
+                self.gui.close_popup();
+            }, 1000);
+        },
+    });
+    gui.define_popup({name:'thumb-up', widget: ThumbUpPopupWidget});
+
 });

@@ -213,4 +213,39 @@
         </div>
     </t>
 
+    <t t-name="ThumbUpPopupWidget">
+        <div class="modal-dialog thumb-up-modal">
+            <div class="popup thumb-up-popup">
+                <div class="container thumb-up-1">
+                    <div class="icon-wrapper">
+                        <span class="icon"><i class="fa fa-thumbs-up"></i></span>
+                        <div class="border"><span></span></div>
+                        <div class="satellite">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container thumb-up-2">
+                    <div class="icon-wrapper-2">
+                        <span class="icon"><i class="fa fa-thumbs-up"></i></span>
+                        <div class="border"><span></span></div>
+                        <div class="spark">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
 </templates>
