@@ -97,7 +97,7 @@
     text-align: left;
     font-size: 80%;
     color: #ff6868;
-    margin-left: 13px;
+    margin-bottom: 3px;
 }
 /* New Styles for POS Order Cancel if pos_mobile was installed*/
 .pos.mobile .modal-dialog .popup.popup-confirm-cancellation {
