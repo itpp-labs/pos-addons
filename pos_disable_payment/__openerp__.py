@@ -9,7 +9,7 @@
     "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'depends': [
-        'pos_discount'
+        'point_of_sale'
     ],
     'images': ['images/pos_payment_access.png'],
     "price": 40.00,
