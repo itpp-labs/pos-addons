@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.2.0`
+-------
+- IMP: New option to disable changing Qty for orders sent to kitchen
+
 `2.1.3`
 -------
 - **IMP:** The code optimization of load data after syncing POS with a server

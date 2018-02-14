@@ -5,8 +5,12 @@
         <field name="model">pos.config</field>
         <field name="inherit_id" ref="pos_order_cancel.view_pos_config_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='refunds']" position="inside">
-                <field name="kitchen_canceled_only"/>
+            <xpath expr="//group[@name='refunds']/group" position="after">
+                <group>
+                    <field name="kitchen_canceled_only"/>
+                    <field name="auto_send_to_kitchen"/>
+                    <field name="save_canceled_orders"/>
+                </group>
             </xpath>
         </field>
     </record>
@@ -18,6 +22,12 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='canceled_lines']/tree" position="inside">
                 <field name="was_printed"/>
+            </xpath>
+            <xpath expr="//field[@name='session_id']" position="after">
+                <field name="save_canceled_orders" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='cancellations']" position="attributes">
+                <attribute name="attrs">{'invisible':[('save_canceled_orders', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

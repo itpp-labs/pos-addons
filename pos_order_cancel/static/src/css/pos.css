@@ -93,6 +93,12 @@
     background: black;
     border: 1px solid black;
 }
+.pos .orderlines .cancellation-info {
+    text-align: left;
+    font-size: 80%;
+    color: #ff6868;
+    margin-bottom: 3px;
+}
 /* New Styles for POS Order Cancel if pos_mobile was installed*/
 .pos.mobile .modal-dialog .popup.popup-confirm-cancellation {
     max-width: initial;
