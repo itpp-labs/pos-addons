@@ -103,6 +103,11 @@
                 <i class='fa fa-money' /> Pay Full Debt
             </div>
         </t>
+
+        <!--<t t-jquery=".screen-content" t-operation="after">-->
+            <!--<t t-call="ValidationButton"/>-->
+        <!--</t>-->
+
     </t>
 
     <t t-extend="ClientListScreenWidget">
@@ -203,12 +208,16 @@
         </t>
     </t>
 
+
     <t t-name="ValidationButton">
         <div class="bottom-left-content">
             <div class="button autopay">
-                <span>
-                    <i class='fa fa-angle-double-right'></i>
-                </span>
+                <div class="button-content">
+                    <span class="title"></span>
+                    <span>
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
             </div>
         </div>
     </t>

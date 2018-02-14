@@ -265,9 +265,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this.paymentlines.add(newPaymentline);
             this.select_paymentline(newPaymentline);
-            if ($('div.bottom-left-content')) {
-                $('div.bottom-left-content').remove();
-            }
+            $(this.autopay_html).hide();
         },
         get_due_debt: function(paymentline) {
             var due = this.get_total_with_tax() - this.get_total_paid();
@@ -306,13 +304,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.pos.on('updateDebtHistory', function(partner_ids){
                 this.update_debt_history(partner_ids);
             }, this);
-            this.autopay_html = QWeb.render('ValidationButton', {
-                widget: self,
-            });
-            $('div.payment-screen.screen').append(this.autopay_html);
-            $('.button.autopay').click(function(){
-                self.click_autopay_validation();
-            });
         },
         update_debt_history: function (partner_ids){
             var client = this.pos.get_client();
@@ -447,14 +438,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return pcr.cashregister;
                 }));
                 _.each(cashregisters, function(cr){
-                    if (self.restricted_products_for_cashregister(cr)){
+                    if (self.restricted_products_check(cr)){
                         violations.push(cr);
                     }
                 });
             }
             return violations;
         },
-        restricted_products_for_cashregister: function(cr){
+        restricted_products_check: function(cr){
             var order = this.pos.get_order();
             var journal = cr.journal;
             var sum_pl = 0,
@@ -627,12 +618,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     pm.innerHTML += credit_line_html;
                 });
             }
-            this.render_autopay_button();
+            this.change_autopay_button();
         },
         add_autopay_paymentlines: function() {
             var client = this.pos.get_client();
             var order = this.pos.get_order();
-            var add_class = '';
+            var status = '';
             if (client && client.debts && order && order.get_orderlines().length !== 0){
                 var autopay_cashregisters = _.filter(this.pos.cashregisters, function(cr){
                     return cr.journal.credits_autopay && client.debts[cr.journal.id].balance > 0;
@@ -644,45 +635,61 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             order.add_paymentline(cr);
                         }
                     });
-                    add_class = 'validate';
+                    status = 'validate';
                 }
                 if (order.get_due() > 0) {
-                    add_class = 'alert';
-//                    text = 'Not enough credits to pay';
+                    status = 'alert';
                 }
             }
-            return add_class;
+            return status;
         },
-        render_autopay_button: function(add_class) {
+        renderElement: function(){
+            this._super();
+            this.autopay_html = this.render_validation_button();
+            this.$el.append(this.autopay_html);
+        },
+        render_validation_button: function() {
             var self = this;
-            var button_div = $('div.bottom-left-content');
-            if (!button_div[0]) {
-                $('div.payment-screen.screen').append(this.autopay_html);
-                button_div = $('div.bottom-left-content');
-                button_div.addClass('oe_hidden');
-            }
-            this.$('.button.autopay').click(function(){
+            var validation_button = $(QWeb.render('ValidationButton', { widget:this }));
+            validation_button.find('.autopay').click(function(){
                 self.click_autopay_validation();
             });
-            var button_autopay = $('.button.autopay')
-            if (add_class === 'validate') {
-                button_div.removeClass('oe_hidden');
-                button_autopay.removeClass('oe_hidden', 'validate', 'alert');
+            return validation_button;
+        },
+        change_autopay_button: function(status) {
+            var content = $(this.autopay_html)
+            var button_autopay = content.find('.autopay')
+            if (status === 'validate') {
+                content.show();
+                button_autopay.removeClass('alert');
                 button_autopay.addClass('validate');
-            } else if (add_class === 'alert') {
-                button_div.removeClass('oe_hidden');
-                button_autopay.removeClass('oe_hidden', 'validate', 'alert');
+                button_autopay.find('.title').text('Validate');
+            } else if (status === 'alert') {
+                content.show();
+                button_autopay.removeClass('validate');
                 button_autopay.addClass('alert');
+                button_autopay.find('.title').text('Not enough credits to pay');
             }
         },
         click_autopay_validation: function() {
-            this.pos.get_order().autopay_like = true;
+            this.pos.get_order().autopay_validated = true;
             this.validate_order();
         },
         show: function() {
-            var add_class = this.add_autopay_paymentlines();
+            var autopay_status = this.add_autopay_paymentlines();
             this._super();
-            this.render_autopay_button(add_class);
+            this.change_autopay_button(autopay_status);
+        },
+        render_paymentlines: function() {
+            var self  = this;
+            var order = this.pos.get_order();
+            if (!order) {
+                return;
+            }
+            this._super();
+            if (!order.get_paymentlines().length){
+                $(this.autopay_html).hide();
+            }
         },
     });
 
@@ -690,25 +697,32 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         show: function(){
             this._super();
             var self = this;
-            if (this.pos.get_order().autopay_like) {
-                this.autopay_html = QWeb.render('ValidationButton', {
-                    widget: self,
-                });
-                $('div.receipt-screen.screen').append(this.autopay_html);
-                $('.button.autopay').click(function(){
-                    self.click_next();
-                });
-                $('.button.autopay').addClass('validate');
+            if (this.pos.get_order().autopay_validated) {
+                var button_next = this.next_button_html.find('.autopay')
+                button_next.addClass('validate');
+                button_next.find('.title').text('Next');
             }
         },
         click_next: function() {
-            if (this.pos.get_order().autopay_like) {
-                this.pos.get_order().autopay_like = false;
+            if (this.pos.get_order().autopay_validated) {
                 this._super();
                 this.pos.thumb_up_animation();
             } else {
                 this._super();
             }
+        },
+        render_validation_button: function() {
+            var self = this;
+            var validation_button = $(QWeb.render('ValidationButton', { widget:this }));
+            validation_button.find('.autopay').click(function(){
+                self.click_next();
+            });
+            return validation_button;
+        },
+        renderElement: function() {
+            this._super();
+            this.next_button_html = this.render_validation_button();
+            this.$el.append(this.next_button_html);
         },
     });
 

@@ -94,8 +94,7 @@
     font-weight:normal !important;
 }
 
-.screen-content .bottom-left-content,
- .bottom-left-content {
+.screen .bottom-left-content {
     height: 170px;
     width: 170px;
     margin: 10px;
@@ -114,6 +113,7 @@
     border-radius: 3px;
     border: solid 1px rgb(209, 209, 209);
     cursor: pointer;
+    position: relative;
 }
 
 .bottom-left-content .alert{
@@ -130,6 +130,27 @@
 
 .pos .increased_width.label{
     width: 150px !important;
+}
+
+.screen .left-content {
+    position: absolute;
+    left: 0px;
+    top: 64px;
+    bottom: 0px;
+    right: 50%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: dashed 1px rgb(215,215,215);
+    border-bottom: dashed 1px rgb(215,215,215);
+    margin-bottom: 190px;
+}
+
+.screen .button.autopay .button-content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 10px);
+    padding: 5px;
 }
 
 /**/
