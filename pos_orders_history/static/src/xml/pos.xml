@@ -3,7 +3,7 @@
 
     <t t-name="OrdersHistoryButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt ' /> History
+            <i class='fa fa-list-alt '/> History
         </div>
     </t>
 
@@ -28,9 +28,6 @@
                             Table
                         </span>
                     </span>
-                    <span class='button next' id="hw_button">
-                        Edit
-                    </span>
                     <span class='searchbox'>
                         <input placeholder='Search Orders' />
                         <span class='search-clear'></span>
@@ -53,13 +50,10 @@
                                             <tr>
                                                 <th>Order Ref</th>
                                                 <th>Customer</th>
-<!--                                            <th>Guests</th>
- -->                                            <th>POS Name</th>
+                                                <th>POS Name</th>
                                                 <th>Order Date</th>
                                                 <th>Salesman</th>
-<!--                                            <th>Table</th>
- -->                                            <th>Status</th>
-                                                <!--<th t-if="widget.pos.config.details_button">Action</th>-->
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody class='order-list-contents'>
@@ -89,17 +83,9 @@
                 <t t-if='order.partner_id' t-esc='order.partner_id[1]'/>
                 <t t-if='!order.partner_id' t-esc='""'/>
             </td>
-
-<!--             <td><t t-if='order.customer_count' t-esc='order.customer_count'/></td>
- -->
             <td><t t-esc='order.pos_name'/></td>
             <td><t t-esc='order.date_order' /></td>
             <td><t t-esc='order.user_id[1]' /></td>
-<!--             <td>
-                <t t-if='order.table_id' t-esc='order.table_id[1]'/>
-                <t t-if='!order.table_id' t-esc='""'/>
-            </td> -->
-
             <t t-if="!order.computed_state">
                 <td>
                     <t t-if="order.state == 'done'">
@@ -126,9 +112,6 @@
                     </t>
                 </td>
             </t>
-
-
-            <!--<td t-if="widget.pos.config.details_button"><span t-if="order.state != 'done'" class='button details' t-att-data-id='order.id'>Order Details</span></td>-->
         </tr>
     </t>
 
@@ -206,89 +189,6 @@
             <td><t t-esc='widget.format_currency(line.price_subtotal)'/></td>
             <td><t t-esc='widget.format_currency(line.price_subtotal_incl)'/></td>
         </tr>
-    </t>
-
-<!--     <t t-name="OrderHistoryDetails">
-        <div class='order-details'>
-            <div class="info">
-                <div class="order_ref">
-                    Order Ref: <span><t t-esc='order.name'/></span>
-                </div>
-                <div class="receipt_ref">
-                    Receipt Ref: <span><t t-esc='order.pos_reference'/></span>
-                </div>
-                <div class="customer">
-                    Customer: <span><t t-if='order.partner_id' t-esc='order.partner_id[1]' /><t t-if='!order.partner_id' t-esc='""' /></span>
-                </div>
-                <div class="order_date">
-                    Order Date: <span><t t-esc='order.date_order' /></span>
-                </div>
-            </div>
-            <div class="info">
-                <div class="salesman">
-                    Salesman: <span><t t-esc='order.user_id[1]' /></span>
-                </div>
-                <div class="amount_total">
-                    Total: <span><t t-esc='order.amount_total' /></span>
-                </div>
-                <div class="sale_journal">
-                    Sale Journal: <span><t t-esc='order.sale_journal[1]' /></span>
-                </div>
-                <div class="state">
-                    Status: <span><t t-esc='order.state' /></span>
-                </div>
-            </div>
-        </div>
-    </t> -->
-
-    <t t-name="EditPopup">
-        <div class="modal-dialog">
-            <div class="popup popup-textinput pos_history_edit_popup">
-                <p class="title"><t t-esc=" widget.order_title || '' " /></p>
-
-                <div class="pos_history_edit_container">
-                    <p>Customer: <t t-esc=" widget.partner_name"/></p>
-                    <button class="button confirm" id="edit-partner">Edit</button>
-                </div>
-                <p>Payments</p>
-
-                <div class="footer pos-history">
-                    <div class="button confirm">
-                        Ok 
-                    </div>
-                    <div class="button cancel">
-                        Cancel 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </t>
-
-    <t t-name="ChoosePartnerPopup">
-        <div class="modal-dialog">
-            <div class="popup popup-selection pos_history_partners">
-                <p class="title"><t t-esc=" widget.options.title || 'Select' " /></p>
-                <div>
-                    <span class='searchbox pos_history_partners'>
-                        <input placeholder='Search Customers' />
-                        <span class='search-clear pos_history_partners'></span>
-                    </span>
-                </div>
-                    
-                <div class='selection scrollable-y touch-scrollable'>
-                    <t t-foreach="widget.partners || []" t-as="item">
-                        <div class='selection-item' t-att-partner_id='item.id'>
-                            <t t-esc='item.name'/>
-                        </div>
-                    </t>
-                </div>
-                <div class="footer">
-                    <div class="button cancel">
-                        Cancel 
-                    </div>
-                </div>
-            </div>
-        </div>
     </t>
 
 </templates>

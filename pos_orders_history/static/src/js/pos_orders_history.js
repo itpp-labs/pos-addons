@@ -18,7 +18,7 @@ odoo.define('pos_orders_history', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function () {
             _super_pos_model.initialize.apply(this, arguments);
-            this.add_channel("pos_orders_history", this.on_orders_history_updates, this);
+            this.bus.add_channel_callback("pos_orders_history", this.on_orders_history_updates, this);
             this.subscribers = [];
         },
 
@@ -141,15 +141,6 @@ odoo.define('pos_orders_history', function (require) {
             });
         },
     });
-
-    // TODO: don't load all lines
-    // models.load_models({
-    //     model: 'pos.order.line',
-    //     fields: [],
-    //     loaded: function(self, lines) {
-    //         self.update_orders_history_lines(lines);
-    //     },
-    // });
 
     PosDB.include({
         init: function (options) {
@@ -298,13 +289,6 @@ odoo.define('pos_orders_history', function (require) {
                 self.line_select(event, $(this), parseInt($(this).data('id')));
             });
 
-            this.$('.next').click(function () {
-                if (!self.selected_order) {
-                    return;
-                }
-                self.edit_order(self.selected_order);
-            });
-
             var search_timeout = null;
             if(this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard){
                 this.chrome.widget.keyboard.connect(this.$('.searchbox input'));
@@ -328,27 +312,6 @@ odoo.define('pos_orders_history', function (require) {
             this.$(".order-line").removeClass('active');
             this.$(".order-line").removeClass('highlight');
             this.$(".line-element-container").addClass('line-element-hidden');
-            this.hide_edit_button();
-        },
-
-        hide_edit_button: function () {
-            this.$('.next').addClass('line-element-hidden');
-        },
-
-        show_edit_button: function () {
-            this.$('.next').removeClass('line-element-hidden');
-        },
-
-        edit_order: function (order) {
-            var id = order.id,
-                partner_id = order.partner_id[0],
-                partner_id = this.pos.db.get_partner_by_id(partner_id);
-
-            this.gui.show_popup('editorder', {
-                title: order.name,
-                partner: partner_id,
-                order: order
-            });
         },
 
         change_filter: function(filter_name, filter) {
@@ -499,12 +462,10 @@ odoo.define('pos_orders_history', function (require) {
                 $line.removeClass('highlight');
 
                 this.hide_order_details($line)
-                this.hide_edit_button()
                 this.selected_order = false;
             } else {
                 $line.addClass('active');
                 $line.addClass('highlight');
-                this.show_edit_button();
                 this.show_order_details($line);
                 var y = event.pageY - $line.parent().offset().top;
                 this.selected_order = this.pos.db.orders_history_by_id[id];
@@ -558,51 +519,6 @@ odoo.define('pos_orders_history', function (require) {
 
         },
 
-        // Shows or hides the order details box :
-        // visibility: 'show', 'hide'
-        // order:    the order object to show
-        // clickpos:   the height of the click on the list (in pixel), used
-        //             to maintain consistent scroll.
-        // display_order_details: function(visibility, order, clickpos) {
-        //     var contents = this.$('.orders-details-contents');
-        //     var parent   = this.$('.order-list').parent();
-        //     var scroll   = parent.scrollTop();
-        //     var height   = contents.height();
-
-        //     if(visibility === 'show') {
-        //         contents.empty();
-        //         contents.append($(QWeb.render('OrderHistoryDetails',{widget:this,order:order})));
-
-        //         var new_height   = contents.height();
-
-        //         if(!this.details_visible){
-        //             // resize client list to take into account client details
-        //             parent.height('-=' + new_height);
-
-        //             if(clickpos < scroll + new_height + 20 ){
-        //                 parent.scrollTop( clickpos - 20 );
-        //             }else{
-        //                 parent.scrollTop(parent.scrollTop() + new_height);
-        //             }
-        //         }else{
-        //             parent.scrollTop(parent.scrollTop() - height + new_height);
-        //         }
-        //         this.details_visible = true;
-        //     } else if (visibility === 'hide') {
-        //         contents.empty();
-        //         parent.height('100%');
-        //         if( height > scroll ){
-        //             contents.css({height:height+'px'});
-        //             contents.animate({height:0},400,function(){
-        //                 contents.css({height:''});
-        //             });
-        //         }else{
-        //             parent.scrollTop( parent.scrollTop() - height);
-        //         }
-        //         this.details_visible = false;
-        //     }
-        // },
-
         perform_search: function(query, associate_result){
             var orders = false;
             if (query) {
@@ -618,204 +534,10 @@ odoo.define('pos_orders_history', function (require) {
             return window.location.origin + '/web/image?model=product.product&field=image_small&id='+product_id;
         },
     });
+
     gui.define_screen({name:'orders_history_screen', widget: OrdersHistoryScreenWidget});
-
-
-    var EditOrderPopup = PopupWidget.extend({
-        template: 'EditPopup',
-        init: function (parent, options) {
-            this._super(parent, options);
-            this.screenState = 'main';
-            this.current_partner = false;
-            this.order_id = false;
-            this.partners = this.pos.db.get_partners_sorted();
-        },
-
-        change_screen_state: function (state) {
-            switch (state) {
-                case 'main':
-                    this.template = 'EditPopup';
-                    this.screenState = 'main';
-                    this.partners = this.pos.db.get_partners_sorted();
-                    this.show();
-                    break;
-                case 'partner':
-                    this.template = 'ChoosePartnerPopup';
-                    this.screenState = 'partner';
-                    this.show();
-                    break;
-            }
-        },
-
-        set_partner: function (id) {
-            this.current_partner = this.pos.db.get_partner_by_id(id);
-        },
-
-        get_partner_name: function () {
-            if (this.current_partner) {
-                return this.current_partner.name;
-            }
-            if (this.options.partner) {
-                this.current_partner = this.options.partner;
-                return this.options.partner.name;
-
-            }
-            return 'None';
-        },
-
-        get_order_id: function () {
-            this.order_id = this.options.order_id;
-        },
-
-        clear_data: function () {
-            this.current_partner = false;
-            this.order = false;
-        },
-
-        get_order_data: function () {
-            this.order = this.options.order ? this.options.order : this.order;
-            this.order_title = this.options.title ? this.options.title: this.order.name;
-        },
-
-        show: function (options) {
-            var self = this;
-            options = options || {};
-            this._super(options);
-            this.get_order_data();
-            this.partner_name = this.get_partner_name();
-            this.renderElement();
-
-            this.$('#edit-partner').click(function () {
-                self.change_screen_state('partner');
-            });
-
-            this.$('.searchbox input').on('keypress', function(event) {
-                if (event.keyCode === 13) {
-                    var query = this.value;
-                    self.perform_search(query);
-                }
-            });
-
-            this.$('.search-clear').on('click', function () {
-                self.partners = self.pos.db.get_partners_sorted();
-                self.show();
-            });
-        },
-
-        perform_search: function (query) {
-            var customers;
-            if (query) {
-                customers = this.pos.db.search_partner(query);
-                this.partners = customers;
-                this.show();
-            } else {
-                this.partners = this.pos.db.get_partners_sorted();
-                this.show();
-            }
-        },
-
-        click_cancel: function () {
-            if (this.screenState === 'main') {
-                this.clear_data();
-                this._super();
-            } else {
-                this.change_screen_state('main');
-            }
-        },
-
-        click_confirm: function () {
-            var self = this,
-                message = {},
-                data = {
-                    partner_id: this.current_partner.id || false
-                };
-            data = JSON.stringify(data);
-
-            new Model('pos.order').call('edit_pos_order_from_ui', [this.order.id, data])
-            .done(function (res) {
-                    self.clear_data();
-                    self.gui.close_popup();                
-            });
-        },
-
-        click_item : function (event) {
-            var new_partner_id = parseInt(event.target.getAttribute('partner_id'));            
-            this.set_partner(new_partner_id);
-            this.change_screen_state('main');
-        }
-    });
-
-    gui.define_popup({name:'editorder', widget: EditOrderPopup});
-
-
-    // OrderLinesHistoryScreenWidget = screens.ScreenWidget.extend({
-    //     template: 'OrderLinesHistoryScreenWidget',
-
-    //     init: function(parent, options){
-    //         this._super(parent, options);
-    //         this.lines_history_cache = new screens.DomCache();
-    //         this.order_history_details_cache = new screens.DomCache();
-    //     },
-    //     auto_back: true,
-
-    //     show: function(options){
-    //         console.log("show options", options);
-    //         var self = this;
-    //         this._super();
-    //         this.$('.back').click(function(){
-    //             self.gui.show_screen('orders_history_screen');
-    //         });
-    //         this.order = this.get_order();
-    //         var lines = [];
-    //         this.order.lines.forEach(function(line_id) {
-    //             var orderline = self.pos.db.line_by_id[line_id];
-    //             orderline.image = self.get_product_image_url(orderline.product_id[0]);
-    //             lines.push(self.pos.db.line_by_id[line_id]);
-    //         });
-    //         this.render_list(lines);
-    //         this.render_order_details(this.order);
-    //     },
-    //     render_list: function(lines) {
-    //         var contents = this.$el[0].querySelector('.orderline-list-contents');
-    //         contents.innerHTML = "";
-
-    //         for(var i = 0, len = Math.min(lines.length,1000); i < len; i++){
-    //             var line = lines[i];
-    //             var orderline = this.lines_history_cache.get_node(line.id);
-    //             if(!orderline){
-    //                 var orderline_html = QWeb.render('LineHistory',{widget: this, line:lines[i]});
-    //                 orderline = document.createElement('tbody');
-    //                 orderline.innerHTML = orderline_html;
-    //                 orderline = orderline.childNodes[1];
-    //                 this.lines_history_cache.cache_node(line.id, orderline);
-    //             }
-    //             contents.appendChild(orderline);
-    //         }
-    //     },
-    //     render_order_details: function(order) {
-    //         var contents = this.$el[0].querySelector('.order-details-content');
-    //         contents.innerHTML = "";
-    //         var order_content = this.order_history_details_cache.get_node(order.id);
-    //         if (!order_content) {
-    //             var order_html = QWeb.render('OrderHistoryDetails',{order:order});
-    //             order_content = document.createElement('div');
-    //             order_content.innerHTML = order_html;
-    //             order_content = order_content.childNodes[1];
-    //             this.order_history_details_cache.cache_node(order.id, order_content);
-    //         }
-    //         contents.appendChild(order_content);
-    //     },
-    //     get_order: function(){
-    //         return this.gui.get_current_screen_param('order');
-    //     },
-    //     get_product_image_url: function(product_id){
-    //         return window.location.origin + '/web/image?model=product.product&field=image_small&id='+product_id;
-    //     },
-    // });
-    // gui.define_screen({name:'order_lines_history_screen', widget: OrderLinesHistoryScreenWidget});
 
     return {
         OrdersHistoryScreenWidget: OrdersHistoryScreenWidget,
-        EditOrderPopup: EditOrderPopup
     };
 });
