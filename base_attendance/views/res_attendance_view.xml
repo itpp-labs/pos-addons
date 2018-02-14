@@ -222,7 +222,7 @@
 
     <!-- Menus -->
 
-    <menuitem id="menu_base_attendance_root" name="Attendances" sequence="90" groups="group_res_attendance" web_icon="base_attendance,static/description/icon.png"/>
+    <menuitem id="menu_base_attendance_root" name="Partner Attendances" sequence="90" groups="group_res_attendance" web_icon="base_attendance,static/description/icon.png"/>
 
     <menuitem id="menu_hr_attendance_manage_attendances" name="Manage Attendances" parent="menu_base_attendance_root" sequence="20" groups="base_attendance.group_res_attendance"/>
 
