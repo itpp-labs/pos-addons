@@ -32,6 +32,7 @@ class TestPosCreditUpdate(TransactionCase):
             'debt_dummy_product_id': False,
             'debt_limit': 0,
             'pos_cash_out': True,
+            'credits_autopay': False,
             })
 
     def get_credit_balance(self_, balance, new_balance):
