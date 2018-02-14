@@ -109,15 +109,11 @@ odoo.define('pos_disable_payment', function(require){
         },
         check_kitchen_access: function(line){
             var user = this.pos.cashier || this.pos.user;
-            var need_check = false;
-            if (!user.allow_decrease_amount) {
-                if (user.allow_decrease_kitchen_only) {
-                    return true;
-                }
-                need_check = true;
+            if (user.allow_decrease_amount || user.allow_decrease_kitchen_only) {
+                return true;
             }
             var state = this.getParent().numpad.state;
-            if (need_check && line.mp_dirty === false) {
+            if (line.mp_dirty === false) {
                 $('.numpad').find("[data-mode='quantity']").addClass('disable');
                 if (user.allow_discount) {
                     state.changeMode('discount');
