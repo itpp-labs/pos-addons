@@ -37,6 +37,18 @@ Credit Products
 * *Credit products* can be sold via POS and via invoices (including eCommerce). The later requires `another module <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_sync/>`_ to notify POS about eCommerce sales, otherwise POS will get updates about invoices only after POS reloading.
 * Note. Taxes on purchasing *Credit Products* are not supported. Taxes are applied on purchasings normal products.
 
+Autopay credits
+---------------
+
+Journals with turned on option *Autopay* will be automatically added to payment lines if credit balance for the journal is positive.
+If added payment lines fully cover the payment amount you will see additional buttons for payment proceeding
+
+* *Validate* button on payment screen
+* *Next* button on the receipt screen
+
+In order to simplify and speed up a payment proceeding, those buttons located in the place of *Payment* button in pos.
+After a successfully proceeded autopay a thumb up is shown on the screen.
+
 Manual Credit Updates
 ---------------------
 
