@@ -205,12 +205,26 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         get_summary_for_cashregister: function(cashregister) {
             var self = this;
-            return _.reduce(this.paymentlines.models, function(memo, pl){
-                if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
-                    return memo + pl.amount - self.get_change(pl);
-                }
-                return memo;
-            }, 0);
+            var debt_updates = _.find(this.paymentlines.models, function(pl){
+                return pl.amount < 0;
+            });
+            // In case of Credit/debt updating, there is a paymentline with amount = change, so for any amount debt_limit won't be exceeded.
+            // Thus it is necessary to ignore the change in this case.
+            if (debt_updates) {
+                return _.reduce(this.paymentlines.models, function(memo, pl){
+                    if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+                        return memo + pl.amount;
+                    }
+                    return memo;
+                }, 0);
+            } else {
+                return _.reduce(this.paymentlines.models, function(memo, pl){
+                    if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+                        return memo + pl.amount - self.get_change(pl);
+                    }
+                    return memo;
+                }, 0);
+            }
         },
         get_summary_for_categories: function(category_list) {
             var self = this;
@@ -346,7 +360,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return;
             }
             var exceeding_debts = this.exceeding_debts_check()
-            if (client && debt_amount > 0 && exceeding_debts) {
+            if (client && exceeding_debts) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit journal ' + exceeding_debts + ' to the customer because its max debt value will be exceeded.')
