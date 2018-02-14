@@ -365,6 +365,9 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Zero transactions on credit payments',
         help='Discount the order (mostly 100%) when user pay via this type of credits')
+    credits_autopay = fields.Boolean("Autopay", default=False,
+                                     help="On payment screen it will be automatically used if balance is positive. "
+                                          "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
 
 class PosConfiguration(models.TransientModel):
