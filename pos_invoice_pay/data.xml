@@ -7,6 +7,5 @@
                 <script type="text/javascript" src="/pos_invoice_pay/static/src/js/main.js"></script>
             </xpath>
         </template>
-        
     </data>
 </odoo>
