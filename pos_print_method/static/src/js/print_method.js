@@ -23,21 +23,38 @@ odoo.define('pos_restaurant.print_method', function (require) {
     models.Order = models.Order.extend({
         print_order_receipt: function(printer, changes) {
             var self = this;
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
             if ( changes.new.length > 0 || changes.cancelled.length > 0) {
                 if (printer.config.printer_method_name === 'separate_receipt') {
+
+                    var q = $.when();
+
                     var changes_new = $.extend({}, changes);
                     changes_new.new.forEach(function(orderline){
-                        changes_new.cancelled = [];
-                        changes_new.new = [orderline];
-                        var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_new, widget:self});
-                        printer.print(receipt);
+                        q = q.then(function(){
+                            changes_new.cancelled = [];
+                            changes_new.new = [orderline];
+                            var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_new, widget:self});
+                            printer.print(receipt);
+                            return delay(100);
+                        });
                     });
-                    var changes_cancelled= $.extend({}, changes);
+
+                    var changes_cancelled = $.extend({}, changes);
                     changes_cancelled.cancelled.forEach(function(orderline){
-                        changes_cancelled.cancelled = [orderline];
-                        changes_cancelled.new = [];
-                        var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_cancelled, widget:self});
-                        printer.print(receipt);
+                        q = q.then(function(){
+                            changes_cancelled.cancelled = [orderline];
+                            changes_cancelled.new = [];
+                            var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_cancelled, widget:self});
+                            printer.print(receipt);
+                            return delay(100);
+                        });
                     });
                 } else {
                     OrderSuper.prototype.print_order_receipt.apply(this, arguments);
