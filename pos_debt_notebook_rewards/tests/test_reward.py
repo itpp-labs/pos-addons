@@ -44,6 +44,7 @@ class TestReward(TransactionCase):
             'debt_dummy_product_id': False,
             'debt_limit': 0,
             'pos_cash_out': True,
+            'credits_autopay': False,
             })
         self.reward_type = self.reward_type_model.create({
             'name': 'test_reward',

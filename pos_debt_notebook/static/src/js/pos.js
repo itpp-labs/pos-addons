@@ -208,23 +208,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var debt_updates = _.find(this.paymentlines.models, function(pl){
                 return pl.amount < 0;
             });
+            var cash_out = cashregister.journal.pos_cash_out;
             // In case of Credit/debt updating, there is a paymentline with amount = change, so for any amount debt_limit won't be exceeded.
             // Thus it is necessary to ignore the change in this case.
-            if (debt_updates) {
-                return _.reduce(this.paymentlines.models, function(memo, pl){
-                    if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+            // Also change is ignored for journals that may be cashed out.
+            return _.reduce(this.paymentlines.models, function(memo, pl){
+                if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+                    if (cash_out || debt_updates) {
                         return memo + pl.amount;
                     }
-                    return memo;
-                }, 0);
-            } else {
-                return _.reduce(this.paymentlines.models, function(memo, pl){
-                    if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
-                        return memo + pl.amount - self.get_change(pl);
-                    }
-                    return memo;
-                }, 0);
-            }
+                    return memo + pl.amount - self.get_change(pl);
+                }
+                return memo;
+            }, 0);
         },
         get_summary_for_categories: function(category_list) {
             var self = this;
@@ -359,7 +355,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var exceeding_debts = this.exceeding_debts_check()
+            var exceeding_debts = this.exceeding_debts_check();
             if (client && exceeding_debts) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
@@ -466,10 +462,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 sum_prod = 0;
             //summary paid by each journal
             sum_pl = order.get_summary_for_cashregister(cr);
-            sum_pl = round_pr(sum_pl, this.pos.currency.rounding)
+            sum_pl = round_pr(sum_pl, this.pos.currency.rounding);
             //summary allowed to pay
             sum_prod = order.get_summary_for_categories(journal.category_ids);
-            sum_prod = round_pr(sum_prod, this.pos.currency.rounding)
+            sum_prod = round_pr(sum_prod, this.pos.currency.rounding);
             if (sum_pl > sum_prod) {
                 return cr;
             }
@@ -642,7 +638,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var autopay_cashregisters = _.filter(this.pos.cashregisters, function(cr){
                     return cr.journal.credits_autopay && client.debts[cr.journal.id].balance > 0;
                 });
-                var order = this.pos.get_order();
                 if (autopay_cashregisters) {
                     _.each(autopay_cashregisters, function(cr){
                         if (order.get_due()) {
@@ -671,8 +666,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             return validation_button;
         },
         change_autopay_button: function(status) {
-            var content = $(this.autopay_html)
-            var button_autopay = content.find('.autopay')
+            var content = $(this.autopay_html);
+            var button_autopay = content.find('.autopay');
             if (status === 'validate') {
                 content.show();
                 button_autopay.removeClass('alert');
@@ -695,7 +690,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.change_autopay_button(autopay_status);
         },
         render_paymentlines: function() {
-            var self  = this;
+            var self = this;
             var order = this.pos.get_order();
             if (!order) {
                 return;
@@ -711,8 +706,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         show: function(){
             this._super();
             var self = this;
+            $(this.next_button_html).hide()
             if (this.pos.get_order().autopay_validated) {
-                var button_next = this.next_button_html.find('.autopay')
+                $(this.next_button_html).show()
+                var button_next = this.next_button_html.find('.autopay');
                 button_next.addClass('validate');
                 button_next.find('.title').text('Next');
             }
@@ -827,8 +824,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 _.each(cashregisters, function(cr){
                     var journal_id = cr.journal.id;
-                    var total_journal = partner.debts[journal_id].balance
-                    for (var i = 0; i < debt_history.length; i++) {
+                    var total_journal = partner.debts[journal_id].balance;
+                    for (i = 0; i < debt_history.length; i++) {
                         if (debt_history[i].journal_id[0] === journal_id) {
                             debt_history[i].total_journal = Math.round(total_journal * 100) / 100;
                             total_journal -= debt_history[i].balance;
@@ -1005,7 +1002,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             var k = 50;
             element.css({
-                "zoom": k * (Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight)/80) + '%'
+                "zoom": ( k * (Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight)/80) ) + '%'
             });
 
             element.show();
