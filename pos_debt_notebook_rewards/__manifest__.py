@@ -21,6 +21,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        'security/pos_debt_notebook_reward_security.xml',
         'views/reward_view.xml',
         'views/reward_type_view.xml',
         'security/ir.model.access.csv',
