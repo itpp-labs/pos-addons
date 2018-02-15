@@ -19,6 +19,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
             }
         },
     });
+
     models.load_models({
         model: 'pos.category_discount',
         fields: [],
@@ -28,20 +29,12 @@ odoo.define('pos_product_category_discount.models', function (require) {
             }
         },
     });
+
+    models.load_fields('product.product',['discount_allowed']);
+    models.load_fields('res.partner',['discount_program_id']);
+
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        load_server_data: function() {
-            var partner_model = _.find(this.models, function(model){
-                return model.model === 'res.partner';
-            });
-            partner_model.fields.push('discount_program_id');
-
-            var product_model = _.find(this.models, function(model){
-                return model.model === 'product.product';
-            });
-            product_model.fields.push('discount_allowed');
-            return PosModelSuper.prototype.load_server_data.apply(this, arguments);
-        },
         get_discount_categories: function(id) {
             return _.filter(this.discount_categories, function(item){
                 return item.discount_program_id[0] === id;
@@ -83,7 +76,9 @@ odoo.define('pos_product_category_discount.models', function (require) {
             if (this.pos.config.iface_discount) {
                 this.discount_program_id = false;
                 this.get_orderlines().forEach(function(line){
-                    line.set_discount(false);
+                    if (line.discount_program_name) {
+                        line.set_discount(false);
+                    }
                 });
             }
         },

@@ -1,3 +1,8 @@
+`1.2.4`
+-------
+
+- **IMP:** Refactoring the code to fix a slow synchronization when using synced POSes
+
 `1.2.3`
 -------
 

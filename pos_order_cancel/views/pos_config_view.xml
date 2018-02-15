@@ -7,7 +7,12 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='features']" position="after">
                 <group name="refunds" string="Refunds / Cancellations" >
-                    <field name="allow_custom_reason"/>
+                    <group>
+                        <field name="allow_custom_reason"/>
+                        <field name="allow_cancel_deletion" attrs="{'invisible': [('allow_custom_reason', '=', True)]}"/>
+                        <field name="show_popup_change_quantity"/>
+                        <field name="show_cancel_info"/>
+                    </group>
                 </group>
             </xpath>
         </field>

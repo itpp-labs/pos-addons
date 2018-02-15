@@ -8,23 +8,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var chrome = require('point_of_sale.chrome');
     var multi_session = require('pos_multi_session');
 
-    var FloorScreenWidget = {};
-    _.each(gui.Gui.prototype.screen_classes, function(o){
-        if (o.name === 'floors'){
-            FloorScreenWidget = o.widget;
-            FloorScreenWidget.include({
-                start: function () {
-                    var self = this;
-                    this._super();
-                    this.pos.bind('change:orders-count-on-floor-screen', function () {
-                        self.renderElement();
-                    });
-                }
-            });
-            return false;
-        }
-    });
     var _t = core._t;
+
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name === 'splitbill';
@@ -115,7 +100,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var old_order = this.get_order();
 
             if (data.uid){
-                order = this.get('orders').find(function(ord){
+                order = this.get('orders').find(function(ord) {
                     return ord.uid === data.uid;
                 });
             }
@@ -127,7 +112,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
-            if (this.gui.screen_instances.floors){
+            if (!sync_all && this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
                 this.gui.screen_instances.floors.renderElement();
             }
         },
@@ -137,21 +122,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
                 order.trigger('change');
-                if (this.gui.screen_instances.floors){
-                    this.gui.screen_instances.floors.renderElement();
-                }
             }
-        },
-        ms_on_add_order: function(current_order){
-            if (current_order){
-                PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
-            }else{
-                this.trigger('change:orders-count-on-floor-screen');
-            }
-        },
-        on_removed_order: function(removed_order, index, reason){
-            PosModelSuper.prototype.on_removed_order.apply(this, arguments);
-            this.trigger('change:orders-count-on-floor-screen');
         },
         // changes the current table.
         set_table: function(table) {
@@ -207,6 +178,88 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.set_note(data.note);
             }
             OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
+        },
+    });
+
+    var MultiSessionSuper = multi_session.MultiSession;
+    multi_session.MultiSession = multi_session.MultiSession.extend({
+        sync_all: function(data) {
+            MultiSessionSuper.prototype.sync_all.apply(this, arguments);
+            if (this.pos.gui.screen_instances.floors && this.pos.gui.get_current_screen() === "floors") {
+                this.pos.gui.screen_instances.floors.renderElement();
+            }
+        }
+    });
+
+    floors.FloorScreenWidget.include({
+        init: function(parent, options) {
+            this._super(parent, options);
+            this.saved_data = false;
+        },
+        show: function(){
+            if (this.pos.debug) {
+                console.log("renderElement of TableWidget");
+            }
+            this._super();
+        },
+        renderElement: function(){
+            if (this.compare_data()) {
+                return false;
+            }
+            if (this.pos.debug) {
+                console.log("renderElement of FloorScreenWidget and TableWidget");
+            }
+            this._super();
+            this.save_changes_data();
+        },
+        save_changes_data: function() {
+            var self = this;
+            var collection = this.get_current_data();
+            this.saved_data = JSON.stringify(collection);
+        },
+        compare_data: function() {
+            var collection = this.get_current_data();
+            return this.saved_data === JSON.stringify(collection);
+        },
+        get_current_data: function(){
+            var self = this;
+            var tables = this.floor.tables;
+
+            var collection = [];
+            tables.forEach(function(table) {
+                collection.push({
+                    'floor': {
+                        'background_color': table.floor.background_color,
+                        'name': table.floor.name,
+                        'sequence': table.floor.sequence,
+                    },
+                    'name': table.name,
+                    'height': table.height,
+                    'position_h': table.position_h,
+                    'position_v': table.position_v,
+                    'seats': table.seats,
+                    'shape': table.shape,
+                    'width': table.width,
+                    'order_count': self.pos.get_table_orders(table).length,
+                    'customer_count': self.pos.get_customer_count(table),
+                    'fill': Math.min(1,Math.max(0,self.pos.get_customer_count(table) / table.seats)),
+                    'notifications': self.get_notifications(table),
+                });
+            });
+            return collection;
+        },
+        get_notifications: function(table){
+            var orders = this.pos.get_table_orders(table);
+            var notifications = {};
+            for (var i = 0; i < orders.length; i++) {
+                if (orders[i].hasChangesToPrint()) {
+                    notifications.printing = true;
+                    break;
+                } else if (orders[i].hasSkippedChanges()) {
+                    notifications.skipped = true;
+                }
+            }
+            return notifications;
         },
     });
 });
