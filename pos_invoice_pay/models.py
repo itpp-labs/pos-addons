@@ -136,3 +136,11 @@ class SaleOrder(models.Model):
             }
             res.append(line)
         return res
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
+    show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
+ 

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-extend="ProductScreenWidget" >
-        <t t-jquery=".subwindow-container-fix.pads" t-operation="prepend">
-         <div class="invoice-so-buttons">
-             <button class='inv-so fetch-orders'>Fetch Orders</button>
-             <button class='inv-so fetch-invoices'>Fetch Invoices</button>
-         </div>
-        </t>
+    <t t-name="SaleOrdersButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt '/> Fetch Orders
+        </div>
+    </t>
+
+        <t t-name="InvoicesButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt '/> Fetch Invoices
+        </div>
     </t>
 
     <t t-name="SaleOrder">
