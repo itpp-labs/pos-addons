@@ -520,7 +520,6 @@ screens.define_action_button({
     'widget': InvoicesButton,
     'condition': function () {
         return this.pos.config.show_invoices;
-        ;
     },
 });
 
@@ -883,7 +882,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
         if (typeof order !== 'object') {
             return;
         }
-        var lines = order.get_paymentlines();        
+        var lines = order.get_paymentlines();
         if (typeof this.pos.selected_invoice !== 'object') {
             return;
         }
