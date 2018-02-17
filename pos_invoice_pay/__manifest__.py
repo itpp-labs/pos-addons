@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "1.0.0",
+    "version": "10.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -49,7 +49,7 @@
     ],
     "demo_addons_hidden": [
     ],
-    "demo_url": "website-multi-company",
+    "demo_url": "pos-invoice-pay",
     "demo_summary": "Handle the payment process for Sale Orders/Invoices over Point of Sale",
     "demo_images": [
         "images/pos_invoice_pay_main.png",
