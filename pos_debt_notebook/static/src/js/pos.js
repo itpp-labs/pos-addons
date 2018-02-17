@@ -205,18 +205,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         get_summary_for_cashregister: function(cashregister) {
             var self = this;
-            var debt_updates = _.find(this.paymentlines.models, function(pl){
-                return pl.amount < 0;
-            });
-            var cash_out = cashregister.journal.pos_cash_out;
-            // In case of Credit/debt updating, there is a paymentline with amount = change, so for any amount debt_limit won't be exceeded.
-            // Thus it is necessary to ignore the change in this case.
-            // Also change is ignored for journals that may be cashed out.
             return _.reduce(this.paymentlines.models, function(memo, pl){
                 if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
-                    if (cash_out || debt_updates) {
-                        return memo + pl.amount;
-                    }
                     return memo + pl.amount - self.get_change(pl);
                 }
                 return memo;
@@ -355,8 +345,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var exceeding_debts = this.exceeding_debts_check();
-            if (client && exceeding_debts) {
+            var exceeding_debts = this.exceeding_debts_check()
+            if (client && debt_amount > 0 && exceeding_debts) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
                     'body': _t('You cannot sell products on credit journal ' + exceeding_debts + ' to the customer because its max debt value will be exceeded.')
