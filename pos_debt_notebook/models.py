@@ -391,6 +391,11 @@ class AccountJournal(models.Model):
                                      help="On payment screen it will be automatically used if balance is positive. "
                                           "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
+    @api.onchange('credits_via_discount')
+    def _onchange_partner(self):
+        if self.credits_via_discount is True:
+            self.pos_cash_out = False
+
 
 class PosConfiguration(models.TransientModel):
     _inherit = 'pos.config.settings'
