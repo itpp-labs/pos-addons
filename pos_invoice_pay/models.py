@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields
 
+SO_CHANNEL = 'pos_sale_orders'
+INV_CHANNEL = 'pos_invoices'
 
 class PosOrder(models.Model):
     _inherit = 'pos.order'
@@ -53,13 +55,6 @@ class PosOrder(models.Model):
     def process_invoices_creation(self, sale_order_id):
         return self.env['sale.order'].browse(sale_order_id).action_invoice_create()[0]
 
-    @api.model
-    def send_longpolling_data(self):
-        return {
-            'dbname': self._cr.dbname,
-            'uid': self.env.uid
-        }
-
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -72,8 +67,8 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     def action_updated_invoice(self):
-        channel = '["%s","%s","%s"]' % (self._cr.dbname, "account.invoice", self.env.uid)
-        self.env['bus.bus'].sendone(channel, self.id)
+        message = {'channel': INV_CHANNEL, 'id': self.id}
+        self.env['pos.config'].search([])._send_to_channel(INV_CHANNEL, message)
 
     @api.model
     def get_invoice_lines_for_pos(self, invoice_ids):
@@ -112,8 +107,8 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def action_updated_sale_order(self):
-        channel = '["%s","%s","%s"]' % (self._cr.dbname, "sale.order", self.env.uid)
-        self.env['bus.bus'].sendone(channel, self.id)
+        message = {'channel': SO_CHANNEL, 'id': self.id}
+        self.env['pos.config'].search([])._send_to_channel(SO_CHANNEL, message)
 
     @api.model
     def get_order_lines_for_pos(self, sale_order_ids):
