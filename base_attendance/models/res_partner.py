@@ -20,7 +20,7 @@ class HrPartner(models.Model):
 
     # barcode = fields.Char(string="Badge ID", help="ID used for partner identification.",
     #                       default=_default_random_barcode, copy=False)
-    pin = fields.Char(string="PIN", default=_default_random_pin,
+    pin = fields.Char(string="Attendance PIN", default=_default_random_pin,
                       help="PIN used to Check In/Out in Kiosk Mode (if enabled in Configuration).", copy=False)
 
     partners_attendance_ids = fields.One2many('res.partner.attendance', 'partner_id',

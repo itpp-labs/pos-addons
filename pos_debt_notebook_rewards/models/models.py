@@ -61,6 +61,9 @@ class PosCreditUpdateReward(models.Model):
                 .search([('id', '=', reward_type_id)]).journal_id.id
         return vals
 
+    def do_confirm(self):
+        self.credit_update_id.do_confirm()
+
 
 class RewardType(models.Model):
     _name = 'pos.credit.update.reward.type'

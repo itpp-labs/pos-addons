@@ -236,6 +236,7 @@ class PosConfig(models.Model):
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
                                                 'debt_limit': default_debt_limit,
                                                 'pos_cash_out': True,
+                                                'credits_autopay': False,
                                                 })
         self.write({
             'journal_ids': [(4, debt_journal.id)],
@@ -283,6 +284,7 @@ class PosConfig(models.Model):
             'category_ids': vals['category_ids'],
             'pos_cash_out': vals['pos_cash_out'],
             'credits_via_discount': vals['credits_via_discount'],
+            'credits_autopay': vals['credits_autopay'],
         })
         self.env['ir.model.data'].create({
             'name': 'debt_journal_' + str(debt_journal.id),
@@ -330,6 +332,7 @@ class PosConfig(models.Model):
                              'debt_dummy_product_id': False,
                              'debt_limit': 1000,
                              'pos_cash_out': False,
+                             'credits_autopay': False,
                              })
         allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
@@ -348,6 +351,25 @@ class PosConfig(models.Model):
                              'debt_dummy_product_id': False,
                              'debt_limit': 1000,
                              'pos_cash_out': False,
+                             'credits_autopay': False,
+                             })
+        self.create_journal({'sequence_name': 'Account Default Autopay Credit Journal',
+                             'prefix': 'CRD ',
+                             'user': user,
+                             'noupdate': True,
+                             'journal_name': 'Credits Autopay',
+                             'code': 'ACRD',
+                             'type': 'cash',
+                             'debt': True,
+                             'journal_user': True,
+                             'debt_account': debt_account,
+                             'credits_via_discount': False,
+                             'category_ids': False,
+                             'write_statement': True,
+                             'debt_dummy_product_id': False,
+                             'debt_limit': 0,
+                             'pos_cash_out': False,
+                             'credits_autopay': True,
                              })
 
 
@@ -365,6 +387,9 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Zero transactions on credit payments',
         help='Discount the order (mostly 100%) when user pay via this type of credits')
+    credits_autopay = fields.Boolean("Autopay", default=False,
+                                     help="On payment screen it will be automatically used if balance is positive. "
+                                          "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
 
 class PosConfiguration(models.TransientModel):

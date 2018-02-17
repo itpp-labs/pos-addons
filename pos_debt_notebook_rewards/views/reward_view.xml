@@ -23,9 +23,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Confirm" type="object" name="switch_to_confirm" attrs="{'invisible': [('state', '==', 'confirm')]}"/>
-                    <button string="Cancel" type="object" name="switch_to_cancel" attrs="{'invisible': [('state', '==', 'cancel')]}"/>
-                    <button string="Draft" type="object" name="switch_to_draft" attrs="{'invisible': [('state', '==', 'draft')]}"/>
+                    <button string="Confirm" type="object" name="switch_to_confirm" attrs="{'invisible': [('state', '==', 'confirm')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
+                    <button string="Cancel" type="object" name="switch_to_cancel" attrs="{'invisible': [('state', '==', 'cancel')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
+                    <button string="Draft" type="object" name="switch_to_draft" attrs="{'invisible': [('state', '==', 'draft')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
                 </header>
 
