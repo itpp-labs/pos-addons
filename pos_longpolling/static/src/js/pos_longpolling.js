@@ -256,7 +256,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         set_icon_class: function(selector, new_class) {
-            var element = self.$(selector);
+            var element = this.$(selector);
             element.removeClass('oe_red oe_green oe_gray').addClass(new_class);
         },
     });
