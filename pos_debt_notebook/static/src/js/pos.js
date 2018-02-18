@@ -212,10 +212,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         get_payment_limits: function(cashregister, limit_code){
             // By default with one first argument returns all limits of the cashregister
             // Output may be changed from all limits to a one particular limit by setting the second string argument
-            // Available atributes 'debt_limit', 'products_restriction', 'cash_out', 'due' and 'all' is default
+            // Available atributes 'debt_limit', 'products_restriction', 'due' and 'all' is default
             // 'debt_limit' = partner balance + debt limit
             // 'products_restriction' = sum of resticted products only
-            // 'cash_out' = 'debt_limit' here to show the presence of that type of limit
             // 'due' = remained amount to pay
             var self = this;
             var limit_code = limit_code || 'all';
@@ -229,9 +228,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 if (category_list.length && (limit_code === 'products_restriction' || limit_code === 'all')){
                     vals.products_restriction = this.get_summary_for_categories(category_list);
-                }
-                if (cashregister.journal.pos_cash_out && (limit_code === 'cash_out' || limit_code === 'all')){
-                    vals.cash_out = debt_limit;
                 }
             }
             if (limit_code === 'due' || limit_code === 'all'){
@@ -484,16 +480,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         debt_change_check: function () {
             var order = this.pos.get_order(),
-                flag = false;
-            var cashregisters = this.get_used_debt_cashregisters();
-            _.each(cashregisters, function(cr){
-                var sum_pl = order.get_summary_for_cashregister(cr);
-                var limits = order.get_payment_limits(cr, 'cash_out');
-                if (limits.hasOwnProperty('cash_out') && sum_pl > limits.cash_out){
-                    flag = true;
+                paymentlines = order.get_paymentlines();
+            for (var i = 0; i < paymentlines.length; i++) {
+                var journal = paymentlines[i].cashregister.journal;
+                if (journal.debt && !journal.pos_cash_out && order.get_change(paymentlines[i]) > 0){
+                    return true;
                 }
-            });
-            return flag;
+            }
+            return false;
         },
         pay_full_debt: function(){
             var self = this;
