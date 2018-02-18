@@ -668,7 +668,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 content.show();
                 button_autopay.removeClass('validate');
                 button_autopay.addClass('alert');
-                button_autopay.find('.title').text('Not enough credits to pay');
+                button_autopay.find('.title').text('Not enough credits to autopay');
             }
         },
         click_autopay_validation: function() {
