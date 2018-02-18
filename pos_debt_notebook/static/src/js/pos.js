@@ -461,7 +461,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order();
             var sum_pl = round_pr(order.get_summary_for_cashregister(cr), this.pos.currency.rounding);
             var limits = order.get_payment_limits(cr, 'products_restriction');
-            if (limits.hasOwnProperty(products_restriction) && sum_pl > limits.products_restriction) {
+            if (limits.hasOwnProperty('products_restriction') && sum_pl > limits.products_restriction) {
                 return cr;
             }
             return false;
@@ -488,7 +488,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             _.each(cashregisters, function(cr){
                 var sum_pl = order.get_summary_for_cashregister(cr);
                 var limits = order.get_payment_limits(cr, 'cash_out');
-                if (limits.hasOwnProperty(cash_out) && sum_pl > limits.cash_out){
+                if (limits.hasOwnProperty('cash_out') && sum_pl > limits.cash_out){
                     flag = true;
                 }
             });
