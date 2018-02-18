@@ -465,6 +465,7 @@ class PosOrder(models.Model):
                                        'note': product_list,
                                        })
                 payment[2]['amount'] = 0
+        pos_order['amount_return'] -= pos_order.get('amount_via_discount', 0)
         for update in credit_updates:
             entry = self.env['pos.credit.update'].create(update)
             entry.switch_to_confirm()
