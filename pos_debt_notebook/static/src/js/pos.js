@@ -433,14 +433,15 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         restricted_categories_message: function(cashregisters) {
             var self = this;
             var body = [];
-            var categ_names = '';
+            var categ_names = [];
             _.each(cashregisters, function(cr) {
                 var journal = cr.journal;
                 _.each(journal.category_ids, function(categ) {
-                    categ_names += self.pos.db.get_category_by_id(categ).name + ' ';
+                    categ_names.push(self.pos.db.get_category_by_id(categ).name);
                 });
-                body.push(categ_names + ' with ' + cr.journal_id[1] + ' ');
+                body.push(categ_names.join(', ') + ' with ' + cr.journal_id[1] + ' ');
             });
+            // TODO we can make a better formatting here
             return 'You may only buy ' + body.toString();
         },
         debt_journal_restricted_categories_check: function(){
