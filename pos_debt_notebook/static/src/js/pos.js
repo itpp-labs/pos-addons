@@ -189,6 +189,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
+            var sum = _.filter(this.get_paymentlines(), function(pl){
+                return pl.cashregister.journal.credits_via_discount;
+            });
+            data.amount_via_discount = _.reduce(sum, function(memo, o){
+                return memo + o.amount;
+            },0);
             return data;
         },
         export_for_printing: function(){
@@ -299,20 +305,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             }
             return round_pr(due, this.pos.currency.rounding);
-        },
-        get_change: function(paymentline) {
-            var result = _super_order.get_change.apply(this, arguments);
-
-            if (!paymentline){
-                var sum = _.filter(this.get_paymentlines(), function(pl){
-                    return pl.cashregister.journal.credits_via_discount;
-                });
-                sum = _.reduce(sum,function(memo, o){
-                    return memo + o.amount;
-                },0);
-                result = this.get_total_paid() - this.get_total_with_tax() - sum;
-            }
-            return result;
         },
     });
 
