@@ -138,7 +138,7 @@ class PosDebtReport(models.Model):
                 (
                 SELECT
                     (-2147483647 + record.id) as id,
-                    NULL::integer as order_id,
+                    record.order_id as order_id,
                     NULL::integer as invoice_id,
                     record.id as update_id,
                     record.balance as balance,
