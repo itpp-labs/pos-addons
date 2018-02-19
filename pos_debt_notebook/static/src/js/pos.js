@@ -238,6 +238,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
         },
         get_summary_for_cashregister: function(cashregister) {
+
             var self = this;
             return _.reduce(this.paymentlines.models, function(memo, pl){
                 if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
@@ -245,6 +246,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 return memo;
             }, 0);
+        },
+        get_summary_for_cashregister: function(cashregister){
+            var debt_updates = _.find(this.paymentlines.models, function(pl){
+                return pl.amount < 0;
+            });
+            var cash_out = cashregister.journal.pos_cash_out && _.find(this.paymentlines.models, function(pl){
+                return !pl.cashregister.journal.debt;
+            });
+            // In case of Credit/debt updating, there is a paymentline with amount = change, so for any amount debt_limit won't be exceeded.
+            // Thus it is necessary to ignore the change in this case.
+            // Also change is ignored for journals that may be cashed out.
+            if (cash_out || debt_updates) {
+                return this.get_summary_for_cashregister_without_change(cashregister);
+            }
+            return this.get_summary_for_cashregister_with_change(cashregister);
         },
         get_summary_for_categories: function(category_list) {
             var self = this;
