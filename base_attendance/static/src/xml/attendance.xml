@@ -73,7 +73,7 @@
             <div class="o_hr_attendance_message">
                 <t t-if="widget.attendance">
                     <t t-if="widget.attendance.check_out">
-                        <h1 class="o_hr_attendance_validation">
+                        <h1 class="o_hr_attendance_validation checkout">
                             Checked out at <t t-esc="widget.attendance.check_out_time"/>
                         </h1>
                         <h2 class="o_hr_attendance_message_message">
@@ -85,7 +85,7 @@
                         
                     </t>
                     <t t-if="!widget.attendance.check_out">
-                        <h1 class="o_hr_attendance_validation">
+                        <h1 class="o_hr_attendance_validation checkin">
                             Checked in at <t t-esc="widget.attendance.check_in_time"/>
                         </h1>
                         <h2 class="o_hr_attendance_message_message">
