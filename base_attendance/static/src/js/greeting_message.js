@@ -11,7 +11,7 @@ var _t = core._t;
 
 
 var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
-    template: 'HrAttendanceGreetingMessage',
+    template: 'BaseAttendanceGreetingMessage',
 
     events: {
         "click .o_hr_attendance_button_dismiss": function() {
@@ -40,7 +40,7 @@ var GreetingMessage = Widget.extend(BarcodeHandlerMixin, {
 
         this.next_action = action.next_action || 'base_attendance.hr_attendance_action_my_attendances';
         // no listening to barcode scans if we aren't coming from the kiosk mode (and thus not going back to it with next_action)
-        if (this.next_action !== 'base_attendance.hr_attendance_action_kiosk_mode' && this.next_action.tag !== 'hr_attendance_kiosk_mode') {
+        if (this.next_action !== 'base_attendance.hr_attendance_action_kiosk_mode' && this.next_action.tag !== 'base_attendance_kiosk_mode') {
             this.stop_listening();
         }
         this.attendance = action.attendance;
