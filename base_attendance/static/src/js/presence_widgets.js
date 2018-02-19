@@ -23,7 +23,7 @@ var FormPresenceIndicator = form_common.AbstractField.extend({
         this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.get_value() === 'checked_out');
     },
     display_field: function() {
-        this.$el.html(QWeb.render("PresenceIndicator"));
+        this.$el.html(QWeb.render("BAPresenceIndicator"));
     },
 });
 
@@ -43,11 +43,11 @@ var KanbanPresenceIndicator = kanban_widgets.AbstractField.extend({
         this.$('.oe_hr_attendance_status').toggleClass("oe_hr_attendance_status_red", this.field.raw_value === 'checked_out');
     },
     display_field: function() {
-        this.$el.html(QWeb.render("PresenceIndicator"));
+        this.$el.html(QWeb.render("BAPresenceIndicator"));
     },
 });
 
-core.form_widget_registry.add('hr_attendance_form_presence_indicator', FormPresenceIndicator);
-kanban_widgets.registry.add('hr_attendance_kanban_presence_indicator', KanbanPresenceIndicator);
+core.form_widget_registry.add('base_attendance_form_presence_indicator', FormPresenceIndicator);
+kanban_widgets.registry.add('base_attendance_kanban_presence_indicator', KanbanPresenceIndicator);
 
 });

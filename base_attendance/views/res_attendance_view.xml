@@ -112,7 +112,7 @@
 
     <record id="hr_attendance_action_kiosk_mode" model="ir.actions.client">
         <field name="name">Attendances</field>
-        <field name="tag">hr_attendance_kiosk_mode</field>
+        <field name="tag">base_attendance_kiosk_mode</field>
         <field name="target">fullscreen</field>
     </record>
 
