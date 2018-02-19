@@ -37,6 +37,7 @@
                                 <field name="new_balance" attrs="{'invisible': [('update_type', '!=', 'new_balance')], 'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="currency_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="company_id" groups="base.group_multi_company"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="order_id" readonly="1"/>
                                 <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>

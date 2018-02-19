@@ -448,11 +448,12 @@ class PosOrder(models.Model):
                                        })
                 payment[2]['amount'] = 0
         pos_order['amount_return'] -= pos_order.get('amount_via_discount', 0)
+        order = super(PosOrder, self)._process_order(pos_order)
         for update in credit_updates:
+            update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
-
-        return super(PosOrder, self)._process_order(pos_order)
+        return order
 
 
 class PosCreditUpdate(models.Model):
@@ -491,6 +492,7 @@ class PosCreditUpdate(models.Model):
     ], default='draft', required=True, track_visibility='always')
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
+    order_id = fields.Many2one('pos.order', string="POS Order")
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
