@@ -181,7 +181,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             this.orderlines.each(function(line){
                 if (line.product.credit_product){
-                    debt_amount -= line.get_price_without_tax();
+                    debt_amount -= line.get_price_with_tax();
                 }
             });
             return debt_amount;
@@ -189,6 +189,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
+            var sum = _.filter(this.get_paymentlines(), function(pl){
+                return pl.cashregister.journal.credits_via_discount;
+            });
+            data.amount_via_discount = _.reduce(sum, function(memo, o){
+                return memo + o.amount;
+            },0);
             return data;
         },
         export_for_printing: function(){
@@ -203,20 +209,40 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             return data;
         },
-        get_summary_for_cashregister_without_change: function(cashregister) {
+        get_payment_limits: function(cashregister, limit_code){
+            // By default with one first argument returns all limits of the cashregister
+            // Output may be changed from all limits to a one particular limit by setting the second string argument
+            // Available atributes 'debt_limit', 'products_restriction', 'due' and 'all' is default
+            // 'debt_limit' = partner balance + debt limit
+            // 'products_restriction' = sum of resticted products only
+            // 'due' = remained amount to pay
+            var self = this;
+            var limit_code = limit_code || 'all';
+            var vals = {};
+            if (cashregister.journal.debt){
+                var partner_balance = this.pos.get_client().debts[cashregister.journal.id].balance,
+                    category_list = cashregister.journal.category_ids;
+                var debt_limit = partner_balance + cashregister.journal.debt_limit;
+                if (limit_code === 'debt_limit' || limit_code === 'all'){
+                    vals.debt_limit = debt_limit;
+                }
+                if (category_list.length && (limit_code === 'products_restriction' || limit_code === 'all')){
+                    vals.products_restriction = this.get_summary_for_categories(category_list);
+                }
+            }
+            if (limit_code === 'due' || limit_code === 'all'){
+                vals.due = this.get_due();
+            }
+            return _.each(vals, function(v){
+                return round_pr(v, self.pos.currency.rounding);
+            });
+        },
+        get_summary_for_cashregister: function(cashregister) {
+
             var self = this;
             return _.reduce(this.paymentlines.models, function(memo, pl){
                 if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
                     return memo + pl.amount;
-                }
-                return memo;
-            }, 0);
-        },
-        get_summary_for_cashregister_with_change: function(cashregister) {
-            var self = this;
-            return _.reduce(this.paymentlines.models, function(memo, pl){
-                if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
-                    return memo + pl.amount - self.get_change(pl);
                 }
                 return memo;
             }, 0);
@@ -227,7 +253,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             var cash_out = cashregister.journal.pos_cash_out && _.find(this.paymentlines.models, function(pl){
                 return !pl.cashregister.journal.debt;
-            });;
+            });
             // In case of Credit/debt updating, there is a paymentline with amount = change, so for any amount debt_limit won't be exceeded.
             // Thus it is necessary to ignore the change in this case.
             // Also change is ignored for journals that may be cashed out.
@@ -264,26 +290,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 pos: this.pos
             });
             if (cashregister.journal.debt && this.get_client()){
-                var category_list = cashregister.journal.category_ids;
-                var partner_balance = this.pos.get_client().debts[journal.id].balance;
-                var amount = this.get_due();
-                //already tendered amount for this journal
-                var sum_pl = this.get_summary_for_cashregister(cashregister);
                 if (this.get_due_debt() < 0) {
-                    amount = this.get_due_debt();
-                } else if (category_list.length) {
-                    //required summary
-                    var sum_prod = this.get_summary_for_categories(category_list);
-                    amount = Math.max(Math.min(
-                        sum_prod - sum_pl,
-                        amount,
-                        journal.debt_limit - sum_pl + partner_balance), 0);
+                    newPaymentline.set_amount(this.get_due_debt());
                 } else {
-                    amount = Math.max(Math.min(
-                        amount,
-                        journal.debt_limit - sum_pl + partner_balance), 0);
+                    var limits = this.get_payment_limits(cashregister, 'all');
+                    newPaymentline.set_amount(Math.max(Math.min.apply(null, _.values(limits)) - this.get_summary_for_cashregister(cashregister), 0));
                 }
-                newPaymentline.set_amount(amount);
             } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
                 newPaymentline.set_amount(this.get_due());
             }
@@ -305,20 +317,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             }
             return round_pr(due, this.pos.currency.rounding);
-        },
-        get_change: function(paymentline) {
-            var result = _super_order.get_change.apply(this, arguments);
-
-            if (!paymentline){
-                var sum = _.filter(this.get_paymentlines(), function(pl){
-                    return pl.cashregister.journal.credits_via_discount;
-                });
-                sum = _.reduce(sum,function(memo, o){
-                    return memo + o.amount;
-                },0);
-                result = this.get_total_paid() - this.get_total_with_tax() - sum;
-            }
-            return result;
         },
     });
 
@@ -435,52 +433,48 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this._super();
             }
         },
+        get_used_debt_cashregisters: function(paymentlines) {
+            var paymentlines = paymentlines || this.pos.get_order().get_paymentlines();
+            var cashregisters = _.uniq(_.map(paymentlines, function(pl){
+                return pl.cashregister;
+            }));
+            return _.filter(cashregisters, function(cr){
+                return cr.journal.debt;
+            });
+        },
         restricted_categories_message: function(cashregisters) {
             var self = this;
             var body = [];
-            var categ_names = '';
+            var categ_names = [];
             _.each(cashregisters, function(cr) {
                 var journal = cr.journal;
                 _.each(journal.category_ids, function(categ) {
-                    categ_names += self.pos.db.get_category_by_id(categ).name + ' ';
+                    categ_names.push(self.pos.db.get_category_by_id(categ).name);
                 });
-                body.push(categ_names + ' with ' + cr.journal_id[1] + ' ');
+                body.push(categ_names.join(', ') + ' with ' + cr.journal_id[1] + ' ');
             });
+            // TODO we can make a better formatting here
             return 'You may only buy ' + body.toString();
         },
         debt_journal_restricted_categories_check: function(){
             var self = this;
-            var order = this.pos.get_order(),
-            paymentlines = order.get_paymentlines(),
-            orderlines = order.get_orderlines();
-            var paymentlines_with_restrictions = _.filter(paymentlines, function(pl){
-                return pl.cashregister.journal.category_ids.length > 0;
+            var cashregisters = this.get_used_debt_cashregisters();
+            cashregisters = _.filter(cashregisters, function(cr){
+                return cr.journal.category_ids.length > 0;
             });
             var violations = [];
-            if (paymentlines_with_restrictions) {
-                var cashregisters = _.uniq(_.map(paymentlines_with_restrictions, function(pcr){
-                    return pcr.cashregister;
-                }));
-                _.each(cashregisters, function(cr){
-                    if (self.restricted_products_check(cr)){
-                        violations.push(cr);
-                    }
-                });
-            }
+            _.each(cashregisters, function(cr){
+                if (self.restricted_products_check(cr)){
+                    violations.push(cr);
+                }
+            });
             return violations;
         },
         restricted_products_check: function(cr){
             var order = this.pos.get_order();
-            var journal = cr.journal;
-            var sum_pl = 0,
-                sum_prod = 0;
-            //summary paid by each journal
-            sum_pl = order.get_summary_for_cashregister(cr);
-            sum_pl = round_pr(sum_pl, this.pos.currency.rounding);
-            //summary allowed to pay
-            sum_prod = order.get_summary_for_categories(journal.category_ids);
-            sum_prod = round_pr(sum_prod, this.pos.currency.rounding);
-            if (sum_pl > sum_prod) {
+            var sum_pl = round_pr(order.get_summary_for_cashregister(cr), this.pos.currency.rounding);
+            var limits = order.get_payment_limits(cr, 'products_restriction');
+            if (limits.hasOwnProperty('products_restriction') && sum_pl > limits.products_restriction) {
                 return cr;
             }
             return false;
@@ -489,17 +483,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order(),
             flag = false;
             if (this.pos.get_client()){
-                var paymentlines = order.get_paymentlines(),
-                debts = this.pos.get_client().debts;
-                _.each(paymentlines, function(pl){
-                    var cr = pl.cashregister;
-                    if (cr.journal.debt) {
-                        var debt_limit = cr.journal.debt_limit;
-                        var sum_pl = order.get_summary_for_cashregister(cr);
-                        var balance = pl.order.get_client().debts[cr.journal.id].balance;
-                        if (sum_pl > debt_limit + balance) {
-                            flag = cr.journal_id[1];
-                        }
+                _.each(this.get_used_debt_cashregisters(), function(cr){
+                    var limits = order.get_payment_limits(cr, 'debt_limit');
+                    var sum_pl = order.get_summary_for_cashregister(cr);
+                    // no need to check that debt_limit is in limits by the reason of get_payment_limits definition
+                    if (sum_pl > limits.debt_limit) {
+                        flag = cr.journal_id[1];
                     }
                 });
                 return flag;
@@ -507,15 +496,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         debt_change_check: function () {
             var order = this.pos.get_order(),
-                paymentlines = order.get_paymentlines(),
-                flag = false;
+                paymentlines = order.get_paymentlines();
             for (var i = 0; i < paymentlines.length; i++) {
                 var journal = paymentlines[i].cashregister.journal;
-                if (order.get_change(paymentlines[i]) > 0 && journal.debt && !journal.pos_cash_out){
-                    flag = true;
+                if (journal.debt && !journal.pos_cash_out && order.get_change(paymentlines[i]) > 0){
+                    return true;
                 }
             }
-            return flag;
+            return false;
         },
         pay_full_debt: function(){
             var self = this;
@@ -691,7 +679,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 content.show();
                 button_autopay.removeClass('validate');
                 button_autopay.addClass('alert');
-                button_autopay.find('.title').text('Not enough credits to pay');
+                button_autopay.find('.title').text('Not enough credits to autopay');
             }
         },
         click_autopay_validation: function() {
@@ -720,9 +708,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         show: function(){
             this._super();
             var self = this;
-            $(this.next_button_html).hide()
+            $(this.next_button_html).hide();
             if (this.pos.get_order().autopay_validated) {
-                $(this.next_button_html).show()
+                $(this.next_button_html).show();
                 var button_next = this.next_button_html.find('.autopay');
                 button_next.addClass('validate');
                 button_next.find('.title').text('Next');
