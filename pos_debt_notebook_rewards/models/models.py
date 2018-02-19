@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models, fields, _
+from odoo import api, models, fields
 
 
 class PosCreditUpdateReward(models.Model):

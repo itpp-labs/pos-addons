@@ -217,7 +217,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             // 'products_restriction' = sum of resticted products only
             // 'due' = remained amount to pay
             var self = this;
-            var limit_code = limit_code || 'all';
+            limit_code = limit_code || 'all';
             var vals = {};
             if (cashregister.journal.debt){
                 var partner_balance = this.pos.get_client().debts[cashregister.journal.id].balance,
@@ -351,7 +351,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var exceeding_debts = this.exceeding_debts_check()
+            var exceeding_debts = this.exceeding_debts_check();
             if (client && exceeding_debts) {
                 this.gui.show_popup('error', {
                     'title': _t('Max Debt exceeded'),
@@ -418,7 +418,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
         },
         get_used_debt_cashregisters: function(paymentlines) {
-            var paymentlines = paymentlines || this.pos.get_order().get_paymentlines();
+            paymentlines = paymentlines || this.pos.get_order().get_paymentlines();
             var cashregisters = _.uniq(_.map(paymentlines, function(pl){
                 return pl.cashregister;
             }));
@@ -458,7 +458,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order();
             var sum_pl = round_pr(order.get_summary_for_cashregister(cr), this.pos.currency.rounding);
             var limits = order.get_payment_limits(cr, 'products_restriction');
-            if (limits.hasOwnProperty('products_restriction') && sum_pl > limits.products_restriction) {
+            if (_.has(limits, 'products_restriction') && sum_pl > limits.products_restriction) {
                 return cr;
             }
             return false;
@@ -622,7 +622,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var status = '';
             if (client && client.debts && order && order.get_orderlines().length !== 0){
                 var autopay_cashregisters = _.filter(this.pos.cashregisters, function(cr){
-                    return cr.journal.credits_autopay && client.debts[cr.journal.id].balance > 0;
+                    return cr.journal.debt && cr.journal.credits_autopay && client.debts[cr.journal.id].balance > 0;
                 });
                 if (autopay_cashregisters) {
                     _.each(autopay_cashregisters, function(cr){
@@ -692,9 +692,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         show: function(){
             this._super();
             var self = this;
-            $(this.next_button_html).hide()
+            $(this.next_button_html).hide();
             if (this.pos.get_order().autopay_validated) {
-                $(this.next_button_html).show()
+                $(this.next_button_html).show();
                 var button_next = this.next_button_html.find('.autopay');
                 button_next.addClass('validate');
                 button_next.find('.title').text('Next');

@@ -103,7 +103,7 @@ class HrPartner(models.Model):
                 attendance.check_out = action_date
             else:
                 raise exceptions.UserError(_('Cannot perform check out on %(empl_name)s, could not find corresponding check in. '
-                    'Your attendances have probably been modified manually by human resources.') % {'empl_name': self.name, })
+                                             'Your attendances have probably been modified manually by human resources.') % {'empl_name': self.name, })
             return attendance
 
     @api.model_cr_context
