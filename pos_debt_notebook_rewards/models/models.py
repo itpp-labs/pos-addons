@@ -7,6 +7,7 @@ class PosCreditUpdateReward(models.Model):
 
     _name = 'pos.credit.update.reward'
     _inherits = {'pos.credit.update': 'credit_update_id'}
+    _inherit = 'barcodes.barcode_events_mixin'
     _description = "Manual Credit Updates"
 
     credit_update_id = fields.Many2one(
@@ -22,6 +23,11 @@ class PosCreditUpdateReward(models.Model):
         'pos.credit.update.reward.type',
         string='Reward type',
         required=True)
+
+    def on_barcode_scanned(self, barcode):
+        partner = self.env['res.partner'].search([('barcode', '=', barcode)])
+        if partner:
+            self.partner_id = partner[0]
 
     @api.onchange('partner_id')
     def _onchange_partner(self):

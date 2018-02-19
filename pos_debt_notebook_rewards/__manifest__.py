@@ -18,6 +18,7 @@
     "depends": [
         "pos_debt_notebook",
         "base_attendance",
+        "barcodes",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
