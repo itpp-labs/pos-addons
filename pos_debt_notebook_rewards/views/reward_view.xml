@@ -32,7 +32,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'barcode_search': 1}"/>
                             <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="currency_id"  readonly="1"/>
                             <field name="reward_type_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -44,6 +44,8 @@
                                             ('reward_ids', '=', False)]">
                             </field>
                             <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="_barcode_scanned" widget="barcode_handler" invisible="1"/>
+
                         </group>
                     </group>
                 </sheet>
@@ -99,7 +101,7 @@
         <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update_reward"/>
     </record>
 
-    <menuitem id="menu_pos_credit_update_reward" name="Attendance Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_user" sequence="100"/>
+    <menuitem id="menu_pos_credit_update_reward" name="Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_user" sequence="100"/>
 
 
 </odoo>

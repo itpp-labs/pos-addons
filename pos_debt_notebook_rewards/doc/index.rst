@@ -46,8 +46,7 @@ To create *Attendance Rewards* record
 
 * Open menu ``[[ Partner Attendances ]] >> Attendance Rewards``
 * Click ``Create``
-* Click ``Create``
-* Fill fields **Partner**, **Reward type** with a suitable data
+* Fill fields **Partner**, **Reward type** with a suitable data. To fill **Partner** you can just scan his barcode
 * Field **Attendances** is automatically filled with appropriate partner attendances, you may choose which ones to reward
 * Saving and Confirmation
 
