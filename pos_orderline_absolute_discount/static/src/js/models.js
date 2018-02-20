@@ -159,6 +159,16 @@ odoo.define('pos_absolute_discount.models', function(require){
                 taxDetails: taxdetail
             };
         },
+        apply_ms_data: function(data) {
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+            if (_super_orderline.apply_ms_data) {
+                _super_orderline.apply_ms_data.apply(this, arguments);
+            }
+            this.absolute_discount = data.absolute_discount;
+            this.absolute_discountStr = data.absolute_discountStr;
+            // rerender Orderline Widget after updating data
+            this.trigger('change', this);
+        }
     });
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
