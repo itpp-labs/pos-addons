@@ -20,6 +20,7 @@
         'base_groupby_extra',
     ],
     'data': [
+        'security/pos_debt_notebook_security.xml',
         'data/product.xml',
         'views/pos_debt_report_view.xml',
         'views.xml',
