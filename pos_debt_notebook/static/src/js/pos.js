@@ -189,12 +189,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
-            var sum = _.filter(this.get_paymentlines(), function(pl){
-                return pl.cashregister.journal.credits_via_discount;
-            });
-            data.amount_via_discount = _.reduce(sum, function(memo, o){
-                return memo + o.amount;
-            },0);
+            data.amount_via_discount = this.get_summary_for_discount_credits();
             return data;
         },
         export_for_printing: function(){
@@ -254,6 +249,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 })));
                 if (_.contains(category_list, ol.product.pos_categ_id[0])) {
                     return memo + ol.get_price_with_tax();
+                }
+                return memo;
+            }, 0);
+        },
+        get_summary_for_discount_credits: function(){
+            var self = this;
+            var paymentlines = this.get_paymentlines();
+            return _.reduce(paymentlines, function(memo, pl){
+                if (pl.cashregister.journal.credits_via_discount){
+                    return memo + pl.get_amount();
                 }
                 return memo;
             }, 0);
@@ -720,6 +725,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this._super();
             this.next_button_html = this.render_validation_button();
             this.$el.append(this.next_button_html);
+        },
+        render_change: function() {
+            // deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
+            var order = this.pos.get_order();
+            var change = order.get_change() - order.get_summary_for_discount_credits();
+            this.$('.change-value').html(this.format_currency(change));
         },
     });
 
