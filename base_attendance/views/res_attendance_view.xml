@@ -141,7 +141,7 @@
                                         <field name="name"/>
                                     </strong>
                                 </div><div class="col-xs-1" style="padding:0px">
-                                    <field name="attendance_state" widget="hr_attendance_kanban_presence_indicator"/>
+                                    <field name="attendance_state" widget="base_attendance_kanban_presence_indicator"/>
                                 </div>
                             </div>
                             <ul>
@@ -172,7 +172,7 @@
                     <strong><field name="name"/></strong>
                 </div>
                 <div class="col-xs-1" style="padding:0px">
-                    <field name="attendance_state" widget="hr_attendance_kanban_presence_indicator"/>
+                    <field name="attendance_state" widget="base_attendance_kanban_presence_indicator"/>
                 </div>
             </xpath>
         </field>
@@ -202,7 +202,7 @@
         <field name="arch" type="xml">
             <field name="name" position="replace">
             <div id="textbox">
-                <field name="attendance_state" widget="hr_attendance_form_presence_indicator"/>
+                <field name="attendance_state" widget="base_attendance_form_presence_indicator"/>
                 <field name="name" placeholder="Partner's Name"/>
             </div>
             </field>
@@ -222,7 +222,7 @@
 
     <menuitem id="menu_hr_attendance_view_attendances" name="Attendances" parent="menu_hr_attendance_manage_attendances" sequence="10" groups="base_attendance.group_res_attendance" action="hr_attendance_action"/>
 
-    <menuitem id="menu_hr_attendance_view_partners_kanban" name="Partners" parent="menu_hr_attendance_manage_attendances" sequence="15" groups="base_attendance.group_hr_attendance_user" action="base.action_partner_customer_form"/>
+    <menuitem id="menu_hr_attendance_view_partners_kanban" name="Partners" parent="menu_hr_attendance_manage_attendances" sequence="15" groups="base_attendance.group_hr_attendance_user" action="res_partner_action_kanban_view"/>
 
     <menuitem id="menu_hr_attendance_kiosk_mode" name="Kiosk Mode" parent="menu_hr_attendance_manage_attendances" sequence="20" groups="base_attendance.group_hr_attendance_user" action="hr_attendance_action_kiosk_mode"/>
 

@@ -15,7 +15,7 @@ var FormPresenceIndicator = form_common.AbstractField.extend({
     start: function() {
         this.display_field();
         // this.render_value();  -> gets called automatically in form_common.AbstractField
-        this.$el.tooltip({title: _t("employee presence<br/>green: checked in<br/>red: checked out"), trigger: 'hover'});
+        this.$el.tooltip({title: _t("partner presence<br/>green: checked in<br/>red: checked out"), trigger: 'hover'});
         return this._super();
     },
     render_value: function() {
@@ -35,7 +35,7 @@ var KanbanPresenceIndicator = kanban_widgets.AbstractField.extend({
         this.display_field();
         // doesn't get called automatically in kanban_widgets.AbstractField
         this.render_value();
-        this.$el.tooltip({title: _t("employee presence<br/>green: checked in<br/>red: checked out"), trigger: 'hover'});
+        this.$el.tooltip({title: _t("partner presence<br/>green: checked in<br/>red: checked out"), trigger: 'hover'});
         return this._super();
     },
     render_value: function() {
