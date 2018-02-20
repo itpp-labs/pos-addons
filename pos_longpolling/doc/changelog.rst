@@ -2,6 +2,7 @@
 -------
 
 - **IMP:** Sync icons for deactivated pollings are hidden
+- **FIX:** Longpolling recovering on very bad internet connection is fixed
 
 `2.0.0`
 -------
