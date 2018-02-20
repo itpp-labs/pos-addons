@@ -729,7 +729,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         render_change: function() {
             // deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
             var order = this.pos.get_order();
-            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0)
+            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0);
             this.$('.change-value').html(this.format_currency(change));
         },
     });
