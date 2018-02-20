@@ -215,7 +215,6 @@
 
     <t t-extend="PosTicket">
         <t t-jquery="table.receipt-paymentlines" t-operation="replace">
-            <!--<t t-set="credits_via_discounts_presence" t-value="0"/>-->
             <table class='receipt-paymentlines'>
                 <t t-foreach='paymentlines' t-as='line'>
                     <t t-if="!line.cashregister.journal.credits_via_discount">
@@ -228,34 +227,29 @@
                           </td>
                       </tr>
                     </t>
-                    <!--<t t-else="">-->
-                        <!--<t t-set="credits_via_discounts_presence" t-value="1"/>-->
-                        <!--<t t-set="credits_via_discounts_amount" t-value="credits_via_discounts_amount + line.get_amount()"/>-->
-                    <!--</t>-->
                 </t>
             </table>
         </t>
         <t t-jquery="table.receipt-change" t-operation="replace">
-            <t t-set="credits_via_discounts_amount" t-value="order.get_summary_for_discount_credits()"/>
+            <t t-set="credits_via_discounts_presence" t-value="order.paymentlines_with_credits_via_discounts()"/>
+            <t t-set="credits_via_discounts_amount" t-value="Math.max(order.get_summary_for_discount_credits(), 0)"/>
             <table class='receipt-change'>
                 <tr><td>Change:</td><td class="pos-right-align">
                     <t t-esc="widget.format_currency(order.get_change() - credits_via_discounts_amount)"/>
                     </td></tr>
             </table>
-            <t t-if="credits_via_discounts_amount">
+            <t t-if="credits_via_discounts_presence">
                 <left><pre>Payments by bonuses:</pre></left>
                 <table class='receipt-paymentlines'>
-                    <t t-foreach='paymentlines' t-as='line'>
-                        <t t-if="line.cashregister.journal.credits_via_discount">
-                            <tr>
-                              <td>
-                                  <t t-esc="line.name"/>
-                              </td>
-                              <td class="pos-right-align">
-                                  <t t-esc="widget.format_currency(line.get_amount())"/>
-                              </td>
-                          </tr>
-                        </t>
+                    <t t-foreach='credits_via_discounts_presence' t-as='line'>
+                        <tr>
+                          <td>
+                              <t t-esc="line.name"/>
+                          </td>
+                          <td class="pos-right-align">
+                              <t t-esc="widget.format_currency(line.get_amount())"/>
+                          </td>
+                      </tr>
                     </t>
                 </table>
             </t>

@@ -166,6 +166,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return line.cashregister.journal.debt;
                 });
         },
+        paymentlines_with_credits_via_discounts: function(){
+            return _.filter(this.get_paymentlines(), function(pl){
+                return pl.cashregister.journal.credits_via_discount;
+            });
+        },
         has_credit_product: function(){
             return this.orderlines.any(function(line){
                 return line.product.credit_product;
@@ -189,7 +194,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
-            data.amount_via_discount = this.get_summary_for_discount_credits();
+            data.amount_via_discount = Math.max(0, this.get_summary_for_discount_credits());
             return data;
         },
         export_for_printing: function(){
@@ -388,12 +393,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             paymentlines = order.get_paymentlines(),
             order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding),
             partner = this.pos.get_client();
-            var disc_credits = _.filter(paymentlines, function(pl){
-                return pl.cashregister.journal.credits_via_discount === true;
-            });
-            if (disc_credits.length && order_total) {
-                var sum = _.reduce(disc_credits, function(memo, num){
-                    return memo + num.amount;
+            var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
+            if (disc_credits_pl.length && order_total) {
+                var sum = _.reduce(disc_credits_pl, function(memo, pl){
+                    return memo + pl.get_amount() - order.get_change(pl);
                 }, 0);
                 var percentage = ( sum / order_total ) * 100;
                 var orderlines = order.get_orderlines();
@@ -726,7 +729,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         render_change: function() {
             // deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
             var order = this.pos.get_order();
-            var change = order.get_change() - order.get_summary_for_discount_credits();
+            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0)
             this.$('.change-value').html(this.format_currency(change));
         },
     });
