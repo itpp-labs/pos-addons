@@ -42,7 +42,7 @@ odoo.define('pos_longpolling', function(require){
             var serv_adr = address
                 ? address.serv
                 : this.serv_adr || '';
-            session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true}).then(function(result) {
+            session.rpc(serv_adr + '/longpolling/poll', data, {shadow : true, timeout: 60000}).then(function(result) {
                 self.on_notification(result);
                 if(!self.stop){
                     self.poll();
