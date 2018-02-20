@@ -16,7 +16,7 @@
     <record id="group_reward_officer" model="res.groups">
         <field name="name">Officer</field>
         <field name="category_id" ref="module_category_attendance"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('group_reward_user'))]"/>
+        <field name="implied_ids" eval="[(4, ref('pos_debt_notebook.group_pos_credit_update_manager')),(4, ref('group_reward_user'))]"/>
     </record>
 
     <record id="group_reward_manager" model="res.groups">
