@@ -1,3 +1,8 @@
+`2.0.1`
+-------
+
+- **IMP:** Synchronization icons merged into one widget, deactivated pollings are hidden
+
 `2.0.0`
 -------
 

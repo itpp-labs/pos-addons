@@ -819,10 +819,12 @@ odoo.define('pos_multi_session', function(require){
         },
         warning: function(warning_message){
             console.info('warning', warning_message);
-            this.pos.chrome.gui.show_popup('error',{
-                'title': _t('Warning'),
-                'body': warning_message,
-            });
+            if (_.keys(this.pos.gui.popup_instances).length) {
+                this.pos.chrome.gui.show_popup('error',{
+                    'title': _t('Warning'),
+                    'body': warning_message,
+                });
+            }
         },
         send_offline_orders: function() {
             var self = this;
