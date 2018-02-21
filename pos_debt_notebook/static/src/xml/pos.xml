@@ -7,6 +7,7 @@
     </t>
 
     <t t-name="CreditLine">
+        <!--deb.balance value sign correlates with credit sign-->
         <div t-if="partner.debt_type == 'debt' and deb.balance!=0" class="client-detail">
             <span t-attf-class="label increased_width notbold client-debt">
                 <t t-if='deb.journal_id'>
@@ -14,7 +15,7 @@
                 </t>
             </span>
             <span t-attf-class="detail client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
-                <t t-esc='widget.format_currency(deb.balance)'/>
+                <t t-esc='widget.format_currency(- deb.balance)'/>
             </span>
         </div>
         <div t-if="partner.debt_type == 'credit' and deb.balance!=0" class="client-detail">
