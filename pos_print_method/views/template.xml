@@ -6,5 +6,11 @@
                 <script type="text/javascript" src="/pos_print_method/static/src/js/print_method.js"></script>
             </xpath>
         </template>
+
+        <template id="demo_assets_backend" name="pos_print_method demo assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_print_method/static/src/js/tour.js"></script>
+            </xpath>
+        </template>
     </data>
 </openerp>

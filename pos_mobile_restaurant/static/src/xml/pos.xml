@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Chrome">
+        <t t-jquery="div[class='pos-content']" t-operation="prepend">
+            <div class="swiper-container-floor-screen">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slide-floor-menu">
+                        <span class="title">Extended function</span>
+                    </div>
+                    <div class="swiper-slide slide-floor-content">
+                        <div class="mobile-floor-selector"></div>
+                        <div class="swiper-container-map">
+                            <div class="swiper-wrapper">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="FloorScreenWidget">
+        <t t-jquery="div[class='floor-map']" t-operation="prepend">
+            <t t-if='widget.pos.floors.length == 1'>
+                <div class="menu-button">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </t>
+        </t>
+        <t t-jquery="div[class='floor-selector']" t-operation="prepend">
+            <t t-if='widget.pos.floors.length > 1'>
+                <div class="menu-button">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </t>
+        </t>
+        <t t-jquery="div[class='tables']">
+            $(this).addClass('touch-scrollable scrollable-y');
+        </t>
+    </t>
+
+    <t t-extend="SubmitOrderButton">
+        <t t-jquery="span[class='control-button order-submit']" t-operation="replace">
+            <span class="control-button order-submit">
+                <img class="active" src="/pos_mobile_restaurant/static/src/img/svg/list_active.svg"/>
+                <img class="not-active" src="/pos_mobile_restaurant/static/src/img/svg/list.svg"/>
+            </span>
+        </t>
+    </t>
+
+    <t t-extend="OrderlineNoteButton">
+        <t t-jquery="div[class='control-button']">
+            $(this).addClass('order-note');
+        </t>
+    </t>
+
+    <t t-extend="TableGuestsButton">
+        <t t-jquery="div[class='control-button']">
+            $(this).addClass('order-guests');
+        </t>
+    </t>
+
+    <t t-extend="ActionpadWidget">
+        <t t-jquery="div[class='actionpad']" t-operation="prepend">
+            <t t-if="widget.pos.config.iface_printbill">
+                <t t-call="PrintBillButton"/>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="OrderlineNoteButton">
+        <t t-jquery="i[class='fa fa-tag']" t-operation="replace">
+            <img src="/pos_mobile_restaurant/static/src/img/svg/note.svg"/>
+        </t>
+    </t>
+
+</templates>

@@ -14,7 +14,7 @@ odoo.define('pos_debt_sync', function(require){
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.add_channel("pos_debt_notebook_sync", this.on_debt_updates, this);
+            this.bus.add_channel_callback("pos_debt_notebook_sync", this.on_debt_updates, this);
         },
         on_debt_updates: function(message){
             this.reload_debts(message.updated_partners);

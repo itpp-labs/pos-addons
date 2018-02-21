@@ -25,11 +25,12 @@ _logger.addHandler(handler)
 # Base configs
 #
 
-PORT = 8069
+PORT = os.environ.get('ODOO_PORT') or '80'
 DATABASE = os.environ.get('DATABASE')
 ADMIN_LOGIN = "admin"
 ADMIN_PASSWORD = "admin"
-MAIN_URL = 'http://localhost:%s' % PORT
+MAIN_DOMAIN = os.environ.get('ODOO_DOMAIN') or 'localhost'
+MAIN_URL = 'http://%s:%s' % (MAIN_DOMAIN, PORT)
 
 
 class ExternalTestCase(unittest2.TestCase):
@@ -40,6 +41,7 @@ class ExternalTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        super(ExternalTestCase, cls).setUpClass()
         # Authenticate
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
         models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(MAIN_URL))
@@ -87,7 +89,7 @@ class ExternalTestCase(unittest2.TestCase):
             password = login
 
         data = {"db": DATABASE, "login": login, "password": password}
-        res = requests.post("http://localhost:%s/web/session/authenticate" % PORT,
+        res = requests.post("http://%s:%s/web/session/authenticate" % (MAIN_DOMAIN, PORT),
                             data=json.dumps({'params': data}),
                             headers={"Content-Type": "application/json"})
         _logger.info('authenticate: %s', res.json())
@@ -106,6 +108,7 @@ class ExternalTestCase(unittest2.TestCase):
             'db': DATABASE,
             'sessions': sessions,
             'commands': commands,
+            'host': MAIN_DOMAIN,
         }
 
         options.update(kw)

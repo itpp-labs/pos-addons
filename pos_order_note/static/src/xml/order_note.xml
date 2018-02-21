@@ -252,7 +252,7 @@
         <div class="modal-dialog">
             <div class="popup popup-confirm-note">
                 <div class="header title">
-                    <div>
+                    <div class="current-title">
                         <t t-esc="widget.options.title || '' " />
                     </div>
                     <div class="note_type">
@@ -268,16 +268,16 @@
                             <t t-foreach="widget.notes.slice(0,8)" t-as="note">
                                 <li>
                                     <t t-if="note.active">
-                                        <div t-attf-id="{{note.id}}" t-attf-class="button active"><t t-esc="note.name"/></div>
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button active"><t t-esc="note.name"/></div>
                                     </t>
                                     <t t-if="!note.active">
-                                        <div t-attf-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div>
+                                        <div t-attf-data-id="{{note.id}}" t-attf-class="button"><t t-esc="note.name"/></div>
                                     </t>
 
                                 </li>
                             </t>
                         </t>
-                        <li><div id="other" class="button other-note">Other</div></li>
+                        <li><div data-id="other" class="button other-note">Other</div></li>
                     </ul>
                 </div>
                 <div class="footer centered">
@@ -293,12 +293,12 @@
     </t>
 
     <t t-name="ProductNotes">
-        <tr class='note-line' t-attf-id='{{note.id}}'>
+        <tr class='note-line' t-attf-data-id='{{note.id}}'>
             <td><t t-esc='note.name' /></td>
         </tr>
     </t>
 
-    <t t-name="ProducNotesScreenWidget">
+    <t t-name="ProductNotesScreenWidget">
         <div class="notelist-screen screen">
             <div class="screen-content">
                 <section class="top-content">

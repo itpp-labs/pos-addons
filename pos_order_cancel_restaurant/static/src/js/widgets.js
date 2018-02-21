@@ -24,13 +24,13 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             }
             if (this.pos.config.kitchen_canceled_only) {
                 if (order.is_empty() && order.canceled_lines && order.canceled_lines.length) {
-                    order.save_canceled_order(false);
+                    order.destroy_and_upload_as_canceled();
                 } else if (!order.is_empty() && !order.get_order_lines_by_dirty_status(false).length){
                      this.gui.show_popup('confirm',{
                         'title': _t('Destroy Current Order ?'),
                         'body': _t('You will lose any data associated with the current order'),
                         confirm: function() {
-                            order.save_canceled_order(false);
+                            order.destroy_and_upload_as_canceled();
                         },
                     });
                 } else {
@@ -52,5 +52,44 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             }
             this._super(type);
         },
+    });
+
+    PosOrderCancelWidget.ReasonCancellationScreenWidget.include({
+        save_changes: function(){
+            this._super();
+            var type = this.get_type();
+            if (this.pos.config.auto_send_to_kitchen && type === 'product') {
+                this.auto_sent_to_kitchen();
+            }
+        },
+        auto_sent_to_kitchen: function() {
+            var order = this.pos.get_order();
+            if (order) {
+                var current_line = order.get_selected_orderline();
+                if (current_line.was_printed && order.hasChangesToPrint()) {
+                    order.printChanges();
+                    order.saveChanges();
+                }
+            }
+        }
+    });
+
+    PosOrderCancelWidget.ConfirmCancellationPopupWidget.include({
+        click_confirm: function(){
+            this._super();
+            if (this.pos.config.auto_send_to_kitchen && this.type === 'product') {
+                this.auto_sent_to_kitchen();
+            }
+        },
+        auto_sent_to_kitchen: function() {
+            var order = this.pos.get_order();
+            if (order) {
+                var current_line = order.get_selected_orderline();
+                if (current_line.was_printed && order.hasChangesToPrint()) {
+                    order.printChanges();
+                    order.saveChanges();
+                }
+            }
+        }
     });
 });

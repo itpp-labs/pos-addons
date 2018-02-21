@@ -9,8 +9,9 @@
                 <xpath expr="//group[@name='features']" position="after">
                     <group string="Longpolling">
                         <group>
-                            <field name="query_timeout"  widget="float_time"/>
-                            <field name="response_timeout"  widget="float_time"/>
+                            <field name="longpolling_max_silence_timeout"  widget="float_time"/>
+                            <field name="longpolling_pong_timeout"  widget="float_time"/>
+                            <field name="autostart_longpolling"/>
                         </group>
                     </group>
                 </xpath>
