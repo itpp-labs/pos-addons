@@ -406,12 +406,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             deb.balance -= pl.amount;
                         }
                     });
-                    partner.debt = _.reduce(partner.debts, function(memo, d){
+                    partner.debt = - _.reduce(partner.debts, function(memo, d){
                         return memo + d.balance;
                     }, 0);
-                    if(partner.debt_type === 'debt'){
-                        partner.debt = - partner.debt;
-                    }
                 }
             } else {
                 this._super();
