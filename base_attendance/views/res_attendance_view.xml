@@ -112,7 +112,7 @@
 
     <record id="hr_attendance_action_kiosk_mode" model="ir.actions.client">
         <field name="name">Attendances</field>
-        <field name="tag">hr_attendance_kiosk_mode</field>
+        <field name="tag">base_attendance_kiosk_mode</field>
         <field name="target">fullscreen</field>
     </record>
 
@@ -206,16 +206,10 @@
                 <field name="name" placeholder="Partner's Name"/>
             </div>
             </field>
-            <page name="sales_purchases" position="after">
-                <page name='attendance_information' string="Attendance information">
-                    <group name="container_row_2">
-                        <group string="Attendance information" name="sale">
-                            <field name="barcode"/>
-                            <field name="pin"/>
-                            <!--<field name="manual_attendance"/>-->
-                        </group>
-                    </group>
-                </page>
+            <page name="sales_purchases" position="inside">
+                <group string="Attendance information" name="container_row_2">
+                    <field name="pin"/>
+                </group>
             </page>
         </field>
     </record>

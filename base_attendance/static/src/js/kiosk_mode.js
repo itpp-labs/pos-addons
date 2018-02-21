@@ -37,7 +37,7 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
            then(function (companies){
                 self.company_name = companies[0].name;
                 self.company_image_url = self.session.url('/web/image', {model: 'res.company', id: self.session.company_id, field: 'logo',});
-                self.$el.html(QWeb.render("HrAttendanceKioskMode", {widget: self}));
+                self.$el.html(QWeb.render("BaseAttendanceKioskMode", {widget: self}));
                 self.start_clock();
             });
         return self._super.apply(this, arguments);
@@ -70,7 +70,7 @@ var KioskMode = Widget.extend(BarcodeHandlerMixin, {
     },
 });
 
-core.action_registry.add('hr_attendance_kiosk_mode', KioskMode);
+core.action_registry.add('base_attendance_kiosk_mode', KioskMode);
 
 return KioskMode;
 

@@ -20,7 +20,7 @@ class HrPartner(models.Model):
 
     # barcode = fields.Char(string="Badge ID", help="ID used for partner identification.",
     #                       default=_default_random_barcode, copy=False)
-    pin = fields.Char(string="PIN", default=_default_random_pin,
+    pin = fields.Char(string="Attendance PIN", default=_default_random_pin,
                       help="PIN used to Check In/Out in Kiosk Mode (if enabled in Configuration).", copy=False)
 
     partners_attendance_ids = fields.One2many('res.partner.attendance', 'partner_id',
@@ -103,7 +103,7 @@ class HrPartner(models.Model):
                 attendance.check_out = action_date
             else:
                 raise exceptions.UserError(_('Cannot perform check out on %(empl_name)s, could not find corresponding check in. '
-                    'Your attendances have probably been modified manually by human resources.') % {'empl_name': self.name, })
+                                             'Your attendances have probably been modified manually by human resources.') % {'empl_name': self.name, })
             return attendance
 
     @api.model_cr_context

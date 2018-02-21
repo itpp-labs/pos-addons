@@ -236,6 +236,7 @@ class PosConfig(models.Model):
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
                                                 'debt_limit': default_debt_limit,
                                                 'pos_cash_out': True,
+                                                'credits_autopay': True,
                                                 })
         self.write({
             'journal_ids': [(4, debt_journal.id)],
@@ -283,6 +284,7 @@ class PosConfig(models.Model):
             'category_ids': vals['category_ids'],
             'pos_cash_out': vals['pos_cash_out'],
             'credits_via_discount': vals['credits_via_discount'],
+            'credits_autopay': vals['credits_autopay'],
         })
         self.env['ir.model.data'].create({
             'name': 'debt_journal_' + str(debt_journal.id),
@@ -330,6 +332,7 @@ class PosConfig(models.Model):
                              'debt_dummy_product_id': False,
                              'debt_limit': 1000,
                              'pos_cash_out': False,
+                             'credits_autopay': True,
                              })
         allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
@@ -348,6 +351,7 @@ class PosConfig(models.Model):
                              'debt_dummy_product_id': False,
                              'debt_limit': 1000,
                              'pos_cash_out': False,
+                             'credits_autopay': True,
                              })
 
 
@@ -365,6 +369,9 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Zero transactions on credit payments',
         help='Discount the order (mostly 100%) when user pay via this type of credits')
+    credits_autopay = fields.Boolean("Autopay", default=True,
+                                     help="On payment screen it will be automatically used if balance is positive. "
+                                          "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
 
 class PosConfiguration(models.TransientModel):
@@ -440,11 +447,13 @@ class PosOrder(models.Model):
                                        'note': product_list,
                                        })
                 payment[2]['amount'] = 0
+        pos_order['amount_return'] -= pos_order.get('amount_via_discount', 0)
+        order = super(PosOrder, self)._process_order(pos_order)
         for update in credit_updates:
-            entry = self.env['pos.credit.update'].create(update)
+            update['order_id'] = order.id
+            entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
-
-        return super(PosOrder, self)._process_order(pos_order)
+        return order
 
 
 class PosCreditUpdate(models.Model):
@@ -483,6 +492,7 @@ class PosCreditUpdate(models.Model):
     ], default='draft', required=True, track_visibility='always')
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
+    order_id = fields.Many2one('pos.order', string="POS Order")
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
