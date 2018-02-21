@@ -20,8 +20,6 @@ var _super_posmodel = models.PosModel.prototype;
 models.PosModel = models.PosModel.extend({
     initialize: function (session, attributes) {
         var self = this;
-        // this.bus = bus;
-              
         this.models.push(
         {
             model: 'sale.order',
@@ -51,7 +49,7 @@ models.PosModel = models.PosModel.extend({
         });
         _super_posmodel.initialize.apply(this, arguments);
         this.bus.add_channel_callback("pos_sale_orders", this.on_notification, this);
-        this.bus.add_channel_callback("pos_invoices", this.on_notification, this);  
+        this.bus.add_channel_callback("pos_invoices", this.on_notification, this);
     },
 
     get_lines: function (ids, model_name, method_name) {
@@ -76,9 +74,9 @@ models.PosModel = models.PosModel.extend({
                     if (!Object.prototype.hasOwnProperty.call(so, 'lines')) {
                         so.lines = [];
                     }
-                    line_ids = _.pluck(so.lines, 'id');
+                    var line_ids = _.pluck(so.lines, 'id');
                     if (!(line_ids.includes(lines[i].id))) {
-                        so.lines.push(lines[i]);                        
+                        so.lines.push(lines[i]);
                     }
                     def.resolve();
                 }
@@ -108,9 +106,9 @@ models.PosModel = models.PosModel.extend({
                     if (!Object.prototype.hasOwnProperty.call(inv, 'lines')) {
                         inv.lines = [];
                     }
-                    line_ids = _.pluck(inv.lines, 'id');
+                    var line_ids = _.pluck(inv.lines, 'id');
                     if (!(line_ids.includes(lines[i].id))) {
-                        inv.lines.push(lines[i]);                        
+                        inv.lines.push(lines[i]);
                     }
                     def.resolve();
                 }
@@ -119,12 +117,11 @@ models.PosModel = models.PosModel.extend({
     },
 
     on_notification: function(notification) {
-        console.log(notification)
         var invoices_to_update = [];
         var sale_orders_to_update = [];
 
-        var channel = notification['channel'];
-        var message = notification['id'];
+        var channel = notification.channel;
+        var message = notification.id;
 
         if (channel === 'pos_invoices') {
             invoices_to_update.push(message);
