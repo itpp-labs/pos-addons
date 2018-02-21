@@ -1,8 +1,8 @@
-=================================
- Pos Orderline Absolute Discount
-=================================
+===========================
+ Absolute Discounts in POS
+===========================
 
-Pos Orderline Absolute Discount
+The module allows to use absolute discounts in Point of Sale
 
 Credits
 =======

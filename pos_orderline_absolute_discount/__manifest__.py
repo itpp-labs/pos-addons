@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Pos Orderline Absolute Discount""",
-    "summary": """Pos Orderline Absolute Discount""",
+    "name": """Absolute Discounts in POS""",
+    "summary": """Makes it possible to use absolute discounts in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": [],
-    "version": "1.0.0",
+    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=10.0',
+    "images": ["images/pos-absolute-discount-main.png"],
+    "version": "10.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 45.00,
+    "price": 79.00,
     "currency": "EUR",
 
     "depends": [
@@ -37,4 +37,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "Absolute Discounts in POS",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-orderline-absolute-discount",
+    "demo_summary": "Use multiple POSes for handling orders",
+    "demo_images": [
+        "images/pos-absolute-discount-main.png",
+    ]
 }
