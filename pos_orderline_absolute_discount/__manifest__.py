@@ -4,7 +4,7 @@
     "summary": """Makes it possible to use absolute discounts in POS""",
     "category": "Point of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=10.0',
-    "images": ["images/pos-absolute-discount-main.png"],
+    "images": ["images/pos_orderline_abs_disc_main.png"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -46,6 +46,6 @@
     "demo_url": "pos-orderline-absolute-discount",
     "demo_summary": "Use multiple POSes for handling orders",
     "demo_images": [
-        "images/pos-absolute-discount-main.png",
+        "images/pos_orderline_abs_disc_main.png",
     ]
 }
