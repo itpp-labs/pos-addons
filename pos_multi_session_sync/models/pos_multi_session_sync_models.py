@@ -68,7 +68,7 @@ class PosMultiSessionSync(models.Model):
         run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
                      .run_ID or message['data']['run_ID'] or False
         if not revision or (order and order.state == 'deleted'):
-            return {'action': 'revision_error'}
+            return {'action': 'revision_error', 'order_uid': order_uid}
         if order:  # order already exists
             order.write({
                 'order': json.dumps(message),
@@ -113,15 +113,26 @@ class PosMultiSessionSync(models.Model):
             pos.user_ID = user_ID
         pos.multi_session_message_ID = 0
         data = []
-        for order in self.env['pos_multi_session_sync.order'] \
-                         .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
-                                  ('run_ID', '=', run_ID)]):
+        if message['uid']:
+            order_uid = message['uid']
+            order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
             msg['data']['run_ID'] = run_ID
-            data.append(msg)
-        message = {'action': 'sync_all', 'orders': data, 'order_ID': self.order_ID}
+            data = msg
+            action = 'sync_order'
+        else:
+            for order in self.env['pos_multi_session_sync.order'] \
+                             .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
+                                      ('run_ID', '=', run_ID)]):
+                msg = json.loads(order.order)
+                msg['data']['message_ID'] = 0
+                msg['data']['revision_ID'] = order.revision_ID
+                msg['data']['run_ID'] = run_ID
+                data.append(msg)
+            action = 'sync_all'
+        message = {'action': action, 'orders': data, 'order_ID': self.order_ID}
         return message
 
     @api.multi
@@ -133,7 +144,7 @@ class PosMultiSessionSync(models.Model):
         if order.state is not 'deleted':
             revision = self.check_order_revision(message, order)
             if not revision:
-                return {'action': 'revision_error'}
+                return {'action': 'revision_error', 'order_uid': order_uid}
         if order:
             order.state = 'deleted'
         self.broadcast_message(message)

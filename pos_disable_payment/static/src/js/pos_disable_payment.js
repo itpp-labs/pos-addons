@@ -12,7 +12,7 @@ odoo.define('pos_disable_payment', function(require){
 
     models.load_models({
         model:  'res.users',
-        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line','allow_refund'],
+        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund'],
         loaded: function(self,users){
             for (var i = 0; i < users.length; i++) {
                 var user = _.find(self.users, function(el){
@@ -88,26 +88,62 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            if (line && line.quantity <= 0) {
+                if (user.allow_delete_order_line) {
+                    $('.numpad-backspace').removeClass('disable');
+                } else{
+                    $('.numpad-backspace').addClass('disable');
+                }
+            } else {
+                $('.numpad-backspace').removeClass('disable');
+            }
+            this.check_kitchen_access(line);
+        },
+        click_line: function(orderline, event) {
+            this._super(orderline, event);
+            this.check_kitchen_access(orderline);
+        },
+        check_kitchen_access: function(line){
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_decrease_amount || user.allow_decrease_kitchen_only) {
+                return true;
+            }
+            var state = this.getParent().numpad.state;
+            if (line.mp_dirty === false) {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                if (user.allow_discount) {
+                    state.changeMode('discount');
+                } else if (user.allow_edit_price) {
+                    state.changeMode('price');
+                } else {
+                    state.changeMode("");
+                }
+            } else {
+                $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                if (state.get('mode') !== 'quantity') {
+                    state.changeMode('quantity');
+                }
+            }
         }
     });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
-        init: function () {
-            var self = this;
-            this._super.apply(this, arguments);
-        },
         start: function () {
             this._super();
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').addClass('disable');
-            }
+            this.checkPayAllowed();
+            this.checkCreateOrderLine();
+            this.checkDiscountButton();
         },
         renderElement: function () {
             this._super();
             this.pos.bind('change:cashier', this.checkPayAllowed, this);
             this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
+            this.pos.bind('change:cashier', this.checkDiscountButton, this);
         },
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
@@ -125,6 +161,14 @@ odoo.define('pos_disable_payment', function(require){
                 this.actionpad.$('.pay').removeClass('disable');
             }else{
                 this.actionpad.$('.pay').addClass('disable');
+            }
+        },
+        checkDiscountButton: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_discount) {
+                this.$('.control-buttons .js_discount').removeClass('disable');
+            }else{
+                this.$('.control-buttons .js_discount').addClass('disable');
             }
         }
     });
@@ -168,6 +212,11 @@ odoo.define('pos_disable_payment', function(require){
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            var orderline = false;
+            if (order) {
+                orderline = order.get_selected_orderline();
+            }
             if (user.allow_discount) {
                 this.$el.find("[data-mode='discount']").removeClass('disable');
             }else{
@@ -183,10 +232,12 @@ odoo.define('pos_disable_payment', function(require){
             }else{
                 this.$el.find('.numpad-minus').addClass('disable');
             }
-            if (user.allow_delete_order_line) {
-                this.$el.find('.numpad-backspace').removeClass('disable');
-            }else{
-                this.$el.find('.numpad-backspace').addClass('disable');
+            if (orderline && orderline.quantity <= 0) {
+                if (user.allow_delete_order_liner) {
+                    this.$el.find('.numpad-backspace').removeClass('disable');
+                }else{
+                    this.$el.find('.numpad-backspace').addClass('disable');
+                }
             }
         }
     });
