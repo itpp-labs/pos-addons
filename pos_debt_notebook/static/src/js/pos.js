@@ -222,7 +222,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (cashregister.journal.debt){
                 var partner_balance = this.pos.get_client().debts[cashregister.journal.id].balance,
                     category_list = cashregister.journal.category_ids;
-                var debt_limit = partner_balance + cashregister.journal.debt_limit;
+                var debt_limit = round_pr(partner_balance + cashregister.journal.debt_limit, this.pos.currency.rounding);
                 if (limit_code === 'debt_limit' || limit_code === 'all'){
                     vals.debt_limit = debt_limit;
                 }
@@ -233,9 +233,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (limit_code === 'due' || limit_code === 'all'){
                 vals.due = this.get_due();
             }
-            return _.each(vals, function(v){
-                return round_pr(v, self.pos.currency.rounding);
-            });
+            return vals;
         },
         get_summary_for_cashregister: function(cashregister) {
             var self = this;
@@ -248,7 +246,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         get_summary_for_categories: function(category_list) {
             var self = this;
-            return _.reduce(this.orderlines.models, function(memo, ol){
+            return round_pr(_.reduce(this.orderlines.models, function(memo, ol){
                 category_list = _.union(category_list, _.flatten(_.map(category_list, function(cl){
                     return self.pos.db.get_category_childs_ids(cl);
                 })));
@@ -256,7 +254,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return memo + ol.get_price_with_tax();
                 }
                 return memo;
-            }, 0);
+            }, 0), this.pos.currency.rounding);
         },
         get_summary_for_discount_credits: function(){
             var self = this;

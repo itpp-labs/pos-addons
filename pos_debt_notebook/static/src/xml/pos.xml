@@ -238,7 +238,7 @@
                     <t t-esc="widget.format_currency(order.get_change() - credits_via_discounts_amount)"/>
                     </td></tr>
             </table>
-            <t t-if="credits_via_discounts_presence">
+            <t t-if="credits_via_discounts_presence.length">
                 <left><pre>Payments by bonuses:</pre></left>
                 <table class='receipt-paymentlines'>
                     <t t-foreach='credits_via_discounts_presence' t-as='line'>
