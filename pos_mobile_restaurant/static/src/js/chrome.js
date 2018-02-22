@@ -134,9 +134,14 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             // close left menu
             this.swiper_floor_screen.slideTo(1);
+
+            // set active selector
+            $('.mobile-floor-selector').find('.button-floor.active').removeClass('active');
+            $('.mobile-floor-selector').find('.button-floor[data-id=' + floor_id +']').addClass('active');
+            active_floor.find('.tables').getNiceScroll().doScrollPos(0, 0);
+
             if (!this.pos.iOS) {
-                $('.floor-scroll').remove();
-                $('.slide-floor.swiper-slide-active').find('.tables').niceScroll({
+                active_floor.find('.tables').niceScroll({
                     horizrailenabled: false,
                     scrollCLass: 'floor-scroll',
                 });

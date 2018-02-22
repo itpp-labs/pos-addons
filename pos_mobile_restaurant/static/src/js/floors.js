@@ -19,7 +19,19 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
             var slide = $('div[data-id='+id+'][id=slide-floor]').index();
             this.chrome.swiper_floors.slideTo(slide);
         },
+        save_current_floor_changes_data: function() {
+            var self = this;
+            var collection = this.get_current_data();
+            this.pos.saved_floors_data[this.floor.id] = JSON.stringify(collection);
+        },
+        compare_current_floor_data: function() {
+            var collection = this.get_current_data();
+            return this.pos.saved_floors_data[this.floor.id] === JSON.stringify(collection);
+        },
         renderElement: function(){
+            if (this.compare_current_floor_data()) {
+                return false;
+            }
             this._super();
             var map = this.$el.find('.floor-map');
             var slide = this.get_floor_slide_by_id(this.floor.id);
@@ -32,6 +44,7 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
                 slide = this.get_floor_slide_by_id(this.floor.id);
                 slide.append(map);
             }
+            this.save_current_floor_changes_data();
         },
         get_floor_slide_by_id: function(id) {
             return $('.swiper-slide.slide-floor[data-id='+ id +']');
