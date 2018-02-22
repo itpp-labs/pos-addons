@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="demo_discount_program_1" model="pos.discount_program">
+        <field name="discount_program_name">Discount for Fruits and Vegetables</field>
+    </record>
+    <record id="demo_discount_program_2" model="pos.discount_program">
+        <field name="discount_program_name">Gold Discount for Partner</field>
+    </record>
+    <record id="demo_discount_program_3" model="pos.discount_program">
+        <field name="discount_program_name">Combination of Discounts</field>
+    </record>
+
+    <record id="demo_category_discount_1" model="pos.category_discount">
+        <field name="category_discount_pc">10</field>
+        <field name="discount_category_id" ref="point_of_sale.fruits_vegetables"/>
+        <field name="discount_program_id" ref="demo_discount_program_1"/>
+    </record>
+    <record id="demo_category_discount_2" model="pos.category_discount">
+        <field name="category_discount_pc">25</field>
+        <field name="discount_category_id" ref="point_of_sale.partner_services"/>
+        <field name="discount_program_id" ref="demo_discount_program_2"/>
+    </record>
+    <record id="demo_category_discount_3" model="pos.category_discount">
+        <field name="category_discount_pc">15</field>
+        <field name="discount_category_id" ref="point_of_sale.fruits_vegetables"/>
+        <field name="discount_program_id" ref="demo_discount_program_3"/>
+    </record>
+    <record id="demo_category_discount_4" model="pos.category_discount">
+        <field name="category_discount_pc">20</field>
+        <field name="discount_category_id" ref="point_of_sale.partner_services"/>
+        <field name="discount_program_id" ref="demo_discount_program_3"/>
+    </record>
+
+    <record id='base.res_partner_1'  model='res.partner'>
+        <field name='discount_program_id' ref="demo_discount_program_2"/>
+    </record>
+
+
+
+</odoo>

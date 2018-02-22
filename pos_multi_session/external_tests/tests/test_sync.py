@@ -8,8 +8,8 @@ class TestSync(TestCommon):
         """Simplest case. Sync new order"""
         self.phantom_js_multi({
             # use default settings for sessions (see ./common.py)
+            "demo": {},
             "admin": {},
-            "demo": {}
         }, [
             # initialisation
             {"session": "admin",
@@ -18,6 +18,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -51,6 +59,7 @@ class TestSync(TestCommon):
              },
             # extra time for demo
             {"session": "demo",
+             "screenshot": "before-wait",
              "code": """
                  mstest.wait(function(){
                  }, 5000)
@@ -58,6 +67,7 @@ class TestSync(TestCommon):
              },
             # demo syncs order
             {"session": "demo",
+             "screenshot": "after-wait",
              "code": """
                 mstest.find_order(share.order);
              """,
@@ -84,6 +94,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -167,6 +185,9 @@ class TestSync(TestCommon):
              "code": """
                  mstest.fill_order();
                  share.order = mstest.get_order();
+                 mstest.wait(function(){
+                     mstest.check_revision_error();
+                 }, 5000)
              """,
              },
             # check sync on demo
@@ -174,12 +195,13 @@ class TestSync(TestCommon):
              "code": """
              mstest.wait(function(){
                 mstest.find_order(share.order);
-            }, 20000)
+            }, 10000)
              """,
              "timeout": 25000,
              },
             # ok
             {"session": "demo",
+             "screenshot": "test-20-final",
              "code": "console.log('ok');",
              },
         ], 240)
@@ -199,10 +221,18 @@ class TestSync(TestCommon):
              """,
              "timeout": 35000,
              },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
+             },
             # admin removes orders
             {"session": "admin",
              "code": """
-                 console.log('test_20_offline');
+                 console.log('test_21_offline_remove_order');
                  mstest.remove_all_orders();
              """,
              },
@@ -264,6 +294,7 @@ class TestSync(TestCommon):
             # demo creates new order (to start reconnection process)
             {"session": "demo",
              "code": """
+                console.log('demo creates new order (to start reconnection process)')
                 mstest.new_order();
                 mstest.fill_order();
                 mstest.wait(function(){
@@ -289,7 +320,7 @@ class TestSync(TestCommon):
                  if (mstest.order_exists(share.order)){
                      console.log('error', 'removed order still exists', share.order.order_num)
                  }
-            }, 15000)
+            }, 20000)
              """,
              "timeout": 25000,
              },
@@ -313,6 +344,14 @@ class TestSync(TestCommon):
                  }, 30000)
              """,
              "timeout": 35000,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # check demo authentication
+            {"session": "demo",
+             "code": "$('.username:contains(Demo)').length || console.log('error', 'Demo label is not found');"
              },
             # admin removes orders
             {"session": "admin",
@@ -396,9 +435,9 @@ class TestSync(TestCommon):
                      synced_order = mstest.get_order();
                      mstest.check_inclusion(share.admin_order, synced_order);
 
-                 }, 10000)
+                 }, 20000)
              """,
-             "timeout": 20000,
+             "timeout": 30000,
              },
             # demo compares order with his initial order
             {"session": "demo",
@@ -415,6 +454,174 @@ class TestSync(TestCommon):
              },
             # ok
             {"session": "admin",
+             "code": "console.log('ok');",
+             },
+        ], 120)
+
+    def test_31_queue(self):
+        """Single POS send two update request.
+        It would raise error 'sync conflicts', if there are no queue for sending updates. For example
+        * Order has revision_ID equal to 10
+        * We send first update
+        * We send second update
+        * First request is reached the server. Server sets  revision_ID equal to 11
+        * Second request is reached the server. Server return revision_error, because in request revision_ID is 10, while server has revision_ID 11
+        """
+
+        # current postpone timer for sending updates is 1000 ms
+        # connection_slow delay response to 3000 ms
+
+        self.phantom_js_multi({
+            # use default settings for sessions (see ./common.py)
+            "admin": {},
+        }, [
+            # admin removes orders
+            {"session": "admin",
+             "code": """
+                 console.log('test_31_slow');
+                 mstest.remove_all_orders();
+             """,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # admin creates order
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+                 mstest.print_order();
+                 mstest.wait(function(){
+                 })
+             """,
+             },
+
+            # response for admin requests are delayed for 3 seconds
+            {"session": "admin",
+             "extra": "connection_slow",
+             "code": """
+                 console.log("admin requests are delayed")
+             """,
+             },
+            # admin updates order
+            {"session": "admin",
+             "code": """
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin waits to send update request')
+                 mstest.wait(function(){
+                 }, 1500)
+             """,
+             },
+            # admin updates order again
+            {"session": "admin",
+             "code": """
+                 console.log('Admin updates Order again')
+                 mstest.fill_order();
+             """,
+             },
+            # admin waits and receives error if queue doesn't work
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.check_revision_error();
+                 }, 10000)
+             """,
+             "timeout": 20000,
+             },
+            # connection is on
+            {"session": "admin",
+             "extra": "connection_on",
+             },
+            # ok
+            {"session": "admin",
+             "screenshot": "test-31-final",
+             "code": "console.log('ok');",
+             },
+        ], 120)
+
+    def test_32_queue_for_removing(self):
+        """Single POS send remove order request that confuses update requests.
+        It would raise error 'sync conflicts', if there are no queue for removing an order. For example
+        * We send some updates
+        * We remove order
+        * Updates in queue are reaching a server. Server sets  revision_ID for each update.
+        * Removing order request reach the server without waiting in the queue.
+        * Server return 'error during synchronization', because requests in the queue keep going processing for already deleted order.
+        """
+
+        # current postpone timer for sending updates is 1000 ms
+        # connection_slow delay response to 3000 ms
+
+        self.phantom_js_multi({
+            # use default settings for sessions (see ./common.py)
+            "admin": {},
+        }, [
+            # admin removes orders
+            {"session": "admin",
+             "code": """
+                 console.log('test_32_slow');
+                 mstest.remove_all_orders();
+             """,
+             },
+            # check admin authentication
+            {"session": "admin",
+             "code": "$('.username:contains(Administrator)').length || console.log('error', 'Administrator label is not found')",
+             },
+            # admin creates order
+            {"session": "admin",
+             "code": """
+                 mstest.fill_order();
+                 mstest.print_order();
+                 mstest.wait(function(){
+                 })
+             """,
+             },
+
+            # response for admin requests are delayed for 3 seconds
+            {"session": "admin",
+             "extra": "connection_slow",
+             "code": """
+                 console.log("admin requests are delayed")
+             """,
+             },
+            # admin updates order
+            {"session": "admin",
+             "code": """
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin updates Order')
+                 mstest.fill_order();
+                 console.log('Admin waits to send update request')
+                 mstest.wait(function(){
+                 }, 1500)
+             """,
+             },
+            # admin remove order
+            {"session": "admin",
+             "code": """
+                 console.log('Admin removes Order')
+                 mstest.remove_all_orders();
+             """,
+             },
+            # admin waits and receives error if queue doesn't work
+            {"session": "admin",
+             "code": """
+                 mstest.wait(function(){
+                     mstest.check_revision_error();
+                 }, 10000)
+             """,
+             "timeout": 20000,
+             },
+            # connection is on
+            {"session": "admin",
+             "extra": "connection_on",
+             },
+            # ok
+            {"session": "admin",
+             "screenshot": "test-32-final",
              "code": "console.log('ok');",
              },
         ], 120)

@@ -19,6 +19,7 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 
   [{"session": "session1",
     "extra": "connection_on" | "connection_off" | "connection_slow"
+    "screenshot": screenshot_name,
     "code": "console.log('ok')",
     "ready": false, # wait before calling next command
     "timeout": 60000, # code execution timeout
@@ -27,6 +28,11 @@ Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/opener
 * code:
 
   * to communicate between commands, variable ``share`` can be used. It's saved right after execution finish. It's not save in async code (e.g. inside setTimeout function)
+
+* screenshot:
+
+  * make screenshot before execution of the code
+  * filename is /tmp/SESSION-SCREENSHOT-NUM.png
 
 */
 
@@ -89,7 +95,7 @@ function PhantomTest() {
     var self = this;
     this.options = JSON.parse(system.args[system.args.length-1]);
     this.inject = this.options.inject || [];
-    this.origin = 'http://localhost';
+    this.origin = 'http://' + this.options.host;
     this.origin += this.options.port ? ':' + this.options.port : '';
 
     // ----------------------------------------------------
@@ -103,10 +109,11 @@ function PhantomTest() {
 
         var jar = require('cookiejar').create();
         this.page = require('webpage').create();
+        this.page.name = sname;
         this.page.cookieJar = jar;
         this.pages[sname] = this.page;
         jar.addCookie({
-            'domain': 'localhost',
+            'domain': this.options.host,
             'name': 'session_id',
             'value': session.session_id,
         });
@@ -214,22 +221,21 @@ function PhantomTest() {
             ready = session.ready || "true";
 
             pages_count++;
-            (function(){
-                var currentPage = page;
-                console.log('start loading', url);
+            (function(currentPage, currentSName){
+                console.log(currentSName, currentPage.name, 'START LOADING', url, JSON.stringify(currentPage.cookieJar.cookies));
                 currentPage.open(url, function(status) {
                     if (status !== 'success') {
                         console.log('error', "failed to load " + url);
                         phantom.exit(1);
                     } else {
-                        console.log('loaded', url, status);
+                        console.log(currentSName, currentPage.name, 'LOADED', url, status, JSON.stringify(currentPage.cookieJar.cookies));
                         // clear localstorage leftovers
                         currentPage.evaluate(function () {localStorage.clear(); });
                         // process ready
-                        waitForReady(page, ready, onPageReady, session.timeout);
+                        waitForReady(currentPage, ready, onPageReady, session.timeout);
                     }
                 });
-            })();
+            })(page, sname);
         }//for (var sname in self.pages){
 
     };
@@ -246,14 +252,20 @@ function PhantomTest() {
             if (i == self.options.commands.length){
                 return;
             }
-            command = self.options.commands[i];
-            sname = command.session;
-            page = self.pages[sname];
-            extra = command.extra;
-            code = command.code || 'true';
-            ready = command.ready || 'true';
+            var command = self.options.commands[i];
+            var sname = command.session;
+            var page = self.pages[sname];
+            var extra = command.extra;
+            var screenshot = command.screenshot;
+            var code = command.code || 'true';
+            var ready = command.ready || 'true';
 
-            console.log("PhantomTest.runCommands: executing: " + code);
+            if (screenshot){
+                console.log('Make screenshot', screenshot);
+                page.render('/tmp/' + sname + '-' + screenshot + '-' + i + '.png');
+            }
+
+            console.log("PhantomTest.runCommands: executing as "+sname+ ' ' + page.name + ": " + code);
             (function(){
                 var commandNum = i;
                 timer = setTimeout(function () {

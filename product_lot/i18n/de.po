@@ -1,0 +1,54 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * product_lot
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-14 10:52+0000\n"
+"PO-Revision-Date: 2017-10-14 10:52+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: product_lot
+#: model:ir.model.fields,field_description:product_lot.field_product_product_is_lot
+msgid "Lot of products"
+msgstr "Los von Produkten"
+
+#. module: product_lot
+#: model:ir.model,name:product_lot.model_product_product
+msgid "Product"
+msgstr "Produkt"
+
+#. module: product_lot
+#: model:ir.model.fields,field_description:product_lot.field_product_product_lot_product_id
+msgid "Product in lot"
+msgstr "Produkt im Los"
+
+#. module: product_lot
+#: model:ir.ui.view,arch_db:product_lot.product_lot_normal_form_view
+msgid "Product lot"
+msgstr "Produkt-Los"
+
+#. module: product_lot
+#: model:ir.model.fields,field_description:product_lot.field_product_product_lot_qty
+msgid "Quantity products in Lot"
+msgstr ""
+
+#. module: product_lot
+#: model:ir.ui.view,arch_db:product_lot.product_lot_normal_form_view
+msgid "Split lot"
+msgstr "Los aufteilen"
+
+#. module: product_lot
+#: model:ir.model.fields,field_description:product_lot.field_product_product_lot_id
+msgid "Used in Lot"
+msgstr "In Los verwendet"

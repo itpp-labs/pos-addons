@@ -8,6 +8,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
 
     tour.register('pos_order_cancel_tour', {
         url: "/web",
+        test: true,
     }, [{
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
         content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
@@ -17,11 +18,41 @@ odoo.define('pos_order_cancel.tour', function(require) {
         content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
         position: "bottom"
     }, {
-        content: " Username is visible",
-        trigger: ".username",
-        auto: true,
+        trigger: ".product-list .product",
+        content: _t("<p>Click product 1</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".product-list .product:not(:first)",
+        content: _t("<p>Click product 2</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".pads .numpad-backspace",
+        content: _t("<p>Remove orderline</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".reason-button[data-id='1']",
+        content: _t("<p>Click predefined reason</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".reason-button[data-id='3']",
+        content: _t("<p>Click predefined reason</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".popup-confirm-cancellation .confirm",
+        content: _t("<p>Click confirm button"),
+        position: "bottom"
+    },{
+        trigger: ".deleteorder-button",
+        content: _t("<p>Click remove order button"),
+        position: "bottom"
+    }, {
+        trigger: ".reason-button[data-id='1']",
+        content: _t("<p>Click predefined reason</p>"),
+        position: "bottom"
+    }, {
+        trigger: ".popup-confirm-cancellation .confirm",
+        content: _t("<p>Click confirm button"),
+        position: "bottom"
     }
-
-       ]);
-
+    ]);
 });

@@ -133,7 +133,7 @@ class ResPartner(models.Model):
         user_tz = timezone(self.env.user.tz)
         final = utc_tz.astimezone(user_tz)
 
-        return final.strftime(fmt)
+        return final.strftime(fmt.encode('utf-8'))
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
@@ -167,13 +167,11 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     debt_dummy_product_id = fields.Many2one(
-        'product.product',
-        string='Dummy Product for Debt',
-        domain=[('available_in_pos', '=', True)],
+        'product.product', string='Dummy Product for Debt', domain=[('available_in_pos', '=', True)],
         help="Dummy product used when a customer pays his debt "
-        "without ordering new products. This is a workaround to the fact "
-        "that Odoo needs to have at least one product on the order to "
-        "validate the transaction.")
+             "without ordering new products. This is a workaround to the fact "
+             "that Odoo needs to have at least one product on the order to "
+             "validate the transaction.")
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']
@@ -197,7 +195,6 @@ class PosConfig(models.Model):
                 'code': 'XDEBT',
                 'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
                 'company_id': user.company_id.id,
-                'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
             self.env['ir.model.data'].create({
                 'name': 'debt_account_for_company' + str(user.company_id.id),
@@ -251,18 +248,16 @@ class PosConfig(models.Model):
                 'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
             })
 
-        config = self
-        config.write({
+        self.write({
             'journal_ids': [(4, debt_journal.id)],
             'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
         })
-
         statement = [(0, 0, {
             'journal_id': debt_journal.id,
             'user_id': user.id,
             'company_id': user.company_id.id
         })]
-        current_session = config.current_session_id
+        current_session = self.current_session_id
         current_session.write({
             'statement_ids': statement,
         })
@@ -357,7 +352,49 @@ class PosCreditUpdate(models.Model):
         default=lambda s: s.env.user.company_id.currency_id,
     )
     balance = fields.Monetary('Balance Update', help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).")
+    new_balance = fields.Monetary('New Balance', help="Value to set balance to. Used only in Draft state.")
     note = fields.Text('Note')
     date = fields.Datetime(string='Date', default=fields.Date.today, required=True)
 
-    state = fields.Selection([('confirm', 'Confirmed'), ('cancel', 'Canceled')], default='confirm', required=True)
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirmed'),
+        ('cancel', 'Canceled')
+    ], default='draft', required=True)
+    update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
+
+    def get_balance(self_, balance, new_balance):
+        return -balance + new_balance
+
+    def update_balance(self, vals):
+        partner_id = vals.get('partner_id', self.partner_id.id)
+        new_balance = vals.get('new_balance', self.new_balance)
+        state = vals.get('state', self.state) or 'draft'
+        update_type = vals.get('update_type', self.update_type)
+        if (state == 'draft' and update_type == 'new_balance'):
+            credit_balance = self.partner_id.browse(partner_id).credit_balance
+            vals['balance'] = self.get_balance(credit_balance, new_balance)
+
+    @api.model
+    def create(self, vals):
+        self.update_balance(vals)
+        return super(PosCreditUpdate, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self.update_balance(vals)
+        return super(PosCreditUpdate, self).write(vals)
+
+    def switch_to_confirm(self):
+        self.write({'state': 'confirm'})
+
+    def switch_to_cancel(self):
+        self.write({'state': 'cancel'})
+
+    def switch_to_draft(self):
+        self.write({'state': 'draft'})
+
+    def do_confirm(self):
+        active_ids = self._context.get('active_ids')
+        for r in self.env['pos.credit.update'].browse(active_ids):
+            r.switch_to_confirm()

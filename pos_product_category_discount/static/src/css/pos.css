@@ -182,3 +182,81 @@
     padding: 0px;
     line-height: 25px;
 }
+/* New Styles for POS Product Category Discount if pos_mobile was installed*/
+.pos.mobile .modal-dialog .popup.popup-discount {
+    max-width: initial;
+    width: 100% !important;
+    height: 880px!important;
+    top: initial;
+    background: white;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .popup-numpad {
+    width: 508px!important;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .discount-program-content {
+    height: 759px !important;
+    border-left: solid 2px #c7c7c7;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .title {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 27px;
+    width: 50%!important;
+    background-color: #f0eeee;
+    margin-bottom: 25px;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .discount-program-content .title {
+    margin: 0;
+    padding-right: 0px;
+    width: initial!important;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .popup-input {
+    width: 480px!important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .footer {
+    border-top: solid 2px #c7c7c7;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .input-button, .pos.mobile .modal-dialog .popup.popup-discount .mode-button {
+    box-shadow: 0px 9px 20px -11px black;
+    background: #ededed;
+    border: 2px solid #e8e8e8;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .input-button img {
+    height: 42px!important;
+    width: 48px!important;
+    margin-top: 10px;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .discount-program-list .button {
+    font-size: 36px!important;
+    width: 421px!important;
+    margin-right: 0px!important;
+    padding-bottom: 23px;
+    padding-top: 23px;
+    padding-right: 10px;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pos.mobile .modal-dialog .popup.popup-discount .footer .button{
+    font-size: 40px;
+}
+.pos.mobile .modal-dialog .popup.popup-discount button:active, .pos.mobile .modal-dialog .popup.popup-discount .button:active {
+    background: #555555;
+    color: white;
+}
+/*Mobile ScreenWidget*/
+.pos.mobile .discountlist-screen .discount-list{
+    font-size: 35px;
+    line-height: 60px;
+}
+.pos.mobile .discountlist-screen .discount-list th,
+.pos.mobile .discountlist-screen .discount-list td {
+    padding: 8px !important;
+}
+.pos.mobile .discountlist-screen .top-content .button.next {
+    font-size: 35px!important;
+}

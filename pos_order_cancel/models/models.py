@@ -10,12 +10,14 @@ class PosCancelledReason(models.Model):
 
     sequence = fields.Integer(string="Sequence")
     name = fields.Char(string="Reason", translate=True)
+    canceled_line_ids = fields.Many2many('pos.order.line.canceled', 'reason_cancelled_line_rel',
+                                         'cancelled_reason_id', 'canceled_line_id')
 
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
-    cancellation_reason = fields.Text(string="Order Cancellation Reason")
+    cancellation_reason = fields.Text(string="Reasons as Text")
     is_cancelled = fields.Boolean("Stage Cancelled", default=False)
     canceled_lines = fields.One2many("pos.order.line.canceled", "order_id", string="Canceled Lines")
     computed_state = fields.Selection(
@@ -47,7 +49,7 @@ class PosOrder(models.Model):
     def _order_fields(self, ui_order):
         order = super(PosOrder, self)._order_fields(ui_order)
         process_canceled_line = partial(self.env['pos.order.line.canceled']._order_cancel_line_fields)
-        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order['canceled_lines']] if ui_order['canceled_lines'] else False
+        order['canceled_lines'] = [process_canceled_line(l) for l in ui_order.get('canceled_lines', [])]
         return order
 
     @api.model
@@ -100,13 +102,15 @@ class PosOrderLineCanceled(models.Model):
     user_id = fields.Many2one(comodel_name='res.users', string='Salesman', help="Person who removed order line", default=lambda self: self.env.uid, readonly=True)
     qty = fields.Float('Cancelled Quantity', default=1, readonly=True)
     current_qty = fields.Float('Remainder', default=0, readonly=True)
-    reason = fields.Text(string="Reason", help="The Reason of Line Canceled", readonly=True)
+    reason = fields.Text(string="Reasons as Text", help="The Reason of Line Canceled", readonly=True)
     order_id = fields.Many2one('pos.order', string='Order Ref', ondelete='cascade', readonly=True)
     pack_lot_ids = fields.One2many('pos.pack.operation.lot', 'pos_order_line_id', string='Lot/serial Number', readonly=True)
     tax_ids = fields.Many2many('account.tax', string='Taxes', readonly=True)
     canceled_date = fields.Datetime(string='Cancelation Time', readonly=True, default=fields.Datetime.now)
     price_subtotal = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal w/o Tax', store=True)
     price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
+    cancelled_reason_ids = fields.Many2many('pos.cancelled_reason', 'reason_cancelled_lines_rel',
+                                            'canceled_line_id', 'cancelled_reason_id', string='Predefined Reasons')
 
     @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
     def _compute_amount_line_all(self):
@@ -135,6 +139,8 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = canceled_date.astimezone(pytz.utc)
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
+        if values.get('cancelled_reason_ids') and len(values.get('cancelled_reason_ids')) > 0:
+            values['cancelled_reason_ids'] = [(4, id) for id in values.get('cancelled_reason_ids')]
         return super(PosOrderLineCanceled, self).create(values)
 
 
@@ -142,3 +148,6 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     allow_custom_reason = fields.Boolean(string="Allow custom cancellation reason", help="When not active, user will be able to select predefined reasons only", default=True)
+    allow_cancel_deletion = fields.Boolean(string="Cancel the deletion", help="When not active, a user will have to select predefined reasons without the possibility to cancel this action", default=True)
+    show_popup_change_quantity = fields.Boolean(string="Specify Quantity to Cancel", help="Allow to specify a quantity for products to cancel")
+    show_cancel_info = fields.Boolean(string="Display the Cancellation Information", default=False, help="Display the information of canceled products in order in POS (format: Qty - User - Table)")

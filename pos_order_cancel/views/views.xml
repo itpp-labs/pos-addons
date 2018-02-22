@@ -59,7 +59,7 @@
             </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="Refunds / Cancellations">
+                <page name="cancellations" string="Refunds / Cancellations">
                     <group>
                         <separator string="Order Cancellation Reason" colspan="4" attrs="{'invisible': ['|',('is_cancelled','!=',True),('cancellation_reason','=',False)]}"/>
                         <field name="cancellation_reason" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>
@@ -168,13 +168,16 @@
                     <field name="current_qty"/>
                     <field name="price_unit" widget="monetary"/>
                     <field name="discount" widget="monetary"/>
-                    <field name="reason"/>
                     <field name="canceled_date"/>
                     <field name="user_id"/>
                     <field name="order_id"/>
                 </group>
                 <group>
                     <field name="tax_ids" widget="many2many_tags"/>
+                </group>
+                <group>
+                    <field name="reason"/>
+                    <field name="cancelled_reason_ids" widget="many2many_tags"/>
                 </group>
             </form>
         </field>
@@ -233,7 +236,7 @@
         <field name="name">Refund / Cancelation Details</field>
         <field name="res_model">pos.order.line.canceled</field>
         <field name="view_type">form</field>
-        <field name="view_mode">graph,tree,form,pivot</field>
+        <field name="view_mode">tree,graph,form,pivot</field>
         <field name="search_view_id" ref="view_report_cancelations_search"/>
         <field name="context">{'search_default_thismonth':1, 'group_by':[]}</field>
     </record>

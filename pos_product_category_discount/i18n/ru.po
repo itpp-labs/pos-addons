@@ -1,0 +1,298 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_product_category_discount
+# 
+# Translators:
+# Dinar <gabbasov@it-projects.info>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-01 07:35+0000\n"
+"PO-Revision-Date: 2017-12-01 07:35+0000\n"
+"Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
+"Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:63
+#, python-format
+msgid "% discount"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:58
+#, python-format
+msgid "% discount ("
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,help:pos_product_category_discount.field_pos_discount_program_discount_program_active
+msgid "Activate or deactivate the discount program in POS"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_discount_program_active
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_filter
+msgid "Active"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:230
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
+#, python-format
+msgid "Apply"
+msgstr "Применить"
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:290
+#, python-format
+msgid "Apply Change"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:87
+#, python-format
+msgid "Cancel"
+msgstr "Отменить"
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,help:pos_product_category_discount.field_product_product_discount_allowed
+#: model:ir.model.fields,help:pos_product_category_discount.field_product_template_discount_allowed
+msgid "Check if you want this product discount allowed in the Point of Sale"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.actions.act_window,help:pos_product_category_discount.pos_discount_program_action
+msgid "Click to define a new discount program."
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_create_uid
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_create_date
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:144
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:156
+#, python-format
+msgid "Discount"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_discount_category_ids
+msgid "Discount Category"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_category_discount_pc
+msgid "Discount Percentage"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:126
+#: model:ir.model,name:pos_product_category_discount.model_pos_discount_program
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_discount_program_id
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_res_partner_discount_program_id
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_res_users_discount_program_id
+#, python-format
+msgid "Discount Program"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_product_product_discount_allowed
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_product_template_discount_allowed
+msgid "Discount allowed"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_form_view
+msgid "Discount category"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:109
+#, python-format
+msgid "Discount program name"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:72
+#, python-format
+msgid "Discounts:"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_display_name
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_display_name
+msgid "Display Name"
+msgstr "Отображаемое Имя"
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_id
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_id
+msgid "ID"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_filter
+msgid "Inactive"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount___last_update
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_write_uid
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_write_date
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:14
+#, python-format
+msgid "Load Discount Program"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_discount_program_name
+msgid "Name"
+msgstr "Имя"
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:158
+#, python-format
+msgid "None"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:22
+#, python-format
+msgid "Other"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.actions.act_window,name:pos_product_category_discount.pos_discount_program_action
+#: model:ir.ui.menu,name:pos_product_category_discount.menu_pos_discount_program
+msgid "POS Discount Programs"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model,name:pos_product_category_discount.model_res_partner
+msgid "Partner"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_category_form_view
+msgid "Pos Category Discount"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_form_view
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_tree_view
+msgid "Pos Discount Program"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_discount_category_id
+msgid "Product Category"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model,name:pos_product_category_discount.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:6
+#, python-format
+msgid "Reset"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_filter
+msgid "Search Discount Program"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_discount_program_number
+msgid "Sequence"
+msgstr "Порядок"
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,help:pos_product_category_discount.field_res_partner_discount_program_id
+#: model:ir.model.fields,help:pos_product_category_discount.field_res_users_discount_program_id
+msgid "That programm will be applied when customer is selected"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,help:pos_product_category_discount.field_pos_category_discount_discount_category_id
+msgid "The category used to model the discount"
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model.fields,help:pos_product_category_discount.field_pos_category_discount_category_discount_pc
+msgid "The default discount percentage"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:34
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:43
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:57
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:62
+#, python-format
+msgid "With a"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:45
+#, python-format
+msgid "discount"
+msgstr ""
+
+#. module: pos_product_category_discount
+#. openerp-web
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:36
+#, python-format
+msgid "discount ("
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model,name:pos_product_category_discount.model_pos_category_discount
+msgid "pos.category_discount"
+msgstr ""

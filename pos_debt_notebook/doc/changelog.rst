@@ -1,3 +1,19 @@
+`4.4.3`
+-------
+
+**FIX:** Compatibility with Chinese localization
+
+`4.4.2`
+-------
+
+**ADD:** Compatibility with Pos Mobile
+
+`4.4.1`
+-------
+
+**FIX:** Extra Debt payment lines when using "Pay Full Debt" method.
+**FIX:** Incorrect order validation.
+
 `4.4.0`
 -------
 

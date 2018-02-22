@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="pos_restaurant.kitchen_printer" model="restaurant.printer">
+        <field name="printer_method_name">separate_receipt</field>
+    </record>
+</odoo>

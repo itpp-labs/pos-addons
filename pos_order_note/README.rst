@@ -11,10 +11,14 @@ Credits
 
 Contributors
 ------------
-* gabbasov@it-projects.info
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------
+* `Sinomate <http://sinomate.net/>`__
+
+Maintainers
+-----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
@@ -28,4 +32,4 @@ Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 10.0 5a3c43b480b404ca660fe2b0860e0a1572c08017
+Tested on Odoo 10.0 808c0e5dde61027241ff59b1674b159067da0d7e
