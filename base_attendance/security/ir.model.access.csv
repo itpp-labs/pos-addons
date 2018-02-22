@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_attendance_readonly_attendance,res.partner.attendance.user,model_res_partner_attendance,base_attendance.group_res_attendance,1,0,0,0
+access_hr_attendance_manual_attendance,res.partner.attendance.user,model_res_partner_attendance,base_attendance.group_manual_attendance,1,1,1,0
+access_hr_attendance_officer,res.partner.attendance.user,model_res_partner_attendance,base_attendance.group_hr_attendance_user,1,1,1,1
+access_hr_attendance_attendance,res.partner.attendance.user,model_res_partner_attendance,,0,0,0,0

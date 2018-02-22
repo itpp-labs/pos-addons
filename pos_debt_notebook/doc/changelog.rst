@@ -1,3 +1,12 @@
+`5.0.0`
+-------
+
+**ADD:** Cash out feature
+**ADD:** Multiple debit credit accounts
+**ADD:** Smart button with debts/credits on a customer view
+**ADD:** Credits via discount
+**FIX:** Debt history for Chinese localization
+
 `4.4.3`
 -------
 
