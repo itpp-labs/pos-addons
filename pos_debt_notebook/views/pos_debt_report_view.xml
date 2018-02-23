@@ -108,6 +108,14 @@
             <field name="context">{}</field>
         </record>
 
+        <record id="action_report_pos_debt_partner" model="ir.actions.act_window">
+            <field name="name">Partner Debts / Credits</field>
+            <field name="res_model">report.pos.debt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree,form</field>
+            <field name="search_view_id" ref="view_report_pos_debt_search"/>
+            <field name="context">{'search_default_partner_id': active_id}</field>
+        </record>
 
         <menuitem id="menu_report_pos_debt_all" name="Debts / Credits" action="action_report_pos_debt_all" parent="point_of_sale.menu_point_rep" groups="point_of_sale.group_pos_manager" sequence="10"/>
 </odoo>
