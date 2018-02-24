@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, SUPERUSER_ID
 from datetime import datetime
 from pytz import timezone
 import pytz
@@ -138,7 +138,8 @@ class ResPartner(models.Model):
 
         server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
         utc_tz = pytz.utc.localize(server_date, is_dst=False)
-        user_tz = timezone(self.env.user.tz)
+        root = self.env['res.users'].browse(SUPERUSER_ID)
+        user_tz = timezone(self.env.user.tz or root.tz or 'UTC')
         final = utc_tz.astimezone(user_tz)
 
         return final.strftime(fmt.encode('utf-8'))
