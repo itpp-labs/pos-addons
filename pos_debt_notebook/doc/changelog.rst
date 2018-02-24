@@ -6,6 +6,7 @@
 **ADD:** Smart button with debts/credits on a customer view
 **ADD:** Credits via discount
 **FIX:** Debt history for Chinese localization
+**FIX:** Error when user doesn't have timezone
 
 `4.4.3`
 -------
