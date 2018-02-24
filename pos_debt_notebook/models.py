@@ -465,6 +465,7 @@ class PosCreditUpdate(models.Model):
     _name = 'pos.credit.update'
     _description = "Manual Credit Updates"
     _inherit = ['mail.thread']
+    _order = 'id desc'
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True, track_visibility='always')
     user_id = fields.Many2one(
