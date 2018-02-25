@@ -624,6 +624,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order();
             var status = '';
             if (client && client.debts && order && order.get_orderlines().length !== 0){
+                var paymentlines = order.get_paymentlines();
+                if (paymentlines.length && order.get_due() > 0 ) {
+                    _.each(paymentlines, function(pl){
+                        order.remove_paymentline(pl);
+                    });
+                }
                 var autopay_cashregisters = _.filter(this.pos.cashregisters, function(cr){
                     return cr.journal.debt && cr.journal.credits_autopay && client.debts[cr.journal.id].balance > 0;
                 });
