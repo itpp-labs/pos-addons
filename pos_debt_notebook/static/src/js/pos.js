@@ -24,12 +24,22 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                                                   'category_ids','credits_autopay']);
             models.load_fields('product.product',['credit_product']);
             _super_posmodel.initialize.apply(this, arguments);
-            this.ready.then(function () {
-                var partner_ids = _.map(self.partners, function(p){
-                    return p.id;
-                });
-                self.reload_debts(partner_ids, 0, {"postpone": false});
+        },
+        after_load_server_data: function(){
+            var self = this;
+            var partner_ids = _.map(this.partners, function(p){
+                return p.id;
             });
+
+            var  done = new $.Deferred();
+
+            this.reload_debts(partner_ids, 0, {"postpone": false}).then(function(){
+                done.resolve();
+            });
+            done.then(function(){
+                return _super_posmodel.after_load_server_data.apply(self, arguments);
+            });
+            return done;
         },
         _save_to_server: function (orders, options) {
             var self = this;
