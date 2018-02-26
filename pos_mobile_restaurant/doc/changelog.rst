@@ -1,7 +1,7 @@
 `1.2.5`
 -------
 
-- **IMP:** Rendering Floor Screen
+- **IMP:** A floor screen rendering
 
 `1.2.4`
 -------
