@@ -21,12 +21,17 @@ odoo.define('pos_mobile_restaurant.floors', function (require) {
         },
         save_current_floor_changes_data: function() {
             var self = this;
-            var collection = this.get_current_data();
-            this.pos.saved_floors_data[this.floor.id] = JSON.stringify(collection);
+            if (this.get_current_data) {
+                var collection = this.get_current_data();
+                this.pos.saved_floors_data[this.floor.id] = JSON.stringify(collection);
+            }
         },
         compare_current_floor_data: function() {
-            var collection = this.get_current_data();
-            return this.pos.saved_floors_data[this.floor.id] === JSON.stringify(collection);
+            if (this.get_current_data) {
+                var collection = this.get_current_data();
+                return this.pos.saved_floors_data[this.floor.id] === JSON.stringify(collection);
+            }
+            return false;
         },
         renderElement: function(){
             if (this.compare_current_floor_data()) {
