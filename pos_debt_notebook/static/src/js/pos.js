@@ -756,31 +756,35 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         update_debt_history: function (partner_ids){
             var self = this;
-            if (this.new_client && $.inArray(this.new_client.id, partner_ids) !== -1) {
-                var debt = this.pos.db.get_partner_by_id(this.new_client.id).debt;
-                if (this.new_client.debt_type === 'credit') {
+            var customers = this.pos.db.get_partners_sorted(1000);
+            var partner = this.new_client || this.pos.get_client();
+            if (partner && this.clientlist_is_opened()) {
+                var debt = partner.debt;
+                if (partner.debt_type === 'credit') {
                     debt = - debt;
                 }
                 debt = this.format_currency(debt);
-                $('.client-detail .detail.client-debt').text(debt);
-            }
-            _.each(partner_ids, function(id){
-                var partner = self.pos.db.get_partner_by_id(id);
-                var debts = _.values(partner.debts);
-                if(partner.debts){
-                    var credit_lines_html = '';
-                    credit_lines_html = QWeb.render('CreditList', {
-                        partner: partner,
-                        debts: debts,
-                        widget: self
-                    });
-                    $('div.credit_list').html(credit_lines_html);
+
+                if (!_.contains(partner_ids, partner.id)){
+                    this.render_list(customers);
+                    $('tr.client-line[data-id=' + partner.id + '] td.client-debt').text(debt);
+                } else {
+                    $('.client-detail .detail.client-debt').text(debt);
+                    var debts = _.values(partner.debts);
+                    if(partner.debts){
+                        var credit_lines_html = '';
+                        credit_lines_html = QWeb.render('CreditList', {
+                            partner: partner,
+                            debts: debts,
+                            widget: self
+                        });
+                        $('div.credit_list').html(credit_lines_html);
+                    }
                 }
-            });
+            }
             _.each(partner_ids, function(id){
                 self.partner_cache.clear_node(id);
             });
-            var customers = this.pos.db.get_partners_sorted(1000);
             this.render_list(customers);
         },
         render_list: function(partners){
@@ -792,8 +796,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             } else if (debt_type === 'credit') {
                 this.$('#client-list-debt').remove();
             }
-            if (this.selected_line && this.selected_line[2]){
-                this.old_client = this.pos.db.get_partner_by_id(this.selected_line[2]);
+            var selected_partner = this.selected_line
+                ? this.pos.db.get_partner_by_id(this.selected_line[2])
+                : this.new_client;
+            if (selected_partner){
+                this.old_client = selected_partner;
             }
             this._super(partners);
             this.old_client = this.pos.get_client();
@@ -979,7 +986,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             return this._super().then(function () {
                 self.render_list(self.pos.db.get_partners_sorted(1000));
             });
-        }
+        },
+        clientlist_is_opened: function(){
+            return $('.clientlist-screen.screen').not('.oe_hidden')[0] || false;
+        },
     });
 
     var ThumbUpPopupWidget = PopupWidget.extend({
