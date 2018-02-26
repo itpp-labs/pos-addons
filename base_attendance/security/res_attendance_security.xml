@@ -42,7 +42,7 @@
         <field name="comment">The user will have to enter his PIN to check in and out manually at the company screen.</field>
     </record>
 
-    <data noupdate="1">   
+    <data noupdate="1">
 
         <record id="hr_attendance_rule_attendance_manager" model="ir.rule">
             <field name="name">attendance officer: full access</field>

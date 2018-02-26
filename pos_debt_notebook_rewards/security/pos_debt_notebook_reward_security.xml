@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!--a service pos group to gain the officer access to creating rewards without access to POS-->
+    <!--POS-->
+
     <record id="group_pos_service" model="res.groups">
         <field name="name">Service POS group</field>
+        <field name="comment">Service pos group to gain the officer access to creating rewards without access to POS.</field>
     </record>
 
     <!--Reward Groups-->
