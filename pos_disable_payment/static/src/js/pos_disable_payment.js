@@ -163,6 +163,19 @@ odoo.define('pos_disable_payment', function(require){
         }
     });
     screens.ActionpadWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_manual_customer_selecting) {
+                this.$('.set-customer').removeClass('disable');
+            } else {
+                this.$('.set-customer').addClass('disable');
+            }
+        },
         renderElement: function () {
             this._super();
             var user = this.pos.cashier || this.pos.user;
@@ -171,22 +184,26 @@ odoo.define('pos_disable_payment', function(require){
             } else{
                 $('.pay').addClass('disable');
             }
-            if (user.allow_manual_customer_selecting) {
-                this.$('.set-customer').removeClass('disable');
-            } else {
-                this.$('.set-customer').addClass('disable');
-            }
+            this.checkManualCustomerSelecting();
         }
     });
     screens.PaymentScreenWidget.include({
-        renderElement: function(){
-            this._super();
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_manual_customer_selecting) {
                 this.$('.js_set_customer').removeClass('disable');
             } else {
                 this.$('.js_set_customer').addClass('disable');
             }
+        },
+        renderElement: function(){
+            this._super();
+            this.checkManualCustomerSelecting();
         }
     });
     screens.NumpadWidget.include({
