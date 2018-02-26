@@ -12,6 +12,8 @@ odoo.define('pos_multi_session', function(require){
     var Model = require('web.Model');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var gui = require('point_of_sale.gui');
+    var framework = require('web.framework');
+
 
     var _t = core._t;
 
@@ -690,9 +692,26 @@ odoo.define('pos_multi_session', function(require){
         sync_all: function(data) {
             var server_orders_uid = [];
             var self = this;
-            data.orders.forEach(function (item) {
-                self.pos.ms_on_update(item, true);
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
+
+            framework.blockUI();
+            this.q = $.when();
+            data.orders.forEach(function (item, index) {
+                self.q = self.q.then(function(){
+                    self.pos.ms_on_update(item, true);
+                    return delay(100);
+                });
                 server_orders_uid.push(item.data.uid);
+            });
+
+            self.q.then(function() {
+                framework.unblockUI();
             });
 
             this.pos.pos_session.order_ID = data.order_ID;
