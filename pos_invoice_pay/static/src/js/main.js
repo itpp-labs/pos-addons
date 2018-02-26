@@ -19,34 +19,6 @@ var round_pr = utils.round_precision;
 var _super_posmodel = models.PosModel.prototype;
 models.PosModel = models.PosModel.extend({
     initialize: function (session, attributes) {
-        var self = this;
-        this.models.push(
-        {
-            model: 'sale.order',
-            fields: ['name', 'partner_id', 'date_order', 'user_id',
-            'amount_total', 'order_line', 'invoice_status'],
-            domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
-            loaded: function (that, sale_orders) {
-                var so_ids = _.pluck(sale_orders, 'id');
-                that.prepare_so_data(sale_orders);
-                that.sale_orders = sale_orders;
-                that.db.add_sale_orders(sale_orders);
-                that.get_sale_order_lines(so_ids);
-            }
-        }, {
-            model: 'account.invoice',
-            fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
-            'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
-            domain: [['state', '=', 'open'],
-            ['type','=', 'out_invoice']],
-            loaded: function (that, invoices) {
-                var invoices_ids = _.pluck(invoices, 'id');
-                that.prepare_invoices_data(invoices);
-                that.invoices = invoices;
-                that.db.add_invoices(invoices);
-                that.get_invoice_lines(invoices_ids);
-            }
-        });
         _super_posmodel.initialize.apply(this, arguments);
         this.bus.add_channel_callback("pos_sale_orders", this.on_notification, this);
         this.bus.add_channel_callback("pos_invoices", this.on_notification, this);
@@ -288,6 +260,35 @@ models.PosModel = models.PosModel.extend({
 
     stop_invoice_processing: function () {
         this.add_itp_data = false;
+    }
+});
+
+models.load_models({
+    model: 'sale.order',
+    fields: ['name', 'partner_id', 'date_order', 'user_id',
+    'amount_total', 'order_line', 'invoice_status'],
+    domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
+    loaded: function (that, sale_orders) {
+        var so_ids = _.pluck(sale_orders, 'id');
+        that.prepare_so_data(sale_orders);
+        that.sale_orders = sale_orders;
+        that.db.add_sale_orders(sale_orders);
+        that.get_sale_order_lines(so_ids);
+    }
+});
+
+models.load_models({
+    model: 'account.invoice',
+    fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
+    'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
+    domain: [['state', '=', 'open'],
+    ['type','=', 'out_invoice']],
+    loaded: function (that, invoices) {
+        var invoices_ids = _.pluck(invoices, 'id');
+        that.prepare_invoices_data(invoices);
+        that.invoices = invoices;
+        that.db.add_invoices(invoices);
+        that.get_invoice_lines(invoices_ids); 
     }
 });
 
@@ -1008,18 +1009,6 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
                 return false;
             }
         }
-
-        // sum = _.reduce(plines, function (accum, pline) {
-        //     accum += pline.get_amount();
-        //     return accum;
-        // }, 0);
-        // if (sum <= 0) {
-        //     this.gui.show_popup('error',{
-        //         'title': _t('Wrong payment amount.'),
-        //         'body': _t('You can not validate the order with zero or negative payment amount.'),
-        //     });
-        //     return false;
-        // }
         return true;
     }
 });

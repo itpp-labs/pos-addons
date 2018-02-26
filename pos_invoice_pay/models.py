@@ -29,7 +29,7 @@ class PosOrder(models.Model):
             payment_difference_handling = 'open'
 
             if amount > inv_obj.residual:
-                writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
+                writeoff_acc_id = self.env['pos.config'].search([]).pos_invoice_pay_writeoff_account_id.id
                 payment_difference_handling = 'reconcile'
 
             vals = {
@@ -136,5 +136,11 @@ class SaleOrder(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
+    def _get_default_writeoff_account(self):
+        acc = self.env['account.account'].search([('code', '=', 220000)]).id
+        return acc if acc else False
+
     show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
     show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
+    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account", 
+        default=_get_default_writeoff_account)
