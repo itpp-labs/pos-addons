@@ -121,7 +121,7 @@
         <field name="tag">base_attendance_greeting_message</field>
     </record>
 
-    <!--Partner kanban view specifically for hr_partner_attendance (to check in/out) -->
+    <!--Partner kanban view specifically for base_attendance (to check in/out) -->
     <record id="res_partner_attendance_view" model="ir.ui.view">
         <field name="name">res.partner.kanban</field>
         <field name="model">res.partner</field>
@@ -166,6 +166,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="priority">99</field>
+        <field name="groups_id" eval="[(4, ref('base_attendance.group_res_attendance'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//strong[contains(@class, 'oe_partner_heading')]" position="replace">
                 <div class="col-xs-11" style="padding:0px">
@@ -184,9 +185,10 @@
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="res_partner_attendance_view"/>
         <field name="context">{}</field>
+        <field name="groups_id" eval="[(4, ref('base_attendance.group_res_attendance'))]"/>
         <field name="help" type="html">
             <p>
-                Create a few partners to be able to select an employee here and perform his check in / check out.
+                Create a few partners to be able to select a partner here and perform his check in / check out.
             </p>
             <p>
                 To create partner go to the Partners menu.
@@ -199,6 +201,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="priority">99</field>
+        <field name="groups_id" eval="[(4, ref('base_attendance.group_res_attendance'))]"/>
         <field name="arch" type="xml">
             <field name="name" position="replace">
             <div id="textbox">
