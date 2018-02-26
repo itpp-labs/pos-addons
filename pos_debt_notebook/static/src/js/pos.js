@@ -124,17 +124,18 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
         },
         _on_load_debts: function(debts){
+            var self = this;
             var partner_ids = _.map(debts, function(debt){
                 return debt.partner_id;
             });
-            for (var i = 0; i < debts.length; i++) {
-                    var partner = this.db.get_partner_by_id(debts[i].partner_id);
-                    partner.debt = debts[i].debt;
-                    partner.debts = debts[i].debts;
-                    partner.records_count = debts[i].records_count;
-                    partner.history = debts[i].history;
-                }
-                this.trigger('updateDebtHistory', partner_ids);
+            _.each(_.values(debts), function(deb){
+                var partner = self.db.get_partner_by_id(deb.partner_id);
+                partner.debt = deb.debt;
+                partner.debts = deb.debts;
+                partner.records_count = deb.records_count;
+                partner.history = deb.history;
+            });
+            this.trigger('updateDebtHistory', partner_ids);
         },
         thumb_up_animation: function(){
             this.gui.show_popup('thumb-up');
@@ -808,7 +809,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var sign = debt_type === 'credit'
                 ? -1
                 : 1;
-            if (debt_history) {
+            if (debt_history && debt_history.length) {
                 var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {
                     debt_history[i].total_balance = sign * Math.round(total_balance * 100) / 100;

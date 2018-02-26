@@ -53,34 +53,31 @@ class ResPartner(models.Model):
             r.credit_balance_company = -r.debt_company
 
     @api.multi
-    def compute_debts_by_journals(self, partner_id):
-        account_journal = self.env['account.journal'].search([('debt', '=', True)])
-        res = dict((id, {'balance': 0, 'journal_id': [id]}) for id in account_journal.ids)
-        res_journal = self.env['report.pos.debt'].read_group(
-            [('partner_id', '=', partner_id), ('journal_id', 'in', account_journal.ids)],
-            ['journal_id', 'balance'],
-            'journal_id')
-        for d in res_journal:
-            res[d['journal_id'][0]] = d
-        return res
-
-    @api.multi
     def debt_history(self, limit=0):
         """
         Get debt details
 
         :param int limit: max number of records to return
-        :return: dictonary with keys:
+        :return: dictionary with keys:
+             * partner_id: partner identification
              * debt: current debt
+             * debts: dictionary with keys:
+
+                 * balance
+                 * journal_id: list
+
+                    * id
+                    * name
+
              * records_count: total count of records
              * history: list of dictionaries
 
                  * date
                  * config_id
                  * balance
+                 * journal_code
 
         """
-        res = []
         fields = [
             'date',
             'config_id',
@@ -89,25 +86,38 @@ class ResPartner(models.Model):
             'balance',
             'product_list',
             'journal_id',
+            'partner_id',
         ]
-        for r in self:
-            domain = [('partner_id', '=', r.id)]
-            data = {"debt": r.debt}
-            if limit:
-                records = self.env['report.pos.debt'].search_read(
-                    domain=domain,
-                    fields=fields,
-                    limit=limit,
-                )
-                for r2 in records:
-                    r2['date'] = self._get_date_formats(r2['date'])
-                    r2['journal_code'] = self.env['account.journal'].search([('id', '=', r2['journal_id'][0])]).code
-                data['history'] = records
-            data['debts'] = self.compute_debts_by_journals(r.id)
-            data['records_count'] = self.env['report.pos.debt'].search_count(domain)
-            data['partner_id'] = r.id
-            res.append(data)
-        return res
+        domain = [('partner_id', 'in', self.ids)]
+        debt_journals = self.env['account.journal'].search([('debt', '=', True)])
+        data = dict((id, {'history': [],
+                         'partner_id': id,
+                         'debt': 0,
+                         'records_count': 0,
+                         'debts': dict((dj.id, {'balance': 0, 'journal_id': [dj.id, dj.name, dj.code]}) for dj in debt_journals)
+                         }) for id in self.ids)
+        records = self.env['report.pos.debt'].search_read(
+            domain=domain,
+            fields=fields,
+            limit=0,
+        )
+        for rec in records:
+            partner_id = rec['partner_id'][0]
+
+            data[partner_id]['debts'][rec['journal_id'][0]]['balance'] += rec['balance']
+
+            if len(data[partner_id]['history']) < limit:
+                rec['date'] = self._get_date_formats(rec['date'])
+                rec['journal_code'] = self.env['account.journal'].browse(rec['journal_id'][0]).code
+                data[partner_id]['history'].append(rec)
+
+        if limit and len(data[partner_id]['history']):
+            data[partner_id]['records_count'] = self.env['report.pos.debt'].search_count([('partner_id', '=', partner_id)])
+
+        for partner_id in self.ids:
+            for journal_id in debt_journals.ids:
+                data[partner_id]['debt'] -= data[partner_id]['debts'][journal_id]['balance']
+        return data
 
     debt = fields.Float(
         compute='_compute_debt', string='Debt', readonly=True,
