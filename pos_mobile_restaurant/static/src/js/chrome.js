@@ -10,6 +10,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
     chrome.Chrome.include({
         // This method instantiates all the screens, widgets, etc.
         build_widgets: function() {
+            var self = this;
             // floors swiper (you can to use the 'resistanceRatio': 1 parameter)
             // read more about it http://idangero.us/swiper/api/#parameters
             this.swiper_floors = new window.Swiper('.swiper-container-map', {
@@ -22,8 +23,6 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             });
 
             this._super();
-
-            var self = this;
 
             // floor screen swiper
             this.swiper_floor_screen = new window.Swiper('.swiper-container-floor-screen', {

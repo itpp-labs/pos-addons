@@ -1,3 +1,8 @@
+`1.2.5`
+-------
+
+- **IMP:** Rendering Floor Screen
+
 `1.2.4`
 -------
 
