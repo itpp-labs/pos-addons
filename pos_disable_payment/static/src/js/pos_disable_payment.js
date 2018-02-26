@@ -10,7 +10,7 @@ odoo.define('pos_disable_payment', function(require){
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var _t = core._t;
 
-    models.load_fields("res.users", ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund']);
+    models.load_fields("res.users", ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund','allow_manual_customer_selecting']);
 
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
     // Example extending of class (method set_cashier), than was created using extend.
@@ -163,14 +163,47 @@ odoo.define('pos_disable_payment', function(require){
         }
     });
     screens.ActionpadWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_manual_customer_selecting) {
+                this.$('.set-customer').removeClass('disable');
+            } else {
+                this.$('.set-customer').addClass('disable');
+            }
+        },
         renderElement: function () {
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
                 $('.pay').removeClass('disable');
-            }else{
+            } else{
                 $('.pay').addClass('disable');
             }
+            this.checkManualCustomerSelecting();
+        }
+    });
+    screens.PaymentScreenWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_manual_customer_selecting) {
+                this.$('.js_set_customer').removeClass('disable');
+            } else {
+                this.$('.js_set_customer').addClass('disable');
+            }
+        },
+        renderElement: function(){
+            this._super();
+            this.checkManualCustomerSelecting();
         }
     });
     screens.NumpadWidget.include({

@@ -26,6 +26,7 @@
                         <field name="is_restaurant_installed" invisible="1"/>
                         <field name="allow_delete_order_line" attrs="{'invisible':['|',('allow_decrease_amount','=',False),('allow_create_order_line','=',False)]}"/>
                         <field name="allow_refund" attrs="{'invisible':[('allow_create_order_line','=',False)]}"/>
+                        <field name="allow_manual_customer_selecting"/>
                     </group>
             </xpath>
         </field>

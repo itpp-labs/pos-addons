@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.5.0`
+-------
+- NEW: New option "Allow manual customer selecting" on user access rights
+
 `2.4.1`
 -------
 - FIX: Compatibility with pos_discount
