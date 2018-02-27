@@ -19,7 +19,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
-            models.load_fields("res.partner",['debt_type', 'debt']);
+            models.load_fields("res.partner",['debt_type']);
             models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out',
                                                   'category_ids','credits_autopay']);
             models.load_fields('product.product',['credit_product']);
