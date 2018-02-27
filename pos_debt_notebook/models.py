@@ -423,6 +423,7 @@ class PosOrder(models.Model):
     _inherit = "pos.order"
 
     product_list = fields.Text('Product list', compute='_compute_product_list', store=True)
+    pos_credit_update_ids = fields.One2many('pos.credit.update', 'order_id', string='Non-Accounting Payments')
 
     @api.multi
     @api.depends('lines', 'lines.product_id', 'lines.product_id.name', 'lines.qty', 'lines.price_unit')
