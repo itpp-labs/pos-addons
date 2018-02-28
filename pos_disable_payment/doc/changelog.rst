@@ -3,6 +3,19 @@
 Updates
 =======
 
+`2.5.0`
+-------
+- NEW: New option "Allow manual customer selecting" on user access rights
+
+`2.4.1`
+-------
+- FIX: Compatibility with pos_discount
+- IMP: When unchecked "Allow remove order line", the delete button is disabled if qty of the line < = 0
+
+`2.4.0`
+-------
+- NEW: Set disabled button as non-clickable instead of hiding
+
 `2.3.0`
 -------
 - NEW: New option "Allow refunds" on user access rights

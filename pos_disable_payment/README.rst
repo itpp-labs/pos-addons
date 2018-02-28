@@ -18,8 +18,9 @@ Credits
 
 Contributors
 ------------
-* Ivan Yelizariev <yelizariev@it-projects.info>
-* Ilmir Karamov <karamov@it-projects.info>
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Ilmir Karamov <https://it-projects.info/team/ilmir-k>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------

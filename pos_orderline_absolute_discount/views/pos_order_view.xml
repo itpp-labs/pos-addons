@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_pos_pos_form" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lines']/tree/field[@name='discount']" position="after">
+                <field name="absolute_discount" widget="monetary"/>
+            </xpath>
+            <xpath expr="//field[@name='lines']/form//field[@name='discount']" position="after">
+                <field name="absolute_discount" widget="monetary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
