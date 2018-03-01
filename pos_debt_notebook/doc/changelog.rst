@@ -1,28 +1,29 @@
 `5.0.0`
 -------
 
-**ADD:** Cash out feature
-**ADD:** Multiple debit credit accounts
-**ADD:** Smart button with debts/credits on a customer view
-**ADD:** Credits via discount
-**FIX:** Debt history for Chinese localization
-**FIX:** Error when user doesn't have timezone
+- **ADD:** Cash out feature
+- **ADD:** Multiple debit credit accounts
+- **ADD:** Smart button with debts/credits on a customer view
+- **ADD:** Credits via discount
+- **FIX:** Debt history for Chinese localization
+- **FIX:** Error when user doesn't have timezone
+- **FIX:** user_id was always replaced to Administrator in pos.order
 
 `4.4.3`
 -------
 
-**FIX:** Compatibility with Chinese localization
+- **FIX:** Compatibility with Chinese localization
 
 `4.4.2`
 -------
 
-**ADD:** Compatibility with Pos Mobile
+- **ADD:** Compatibility with Pos Mobile
 
 `4.4.1`
 -------
 
-**FIX:** Extra Debt payment lines when using "Pay Full Debt" method.
-**FIX:** Incorrect order validation.
+- **FIX:** Extra Debt payment lines when using "Pay Full Debt" method.
+- **FIX:** Incorrect order validation.
 
 `4.4.0`
 -------

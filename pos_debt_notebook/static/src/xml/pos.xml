@@ -152,11 +152,8 @@
     <t t-extend="ClientLine">
         <t t-jquery="tr.client-line" t-operation="append">
             <td t-attf-class="client-debt #{((partner.debt_type == 'debt' and partner.debt lt 0) or (partner.debt_type == 'credit' and partner.debt lt 0)) ? 'negative' : ''} #{((partner.debt_type == 'debt' and partner.debt gt 0) or (partner.debt_type == 'credit' and partner.debt gt 0)) ? 'positive' : ''}">
-                <t t-if="partner.debt_type == 'debt'" t-esc='widget.round(partner.debt)'/>
-                <t t-if="partner.debt_type == 'credit'" t-esc='widget.round(-partner.debt)'/>
-            </td>
-            <td>
-                <t t-esc='partner.debt_limit'/>
+                <t t-if="partner.debt_type == 'debt'" t-esc='widget.format_currency(partner.debt)'/>
+                <t t-if="partner.debt_type == 'credit'" t-esc='widget.format_currency(-partner.debt)'/>
             </td>
         </t>
     </t>
