@@ -29,7 +29,7 @@ class PosOrder(models.Model):
             payment_difference_handling = 'open'
 
             if amount > inv_obj.residual:
-                writeoff_acc_id = self.env['pos.config'].search([]).pos_invoice_pay_writeoff_account_id.id
+                writeoff_acc_id = self._default_session().config_id.pos_invoice_pay_writeoff_account_id.id
                 payment_difference_handling = 'reconcile'
 
             vals = {
