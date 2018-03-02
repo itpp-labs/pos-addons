@@ -858,6 +858,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var debt_history_line_html = QWeb.render('DebtHistoryLine', {
                         partner: partner,
                         line: debt_history[y],
+                        widget: self,
                         debt_type: debt_type
                     });
                     var debt_history_line = document.createElement('tbody');
