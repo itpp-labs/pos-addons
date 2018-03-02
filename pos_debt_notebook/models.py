@@ -515,6 +515,7 @@ class PosCreditUpdate(models.Model):
     update_type = fields.Selection([('balance_update', 'Balance Update'), ('new_balance', 'New Balance')], default='balance_update', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
     order_id = fields.Many2one('pos.order', string="POS Order")
+    config_id = fields.Many2one(related='order_id.config_id', string="POS", store=True)
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance

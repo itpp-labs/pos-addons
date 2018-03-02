@@ -162,7 +162,7 @@ class PosDebtReport(models.Model):
                     record.partner_id as partner_id,
                     record.user_id as user_id,
                     NULL::integer as session_id,
-                    NULL::integer as config_id,
+                    record.config_id as config_id,
                     record.company_id as company_id,
                     record.currency_id as currency_id,
                     record.note as product_list,
