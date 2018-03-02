@@ -33,6 +33,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
             var done = new $.Deferred();
 
+            // FIXME: find solution that doesn't depend on UI (width of progress bar, etc.)
             // .progressbar has constant width 400px
             var progress = $('.progressbar .progress').width();
             progress = (progress + (400 - progress) / 2) / 400;
