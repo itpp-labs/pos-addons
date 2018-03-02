@@ -33,6 +33,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
             var done = new $.Deferred();
 
+            // .progressbar has constant width 400px
+            var progress = $('.progressbar .progress').width();
+            progress = (progress + (400 - progress) / 2) / 400;
+            this.chrome.loading_message(_t('Loading Credits data'), progress);
             this.reload_debts(partner_ids, 0, {"postpone": false}).then(function(){
                 done.resolve();
             });
