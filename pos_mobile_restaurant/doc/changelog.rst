@@ -1,3 +1,8 @@
+`1.2.5`
+-------
+
+- **IMP:** A floor screen rendering
+
 `1.2.4`
 -------
 

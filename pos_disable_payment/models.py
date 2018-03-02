@@ -2,7 +2,7 @@
 from odoo import fields, models, api
 
 
-class PosConfig(models.Model):
+class ResUsers(models.Model):
     _inherit = 'res.users'
 
     allow_payments = fields.Boolean('Allow payments', default=True)
@@ -14,6 +14,7 @@ class PosConfig(models.Model):
     allow_delete_order_line = fields.Boolean('Allow remove order line', default=True)
     allow_create_order_line = fields.Boolean('Allow create order line', default=True)
     allow_refund = fields.Boolean('Allow refunds', default=True)
+    allow_manual_customer_selecting = fields.Boolean('Allow manual customer selecting', default=True)
     is_restaurant_installed = fields.Boolean(compute='_compute_state')
 
     def _compute_state(self):

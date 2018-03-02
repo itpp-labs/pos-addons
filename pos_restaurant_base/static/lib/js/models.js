@@ -165,9 +165,21 @@ odoo.define('pos_restaurant_base.models', function (require) {
             }
         },
         print_order_receipt: function(printer, changes) {
+            var self = this;
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
+            var q = $.when();
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
-                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this});
-                printer.print(receipt);
+                q = q.then(function(){
+                    var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this});
+                    printer.print(receipt);
+                    return delay(100);
+                });
             }
         },
         hasChangesToPrint: function(){
