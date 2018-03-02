@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Absolute Discounts in POS""",
     "summary": """Makes it possible to use absolute discounts in POS""",
     "category": "Point of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=10.0',
     "images": ["images/pos_orderline_abs_disc_main.png"],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -36,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Absolute Discounts in POS",
     "demo_addons": [
