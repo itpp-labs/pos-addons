@@ -611,28 +611,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     }
                 }
             }
-            var $paymentmethods = this.$('.paymentmethods');
-            if ($paymentmethods && $paymentmethods.children()) {
-                _.each($paymentmethods.children(), function(pm) {
-                    var pm_id = pm.dataset.id;
-                    var credit_line_html = '';
-                    if (client && client.debts && client.debts[pm_id]) {
-                        credit_line_html = QWeb.render('CreditNote', {
-                            debt: deb_type * client.debts[pm_id].balance,
-                            widget: self
-                        });
-                    }
-                    var prev_debt = _.filter(pm.children, function(c){
-                       return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit');
+            var debt_cashregisters = _.filter(this.pos.cashregisters, function(cr){
+                return cr.journal.debt;
+            });
+            _.each(debt_cashregisters, function(cr){
+                var journal_id = cr.journal.id;
+                var pm_button = self.$el.find('div[data-id=' + journal_id +']');
+                pm_button.find('span').remove();
+                if (client && client.debts && client.debts[journal_id]) {
+                    var credit_line_html = QWeb.render('CreditNote', {
+                        debt: deb_type * client.debts[journal_id].balance,
+                        widget: self
                     });
-                    if (prev_debt){
-                        _.map(prev_debt, function(pd){
-                            pd.remove();
-                        });
-                    }
-                    pm.innerHTML += credit_line_html;
-                });
-            }
+                    pm_button.append(credit_line_html);
+                }
+            });
             this.change_autopay_button();
         },
         add_autopay_paymentlines: function() {
