@@ -89,6 +89,7 @@
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
         <field name="currency_id" position="after">
+            <field name="debt_type" widget="radio"/>
             <field name="debt_dummy_product_id"/>
         </field>
     </field>
@@ -100,7 +101,6 @@
     <field name="inherit_id" ref="point_of_sale.view_sale_config_settings_form_pos"/>
     <field name="arch" type="xml">
         <xpath expr="//field[@name='module_pos_reprint']" position="after">
-            <field name="debt_type" widget="radio"/>
             <field name="debt_limit" class="oe_inline"/>
         </xpath>
     </field>

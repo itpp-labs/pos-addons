@@ -179,6 +179,11 @@ class PosConfig(models.Model):
              "without ordering new products. This is a workaround to the fact "
              "that Odoo needs to have at least one product on the order to "
              "validate the transaction.")
+    debt_type = fields.Selection([
+        ('debt', 'Display Debt'),
+        ('credit', 'Display Credit')
+    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount) in POS. '
+                                                'In both cases debt will be red, credit - green')
 
     def init_debt_journal(self):
         journal_obj = self.env['account.journal']
@@ -400,7 +405,7 @@ class PosConfiguration(models.TransientModel):
     debt_type = fields.Selection([
         ('debt', 'Display Debt'),
         ('credit', 'Display Credit')
-    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
+    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount) in the backend.'
                                                 'In both cases debt will be red, credit - green')
     debt_limit = fields.Float(
         string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
