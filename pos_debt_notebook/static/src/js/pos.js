@@ -33,6 +33,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
             var done = new $.Deferred();
 
+            var progress = (this.models.length - 0.5) / this.models.length;
+            this.chrome.loading_message(_t('Loading Credits data'), progress);
             this.reload_debts(partner_ids, 0, {"postpone": false}).then(function(){
                 done.resolve();
             });
@@ -134,20 +136,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
         },
         _on_load_debts: function(debts){
+            var self = this;
             var partner_ids = _.map(debts, function(debt){
                 return debt.partner_id;
             });
-            for (var i = 0; i < debts.length; i++) {
-                    var partner = this.db.get_partner_by_id(debts[i].partner_id);
-                    partner.debt = debts[i].debt;
-                    partner.debts = debts[i].debts;
-                    partner.records_count = debts[i].records_count;
-                    if (debts[i].history && debts[i].history.length){
-                        // that condition prevent from rewriting partners history to nothing
-                        partner.history = debts[i].history;
-                    }
+            _.each(_.values(debts), function(deb){
+                var partner = self.db.get_partner_by_id(deb.partner_id);
+                partner.debt = deb.debt;
+                partner.debts = deb.debts;
+                partner.records_count = deb.records_count;
+                if (deb.history && deb.history.length){
+                    // that condition prevent from rewriting partners history to nothing
+                    partner.history = deb.history;
                 }
-                this.trigger('updateDebtHistory', partner_ids);
+            });
+            this.trigger('updateDebtHistory', partner_ids);
         },
         thumb_up_animation: function(){
             this.gui.show_popup('thumb-up');
@@ -834,7 +837,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var sign = debt_type === 'credit'
                 ? -1
                 : 1;
-            if (debt_history) {
+            if (debt_history && debt_history.length) {
                 var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {
                     debt_history[i].total_balance = sign * Math.round(total_balance * 100) / 100;
@@ -856,7 +859,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 for (var y = 0; y < debt_history.length; y++) {
                     var debt_history_line_html = QWeb.render('DebtHistoryLine', {
                         partner: partner,
-                        line: debt_history[y]
+                        line: debt_history[y],
+                        widget: self,
+                        debt_type: debt_type
                     });
                     var debt_history_line = document.createElement('tbody');
                     debt_history_line.innerHTML = debt_history_line_html;

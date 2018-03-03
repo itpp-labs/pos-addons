@@ -34,6 +34,9 @@ class PosDebtReport(models.Model):
         self._cr.execute("""
             CREATE OR REPLACE VIEW report_pos_debt AS (
                 (
+                --
+                -- Using Debt journal in POS
+                --
                 SELECT
                     st_line.id as id,
                     o.id as order_id,
@@ -66,11 +69,15 @@ class PosDebtReport(models.Model):
                 )
                 UNION ALL
                 (
+                --
+                -- Sales of credit products in POS
+                --
                 SELECT
                     -pos_line.id as id,
                     o.id as order_id,
                     NULL::integer as invoice_id,
                     NULL::integer as update_id,
+                    -- FIXME: price_subtotal cannot be used, because it's not stored field
                     pos_line.price_unit * qty as balance,
                     CASE o.state
                         WHEN 'done' THEN 'confirm'
@@ -105,6 +112,9 @@ class PosDebtReport(models.Model):
                 )
                 UNION ALL
                 (
+                --
+                -- Sales of credit products in via Invoices
+                --
                 SELECT
                     (2147483647 - inv_line.id) as id,
                     NULL::integer as order_id,
@@ -136,6 +146,9 @@ class PosDebtReport(models.Model):
                 )
                 UNION ALL
                 (
+                --
+                -- Manual Credit Updates
+                --
                 SELECT
                     (-2147483647 + record.id) as id,
                     record.order_id as order_id,
@@ -149,7 +162,7 @@ class PosDebtReport(models.Model):
                     record.partner_id as partner_id,
                     record.user_id as user_id,
                     NULL::integer as session_id,
-                    NULL::integer as config_id,
+                    record.config_id as config_id,
                     record.company_id as company_id,
                     record.currency_id as currency_id,
                     record.note as product_list,

@@ -30,7 +30,10 @@ Credits
 
 Contributors
 ------------
-* krotov@it-projects.info
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Stanislav Krotov <https://it-projects.info/team/ufaks>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------
