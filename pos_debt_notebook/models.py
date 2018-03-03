@@ -91,11 +91,11 @@ class ResPartner(models.Model):
         ]
         debt_journals = self.env['account.journal'].search([('debt', '=', True)])
         data = dict((id, {'history': [],
-                         'partner_id': id,
-                         'debt': 0,
-                         'records_count': 0,
-                         'debts': dict((dj.id, {'balance': 0, 'journal_id': [dj.id, dj.name], 'journal_code': dj.code}) for dj in debt_journals)
-                         }) for id in self.ids)
+                          'partner_id': id,
+                          'debt': 0,
+                          'records_count': 0,
+                          'debts': dict((dj.id, {'balance': 0, 'journal_id': [dj.id, dj.name], 'journal_code': dj.code}) for dj in debt_journals)
+                          }) for id in self.ids)
 
         records = self.env['report.pos.debt'].read_group(
             domain=[('partner_id', 'in', self.ids), ('journal_id', 'in', debt_journals.ids)],
@@ -407,6 +407,7 @@ class PosConfiguration(models.TransientModel):
         ('credit', 'Display Credit')
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount) in the backend.'
                                                 'In both cases debt will be red, credit - green')
+
     @api.multi
     def set_debt_type(self):
         self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", self.debt_type)

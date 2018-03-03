@@ -575,7 +575,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var client = this.pos.get_client();
             var debt = 0;
             var deb_type = 1;
-            var debt_type = this.pos.config.debt_type
+            var debt_type = this.pos.config.debt_type;
             if (client) {
                 debt = Math.round(client.debt * 100) / 100;
                 if (debt_type === 'credit') {
