@@ -33,6 +33,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
 
             var done = new $.Deferred();
 
+            var progress = (this.models.length - 0.5) / this.models.length;
+            this.chrome.loading_message(_t('Loading Credits data'), progress);
             this.reload_debts(partner_ids, 0, {"postpone": false}).then(function(){
                 done.resolve();
             });
