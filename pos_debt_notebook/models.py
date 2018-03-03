@@ -477,6 +477,19 @@ class PosOrder(models.Model):
         return order
 
 
+class AccountBankStatement(models.Model):
+    _inherit = 'account.bank.statement'
+
+    pos_credit_update_ids = fields.One2many('pos.credit.update', 'account_bank_statement_id', string='Non-Accounting Transactions')
+    pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions', store=True)
+
+    @api.multi
+    @api.depends('pos_credit_update_ids', 'pos_credit_update_ids.balance')
+    def _compute_credit_balance(self):
+        for st in self:
+            st.pos_credit_update_balance = sum([credit_update.balance for credit_update in st.pos_credit_update_ids])
+
+
 class PosCreditUpdate(models.Model):
     _name = 'pos.credit.update'
     _description = "Manual Credit Updates"
@@ -516,6 +529,16 @@ class PosCreditUpdate(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('debt', '=', True)]")
     order_id = fields.Many2one('pos.order', string="POS Order")
     config_id = fields.Many2one(related='order_id.config_id', string="POS", store=True)
+    account_bank_statement_id = fields.Many2one('account.bank.statement', compute='_compute_bank_statement', string="Account Bank Statement", store=True)
+
+    @api.multi
+    @api.depends('order_id', 'journal_id')
+    def _compute_bank_statement(self):
+        for record in self:
+            if record.order_id:
+                order = record.env['pos.order'].browse(record.order_id.id)
+                record.account_bank_statement_id = record.env['account.bank.statement']\
+                    .search([('journal_id', '=', record.journal_id.id), ('pos_session_id', '=', order.session_id.id)]).id
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
