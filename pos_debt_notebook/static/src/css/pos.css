@@ -1254,24 +1254,24 @@
 }
 /* iPads (horizontal) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-    .pos .clientlist-screen .client-details-left {
+    .pos .clientlist-screen .debt-history .client-details-left {
         display: none;
     }
-    .pos .clientlist-screen .client-details-right {
+    .pos .clientlist-screen .debt-history .client-details-right {
         float: none;
         width: 100%;
     }
-    .pos .clientlist-screen .client-detail {
+    .pos .clientlist-screen .debt-history .client-detail {
         display: none;
     }
-    .pos .clientlist-screen .credit_list.client-detail,
-    .pos .clientlist-screen .credit_list.client-detail .client-detail,
-    .pos .clientlist-screen .client-detail.debt-label,
-    .pos .clientlist-screen .client-detail.total {
+    .pos .clientlist-screen .debt-history .credit_list.client-detail,
+    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail,
+    .pos .clientlist-screen .debt-history .client-detail.debt-label,
+    .pos .clientlist-screen .debt-history .client-detail.total {
         display: inline-block;
         padding-right: 20px;
     }
-    .pos .increased_width.label, .pos .clientlist-screen .client-detail.debt-label .label {
+    .pos .debt-history .increased_width.label, .pos .clientlist-screen .debt-history .client-detail.debt-label .label {
         width: initial !important;
     }
 }
