@@ -11,9 +11,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         add_cancelled_line: function(line) {
-            if (this.pos.config.save_canceled_orders) {
-                _super_order.add_cancelled_line.apply(this, arguments);
-            } else {
+            if (this.pos.config.save_canceled_kitchen_orders_only) {
                 var new_line = line.export_as_JSON();
                 new_line.reason = false;
                 if (this.is_cancelled) {
@@ -30,7 +28,13 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 }
                 new_line.cancelled_id = line.id;
                 new_line.user_id = this.pos.get_cashier().id;
+                new_line.user_name = this.pos.get_cashier().name;
                 line.cancelled_line = new_line;
+                if (new_line.was_printed) {
+                    this.canceled_lines.push([0, 0, new_line]);
+                }
+            } else {
+                _super_order.add_cancelled_line.apply(this, arguments);
             }
         },
         saveChanges: function(){
@@ -84,9 +88,11 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             var self = this;
             var res = _super_order.computeChanges.apply(this, arguments);
             if (res.cancelled && res.cancelled.length) {
-                res.cancelled.forEach(function(product) {
+                res.cancelled.forEach(function(product, index) {
                     var line = self.get_orderline(product.line_id);
-                    if (line && line.cancelled_line && line.cancelled_line.reason) {
+                    if (self.pos.config.auto_send_to_kitchen && product.qty === 0) {
+                        res.cancelled.splice(index, 1);
+                    } else if (line && line.cancelled_line && line.cancelled_line.reason) {
                         product.reason = line.cancelled_line.reason;
                     }
                 });
@@ -100,14 +106,14 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             _super_order.destroy_and_upload_as_canceled.apply(this, arguments);
             this.printChanges();
             this.saveChanges();
-            if (!this.pos.config.save_canceled_orders) {
+            if (!this.canceled_lines.length) {
                 this.destroy({'reason':'abandon'});
             }
             //  Read more about this trigger in pos_order_cancel module
             this.trigger('change:sync');
         },
         upload_order_as_canceled: function() {
-            if (this.pos.config.save_canceled_orders) {
+            if (this.canceled_lines.length) {
                 _super_order.upload_order_as_canceled.apply(this, arguments);
             }
         },
