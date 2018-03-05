@@ -813,7 +813,7 @@ odoo.define('pos_multi_session', function(require){
                     clearInterval(self.offline_sync_all_timer);
                     self.offline_sync_all_timer = false;
                 }
-                self.pos.longpolling_connection.network_is_on();
+                self.pos.sync_bus.longpolling_connection.network_is_on();
             });
         },
         destroy_removed_orders: function(server_orders_uid) {
