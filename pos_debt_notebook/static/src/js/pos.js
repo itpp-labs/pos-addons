@@ -975,6 +975,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         renderElement: function(){
             var self = this;
             this._super();
+            var parent = self.$('.client-list').parent();
+
             var $show_debt_history = this.$el.find('#show_debt_history'),
                 $show_customers = this.$el.find('#show_customers'),
                 $debt_history = this.$el.find('#debt_history');
@@ -988,7 +990,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $debt_history.removeClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
                 $show_customers.removeClass('oe_hidden');
+
+                var old_size = self.$el.find('.client-details').height();
                 self.$el.find('.client-details').addClass('debt-history');
+                var new_size = self.$el.find('.client-details').height();
+                var resize = old_size - new_size;
+                // set new height for debt history list
+                parent.height(parent.height() + resize);
+
                 self.pos.reload_debts(
                     client.id,
                     self.debt_history_limit_initial,
@@ -1004,7 +1013,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $debt_history.addClass('oe_hidden');
                 $show_customers.addClass('oe_hidden');
                 $show_debt_history.removeClass('oe_hidden');
+                var old_details_size = self.$el.find('.client-details').height();
                 self.$el.find('.client-details').removeClass('debt-history');
+                var new_details_size = self.$el.find('.client-details').height();
+                var new_resize = old_details_size - new_details_size;
+                // set new height for client list
+                parent.height(parent.height() + new_resize);
             });
         },
         saved_client_details: function(partner_id){
