@@ -1252,7 +1252,7 @@
             transform: rotate(-342deg) translate(96px) scale(0);
   }
 }
-/* iPads (horizontal) */
+/* Styles for tablets (horizontal) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     .pos .clientlist-screen .debt-history .client-details-left {
         display: none;
