@@ -780,7 +780,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var customers = this.pos.db.get_partners_sorted(1000);
             var partner = this.new_client || this.pos.get_client();
-            if (partner && this.clientlist_is_opened()) {
+            if (partner && this.clientlist_screen_is_opened()) {
                 var debt = partner.debt;
                 if (partner.debt_type === 'credit') {
                     debt = - debt;
@@ -900,7 +900,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $pay_full_debt.addClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
                 $show_customers.addClass('oe_hidden');
-            } else {
+            } else if (!this.debt_history_is_opened()) {
                 if ((this.new_client && this.new_client.debt > 0) ||
                         (curr_client && curr_client.debt > 0 && !this.new_client)) {
                     $pay_full_debt.removeClass('oe_hidden');
@@ -912,6 +912,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 } else {
                     $show_debt_history.addClass('oe_hidden');
                 }
+            } else {
+                $show_customers.removeClass('oe_hidden');
             }
         },
         show: function(){
@@ -1016,8 +1018,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 self.render_list(self.pos.db.get_partners_sorted(1000));
             });
         },
-        clientlist_is_opened: function(){
+        clientlist_screen_is_opened: function(){
             return $('.clientlist-screen.screen').not('.oe_hidden')[0] || false;
+        },
+        debt_history_is_opened: function(){
+            return $('#debt_history').not('.oe_hidden')[0] || false;
         },
     });
 
