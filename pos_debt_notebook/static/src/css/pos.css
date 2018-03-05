@@ -1266,12 +1266,24 @@
     }
     .pos .clientlist-screen .debt-history .credit_list.client-detail,
     .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail,
-    .pos .clientlist-screen .debt-history .client-detail.debt-label,
     .pos .clientlist-screen .debt-history .client-detail.total {
         display: inline-block;
-        padding-right: 20px;
+        padding-right: 10px;
+    }
+    .pos .clientlist-screen .debt-history .client-detail.total {
+        float: left;
+    }
+    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:first-child:before {
+        content: "(";
+    }
+    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:after {
+        content: ",";
+    }
+    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:last-child:after {
+        content: ")";
     }
     .pos .debt-history .increased_width.label, .pos .clientlist-screen .debt-history .client-detail.debt-label .label {
         width: initial !important;
+        margin-right: 0px;
     }
 }
