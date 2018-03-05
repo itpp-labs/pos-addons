@@ -136,8 +136,14 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 this.events = _.extend(this.events || {}, {
                     'click .discount-program-list .button': 'click_discount_program',
                     'click .reset': function() {
-                        self.pos.get_order().remove_all_discounts();
-                        self.gui.close_popup();
+                        var order = self.pos.get_order();
+                        if (order.discount_program_id) {
+                            order.remove_all_discounts();
+                            self.gui.close_popup();
+                        } else {
+                            self.$('.value').text(0);
+                            self.inputbuffer = 0;
+                        }
                     },
                 });
             }
