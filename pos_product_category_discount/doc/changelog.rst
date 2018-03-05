@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.4`
+------
+
+- **FIX:** The Discount feature didn't work correctly when percentage value has been modified
+
 `1.2.3`
 ------
 

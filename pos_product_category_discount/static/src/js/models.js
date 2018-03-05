@@ -86,12 +86,14 @@ odoo.define('pos_product_category_discount.models', function (require) {
             var json = OrderSuper.prototype.export_as_JSON.call(this);
             json.product_discount = this.product_discount || false;
             json.discount_program_id = this.discount_program_id;
+            json.discount_percent = this.discount_percent;
             return json;
         },
         init_from_JSON: function(json) {
             OrderSuper.prototype.init_from_JSON.apply(this,arguments);
             this.product_discount = json.product_discount || false;
             this.discount_program_id = json.discount_program_id;
+            this.discount_percent = json.discount_percent;
         },
     });
 
