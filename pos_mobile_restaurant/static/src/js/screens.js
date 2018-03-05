@@ -28,7 +28,7 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
 
     screens.OrderWidget.include({
         renderElement: function(scrollbottom){
-            this._super();
+            this._super(scrollbottom);
             /* If POS Order Note was installed */
             var order_note = $('.slide-order .order-note-line');
             if (order_note.length) {
