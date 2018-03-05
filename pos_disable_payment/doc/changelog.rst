@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.6.0`
+-------
+- NEW: New option "Allow change Qty for kitchen orders"
+
 `2.5.0`
 -------
 - NEW: New option "Allow manual customer selecting" on user access rights
