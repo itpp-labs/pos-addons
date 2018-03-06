@@ -71,7 +71,7 @@ odoo.define('pos_disable_payment', function(require){
             if (line && line.quantity <= 0) {
                 if (user.allow_delete_order_line) {
                     $('.numpad-backspace').removeClass('disable');
-                } else{
+                } else {
                     $('.numpad-backspace').addClass('disable');
                 }
             } else {
@@ -101,8 +101,10 @@ odoo.define('pos_disable_payment', function(require){
 
                 if (user.allow_decrease_amount) {
                     // allow all buttons
-                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
-                    state.changeMode('quantity');
+                    if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                        $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                        state.changeMode('quantity');
+                    }
                     if (user.allow_delete_order_line) {
                         $('.numpad').find('.numpad-backspace').removeClass('disable');
                     }
@@ -176,9 +178,9 @@ odoo.define('pos_disable_payment', function(require){
         checkDiscountButton: function() {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_discount) {
-                this.$('.control-buttons .js_discount').removeClass('disable');
+                $('.control-button.js_discount').removeClass('disable');
             }else{
-                this.$('.control-buttons .js_discount').addClass('disable');
+                $('.control-button.js_discount').addClass('disable');
             }
         },
         show: function(reset){
