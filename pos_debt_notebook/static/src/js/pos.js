@@ -828,6 +828,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var sign = debt_type === 'credit'
                 ? -1
                 : 1;
+            if (debt_type === 'debt'){
+                this.$el.find('th:contains(Total Balance)').text('Total Debt');
+            }
             if (debt_history && debt_history.length) {
                 var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {
