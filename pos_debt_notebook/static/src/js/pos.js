@@ -915,7 +915,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             } else {
                 $show_customers.removeClass('oe_hidden');
             }
-            
+
             if (this.debt_history_is_opened() && !this.editing_client) {
                 this.$el.find('.client-details').addClass('debt-history');
             } else {

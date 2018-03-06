@@ -1252,7 +1252,8 @@
             transform: rotate(-342deg) translate(96px) scale(0);
   }
 }
-.pos .clientlist-screen .debt-history .client-details-left {
+/* .debt-history */
+    .pos .clientlist-screen .debt-history .client-details-left {
         display: none;
     }
     .pos .clientlist-screen .debt-history .client-details-right {
