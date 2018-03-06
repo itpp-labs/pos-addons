@@ -128,10 +128,6 @@
     border: solid 1px rgb(110,200,155);
 }
 
-.pos .increased_width.label{
-    width: 150px !important;
-}
-
 .screen .left-content {
     position: absolute;
     left: 0px;
@@ -1263,25 +1259,29 @@
     .pos .clientlist-screen .debt-history .client-detail {
         display: none;
     }
-    .pos .clientlist-screen .debt-history .credit_list.client-detail,
-    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail,
-    .pos .clientlist-screen .debt-history .client-detail.total {
+    .pos .clientlist-screen .client-details-debt {
+        float: left;
+        width: 100%;
+    }
+    .pos .clientlist-screen .client-details-debt .credit_list.client-detail,
+    .pos .clientlist-screen .client-details-debt .credit_list.client-detail .client-detail,
+    .pos .clientlist-screen .client-details-debt .client-detail.total {
         display: inline-block;
         padding-right: 10px;
     }
-    .pos .clientlist-screen .debt-history .client-detail.total {
+    .pos .clientlist-screen .client-details-debt .client-detail.total {
         float: left;
     }
-    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:first-child:before {
+    .pos .clientlist-screen .client-details-debt .credit_list.client-detail .client-detail:first-child:before {
         content: "(";
     }
-    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:after {
+    .pos .clientlist-screen .client-details-debt .credit_list.client-detail .client-detail:after {
         content: ",";
     }
-    .pos .clientlist-screen .debt-history .credit_list.client-detail .client-detail:last-child:after {
+    .pos .clientlist-screen .client-details-debt .credit_list.client-detail .client-detail:last-child:after {
         content: ")";
     }
-    .pos .debt-history .increased_width.label, .pos .clientlist-screen .debt-history .client-detail.debt-label .label {
+    .pos .increased_width.label{
         width: initial !important;
         margin-right: 0px;
     }
