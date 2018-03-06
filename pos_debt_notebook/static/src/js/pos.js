@@ -909,13 +909,17 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 if (client) {
                     $show_debt_history.removeClass('oe_hidden');
-                    self.$el.find('.client-details').removeClass('debt-history');
                 } else {
                     $show_debt_history.addClass('oe_hidden');
-                    self.$el.find('.client-details').addClass('debt-history');
                 }
             } else {
                 $show_customers.removeClass('oe_hidden');
+            }
+            
+            if (this.debt_history_is_opened() && !this.editing_client) {
+                this.$el.find('.client-details').addClass('debt-history');
+            } else {
+                this.$el.find('.client-details').removeClass('debt-history');
             }
         },
         show: function(){

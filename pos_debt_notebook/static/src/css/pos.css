@@ -1252,9 +1252,7 @@
             transform: rotate(-342deg) translate(96px) scale(0);
   }
 }
-/* Styles for tablets (horizontal) */
-@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-    .pos .clientlist-screen .debt-history .client-details-left {
+.pos .clientlist-screen .debt-history .client-details-left {
         display: none;
     }
     .pos .clientlist-screen .debt-history .client-details-right {
@@ -1286,4 +1284,3 @@
         width: initial !important;
         margin-right: 0px;
     }
-}
