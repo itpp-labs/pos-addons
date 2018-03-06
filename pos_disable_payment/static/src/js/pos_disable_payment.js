@@ -62,7 +62,7 @@ odoo.define('pos_disable_payment', function(require){
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
             this.pos.bind('change:cashier', function(){
-                self.check_kitchen_access();
+                self.check_numpad_access();
             });
         },
         orderline_change: function(line) {
@@ -77,17 +77,17 @@ odoo.define('pos_disable_payment', function(require){
             } else {
                 $('.numpad-backspace').removeClass('disable');
             }
-            this.check_kitchen_access(line);
+            this.check_numpad_access(line);
         },
         click_line: function(orderline, event) {
             this._super(orderline, event);
-            this.check_kitchen_access(orderline);
+            this.check_numpad_access(orderline);
         },
         renderElement:function(scrollbottom){
             this._super(scrollbottom);
-            this.check_kitchen_access();
+            this.check_numpad_access();
         },
-        check_kitchen_access: function(line) {
+        check_numpad_access: function(line) {
             var order = this.pos.get_order();
             if (order) {
                 line = line || order.get_selected_orderline();
@@ -109,28 +109,32 @@ odoo.define('pos_disable_payment', function(require){
                 } else {
                     // disable the backspace button of numpad
                     $('.pads .numpad').find('.numpad-backspace').addClass('disable');
-
-                    if (user.allow_decrease_kitchen_only) {
-                        $('.numpad').find("[data-mode='quantity']").removeClass('disable');
-                        if (state.get('mode') !== 'quantity') {
-                            state.changeMode('quantity');
-                        }
-                    } else if (line.mp_dirty) {
-                        if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
-                            $('.numpad').find("[data-mode='quantity']").removeClass('disable');
-                            state.changeMode('quantity');
-                        }
+                    this.check_kitchen_access(line);
+                }
+            }
+        },
+        check_kitchen_access: function(line) {
+            var user = this.pos.cashier || this.pos.user;
+            var state = this.getParent().numpad.state;
+            if (user.allow_decrease_kitchen_only) {
+                $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                if (state.get('mode') !== 'quantity') {
+                    state.changeMode('quantity');
+                }
+            } else if (line.mp_dirty) {
+                if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    state.changeMode('quantity');
+                }
+            } else {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                if (state.get('mode') === 'quantity') {
+                    if (user.allow_discount) {
+                        state.changeMode('discount');
+                    } else if (user.allow_edit_price) {
+                        state.changeMode('price');
                     } else {
-                        $('.numpad').find("[data-mode='quantity']").addClass('disable');
-                        if (state.get('mode') === 'quantity') {
-                            if (user.allow_discount) {
-                                state.changeMode('discount');
-                            } else if (user.allow_edit_price) {
-                                state.changeMode('price');
-                            } else {
-                                state.changeMode("");
-                            }
-                        }
+                        state.changeMode("");
                     }
                 }
             }
@@ -180,7 +184,7 @@ odoo.define('pos_disable_payment', function(require){
         show: function(reset){
             this._super(reset);
             if (reset) {
-                this.order_widget.check_kitchen_access();
+                this.order_widget.check_numpad_access();
             }
         }
     });
