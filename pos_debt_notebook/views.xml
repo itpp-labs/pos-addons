@@ -140,5 +140,18 @@
     </field>
 </record>
 
+    <!--POS SESSION-->
+
+<record id="pos_debt_notebook_session_form" model="ir.ui.view">
+    <field name="name">pos.session.form.view</field>
+    <field name="model">pos.session</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='statement_ids']/tree/field[@name='total_entry_encoding']" position="after">
+            <field name="pos_credit_update_balance"/>
+        </xpath>
+    </field>
+</record>
+
 </data>
 </openerp>
