@@ -1,3 +1,8 @@
+`1.2.0`
+-------
+
+- **NEW:** Option "Save Canceled / Refunded kitchen orders only" to store on the server the kitchen orders only
+
 `1.1.0`
 -------
 

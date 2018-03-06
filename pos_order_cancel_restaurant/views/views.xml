@@ -9,7 +9,7 @@
                 <group>
                     <field name="kitchen_canceled_only"/>
                     <field name="auto_send_to_kitchen"/>
-                    <field name="save_canceled_orders"/>
+                    <field name="save_canceled_kitchen_orders_only"/>
                 </group>
             </xpath>
         </field>
@@ -24,10 +24,10 @@
                 <field name="was_printed"/>
             </xpath>
             <xpath expr="//field[@name='session_id']" position="after">
-                <field name="save_canceled_orders" invisible="1"/>
+                <field name="save_canceled_kitchen_orders_only" invisible="1"/>
             </xpath>
             <xpath expr="//page[@name='cancellations']" position="attributes">
-                <attribute name="attrs">{'invisible':[('save_canceled_orders', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible':[('save_canceled_kitchen_orders_only', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

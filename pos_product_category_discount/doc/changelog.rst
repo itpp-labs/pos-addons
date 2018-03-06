@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.3`
+------
+
+- **IMP:** Save the previous percentage value when the discount popup is opened again
+
 `1.2.2`
 ------
 
