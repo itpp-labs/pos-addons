@@ -85,6 +85,17 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (typeof limit === "undefined"){
                 limit = 0;
             }
+            if (partner_ids.length === 1 && !limit){
+                // incoming data about balance updates not contains limit
+                // this block changes limit only in case of opened debt history for a partner who have got an update
+                var client_list_screen = this.gui.screen_instances.clientlist;
+                if (client_list_screen && client_list_screen.debt_history_is_opened()){
+                    var partner = client_list_screen.new_client || this.get_client();
+                    if (partner_ids[0] === partner.id){
+                        limit = client_list_screen.history_length || client_list_screen.debt_history_limit_initial;
+                    }
+                }
+            }
             options = options || {};
             if (typeof options.postpone === "undefined"){
                 options.postpone = true;
@@ -787,7 +798,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 debt = this.format_currency(debt);
 
-                if (_.contains(partner_ids, partner.id)){
+                if (partner_ids.length === 1 && partner_ids[0] === partner.id){
+                    // updating only opened partner profile and debt history
                     $('.client-detail .detail.client-debt').text(debt);
                     var debts = _.values(partner.debts);
                     if(partner.debts){
@@ -798,6 +810,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             widget: self
                         });
                         $('div.credit_list').html(credit_lines_html);
+                    }
+                    if (this.debt_history_is_opened()){
+                        this.render_debt_history(partner);
                     }
                 } else {
                     this.render_list(customers);
@@ -837,7 +852,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var sign = debt_type === 'credit'
                 ? -1
                 : 1;
-            if (debt_history && debt_history.length) {
+            this.history_length = debt_history
+                ? debt_history.length
+                : 0;
+            if (this.history_length) {
                 var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {
                     debt_history[i].total_balance = sign * Math.round(total_balance * 100) / 100;
