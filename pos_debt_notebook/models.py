@@ -422,7 +422,7 @@ class Product(models.Model):
 
     _inherit = 'product.template'
 
-    credit_product = fields.Many2one('account.journal', string='Journal Credit Product',
+    credit_product = fields.Many2one('account.journal', string='Journal Credit Product', domain="[('debt', '=', True)]",
                                      help="This product is used to buy Credits (pay for debts).")
 
 

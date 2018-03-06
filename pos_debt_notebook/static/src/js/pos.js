@@ -417,33 +417,41 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             paymentlines = order.get_paymentlines(),
             order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding),
             partner = this.pos.get_client();
-            var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
-            if (disc_credits_pl.length && order_total) {
-                var sum = _.reduce(disc_credits_pl, function(memo, pl){
-                    return memo + pl.get_amount() - order.get_change(pl);
-                }, 0);
-                var percentage = ( sum / order_total ) * 100;
-                var orderlines = order.get_orderlines();
-                _.each(orderlines, function(ol){
-                    ol.set_discount(percentage);
-                });
-                this._super();
-                if (partner) {
-                    var deb = {};
-                    _.each(paymentlines, function(pl){
-                        deb = _.find(_.values(partner.debts), function(d){
-                            return d.journal_id[0] === pl.cashregister.journal.id;
-                        });
-                        if(deb && deb.balance){
-                            deb.balance -= pl.amount;
-                        }
-                    });
-                    partner.debt = - _.reduce(partner.debts, function(memo, d){
-                        return memo + d.balance;
+            var debt_pl = _.filter(paymentlines, function(pl){
+                return pl.cashregister.journal.debt;
+            });
+            if (debt_pl && partner){
+                var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
+                if (disc_credits_pl.length && order_total) {
+                    // adding a discount
+                    var sum = _.reduce(disc_credits_pl, function(memo, pl){
+                        return memo + pl.get_amount() - order.get_change(pl);
                     }, 0);
+                    var percentage = ( sum / order_total ) * 100;
+                    var orderlines = order.get_orderlines();
+                    _.each(orderlines, function(ol){
+                        ol.set_discount(percentage);
+                    });
                 }
+                this._super();
+                // offline updating of credits, on a restored network this data will be replaced by the servers one
+                _.each(debt_pl, function(pl){
+                    partner.debts[pl.cashregister.journal.id].balance -= pl.amount;
+                    partner.debt += pl.amount
+                });
             } else {
                 this._super();
+            }
+            var debt_prod = _.filter(order.get_orderlines(), function(ol){
+                return ol.product.credit_product;
+            });
+            if (debt_prod) {
+                var value = 0;
+                _.each(debt_prod, function(dp){
+                    value = round_pr(dp.quantity * dp.price, self.pos.currency.rounding);
+                    partner.debts[dp.product.credit_product[0]].balance += value;
+                    partner.debt -= value;
+                });
             }
         },
         get_used_debt_cashregisters: function(paymentlines) {
