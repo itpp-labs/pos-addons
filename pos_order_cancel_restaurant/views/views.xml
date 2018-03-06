@@ -10,6 +10,7 @@
                     <field name="kitchen_canceled_only"/>
                     <field name="auto_send_to_kitchen"/>
                     <field name="save_canceled_kitchen_orders_only"/>
+                    <field name="send_removed_lines_to_kitchen"/>
                 </group>
             </xpath>
         </field>

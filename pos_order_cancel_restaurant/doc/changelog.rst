@@ -1,3 +1,8 @@
+`1.3.0`
+-------
+
+- **NEW:** Option "Send removed line to Kitchen" to disallow the repeat printing after remove an orderline
+
 `1.2.0`
 -------
 
