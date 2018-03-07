@@ -160,6 +160,9 @@ odoo.define('pos_order_cancel.models', function (require) {
         set_quantity: function(quantity) {
             this.old_quantity = this.quantity;
             _super_orderline.set_quantity.apply(this,arguments);
+            this.check_max_quantity(quantity);
+        },
+        check_max_quantity: function(quantity) {
             if (this.max_quantity <= Number(quantity)) {
                 this.max_quantity = Number(quantity);
                 this.order.remove_canceled_lines(this);
