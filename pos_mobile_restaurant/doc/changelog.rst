@@ -1,3 +1,8 @@
+`1.2.6`
+-------
+
+- **IMP:** Optimization the orderline rendering after sending the order to the kitchen
+
 `1.2.5`
 -------
 

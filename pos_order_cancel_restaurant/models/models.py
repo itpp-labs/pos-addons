@@ -12,6 +12,7 @@ class PosConfig(models.Model):
                                           default=False)
     save_canceled_kitchen_orders_only = fields.Boolean(string="Save Canceled / Refunded kitchen orders only",
                                                        default=False, help="Save canceled / refunded orders in Backend")
+    send_removed_lines_to_kitchen = fields.Boolean(string="Send removed line to Kitchen", default=True, help="If unchecked, the orderline will not be printed repeatly after its removing")
 
 
 class PosOrderLineCanceled(models.Model):
