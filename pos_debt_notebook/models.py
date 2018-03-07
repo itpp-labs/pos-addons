@@ -217,7 +217,8 @@ class PosConfig(models.Model):
             })
 
         default_debt_limit = 0
-        if self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo:
+        demo_is_on = self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo
+        if demo_is_on:
             self.create_demo_debt_journals(user, debt_account)
             default_debt_limit = 1000
 
@@ -271,6 +272,11 @@ class PosConfig(models.Model):
         current_session.write({
             'statement_ids': statement,
         })
+        if demo_is_on:
+            self.env.ref('pos_debt_notebook.product_credit_product').write({
+                'credit_product': debt_journal.id
+            })
+
         return
 
     def create_journal(self, vals):
