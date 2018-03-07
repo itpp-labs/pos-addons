@@ -19,7 +19,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             this.reload_debts_partner_ids = [];
             this.reload_debts_ready = $.when();
-            models.load_fields("res.partner",['debt_type']);
             models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out',
                                                   'category_ids','credits_autopay']);
             models.load_fields('product.product',['credit_product']);
@@ -231,7 +230,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var rounding = this.pos.currency.rounding;
                 data.debt_before = round_pr(this.debt_before, rounding);
                 data.debt_after = round_pr(this.debt_after, rounding);
-                data.debt_type = client.debt_type;
+                data.debt_type = this.pos.config.debt_type;
 
             }
             return data;
@@ -587,9 +586,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var client = this.pos.get_client();
             var debt = 0;
             var deb_type = 1;
+            var debt_type = this.pos.config.debt_type;
             if (client) {
                 debt = Math.round(client.debt * 100) / 100;
-                if (client.debt_type === 'credit') {
+                if (debt_type === 'credit') {
                     debt = - debt;
                     deb_type = -1;
                 }
@@ -606,14 +606,14 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             $pay_full_debt.addClass('oe_hidden');
             if (client && debt) {
-                if (client.debt_type === 'debt') {
+                if (debt_type === 'debt') {
                     if (debt > 0) {
                         $pay_full_debt.removeClass('oe_hidden');
                         $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + debt + ']</span>');
                     } else if (debt < 0) {
                         $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + debt + ']</span>');
                     }
-                } else if (client.debt_type === 'credit') {
+                } else if (debt_type === 'credit') {
                     if (debt > 0) {
                         $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + debt + ']</span>');
                     } else if (debt < 0) {
@@ -622,28 +622,21 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     }
                 }
             }
-            var $paymentmethods = this.$('.paymentmethods');
-            if ($paymentmethods && $paymentmethods.children()) {
-                _.each($paymentmethods.children(), function(pm) {
-                    var pm_id = pm.dataset.id;
-                    var credit_line_html = '';
-                    if (client && client.debts && client.debts[pm_id]) {
-                        credit_line_html = QWeb.render('CreditNote', {
-                            debt: deb_type * client.debts[pm_id].balance,
-                            widget: self
-                        });
-                    }
-                    var prev_debt = _.filter(pm.children, function(c){
-                       return _.includes(c.classList, 'client-debt') || _.includes(c.classList, 'client-credit');
+            var debt_cashregisters = _.filter(this.pos.cashregisters, function(cr){
+                return cr.journal.debt;
+            });
+            _.each(debt_cashregisters, function(cr){
+                var journal_id = cr.journal.id;
+                var pm_button = self.$el.find('div[data-id=' + journal_id +']');
+                pm_button.find('span').remove();
+                if (client && client.debts && client.debts[journal_id]) {
+                    var credit_line_html = QWeb.render('CreditNote', {
+                        debt: deb_type * client.debts[journal_id].balance,
+                        widget: self
                     });
-                    if (prev_debt){
-                        _.map(prev_debt, function(pd){
-                            pd.remove();
-                        });
-                    }
-                    pm.innerHTML += credit_line_html;
-                });
-            }
+                    pm_button.append(credit_line_html);
+                }
+            });
             this.change_autopay_button();
         },
         add_autopay_paymentlines: function() {
@@ -793,7 +786,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var partner = this.new_client || this.pos.get_client();
             if (partner && this.clientlist_screen_is_opened()) {
                 var debt = partner.debt;
-                if (partner.debt_type === 'credit') {
+                if (this.pos.config.debt_type === 'credit') {
                     debt = - debt;
                 }
                 debt = this.format_currency(debt);
@@ -825,9 +818,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.render_list(customers);
         },
         render_list: function(partners){
-            var debt_type = partners && partners.length
-                ? partners[0].debt_type
-                : '';
+            var debt_type = this.pos.config.debt_type;
             if (debt_type === 'debt') {
                 this.$('#client-list-credit').remove();
             } else if (debt_type === 'credit') {
@@ -847,7 +838,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var contents = this.$el[0].querySelector('#debt_history_contents');
             contents.innerHTML = "";
-            var debt_type = partner.debt_type;
+            var debt_type = this.pos.config.debt_type;
             var debt_history = partner.history;
             var sign = debt_type === 'credit'
                 ? -1
@@ -855,6 +846,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.history_length = debt_history
                 ? debt_history.length
                 : 0;
+            if (debt_type === 'debt'){
+                this.$el.find('th:contains(Total Balance)').text('Total Debt');
+            }
             if (this.history_length) {
                 var total_balance = partner.debt;
                 for (var i = 0; i < debt_history.length; i++) {

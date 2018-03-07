@@ -66,7 +66,7 @@ class TestReward(TransactionCase):
         # check that partners balance was properly updated
         self.assertEqual(self.test_partner.credit_balance, self.pcu_reward.balance)
         # check journal update correctness
-        self.assertEqual(self.test_partner.compute_debts_by_journals(self.test_partner.id)[self.journal.id]['balance'],
+        self.assertEqual(self.test_partner.debt_history(0)[self.test_partner.id]['debts'][self.journal.id]['balance'],
                          self.reward_type.amount)
 
         # sure that attendance was set correctly
