@@ -37,28 +37,30 @@
     </t>
 
     <t t-extend="ClientDetails">
-        <t t-jquery=".client-details-right" t-operation="append">
-            <div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail">
-                <span class='label'>Debts:</span>
-            </div>
-            <div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail">
-                <span class='label'>Credits:</span>
-            </div>
-            <div class="credit_list client-detail">
-                <t t-set="debts" t-value="partner.debts"/>
-                <t t-if="debts" t-call="CreditList"/>
-            </div>
-            <div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail">
-                <span class='label increased_width'>Total Debt</span>
-                <b><span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
-                    <t t-esc='widget.format_currency(partner.debt)'/>
-                </span></b>
-            </div>
-            <div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail">
-                <span class='label increased_width'>Total Credit</span>
-                <b><span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
-                    <t t-esc='widget.format_currency(- partner.debt)'/>
-                </span></b>
+        <t t-jquery=".client-details-right" t-operation="after">
+            <div class="client-details-debt">
+                <!--<div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail">-->
+                <!--<span class='label'>Debts:</span>-->
+                <!--</div>-->
+                <!--<div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail">-->
+                <!--<span class='label'>Credits:</span>-->
+                <!--</div>-->
+                <div class="credit_list client-detail">
+                    <t t-set="debts" t-value="partner.debts"/>
+                    <t t-if="debts" t-call="CreditList"/>
+                </div>
+                <div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail total">
+                    <span class='label increased_width'>Total Debt</span>
+                    <b><span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
+                        <t t-esc='widget.format_currency(partner.debt)'/>
+                    </span></b>
+                </div>
+                <div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail total">
+                    <span class='label increased_width'>Total Credit</span>
+                    <b><span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
+                        <t t-esc='widget.format_currency(- partner.debt)'/>
+                    </span></b>
+                </div>
             </div>
         </t>
         <t t-jquery=".client-details-box" t-operation="after">
