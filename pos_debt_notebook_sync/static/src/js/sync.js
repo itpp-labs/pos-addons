@@ -18,6 +18,20 @@ odoo.define('pos_debt_sync', function(require){
         },
         on_debt_updates: function(message){
             this.reload_debts(message.updated_partners);
-        }
+        },
+        _on_load_debts: function(debts){
+            var longpolling_connection = this.bus.longpolling_connection;
+            if (longpolling_connection && !longpolling_connection.status){
+                longpolling_connection.send_ping();
+            }
+            PosModelSuper.prototype._on_load_debts.apply(this, arguments);
+        },
+        _failed_load_debts: function(load_partner_ids){
+            var longpolling_connection = this.bus.longpolling_connection;
+            if (longpolling_connection && longpolling_connection.status){
+                longpolling_connection.send_ping();
+            }
+            PosModelSuper.prototype._failed_load_debts.apply(this, arguments);
+        },
     });
 });

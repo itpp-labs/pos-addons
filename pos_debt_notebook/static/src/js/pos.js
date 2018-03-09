@@ -133,8 +133,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             request_finished.resolve();
                         }).fail(function () {
                             // make request again, Timeout is set to allow properly work in offline mode
-                            setTimeout(_.bind(self.reload_debts, self,
-                                load_partner_ids, 0, {"postpone": true, "shadow": false}), 3000);
+                            self._failed_load_debts(load_partner_ids);
                         });
                         return request_finished;
                     });
@@ -161,6 +160,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             });
             this.trigger('updateDebtHistory', partner_ids);
+        },
+        _failed_load_debts: function(load_partner_ids){
+            var self = this;
+            setTimeout(_.bind(self.reload_debts, self,
+                                load_partner_ids, 0, {"postpone": true, "shadow": false}), 3000);
         },
         thumb_up_animation: function(){
             this.gui.show_popup('thumb-up');
