@@ -110,7 +110,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.reload_debts_ready = reload_ready_def;
                 setTimeout(function(){
                     reload_ready_def.resolve();
-                }, 1000);
+                }, typeof options.postpone !== 'number'
+                    ? 1000
+                    : options.postpone);
             }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
@@ -133,7 +135,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             request_finished.resolve();
                         }).fail(function () {
                             // make request again, Timeout is set to allow properly work in offline mode
-                            self._failed_load_debts(load_partner_ids);
+                            self.reload_debts(load_partner_ids, 0, {"postpone": 4000, "shadow": false});
+                            self.trigger('updateDebtHistoryFail');
                         });
                         return request_finished;
                     });
@@ -160,11 +163,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             });
             this.trigger('updateDebtHistory', partner_ids);
-        },
-        _failed_load_debts: function(load_partner_ids){
-            var self = this;
-            setTimeout(_.bind(self.reload_debts, self,
-                                load_partner_ids, 0, {"postpone": true, "shadow": false}), 3000);
         },
         thumb_up_animation: function(){
             this.gui.show_popup('thumb-up');
@@ -803,7 +801,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 debt = this.format_currency(debt);
 
-                if (partner_ids.length === 1 && partner_ids[0] === partner.id){
+                if (partner_ids.length && _.contains(partner_ids, partner.id)){
                     // updating only opened partner profile and debt history
                     $('.client-detail .detail.client-debt').text(debt);
                     var debts = _.values(partner.debts);
