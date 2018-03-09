@@ -90,7 +90,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var client_list_screen = this.gui.screen_instances.clientlist;
                 if (client_list_screen && client_list_screen.debt_history_is_opened()){
                     var partner = client_list_screen.new_client || this.get_client();
-                    if (partner_ids[0] === partner.id){
+                    if (partner && partner_ids[0] === partner.id){
                         limit = client_list_screen.history_length || client_list_screen.debt_history_limit_initial;
                     }
                 }
