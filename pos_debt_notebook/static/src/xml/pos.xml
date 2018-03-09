@@ -83,7 +83,7 @@
     <t t-name="CreditNote">
         <t t-if="debt != 0">
             <t t-if="widget.pos.config.debt_type == 'debt'">
-                <span t-attf-class="client-debt #{(widget.pos.get_client() and debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'positive' : ''}">
+                <span t-attf-class="client-debt #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''}">
                     <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(debt * 100) / 100).toString() + ']': '')"/>
                 </span>
             </t>
