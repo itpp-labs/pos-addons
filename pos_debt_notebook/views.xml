@@ -89,7 +89,6 @@
     <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
     <field name="arch" type="xml">
         <field name="currency_id" position="after">
-            <field name="debt_type" widget="radio"/>
             <field name="debt_dummy_product_id"/>
         </field>
     </field>
