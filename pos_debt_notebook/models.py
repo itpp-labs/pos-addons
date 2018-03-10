@@ -490,7 +490,7 @@ class AccountBankStatement(models.Model):
     @api.depends('pos_credit_update_ids', 'pos_credit_update_ids.balance')
     def _compute_credit_balance(self):
         for st in self:
-            st.pos_credit_update_balance = sum([credit_update.balance for credit_update in st.pos_credit_update_ids])
+            st.pos_credit_update_balance = - sum([credit_update.balance for credit_update in st.pos_credit_update_ids])
 
 
 class PosCreditUpdate(models.Model):
