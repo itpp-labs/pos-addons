@@ -130,7 +130,7 @@
                 <field name="pos_credit_update_ids" colspan="4" nolabel="1">
                     <tree editable="bottom" string="Statement lines">
                         <field name="journal_id"/>
-                        <field name="balance"/>
+                        <field name="reversed_balance"/>
                         <field name="state"/>
                     </tree>
                 </field>
