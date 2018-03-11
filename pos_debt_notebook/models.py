@@ -533,6 +533,8 @@ class PosCreditUpdate(models.Model):
     order_id = fields.Many2one('pos.order', string="POS Order")
     config_id = fields.Many2one(related='order_id.config_id', string="POS", store=True)
     account_bank_statement_id = fields.Many2one('account.bank.statement', compute='_compute_bank_statement', string="Account Bank Statement", store=True)
+    reversed_balance = fields.Monetary(compute="_compute_reversed_balance", string="Payments",
+                                       help="Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts).")
 
     @api.multi
     @api.depends('order_id', 'journal_id')
@@ -542,6 +544,12 @@ class PosCreditUpdate(models.Model):
                 order = record.env['pos.order'].browse(record.order_id.id)
                 record.account_bank_statement_id = record.env['account.bank.statement']\
                     .search([('journal_id', '=', record.journal_id.id), ('pos_session_id', '=', order.session_id.id)]).id
+
+    @api.multi
+    @api.depends('balance')
+    def _compute_reversed_balance(self):
+        for record in self:
+            record.reversed_balance = - record.balance
 
     def get_balance(self_, balance, new_balance):
         return -balance + new_balance
