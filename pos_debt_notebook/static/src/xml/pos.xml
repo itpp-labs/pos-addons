@@ -69,14 +69,21 @@
     </t>
 
     <t t-extend="ActionpadWidget">
-        <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
+        <t t-jquery="t[t-esc*='widget.pos.get_client().name']" t-operation="after">
             <br/>
-            <span t-attf-class="client-debt #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'positive' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'debt' ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
-            </span>
-            <span t-attf-class="client-credit #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'negative' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
-            </span>
+            <t t-set="client" t-value="widget.pos.get_client()"/>
+            <t t-if="client.debt">
+                <t t-if="widget.pos.config.debt_type == 'debt'">
+                    <span t-attf-class="client-debt #{client.debt lt 0 and 'negative' or client.debt gt 0 and 'positive' or ''}">
+                        <t t-esc="(' [Debt: ' + widget.format_currency(client.debt) + ']' || '')"/>
+                    </span>
+                </t>
+                <t t-if="widget.pos.config.debt_type == 'credit'">
+                    <span t-attf-class="client-credit #{client.debt lt 0 and 'positive' or client.debt gt 0 and 'negative' or ''}">
+                        <t t-esc="(' [Credit: ' + widget.format_currency(- client.debt) + ']' || '')"/>
+                    </span>
+                </t>
+            </t>
         </t>
     </t>
 
