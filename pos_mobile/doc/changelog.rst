@@ -1,3 +1,8 @@
+`1.1.6`
+-------
+
+- **FIX:** Product category rendering error after click the search box
+
 `1.1.5`
 -------
 
