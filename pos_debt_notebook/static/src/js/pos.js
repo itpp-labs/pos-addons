@@ -415,7 +415,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var self = this;
             var order = this.pos.get_order(),
             paymentlines = order.get_paymentlines(),
-            order_total = round_pr(order.get_total_with_tax(), self.pos.currency.rounding),
+            order_total = order.get_total_with_tax(),
             partner = this.pos.get_client();
             var debt_pl = _.filter(paymentlines, function(pl){
                 return pl.cashregister.journal.debt;
@@ -424,13 +424,15 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
                 if (disc_credits_pl.length && order_total) {
                     // adding a discount
-                    var sum = _.reduce(disc_credits_pl, function(memo, pl){
-                        return memo + pl.get_amount() - order.get_change(pl);
-                    }, 0);
-                    var percentage = ( sum / order_total ) * 100;
+                    var discount_credits = Math.max(0, order.get_summary_for_discount_credits());
+                    var percentage = 0;
                     var orderlines = order.get_orderlines();
                     _.each(orderlines, function(ol){
-                        ol.set_discount(percentage);
+                        if (discount_credits > 0.00001) {
+                            percentage = Math.min(Math.max(( discount_credits / ol.get_unit_price() ) * 100, 0), 100);
+                            ol.set_discount(percentage);
+                            discount_credits -= ol.get_unit_price() * (percentage) / 100;
+                        }
                     });
                 }
                 this._super();
