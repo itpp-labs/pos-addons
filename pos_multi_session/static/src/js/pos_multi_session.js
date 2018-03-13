@@ -657,6 +657,7 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.on_syncing = false;
+            this.first_load_data_from_server = true;
             this.pos.sync_bus.longpolling_connection.on("change:poll_connection", function(status){
                 if (self.pos.gui.closing) {
                     return;
@@ -700,7 +701,10 @@ odoo.define('pos_multi_session', function(require){
                 return d.promise();
             }
 
-            framework.blockUI();
+            if (this.first_load_data_from_server) {
+                framework.blockUI();
+            }
+
             this.q = $.when();
             data.orders.forEach(function (item, index) {
                 self.q = self.q.then(function(){
@@ -711,7 +715,10 @@ odoo.define('pos_multi_session', function(require){
             });
 
             self.q.then(function() {
-                framework.unblockUI();
+                if (self.first_load_data_from_server) {
+                    framework.unblockUI();
+                    self.first_load_data_from_server = false;
+                }
             });
 
             this.pos.pos_session.order_ID = data.order_ID;
