@@ -44,6 +44,7 @@ odoo.define('pos_debt_sync', function(require){
         },
         after_restoring_connection(){
             var partners_in_orders = [];
+            this.push_order(null,{'show_error':true});
             _.each(this.get_order_list(), function(o){
                 if (o.get_client()){
                     partners_in_orders.push(o.get_client().id);
