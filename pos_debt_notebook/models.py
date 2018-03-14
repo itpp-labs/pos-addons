@@ -267,12 +267,13 @@ class PosConfig(models.Model):
             'journal_ids': [(4, debt_journal.id)],
             'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
         })
+        current_session = self.current_session_id
         statement = [(0, 0, {
+            'name': current_session.name,
             'journal_id': debt_journal.id,
             'user_id': user.id,
             'company_id': user.company_id.id
         })]
-        current_session = self.current_session_id
         current_session.write({
             'statement_ids': statement,
         })
@@ -328,12 +329,13 @@ class PosConfig(models.Model):
                 'journal_ids': [(4, debt_journal.id)],
                 'debt_dummy_product_id': vals['debt_dummy_product_id'],
             })
+            current_session = self.current_session_id
             statement = [(0, 0, {
+                'name': current_session.name,
                 'journal_id': debt_journal.id,
                 'user_id': user.id,
                 'company_id': user.company_id.id
             })]
-            current_session = self.current_session_id
             current_session.write({
                 'statement_ids': statement,
             })
