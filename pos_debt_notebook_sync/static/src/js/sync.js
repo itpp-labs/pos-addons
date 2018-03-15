@@ -61,7 +61,7 @@ odoo.define('pos_debt_sync', function(require){
             }
             PosModelSuper.prototype._on_load_debts.apply(this, [debts]);
         },
-        after_restoring_connection(){
+        after_restoring_connection: function(){
             var self = this;
             var partners_to_reload = [];
             _.each(this.get_order_list(), function(o){

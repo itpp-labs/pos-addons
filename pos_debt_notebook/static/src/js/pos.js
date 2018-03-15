@@ -110,9 +110,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.reload_debts_ready = reload_ready_def;
                 setTimeout(function(){
                     reload_ready_def.resolve();
-                }, typeof options.postpone !== 'number'
-                    ? 1000
-                    : options.postpone);
+                }, typeof options.postpone === 'number'
+                    ? options.postpone
+                    : 1000);
             }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
@@ -439,7 +439,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 // offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl){
                     partner.debts[pl.cashregister.journal.id].balance -= pl.amount;
-                    partner.debt += pl.amount
+                    partner.debt += pl.amount;
                 });
             } else {
                 this._super();
