@@ -149,7 +149,7 @@ odoo.define('pos_multi_session', function(require){
 
             loaded.then(function() {
                 var progress = (self.models.length - 0.5) / self.models.length;
-                self.chrome.loading_message(_t('Loading Multi Session data'), progress);
+                self.chrome.loading_message(_t('Sync Orders'), progress);
 
                 return self.multi_session.request_sync_all().then(function() {
                     done.resolve();
