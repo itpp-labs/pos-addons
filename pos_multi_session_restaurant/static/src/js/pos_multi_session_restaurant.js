@@ -76,7 +76,30 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }else{
                 PosModelSuper.prototype.ms_on_add_order.apply(this, arguments);
             }
-        }
+        },
+        ms_on_update: function(message, sync_all){
+            var self = this;
+            var data = message.data || {};
+            var order = false;
+            var old_order = this.get_order();
+
+            if (data.uid){
+                order = this.get('orders').find(function(ord) {
+                    return ord.uid === data.uid;
+                });
+            }
+            if (order && order.table && order.table.id !== data.table_id) {
+                order.transfer = true;
+                order.destroy({'reason': 'abandon'});
+            }
+            PosModelSuper.prototype.ms_on_update.apply(this, arguments);
+            if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
+                this.set('selectedOrder',old_order);
+            }
+            if (!sync_all && this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
+                this.gui.screen_instances.floors.renderElement();
+            }
+        },
     });
 
     var OrderSuper = models.Order;
