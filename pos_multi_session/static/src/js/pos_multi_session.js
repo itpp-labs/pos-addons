@@ -132,22 +132,11 @@ odoo.define('pos_multi_session', function(require){
             if (!this.config.multi_session_id){
                 return PosModelSuper.prototype.after_load_server_data.apply(this, arguments);
             }
-
             this.multi_session = new exports.MultiSession(self);
             var res = PosModelSuper.prototype.after_load_server_data.apply(self, arguments);
-
-            var loaded = new $.Deferred();
             var done = new $.Deferred();
 
-            if (res) {
-                res.then(function() {
-                    loaded.resolve();
-                });
-            } else {
-                loaded.resolve();
-            }
-
-            loaded.then(function() {
+            $.when(res).then(function() {
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
@@ -155,7 +144,6 @@ odoo.define('pos_multi_session', function(require){
                     done.resolve();
                 });
             });
-
             return done;
         },
         getUrlParameter: function(sParam) {
@@ -723,10 +711,6 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         sync_all: function(data) {
-            if (this.first_load_data_from_server) {
-                return this.update_orders(data);
-            }
-
             var server_orders_uid = [];
             var self = this;
 
@@ -740,13 +724,21 @@ odoo.define('pos_multi_session', function(require){
 
             this.q = $.when();
             var done = $.Deferred();
-            data.orders.forEach(function (item, index) {
-                self.q = self.q.then(function(){
+
+            if (this.first_load_data_from_server) {
+                data.orders.forEach(function (item, index) {
                     self.pos.ms_on_update(item, true);
-                    return delay(100);
+                    server_orders_uid.push(item.data.uid);
                 });
-                server_orders_uid.push(item.data.uid);
-            });
+            } else {
+                data.orders.forEach(function (item, index) {
+                    self.q = self.q.then(function(){
+                        self.pos.ms_on_update(item, true);
+                        return delay(100);
+                    });
+                    server_orders_uid.push(item.data.uid);
+                });
+            }
 
             this.pos.pos_session.order_ID = data.order_ID;
 
@@ -756,28 +748,13 @@ odoo.define('pos_multi_session', function(require){
             this.destroy_removed_orders(server_orders_uid);
 
             self.q.then(function() {
+                if (self.first_load_data_from_server) {
+                    self.first_load_data_from_server = false;
+                }
                 done.resolve();
             });
 
             return done;
-        },
-        update_orders: function(data) {
-            var server_orders_uid = [];
-            var self = this;
-
-            data.orders.forEach(function (item, index) {
-                self.pos.ms_on_update(item, true);
-                server_orders_uid.push(item.data.uid);
-            });
-
-            this.pos.pos_session.order_ID = data.order_ID;
-
-            if (data.order_ID !== 0) {
-                this.pos.pos_session.sequence_number = data.order_ID;
-            }
-            this.destroy_removed_orders(server_orders_uid);
-            this.first_load_data_from_server = false;
-            return $.when();
         },
         remove_order: function(data){
             return this.send({action: 'remove_order', data: data});
