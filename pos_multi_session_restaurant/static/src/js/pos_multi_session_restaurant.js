@@ -43,6 +43,13 @@ odoo.define('pos_multi_session_restaurant', function(require){
                                 return lines.mp_dirty;
                             });
             return !not_printed_line;
+        },
+        remove_orderline: function(order_line){
+            if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
+                this._super(order_line);
+            } else {
+                order_line.node.parentNode.removeChild(order_line.node);
+            }
         }
     });
 
