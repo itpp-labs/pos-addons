@@ -113,15 +113,14 @@ class PosMultiSessionSync(models.Model):
             pos.user_ID = user_ID
         pos.multi_session_message_ID = 0
         data = []
-        if message['uid']:
+        if message.get('uid'):
             order_uid = message['uid']
             order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
             msg['data']['run_ID'] = run_ID
-            data = msg
-            action = 'sync_order'
+            data.append(msg)
         else:
             for order in self.env['pos_multi_session_sync.order'] \
                              .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
@@ -131,7 +130,7 @@ class PosMultiSessionSync(models.Model):
                 msg['data']['revision_ID'] = order.revision_ID
                 msg['data']['run_ID'] = run_ID
                 data.append(msg)
-            action = 'sync_all'
+        action = 'sync_all'
         message = {'action': action, 'orders': data, 'order_ID': self.order_ID}
         return message
 

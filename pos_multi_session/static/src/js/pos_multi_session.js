@@ -140,7 +140,7 @@ odoo.define('pos_multi_session', function(require){
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
-                return self.multi_session.request_sync_all().then(function() {
+                return self.multi_session.request_sync_all({'first_load': true}).then(function() {
                     done.resolve();
                 });
             });
@@ -674,7 +674,6 @@ odoo.define('pos_multi_session', function(require){
             this.update_queue = $.when();
             this.func_queue = [];
             this.on_syncing = false;
-            this.first_load_data_from_server = true;
         },
         bind_ms_connection_events: function() {
             var self = this;
@@ -697,23 +696,28 @@ odoo.define('pos_multi_session', function(require){
                 }
             });
         },
-        request_sync_all: function(uid){
+        request_sync_all: function(options){
             if (this.on_syncing) {
                 return;
             }
-            var order_uid = uid || false;
             var self = this;
+            options = options || {}
             this.on_syncing = true;
             var data = {run_ID: this.pos.multi_session_run_ID};
-            var message = {'action': 'sync_all', data: data, 'uid': order_uid};
+            var message = {'action': 'sync_all', data: data};
+            if (options.uid) {
+                message.uid = options.uid;
+            }
+            if (options.first_load) {
+                message.first_load = options.first_load;
+            }
             return this.send(message).always(function(){
                 self.on_syncing = false;
             });
         },
-        sync_all: function(data) {
+        sync_all: function(data, options) {
             var server_orders_uid = [];
             var self = this;
-
             function delay(ms) {
                 var d = $.Deferred();
                 setTimeout(function(){
@@ -725,13 +729,15 @@ odoo.define('pos_multi_session', function(require){
             this.q = $.when();
             var done = $.Deferred();
 
-            if (this.first_load_data_from_server) {
-                data.orders.forEach(function (item, index) {
+            options = options || {};
+
+            if (options.first_load) {
+                data.orders.forEach(function (item) {
                     self.pos.ms_on_update(item, true);
                     server_orders_uid.push(item.data.uid);
                 });
             } else {
-                data.orders.forEach(function (item, index) {
+                data.orders.forEach(function (item) {
                     self.q = self.q.then(function(){
                         self.pos.ms_on_update(item, true);
                         return delay(100);
@@ -748,9 +754,6 @@ odoo.define('pos_multi_session', function(require){
             this.destroy_removed_orders(server_orders_uid);
 
             self.q.then(function() {
-                if (self.first_load_data_from_server) {
-                    self.first_load_data_from_server = false;
-                }
                 done.resolve();
             });
 
@@ -833,18 +836,10 @@ odoo.define('pos_multi_session', function(require){
                 if (res.action === "revision_error") {
                     var warning_message = _t('There is a conflict during synchronization, try your action again');
                     self.warning(warning_message);
-                    self.request_sync_all(res.order_uid);
+                    self.request_sync_all({'uid': res.order_uid});
                 }
                 if (res.action === 'sync_all') {
-                    self.sync_all(res);
-                }
-                if (res.action === 'sync_order') {
-                    self.pos.ms_on_update(res.orders, true);
-                    self.pos.pos_session.order_ID = res.order_ID;
-
-                    if (res.order_ID !== 0) {
-                        self.pos.pos_session.sequence_number = res.order_ID;
-                    }
+                    self.sync_all(res, {'first_load': message.first_load});
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
