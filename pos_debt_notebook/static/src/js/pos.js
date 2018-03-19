@@ -427,11 +427,15 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     var discount_credits = Math.max(0, order.get_summary_for_discount_credits());
                     var percentage = 0;
                     var orderlines = order.get_orderlines();
+                    var old_price = 0;
                     _.each(orderlines, function(ol){
                         if (discount_credits > 0.00001) {
-                            percentage = Math.min(Math.max(( discount_credits / ol.get_unit_price() ) * 100, 0), 100);
+                            old_price = ol.get_price_with_tax();
+                            percentage = Math.min(Math.max(( discount_credits / old_price ) * 100, 0), 100);
                             ol.set_discount(percentage);
-                            discount_credits -= ol.get_unit_price() * (percentage) / 100;
+                            discount_credits -= old_price - ol.get_price_with_tax();
+                        } else {
+                            return;
                         }
                     });
                 }
