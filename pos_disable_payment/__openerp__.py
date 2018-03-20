@@ -2,7 +2,7 @@
 {
     'name': "Disable payments in POS",
     'summary': "Control access to the POS payments",
-    'version': '10.0.2.5.0',
+    'version': '11.0.2.5.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',

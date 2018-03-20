@@ -5,7 +5,6 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
     var models = require('pos_product_category_discount.models');
     var screens = require('pos_discount_base.screens');
     var gui = require('point_of_sale.gui');
-    var Model = require('web.Model');
     var Widget = require('web.Widget');
     var core = require('web.core');
     var PosDiscountWidget = require('pos_discount.pos_discount');
