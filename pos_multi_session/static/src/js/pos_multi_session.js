@@ -129,11 +129,11 @@ odoo.define('pos_multi_session', function(require){
         },
         after_load_server_data: function() {
             var self = this;
+            var res = PosModelSuper.prototype.after_load_server_data.apply(this, arguments);
             if (!this.config.multi_session_id){
-                return PosModelSuper.prototype.after_load_server_data.apply(this, arguments);
+                return res;
             }
             this.multi_session = new exports.MultiSession(self);
-            var res = PosModelSuper.prototype.after_load_server_data.apply(self, arguments);
             var done = new $.Deferred();
 
             $.when(res).then(function() {
@@ -701,17 +701,10 @@ odoo.define('pos_multi_session', function(require){
                 return;
             }
             var self = this;
-            options = options || {}
             this.on_syncing = true;
             var data = {run_ID: this.pos.multi_session_run_ID};
             var message = {'action': 'sync_all', data: data};
-            if (options.uid) {
-                message.uid = options.uid;
-            }
-            if (options.first_load) {
-                message.first_load = options.first_load;
-            }
-            return this.send(message).always(function(){
+            return this.send(message, options).always(function(){
                 self.on_syncing = false;
             });
         },
@@ -780,7 +773,11 @@ odoo.define('pos_multi_session', function(require){
             });
         },
         _debug_send_number: 0,
-        send: function(message, address){
+        send: function(message, options){
+            options = options || {};
+            if (options.uid) {
+                message.uid = options.uid;
+            }
             var current_send_number = 0;
             if (this.pos.debug){
                 var logs = message;
@@ -793,9 +790,10 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             var send_it = function () {
-                var temp = address
-                ? address.serv
-                : self.pos.config.sync_server || '';
+                var temp = self.pos.config.sync_server || '';
+                if (options.address) {
+                    temp = address.serv;
+                }
                 return openerp.session.rpc(temp + "/pos_multi_session_sync/update", {
                     multi_session_id: self.pos.config.multi_session_id[0],
                     message: message,
@@ -839,7 +837,11 @@ odoo.define('pos_multi_session', function(require){
                     self.request_sync_all({'uid': res.order_uid});
                 }
                 if (res.action === 'sync_all') {
-                    self.sync_all(res, {'first_load': message.first_load});
+                    var sync_options = {};
+                    if (options.first_load) {
+                        sync_options.first_load = options.first_load;
+                    }
+                    self.sync_all(res, sync_options);
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
