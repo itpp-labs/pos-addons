@@ -18,7 +18,7 @@
 
     "depends": [
         "account",
-        "base_action_rule",
+        "base_automation",
         "bus",
         "point_of_sale",
         "sale",
@@ -27,10 +27,9 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "data.xml",
-        "actions/ir_action_server.xml",
         "actions/base_action_rules.xml",
         "report/report.xml",
-        "views.xml",
+        "view.xml"
     ],
     "qweb": [
         'static/src/xml/pos.xml'
@@ -43,7 +42,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Pay Sale Orders & Invoices over POS",
     "demo_addons": [

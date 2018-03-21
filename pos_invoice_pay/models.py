@@ -1,7 +1,6 @@
 # Copyright 2017 Artyom Losev
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 from odoo import api, models, fields
 
 SO_CHANNEL = 'pos_sale_orders'
@@ -17,7 +16,8 @@ class PosOrder(models.Model):
         original_orders = [o for o in orders if o not in invoices_to_pay]
         res = super(PosOrder, self).create_from_ui(original_orders)
         if invoices_to_pay:
-            map(self.process_invoice_payment, invoices_to_pay)
+            for inv in invoices_to_pay:
+                self.process_invoice_payment(inv)
         return res
 
     @api.model
@@ -32,9 +32,9 @@ class PosOrder(models.Model):
             writeoff_acc_id = False
             payment_difference_handling = 'open'
 
-            if amount > inv_obj.residual:
-                writeoff_acc_id = self._default_session().config_id.pos_invoice_pay_writeoff_account_id.id
-                payment_difference_handling = 'reconcile'
+            # if amount > inv_obj.residual:
+            #     writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
+            #     payment_difference_handling = 'reconcile'
 
             vals = {
                 'journal_id': journal.id,
@@ -57,7 +57,10 @@ class PosOrder(models.Model):
 
     @api.model
     def process_invoices_creation(self, sale_order_id):
-        return self.env['sale.order'].browse(sale_order_id).action_invoice_create()[0]
+        order = self.env['sale.order'].browse(sale_order_id)
+        inv_id = order.action_invoice_create()
+        self.env['account.invoice'].browse(inv_id).action_invoice_open()
+        return inv_id
 
 
 class AccountPayment(models.Model):
@@ -96,17 +99,14 @@ class AccountInvoice(models.Model):
 
     @api.depends('payment_move_line_ids.amount_residual')
     def _get_payment_info_JSON(self):
-        record = self
-        if len(record) > 1:
-            record = record.browse(self.env.context.get('active_id'))
-        if record.payment_move_line_ids:
-            for move in record.payment_move_line_ids:
+        if self.payment_move_line_ids:
+            for move in self.payment_move_line_ids:
                 if move.payment_id.cashier:
                     if move.move_id.ref:
                         move.move_id.ref = "%s by %s" % (move.move_id.ref, move.payment_id.cashier.name)
                     else:
                         move.move_id.name = "%s by %s" % (move.move_id.name, move.payment_id.cashier.name)
-        data = super(AccountInvoice, record)._get_payment_info_JSON()
+        data = super(AccountInvoice, self)._get_payment_info_JSON()
         return data
 
 
@@ -143,10 +143,5 @@ class SaleOrder(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    def _get_default_writeoff_account(self):
-        acc = self.env['account.account'].search([('code', '=', 220000)]).id
-        return acc if acc else False
-
-    show_invoices = fields.Boolean(string="Show Invoices in POS", help="Fetch and pay regular invoices", default=True)
-    show_sale_orders = fields.Boolean(string="Show Sale Orders in POS", help="Fetch and pay sale orders", default=True)
-    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account", help="The account is used for the difference between due and paid amount", default=_get_default_writeoff_account)
+    show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
+    show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)

@@ -6,13 +6,13 @@
 
     <t t-name="SaleOrdersButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt '/> Sale Orders
+            <i class='fa fa-list-alt'/> Fetch Orders
         </div>
     </t>
 
-        <t t-name="InvoicesButton">
+    <t t-name="InvoicesButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt '/> Invoices
+            <i class='fa fa-list-alt'/> Fetch Invoices
         </div>
     </t>
 
