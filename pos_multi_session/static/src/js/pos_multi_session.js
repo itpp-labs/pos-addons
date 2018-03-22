@@ -140,7 +140,7 @@ odoo.define('pos_multi_session', function(require){
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
-                return self.multi_session.request_sync_all({'first_load': true}).then(function() {
+                return self.multi_session.request_sync_all({'immediate_rerendeing': true}).then(function() {
                     done.resolve();
                 });
             });
@@ -700,10 +700,14 @@ odoo.define('pos_multi_session', function(require){
             if (this.on_syncing) {
                 return;
             }
+            options = options || {};
             var self = this;
             this.on_syncing = true;
             var data = {run_ID: this.pos.multi_session_run_ID};
             var message = {'action': 'sync_all', data: data};
+            if (options.uid) {
+                message.uid = options.uid;
+            }
             return this.send(message, options).always(function(){
                 self.on_syncing = false;
             });
@@ -724,7 +728,7 @@ odoo.define('pos_multi_session', function(require){
 
             options = options || {};
 
-            if (options.first_load) {
+            if (options.immediate_rerendeing) {
                 data.orders.forEach(function (item) {
                     self.pos.ms_on_update(item, true);
                     server_orders_uid.push(item.data.uid);
@@ -775,9 +779,6 @@ odoo.define('pos_multi_session', function(require){
         _debug_send_number: 0,
         send: function(message, options){
             options = options || {};
-            if (options.uid) {
-                message.uid = options.uid;
-            }
             var current_send_number = 0;
             if (this.pos.debug){
                 var logs = message;
@@ -838,8 +839,8 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (res.action === 'sync_all') {
                     var sync_options = {};
-                    if (options.first_load) {
-                        sync_options.first_load = options.first_load;
+                    if (options.immediate_rerendeing) {
+                        sync_options.immediate_rerendeing = options.immediate_rerendeing;
                     }
                     self.sync_all(res, sync_options);
                 }
