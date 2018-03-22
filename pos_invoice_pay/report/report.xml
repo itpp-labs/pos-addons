@@ -4,7 +4,7 @@
 
 <openerp>
         <template id="pos_invoice_pay_report" inherit_id="point_of_sale.report_saledetails">
-            <xpath expr="//div[@class='page']/table[position()=3]" position="after">
+            <xpath expr="//div[hasclass('page')]/table[position()=3]" position="after">
                 <br/>
 
                 <h3>Paid Orders/Invoices</h3>

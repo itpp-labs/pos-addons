@@ -17,12 +17,9 @@
     "currency": "EUR",
 
     "depends": [
-        "account",
         "base_automation",
-        "bus",
-        "point_of_sale",
-        "sale",
-        "pos_longpolling"
+        "sale_management",
+        "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

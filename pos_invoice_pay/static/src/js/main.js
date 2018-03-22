@@ -18,37 +18,40 @@ var QWeb = core.qweb;
 var _t = core._t;
 var round_pr = utils.round_precision;
 
+
+models.load_models({
+    model: 'sale.order',
+    fields: ['name', 'partner_id', 'date_order', 'user_id',
+    'amount_total', 'order_line', 'invoice_status'],
+    domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
+    loaded: function (self, sale_orders) {
+        var so_ids = _.pluck(sale_orders, 'id');
+        self.prepare_so_data(sale_orders);
+        self.sale_orders = sale_orders;
+        self.db.add_sale_orders(sale_orders);
+        self.get_sale_order_lines(so_ids);
+    }
+});
+
+models.load_models({
+    model: 'account.invoice',
+    fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
+    'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
+    domain: [['state', '=', 'open'],
+    ['type','=', 'out_invoice']],
+    loaded: function (self, invoices) {
+        var invoices_ids = _.pluck(invoices, 'id');
+        self.prepare_invoices_data(invoices);
+        self.invoices = invoices;
+        self.db.add_invoices(invoices);
+        self.get_invoice_lines(invoices_ids);
+    }
+});
+
 var _super_posmodel = models.PosModel.prototype;
 models.PosModel = models.PosModel.extend({
     initialize: function (session, attributes) {
         var self = this;
-        this.models.push(
-        {
-            model: 'sale.order',
-            fields: ['name', 'partner_id', 'date_order', 'user_id',
-            'amount_total', 'order_line', 'invoice_status'],
-            domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
-            loaded: function (that, sale_orders) {
-                var so_ids = _.pluck(sale_orders, 'id');
-                that.prepare_so_data(sale_orders);
-                that.sale_orders = sale_orders;
-                that.db.add_sale_orders(sale_orders);
-                that.get_sale_order_lines(so_ids);
-            }
-        }, {
-            model: 'account.invoice',
-            fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
-            'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
-            domain: [['state', '=', 'open'],
-            ['type','=', 'out_invoice']],
-            loaded: function (that, invoices) {
-                var invoices_ids = _.pluck(invoices, 'id');
-                that.prepare_invoices_data(invoices);
-                that.invoices = invoices;
-                that.db.add_invoices(invoices);
-                that.get_invoice_lines(invoices_ids);
-            }
-        });
         _super_posmodel.initialize.apply(this, arguments);
         this.bus.add_channel_callback("pos_sale_orders", this.on_notification, this);
         this.bus.add_channel_callback("pos_invoices", this.on_notification, this);
@@ -715,7 +718,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
             self.pos.update_or_fetch_invoice(created_invoice_id).then(function (res) {
                 self.pos.selected_invoice = self.pos.db.get_invoice_by_id(res);
                 self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
-                self.gui.show_screen('invoice_payment');
+                self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
         }).fail(function (type, err) {
             self.gui.show_popup('error', {
@@ -831,7 +834,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
                             self.render_data(self.pos.get_invoices_to_render(self.pos.db.invoices));
                             self.toggle_save_button();
                             self.pos.selected_invoice = self.pos.db.get_invoice_by_id(self.selected_invoice.id);
-                            self.gui.show_screen('invoice_payment');
+                            self.gui.show_screen('invoice_payment', {type: 'invoices'});
                         });
                     }).fail(function () {
                         this.gui.show_popup('error',{
@@ -841,7 +844,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
                     });
                 break;
             case "Open":
-                this.gui.show_screen('invoice_payment');
+                this.gui.show_screen('invoice_payment', {type: 'invoices'});
             }
         } else {
             this.gui.show_popup('error',{
@@ -1010,6 +1013,20 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
             }
         }
         return true;
+    },
+    get_type: function(){
+        return this.gui.get_current_screen_param('type');
+    },
+    show: function(){
+        this._super();
+        if (this.pos.config.iface_invoicing) {
+            var order = this.pos.get_order();
+            if (!order.is_to_invoice() && this.get_type() === "orders") {
+                this.click_invoice();
+            } else if (order.is_to_invoice() && this.get_type() === "invoices") {
+                this.click_invoice();
+            }
+        }
     }
 });
 
