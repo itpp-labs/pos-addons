@@ -71,3 +71,21 @@
     padding: 3px 13px;
     transition: all 150ms linear;
 }
+/* if pos_mobile was installed*/
+.pos.mobile .clientlist-screen .top-content .debt_notebook_button {
+    float: none;
+}
+.pos.mobile .clientlist-screen .top-content #client_list_header_buttons {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    height: initial;
+}
+.pos.mobile .clientlist-screen .top-content #client_list_header_buttons span {
+    margin-left: 0;
+    margin-right: 0;
+}

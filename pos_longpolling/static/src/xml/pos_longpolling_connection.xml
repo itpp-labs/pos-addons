@@ -13,7 +13,7 @@
     </t>
 
     <t t-name="AdditionalSynchNotificationWidget">
-        <div class="js_poll_connected oe_status oe_icon oe_red serv_additional">
+        <div class="js_poll_connected oe_icon oe_red serv_additional">
             <t t-call="synch_icon"/>
         </div>
     </t>

@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_mobile_restaurant
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-15 16:15+0000\n"
+"PO-Revision-Date: 2017-12-15 16:15+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_mobile_restaurant
+#. openerp-web
+#: code:addons/pos_mobile_restaurant/static/src/xml/pos.xml:9
+#, python-format
+msgid "Extended function"
+msgstr ""
+
+#. module: pos_mobile_restaurant
+#. openerp-web
+#: code:addons/pos_mobile_restaurant/static/src/js/floors.js:61
+#, python-format
+msgid "Guests ?"
+msgstr ""
+
+#. module: pos_mobile_restaurant
+#: model:ir.model.fields,field_description:pos_mobile_restaurant.field_pos_config_show_number_guests
+msgid "Show the number of guests"
+msgstr ""
+
+#. module: pos_mobile_restaurant
+#: model:ir.model.fields,help:pos_mobile_restaurant.field_pos_config_show_number_guests
+msgid "Show the number of guests in popup for empty table"
+msgstr ""
+
+#. module: pos_mobile_restaurant
+#: model:ir.model,name:pos_mobile_restaurant.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"

@@ -4,6 +4,10 @@
 
 Based on module pos_mobile. Adds extra styling.
 
+Additionally:
+
+* On clicking empty table: ask for number of guests
+
 Credits
 =======
 
@@ -13,7 +17,7 @@ Contributors
 
 Sponsors
 --------
-* `IT-Projects LLC <https://it-projects.info>`__
+* `Sinomate <http://sinomate.net/>`__
 
 Maintainers
 -----------

@@ -1,54 +1,44 @@
-/* --- Restaurant for Mobile Specific CSS --- */
-
-.pos.mobile .screen .screen-content-flexbox {
-    margin:     0px auto;
-    text-align: left;
-    height:     100%;
-    overflow:   hidden;
-    position:   relative;
-    display:    -webkit-flex;
-    -webkit-flex-flow:  column nowrap;
-    flex-flow:  column nowrap;
-}
-
 /* ------ FLOOR SELECTOR ------- */
 
 .pos.mobile .floor-selector {
-    line-height: 96px;
-    font-size: 36px;
-    display: block;
+    line-height: 80px;
+    font-size: 30px;
 }
-.pos.mobile .floor-selector .button {
-    border: none;
-    display: block;
-    -webkit-flex: none;
-    flex: none;
-    background: #67aeff;
-    margin-bottom: 10px;
+.pos.mobile .slide-floor-menu {
+    z-index: 10;
 }
-.pos.mobile .floor-selector .button.active {
-    background: #6EC89B;
-}
-.pos.mobile .floor-selector .button:hover {
-    background: #6EC89B;
-    -webkit-transition: .3s;
-    transition: .3s;
-}
-.pos.mobile .floor-selector .title {
+.pos.mobile .slide-floor-menu .title {
     display: block;
     font-size: 50px;
-    line-height: 91px;
+    line-height: 80px;
+    text-align: center;
 }
+
 /* ------ FLOOR MAP ------- */
 
 .pos.mobile .floor-map {
     box-shadow: initial;
+    position: relative;
 }
 .pos.mobile .floor-map .tables {
-    overflow-y: auto;
     max-width: 900px;
-    max-height: initial;
-    float: right;
+    margin: initial;
+    margin-left: 88px;
+
+    max-height: 90%;
+    max-height: -webkit-calc(100% - 150px);
+    max-height: -moz-calc(100% - 150px);
+    max-height: calc(100% - 150px);
+
+    border-radius: initial;
+    border: initial;
+    height: 100%;
+    float: none;
+
+    margin-top: 15px;
+}
+.pos.mobile .scrollable-y {
+    position: relative;
 }
 .pos.mobile .floor-map .table{
     font-size: 36px;
@@ -158,6 +148,11 @@
 
 .pos.mobile .order-button.floor-button {
     background: white;
+    word-wrap: break-word;
+    white-space: normal;
+    width: 150px;
+    line-height: initial;
+    font-size: smaller;
 }
 .pos.mobile .order-button.floor-button .fa{
     font-size: 48px;
@@ -184,29 +179,34 @@
 }
 
 /* ------ FLOOR SWIPER ------- */
-.pos.mobile .swiper-floor-container {
+.pos.mobile .swiper-container-floor-screen {
     height: 100%;
 }
 .pos.mobile .slide-floor-menu {
     min-width: 100px;
 	width: 70%;
-	max-width: 640px;
+	max-width: 641px;
 	background-color: #2C8DFB;
 	color: #fff;
 	overflow-y: auto;
 }
 /* ------ FLOR MAP BUTTON MENU ------- */
-.pos.mobile .slide-floor-map .menu-button {
+.pos.mobile .swiper-container-floor-screen .menu-button {
     position: absolute;
     top: 0px; left: 0px;
-    padding: 15px;
+    padding: 9px;
     cursor: pointer;
     -webkit-transition: .3s;
     transition: .3s;
     background-color: #2C8DFB;
     z-index: 1;
+    margin-bottom: -1px;
+    width: 80px;
 }
-.pos.mobile .slide-floor-map .bar {
+.pos.mobile .floor-selector .menu-button {
+    position: initial;
+}
+.pos.mobile .swiper-container-floor-screen .bar {
     position: relative;
     display: block;
     width: 80px;
@@ -217,21 +217,21 @@
     -webkit-transition: .3s;
     transition: .3s;
 }
-.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(1) {
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(1) {
     margin-top: 0px;
 }
-.pos.mobile .slide-floor-map .menu-button .bar:nth-of-type(3) {
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(3) {
     margin-bottom: 0px;
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(1) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(1) {
     -webkit-transform: translateY(30px) rotate(-45deg);
     -ms-transform: translateY(30px) rotate(-45deg);
     transform: translateY(30px) rotate(-45deg);
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(2) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(2) {
     opacity: 0;
 }
-.pos.mobile .slide-floor-map .cross .bar:nth-of-type(3) {
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(3) {
     -webkit-transform: translateY(-26px) rotate(45deg);
     -ms-transform: translateY(-26px) rotate(45deg);
     transform: translateY(-26px) rotate(45deg);
@@ -243,12 +243,14 @@
 }
 .pos.mobile .splitbill-screen .left-content {
     width: 60%;
+    height: calc(100% - 120px);
+    float: left;
 }
 .pos.mobile .splitbill-screen .right-content {
     width: 40%;
-    left: 60%;
+    float: right;
+    left: 0%;
 }
-
 /*Order Button*/
 .pos.mobile .control-button.order-submit {
     padding: initial;
@@ -292,4 +294,98 @@
 }
 .pos.mobile .control-button.order-submit.highlight .active {
     display: inline-block;
+}
+.pos.mobile .control-button.order-printbill {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+    height: 93px;
+    line-height: 93px;
+    max-width: calc(100% - 5px);
+}
+.pos.mobile .control-button.order-note {
+    position: relative;
+}
+.pos.mobile .control-button.order-note img {
+    width: 40px;
+}
+/* --------------------- Numpad ------------------------ */
+.pos.mobile .subwindow-container-fix.pads {
+    width: 100%;
+}
+.pos.mobile .actionpad .button.pay {
+    height: 210px;
+}
+.pos.mobile .top-control-buttons {
+    margin: 0px;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    max-width: initial;
+    width: 100%;
+}
+.pos.mobile .top-control-buttons .control-button {
+    width: calc(100%/3 - 15px);
+    margin: 5px;
+    flex-grow: 3;
+    height: 93px;
+    line-height: 93px;
+}
+.pos.mobile .actionpad, .pos.mobile .numpad {
+    margin-top: 0px;
+}
+.pos.mobile .actionpad {
+    max-width: initial;
+    width: calc(100%/3 - 10px);
+}
+.pos.mobile .slide-numpad .numpad {
+    width: 66%;
+    max-width: initial;
+}
+.pos.mobile .slide-numpad .numpad button {
+    width: calc(25% - 10px);
+}
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 705px)!important;
+}
+.pos.mobile .under-search {
+    max-height: 705px;
+}
+.pos.mobile .top-control-buttons .control-button:active, .pos.mobile .control-button.order-printbill:active {
+    background: black;
+    color: white;
+    border-color: transparent;
+}
+
+/* --- Restaurant for Mobile Specific CSS --- */
+.pos.mobile .screen-content-flexbox {
+    margin:     0px auto;
+    text-align: left;
+    height:     100%;
+    overflow:   hidden;
+    position:   relative;
+    display:    -webkit-flex;
+    -webkit-flex-flow:  column nowrap;
+    flex-flow:  column nowrap;
+}
+.pos.mobile .swiper-container-map {
+    height: 100%;
+}
+/*  ********* The Webkit Scrollbar  ********* */
+.pos.mobile .floor-map *::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-track {
+    border-left: solid 4px transparent;
+    background: transparent;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+.pos.mobile .floor-map.scrolling *::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #393939;
 }
