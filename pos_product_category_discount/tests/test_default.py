@@ -14,7 +14,7 @@ class TestUi(odoo.tests.HttpCase):
         main_pos_config = env.ref('point_of_sale.pos_config_main')
 
         main_pos_config.write({
-            'iface_discount': True,
+            'module_pos_discount': True,
         })
         main_pos_config.discount_product_id = env.ref('point_of_sale.boni_orange')
 
