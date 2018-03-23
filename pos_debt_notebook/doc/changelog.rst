@@ -8,6 +8,8 @@
 - **FIX:** Debt history for Chinese localization
 - **FIX:** Error when user doesn't have timezone
 - **FIX:** user_id was always replaced to Administrator in pos.order
+- **IMP:** Updating debts/credits data for partners in opened orders after restoring the internet connection
+- **ADD:** Option 'Autopay' for debt journals
 
 `4.4.3`
 -------
