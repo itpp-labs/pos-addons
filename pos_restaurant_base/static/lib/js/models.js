@@ -33,6 +33,18 @@ odoo.define('pos_restaurant_base.models', function (require) {
             });
             return resume;
         },
+        set_dirty: function(dirty) {
+            //  DIFFERENCES FROM ORIGINAL:
+            // * check mp_dirty to avoid repeated orderline rendering
+            //   (https://github.com/odoo/odoo/pull/23266)
+            //
+            // * using orderline_change_line function instead trigger
+            //   allows you to avoid unnecessary multiple calls of the same functions
+            if (this.mp_dirty !== dirty) {
+                this.mp_dirty = dirty;
+                this.pos.gui.screen_instances.products.order_widget.orderline_change_line(this);
+            }
+        },
         get_line_resume: function(line) {
             var qty  = Number(line.get_quantity());
             var note = line.get_note();
