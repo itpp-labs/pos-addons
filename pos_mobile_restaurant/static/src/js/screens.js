@@ -35,6 +35,10 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
                 $('.slide-order .order-scroller').append(order_note);
             }
         },
+        orderline_change_line: function(line) {
+            this._super(line);
+            this.change_product_qty(line.product.id);
+        },
         scroll_to_selected_order: function() {
             if (this.pos.table) {
                 var orders = this.pos.get_table_orders(this.pos.table);
