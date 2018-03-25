@@ -12,7 +12,6 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
             var order = this.order_widget.$el;
             order.detach();
             $('.slide-order').append(order);
-
         },
     });
 
