@@ -140,7 +140,7 @@ odoo.define('pos_multi_session', function(require){
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
-                return self.multi_session.request_sync_all({'immediate_rerendeing': true}).then(function() {
+                return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
                     done.resolve();
                 });
             });
@@ -728,7 +728,7 @@ odoo.define('pos_multi_session', function(require){
 
             options = options || {};
 
-            if (options.immediate_rerendeing) {
+            if (options.immediate_rerendering) {
                 data.orders.forEach(function (item) {
                     self.pos.ms_on_update(item, true);
                     server_orders_uid.push(item.data.uid);
@@ -839,8 +839,8 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (res.action === 'sync_all') {
                     var sync_options = {};
-                    if (options.immediate_rerendeing) {
-                        sync_options.immediate_rerendeing = options.immediate_rerendeing;
+                    if (options.immediate_rerendering) {
+                        sync_options.immediate_rerendering = options.immediate_rerendering;
                     }
                     self.sync_all(res, sync_options);
                 }
