@@ -46,13 +46,7 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
             } else {
                 this._super();
             }
-        },
-        rerender_orderline: function(order_line){
-            if (order_line.change_dirty) {
-                return false;
-            }
-            this._super(order_line);
-        },
+        }
     });
 
     return screens;
