@@ -115,6 +115,16 @@ odoo.define('pos_disable_payment', function(require){
                 }
             }
         },
+        orderline_change_line: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            if (order && !user.allow_decrease_amount) {
+                // disable the backspace button of numpad
+                $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                this.check_kitchen_access(line);
+            }
+        },
         check_kitchen_access: function(line) {
             var user = this.pos.cashier || this.pos.user;
             var state = this.getParent().numpad.state;
