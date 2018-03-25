@@ -41,6 +41,35 @@ odoo.define('pos_restaurant_base.models', function (require) {
             var line_id = line.id;
             return {qty: qty, note: note, product_id: product_id, product_name_wrapped: product_name_wrapped, line_id: line_id};
         },
+        saveChanges: function(){
+            var self = this;
+            this.saved_resume = this.build_line_resume();
+
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
+
+            var q = $.when();
+
+            var lines = this.get_orderlines();
+            lines.forEach(function(line, index){
+                q = q.then(function(){
+                    if (line.mp_dirty !== false) {
+                        $('.order-scroller').scrollTop(133 * index);
+                    }
+                    line.set_dirty(false);
+                    return delay(50);
+                });
+            });
+
+            q.then(function(){
+                self.trigger('change', self);
+            });
+        },
         computeChanges: function(categories, config){
             //  DIFFERENCES FROM ORIGINAL: 
             // * new incomming argument "config" (printer config)
