@@ -1,6 +1,6 @@
 odoo.define('pos_multi_session_restaurant', function(require){
-    var screens = require('point_of_sale.screens');
-    var models = require('point_of_sale.models');
+    var screens = require('pos_restaurant_base.screens');
+    var models = require('pos_restaurant_base.models');
     var multiprint = require('pos_restaurant.multiprint');
     var floors = require('pos_restaurant.floors');
     var core = require('web.core');
@@ -152,6 +152,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 return;
             }
             return OrderSuper.prototype.ms_remove_order.call(this, arguments);
+        },
+        saveChanges: function(){
+            OrderSuper.prototype.saveChanges.apply(this, arguments);
+            this.trigger('change:sync');
         },
     });
 
