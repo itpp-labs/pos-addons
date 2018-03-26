@@ -8,6 +8,21 @@ odoo.define('pos_restaurant_base.models', function (require) {
 
     var QWeb = core.qweb;
 
+    var _super_orderline = models.Orderline.prototype;
+    models.Orderline = models.Orderline.extend({
+        set_dirty: function(dirty) {
+            //  DIFFERENCES FROM ORIGINAL:
+            // * check mp_dirty to avoid repeated orderline rendering
+            //   (https://github.com/odoo/odoo/pull/23266)
+            //
+            // * using orderline_change_line function instead trigger
+            //   allows you to avoid unnecessary multiple calls of the same functions
+            if (this.mp_dirty !== dirty) {
+                this.mp_dirty = dirty;
+                this.pos.gui.screen_instances.products.order_widget.orderline_change_line(this);
+            }
+        }
+    });
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({

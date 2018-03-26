@@ -12,7 +12,6 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
             var order = this.order_widget.$el;
             order.detach();
             $('.slide-order').append(order);
-
         },
     });
 
@@ -46,13 +45,7 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
             } else {
                 this._super();
             }
-        },
-        rerender_orderline: function(order_line){
-            if (order_line.change_dirty) {
-                return false;
-            }
-            this._super(order_line);
-        },
+        }
     });
 
     return screens;
