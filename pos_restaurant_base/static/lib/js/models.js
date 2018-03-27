@@ -19,7 +19,9 @@ odoo.define('pos_restaurant_base.models', function (require) {
             //   allows you to avoid unnecessary multiple calls of the same functions
             if (this.mp_dirty !== dirty) {
                 this.mp_dirty = dirty;
-                this.pos.gui.screen_instances.products.order_widget.orderline_change_line(this);
+                if (this.pos.gui.screen_instances.products) {
+                    this.pos.gui.screen_instances.products.order_widget.orderline_change_line(this);
+                }
             }
         }
     });
