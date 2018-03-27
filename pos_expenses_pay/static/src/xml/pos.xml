@@ -40,6 +40,7 @@
                                             <tr>
                                                 <th>Expense Description</th>
                                                 <th>Employee</th>
+                                                <th>Payment By</th>
                                                 <th>Total Amount</th>
                                             </tr>
                                         </thead>
@@ -59,6 +60,10 @@
         <tr class='order-line' t-att-data-id='order.id'>
             <td><t t-esc='order.name'/></td>
             <td><t t-esc='order.employee_id[1]' /></td>
+            <td>
+                <t t-if="order.payment_mode == 'own_account'">Employee (to reimburse)</t>
+                <t t-if="order.payment_mode == 'company_account'">Company</t>
+            </td>
             <td><t t-esc='widget.format_currency(order.total_amount)' /></td>
         </tr>
     </t>
@@ -87,7 +92,11 @@
     <t t-name="ExpensesWidget">
         <div class="modal-dialog">
             <div class="popup popup-alert">
-                <p class="title"><t t-esc=" widget.options.title || 'Alert' " /></p>
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'Alert' " />
+                    <br/>
+                    <span style="font-size: 16px"><t t-esc="widget.options.payment_mode" /></span>
+                </p>
                 <p class="body"><t t-esc=" widget.options.body || '' "/></p>
                 <div class="footer">
                     <div class="button confirm">

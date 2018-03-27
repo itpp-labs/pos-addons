@@ -30,6 +30,7 @@ class ReportSaleDetails(models.AbstractModel):
             ('accounting_date', '<=', date_stop),
             ('state', '=', 'done')
         ])
+        res['expenses_total'] = 0
         res['expenses'] = []
         for e in expenses:
             for line in e.expense_line_ids:
@@ -41,6 +42,5 @@ class ReportSaleDetails(models.AbstractModel):
                     'amount': line.total_amount*-1
                 }
                 res['expenses'].append(data)
-
+                res['expenses_total'] = res['expenses_total'] + data['amount']
         return res
-    

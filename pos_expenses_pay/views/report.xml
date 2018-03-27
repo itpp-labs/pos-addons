@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <template id="pos_expense_pay_report" inherit_id="point_of_sale.report_saledetails">
-            <xpath expr="//div[@class='page']/table[position()=3]" position="after">
+            <xpath expr="//div[hasclass('page')]/table[position()=3]" position="after">
                 <br/>
                 <h3>Expenses</h3>
                 <table class="table table-condensed">
@@ -10,7 +10,7 @@
                         <tr>
                             <th>Expense Date</th>
                             <th>Description</th>
-                            <th>Partner</th>
+                            <th>Employee</th>
                             <th>Cashier</th>
                             <th>Amount</th>
                         </tr>
@@ -22,6 +22,11 @@
                             <td><t t-esc="exp['partner']" /></td>
                             <td><t t-esc="exp['cashier']" /></td>
                             <td><t t-esc="exp['amount']" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-right">
+                                <strong>Total:</strong> <span t-esc="expenses_total"/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
