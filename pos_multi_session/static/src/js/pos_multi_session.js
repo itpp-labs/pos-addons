@@ -12,6 +12,8 @@ odoo.define('pos_multi_session', function(require){
     var Model = require('web.Model');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var gui = require('point_of_sale.gui');
+    var framework = require('web.framework');
+
 
     var _t = core._t;
 
@@ -690,9 +692,26 @@ odoo.define('pos_multi_session', function(require){
         sync_all: function(data) {
             var server_orders_uid = [];
             var self = this;
-            data.orders.forEach(function (item) {
-                self.pos.ms_on_update(item, true);
+            function delay(ms) {
+                var d = $.Deferred();
+                setTimeout(function(){
+                    d.resolve();
+                }, ms);
+                return d.promise();
+            }
+
+            framework.blockUI();
+            this.q = $.when();
+            data.orders.forEach(function (item, index) {
+                self.q = self.q.then(function(){
+                    self.pos.ms_on_update(item, true);
+                    return delay(100);
+                });
                 server_orders_uid.push(item.data.uid);
+            });
+
+            self.q.then(function() {
+                framework.unblockUI();
             });
 
             this.pos.pos_session.order_ID = data.order_ID;
@@ -744,7 +763,7 @@ odoo.define('pos_multi_session', function(require){
                     message: message,
                     dbname: session.db,
                     user_ID: self.pos.user.id
-                });
+                },{timeout:2500});
             };
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
@@ -794,6 +813,7 @@ odoo.define('pos_multi_session', function(require){
                     clearInterval(self.offline_sync_all_timer);
                     self.offline_sync_all_timer = false;
                 }
+                self.pos.sync_bus.longpolling_connection.network_is_on();
             });
         },
         destroy_removed_orders: function(server_orders_uid) {
@@ -839,7 +859,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             self.offline_sync_all_timer = setInterval(function(){
                 self.request_sync_all();
-            }, 5000);
+            }, 5000 + (Math.floor((Math.random()*10)+1)*1000));
         },
         no_connection_warning: function(){
             var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");

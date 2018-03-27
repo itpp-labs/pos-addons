@@ -3,6 +3,10 @@
 Updates
 =======
 
+`3.2.0`
+-------
+- IMP: Optimization the rendering of orderlines after orders printing
+
 `2.2.0`
 -------
 - IMP: New option to disable changing Qty for orders sent to kitchen

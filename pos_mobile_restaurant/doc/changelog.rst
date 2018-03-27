@@ -1,3 +1,19 @@
+`1.3.6`
+-------
+
+- **IMP:** Code refactoring to speed up order sending to the kitchen
+
+
+`1.2.6`
+-------
+
+- **IMP:** Optimization the orderline rendering after sending the order to the kitchen
+
+`1.2.5`
+-------
+
+- **IMP:** A floor screen rendering
+
 `1.2.4`
 -------
 
