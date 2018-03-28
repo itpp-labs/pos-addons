@@ -7,6 +7,17 @@ Installation
 
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
 
+Configuration
+=============
+
+* Go to ``[[Point of Sale]] >> Configuration >> Point of Sale`` menu
+
+  * Click ``[Edit]``
+  * Activate ``Show Sale Orders in POS`` option
+  * Activate ``Show Invoices in POS`` option
+  * Set ``Difference Account`` - used for the difference between paid and due amount
+  * Click ``[Save]``
+
 Usage
 =====
 

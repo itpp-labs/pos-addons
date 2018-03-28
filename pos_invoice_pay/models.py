@@ -142,5 +142,5 @@ class PosConfig(models.Model):
 
     show_invoices = fields.Boolean(string="Show Invoices in POS", help="Fetch and pay regular invoices", default=True)
     show_sale_orders = fields.Boolean(string="Show Sale Orders in POS", help="Fetch and pay sale orders", default=True)
-    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account", 
+    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account", help="The account is used for the difference between due and paid amount", 
         default=_get_default_writeoff_account)
