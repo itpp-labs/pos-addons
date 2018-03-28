@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='features']" position="after">
-                    <group string="Pos Invoice Pay" name="pos_invoice_pay">
+                    <group string="Pay Sale Orders &amp; Invoices" name="pos_invoice_pay">
                         <group>
                             <field name="show_invoices"/>
                             <field name="show_sale_orders"/>
