@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Unlock POS by scanning barcode""",
-    "summary": """Unlock POS by scanning barcode""",
+    "name": """Lock POS Screen""",
+    "summary": """Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN""",
     "category": "Point of Sale",
-    # "live_test_url":
-    "images": [],
-    "version": "1.0.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-logout?version=11.0",
+    "images": ["images/pos_logout_main.png"],
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 30.00,
+    "price": 39.00,
     "currency": "EUR",
 
     "depends": [
@@ -34,4 +34,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "Unlock POS Screen by Barcode",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-logout",
+    "demo_summary": "Users can unlock POS screen by scanning or typing their barcodes only",
+    "demo_images": [
+        "images/pos_logout_main.png",
+    ]
 }

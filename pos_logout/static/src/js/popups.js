@@ -4,7 +4,7 @@ odoo.define('pos_logout.popups', function (require) {
     var PopupWidget = require('point_of_sale.popups');
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
-    
+
     var _t = core._t;
 
     var barcode_cashier_action = function (code) {
@@ -14,13 +14,13 @@ odoo.define('pos_logout.popups', function (require) {
             if(users[i].barcode === code.code){
                 this.pos.set_cashier(users[i]);
                 this.chrome.widget.username.renderElement();
-                this.gui.close_popup();                    
+                this.gui.close_popup();
                 return true;
             }
         }
         this.barcode_error_action(code);
         return false;
-    }
+    };
 
     var BlockPopupWidget = PopupWidget.extend({
         template: 'BlockPopupWidget',
@@ -35,7 +35,7 @@ odoo.define('pos_logout.popups', function (require) {
                 'cashier': _.bind(self.barcode_cashier_action, self)
             });
         },
-        
+
 
         click_unlock: function() {
             this.gui.close_popup();
@@ -68,7 +68,9 @@ odoo.define('pos_logout.popups', function (require) {
             this._super(options);
             this.block = true;
             this.list = options.list || [];
-            this.is_selected = options.is_selected || function (item) { return false; };
+            this.is_selected = options.is_selected || function (item) {
+		return false;
+	    };
             this.renderElement();
             this.pos.barcode_reader.set_action_callback({
                 'cashier': _.bind(self.barcode_cashier_action, self)
@@ -123,7 +125,7 @@ odoo.define('pos_logout.popups', function (require) {
                     });
                 },
             });
-        }  
+        }
     });
     PassSelectionPopupWidget.prototype.barcode_cashier_action = barcode_cashier_action;
     gui.define_popup({name:'selection_with_pass', widget: PassSelectionPopupWidget});

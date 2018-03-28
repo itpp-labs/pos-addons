@@ -1,8 +1,8 @@
-==============
- POS QR Login
-==============
+=================
+ Lock POS Screen
+=================
 
-POS QR Login
+Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN
 
 Credits
 =======
@@ -28,12 +28,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_qr_login/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_logout/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 a63ecee47ac271b1f0a23528d9d5eab7f63ae528
+Tested on Odoo 11.0 a63ecee47ac271b1f0a23528d9d5eab7f63ae528

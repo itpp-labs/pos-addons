@@ -32,5 +32,5 @@ odoo.define('pos_logout.gui', function (require) {
         },
     });
 
-    return gui
+    return gui;
 });
