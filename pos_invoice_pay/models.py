@@ -140,7 +140,7 @@ class PosConfig(models.Model):
         acc = self.env['account.account'].search([('code', '=', 220000)]).id
         return acc if acc else False
 
-    show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
-    show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
+    show_invoices = fields.Boolean(string="Show Invoices in POS", help="Fetch and pay regular invoices", default=True)
+    show_sale_orders = fields.Boolean(string="Show Sale Orders in POS", help="Fetch and pay sale orders", default=True)
     pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account", 
         default=_get_default_writeoff_account)
