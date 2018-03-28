@@ -314,9 +314,11 @@ odoo.define('pos_multi_session', function(require){
                 if (!line){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
+                    line.apply_ms_data(dline);
+                    order.orderlines.add(line);
+                } else if (dline.was_changed) {
+                    line.apply_ms_data(dline);
                 }
-                line.apply_ms_data(dline);
-                order.orderlines.add(line);
             });
 
             _.each(not_found, function(uid){
@@ -573,6 +575,12 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
+                    var changed_lines = self.get_orderlines().filter(function(line){
+                        return line.was_changed;
+                    });
+                    changed_lines.forEach(function(line){
+                        line.was_changed = false;
+                    });
                     if (res && res.action === "update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
@@ -620,6 +628,7 @@ odoo.define('pos_multi_session', function(require){
                 if (self.order.ms_check() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
                     line.order.ms_info.changed = line.order.pos.ms_my_info();
+                    line.was_changed = true;
                     var order_lines = line.order.orderlines;
                     // to rerender line
                     order_lines.trigger('change', line);
@@ -642,13 +651,13 @@ odoo.define('pos_multi_session', function(require){
                 OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
             }
             this.ms_info = data.ms_info || {};
-            if(typeof data.qty !== "undefined"){
+            if(typeof data.qty !== "undefined" && data.qty !== this.quantity){
                 this.set_quantity(data.qty);
             }
-            if(typeof data.price_unit !== "undefined"){
+            if(typeof data.price_unit !== "undefined" && data.price_unit !== this.price){
                 this.set_unit_price(data.price_unit);
             }
-            if(typeof data.discount !== "undefined"){
+            if(typeof data.discount !== "undefined" && data.discount !== this.discount){
                 this.set_discount(data.discount);
             }
         },
@@ -661,6 +670,7 @@ odoo.define('pos_multi_session', function(require){
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
             data.uid = this.uid;
             data.ms_info = this.ms_info;
+            data.was_changed = this.was_changed;
             return data;
         }
     });
