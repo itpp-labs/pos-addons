@@ -288,7 +288,7 @@ models.load_models({
         that.prepare_invoices_data(invoices);
         that.invoices = invoices;
         that.db.add_invoices(invoices);
-        that.get_invoice_lines(invoices_ids); 
+        that.get_invoice_lines(invoices_ids);
     }
 });
 
