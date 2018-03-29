@@ -59,6 +59,45 @@ class PosMultiSessionSync(models.Model):
             return True
 
     @api.multi
+    def dict_compare(self, d1, d2):
+        self.ensure_one()
+        d1_keys = set(d1.keys())
+        d2_keys = set(d2.keys())
+        intersect_keys = d1_keys.intersection(d2_keys)
+
+        # ID does not need to compare because the line can be
+        # with different id as each POS creates its own separate line
+
+        # is_changed does not need to be compared because this value is not updated after being written to the server
+        added = d1_keys - d2_keys
+        added.discard('is_changed')
+
+        removed = d2_keys - d1_keys
+        removed.discard('is_changed')
+
+        modified = {o: (d1[o], d2[o]) for o in intersect_keys if d1[o] != d2[o]}
+        if modified.get('id'):
+            modified.pop('id')
+
+        return modified, added, removed
+
+    @api.multi
+    def set_changes(self, message, order):
+        self.ensure_one()
+        order = json.loads(order.order)
+        data = order.get('data')
+        lines = data.get('lines')
+        lines_list = {l[2]['uid']: l[2] for l in lines}
+
+        for e in message['data']['lines']:
+            line = lines_list.get(e[2]['uid'])
+            if line:
+                modified, added, removed = self.dict_compare(e[2], line)
+                if modified or added or removed:
+                    e[2]['is_changed'] = True
+        return message
+
+    @api.multi
     def set_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
@@ -70,6 +109,7 @@ class PosMultiSessionSync(models.Model):
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error', 'order_uid': order_uid}
         if order:  # order already exists
+            message = self.set_changes(message, order)
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
