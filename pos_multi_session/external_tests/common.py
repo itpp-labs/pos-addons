@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import errno
 import glob
@@ -154,14 +153,15 @@ class ExternalTestCase(unittest2.TestCase):
         t0 = datetime.now()
         td = timedelta(seconds=timeout)
         buf = bytearray()
+        pid = phantom.stdout.fileno()
         while True:
             # timeout
             self.assertLess(datetime.now() - t0, td, "PhantomJS tests should take less than %s seconds" % timeout)
 
             # read a byte
             try:
-                ready, _, _ = select.select([phantom.stdout], [], [], 0.5)
-            except select.error, e:
+                ready, _, _ = select.select([pid], [], [], 0.5)
+            except select.error as e:
                 # In Python 2, select.error has no relation to IOError or
                 # OSError, and no errno/strerror/filename, only a pair of
                 # unnamed arguments (matching errno and strerror)
