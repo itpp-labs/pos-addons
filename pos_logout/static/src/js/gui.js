@@ -14,15 +14,12 @@ odoo.define('pos_logout.gui', function (require) {
                 this.show_popup('password',{
                     'title': _t('Password ?'),
                     confirm: function(pw) {
-                        if (pw !== password) {
+                        if (pw === password) {
+                            ret.resolve();
+                        } else {
                             self.show_popup('error',_t('Incorrect Password'));
                             ret.reject();
-                        } else {
-                            ret.resolve();
                         }
-                    },
-                    cancel: function() {
-                        console.log("test cancel");
                     },
                 });
             } else {

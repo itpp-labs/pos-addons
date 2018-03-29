@@ -69,8 +69,8 @@ odoo.define('pos_logout.popups', function (require) {
             this.block = true;
             this.list = options.list || [];
             this.is_selected = options.is_selected || function (item) {
-		return false;
-	    };
+                return false;
+            };
             this.renderElement();
             this.pos.barcode_reader.set_action_callback({
                 'cashier': _.bind(self.barcode_cashier_action, self)
@@ -80,7 +80,9 @@ odoo.define('pos_logout.popups', function (require) {
         click_item: function(event) {
             var self = this,
                 item = this.list[parseInt($(event.target).data('item-index'))];
-            item = item ? item.item : item;
+            item = item
+            ? item.item
+            : item;
             this.gui.close_popup();
             if (item.pos_security_pin) {
                 this.show_pw_popup(item.pos_security_pin, item);
@@ -109,11 +111,10 @@ odoo.define('pos_logout.popups', function (require) {
             this.gui.show_popup('password',{
                 'title': _t('Password ?'),
                 confirm: function(pw) {
-                    if (pw !== password) {
-                        // self.gui.show_popup('error',_t('Incorrect Password'));
-                        self.show_pw_popup(password);
-                    } else {
+                    if (pw === password) {
                         self.set_cashier(user);
+                    } else {
+                        self.show_pw_popup(password);
                     }
                 },
                 cancel: function() {
