@@ -1,4 +1,5 @@
 odoo.define('pos_disable_payment', function(require){
+
 "use strict";
 
     var chrome = require('point_of_sale.chrome');
@@ -9,42 +10,14 @@ odoo.define('pos_disable_payment', function(require){
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var _t = core._t;
 
-    models.load_models({
-        model:  'res.users',
-        fields: ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_delete_order_line','allow_create_order_line','allow_refund'],
-        loaded: function(self,users){
-            for (var i = 0; i < users.length; i++) {
-                var user = _.find(self.users, function(el){
-                    return el.id === users[i].id;
-                });
-                if (user) {
-                    _.extend(user,users[i]);
-                }
-            }
-        }
-    });
+    models.load_fields("res.users", ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund','allow_manual_customer_selecting']);
+
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
     // Example extending of class (method set_cashier), than was created using extend.
     // /odoo9/addons/point_of_sale/static/src/js/models.js
     // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        initialize: function(){
-            PosModelSuper.prototype.initialize.apply(this, arguments);
-            var self = this;
-            this.ready.then(function () {
-                if (!self.cashier){
-                    // it's possible in non-updated odoo that self.cashier if falsy here
-                    return;
-                }
-                // At this point this.cashier has no rights settings added by module.
-                // Reset cashier to fix it
-                var current_cashier = _.find(self.users, function(user){
-                    return user.id === self.cashier.id;
-                });
-                self.set_cashier(current_cashier);
-            });
-        },
         set_cashier: function(){
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
             this.trigger('change:cashier',this);
@@ -63,9 +36,9 @@ odoo.define('pos_disable_payment', function(require){
             if (order) {
                  // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (!user.allow_delete_order && order.orderlines.length > 0) {
-                    this.$('.deleteorder-button').hide();
+                    this.$('.deleteorder-button').addClass('disable');
                 } else {
-                    this.$('.deleteorder-button').show();
+                    this.$('.deleteorder-button').removeClass('disable');
                 }
             }
         },
@@ -85,28 +58,114 @@ odoo.define('pos_disable_payment', function(require){
     screens.OrderWidget.include({
         bind_order_events: function(){
             this._super();
+            var self = this;
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
+            this.pos.bind('change:cashier', function(){
+                self.check_numpad_access();
+            });
+        },
+        orderline_change: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            if (line && line.quantity <= 0) {
+                if (user.allow_delete_order_line) {
+                    $('.numpad-backspace').removeClass('disable');
+                } else {
+                    $('.numpad-backspace').addClass('disable');
+                }
+            } else {
+                $('.numpad-backspace').removeClass('disable');
+            }
+            this.check_numpad_access(line);
+        },
+        click_line: function(orderline, event) {
+            this._super(orderline, event);
+            this.check_numpad_access(orderline);
+        },
+        renderElement:function(scrollbottom){
+            this._super(scrollbottom);
+            this.check_numpad_access();
+        },
+        check_numpad_access: function(line) {
+            var order = this.pos.get_order();
+            if (order) {
+                line = line || order.get_selected_orderline();
+                var user = this.pos.cashier || this.pos.user;
+                var state = this.getParent().numpad.state;
+                if (!line) {
+                    $('.numpad').find('.numpad-backspace').removeClass('disable');
+                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    return false;
+                }
+
+                if (user.allow_decrease_amount) {
+                    // allow all buttons
+                    if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                        $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                        state.changeMode('quantity');
+                    }
+                    if (user.allow_delete_order_line) {
+                        $('.numpad').find('.numpad-backspace').removeClass('disable');
+                    }
+                } else {
+                    // disable the backspace button of numpad
+                    $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                    this.check_kitchen_access(line);
+                }
+            }
+        },
+        orderline_change_line: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            if (order && !user.allow_decrease_amount) {
+                // disable the backspace button of numpad
+                $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                this.check_kitchen_access(line);
+            }
+        },
+        check_kitchen_access: function(line) {
+            var user = this.pos.cashier || this.pos.user;
+            var state = this.getParent().numpad.state;
+            if (user.allow_decrease_kitchen_only) {
+                $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                if (state.get('mode') !== 'quantity') {
+                    state.changeMode('quantity');
+                }
+            } else if (line.mp_dirty) {
+                if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    state.changeMode('quantity');
+                }
+            } else {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                if (state.get('mode') === 'quantity') {
+                    if (user.allow_discount) {
+                        state.changeMode('discount');
+                    } else if (user.allow_edit_price) {
+                        state.changeMode('price');
+                    } else {
+                        state.changeMode("");
+                    }
+                }
+            }
         }
     });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
-        init: function () {
-            var self = this;
-            this._super.apply(this, arguments);
-        },
         start: function () {
             this._super();
-            var user = this.pos.cashier || this.pos.user;
-            if (!user.allow_payments) {
-                this.actionpad.$('.pay').hide();
-            }
+            this.checkPayAllowed();
+            this.checkCreateOrderLine();
+            this.checkDiscountButton();
         },
         renderElement: function () {
             this._super();
             this.pos.bind('change:cashier', this.checkPayAllowed, this);
             this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
+            this.pos.bind('change:cashier', this.checkDiscountButton, this);
         },
         checkCreateOrderLine: function () {
             var user = this.pos.cashier || this.pos.user;
@@ -121,9 +180,23 @@ odoo.define('pos_disable_payment', function(require){
         checkPayAllowed: function () {
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                this.actionpad.$('.pay').show();
+                this.actionpad.$('.pay').removeClass('disable');
             }else{
-                this.actionpad.$('.pay').hide();
+                this.actionpad.$('.pay').addClass('disable');
+            }
+        },
+        checkDiscountButton: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_discount) {
+                $('.control-button.js_discount').removeClass('disable');
+            }else{
+                $('.control-button.js_discount').addClass('disable');
+            }
+        },
+        show: function(reset){
+            this._super(reset);
+            if (reset) {
+                this.order_widget.check_numpad_access();
             }
         }
     });
@@ -132,9 +205,9 @@ odoo.define('pos_disable_payment', function(require){
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').show();
+                $('.pay').removeClass('disable');
             }else{
-                $('.pay').hide();
+                $('.pay').addClass('disable');
             }
             if (user.allow_create_order_line) {
                 $('.numpad').show();
@@ -146,14 +219,47 @@ odoo.define('pos_disable_payment', function(require){
         }
     });
     screens.ActionpadWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_manual_customer_selecting) {
+                this.$('.set-customer').removeClass('disable');
+            } else {
+                this.$('.set-customer').addClass('disable');
+            }
+        },
         renderElement: function () {
             this._super();
             var user = this.pos.cashier || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').show();
-            }else{
-                $('.pay').hide();
+                $('.pay').removeClass('disable');
+            } else{
+                $('.pay').addClass('disable');
             }
+            this.checkManualCustomerSelecting();
+        }
+    });
+    screens.PaymentScreenWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent, options);
+            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+        },
+        checkManualCustomerSelecting: function() {
+            var user = this.pos.cashier || this.pos.user;
+            if (user.allow_manual_customer_selecting) {
+                this.$('.js_set_customer').removeClass('disable');
+            } else {
+                this.$('.js_set_customer').addClass('disable');
+            }
+        },
+        renderElement: function(){
+            this._super();
+            this.checkManualCustomerSelecting();
         }
     });
     screens.NumpadWidget.include({
@@ -167,35 +273,33 @@ odoo.define('pos_disable_payment', function(require){
         },
         check_access: function(){
             var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            var orderline = false;
+            if (order) {
+                orderline = order.get_selected_orderline();
+            }
             if (user.allow_discount) {
-                this.$el.find("[data-mode='discount']").css('visibility', 'visible');
+                this.$el.find("[data-mode='discount']").removeClass('disable');
             }else{
-                this.$el.find("[data-mode='discount']").css('visibility', 'hidden');
+                this.$el.find("[data-mode='discount']").addClass('disable');
             }
             if (user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").css('visibility', 'visible');
+                this.$el.find("[data-mode='price']").removeClass('disable');
             }else{
-                this.$el.find("[data-mode='price']").css('visibility', 'hidden');
+                this.$el.find("[data-mode='price']").addClass('disable');
             }
             if (user.allow_refund) {
-                this.$el.find('.numpad-minus').css('visibility', 'visible');
+                this.$el.find('.numpad-minus').removeClass('disable');
             }else{
-                this.$el.find('.numpad-minus').css('visibility', 'hidden');
+                this.$el.find('.numpad-minus').addClass('disable');
             }
-        }
-    });
-
-
-    screens.NumpadWidget.include({
-        clickDeleteLastChar: function(){
-            var user = this.pos.cashier || this.pos.user;
-            if(!user.allow_decrease_amount && this.state.get('mode') === 'quantity'){
-                return;
+            if (orderline && orderline.quantity <= 0) {
+                if (user.allow_delete_order_line) {
+                    this.$el.find('.numpad-backspace').removeClass('disable');
+                } else{
+                    this.$el.find('.numpad-backspace').addClass('disable');
+                }
             }
-            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
-                return;
-            }
-            return this._super();
         }
     });
 });

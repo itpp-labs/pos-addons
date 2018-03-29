@@ -31,7 +31,7 @@
                     </ul>
                 </div>
                 <div class="footer centered">
-                <t t-if="widget.pos.config.allow_custom_reason">
+                <t t-if="widget.pos.config.allow_custom_reason || widget.pos.config.allow_cancel_deletion">
                     <div class="button cancel">
                         Cancel
                     </div>
@@ -54,10 +54,12 @@
         <div class="reasonlist-screen screen">
             <div class="screen-content">
                 <section class="top-content">
-                    <span class='button back reason-back'>
-                        <i class='fa fa-angle-double-left'></i>
-                        Cancel
-                    </span>
+                    <t t-if="widget.pos.config.allow_custom_reason || widget.pos.config.allow_cancel_deletion">
+                        <span class='button back reason-back'>
+                            <i class='fa fa-angle-double-left'></i>
+                            Cancel
+                        </span>
+                    </t>
                     <span class='reason-next button next oe_hidden highlight'>
                         Apply
                         <i class='fa fa-angle-double-right'></i>
@@ -84,6 +86,16 @@
                 </section>
             </div>
         </div>
+    </t>
+
+    <t t-extend="Orderline">
+        <t t-jquery="ul[class='info-list']" t-operation="append">
+            <t t-if="line.cancelled_line and widget.pos.config.show_cancel_info">
+                <li class="info cancellation-info">
+                    <t t-esc="line.cancelled_line.qty" /><t t-esc="line.product.uom_id[1]" /> Cancel by <t t-esc="line.cancelled_line.user_name" />
+                </li>
+            </t>
+        </t>
     </t>
 
 </templates>

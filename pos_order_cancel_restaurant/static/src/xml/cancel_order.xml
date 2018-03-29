@@ -24,4 +24,12 @@
             </t>
         </t>
     </t>
+
+    <t t-extend="Orderline">
+        <t t-if="widget.pos.config.show_cancel_info" t-jquery="t[t-esc='line.cancelled_line.user_name']" t-operation="after">
+            <t t-if="line.order.get_order_floor()">
+                (<t t-esc="line.order.get_order_floor()" />)
+            </t>
+        </t>
+    </t>
 </templates>

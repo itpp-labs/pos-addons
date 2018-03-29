@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="assets_backend" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
+        <template id="point_of_sale_assets" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
                 <link rel="stylesheet" href="/pos_multi_session/static/src/css/pos_multi_session.css"/>
+            </xpath>
+        </template>
+
+        <template id="assets_backend" name="pos_multi_session backend_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_multi_session/static/src/js/test_pos_multi_session.js"></script>
             </xpath>
         </template>
 
@@ -26,6 +32,9 @@
                             <p class="oe_edit_only" attrs="{'invisible':[('current_session_state', '!=', 'opened')]}"> You need to close current session to be able modify Multi-session value </p>
                         </group>
                     </group>
+                </xpath>
+                <xpath expr="//field[@name='longpolling_max_silence_timeout']" position="before">
+                    <field name="sync_server"  placeholder="http://yourhost"/>
                 </xpath>
             </field>
         </record>

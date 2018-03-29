@@ -9,7 +9,6 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
     var _t = core._t;
 
     for (var position = 0; position < steps.length; position++) {
-        console.log("666",steps[position].trigger);
         if (steps[position].trigger === ".product-list .product") {
             steps.splice(
                 position,
