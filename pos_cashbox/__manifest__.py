@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 {
     "name": """Open CashBox from Backend""",
-    "summary": """The module allows to open the CashBox from Backend""",
+    "summary": """The module allows to open Cashbox/Cashdrawer from Backend""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": [],
-    "version": "1.0.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-cashbox?version=10.0",
+    "images": ['images/pos_cashbox_main.png'],
+    "version": "10.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 49.00,
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",
@@ -35,4 +35,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "Open CashBox from Backend",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-cashbox",
+    "demo_summary": "The module allows to open the CashBox from Backend",
+    "demo_images": [
+        "images/pos_cashbox_main.png",
+    ]
 }

@@ -2,7 +2,9 @@
  Open CashBox from Backend
 ===========================
 
-The module allows to open the CashBox from Backend
+The module allows to open Cashbox/Cashdrawer from backend
+
+You can see new **Open Cashbox** button on POS session form at ``Point of Sale >> Orders >> Sessions`` menu
 
 Credits
 =======

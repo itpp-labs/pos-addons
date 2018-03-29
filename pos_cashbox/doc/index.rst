@@ -13,13 +13,17 @@ Configuration
 * Go to ``Point of Sale >> Configuration >> Point of Sale``
 
   * Open POS configuration form
-  * Click on ``[Edit]``
+  * Click ``[Edit]``
   * Specify IP address for ``Hardware Proxy / PosBox``
-  * Check the **[x] Cashdrawer**
-  * Click on ``[Save]``
+  * Check the **[x] Cashdrawer** box
+  * Click ``[Save]``
 
 Usage
 =====
 
-* Open POS session form
-* Click on ``Open CashBox``
+* Go to ``Point of Sale >> Orders >> Sessions``
+  
+  * Open POS session form
+  * Click on ``Open CashBox``
+
+RESULT: Cashbox is opened
