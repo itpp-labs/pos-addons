@@ -16,6 +16,7 @@ Configuration
   * Click ``[Edit]``
   * Specify IP address for ``Hardware Proxy / PosBox``
   * Check the **[x] Cashdrawer** box
+  * Check the **[x] Cash Control** box
   * Click ``[Save]``
 
 Usage
