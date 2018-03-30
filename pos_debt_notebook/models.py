@@ -261,7 +261,7 @@ class PosConfig(models.Model):
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
                                                 'debt_limit': default_debt_limit,
                                                 'pos_cash_out': True,
-                                                'credits_autopay': True,
+                                                'credits_autopay': False,
                                                 })
         self.write({
             'journal_ids': [(4, debt_journal.id)],
@@ -401,7 +401,7 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Zero transactions on credit payments',
         help='Discount the order (mostly 100%) when user pay via this type of credits')
-    credits_autopay = fields.Boolean("Autopay", default=True,
+    credits_autopay = fields.Boolean("Autopay", default=False,
                                      help="On payment screen it will be automatically used if balance is positive. "
                                           "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
