@@ -3,6 +3,10 @@
 Updates
 =======
 
+`3.2.1`
+-------
+- IMP: Refactoring the code to improve the speed of POS synchronization
+
 `3.2.0`
 -------
 - IMP: Optimization the rendering of orderlines after orders printing
