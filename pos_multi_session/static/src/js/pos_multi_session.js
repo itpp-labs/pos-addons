@@ -32,8 +32,8 @@ odoo.define('pos_multi_session', function(require){
         bind_order_events: function() {
             this._super();
             var order = this.pos.get_order();
-            order.unbind('change:currentOrder', this.change_current_order, this);
-            order.bind('change:currentOrder', this.change_current_order, this);
+            order.unbind('change:newLines', this.change_current_order, this);
+            order.bind('change:newLines', this.change_current_order, this);
         },
         change_current_order: function() {
             if (this.pos.get_order()) {
@@ -344,7 +344,7 @@ odoo.define('pos_multi_session', function(require){
                 }
             });
             if (added_new_lines) {
-                order.trigger('change:currentOrder', order);
+                order.trigger('change:newLines', order);
             }
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
