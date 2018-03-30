@@ -29,6 +29,28 @@ odoo.define('pos_multi_session', function(require){
             }
             this._super(scrollbottom);
         },
+        bind_order_events: function() {
+            this._super();
+            var order = this.pos.get_order();
+            order.unbind('change:currentOrder', this.change_current_order, this);
+            order.bind('change:currentOrder', this.change_current_order, this);
+        },
+        change_current_order: function() {
+            if (this.pos.get_order()) {
+                this.renderElement('and_scroll_to_bottom');
+            }
+        },
+        orderline_add: function(){
+            var options = arguments
+            && arguments[2]
+            ? arguments[2]
+            : {};
+            if (options.not_render) {
+                this.numpad_state.reset();
+            } else {
+                this._super();
+            }
+        },
         rerender_orderline: function(order_line){
             if (order_line.node && order_line.node.parentNode) {
                 return this._super(order_line);
@@ -304,6 +326,7 @@ odoo.define('pos_multi_session', function(require){
                 order.set_client(client);
             }
 
+            var added_new_lines = false;
             _.each(data.lines, function(dline){
                 dline = dline[2];
                 var line = order.orderlines.find(function(r){
@@ -315,12 +338,15 @@ odoo.define('pos_multi_session', function(require){
                     line = new models.Orderline({}, {pos: pos, order: order, product: product});
                     line.uid = dline.uid;
                     line.apply_ms_data(dline);
-                    order.orderlines.add(line);
+                    order.orderlines.add(line, {'not_render': true});
+                    added_new_lines = true;
                 } else if (dline.is_changed) {
                     line.apply_ms_data(dline);
                 }
             });
-
+            if (added_new_lines) {
+                order.trigger('change:currentOrder', order);
+            }
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
                                return uid === r.uid;
