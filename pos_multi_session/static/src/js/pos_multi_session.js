@@ -41,8 +41,7 @@ odoo.define('pos_multi_session', function(require){
             }
         },
         orderline_add: function(){
-            var options = arguments
-            && arguments[2]
+            var options = arguments && arguments[2]
             ? arguments[2]
             : {};
             if (options.not_render) {
