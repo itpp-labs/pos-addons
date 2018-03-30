@@ -659,7 +659,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var client = this.pos.get_client();
             var order = this.pos.get_order();
             var status = '';
-            if (client && client.debts && order && order.get_orderlines().length !== 0){
+            if (client && client.debts && order && order.get_orderlines().length !== 0 && !order.has_credit_product()){
                 var paymentlines = order.get_paymentlines();
                 if (paymentlines.length && order.get_due() > 0 ) {
                     _.each(paymentlines, function(pl){
@@ -727,7 +727,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return;
             }
             this._super();
-            if (!order.get_paymentlines().length){
+            if (!order.get_paymentlines().length || order.has_credit_product()){
                 $(this.autopay_html).hide();
             }
         },
