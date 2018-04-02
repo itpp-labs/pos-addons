@@ -1,3 +1,8 @@
+/* Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_multi_session', function(require){
     var exports = {};
 
