@@ -1,3 +1,10 @@
+/* Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+ * Copyright 2017 Artyom Losev
+ * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_debt_notebook.pos', function (require) {
     "use strict";
 
