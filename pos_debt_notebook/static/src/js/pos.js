@@ -1062,6 +1062,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         saved_client_details: function(partner_id){
             this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(partner_id);
             this._super(partner_id);
+            this.pos.reload_debts([partner_id], 0, {"postpone": false});
         },
         reload_partners: function(){
             var self = this;
