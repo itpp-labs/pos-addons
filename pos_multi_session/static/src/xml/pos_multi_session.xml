@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     Copyright 2016 Ilyas Rakhimkulov
+     Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
 <templates id="template" xml:space="preserve">
     <t t-extend="Orderline">
         <t t-jquery=".info-list" t-operation="after">

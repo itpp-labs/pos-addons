@@ -1,3 +1,11 @@
+/* Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * Copyright 2015-2016 Ilyas Rakhimkulov
+ * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017 Attila Szöllősi
+ * Copyright 2017 Thomas Paul
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_multi_session_restaurant', function(require){
     var screens = require('pos_restaurant_base.screens');
     var models = require('pos_restaurant_base.models');
@@ -188,14 +196,12 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var MultiSessionSuper = multi_session.MultiSession;
     multi_session.MultiSession = multi_session.MultiSession.extend({
         sync_all: function(data) {
-            MultiSessionSuper.prototype.sync_all.apply(this, arguments);
             var self = this;
-            this.q.then(function(){
+            return MultiSessionSuper.prototype.sync_all.apply(this, arguments).then(function(){
                 if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
                     self.pos.gui.screen_instances.floors.renderElement();
                 }
             });
-
         }
     });
 

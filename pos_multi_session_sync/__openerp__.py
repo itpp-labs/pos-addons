@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 {
     "name": """Sync Server for POS orders""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "10.0.1.0.1",
+    "version": "10.0.1.0.2",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
