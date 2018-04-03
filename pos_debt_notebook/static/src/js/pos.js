@@ -132,7 +132,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (isDebt && currentOrder.get_total_paid() > currentOrder.get_total_with_tax()) {
+            if (this.debt_change_check()) {
                 this.gui.show_popup('error', {
                     'title': _t('Unable to return the change with a debt payment method'),
                     'body': _t('Please enter the exact or lower debt amount than the cost of the order.')
@@ -141,6 +141,18 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
+        },
+
+        debt_change_check: function () {
+             var order = this.pos.get_order(),
+                paymentlines = order.get_paymentlines(),
+                flag = false;
+            for (var i = 0; i < paymentlines.length; i++) {
+                if (paymentlines[i].cashregister.journal.debt && order.get_change(paymentlines[i]) > 0) {
+                    flag = true;
+                }
+            }
+            return flag;
         },
 
         pay_full_debt: function(){
@@ -215,7 +227,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     ? client.name
                     : _t('Customer')
             );
-            $pay_full_debt.on('click', function() {
+            $pay_full_debt.unbind().on('click', function() {
                 self.pay_full_debt();
             });
             $pay_full_debt.addClass('oe_hidden');
