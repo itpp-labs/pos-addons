@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 09:02+0000\n"
-"PO-Revision-Date: 2017-11-24 09:02+0000\n"
+"POT-Creation-Date: 2017-12-31 00:08+0000\n"
+"PO-Revision-Date: 2017-12-31 00:08+0000\n"
 "Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
 "Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,22 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:95
+#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:14
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_autostart_longpolling
+msgid "Autostart longpolling"
+msgstr ""
+
+#. module: pos_longpolling
+#. openerp-web
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:128
 #, python-format
 msgid "Error"
 msgstr "Ошибка"
@@ -34,6 +49,13 @@ msgstr "Longpolling"
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_query_timeout
 msgid "Query timeout"
 msgstr "Время запроса"
+
+#. module: pos_longpolling
+#. openerp-web
+#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:10
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
 
 #. module: pos_longpolling
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_response_timeout
@@ -62,6 +84,12 @@ msgstr ""
 " будет ждать ответного сообщения («PONG») в течении этого времени, и если "
 "сообщение не придет, тогда значок окраситься в красный, если сообщение "
 "придет, значит соединение восстановлена, значок изменит цвет на зеленый)"
+
+#. module: pos_longpolling
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config_autostart_longpolling
+msgid ""
+"When switched off longpoling will start only when other module start it"
+msgstr ""
 
 #. module: pos_longpolling
 #: model:ir.model,name:pos_longpolling.model_pos_config

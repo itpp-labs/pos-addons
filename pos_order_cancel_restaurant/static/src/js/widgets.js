@@ -52,4 +52,43 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             this._super(type);
         },
     });
+
+    PosOrderCancelWidget.ReasonCancellationScreenWidget.include({
+        save_changes: function(){
+            this._super();
+            var type = this.get_type();
+            if (this.pos.config.auto_send_to_kitchen && type === 'product') {
+                this.auto_sent_to_kitchen();
+            }
+        },
+        auto_sent_to_kitchen: function() {
+            var order = this.pos.get_order();
+            if (order) {
+                var current_line = order.get_selected_orderline();
+                if (current_line.was_printed && order.hasChangesToPrint()) {
+                    order.printChanges();
+                    order.saveChanges();
+                }
+            }
+        }
+    });
+
+    PosOrderCancelWidget.ConfirmCancellationPopupWidget.include({
+        click_confirm: function(){
+            this._super();
+            if (this.pos.config.auto_send_to_kitchen && this.type === 'product') {
+                this.auto_sent_to_kitchen();
+            }
+        },
+        auto_sent_to_kitchen: function() {
+            var order = this.pos.get_order();
+            if (order) {
+                var current_line = order.get_selected_orderline();
+                if (current_line.was_printed && order.hasChangesToPrint()) {
+                    order.printChanges();
+                    order.saveChanges();
+                }
+            }
+        }
+    });
 });
