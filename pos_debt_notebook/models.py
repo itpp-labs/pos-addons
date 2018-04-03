@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, SUPERUSER_ID
+from odoo import models, fields, api, SUPERUSER_ID, tools
 from datetime import datetime
 from pytz import timezone
 import pytz
@@ -456,11 +456,13 @@ class PosOrder(models.Model):
     @api.model
     def _process_order(self, pos_order):
         credit_updates = []
+        amount_via_discount = 0
         for payment in pos_order['statement_ids']:
             journal = self.env['account.journal'].browse(payment[2]['journal_id'])
             if journal.credits_via_discount:
                 amount = float(payment[2]['amount'])
                 product_list = list()
+                amount_via_discount += amount
                 for o_line in pos_order['lines']:
                     o_line = o_line[2]
                     name = self.env['product.product'].browse(o_line['product_id']).name
@@ -473,13 +475,38 @@ class PosOrder(models.Model):
                                        'note': product_list,
                                        })
                 payment[2]['amount'] = 0
-        pos_order['amount_return'] -= pos_order.get('amount_via_discount', 0)
+        # pos_order['amount_return'] = amount_via_discount > pos_order['amount_return'] and 0 or pos_order['amount_return'] - amount_via_discount
+        pos_order['amount_via_discount'] = amount_via_discount
+        self.set_discounts(False, pos_order)
+        # next variable includes taxes and errors of rounding, for th
+        remained_diff = pos_order['amount_total'] - pos_order['amount_paid']
+        print remained_diff, '****************', pos_order
+        if abs(remained_diff) > 0:
+            print 'in remained diff'
+            self.set_discounts(remained_diff, pos_order)
+        print pos_order
         order = super(PosOrder, self)._process_order(pos_order)
         for update in credit_updates:
             update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
         return order
+
+    def set_discounts(self, amount, pos_order):
+        if not pos_order:
+            pos_order = self
+        if not amount:
+            amount = pos_order['amount_via_discount']
+        for o_line in pos_order['lines']:
+            line = o_line[2]
+            price = line['qty'] * line['price_unit']
+            old_price = price * (1 - line['discount'] / 100)
+            if abs(amount) < 0.00001 or not old_price:
+                return
+            line['discount'] = min(line['discount'] + amount / price, 100)
+            new_price = price * (1 - line['discount'] / 100)
+            amount -= old_price - new_price
+            print amount, '++===++'
 
 
 class AccountBankStatement(models.Model):

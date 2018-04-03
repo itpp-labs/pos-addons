@@ -222,7 +222,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
-            data.amount_via_discount = Math.max(0, this.get_summary_for_discount_credits());
             return data;
         },
         export_for_printing: function(){
@@ -424,23 +423,23 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             if (debt_pl && partner){
                 var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
-                if (disc_credits_pl.length && order_total) {
-                    // adding a discount
-                    var discount_credits = Math.max(0, order.get_summary_for_discount_credits());
-                    var percentage = 0;
-                    var orderlines = order.get_orderlines();
-                    var old_price = 0;
-                    _.each(orderlines, function(ol){
-                        if (discount_credits > 0.00001) {
-                            old_price = ol.get_price_with_tax();
-                            percentage = Math.min(Math.max(( discount_credits / old_price ) * 100, 0), 100);
-                            ol.set_discount(percentage);
-                            discount_credits -= old_price - ol.get_price_with_tax();
-                        } else {
-                            return;
-                        }
-                    });
-                }
+//                if (disc_credits_pl.length && order_total) {
+//                    // adding a discount
+//                    var discount_credits = Math.max(0, order.get_summary_for_discount_credits());
+//                    var percentage = 0;
+//                    var orderlines = order.get_orderlines();
+//                    var old_price = 0;
+//                    _.each(orderlines, function(ol){
+//                        if (discount_credits > 0.00001) {
+//                            old_price = ol.get_price_with_tax();
+//                            percentage = Math.min(Math.max(( discount_credits / old_price ) * 100, 0), 100);
+//                            ol.set_discount(percentage);
+//                            discount_credits -= old_price - ol.get_price_with_tax();
+//                        } else {
+//                            return;
+//                        }
+//                    });
+//                }
                 this._super();
                 // offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl){
@@ -769,8 +768,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         render_change: function() {
             // deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
             var order = this.pos.get_order();
-            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0);
-            this.$('.change-value').html(this.format_currency(change));
+//            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0);
+            this.$('.change-value').html(this.format_currency(order.get_change()));
         },
     });
 
