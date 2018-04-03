@@ -1,3 +1,7 @@
+`4.0.1`
+-------
+- **FIX:** TypeError: self.new_client is null when `Pay Full Debt`
+
 `4.0.0`
 -------
 - **ADD:** Credits can be purchased via Credit Product. No need to use Debt Journal at that case

@@ -282,7 +282,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.$('#set-customer-pay-full-debt').click(function(){
                 self.save_changes();
 //                self.gui.back();
-                if (self.new_client.debt <= 0) {
+                var partner = self.new_client || self.old_client;
+                if (partner.debt <= 0) {
                     self.gui.show_popup('error',{
                         'title': _t('Error: No Debt'),
                         'body': _t('The selected customer has no debt.'),
@@ -324,7 +325,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
 
                 var newDebtPaymentline = new models.Paymentline({},{order: order, cashregister: debtjournal, pos: self.pos});
-                newDebtPaymentline.set_amount(self.new_client.debt * -1);
+                newDebtPaymentline.set_amount(partner.debt * -1);
                 order.paymentlines.add(newDebtPaymentline);
                 self.gui.show_screen('payment');
             });
