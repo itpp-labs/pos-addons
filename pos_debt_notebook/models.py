@@ -270,7 +270,7 @@ class PosConfig(models.Model):
                                                 'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
                                                 'debt_limit': default_debt_limit,
                                                 'pos_cash_out': True,
-                                                'credits_autopay': False,
+                                                'credits_autopay': True,
                                                 })
         self.write({
             'journal_ids': [(4, debt_journal.id)],

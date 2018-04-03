@@ -734,6 +734,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return;
             }
             this._super();
+            if (order.get_due()) {
+                // red if not fully paid, green if payment cover up the due
+                this.change_autopay_button('alert');
+            } else {
+                this.change_autopay_button('validate');
+            }
             if (!order.get_paymentlines().length || order.has_credit_product()){
                 $(this.autopay_html).hide();
             }
