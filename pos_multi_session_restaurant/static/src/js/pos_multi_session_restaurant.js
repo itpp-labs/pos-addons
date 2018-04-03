@@ -2,6 +2,8 @@
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017 Attila Szöllősi
+ * Copyright 2017 Thomas Paul
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
 odoo.define('pos_multi_session_restaurant', function(require){
