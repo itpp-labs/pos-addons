@@ -311,6 +311,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             self.pos.config.debt_dummy_product_id[0]);
                         order.add_product(dummy_product, {'price': 0});
                     }
+                    if (!order.get_client()){
+                        order.set_client(partner);
+                    }
                 }
 
                 // select debt journal
