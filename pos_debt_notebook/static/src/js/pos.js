@@ -941,7 +941,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $pay_full_debt.addClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
                 $show_customers.addClass('oe_hidden');
-            } else if (!this.debt_history_is_opened()) {
+            } else if (this.debt_history_is_opened()) {
+                $show_customers.removeClass('oe_hidden');
+            } else {
                 if ((this.new_client && this.new_client.debt > 0) ||
                         (curr_client && curr_client.debt > 0 && !this.new_client)) {
                     $pay_full_debt.removeClass('oe_hidden');
@@ -953,8 +955,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 } else {
                     $show_debt_history.addClass('oe_hidden');
                 }
-            } else {
-                $show_customers.removeClass('oe_hidden');
             }
 
             if (this.debt_history_is_opened() && !this.editing_client) {
