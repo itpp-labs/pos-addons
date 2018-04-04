@@ -35,13 +35,13 @@
     "auto_install": False,
     "installable": True,
 
-    "demo_title": "Unlock POS Screen by Barcode",
+    "demo_title": "Lock POS Screen",
     "demo_addons": [
     ],
     "demo_addons_hidden": [
     ],
     "demo_url": "pos-logout",
-    "demo_summary": "Users can unlock POS screen by scanning or typing their barcodes only",
+    "demo_summary": "Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN",
     "demo_images": [
         "images/pos_logout_main.png",
     ]
