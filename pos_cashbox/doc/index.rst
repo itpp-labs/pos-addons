@@ -25,6 +25,7 @@ Usage
 * Go to ``Point of Sale >> Orders >> Sessions``
   
   * Open POS session form
+  * Check that the session state is ``Opening Control`` or ``Closing Control``
   * Click on ``Open CashBox``
 
 RESULT: Cashbox is opened
