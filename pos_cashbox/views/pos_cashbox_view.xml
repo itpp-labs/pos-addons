@@ -10,12 +10,7 @@
                     <field name="iface_cashdrawer" invisible="1"/>
                     <field name="proxy_ip" invisible="1"/>
                     <button name="open_backend_cashbox" type="object" string="Open CashBox"
-                            attrs="{'invisible':['|','|', ('iface_cashdrawer', '=', False), ('cash_control', '=', False), ('state', '!=', 'opening_control')]}"
-                            class="oe_highlight o_wow" special="open_backend_cashbox">
-                        <i class='fa fa-archive' />
-                    </button>
-                    <button name="open_backend_cashbox" type="object" string="Open CashBox"
-                            attrs="{'invisible':['|','|', ('iface_cashdrawer', '=', False), ('cash_control', '=', False), ('state', '!=', 'closing_control')]}"
+                            attrs="{'invisible':['|','|', ('iface_cashdrawer', '=', False), ('cash_control', '=', False), ('state', 'not in', ['opening_control', 'closing_control'])]}"
                             class="oe_highlight o_wow" special="open_backend_cashbox">
                         <i class='fa fa-archive' />
                     </button>
