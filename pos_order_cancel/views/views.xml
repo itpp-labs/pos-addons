@@ -59,7 +59,7 @@
             </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="Refunds / Cancellations">
+                <page name="cancellations" string="Refunds / Cancellations">
                     <group>
                         <separator string="Order Cancellation Reason" colspan="4" attrs="{'invisible': ['|',('is_cancelled','!=',True),('cancellation_reason','=',False)]}"/>
                         <field name="cancellation_reason" colspan="4" nolabel="1" readonly="1" attrs="{'invisible': [('is_cancelled','!=',True)]}"/>

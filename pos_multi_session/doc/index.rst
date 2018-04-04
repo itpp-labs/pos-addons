@@ -28,6 +28,11 @@ Domain switching
 
 There is a rare case, when you need to clear browser data after installation: if you use this module on a website domain, which was previously used by another database with this module installed (e.g. main_company.example.com was used by ``database1`` and then the domain starts to handle another ``database2``). In that case the browser data has to be cleaned on all devices before first use.
 
+Modules compatibility
+=====================
+
+The ``pos_multi_session`` is compatible with all IT-Projects` modules. It may not be compatible with other third-party modules that add additional data to Order or Orderline js model. For such cases we provide developer instruction how to add compatibility (available in README.rst file).
+
 Usage
 =====
 

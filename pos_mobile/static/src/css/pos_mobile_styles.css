@@ -1,4 +1,10 @@
 /*===================Common styles for mobile version=============================*/
+.ios {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    margin: 0;
+}
 .pos.mobile textarea {
     font-size: 38px;
     padding: 20px;
@@ -61,6 +67,10 @@
     height: 96px;
     background: white;
     border-bottom: solid 3px rgb(196, 196, 196);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 }
 /*  a) The left part of the top-bar */
 
@@ -69,23 +79,28 @@
     width: initial;
     position: relative;
     vertical-align: top;
+    display: block;
+    float: left;
 }
 .pos.mobile .pos-branding .username{
-    margin-right:0px;
     margin-left: 20px;
-    line-height: 22px;
+    margin-right: 20px;
+    line-height: 104px;
     float: left;
     color: #555555;
-    word-wrap: break-word;
-    width: 50px;
-    font-size: 22px;
-    padding-top: 15px;
+    /*word-wrap: break-word;*/
+    width: initial;
+    font-size: 20px;
+    white-space: nowrap;
 }
 /*  b) The right part of the top-bar */
 .pos.mobile .pos-rightheader {
-    display: table-cell;
+    display: block;
     position: relative;
-    left: 20px;
+    left: 0px;
+    right: 0px;
+    float: right;
+    width: 100%;
 }
 .pos.mobile .pos-rightheader > * {
     border-right: 0px;
@@ -154,7 +169,6 @@
 /*  c) The session buttons */
 .pos.mobile .pos-rightheader .header-button{
     display: inline-block;
-    float: left;
     height: 96px;
     padding-left: 32px;
     padding-right: 32px;
@@ -162,6 +176,10 @@
     border-left: 2px solid #292929;
     line-height: 96px;
     color: #555555;
+    position: absolute;
+    right: 0;
+    padding: 0px;
+    width: 80px;
 }
 .pos.mobile .pos-rightheader .header-button img{
     padding: 10px;
@@ -174,11 +192,13 @@
 }
 /*  c) The notifications indicator */
 .pos.mobile .oe_status{
-    display: inline-block;
-    float: left;
     padding: 28px;
     line-height: 40px;
     font-size: 40px;
+    float: right;
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .pos.mobile .oe_status .oe_icon{
     width:40px;
@@ -239,9 +259,12 @@
 .pos.mobile .control-buttons {
     padding: 16px 32px 0px 22px;
     margin-bottom: -12px;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 .pos.mobile .control-button {
-    font-size: 28px;
+    font-size: 48px;
     margin: 15px;
     padding: 10px 24px;
     line-height: 80px;
@@ -258,11 +281,18 @@
     margin-right: 8px;
 }
 .pos.mobile .control-button .control-button-number {
-    height: 56px;
-    line-height: 56px;
-    width: 56px;
-    margin-left: -32px;
+    height: 48px;
+    line-height: 48px;
+    width: 48px;
+    margin-left: 0px;
     margin-right: 8px;
+    margin-bottom: 13px;
+    border-radius: 10px;
+    border: 3px solid rgb(85, 85, 85);
+    background: initial;
+    color: rgb(85, 85, 85);
+    font-size: 40px;
+    font-weight: initial;
 }
 .pos.mobile .control-button.highlight,
 .pos.mobile .button.highlight {
@@ -320,14 +350,14 @@
 }
 .pos.mobile .actionpad .button.pay {
     height: 315px;
+    font-size: 48px;
 }
 .pos.mobile .actionpad .button.pay .pay-circle {
-    font-size: 64px;
-    line-height: 108px;
+    font-size: 47px;
+    line-height: 84px;
     padding-top: 12px;
-    width: 120px;
-    border-radius: 60px;
-    margin-bottom: 20px;
+    width: 96px;
+    border-radius: 50%;
     background: #dbdbdb;
     color: #555555;
 }
@@ -336,15 +366,17 @@
     left: 6px;
 }
 .pos.mobile .actionpad .button.set-customer{
-    padding-left: 80px;
+    padding-left: 90px;
     padding-right: 80px;
     height: 98px;
     margin-bottom: 10px;
     position: relative;
+    font-size: 48px;
 }
 .pos .actionpad .button.set-customer.decentered {
-    padding-left: 40px;
+    padding-left: 5px;
     padding-right: 5px;
+    font-size: 35px;
 }
 .pos.mobile .actionpad .button .fa-user {
     left: 26px;
@@ -357,7 +389,7 @@
 .pos.mobile .actionpad .button.set-customer img{
     width: 50px;
     position: absolute;
-    left: 30px;
+    left: 25px;
     top: 20px;
 }
 /*  ********* The Numpad ********* */
@@ -385,10 +417,6 @@
     background: #6EC89B;
     border-color: transparent;
 }
-.pos.mobile .numpad-backspace img {
-    height: 42px;
-    width: 48px;
-}
 .pos.mobile .numpad button:nth-child(4) {
     border-top-right-radius: 15px;
 }
@@ -399,9 +427,9 @@
     font-size: 48px;
 }
 .pos.mobile .mode-button {
-    font-size: 28px;
+    font-size: 48px;
 }
-.pos.mobile .numpad button:hover {
+.pos.mobile .numpad button:active {
     background: #6EC89B;
     color: white;
     border-color: transparent;
@@ -449,11 +477,25 @@
     padding: 20px;
     text-align: center;
 }
+.pos.mobile .current-order-qty {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: red;
+    color: white;
+    line-height: 30px;
+    min-width: 30px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
+}
 /*  a) the product list navigation bar */
 .pos.mobile .breadcrumb{
     line-height: 96px;
     height: 96px;
     min-width: 96px;
+    float: right;
 }
 .pos.mobile .breadcrumb:last-child {
     padding-right: 6px;
@@ -470,6 +512,7 @@
 }
 .pos.mobile .breadcrumb-arrow{
     width: 56px;
+    transform: scale(-1, 1);
 }
 .pos.mobile .breadcrumb-homeimg {
     width: 54px;
@@ -527,7 +570,7 @@
     text-align: center;
 }
 .pos .category-list-scroller {
-    max-height: 311px;
+    max-height: 342px;
 }
 /*  d) the category button */
 .pos.mobile .category-button {
@@ -572,7 +615,17 @@
     -webkit-transition-property: background, border;
     -webkit-transition-duration: 0.2s;
     -webkit-transition-timing-function: ease-out;
-    transition: 0.order-scroller2s;
+    transition: 0.2s;
+}
+.pos.mobile .category-simple-button.active {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
 }
 .pos.mobile .category-button .category-img {
     width: 240px;
@@ -626,17 +679,19 @@
 .pos.mobile .product .product-img img {
     max-height: 200px;
     max-width: 220px;
-    min-width: 128px;
+    width: 185px;
+    height: 185px;
+    vertical-align: top;
 }
 .pos.mobile .product .price-tag {
-    top: 4px;
-    right: 4px;
+    top: 0px;
+    right: 0px;
     line-height: 26px;
     padding: 4px 10px;
     border-radius: 4px;
 }
 .pos.mobile .product .product-name {
-    line-height: 28px;
+    line-height: 20px;
     padding: 6px;
     padding-top:30px;
     text-align: left;
@@ -659,18 +714,17 @@
 /* a) Generic Screen Layout Constructs */
 .pos.mobile .screen .screen-content{
     max-width: 2048px;
-    background: #f7f7f7;
+    background: white;
 }
-
 .pos.mobile .screen .top-content{
     background: white;
     height: 128px;
-    border-bottom: dashed 2px rgb(215,215,215);
+    border-bottom: dashed 2px rgb(110,110,110);
 }
 .pos.mobile .screen .top-content .button {
     line-height: 64px;
     padding: 6px 26px;
-    font-size: 35px;
+    font-size: 35px !important;
     margin: 24px;
     border: 2px solid #e8e8e8;
     border-radius: 15px;
@@ -694,6 +748,7 @@
 }
 .pos.mobile .screen .top-content .button.next{
     font-size: inherit;
+
 }
 .pos.mobile .screen .left-content{
     top: 128px;
@@ -727,18 +782,25 @@
 /* b) The payment screen */
 .pos.mobile .payment-numpad {
     width: 100%;
-    max-width: 760px;
+    max-width: 635px;
+    padding: 0px;
+    margin: 0px;
+    float: right;
 }
 .pos.mobile .payment-numpad .numpad {
     border: none;
     border-radius: 8px;
     width: 100% !important;
     max-width: initial;
-    margin-left: 5px;
+    margin: 0px;
+    margin-top: 15px;
 }
 .pos.mobile .payment-numpad .numpad button {
-    width: 160px;
-    height: 160px;
+    width: 145px;
+    height: 135px;
+    font-size: 50px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 22px -14px black;
 }
 .pos.mobile .payment-numpad .numpad button:first-child {
     border-top-left-radius: 8px;
@@ -746,10 +808,21 @@
 .pos.mobile .payment-numpad .numpad button:nth-child(16) {
     border-bottom-left-radius: 8px;
 }
+.pos.mobile .paymentlines {
+    margin-bottom: 20px;
+}
 .pos.mobile .paymentlines-container {
     padding: 0px;
-    border-bottom: dashed 2px gainsboro;
-    min-height: 308px;
+    border-bottom: dashed 2px rgb(110,110,110);
+    max-height: initial;
+    height: 562px;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch!important;
+}
+.pos.mobile .paymentlines-container .delete-button{
+    padding: 0px;
+    line-height: 65px;
 }
 .pos.mobile .paymentlines .controls {
     width: 80px;
@@ -762,15 +835,16 @@
     border-radius: 6px;
 }
 .pos.mobile .paymentline{
-    font-size: 44px;
+    font-size: 35px;
 }
 .pos.mobile .paymentline.selected {
     font-size: 35px;
 }
 .pos.mobile .paymentline.selected .edit {
-    outline: 6px blue;
-    box-shadow: 0px 0px 0px 6px #6EC89B;
+    outline: 1px blue;
+    box-shadow: 0px 0px 0px 1px #6EC89B;
     border-radius: 6px;
+    color: #555555;
 }
 .pos.mobile .paymentline > *{
     padding: 16px 24px;
@@ -792,21 +866,58 @@
     width: 100%;
     display: block;
 }
+.pos.mobile .payment-screen .left-content{
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 375px;
+}
+.pos.mobile .payment-screen .left-content.pc40{
+    right: initial;
+    border-bottom: dashed 2px rgb(175,175,175);
+}
+.pos.mobile .payment-screen .right-content{
+    width: 100%;
+    display: block;
+    position: relative;
+}
+.pos.mobile .payment-screen .right-content.pc60{
+    left: initial;
+    height: calc(100% - 128px);
+}
+.pos.mobile .payment-screen .payment-buttons{
+    padding: 0px;
+    display: block;
+    max-width: 380px;
+    width: 100%;
+    padding-right: 5px;
+}
 .pos.mobile .payment-screen .payment-buttons .button {
-    line-height: 146px;
+    line-height: 130px;
     font-size: 32px;
     padding: 0px 16px;
     border: 2px solid #e8e8e8;
-    border-radius: 15px;
-    margin: 10px;
+    border-radius: 8px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    text-align: left;
+    padding-left: 135px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+.pos.mobile .payment-screen .payment-buttons i {
+    text-align: center;
 }
 .pos.mobile .payment-screen .payment-buttons .button:first-child {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-top-width: 2px;
+    margin-top: 20px;
 }
 .pos.mobile .payment-screen .payment-buttons .button:last-child {
     border-bottom-left-radius: 6px;
@@ -830,6 +941,32 @@
     padding: 48px 0px 36px;
     font-size: 128px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
+}
+.pos.mobile .payment-screen .paymentlines-empty {
+    margin-bottom: 20px;
+}
+.pos.mobile .paymentmethods-container {
+    border-bottom: dashed 3px rgb(188,188,188);
+    max-height: 375px;
+    width: 100%;
+    -webkit-overflow-scrolling: auto!important;
+}
+.pos.mobile .payment-screen .payment-numpad {
+    max-width: calc(100% - 380px);
+}
+.pos.mobile .payment-screen .left-content {
+    display: none;
+}
+.pos.mobile .payment-screen .paymentlines-empty .message {
+    font-weight: bold;
+    font-size: 30px;
+}
+.pos.mobile .payment-screen .paymentlines-empty .total {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.pos.mobile .payment-screen .touch-scrollable{
+    overflow: hidden!important;
 }
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
@@ -888,9 +1025,19 @@
     font-size: 30px;
     line-height: 50px;
 }
-.pos.mobile .clientlist-screen  .scrollable-y{
-    overflow: auto !important;
-    overflow-y: auto !important;
+.pos.mobile .clientlist-screen .top-content{
+    text-align: left;
+    margin-left: 15px;
+    margin-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch !important;
+}
+pos.mobile .clientlist-screen .top-content .button {
+    margin: 0px;
+    position: relative;
+    display: inline-block;
 }
 .pos.mobile .clientlist-screen .client-details-left, .pos.mobile .clientlist-screen .client-details-right {
     width: 100%;
@@ -903,6 +1050,10 @@
 .pos.mobile .clientlist-screen .client-details{
     padding: 32px;
     border-bottom: solid 10px rgb(110,200,155);
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
 }
 .pos.mobile .clientlist-screen .client-picture{
     height: 128px;
@@ -959,8 +1110,13 @@
     margin-top: 40px;
 }
 .pos.mobile .clientlist-screen .searchbox{
-    margin-left: -295px;
+    margin-left: 0px;
     margin-top:0px;
+    position: relative;
+    display: inline-block;
+    right: 0px;
+    float: initial;
+    left: 0;
 }
 .pos.mobile .clientlist-screen .searchbox input{
     width: 275px;
@@ -969,16 +1125,28 @@
     font-size: 35px;
 }
 .pos.mobile .clientlist-screen .button.new-customer {
-    margin-left: 60px;
+    margin-left: 0px;
+    left: 0;
+}
+.pos.mobile .clientlist-screen .button.next {
+    margin-left: 0px;
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    /*height: 100%!important;
-    max-height: 1000px;
-    min-height: 700px;*/
     border-bottom: 8px solid rgb(110,200,155) !important;
+    overflow: hidden!important;
 }
-.pos.mobile .clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y {
-    min-height: 900px;
+.ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
+    overflow: hidden!important;
+    overflow-y: auto!important;
+    -webkit-overflow-scrolling: touch!important;
+}
+.pos.mobile .clientlist-screen .button {
+    display: inline-block;
+    position: relative;
+}
+ .pos.mobile .clientlist-screen .top-content .button.back {
+    margin-left: 0;
+    margin-right: 0;
 }
 /*  ********* The OrderWidget  ********* */
 .pos.mobile .order{
@@ -1028,6 +1196,10 @@
 .pos.mobile .summary .line .discount .value{
     float: none;
 }
+.pos.mobile .summary .line .fiscal{
+    display: inline-block;
+    margin-left:10px;
+}
 /*______________________________________________________*/
 .pos.mobile .submit-kitchen-button {
     padding: 24px 40px;
@@ -1055,7 +1227,7 @@
 .pos.mobile .splitbill-screen .order-info {
     margin-bottom:40px;
     padding: 40px 0px;
-    font-size: 128px;
+    font-size: 100px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
     border-bottom: dashed 2px rgb(215,215,215);
 }
@@ -1076,26 +1248,37 @@
 }
 .pos.mobile .paymentmethods {
     margin: 15px;
-    margin-top: 55px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
 }
 .pos.mobile .paymentmethods .button {
     line-height: 90px;
     font-size: 32px;
     border: 2px solid #e8e8e8;
-    border-radius: 15px;
+    border-radius: 5px;
     margin: 10px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
     font-weight: inherit;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 400px;
+    margin-left:30px;
+    margin-right: 30px;
 }
 .pos.mobile .paymentmethods .button:first-child {
     border-top-width: 2px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .pos.mobile .paymentmethods .button:last-child {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.pos.mobile .splitbill-screen .left-content{
+    border-right: 0px;
 }
 /*  ********* The ActionBarWidget  ********* */
 
@@ -1307,11 +1490,16 @@
     font-size: 28px;
 }
 /*  ********* Styles for pos with swiper ********* */
-.pos.mobile .screen, .swiper-container {
-    width: 100%;
+.pos.mobile .mobile-order-container, .pos.mobile .swiper-container-order {
     height: 100%;
 }
-.pos.mobile .order-selector, .pos.mobile .orders.touch-scrollable{
+.pos.mobile .order-selector {
+    display: flex;
+    float: left;
+    max-width: 674px;
+    white-space: nowrap;
+}
+.pos.mobile .orders.touch-scrollable{
     display: inline-block;
     float: left;
 }
@@ -1328,7 +1516,7 @@
     margin: 0 10px;
     color: #808080;
 }
-.pos.mobile .slide-categories {
+.pos.mobile .mobile-categories {
     background: white;
     width: 100%;
     height: 100%;
@@ -1339,12 +1527,16 @@
 .pos.mobile .slide-numpad-button img,
 .pos.mobile .slide-categories-button img,
 .pos.mobile .slide-order-button img {
-    width: 86px;
+    width: 75px;
+}
+.pos.mobile .swiper-container-numpad {
+    background: white;
 }
 .pos.mobile .slide-numpad {
     overflow-y: auto;
     height: 100%;
     background: white;
+    border-bottom: 6px solid white;
 }
 .pos.mobile .rightpane-header .slide-order-button{
     margin-left: 30px;
@@ -1364,21 +1556,17 @@
     -o-transition: 0.5s;
     transition: 0.5s;
 }
-.pos.mobile .slide-search {
+.pos.mobile .mobile-search-bar {
     height: 150px;
     border-top: 2px solid #e8e8e8;
     border-bottom: 2px solid #e8e8e8;
 }
-.pos.mobile .under-search {
+.pos.mobile .mobile-search-bar-menu {
     max-height:650px;
     height: 100%;
 }
 .pos.mobile .slide-buttons {
     background: white;
-}
-.pos.mobile .swipe-is-open {
-    transform: translate3d(0px, 0px, 0px) !important;
-    transition: 0.3s !important;
 }
 /* New size for order-and-products blocks */
 .pos.mobile .swipe-is-open .order-and-products{
@@ -1403,4 +1591,7 @@
 }
 .pos.mobile .mobile-active-screen {
     display: block;
+}
+.pos.mobile .disable {
+    box-shadow: 0px 0px 0px 0px transparent!important;
 }
