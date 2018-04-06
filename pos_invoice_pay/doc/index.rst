@@ -35,7 +35,7 @@ Pay Sale Orders
 * Go to ``[[Point of Sale]]`` menu
 * Open POS session
 
-  * Click ``[Fetch Orders]``
+  * Click ``[Sale Orders]``
   * Select Sale Order
   * Click ``[Create Invoice]``
   * Select payment method on Payment screen
@@ -59,7 +59,7 @@ Pay Invoices
 * Go to ``[[Point of Sale]]`` menu
 * Open POS session
 
-  * Click ``[Fetch Invoices]``
+  * Click ``[Invoices]``
   * Select the invoice
   * Click ``[Create Invoice]``
   * Select payment method on Payment screen
