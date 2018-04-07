@@ -4,6 +4,7 @@
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 David Arnold
+ * Copyright 2018 Attila Szollosi
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
 odoo.define('pos_multi_session', function(require){
@@ -492,6 +493,10 @@ odoo.define('pos_multi_session', function(require){
             this.bind('change:sync', function(){
                 self.ms_update();
             });
+        },
+        add_orderline: function(line){
+            OrderSuper.prototype.add_orderline.apply(this, arguments);
+            line.order.trigger('change:sync');
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
