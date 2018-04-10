@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.0.4`
+-------
+- **FIX:** Remove some orders after revision error
+
 `4.0.3`
 -------
 - **IMP:** All data are updated during POS loading
