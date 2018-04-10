@@ -837,7 +837,7 @@ odoo.define('pos_multi_session', function(require){
                     message: message,
                     dbname: session.db,
                     user_ID: self.pos.user.id
-                },{timeout:2500});
+                },{timeout:30000});
             };
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
