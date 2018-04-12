@@ -783,8 +783,10 @@ odoo.define('pos_multi_session', function(require){
             if (data.order_ID !== 0) {
                 this.pos.pos_session.sequence_number = data.order_ID;
             }
-            this.destroy_removed_orders(server_orders_uid);
 
+            if (!options.sync_current_order) {
+                this.destroy_removed_orders(server_orders_uid);
+            }
             self.q.then(function() {
                 done.resolve();
             });
@@ -876,6 +878,9 @@ odoo.define('pos_multi_session', function(require){
                     var sync_options = {};
                     if (options.immediate_rerendering) {
                         sync_options.immediate_rerendering = options.immediate_rerendering;
+                    }
+                    if (message.uid) {
+                        sync_options.sync_current_order = true;
                     }
                     self.sync_all(res, sync_options);
                 }
