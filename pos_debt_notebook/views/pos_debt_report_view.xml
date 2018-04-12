@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
 <odoo>
         <record id="view_report_pos_debt_pivot" model="ir.ui.view">
             <field name="name">report.pos.debt.pivot</field>

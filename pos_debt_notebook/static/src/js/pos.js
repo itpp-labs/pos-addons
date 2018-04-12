@@ -1,3 +1,10 @@
+/* Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+ * Copyright 2017 Artyom Losev
+ * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_debt_notebook.pos', function (require) {
     "use strict";
 
@@ -658,7 +665,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var client = this.pos.get_client();
             var order = this.pos.get_order();
             var status = '';
-            if (client && client.debts && order && order.get_orderlines().length !== 0){
+            if (client && client.debts && order && order.get_orderlines().length !== 0 && !order.has_credit_product()){
                 var paymentlines = order.get_paymentlines();
                 if (paymentlines.length && order.get_due() > 0 ) {
                     _.each(paymentlines, function(pl){
@@ -726,7 +733,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return;
             }
             this._super();
-            if (!order.get_paymentlines().length){
+            if (order.get_due()) {
+                // red if not fully paid, green if payment cover up the due
+                this.change_autopay_button('alert');
+            } else {
+                this.change_autopay_button('validate');
+            }
+            if (!order.get_paymentlines().length || order.has_credit_product()){
                 $(this.autopay_html).hide();
             }
         },
@@ -927,7 +940,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 $pay_full_debt.addClass('oe_hidden');
                 $show_debt_history.addClass('oe_hidden');
                 $show_customers.addClass('oe_hidden');
-            } else if (!this.debt_history_is_opened()) {
+            } else if (this.debt_history_is_opened()) {
+                $show_customers.removeClass('oe_hidden');
+            } else {
                 if ((this.new_client && this.new_client.debt > 0) ||
                         (curr_client && curr_client.debt > 0 && !this.new_client)) {
                     $pay_full_debt.removeClass('oe_hidden');
@@ -939,8 +954,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 } else {
                     $show_debt_history.addClass('oe_hidden');
                 }
-            } else {
-                $show_customers.removeClass('oe_hidden');
             }
 
             if (this.debt_history_is_opened() && !this.editing_client) {
