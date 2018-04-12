@@ -475,16 +475,8 @@ class PosOrder(models.Model):
                                        'note': product_list,
                                        })
                 payment[2]['amount'] = 0
-        # pos_order['amount_return'] = amount_via_discount > pos_order['amount_return'] and 0 or pos_order['amount_return'] - amount_via_discount
         pos_order['amount_via_discount'] = amount_via_discount
-        self.set_discounts(False, pos_order)
-        # next variable includes taxes and errors of rounding, for th
-        remained_diff = pos_order['amount_total'] - pos_order['amount_paid']
-        print remained_diff, '****************', pos_order
-        if abs(remained_diff) > 0:
-            print 'in remained diff'
-            self.set_discounts(remained_diff, pos_order)
-        print pos_order
+        self.set_discounts(pos_order)
         order = super(PosOrder, self)._process_order(pos_order)
         for update in credit_updates:
             update['order_id'] = order.id
@@ -492,21 +484,39 @@ class PosOrder(models.Model):
             entry.switch_to_confirm()
         return order
 
-    def set_discounts(self, amount, pos_order):
-        if not pos_order:
-            pos_order = self
-        if not amount:
-            amount = pos_order['amount_via_discount']
-        for o_line in pos_order['lines']:
-            line = o_line[2]
+    def set_discounts(self, pos_order):
+        amount = pos_order['amount_via_discount']
+        for line in pos_order['lines']:
+            if abs(amount) < 0.00001:
+                return
+            if type(line[2]) is dict:
+                line = line[2]
             price = line['qty'] * line['price_unit']
             old_price = price * (1 - line['discount'] / 100)
-            if abs(amount) < 0.00001 or not old_price:
-                return
-            line['discount'] = min(line['discount'] + amount / price, 100)
+            if not old_price:
+                continue
+            line['discount'] = round(max(min(line['discount'] + (amount / price) * 100, 100), 0), 2)
             new_price = price * (1 - line['discount'] / 100)
             amount -= old_price - new_price
-            print amount, '++===++'
+
+    def test_paid(self):
+        res = True
+        for order in self:
+            credits_via_discount = len(self.env['pos.credit.update'].search([('order_id', '=', order.id)]))
+            diff = order.amount_total - order.amount_paid
+            if credits_via_discount and abs(diff) > 0.00001:
+                for line in order.lines:
+                    if abs(diff) < 0.00001:
+                        return
+                    price = line.qty * line.price_unit
+                    old_price = price * (1 - line.discount / 100)
+                    if not old_price:
+                        continue
+                    line.discount = round(max(min(line.discount - (diff / price) * 100, 100), 0), 2)
+                    new_price = price * (1 - line.discount / 100)
+                    diff -= old_price - new_price
+            res = super(PosOrder, order).test_paid()
+        return res
 
 
 class AccountBankStatement(models.Model):
