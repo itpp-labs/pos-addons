@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, SUPERUSER_ID, tools
+# Copyright 2014-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
+# Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+# Copyright 2016 Florent Thomas <https://it-projects.info/team/flotho>
+# Copyright 2017 iceship <https://github.com/iceship>
+# Copyright 2017 gnidorah <https://github.com/gnidorah>
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
+from odoo import models, fields, api, SUPERUSER_ID
 from datetime import datetime
 from pytz import timezone
 import pytz
@@ -401,7 +410,7 @@ class AccountJournal(models.Model):
     credits_via_discount = fields.Boolean(
         default=False, string='Zero transactions on credit payments',
         help='Discount the order (mostly 100%) when user pay via this type of credits')
-    credits_autopay = fields.Boolean("Autopay", default=True,
+    credits_autopay = fields.Boolean("Autopay", default=False,
                                      help="On payment screen it will be automatically used if balance is positive. "
                                           "In case of several autopay journals they will be applied in Journal order until full amount is paid")
 
