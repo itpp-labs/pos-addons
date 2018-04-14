@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+/* Copyright 2015-2016,2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
