@@ -290,6 +290,7 @@ odoo.define('pos_multi_session', function(require){
             // init_locked blocks execution of save_to_db
             // the order is unlocked at the end of ms_do_update
             order.init_locked = true;
+            return order;
         },
         ms_do_update: function(order, data){
             var pos = this;
