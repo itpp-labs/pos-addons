@@ -286,7 +286,7 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
-            order = new models.Order({}, options);
+            var order = new models.Order({}, options);
             // init_locked blocks execution of save_to_db
             // the order is unlocked at the end of ms_do_update
             order.init_locked = true;
@@ -297,7 +297,7 @@ odoo.define('pos_multi_session', function(require){
             this.pos_session.order_ID = data.sequence_number;
             if (order){
                 // init_locked blocks execution of save_to_db
-                order.init_locked = true; 
+                order.init_locked = true;
                 order.apply_ms_data(data);
             } else {
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
@@ -368,7 +368,7 @@ odoo.define('pos_multi_session', function(require){
             });
             order.order_on_server = true;
             order.new_order = false;
-            order.init_locked = false; 
+            order.init_locked = false;
         },
         load_new_partners_by_id: function(partner_id){
             var self = this;
