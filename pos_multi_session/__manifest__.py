@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
