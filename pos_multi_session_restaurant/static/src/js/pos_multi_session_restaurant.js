@@ -97,7 +97,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (options.data.table_id) {
                 order.table = self.tables_by_id[options.data.table_id];
                 order.customer_count = options.data.customer_count;
-                order.save_to_db();
             }
             return order;
         },
