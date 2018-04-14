@@ -286,7 +286,10 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
-            return new models.Order({}, options);
+            order = new models.Order({}, options);
+            // init_locked blocks execution of save_to_db
+            // the order is unlocked at the end of ms_do_update
+            order.init_locked = true;
         },
         ms_do_update: function(order, data){
             var pos = this;
