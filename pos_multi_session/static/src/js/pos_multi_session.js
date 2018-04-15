@@ -313,6 +313,8 @@ odoo.define('pos_multi_session', function(require){
                     multiprint_resume: data.multiprint_resume,
                     new_order: false,
                     order_on_server: true,
+                    table_id: data.table_id,
+                    floors_id: data.floor_id
                 };
                 order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
