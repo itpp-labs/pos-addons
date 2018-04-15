@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+/* Copyright 2015-2016,2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016 Gael Torrecillas
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
@@ -286,12 +286,18 @@ odoo.define('pos_multi_session', function(require){
         },
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
-            return new models.Order({}, options);
+            var order = new models.Order({}, options);
+            // init_locked blocks execution of save_to_db
+            // the order is unlocked at the end of ms_do_update
+            order.init_locked = true;
+            return order;
         },
         ms_do_update: function(order, data){
             var pos = this;
             this.pos_session.order_ID = data.sequence_number;
             if (order){
+                // init_locked blocks execution of save_to_db
+                order.init_locked = true;
                 order.apply_ms_data(data);
             } else {
                 var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
@@ -307,6 +313,8 @@ odoo.define('pos_multi_session', function(require){
                     multiprint_resume: data.multiprint_resume,
                     new_order: false,
                     order_on_server: true,
+                    table_id: data.table_id,
+                    floors_id: data.floor_id
                 };
                 order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
                 var current_order = this.get_order();
@@ -362,6 +370,7 @@ odoo.define('pos_multi_session', function(require){
             });
             order.order_on_server = true;
             order.new_order = false;
+            order.init_locked = false;
         },
         load_new_partners_by_id: function(partner_id){
             var self = this;
