@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Copyright 2017 Artyom Losev
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",

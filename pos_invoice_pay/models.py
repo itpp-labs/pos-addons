@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+# Copyright 2017 Artyom Losev
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from odoo import api, models, fields
 
 SO_CHANNEL = 'pos_sale_orders'
@@ -93,14 +97,17 @@ class AccountInvoice(models.Model):
 
     @api.depends('payment_move_line_ids.amount_residual')
     def _get_payment_info_JSON(self):
-        if self.payment_move_line_ids:
-            for move in self.payment_move_line_ids:
+        record = self
+        if len(record) > 1:
+            record = record.browse(self.env.context.get('active_id'))
+        if record.payment_move_line_ids:
+            for move in record.payment_move_line_ids:
                 if move.payment_id.cashier:
                     if move.move_id.ref:
                         move.move_id.ref = "%s by %s" % (move.move_id.ref, move.payment_id.cashier.name)
                     else:
                         move.move_id.name = "%s by %s" % (move.move_id.name, move.payment_id.cashier.name)
-        data = super(AccountInvoice, self)._get_payment_info_JSON()
+        data = super(AccountInvoice, record)._get_payment_info_JSON()
         return data
 
 
