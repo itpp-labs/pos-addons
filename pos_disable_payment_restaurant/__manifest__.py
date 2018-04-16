@@ -2,8 +2,8 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Disable payments in Restaurant""",
-    "summary": """Control access to the Restaurant payments""",
+    "name": """Disable options in POS (restaurant extension)""",
+    "summary": """Control access to POS restaurant options""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
@@ -14,8 +14,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 9.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_disable_payment",

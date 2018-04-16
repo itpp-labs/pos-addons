@@ -2,12 +2,17 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-================================
- Disable payments in Restaurant
-================================
+===============================================
+ Disable options in POS (restaurant extension)
+===============================================
 
-Control access to the Restaurant payments
+Control access to POS Restaurant options
 
+The mdoule adds new options on user form (``Point of Sale`` tab):
+
+* ``Allow change Qty for kitchen orders``
+* ``Allow remove kitchen order line``
+  
 Credits
 =======
 

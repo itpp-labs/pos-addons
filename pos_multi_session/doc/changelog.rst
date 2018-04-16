@@ -61,6 +61,19 @@
 **Improvement:** All data are updated during POS loading
 **Improvement:** Improved orderline updating speed after synchronization with server
 
+`4.0.5`
+-------
+- **IMP:** Improved performance
+
+`4.0.4`
+-------
+- **FIX:** Remove some orders after revision error
+
+`4.0.3`
+-------
+- **IMP:** All data are updated during POS loading
+- **IMP:** Improved orderline updating speed after synchronization with server
+
 `4.0.2`
 -------
 **Improvement:** Dramatically improved performance
