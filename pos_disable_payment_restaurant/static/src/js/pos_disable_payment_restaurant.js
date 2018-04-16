@@ -54,7 +54,7 @@ odoo.define('pos_disable_payment_restaurant', function(require){
                 if (state.get('mode') !== 'quantity') {
                     state.changeMode('quantity');
                 }
-            } else if (line.mp_dirty) {
+            } else if (line && line.mp_dirty) {
                 if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
                     $('.numpad').find("[data-mode='quantity']").removeClass('disable');
                     state.changeMode('quantity');
