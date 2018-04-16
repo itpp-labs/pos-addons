@@ -1,7 +1,6 @@
-.. _changelog:
-
-Updates
-=======
+`3.2.2`
+-------
+- **IMP:** Improved performance
 
 `3.2.1`
 -------
