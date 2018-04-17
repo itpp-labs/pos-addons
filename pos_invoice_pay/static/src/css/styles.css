@@ -1,0 +1,72 @@
+.invoice-so-buttons {
+    padding: 0;
+    margin: 16px;
+    margin-top: 8px;
+    margin-right: 0;
+    text-align: center;
+    vertical-align: top;
+}
+
+.inv-so {
+    display: inline-block;
+    cursor: pointer;
+    padding: 4px 10px;
+    font-weight: bold;
+    border: 1px solid #cacaca;
+    background: #e2e2e2;
+    border-radius: 3px;
+    float:left;
+    height: 54px;
+}
+
+
+.inv-so.fetch-orders {
+    width: 188px;
+    font-size: 14px;
+    color:#555555;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+
+}
+
+.inv-so.fetch-invoices {
+    width: 216px;
+    font-size: 14px;
+    color:#555555;
+    border-left: 0px;
+}
+
+.inv-so:hover {
+    background: #efefef;
+}
+
+.line-element-hidden {
+    display: none;
+}
+
+.lines-table {
+    width:100%;
+    border: solid 1px rgb(215,215,215);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: .8em;
+}
+tr.invoice  {
+    border-bottom: 1px dashed rgb(215,215,215);
+}
+tr.sale-order {
+    border-bottom: 1px dashed rgb(215,215,215);
+}
+
+.pos .client-list tr.sale-order-line {
+    background-color: rgb(247,247,247);
+    border: solid 1px rgb(215,215,215);
+}
+
+.pos .client-list tr.sale-order-line.invoiceble {
+    background-color: rgba(110, 200, 155, 0.5);
+    border: solid 1px rgb(215,215,215);
+
+}
+
