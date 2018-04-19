@@ -1,4 +1,5 @@
 // Copyright 2017 Artyom Losev
+// Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 odoo.define('pos_invoices', function (require) {
