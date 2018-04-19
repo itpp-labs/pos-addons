@@ -872,7 +872,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     render_paymentlines: function () {
         var self = this;
         var order = this.pos.get_order();
-        if (typeof order !== 'object') {
+        if (!order) {
             return;
         }
         var lines = order.get_paymentlines();
