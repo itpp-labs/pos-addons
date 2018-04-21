@@ -13,7 +13,7 @@ Credits
 
 Contributors
 ------------
-* `Artyom Losev <https://it-projects.info>`__
+* `Artyom Losev <https://it-projects.info/team/ArtyomLosev>`__
 
 Sponsors
 --------
