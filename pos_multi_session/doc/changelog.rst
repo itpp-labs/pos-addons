@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.0.5`
+-------
+- **IMP:** Improved performance
+
 `4.0.4`
 -------
 - **FIX:** Remove some orders after revision error
