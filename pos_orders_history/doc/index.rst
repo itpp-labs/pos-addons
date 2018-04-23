@@ -10,18 +10,18 @@ Installation
 Configuration
 =============
 
-To deactivate Orders History on some POSes do as following:
+To activate/deactivate ``History`` button for some of POSes do as follows:
 
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
-* Open POS form
+* Open POS configuration form
 * Click on ``[Edit]``
-* Swith ``[ ] Orders History`` off
+* Check/uncheck ``[x] Orders History`` box
 * Click on ``[Save]``
 
 Usage
 =====
 
 * Go to ``Point of Sale`` menu
-* Open POS interface
+* Open POS session
 * Click on ``History``
-* You will see all orders list
+* RESULT: all paid orders list are displayed

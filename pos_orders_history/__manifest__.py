@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Orders History""",
-    "summary": """Work with paid POS Orders directly in POS interface.""",
-    "category": "point_of_sale",
-    # "live_test_URL": "",
-    "images": [],
-    "version": "1.0.0",
+    "name": "POS Orders History",
+    "summary": """See all paid orders from special menu in POS""",
+    "category": "Point of Sale",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=10.0",
+    "images": ['images/pos_orders_history_main.png'],
+    "version": "10.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    # "price": 50.00,
-    # "currency": "EUR",
+    "price": 49.00,
+    "currency": "EUR",
 
     "depends": [
         "base_action_rule",
@@ -37,4 +37,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "POS Orders History",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-orders-history",
+    "demo_summary": "See all paid orders from special menu in POS",
+    "demo_images": [
+        "images/pos_orders_history_main.png",
+    ]
 }

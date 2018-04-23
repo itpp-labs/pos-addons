@@ -2,14 +2,14 @@
  POS Orders History
 ====================
 
-POS Orders History module display all paid orders in the POS interface
+The module allows to display all paid orders in POS interface
 
 Credits
 =======
 
 Contributors
 ------------
-* Dinar Gabbasov <gabbasov@it-projects.info>
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------
@@ -18,6 +18,12 @@ Sponsors
 Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
+
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_orders_history/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
 ===================
