@@ -3,24 +3,9 @@
 License MIT (https://opensource.org/licenses/MIT). -->
 <openerp>
     <data>
-        <template
-            id="assets_backend"
-            name="pos_order_print_check_assets"
-            inherit_id="point_of_sale.assets"
-        >
+        <template id="assets_backend" name="pos_order_print_check_assets" inherit_id="point_of_sale.assets">
             <xpath expr="//link[last()]" position="after">
-                <script
-                    type="text/javascript"
-                    src="/pos_order_print_check/static/src/js/widget.js"
-                />
-                <script
-                    type="text/javascript"
-                    src="/pos_order_print_check/static/src/js/models.js"
-                />
-                <script
-                    type="text/javascript"
-                    src="/pos_order_print_check/static/src/js/multiprint.js"
-                />
+                <script type="text/javascript" src="/pos_order_print_check/static/src/js/widget.js"></script>
             </xpath>
         </template>
     </data>
