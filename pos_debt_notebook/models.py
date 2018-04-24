@@ -522,6 +522,8 @@ class PosOrder(models.Model):
             new_price = price * (1 - line['discount'] / 100)
             line['price_unit'] += tax_summary
             amount -= old_price - new_price
+            # taxes are already token into account in the product price
+            line['tax_ids'] = False
 
 
 class AccountBankStatement(models.Model):
