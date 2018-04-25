@@ -1,3 +1,6 @@
+/* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2018 Artem Losev
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history', function (require) {
     "use strict";
     var screens = require('point_of_sale.screens');
@@ -121,7 +124,6 @@ odoo.define('pos_orders_history', function (require) {
             } else if (domain.length === 3) {
                 domain.unshift('|','|');
             }
-            console.log("domain", domain);
             return domain;
         },
 
@@ -284,9 +286,13 @@ odoo.define('pos_orders_history', function (require) {
                 self.change_filter('table', $(this));
             });
 
-            this.$('.order-list-contents').delegate('.order-line', 'click', function (event) {
+            this.$('.order-list-contents').delegate('.order-line td', 'click', function (event) {
                 event.stopImmediatePropagation();
-                self.line_select(event, $(this), parseInt($(this).data('id')));
+                if ($(this).hasClass('actions')) {
+                    return false;
+                }
+                var parent = $(this).parent()
+                self.line_select(event, parent, parseInt(parent.data('id')));
             });
 
             var search_timeout = null;

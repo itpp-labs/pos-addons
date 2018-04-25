@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Artem Losev
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
-    <data>
-        <record model="ir.ui.view" id="view_pos_config_form">
-            <field name="name">pos.config.form.view.inherit</field>
-            <field name="model">pos.config</field>
-            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='features']" position="after">
-                    <group string="Orders History" name="orders_history">
-                        <group>
-                            <field name="orders_history"/>
-                            <field name="current_day_orders_only" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
-                            <field name="show_cancelled_orders" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
-                        </group>
-                        <group name="buttons" attrs="{'invisible' : [('orders_history', '=', False)]}">
-                            <field name="details_button"/>
-                        </group>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='features']" position="after">
+                <group string="Orders History" name="orders_history">
+                    <group>
+                        <field name="orders_history"/>
+                        <field name="current_day_orders_only" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
+                        <field name="show_cancelled_orders" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
                     </group>
-                </xpath>
-            </field>
-        </record>
-    </data>
+                </group>
+            </xpath>
+        </field>
+    </record>
 </odoo>

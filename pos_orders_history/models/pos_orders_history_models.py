@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+# Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018 Artem Losev
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+
 from odoo import fields, models, api
-import json
 
 
 CHANNEL = "pos_orders_history"
@@ -12,8 +15,6 @@ class PosConfig(models.Model):
     orders_history = fields.Boolean("Orders History", help="Show all orders list in POS", default=True)
     current_day_orders_only = fields.Boolean("Current Day Orders Only", help="Show current day orders only", default=True)
     show_cancelled_orders = fields.Boolean("Show Cancelled Orders", default=True)
-    details_button = fields.Boolean("Details Button", help="Check the box for available the Details Button"
-                                                           " in Orders History screen", default=True)
 
     # ir.actions.server methods:
     @api.model

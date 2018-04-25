@@ -1,3 +1,7 @@
+/* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+   Copyright 2018 Artem Losev
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).*/
+
 /*OrdersHistoryScreenWidget*/
 .pos .orders-list-screen .order-list{
     font-size: 16px;
@@ -60,6 +64,22 @@
     display: inline-block;
     position: initial;
     margin: 12px 0 0;
+}
+/*Actions*/
+.pos .order-line .actions .button {
+    border: 1px solid #cecece;
+    background-color: #e6e6e6;
+    padding: 5px;
+    margin-right: 5px;
+    color: #555555;
+}
+.pos .order-line .actions .button:active {
+    background-color: black!important;
+    border-color: black;
+    color: white;
+}
+.pos .order-line .actions .button:hover {
+    background-color: #f0eeee;
 }
 /*LinesHistoryScreenWidget*/
 .pos .orderlines-list-screen .orderline-list{

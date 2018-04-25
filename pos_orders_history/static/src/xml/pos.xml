@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Artem Losev
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <templates id="template" xml:space="preserve">
 
     <t t-name="OrdersHistoryButton">
@@ -54,6 +57,7 @@
                                                 <th>Order Date</th>
                                                 <th>Salesman</th>
                                                 <th>Status</th>
+                                                <th class="actions oe_hidden">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class='order-list-contents'>
@@ -70,13 +74,10 @@
 
     <t t-name="OrderHistory">
         <tr class='order-line' t-att-data-id='order.id'>
-            <td t-if="widget.pos.config.details_button">
+            <td>
                 <span class='details' >
                     <t t-esc='order.pos_reference'/>
                 </span>
-            </td>
-            <td t-if="!widget.pos.config.details_button">
-                <t t-esc='order.pos_reference'/>
             </td>
 
             <td>
@@ -112,6 +113,8 @@
                     </t>
                 </td>
             </t>
+            <td class="actions oe_hidden">
+            </td>
         </tr>
     </t>
 
