@@ -1,3 +1,8 @@
+`2.0.1`
+-------
+
+- **FIX:** Printing orders after connection recovery of Network Printer.
+
 `2.0.0`
 -------
 
