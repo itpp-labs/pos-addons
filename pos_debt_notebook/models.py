@@ -467,7 +467,6 @@ class PosOrder(models.Model):
     def _process_order(self, pos_order):
         credit_updates = []
         amount_via_discount = 0
-        print pos_order
         for payment in pos_order['statement_ids']:
             journal = self.env['account.journal'].browse(payment[2]['journal_id'])
             if journal.credits_via_discount:

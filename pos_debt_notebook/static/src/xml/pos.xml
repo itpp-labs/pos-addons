@@ -255,7 +255,6 @@
             <t t-set="credits_via_discounts_amount" t-value="Math.max(order.get_summary_for_discount_credits(), 0)"/>
             <table class='receipt-change'>
                 <tr><td>Change:</td><td class="pos-right-align">
-                    <!--<t t-esc="widget.format_currency(order.get_change() - credits_via_discounts_amount)"/>-->
                     <t t-esc="widget.format_currency(order.get_change())"/>
                     </td></tr>
             </table>
