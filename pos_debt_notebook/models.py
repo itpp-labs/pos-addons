@@ -500,20 +500,26 @@ class PosOrder(models.Model):
         return res
 
     def action_pos_order_paid(self):
-        amount = self.amount_via_discount
+        self.set_discounts(self.amount_via_discount)
+        rounding_diff = self.amount_total - self.amount_paid
+        if abs(rounding_diff) > 0.00001:
+            self.set_discounts(rounding_diff)
+        return super(PosOrder, self).action_pos_order_paid()
+
+    def set_discounts(self, amount):
         for line in self.lines:
             if abs(amount) < 0.00001:
                 break
             price = line.price_subtotal_incl
-            old_price = price * (1 - line.discount / 100)
-            if not old_price:
+            if not price:
                 continue
+            disc = line.discount
+            full_price = disc and (price / (100 - disc)) * 100 or price
             line.write({
-                'discount': round(max(min(line.discount + (amount / price) * 100, 100), 0), 2),
+                'discount': round(max(min(line.discount + (amount / full_price) * 100, 100), 0), 2),
             })
             new_price = price * (1 - line.discount / 100)
-            amount -= old_price - new_price
-        return super(PosOrder, self).action_pos_order_paid()
+            amount -= price - new_price
 
 
 class AccountBankStatement(models.Model):
