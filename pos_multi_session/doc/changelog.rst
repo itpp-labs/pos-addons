@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.0.6`
+-------
+- **FIX:** Synchronization error during fast change the order
+
 `4.0.5`
 -------
 - **IMP:** Improved performance
