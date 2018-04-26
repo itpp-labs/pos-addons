@@ -123,7 +123,9 @@ class EscposNetworkDriver(EscposDriver):
                             _logger.info('Done printing XML receipt on printer %s', network_printer_ip)
                         else:
                             _logger.error('xml_receipt: printer offline!')
-                            # TODO: do something with the missed order?
+                            # add a missed order to queue
+                            time.sleep(3)
+                            self.queue.put((timestamp, task, data))
                 elif task == 'printstatus':
                     pass
                 elif task == 'status':
