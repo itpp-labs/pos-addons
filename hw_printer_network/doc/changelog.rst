@@ -1,7 +1,7 @@
 `2.0.1`
 -------
 
-- **FIX:** Printing orders after connection recovery of Network Printer.
+- **FIX:** Orders sent to print are not missed after the connection to Network Printer is lost.
 
 `2.0.0`
 -------
