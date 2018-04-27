@@ -515,8 +515,10 @@ class PosOrder(models.Model):
                 continue
             disc = line.discount
             full_price = disc and (price / (100 - disc)) * 100 or price
+            currency = self.pricelist_id.currency_id
+
             line.write({
-                'discount': round(max(min(line.discount + (amount / full_price) * 100, 100), 0), 2),
+                'discount': currency.round(max(min(line.discount + (amount / full_price) * 100, 100), 0)),
             })
             new_price = price * (1 - line.discount / 100)
             amount -= price - new_price
