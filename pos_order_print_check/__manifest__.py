@@ -27,6 +27,7 @@
     "demo": [
     ],
     "qweb": [
+        "static/src/xml/pos.xml"
     ],
 
     "post_load": None,
