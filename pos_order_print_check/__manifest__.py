@@ -17,9 +17,14 @@
     "currency": "EUR",
     "depends": ["pos_restaurant_base", "web_tour"],
     "external_dependencies": {"python": [], "bin": []},
-    "data": ["views/pos_order_print_check_template.xml", "views/assets_demo.xml"],
-    "demo": [],
-    "qweb": [],
+    "data": [
+        "views/pos_order_print_check_template.xml",
+    ],
+    "demo": [
+    ],
+    "qweb": [
+        "static/src/xml/pos.xml"
+    ],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
