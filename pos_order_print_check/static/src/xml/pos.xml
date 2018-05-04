@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="OrderPrintQtyWidget">
-        <div class="oe_status" style="color:yellow">
+        <div class="oe_status check_print_qty">
             <t t-esc="widget.order_print_quantity"/>
         </div>
     </t>
