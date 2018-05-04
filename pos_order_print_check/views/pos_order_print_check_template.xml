@@ -5,9 +5,9 @@ License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
     <data>
         <template id="assets_backend" name="pos_order_print_check_assets" inherit_id="point_of_sale.assets">
             <xpath expr="//link[last()]" position="after">
-                <!--<script type="text/javascript" src="/pos_order_print_check/static/src/js/widget.js"></script>-->
                 <script type="text/javascript" src="/pos_order_print_check/static/src/js/devices.js"></script>
                 <script type="text/javascript" src="/pos_order_print_check/static/src/js/chrome.js"></script>
+                <link rel="stylesheet" href="/pos_order_print_check/static/src/css/print_check_styles.css"/>
             </xpath>
         </template>
     </data>
