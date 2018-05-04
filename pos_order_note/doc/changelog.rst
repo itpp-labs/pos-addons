@@ -1,3 +1,8 @@
+`1.1.2`
+-------
+
+- **FIX:** order_widget is undefined
+
 `1.1.1`
 -------
 
