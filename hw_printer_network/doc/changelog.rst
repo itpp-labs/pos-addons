@@ -1,3 +1,8 @@
+`2.0.1`
+-------
+
+- **FIX:** Orders sent to print are not missed after the connection to Network Printer is lost.
+
 `2.0.0`
 -------
 
