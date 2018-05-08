@@ -50,7 +50,7 @@ models.PosModel = models.PosModel.extend({
                         so.lines = [];
                     }
                     var line_ids = _.pluck(so.lines, 'id');
-                    if (!(line_ids.includes(lines[i].id))) {
+                    if (!_.contains(line_ids, lines[i].id)) {
                         so.lines.push(lines[i]);
                     }
                     def.resolve();
@@ -82,7 +82,7 @@ models.PosModel = models.PosModel.extend({
                         inv.lines = [];
                     }
                     var line_ids = _.pluck(inv.lines, 'id');
-                    if (!(line_ids.includes(lines[i].id))) {
+                    if (!_.contains(line_ids, lines[i].id)) {
                         inv.lines.push(lines[i]);
                     }
                     def.resolve();
