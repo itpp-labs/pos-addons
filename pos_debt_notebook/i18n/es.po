@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
-# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+# Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-20 13:24+0000\n"
-"PO-Revision-Date: 2017-10-20 13:24+0000\n"
-"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"POT-Creation-Date: 2017-12-31 00:07+0000\n"
+"PO-Revision-Date: 2017-12-31 00:07+0000\n"
+"Last-Translator: Alexandr Frrost <alexandr.frrost@gmail.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,7 +87,7 @@ msgstr "Compañía"
 #: model:ir.actions.server,name:pos_debt_notebook.server_action_pos_credit_update
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_form
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #. module: pos_debt_notebook
 #: selection:pos.credit.update,state:0
@@ -175,7 +175,7 @@ msgstr "Monto personalizado por cada empleado"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:368
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:389
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_search
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 #, python-format
@@ -292,7 +292,7 @@ msgstr "Mostrar Nombre"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:273
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:277
 #, python-format
 msgid "Don't forget to specify Customer when sell Credits."
 msgstr "No olvides especificar un Cliente cuando vendas a Crédito."
@@ -321,14 +321,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:279
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:283
 #, python-format
 msgid "Empty Order"
 msgstr "Orden vacía"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:538
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:559
 #, python-format
 msgid "Error: No Debt"
 msgstr "Error: No hay Deuda"
@@ -414,7 +414,7 @@ msgstr "Última Actualización en"
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_ids
 msgid "Line ids"
-msgstr ""
+msgstr "IDs de líneas"
 
 #. module: pos_debt_notebook
 #. openerp-web
@@ -454,7 +454,7 @@ msgstr "Deuda Máxima *"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:286
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:290
 #, python-format
 msgid "Max Debt exceeded"
 msgstr "Deuda Máxima Excedida"
@@ -490,7 +490,7 @@ msgstr "Actual"
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_new_balance
 #: selection:pos.credit.update,update_type:0
 msgid "New Balance"
-msgstr ""
+msgstr "Balance nuevo"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_note
@@ -533,7 +533,7 @@ msgstr "Orden del TPV"
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_search
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 msgid "POS ordered created during current year"
-msgstr ""
+msgstr "Pedidos creados con TPV durante el año actual"
 
 #. module: pos_debt_notebook
 #: model:ir.model,name:pos_debt_notebook.model_res_partner
@@ -574,7 +574,7 @@ msgstr "Tipo de pago"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:294
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:298
 #, python-format
 msgid ""
 "Please enter the exact or lower debt amount than the cost of the order."
@@ -639,7 +639,7 @@ msgstr "Créditos Compraods (Entrante)"
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_report_pos_debt_credit_product
 msgid "Record is registered as Purchasing credit product"
-msgstr ""
+msgstr "El registro se registra como un producto de crédito de compra"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_user_id
@@ -682,14 +682,14 @@ msgstr "El contacto no tiene permitido tener una deuda mayor que este valor"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:539
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:560
 #, python-format
 msgid "The selected customer has no debt."
 msgstr "El cliente seleccionado no tiene deuda."
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:280
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:284
 #, python-format
 msgid ""
 "There must be at least one product in your order before it can be validated."
@@ -753,15 +753,15 @@ msgstr "Total a Pagar"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:293
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:297
 #, python-format
 msgid "Unable to return the change with a debt payment method"
 msgstr "No se puede devolver cambio con un método de pago a crédito."
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:265
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:272
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:269
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:276
 #, python-format
 msgid "Unknown customer"
 msgstr "Cliente desconocido"
@@ -769,7 +769,7 @@ msgstr "Cliente desconocido"
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_update_type
 msgid "Update type"
-msgstr ""
+msgstr "Tipo de actualización"
 
 #. module: pos_debt_notebook
 #: selection:report.pos.debt,state:0
@@ -779,7 +779,7 @@ msgstr "Validado"
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_pos_credit_update_new_balance
 msgid "Value to set balance to. Used only in Draft state."
-msgstr ""
+msgstr "Valor para establecer el balance a. Usado solo en el estado borrador."
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_pos_config_settings_debt_type
@@ -799,11 +799,11 @@ msgstr "Semana"
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_wizard_id
 msgid "Wizard id"
-msgstr ""
+msgstr "Id de asistente"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:287
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:291
 #, python-format
 msgid ""
 "You cannot sell products on credit to the customer, because his max debt "
@@ -814,7 +814,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:266
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:270
 #, python-format
 msgid "You cannot use Debt payment. Select customer first."
 msgstr "No puede pagar a Crédito. Primero seleccione un cliente."

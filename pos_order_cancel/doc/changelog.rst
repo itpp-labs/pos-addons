@@ -1,3 +1,8 @@
+`1.2.1`
+-------
+
+- **IMP:** option to show cancelation information for orders sent to kitchen
+
 `1.1.1`
 -------
 

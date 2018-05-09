@@ -3,6 +3,10 @@
 Updates
 =======
 
+`3.6.1`
+-------
+- IMP: Compatibility with pos_restaurant_base module
+
 `2.6.1`
 -------
 - FIX: Option "Allow remove order line" didn't work correctly after the previous updates

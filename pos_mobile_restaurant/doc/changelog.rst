@@ -1,3 +1,9 @@
+`1.3.6`
+-------
+
+- **IMP:** Code refactoring to speed up order sending to the kitchen
+
+
 `1.2.6`
 -------
 
