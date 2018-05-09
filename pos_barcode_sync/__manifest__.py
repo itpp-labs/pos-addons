@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Barcode synchronization with POS""",
-    "summary": """Synchronize barcodes after updating one for POSes""",
+    "name": """Sync Barcode in POS""",
+    "summary": """Instant update of partner data in POS""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/pos_barcode_sync_main.png"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -12,8 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 24.00,
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",
