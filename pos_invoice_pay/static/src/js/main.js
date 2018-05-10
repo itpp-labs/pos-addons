@@ -1,4 +1,5 @@
 // Copyright 2017 Artyom Losev
+// Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 odoo.define('pos_invoices', function (require) {
@@ -872,7 +873,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     render_paymentlines: function () {
         var self = this;
         var order = this.pos.get_order();
-        if (typeof order !== 'object') {
+        if (!order || typeof order !== 'object') {
             return;
         }
         var lines = order.get_paymentlines();
