@@ -194,4 +194,18 @@
         </tr>
     </t>
 
+    <t t-extend="PosTicket">
+        <t t-jquery="t[t-if*='receipt.footer']" t-operation="before">
+            <span>
+                <img id="barcode"/>
+            </span>
+        </t>
+    </t>
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-if*='receipt.footer_xml']" t-operation="before">
+            <img id="barcode"/>
+        </t>
+    </t>
+
 </templates>

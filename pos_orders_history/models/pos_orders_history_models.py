@@ -15,6 +15,8 @@ class PosConfig(models.Model):
     orders_history = fields.Boolean("Orders History", help="Show all orders list in POS", default=True)
     current_day_orders_only = fields.Boolean("Current Day Orders Only", help="Show current day orders only", default=True)
     show_cancelled_orders = fields.Boolean("Show Cancelled Orders", default=True)
+    show_posted_orders = fields.Boolean("Show Posted Orders", default=False)
+    show_barcode_in_receipt = fields.Boolean("Show Barcode in Receipt", default=True)
 
     # ir.actions.server methods:
     @api.model
