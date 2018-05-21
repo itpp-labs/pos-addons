@@ -85,6 +85,9 @@ odoo.define('pos_orders_history_return.models', function (require) {
                     }
                     _super_orderline.set_quantity.call(this, quantity);
                     order.change_return_product_limit(this.product);
+                } else if (quantity === "") {
+                    _super_orderline.set_quantity.call(this, quantity);
+                    order.change_return_product_limit(this.product);
                 }
             } else {
                 _super_orderline.set_quantity.call(this, quantity);
