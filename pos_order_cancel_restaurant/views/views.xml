@@ -22,12 +22,20 @@
                         <label for="auto_send_to_kitchen"/>
                     </div>
                 </div>
-                <div id="save_canceled_orders" class="col-xs-12 col-md-6 o_setting_box">
+                <div id="save_canceled_kitchen_orders_only" class="col-xs-12 col-md-6 o_setting_box">
                     <div class="o_setting_left_pane">
-                        <field name="save_canceled_orders"/>
+                        <field name="save_canceled_kitchen_orders_only"/>
                     </div>
                     <div class="o_setting_right_pane">
-                        <label for="save_canceled_orders"/>
+                        <label for="save_canceled_kitchen_orders_only"/>
+                    </div>
+                </div>
+                <div id="send_removed_lines_to_kitchen" class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="send_removed_lines_to_kitchen"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="send_removed_lines_to_kitchen"/>
                     </div>
                 </div>
             </xpath>
