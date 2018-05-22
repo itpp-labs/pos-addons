@@ -105,7 +105,7 @@ odoo.define('pos_multi_session', function(require){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
                 loaded: function(me, current_session){
-                    if (self.config.multi_session_id) {
+                    if (self.config.multi_session_active) {
                         self.multi_session_run_ID = current_session[0].run_ID;
                     }
             }};
@@ -123,7 +123,7 @@ odoo.define('pos_multi_session', function(require){
                 this.stringify_logs = true;
             }
             this.ready.then(function () {
-                if (!self.config.multi_session_id){
+                if (!self.config.multi_session_active){
                     return;
                 }
                 self.get('orders').bind('remove', function(order, collection, options){
@@ -159,7 +159,7 @@ odoo.define('pos_multi_session', function(require){
         after_load_server_data: function() {
             var self = this;
             var res = PosModelSuper.prototype.after_load_server_data.apply(this, arguments);
-            if (!this.config.multi_session_id){
+            if (!this.config.multi_session_active){
                 return res;
             }
             this.multi_session = new exports.MultiSession(self);
@@ -480,7 +480,7 @@ odoo.define('pos_multi_session', function(require){
             }
 
             OrderSuper.prototype.initialize.apply(this, arguments);
-            if (!this.pos.config.multi_session_id){
+            if (!this.pos.config.multi_session_active){
                 this.new_order = false;
                 return;
             }
@@ -490,7 +490,7 @@ odoo.define('pos_multi_session', function(require){
             }
             if (!_.isEmpty(options.ms_info)){
                 this.ms_info = options.ms_info;
-            } else if (this.pos.config.multi_session_id){
+            } else if (this.pos.config.multi_session_active){
                 this.ms_info.created = this.pos.ms_my_info();
             }
             if (!this.run_ID) {
@@ -585,7 +585,7 @@ odoo.define('pos_multi_session', function(require){
                 self.enquied=false;
                 return self.pos.multi_session.remove_order({'uid': self.uid, 'revision_ID': self.revision_ID}).done();
             };
-            if (!this.pos.config.multi_session_id){
+            if (!this.pos.config.multi_session_active){
                 return;
             }
             this.enquied = true;
@@ -635,7 +635,7 @@ odoo.define('pos_multi_session', function(require){
                     }
                 });
             };
-            if (!this.pos.config.multi_session_id){
+            if (!this.pos.config.multi_session_active){
                 return;
             }
             this.enquied = true;

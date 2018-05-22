@@ -2,7 +2,7 @@
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# Copyright 2016-2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
@@ -16,7 +16,8 @@ _logger = logging.getLogger(__name__)
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session', required=True, help='Set the same value for POSes where orders should be synced. Keep empty if this POS should not use syncing. Before updating it you need to close active session')
+    multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session', required=True, help='Set the same value for POSes where orders should be synced. Deselect checkbox of "Active" if this POS should not use syncing. Before updating it you need to close active session')
+    multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for this POS", default=True)
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
