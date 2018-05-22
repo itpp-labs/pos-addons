@@ -14,6 +14,7 @@ from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import float_is_zero
 
 
 class ResPartner(models.Model):
@@ -502,26 +503,26 @@ class PosOrder(models.Model):
     def action_pos_order_paid(self):
         self.set_discounts(self.amount_via_discount)
         rounding_diff = self.amount_total - self.amount_paid
-        if abs(rounding_diff) > 0.00001:
+        if float_is_zero(rounding_diff, self.env['decimal.precision'].precision_get('Account')):
             self.set_discounts(rounding_diff)
         return super(PosOrder, self).action_pos_order_paid()
 
     def set_discounts(self, amount):
         for line in self.lines:
-            if abs(amount) < 0.00001:
+            if float_is_zero(amount, self.env['decimal.precision'].precision_get('Account')):
                 break
             price = line.price_subtotal_incl
             if not price:
                 continue
             disc = line.discount
-            full_price = disc and (price / (100 - disc)) * 100 or price
             currency = self.pricelist_id.currency_id
 
             line.write({
-                'discount': currency.round(max(min(line.discount + (amount / full_price) * 100, 100), 0)),
+                'discount': currency.round(max(min(line.discount + (amount /
+                                                                    (disc and (price / (100 - disc)) * 100 or price)
+                                                                    ) * 100, 100), 0)),
             })
-            new_price = price * (1 - line.discount / 100)
-            amount -= price - new_price
+            amount -= price - line.price_subtotal_incl
 
 
 class AccountBankStatement(models.Model):
