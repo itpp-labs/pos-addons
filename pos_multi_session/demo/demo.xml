@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright 2016 Ilyas Rakhimkulov
-     Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2016,2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
@@ -9,6 +9,9 @@
     <data>
         <record id="demo_multi_session" model="pos.multi_session">
             <field name="name">multi session demo</field>
+        </record>
+        <record id="demo_multi_session2" model="pos.multi_session">
+            <field name="name">multi session demo 2</field>
         </record>
         <record id="demo_multi_pos_config_one" model="pos.config">
             <field name="name">POS1</field>
@@ -20,6 +23,8 @@
         </record>
         <record id="demo_multi_pos_config_three" model="pos.config">
             <field name="name">POS3</field>
+            <field name="multi_session_id" ref="demo_multi_session2"/>
+            <field name="multi_session_active">False</field>
         </record>
         <record id="point_of_sale.pos_config_main" model="pos.config">
             <field name="multi_session_id" ref="demo_multi_session"/>
