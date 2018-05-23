@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Available quantity of products in POS',
     'version': '1.0.4',

@@ -179,16 +179,16 @@ class ResConfigSettings(models.TransientModel):
         super(ResConfigSettings, self).set_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
         for record in self:
-            config_parameters.set_param("pos_debt_notebook.debt_type", record.debt_type)
-            config_parameters.set_param("pos_debt_notebook.debt_limit", record.debt_limit)
+            config_parameters.sudo().set_param("pos_debt_notebook.debt_type", record.debt_type)
+            config_parameters.sudo().set_param("pos_debt_notebook.debt_limit", record.debt_limit)
 
     @api.multi
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
         res.update(
-            debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
-            debt_limit=float(config_parameters.get_param("pos_debt_notebook.debt_limit", default=0))
+            debt_type=config_parameters.sudo().get_param("pos_debt_notebook.debt_type", default='debt'),
+            debt_limit=float(config_parameters.sudo().get_param("pos_debt_notebook.debt_limit", default=0))
         )
         return res
 

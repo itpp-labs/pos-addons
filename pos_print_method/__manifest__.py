@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Print Method""",
     "summary": """Choose print method for order printing in POS""",

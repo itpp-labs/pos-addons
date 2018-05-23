@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Saving removed products of POS order""",
     "summary": """Store all cases of product removing and allow to specify reasons for it""",

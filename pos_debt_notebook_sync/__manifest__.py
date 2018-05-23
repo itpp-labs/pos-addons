@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Internal Credit System""",
     "summary": """Credit payment system for festivals, food courts, etc.""",
