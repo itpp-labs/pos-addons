@@ -4,7 +4,7 @@
     "summary": """Update the partner data in POS instantly""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
-    "images": ["images/pos_barcode_sync_main.png"],
+    "images": ["images/pos_barcode_sync_main.jpeg"],
     "version": "10.0.1.0.0",
     "application": False,
 
