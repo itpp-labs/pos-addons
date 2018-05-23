@@ -18,7 +18,7 @@
         <field name="name">pos.cancelled_reason.tree</field>
         <field name="model">pos.cancelled_reason</field>
         <field name="arch" type="xml">
-            <tree string="Refund / Cancellation Reason">
+            <tree>
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
@@ -67,7 +67,7 @@
                     </group>
                     <group>
                         <field name="canceled_lines" colspan="4" nolabel="1">
-                            <tree string="Canceled Order lines" editable="bottom" create="false" delete="false">
+                            <tree editable="bottom" create="false" delete="false">
                                 <field name="product_id"/>
                                 <field name="qty"/>
                                 <field name="current_qty"/>
@@ -187,7 +187,7 @@
         <field name="name">pos.order.line.canceled.tree</field>
         <field name="model">pos.order.line.canceled</field>
         <field name="arch" type="xml">
-            <tree string="Canceled Lines" create="false" delete="false">
+            <tree create="false" delete="false">
                 <field name="product_id"/>
                 <field name="qty"/>
                 <field name="current_qty"/>
