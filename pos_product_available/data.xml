@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_product_available/static/src/js/pos.js"></script>
@@ -14,5 +13,4 @@
                 <script type="text/javascript" src="/pos_product_available/static/src/js/test_pos_quantities.js"></script>
             </xpath>
         </template>
-    </data>
 </openerp>
