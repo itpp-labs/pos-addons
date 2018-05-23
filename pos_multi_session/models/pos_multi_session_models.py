@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session', required=True, help='Set the same value for POSes where orders should be synced. Deselect checkbox of "Active" if this POS should not use syncing. Before updating it you need to close active session')
+    multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session', help='Set the same value for POSes where orders should be synced. Deselect checkbox of "Active" if this POS should not use syncing. Before updating it you need to close active session')
     multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for this POS", default=True)
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
