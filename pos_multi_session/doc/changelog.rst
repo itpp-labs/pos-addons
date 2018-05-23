@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.1.0`
+-------
+- **NEW:** A setting in POS config Enable or Disable Synchronization for the POS
+
 `4.0.5`
 -------
 - **IMP:** Improved performance
