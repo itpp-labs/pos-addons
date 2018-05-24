@@ -27,6 +27,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "data/pos_multi_session_data.xml",
         "security/ir.model.access.csv",
         "views/pos_multi_session_views.xml",
         "multi_session_view.xml"

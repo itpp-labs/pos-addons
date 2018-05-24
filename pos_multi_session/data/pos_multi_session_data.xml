@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
+<odoo>
+
+    <record id="multi_session" model="pos.multi_session">
+        <field name="name">multi session</field>
+    </record>
+
+    <record id="point_of_sale.pos_config_main" model="pos.config">
+        <field name="multi_session_id" ref="multi_session"/>
+    </record>
+
+</odoo>
