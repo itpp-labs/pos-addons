@@ -574,7 +574,15 @@ odoo.define('pos_multi_session', function(require){
             if (!this.ms_check()){
                 return;
             }
-            this.do_ms_remove_order();
+            var self = this;
+            if (this.ms_update_timeout){
+                // restart timeout
+                clearTimeout(this.ms_update_timeout);
+            }
+            this.ms_update_timeout = setTimeout(function(){
+                self.ms_update_timeout = false;
+                self.do_ms_remove_order();
+            }, 0);
         },
         do_ms_remove_order: function(){
             var self = this;
