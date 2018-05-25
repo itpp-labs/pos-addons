@@ -1,7 +1,6 @@
-.. _changelog:
-
-Updates
-=======
+`4.0.6`
+-------
+- **FIX:** Incompatibility with pos_order_cancel_restaurant: it showed *Synchronization error* on removing order
 
 `4.0.5`
 -------
