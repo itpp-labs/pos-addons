@@ -8,13 +8,14 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import models, fields, api, SUPERUSER_ID
+from odoo import models, fields, api, SUPERUSER_ID, _
 from datetime import datetime
 from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools import float_is_zero
+from odoo.exceptions import UserError
 
 
 class ResPartner(models.Model):
@@ -503,8 +504,25 @@ class PosOrder(models.Model):
     def action_pos_order_paid(self):
         self.set_discounts(self.amount_via_discount)
         rounding_diff = self.amount_total - self.amount_paid
-        if float_is_zero(rounding_diff, self.env['decimal.precision'].precision_get('Account')):
-            self.set_discounts(rounding_diff)
+        if not float_is_zero(rounding_diff, self.env['decimal.precision'].precision_get('Account')):
+            residual = self.set_discounts(rounding_diff)
+            if not float_is_zero(residual, self.env['decimal.precision'].precision_get('Account')) and residual < 0:
+                # It's a case of a incorrect absolute(via discount credits) discount applying
+                # Here there are no any credits_via_discounts journals here
+                journals = map(lambda st: st.journal_id, self.statement_ids.filtered(lambda st: st.journal_id.type == 'cash'))
+                cash_journal = len(journals) and journals[0]
+                if not cash_journal:
+                    journals = self.session_id.config_id.journal_ids.filtered(lambda journal: journal.type == 'cash' and not journal.credits_via_discount)
+                    cash_journal = len(journals) and journals[0]
+                    if not cash_journal:
+                        raise UserError(
+                                        _("No cash statement found for this session. Unable to record returned cash."))
+                self.add_payment({
+                    'amount': residual,
+                    'payment_date': fields.Datetime.now(),
+                    'payment_name': _('return'),
+                    'journal': cash_journal.id,
+                })
         return super(PosOrder, self).action_pos_order_paid()
 
     def set_discounts(self, amount):
@@ -515,14 +533,13 @@ class PosOrder(models.Model):
             if not price:
                 continue
             disc = line.discount
-            currency = self.pricelist_id.currency_id
-
             line.write({
-                'discount': currency.round(max(min(line.discount + (amount /
-                                                                    (disc and (price / (100 - disc)) * 100 or price)
-                                                                    ) * 100, 100), 0)),
+                'discount': max(min(line.discount + (amount /
+                                                     (disc and (price / (100 - disc)) * 100 or price)
+                                                     ) * 100, 100), 0),
             })
             amount -= price - line.price_subtotal_incl
+        return amount
 
 
 class AccountBankStatement(models.Model):
