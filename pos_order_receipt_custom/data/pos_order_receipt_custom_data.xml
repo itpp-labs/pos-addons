@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
+<odoo>
+    <record id="simple_kitchen_receipt" model="pos.order_receipt">
+        <field name="name">Simple Kitchen Receipt</field>
+        <field name="qweb_template">
+            <![CDATA[<t t-name="SimpleKitchenReceipt">
+        <receipt
+            align='center'
+            width='40'
+            line-ratio='0.4'
+            value-decimals='3'
+            value-thousands-separator=''
+            value-autoint='on'
+        >
+            <t t-if="changes.changes_table">
+                <h1>===Transfer order===</h1>
+                <br />
+                <h3><t t-esc="changes.old_table.floor.name" />/<t t-esc="changes.old_table.name"/> >>> <t t-esc="changes.new_table.floor.name" />/<t t-esc="changes.new_table.name"/></h3>
+                <br />
+                <div>==============================================</div>
+                <br />
+                <t t-foreach="changes.products" t-as="change">
+                    <div size="double-height" t-if="!change.order">
+                        <line>
+                            <left><t t-esc="change.name_wrapped[0]" /></left>
+                            <right><t t-esc="change.qty" /></right>
+                        </line>
+                        <t t-call="NameWrapped"/>
+                        <t t-if="change.note">
+                            <line>
+                                <left>Note</left>
+                                <right>--- <t t-esc="change.note" /></right>
+                            </line>
+                        </t>
+                        <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                        <t t-if="change.custom_notes">
+                            <t t-if="!change.note">
+                                <line>
+                                    <left>Note</left>
+                                    <right></right>
+                                </line>
+                            </t>
+                            <t t-foreach="change.custom_notes" t-as="custom_note">
+                                <line>
+                                    <left></left>
+                                    <right>--- <t t-esc="custom_note.name" /></right>
+                                </line>
+                            </t>
+                        </t>
+                    </div>
+                    <br/>
+                </t>
+                <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                <div size="double-height">
+                    <t t-if="changes.order_note">
+                        <line>
+                            <left>Order Note</left>
+                            <right>--- <t t-esc="changes.order_note" /></right>
+                        </line>
+                    </t>
+                    <t t-if="changes.order_custom_notes">
+                        <t t-if="!changes.order_note">
+                            <line>
+                                <left>Order Note</left>
+                                <right></right>
+                            </line>
+                        </t>
+                        <t t-foreach="changes.order_custom_notes" t-as="custom_note">
+                            <line>
+                                <left></left>
+                                <right>--- <t t-esc="custom_note.name" /></right>
+                            </line>
+                        </t>
+                    </t>
+                </div>
+                <br />
+                <div>==============================================</div>
+                <br />
+                <div>
+                    <div>Print time: <t t-esc="changes.date.year" />.<t t-esc="changes.date.month" />.<t t-esc="changes.date.date" /> <t t-esc='changes.time.hours' />:<t t-esc='changes.time.minutes' /> Waiter: <t t-esc='changes.waiter.name' /></div>
+                    <div>Printer name: <t t-esc="changes.printer.name" /></div>
+                    <div><t t-esc="changes.name" /></div>
+                </div>
+            </t>
+            <t t-if="changes.changes_table">
+                <t t-if="changes.cancelled.length > 0 || changes.new.length > 0">
+                    <!-- cut paper (uncomment if necessary) -->
+                    <!-- <cut/> -->
+                </t>
+            </t>
+            <t t-if="changes.cancelled.length > 0">
+                <div color='red'>
+                    <h1>===Canceled order===</h1>
+                    <t t-if="changes.floor || changes.table">
+                        <br />
+                        <h3><t t-esc="changes.floor" />/<t t-esc="changes.table"/></h3>
+                    </t>
+                    <br />
+                    <div>==============================================</div>
+                    <br />
+                    <t t-foreach="changes.cancelled" t-as="change">
+                        <div size="double-height" t-if="!change.order">
+                            <line>
+                                <left><t t-esc="change.name_wrapped[0]" /></left>
+                                <right><t t-esc="change.qty" /></right>
+                            </line>
+                            <t t-call="NameWrapped"/>
+                            <t t-if="change.note">
+                                <line>
+                                    <left>Note</left>
+                                    <right>--- <t t-esc="change.note" /></right>
+                                </line>
+                            </t>
+                            <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                            <t t-if="change.custom_notes">
+                                <t t-if="!change.note">
+                                    <line>
+                                        <left>Note</left>
+                                        <right></right>
+                                    </line>
+                                </t>
+                                <t t-foreach="change.custom_notes" t-as="custom_note">
+                                    <line>
+                                        <left></left>
+                                        <right>--- <t t-esc="custom_note.name" /></right>
+                                    </line>
+                                </t>
+                            </t>
+                        </div>
+                        <br/>
+                    </t>
+                    <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                    <div size="double-height">
+                        <t t-if="changes.old_order_note">
+                            <line>
+                                <left>Order Note</left>
+                                <right>--- <t t-esc="changes.old_order_note" /></right>
+                            </line>
+                        </t>
+                        <t t-if="changes.old_order_custom_notes">
+                            <t t-if="!changes.old_order_note">
+                                <line>
+                                    <left>Order Note</left>
+                                    <right></right>
+                                </line>
+                            </t>
+                            <t t-foreach="changes.old_order_custom_notes" t-as="custom_note">
+                                <line>
+                                    <left></left>
+                                    <right>--- <t t-esc="custom_note.name" /></right>
+                                </line>
+                            </t>
+                        </t>
+                    </div>
+                    <br />
+                    <div>==============================================</div>
+                    <br />
+                </div>
+                <div>
+                    <div>Print time: <t t-esc="changes.date.year" />.<t t-esc="changes.date.month" />.<t t-esc="changes.date.date" /> <t t-esc='changes.time.hours' />:<t t-esc='changes.time.minutes' /> Waiter: <t t-esc='changes.waiter.name' /></div>
+                    <div>Printer name: <t t-esc="changes.printer.name" /></div>
+                    <div><t t-esc="changes.name" /></div>
+                </div>
+            </t>
+            <br />
+            <br />
+            <t t-if="changes.new.length > 0">
+                <t t-if="changes.cancelled.length > 0">
+                    <!-- cut paper (uncomment if necessary) -->
+                    <!-- <cut/> -->
+                </t>
+            </t>
+            <t t-if="changes.new.length > 0">
+                <t t-if="changes.order.first_order_printing">
+                    <h1>===New order===</h1>
+                </t>
+                <t t-if="!changes.order.first_order_printing">
+                    <h1>===Add order===</h1>
+                </t>
+                <t t-if="changes.floor || changes.table">
+                    <br />
+                    <h3><t t-esc="changes.floor" />/<t t-esc="changes.table"/></h3>
+                </t>
+                <br />
+                <div>==============================================</div>
+                <br />
+                <t t-foreach="changes.new" t-as="change">
+                    <div size="double-height" t-if="!change.order">
+                        <line>
+                            <left><t t-esc="change.name_wrapped[0]" /></left>
+                            <right><t t-esc="change.qty" /></right>
+                        </line>
+                        <t t-call="NameWrapped"/>
+                        <t t-if="change.note">
+                            <line>
+                                <left>Note</left>
+                                <right>--- <t t-esc="change.note" /></right>
+                            </line>
+                        </t>
+                        <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                        <t t-if="change.custom_notes">
+                            <t t-if="!change.note">
+                                <line>
+                                    <left>Note</left>
+                                    <right></right>
+                                </line>
+                            </t>
+                            <t t-foreach="change.custom_notes" t-as="custom_note">
+                                <line>
+                                    <left></left>
+                                    <right>--- <t t-esc="custom_note.name" /></right>
+                                </line>
+                            </t>
+                        </t>
+                    </div>
+                    <br/>
+                </t>
+                <!--For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module-->
+                <div size="double-height">
+                    <t t-if="changes.order_note">
+                        <line>
+                            <left>Order Note</left>
+                            <right>--- <t t-esc="changes.order_note" /></right>
+                        </line>
+                    </t>
+                    <t t-if="changes.order_custom_notes">
+                        <t t-if="!changes.order_note">
+                            <line>
+                                <left>Order Note</left>
+                                <right></right>
+                            </line>
+                        </t>
+                        <t t-foreach="changes.order_custom_notes" t-as="custom_note">
+                            <line>
+                                <left></left>
+                                <right>--- <t t-esc="custom_note.name" /></right>
+                            </line>
+                        </t>
+                    </t>
+                </div>
+                <br />
+                <div>==============================================</div>
+                <br />
+                <div>
+                    <div>Print time: <t t-esc="changes.date.year" />.<t t-esc="changes.date.month" />.<t t-esc="changes.date.date" /> <t t-esc='changes.time.hours' />:<t t-esc='changes.time.minutes' /> Waiter: <t t-esc='changes.waiter.name' /></div>
+                    <div>Printer name: <t t-esc="changes.printer.name" /></div>
+                    <div><t t-esc="changes.name" /></div>
+                </div>
+            </t>
+        </receipt>
+    </t>
+]]></field>
+    </record>
+</odoo>
