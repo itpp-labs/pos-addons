@@ -1,7 +1,7 @@
 `2.0.2`
 -------
 
-- FIX: parentNode is undefined after splitting a bill of order
+- FIX: Issue ``parentNode is undefined`` after order bill splitting
 
 
 `2.0.1`
