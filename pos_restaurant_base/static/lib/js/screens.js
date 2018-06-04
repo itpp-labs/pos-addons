@@ -11,7 +11,9 @@ odoo.define('pos_restaurant_base.screens', function (require) {
             this.update_summary();
         },
         orderline_change_line: function(line) {
-            this.rerender_orderline(line);
+            if (line.node && line.node.parentNode) {
+                this.rerender_orderline(line);
+            }
         }
     });
 

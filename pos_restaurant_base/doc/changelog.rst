@@ -1,3 +1,9 @@
+`2.0.2`
+-------
+
+- FIX: parentNode is undefined after splitting a bill of order
+
+
 `2.0.1`
 -------
 
