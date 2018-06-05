@@ -9,6 +9,7 @@
 
     <record id="demo_multi_session" model="pos.multi_session">
         <field name="name">Multi Session Demo</field>
+        <field name="active">True</field>
     </record>
 
     <record id="point_of_sale.pos_config_main" model="pos.config">
@@ -28,7 +29,6 @@
     <record id="demo_multi_pos_config_three" model="pos.config">
         <field name="name">POS3</field>
         <field name="multi_session_id" ref="default_multi_session"/>
-        <field name="multi_session_active">False</field>
     </record>
 
     <record id="partner_demo2" model="res.partner">

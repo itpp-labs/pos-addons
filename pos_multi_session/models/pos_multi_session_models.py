@@ -21,7 +21,6 @@ class PosConfig(models.Model):
                                             'Deselect checkbox of "Active" if this POS should not use syncing.'
                                             'Before updating it you need to close active session',
                                        default=lambda self: self.env.ref('pos_multi_session.default_multi_session', raise_if_not_found=False))
-    multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for this POS", default=True)
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
@@ -47,6 +46,7 @@ class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
 
     name = fields.Char('Name')
+    active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for POSes", default=True)
     pos_ids = fields.One2many('pos.config', 'multi_session_id', string='POSes in Multi-session')
     order_ID = fields.Integer(string="Order number", default=0, help="Current Order Number shared across all POS in Multi Session")
     sync_server = fields.Char('Sync Server', default='')
@@ -67,6 +67,14 @@ class PosMultiSession(models.Model):
         configs.write({
             'multi_session_id': self.id
         })
+
+    @api.multi
+    def name_get(self):
+        """ Override name_get method to return generated name."""
+        name = self.name or self._name
+        if self.active is False:
+            name += " - Syncronization is disabled"
+        return [(record.id, name) for record in self]
 
 
 class PosSession(models.Model):
