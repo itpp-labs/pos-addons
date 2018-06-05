@@ -18,8 +18,8 @@ class PosConfig(models.Model):
 
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session',
                                        help='Set the same value for POSes where orders should be synced.'
-                                            'Deselect checkbox of "Active" if this POS should not use syncing.'
-                                            'Before updating it you need to close active session',
+                                            'Uncheck the box "Active" if the POS should not use syncing.'
+                                            'Before updating you need to close active session',
                                        default=lambda self: self.env.ref('pos_multi_session.default_multi_session', raise_if_not_found=False))
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
