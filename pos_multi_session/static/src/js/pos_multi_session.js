@@ -100,12 +100,12 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             var ms_model = {
                 model: 'pos.multi_session',
-                fields: ['run_ID', 'active'],
+                fields: ['run_ID', 'multi_session_active'],
                 domain: function(){
                     return [['id', '=', self.config.multi_session_id[0]]];
                 },
                 loaded: function(me, current_session) {
-                    self.multi_session_active = current_session[0].active;
+                    self.multi_session_active = current_session[0].multi_session_active;
                     if (self.multi_session_active) {
                         self.multi_session_run_ID = current_session[0].run_ID;
                     }
