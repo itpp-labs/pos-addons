@@ -13,24 +13,22 @@
 
     <record id="point_of_sale.pos_config_main" model="pos.config">
         <field name="multi_session_id" ref="demo_multi_session"/>
-        <field name="multi_session_active">True</field>
     </record>
 
     <record id="demo_multi_pos_config_one" model="pos.config">
         <field name="name">POS1</field>
         <field name="multi_session_id" ref="demo_multi_session"/>
-        <field name="multi_session_active">True</field>
     </record>
 
     <record id="demo_multi_pos_config_two" model="pos.config">
         <field name="name">POS2</field>
         <field name="multi_session_id" ref="demo_multi_session"/>
-        <field name="multi_session_active">True</field>
     </record>
 
     <record id="demo_multi_pos_config_three" model="pos.config">
         <field name="name">POS3</field>
         <field name="multi_session_id" ref="default_multi_session"/>
+        <field name="multi_session_active">False</field>
     </record>
 
     <record id="partner_demo2" model="res.partner">
