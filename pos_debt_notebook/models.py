@@ -129,7 +129,8 @@ class ResPartner(models.Model):
 
         server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
         utc_tz = pytz.utc.localize(server_date, is_dst=False)
-        user_tz = timezone(self.env.user.tz)
+        user_tz = self.env.user.tz
+        user_tz = user_tz and timezone(self.env.user.tz) or timezone('GMT')
         final = utc_tz.astimezone(user_tz)
 
         return final.strftime(fmt)
