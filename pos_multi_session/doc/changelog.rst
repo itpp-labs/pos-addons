@@ -1,6 +1,6 @@
 `4.1.0`
 -------
-- **NEW:** A setting in POS config Enable or Disable Synchronization for the POS
+- **NEW:** Field "Active" to enable/disable synchronization for POSes. The multi-session parameter is required now to provide compatibility with "POS Multi Session Menu" module
 
 `4.0.6`
 -------
