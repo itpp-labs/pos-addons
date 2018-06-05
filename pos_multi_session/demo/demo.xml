@@ -13,11 +13,11 @@
 
     <record id="demo_multi_pos_config_one" model="pos.config">
         <field name="name">POS1</field>
-        <field name="multi_session_id" ref="multi_session"/>
+        <field name="multi_session_id" ref="default_multi_session"/>
     </record>
     <record id="demo_multi_pos_config_two" model="pos.config">
         <field name="name">POS2</field>
-        <field name="multi_session_id" ref="multi_session"/>
+        <field name="multi_session_id" ref="default_multi_session"/>
     </record>
 
     <record id="demo_multi_pos_config_three" model="pos.config">
