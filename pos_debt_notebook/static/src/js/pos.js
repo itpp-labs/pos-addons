@@ -379,14 +379,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            var discount_pls = this.discount_credits_for_taxed_products()
-            if (discount_pls.length){
-                var text = _.map(discount_pls, function(pl){
+            if (this.check_discount_credits_for_taxed_products()){
+                var text = _.map(currentOrder.paymentlines_with_credits_via_discounts(), function(pl){
                     return pl.name;
-                }).join(discount_pls.length === 1
-                    ? ' '
-                    : ', '
-                );
+                }).join(', ');
                 this.gui.show_popup('error',{
                     'title': _t('Unable to validate with the "Credits via Discounts" payment method'),
                     'body': _t('You cannot use ' + text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
@@ -502,19 +498,27 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             return violations;
         },
-        discount_credits_for_taxed_products: function(){
+        check_discount_credits_for_taxed_products: function(){
             var order = this.pos.get_order(),
-                orderlines = order.orderlines.models,
                 discount_pl = order.paymentlines_with_credits_via_discounts();
-            if(discount_pl.length) {
-                var check = discount_pl.length !== order.get_paymentlines().length && _.find(orderlines, function(ol){
-                    return ol.product.taxes_id && ol.product.taxes_id.length;
-                });
-                if(check) {
-                    return discount_pl;
-                }
+            if (discount_pl.length === order.get_paymentlines().length) {
+                return false;
             }
-            return false;
+            var taxes_id = false;
+            var taxed_orderlines = _.find(order.orderlines.models, function(ol){
+                // returns only a found orderline with a tax that is not included in the price
+                taxes_id = ol.product.taxes_id;
+                if (taxes_id && taxes_id.length) {
+                    return _.find(taxes_id, function(t){
+                        return !order.pos.taxes_by_id[t].price_include;
+                    });
+                }
+                return false;
+            });
+            if (!taxed_orderlines) {
+                return false;
+            }
+            return true;
         },
         restricted_products_check: function(cr){
             var order = this.pos.get_order();
