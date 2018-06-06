@@ -63,6 +63,21 @@ To use it
 * open ``Point of sale >> Configuration >> Manual Credit Updates``
 * create record or import csv, Excel file
 
+Credits via Discounts
+---------------------
+
+A special type of debt journals. Applies discounts for the amount of payment.
+
+* Zero transactions
+* Could not be cashed out via POS
+* Could not be paid for the products with taxes that are not included in the price in case of a partial payment
+
+To use it
+
+* Open ``Point of sale >> Configuration >> Payment Methods``
+* Create or select a required record
+* Turn on the **Zero transactions** option
+
 Handling employees
 ------------------
 
