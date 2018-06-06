@@ -2,6 +2,7 @@
 -------
 - **FIX:** 'order_line.node' is undefined
 - **NEW:** Added synchronization among the same POS
+- **IMP:** New option to save orderlines added to existing orders in offline mode
 
 `4.1.1`
 -------
