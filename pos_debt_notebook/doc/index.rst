@@ -63,14 +63,13 @@ To use it
 * open ``Point of sale >> Configuration >> Manual Credit Updates``
 * create record or import csv, Excel file
 
-Credits via Discounts
----------------------
+Zero transactions
+-----------------
 
-A special type of debt journals. Applies discounts for the amount of payment.
+A special type of debt journals. Applies discounts corresponding to amount of payment. It creates *Manual Credit Updates* instead of accounting transactions. It can be used for bonuses, volunteer rewards and other cases when you don't work with real money. Notes:
 
-* Zero transactions
-* Could not be cashed out via POS
-* Could not be paid for the products with taxes that are not included in the price in case of a partial payment
+* For such journals option **Allow to cash out credits** cannot be activated
+* In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
 
 To use it
 
