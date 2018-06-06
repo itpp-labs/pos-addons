@@ -134,7 +134,7 @@
         <xpath expr="//page[@name='extra']" position="before">
             <page name="non_accounting_payments" string="Non-Accounting Payments">
                 <field name="pos_credit_update_ids" colspan="4" nolabel="1">
-                    <tree editable="bottom" string="Statement lines">
+                    <tree editable="bottom">
                         <field name="journal_id"/>
                         <field name="reversed_balance"/>
                         <field name="state"/>
