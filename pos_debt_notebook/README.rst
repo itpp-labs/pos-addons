@@ -28,9 +28,9 @@ Installation \ Deinstallation
 Roadmap
 =======
 
-* TODO. Option to use extra order line with negative amount instead of applying discounts. 
+* TODO. New option for **Zero transactions** feature: allow to create extra order line with negative amount instead of applying discounts. 
 
-  * It allows to have a record in accounting system as a backup for *Manual Updates*
+  * It creates extra record in accounting system (pos.order.line). It can be used as a backup for *Manual Updates*
   * It works with following problem case:
   
         In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
