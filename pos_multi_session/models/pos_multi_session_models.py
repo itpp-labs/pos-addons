@@ -20,6 +20,7 @@ class PosConfig(models.Model):
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
+    multi_session_block_exist_order = fields.Boolean('Block exist order', default=True, help='Block the existing order if a POS does not have a connection to the server')
     current_session_state = fields.Char(search='_search_current_session_state')
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)

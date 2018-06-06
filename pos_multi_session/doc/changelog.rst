@@ -1,3 +1,7 @@
+`4.0.7`
+-------
+- **IMP:** New option to save orderlines added to existing orders in offline mode
+
 `4.0.6`
 -------
 - **FIX:** Incompatibility with pos_order_cancel_restaurant: it showed *Synchronization error* on removing order
