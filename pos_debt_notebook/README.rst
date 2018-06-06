@@ -25,6 +25,17 @@ Installation \ Deinstallation
   POS config would not be changed. 
 * Multicompany mode is supported
 
+Roadmap
+=======
+
+* TODO. Option to use extra order line with negative amount instead of applying discounts. 
+
+  * It allows to have a record in accounting system as a backup for *Manual Updates*
+  * It works with following problem case:
+  
+        In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
+
+
 Credits
 =======
 
