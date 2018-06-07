@@ -23,5 +23,4 @@
             <field name="trigger">on_create_or_write</field>
             <field name="active" eval="True"/>
         </record>
-
 </odoo>
