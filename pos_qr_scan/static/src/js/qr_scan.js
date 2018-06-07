@@ -54,7 +54,8 @@ odoo.define('pos_qr_scan', function(require){
                 console.log(content);
                 qr_scan_popup.add_button(content);
                 self.posmodel.get_order().auth_code = content;
-                scanner.stop();
+                console.log(content)
+//                scanner.stop();
 //                qr_scan_popup.click_cancel();
             });
             Instascan.Camera.getCameras().then(function (cameras) {
