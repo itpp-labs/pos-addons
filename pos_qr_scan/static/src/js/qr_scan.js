@@ -11,7 +11,7 @@ odoo.define('pos_qr_scan', function(require){
             var self = this;
             this.gui.show_popup('qr_scan',{
                 'title': 'QR Scanning',
-                'value': this.pos.config.discount_pc,
+                'value': false,
             });
         },
     });
@@ -19,9 +19,6 @@ odoo.define('pos_qr_scan', function(require){
     screens.define_action_button({
         'name': 'qr_button',
         'widget': QrButton,
-        'condition': function(){
-            return this.pos.config;
-        },
     });
 
     var QrScanPopupWidget = PopupWidget.extend({
@@ -29,7 +26,7 @@ odoo.define('pos_qr_scan', function(require){
         show: function (options) {
             var self = this;
             this._super(options);
-            this.start_script();
+            this.generate_qr_scanner();
         },
         click_cancel: function() {
             this.var_scanner.stop();
@@ -45,7 +42,7 @@ odoo.define('pos_qr_scan', function(require){
             new_scan.innerHTML = content;
             $('.sidebar > .body').append(new_scan);
         },
-        start_script: function() {
+        generate_qr_scanner: function() {
             this.var_scanner = new Instascan.Scanner({video: document.getElementById('preview')});
             var scanner = this.var_scanner;
             var qr_scan_popup = self.posmodel.gui.popup_instances.qr_scan;
@@ -58,7 +55,7 @@ odoo.define('pos_qr_scan', function(require){
                 qr_scan_popup.add_button(content);
                 self.posmodel.get_order().auth_code = content;
                 scanner.stop();
-                qr_scan_popup.click_cancel();
+//                qr_scan_popup.click_cancel();
             });
             Instascan.Camera.getCameras().then(function (cameras) {
                 if (cameras.length > 0) {
