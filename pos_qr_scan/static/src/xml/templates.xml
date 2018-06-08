@@ -10,22 +10,17 @@
     <t t-name="QrScanPopupWidget">
         <div class="modal-dialog">
             <div class="popup popup-qr_scan">
-                <div class="sidebar">
+                <div class="preview-container">
+                    <video id="preview" class="video_preview"></video>
+                </div>
+                <div class="transparent_sidebar">
                     <div class="title">
                         <p>QR Scanning</p>
                     </div>
                     <div class="body">
-                        <p>Scans:</p>
+                        <p>Cameras:</p>
                         <p></p>
-
                     </div>
-                    <div class="footer-qr">
-                        <div class="button confirm">Ok</div>
-                        <div class="button cancel">Cancel</div>
-                    </div>
-                </div>
-                <div class="preview-container">
-                    <video id="preview" class="video_preview"></video>
                 </div>
             </div>
         </div>
