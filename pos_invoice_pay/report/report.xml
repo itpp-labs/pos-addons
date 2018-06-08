@@ -28,12 +28,9 @@
                             <td><t t-esc="inv['amount']"/></td>
                         </tr>
                         <tr>
-                            <th>Total:</th>
-                            <td/>
-                            <td/>
-                            <td/>
-                            <td/>
-                            <td><t t-esc="total_invoices"/></td>
+                            <td colspan="6" class="text-right">
+                                <strong>Total:</strong> <t t-esc="total_invoices"/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
