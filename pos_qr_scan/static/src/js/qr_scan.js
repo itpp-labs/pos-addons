@@ -39,7 +39,8 @@ odoo.define('pos_qr_scan', function(require){
         add_button: function(content) {
             var new_scan = document.createElement('div');
             new_scan.className = 'button qr-content'
-            new_scan.innerHTML = content;
+            new_scan.innerHTML = content.name;
+            new_scan.setAttribute('camera-id', content.id);
             return $('.transparent_sidebar > .body').append(new_scan);
         },
         generate_qr_scanner: function() {
@@ -47,16 +48,11 @@ odoo.define('pos_qr_scan', function(require){
             this.var_scanner = new Instascan.Scanner({video: document.getElementById('preview')});
             var scanner = this.var_scanner;
             var qr_scan_popup = this.pos.gui.popup_instances.qr_scan;
-            if (this.pos.get_order().auth_code) {
-                var old_content = this.pos.get_order().auth_code;
-                qr_scan_popup.add_button(old_content);
-            }
             $('.popup.popup-qr_scan .preview-container').on('click',function(){
                 qr_scan_popup.click_cancel();
             });
             scanner.addListener('scan', function (content) {
                 console.log(content);
-                qr_scan_popup.add_button(content);
                 self.pos.get_order().auth_code = content;
                 console.log(content);
             });
@@ -64,9 +60,11 @@ odoo.define('pos_qr_scan', function(require){
                 if (cameras.length > 0) {
                     scanner.start(cameras[0]);
                     for (var i = 0; i < cameras.length; i++) {
-                        self.add_button(cameras[i].name).off().on('click',function(){
+                        self.add_button(cameras[i]).off().on('click',function(e){
                             self.var_scanner.stop();
-                            scanner.start(cameras[i]);
+                            scanner.start(_.find(cameras, function(cam){
+                                return cam.id === e.target.getAttribute('camera-id');
+                            }));
                         });
                     };
                 } else {
