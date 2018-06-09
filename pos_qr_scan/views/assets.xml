@@ -6,6 +6,8 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_qr_scan/static/src/js/qr_scan.js"></script>
                 <script type="text/javascript" src="/pos_qr_scan/static/src/js/instascan.min.js"></script>
+                <!--Necessary for apple devices-->
+                <script src="ac_quicktime.js" type="text/javascript"></script>
             </xpath>
             <xpath expr="//link[@id='pos-stylesheet']" position="after">
               <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css"/>

@@ -10,6 +10,7 @@ Installation
 Configuration
 =============
 
+Chrome, Firefox, Safari support the qr scan feature provided by the module.
 For correct work of the module server should support SSL.
 Example for NGINX configurations with selfsigned certificate::
 

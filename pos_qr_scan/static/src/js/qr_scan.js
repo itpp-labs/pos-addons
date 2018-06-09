@@ -52,7 +52,6 @@ odoo.define('pos_qr_scan', function(require){
                 qr_scan_popup.click_cancel();
             });
             scanner.addListener('scan', function (content) {
-                console.log(content);
                 self.pos.get_order().auth_code = content;
                 console.log(content);
             });
@@ -61,7 +60,7 @@ odoo.define('pos_qr_scan', function(require){
                     scanner.start(cameras[0]);
                     for (var i = 0; i < cameras.length; i++) {
                         self.add_button(cameras[i]).off().on('click',function(e){
-                            self.var_scanner.stop();
+                            scanner.stop();
                             scanner.start(_.find(cameras, function(cam){
                                 return cam.id === e.target.getAttribute('camera-id');
                             }));
