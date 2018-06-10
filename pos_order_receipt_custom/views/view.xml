@@ -9,34 +9,9 @@
         <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='proxy_ip']" position="after">
-                <field name="receipt_format_id"/>
+                <field name="custom_order_receipt"/>
+                <field name="custom_order_receipt_id" attrs="{'invisible' : [('custom_order_receipt', '=', False)],'required': [('custom_order_receipt', '=', True)]}"/>
             </xpath>
-        </field>
-    </record>
-
-    <record id="view_restaurant_printer" model="ir.ui.view">
-        <field name="name">Order Printers</field>
-        <field name="model">restaurant.printer</field>
-        <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='proxy_ip']" position="after">
-                <field name="receipt_format_id"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="pos_order_receipt_form_view" model="ir.ui.view">
-        <field name="name">pos.order_receipt.view.form</field>
-        <field name="model">pos.order_receipt</field>
-        <field name="arch" type="xml">
-            <form string="Order Receipt">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="qweb_template" widget="ace" options="{'mode': 'xml'}"/>
-                    </group>
-                </sheet>
-            </form>
         </field>
     </record>
 

@@ -1,23 +1,16 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
-odoo.define('pos_order_receipt_custom', function (require) {
+odoo.define('pos_order_receipt_custom.models', function (require) {
     "use strict";
 
     var models = require('pos_restaurant_base.models');
+    require('pos_receipt_custom.models')
     var core = require('web.core');
 
     var Qweb = core.qweb;
 
-    models.load_models({
-        model: 'pos.order_receipt',
-        fields: ['qweb_template'],
-        loaded: function(self, receipt_formats){
-            self.receipt_formats = receipt_formats;
-        },
-    });
-
-    models.load_fields('restaurant.printer',['receipt_format_id']);
+    models.load_fields('restaurant.printer',['custom_order_receipt', 'custom_order_receipt_id']);
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
@@ -84,27 +77,8 @@ odoo.define('pos_order_receipt_custom', function (require) {
             this.first_order_printing = true;
             return _super_order.initialize.apply(this, arguments);
         },
-        get_receipt_template_by_id: function(id) {
-            return this.pos.receipt_formats.find(function(receipt){
-                return receipt.id === id;
-            });
-        },
-        render_custom_qweb: function(template, options) {
-            var code = Qweb.compile(template), tcompiled;
-            try {
-                tcompiled = new Function(['dict'], code);
-            } catch (error) {
-                Qweb.tools.exception("Error evaluating template: " + error, { template: name });
-            }
-            if (!tcompiled) {
-                Qweb.tools.exception("Error evaluating template: (IE?)" + error, { template: name });
-            }
-            var template_name = $(template).attr('t-name')
-            Qweb.compiled_templates[template_name] = tcompiled;
-            return Qweb.render(template_name, options);
-        },
         print_order_receipt: function(printer, changes) {
-            if (printer.config.receipt_format_id && (changes['new'].length > 0 || changes['cancelled'].length > 0 || changes.changes_table)) {
+            if (printer.config.custom_order_receipt && (changes['new'].length > 0 || changes['cancelled'].length > 0 || changes.changes_table)) {
                 this.print_custom_receipt(printer, changes);
             } else {
                 _super_order.print_order_receipt.apply(this,arguments);
@@ -144,9 +118,9 @@ odoo.define('pos_order_receipt_custom', function (require) {
             changes.date = {'date': date, 'month': month, 'year':year};
             changes.printer = {'name': printer.config.name};
 
-            var receipt_template = this.get_receipt_template_by_id(printer.config.receipt_format_id[0]);
+            var receipt_template = this.get_receipt_template_by_id(printer.config.custom_order_receipt_id[0], 'order_receipt');
             var template = $.parseXML(receipt_template.qweb_template).children[0];
-            var receipt = this.render_custom_qweb(template, {changes:changes, widget:this});
+            var receipt = this.custom_qweb_render(template, {changes:changes, widget:this});
             printer.print(receipt);
             this.first_order_printing = false;
         },
@@ -160,4 +134,6 @@ odoo.define('pos_order_receipt_custom', function (require) {
             this.first_order_printing = json.first_order_printing;
         },
     });
+
+    return models;
 });

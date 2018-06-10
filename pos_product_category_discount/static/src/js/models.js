@@ -67,6 +67,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
                 line.set_discount(discount.category_discount_pc);
             });
             order.discount_program_id = discount.discount_program_id[0];
+            order.discount_program_name = discount.discount_program_id[1];
         },
     });
 
@@ -86,6 +87,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
             var json = OrderSuper.prototype.export_as_JSON.call(this);
             json.product_discount = this.product_discount || false;
             json.discount_program_id = this.discount_program_id;
+            json.discount_program_name = this.discount_program_name;
             json.discount_percent = this.discount_percent;
             return json;
         },
@@ -93,6 +95,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
             OrderSuper.prototype.init_from_JSON.apply(this,arguments);
             this.product_discount = json.product_discount || false;
             this.discount_program_id = json.discount_program_id;
+            this.discount_program_name = json.discount_program_name;
             this.discount_percent = json.discount_percent;
         },
     });

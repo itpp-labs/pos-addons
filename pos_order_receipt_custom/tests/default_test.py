@@ -15,7 +15,8 @@ class TestUi(odoo.tests.HttpCase):
         receipt_template = env.ref('pos_order_receipt_custom.simple_kitchen_receipt')
 
         kitchen_printer.write({
-            'receipt_format_id': [(6, 0, [receipt_template.id])]
+            'custom_order_receipt': True,
+            'custom_order_receipt_id': [(6, 0, [receipt_template.id])],
         })
 
         main_pos_config = env.ref('point_of_sale.pos_config_main')

@@ -2,8 +2,8 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """POS Order Receipt Custom""",
-    "summary": """POS Order Receipt Custom""",
+    "name": """POS Receipt Custom""",
+    "summary": """POS Receipt Custom""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
@@ -18,18 +18,19 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_restaurant_base",
-        "pos_receipt_custom",
+        "point_of_sale",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/view.xml",
         "views/template.xml",
-        "data/pos_order_receipt_custom_data.xml",
+        "security/ir.model.access.csv",
+        "data/data.xml",
     ],
     "demo": [
     ],
     "qweb": [
+        "static/src/xml/pos.xml",
     ],
 
     "post_load": None,

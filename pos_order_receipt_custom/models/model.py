@@ -5,17 +5,21 @@
 from odoo import fields, models
 
 
-class PosOrderReceipt(models.Model):
-    _name = "pos.order_receipt"
+class PosCustomReceipt(models.Model):
+    _inherit = "pos.custom_receipt"
 
-    name = fields.Char('Name')
-    qweb_template = fields.Text('Qweb')
+    type = fields.Selection(selection_add=[('order_receipt', 'Order Receipt')])
 
 
 class RestaurantPrinter(models.Model):
     _inherit = 'restaurant.printer'
 
-    receipt_format_id = fields.Many2one('pos.order_receipt', string='Print Template')
+    def _get_custom_order_receipt_id_domain(self):
+        return [('type', '=', 'order_receipt')]
+
+    custom_order_receipt = fields.Boolean(string="Custom Order Receipt", defaut=False)
+    custom_order_receipt_id = fields.Many2one("pos.custom_receipt", string='Print Template',
+                                              domain=lambda self: self._get_custom_order_receipt_id_domain())
 
 
 class PosConfig(models.Model):
