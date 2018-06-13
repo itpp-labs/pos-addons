@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Copyright 2017 Artyom Losev
+<!--Copyright 2018 Artyom Losev
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <odoo>
-        <template id="assets_backend" name="pos_invoice_pay" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/pos_invoice_pay/static/src/css/styles.css"/>
-                <script type="text/javascript" src="/pos_invoice_pay/static/src/js/main.js"></script>
+  <template id="assets_backend" name="pos_invoice_pay" inherit_id="point_of_sale.assets">
+    <xpath expr="." position="inside">
+      <link rel="stylesheet" href="/pos_invoice_pay/static/src/css/styles.css"/>
+      <script type="text/javascript" src="/pos_invoice_pay/static/src/js/main.js"></script>
             </xpath>
-        </template>
+  </template>
 </odoo>

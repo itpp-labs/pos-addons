@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Copyright 2017 Artyom Losev
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
         <template id="pos_invoice_pay_report" inherit_id="point_of_sale.report_saledetails">
@@ -14,6 +16,7 @@
                             <th>Sales Order(origin)</th>
                             <th>Customer</th>
                             <th>Cashier</th>
+                            <th>Payment Method</th>
                             <th>Amount Total</th>
                             <th>Paid</th>
                         </tr>
@@ -24,11 +27,12 @@
                             <td><t t-esc="inv['so_origin']" /></td>
                             <td><t t-esc="inv['customer']" /></td>
                             <td><t t-esc="inv['cashier']" /></td>
+                            <td><t t-esc="inv['payment_method']" /></td>
                             <td><t t-esc="inv['amount_total']" /></td>
                             <td><t t-esc="inv['amount']"/></td>
                         </tr>
                         <tr>
-                            <td colspan="6" class="text-right">
+                            <td colspan="7" class="text-right">
                                 <strong>Total:</strong> <t t-esc="total_invoices"/>
                             </td>
                         </tr>

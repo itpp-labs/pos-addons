@@ -1,5 +1,9 @@
 # Copyright 2017 Artyom Losev
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+=======
+# Copyright 2018 Artyom Losev
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
