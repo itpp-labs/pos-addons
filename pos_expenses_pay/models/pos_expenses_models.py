@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
+# Copyright 2018 Artyom Losev
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from odoo import fields, models, api, _
 from werkzeug import url_encode
-import json
 
 CHANNEL = "pos_expenses"
+
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'

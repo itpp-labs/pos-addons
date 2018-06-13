@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+
+<odoo>
         <template id="pos_expense_pay_report" inherit_id="point_of_sale.report_saledetails">
-            <xpath expr="//div[hasclass('page')]/table[position()=3]" position="after">
+            <xpath expr="//div[hasclass('page')]" position="inside">
                 <br/>
                 <h3>Expenses</h3>
                 <table class="table table-condensed">
@@ -32,5 +36,4 @@
                 </table>
             </xpath>
         </template>
-    </data>
-</openerp>
+</odoo>
