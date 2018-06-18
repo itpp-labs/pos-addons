@@ -1,22 +1,20 @@
-====================
- POS Orders History
-====================
+============================
+ POS Orders History Reprint
+============================
 
 Installation
 ============
 
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
-* `Activate longpolling <https://odoo-development.readthedocs.io/en/latest/admin/longpolling.html>`__
 
 Configuration
 =============
 
-To activate/deactivate ``History`` button for some of POSes do as follows:
-
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
 * Open POS configuration form
 * Click on ``[Edit]``
-* Check/uncheck ``[x] Orders History`` box
+* Check ``[x] Orders History`` box
+* Check ``[x] Reprint Orders`` box
 * Click on ``[Save]``
 
 Usage
@@ -25,4 +23,6 @@ Usage
 * Go to ``Point of Sale`` menu
 * Open POS session
 * Click on ``History``
-* RESULT: all paid orders list are displayed
+* Select ``Order``
+* Click on ``Reprint``
+* RESULT: The order printed again

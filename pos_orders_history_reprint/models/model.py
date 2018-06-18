@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-from odoo import models, api, fields
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018 Artem Losev
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+
+from odoo import models, fields
+
 
 class PosReceipt(models.Model):
     _name = 'pos.xml_receipt'
@@ -12,7 +17,6 @@ class PosReceipt(models.Model):
             "pos_reference": name,
             "receipt": receipt,
         })
-
 
 
 class PosOrder(models.Model):
@@ -41,3 +45,9 @@ class PosOrder(models.Model):
             'paymentlines': paymentlines,
             'taxes': taxes
         }
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)

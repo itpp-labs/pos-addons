@@ -3,7 +3,8 @@
 
 /*OrdersHistoryScreenWidget*/
 .pos .return-no-receipt {
-    left: 150px;
+    left: 214px;
+    font-size: 18px!important;
 }
 .pos .breadcrumb-order {
     font-size: 18px;

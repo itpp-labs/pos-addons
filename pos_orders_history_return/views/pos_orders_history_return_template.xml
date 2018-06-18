@@ -9,4 +9,10 @@
             <link rel="stylesheet" href="/pos_orders_history_return/static/src/css/pos.css"/>
         </xpath>
     </template>
+
+    <template id="demo_assets_backend" name="pos_orders_history demo assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_orders_history_return/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
 </odoo>

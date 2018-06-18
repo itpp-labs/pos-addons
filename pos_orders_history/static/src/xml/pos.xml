@@ -5,7 +5,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="OrdersHistoryButton">
-        <div class='control-button'>
+        <div class='control-button orders-history'>
             <i class='fa fa-list-alt '/> History
         </div>
     </t>
