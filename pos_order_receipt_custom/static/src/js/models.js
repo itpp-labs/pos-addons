@@ -65,6 +65,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
                     'custom_notes': line.custom_notes,
                     'qty':      line.quantity,
                     'line_id':  line.id,
+                    'unit':     line.get_unit().name,
                 });
             });
             return products;
@@ -123,6 +124,41 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             var receipt = this.custom_qweb_render(template, {changes:changes, widget:this});
             printer.print(receipt);
             this.first_order_printing = false;
+        },
+        get_custom_notes_as_string: function(notes) {
+            var str_notes = '';
+            notes.forEach(function(note, index){
+                str_notes += note.name;
+                if (index + 1 !== notes.length) {
+                    str_notes += ', ';
+                }
+            });
+            return str_notes;
+        },
+        get_string_array_by_len: function(len, str, s) {
+            //  len - the maximum number of characters
+            //  str - text to be divided
+            //  s - division symbol (default value  ' ')
+            s = s || ' ';
+            var temp = "";
+            var arr = [];
+            var temp_arr = [];
+            str = str.split(s);
+            str.forEach(function(item, index) {
+                temp += item+' ';
+                if (temp.length <= len) {
+                    temp_arr.push(item);
+                } else {
+                    arr.push(temp_arr.join(" "));
+                    temp_arr = [];
+                    temp = item;
+                    temp_arr.push(item);
+                }
+                if (index + 1 === str.length && temp_arr.length) {
+                    arr.push(temp_arr.join(" "));
+                }
+            });
+            return arr;
         },
         export_as_JSON: function(){
             var json = _super_order.export_as_JSON.call(this);
