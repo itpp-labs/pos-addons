@@ -236,7 +236,7 @@
                 <br />
                 <line>
                     <left><t t-esc='receipt.company.name' /></left>
-                    <right>(<t t-esc="order.get_receipt_type()"/>)</right>
+                    <right class='receipt-type'>(<t t-esc="order.get_receipt_type()"/>)</right>
                 </line>
                 <line>
                     <left>Waiter: <t t-esc='receipt.cashier' /></left>
