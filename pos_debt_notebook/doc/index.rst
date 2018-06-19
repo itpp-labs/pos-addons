@@ -35,8 +35,20 @@ Credit Products
 * Instead of using Debt Journal, customer can purchase *Credits* via *Credit Products*
 * When you create *Credit product*, don't forget to set **Credit Product** field
 * *Credit products* can be sold via POS and via invoices (including eCommerce). The later requires `another module <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_sync/>`_ to notify POS about eCommerce sales, otherwise POS will get updates about invoices only after POS reloading.
+* We recommend a module that force user to login before making purchase on website, e.g. `website_sale_require_login <https://www.odoo.com/apps/modules/10.0/website_sale_require_login/>`_
 * Note. Taxes on purchasing *Credit Products* are supported for purchasing via invoices (including eCommerce), but not for sales via POS. For taxed Credit Products in invoices only untaxed amount is added to credit amount.
 
+Allow to cash out credits
+-------------------------
+
+* Go to ``Point of sale >> Configuration >> Payment Methods``
+
+  * Open journal form
+  * On ``Pont of Sale`` tab check the box ``Allow to cash out credits``
+
+RESULT: By using journals with this option partners will be able to exchange their credits to cash in POS
+
+  
 Autopay credits
 ---------------
 
@@ -48,6 +60,16 @@ If added payment lines fully cover the payment amount you will see additional bu
 
 In order to simplify and speed up a payment proceeding, those buttons located in the place of *Payment* button in pos.
 After a successfully proceeded autopay a thumb up is shown on the screen.
+
+Zero transactions
+-----------------
+
+* Go to ``Point of sale >> Configuration >> Payment Methods``
+
+  * Open journal form
+  * On ``Pont of Sale`` tab check the box ``Zero transactions``
+
+RESULT: Discount the order (mostly 100%) when a user pay via such type of journal in POS
 
 Manual Credit Updates
 ---------------------

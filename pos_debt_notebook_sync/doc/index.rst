@@ -14,10 +14,12 @@ Configuration
 Max Debt Limit
 --------------
 
-* open Customer form
+* Go to ``Point of Sale >> Configuration >> Payment Methods``
+* open journal form (e.g. ``Debt Journal``)
 
   * click on ``[Edit]``
-  * On ``Accounting`` tab set ``Max Debt`` value
+  * On ``Point of Sale`` tab check the box ``Credit Journal`` 
+  * set ``Max Debt`` value
   * click ``[Save]``
 
 Default Max Debt
@@ -45,7 +47,8 @@ Credit Product
 * go to ``Point of Sale >> Products``
 
   * click on ``[Create]``
-  * on ``Invoicing`` tab check the box ``Credit Product``
+  * open ``Invoicing`` tab
+  * select an available journal in ``Journal Credit Product`` field
   * click ``[Save]``
 
 Payment Acquirer
