@@ -16,17 +16,17 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
 
     screens.ReceiptScreenWidget.include({
         print_xml: function() {
+            this._super();
+            var order = this.pos.get_order();
             var env = {
                 widget:  this,
                 pos: this.pos,
-                order: this.pos.get_order(),
-                receipt: this.pos.get_order().export_for_printing(),
-                paymentlines: this.pos.get_order().get_paymentlines()
+                order: order,
+                receipt: order.export_for_printing(),
+                paymentlines: order.get_paymentlines()
             };
             var receipt = QWeb.render('XmlReceipt',env);
-            this.save_order_xml(env.order, receipt)
-            this.pos.proxy.print_receipt(receipt);
-            this.pos.get_order()._printed = true;
+            this.save_order_xml(order, receipt);
         },
         save_order_xml: function (order, receipt) {
             var name = order.name,
