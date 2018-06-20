@@ -24,7 +24,7 @@
                     <td><t t-if='widget.pos.table'>Table: <t t-esc="widget.pos.table.name"/></t></td>
                 </tr>
                 <tr>
-                    <td>Casher: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/></td>
+                    <td>Cashier: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/></td>
                     <td><t t-if='order.customer_count'>Guest: <t t-esc="order.customer_count"/></t></td>
                 </tr>
             </table>

@@ -24,13 +24,16 @@ odoo.define('pos_receipt_custom.models', function(require){
     models.PosModel = models.PosModel.extend({
         // changes the current table.
         set_table: function(table) {
+            var old_table = this.table;
             if (table && !this.order_to_transfer_to_different_table) {
+                this.table = table;
                 var orders = this.get_order_list();
                 if (!orders.length) {
                     // set opening datetime for table
                     table.open_time = this.get_current_datetime();
                 }
             }
+            this.table = old_table;
             _super_posmodel.set_table.apply(this, arguments);
         },
         get_current_datetime: function(){
