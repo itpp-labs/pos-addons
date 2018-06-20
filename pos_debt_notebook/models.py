@@ -14,6 +14,7 @@ from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import float_is_zero
 
 
 class ResPartner(models.Model):
@@ -452,6 +453,7 @@ class PosOrder(models.Model):
 
     product_list = fields.Text('Product list', compute='_compute_product_list', store=True)
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'order_id', string='Non-Accounting Payments')
+    amount_via_discount = fields.Float('Amount via Discounts', help="service field to properly proceed ")
 
     @api.multi
     @api.depends('lines', 'lines.product_id', 'lines.product_id.name', 'lines.qty', 'lines.price_unit')
@@ -465,11 +467,13 @@ class PosOrder(models.Model):
     @api.model
     def _process_order(self, pos_order):
         credit_updates = []
+        amount_via_discount = 0
         for payment in pos_order['statement_ids']:
             journal = self.env['account.journal'].browse(payment[2]['journal_id'])
             if journal.credits_via_discount:
                 amount = float(payment[2]['amount'])
                 product_list = list()
+                amount_via_discount += amount
                 for o_line in pos_order['lines']:
                     o_line = o_line[2]
                     name = self.env['product.product'].browse(o_line['product_id']).name
@@ -482,13 +486,39 @@ class PosOrder(models.Model):
                                        'note': product_list,
                                        })
                 payment[2]['amount'] = 0
-        pos_order['amount_return'] -= pos_order.get('amount_via_discount', 0)
+        pos_order['amount_via_discount'] = amount_via_discount
         order = super(PosOrder, self)._process_order(pos_order)
         for update in credit_updates:
             update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
         return order
+
+    @api.model
+    def _order_fields(self, ui_order):
+        res = super(PosOrder, self)._order_fields(ui_order)
+        res['amount_via_discount'] = ui_order['amount_via_discount']
+        return res
+
+    def action_pos_order_paid(self):
+        self.set_discounts(self.amount_via_discount)
+        return super(PosOrder, self).action_pos_order_paid()
+
+    def set_discounts(self, amount):
+        for line in self.lines:
+            if float_is_zero(amount, self.env['decimal.precision'].precision_get('Account')):
+                break
+            price = line.price_subtotal_incl
+            if not price:
+                continue
+            disc = line.discount
+            line.write({
+                'discount': max(min(line.discount + (amount /
+                                                     (disc and (price / (100 - disc)) * 100 or price)
+                                                     ) * 100, 100), 0),
+            })
+            amount -= price - line.price_subtotal_incl
+        return amount
 
 
 class AccountBankStatement(models.Model):

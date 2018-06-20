@@ -229,7 +229,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         export_as_JSON: function(){
             var data = _super_order.export_as_JSON.apply(this, arguments);
             data.updates_debt = this.updates_debt();
-            data.amount_via_discount = Math.max(0, this.get_summary_for_discount_credits());
             return data;
         },
         export_for_printing: function(){
@@ -380,6 +379,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
+            if (this.check_discount_credits_for_taxed_products()){
+                var text = _.map(currentOrder.paymentlines_with_credits_via_discounts(), function(pl){
+                    return pl.name;
+                }).join(', ');
+                this.gui.show_popup('error',{
+                    'title': _t('Unable to validate with the "Credits via Discounts" payment method'),
+                    'body': _t('You cannot use ' + text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
+                });
+                return;
+            }
             if (currentOrder.has_credit_product() && !client){
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
@@ -431,23 +440,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             });
             if (debt_pl && partner){
                 var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
-                if (disc_credits_pl.length && order_total) {
-                    // adding a discount
-                    var discount_credits = Math.max(0, order.get_summary_for_discount_credits());
-                    var percentage = 0;
-                    var orderlines = order.get_orderlines();
-                    var old_price = 0;
-                    _.each(orderlines, function(ol){
-                        if (discount_credits > 0.00001) {
-                            old_price = ol.get_price_with_tax();
-                            percentage = Math.min(Math.max(( discount_credits / old_price ) * 100, 0), 100);
-                            ol.set_discount(percentage);
-                            discount_credits -= old_price - ol.get_price_with_tax();
-                        } else {
-                            return;
-                        }
-                    });
-                }
                 this._super();
                 // offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl){
@@ -505,6 +497,28 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
             });
             return violations;
+        },
+        check_discount_credits_for_taxed_products: function(){
+            var order = this.pos.get_order(),
+                discount_pl = order.paymentlines_with_credits_via_discounts();
+            if (discount_pl.length === order.get_paymentlines().length) {
+                return false;
+            }
+            var taxes_id = false;
+            var taxed_orderlines = _.find(order.orderlines.models, function(ol){
+                // returns only a found orderline with a tax that is not included in the price
+                taxes_id = ol.product.taxes_id;
+                if (taxes_id && taxes_id.length) {
+                    return _.find(taxes_id, function(t){
+                        return !order.pos.taxes_by_id[t].price_include;
+                    });
+                }
+                return false;
+            });
+            if (!taxed_orderlines) {
+                return false;
+            }
+            return true;
         },
         restricted_products_check: function(cr){
             var order = this.pos.get_order();
@@ -782,8 +796,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         render_change: function() {
             // deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
             var order = this.pos.get_order();
-            var change = order.get_change() - Math.max(order.get_summary_for_discount_credits(), 0);
-            this.$('.change-value').html(this.format_currency(change));
+            this.$('.change-value').html(this.format_currency(order.get_change()));
         },
     });
 
