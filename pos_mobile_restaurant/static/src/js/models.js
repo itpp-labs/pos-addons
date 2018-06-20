@@ -8,6 +8,10 @@ odoo.define('pos_mobile_restaurant.models', function (require) {
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            this.saved_floors_data = {};
+            return _super_posmodel.initialize.call(this, session, attributes);
+        },
         set_table: function(table) {
             this.table = table;
             var orders = this.get_order_list();
