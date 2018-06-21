@@ -53,7 +53,7 @@
     min-height: 60px;
 }
 /*  ********* Generic element styling  ********* */
-.pos.mobile button, .pos a.button {
+.pos.mobile button, .pos.mobile a.button {
     padding: 8px 20px;
     font-size: 22px;
     border: 2px solid #cacaca;
@@ -332,12 +332,12 @@
     background: #ededed;
     font-weight: inherit;
 }
-.pos .actionpad .button:hover {
+.pos.mobile .actionpad .button:hover {
     background: #6EC89B;
     color: white;
     border-color: transparent;
 }
-.pos .actionpad .button:active {
+.pos.mobile .actionpad .button:active {
     background: black;
     color: white;
     border-color: transparent;
@@ -373,7 +373,7 @@
     position: relative;
     font-size: 48px;
 }
-.pos .actionpad .button.set-customer.decentered {
+.pos.mobile .actionpad .button.set-customer.decentered {
     padding-left: 5px;
     padding-right: 5px;
     font-size: 35px;
@@ -569,7 +569,7 @@
     background: white;
     text-align: center;
 }
-.pos .category-list-scroller {
+.pos.mobile .category-list-scroller {
     max-height: 342px;
 }
 /*  d) the category button */
