@@ -10,8 +10,19 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
     chrome.Chrome.include({
         // This method instantiates all the screens, widgets, etc.
         build_widgets: function() {
-            this._super();
             var self = this;
+            // floors swiper (you can to use the 'resistanceRatio': 1 parameter)
+            // read more about it http://idangero.us/swiper/api/#parameters
+            this.swiper_floors = new window.Swiper('.swiper-container-map', {
+                'resistanceRatio': 0
+            });
+
+            // Event will be fired after transition to another slide
+            this.swiper_floors.on('transitionEnd', function() {
+                self.change_current_floor();
+            });
+
+            this._super();
 
             // floor screen swiper
             this.swiper_floor_screen = new window.Swiper('.swiper-container-floor-screen', {
@@ -24,17 +35,6 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             // remove all events for floor swiper
             this.swiper_floor_screen.destroy(false , false);
 
-            // floors swiper (you can to use the 'resistanceRatio': 1 parameter)
-            // read more about it http://idangero.us/swiper/api/#parameters
-            this.swiper_floors = new window.Swiper('.swiper-container-map', {
-                'resistanceRatio': 0
-            });
-
-            // Event will be fired after transition to another slide
-            this.swiper_floors.on('transitionEnd', function() {
-                self.change_current_floor();
-            });
-
             var floor_selector = $('.floor-screen .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();
@@ -44,7 +44,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             // floors
             if (this.pos.floors) {
                 _.each(this.pos.floors, function(floor, index){
-                    self.rerender_floors(floor.id, index);
+                    self.render_all_floors(floor.id, index);
                 });
             }
 
@@ -98,43 +98,30 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                 this.menu_is_opened = true;
             }
         },
-        rerender_floors: function(id, index) {
+        render_all_floors: function(id, index) {
             var floor_widget = this.gui.screen_instances.floors;
             floor_widget.floor = this.pos.floors_by_id[id];
-            this.swiper_floors.appendSlide('<div class="swiper-slide slide-floor" id="slide-floor" data-id='+id+'></div>');
             floor_widget.renderElement();
-            var floor_map = $('.floor-screen .floor-map');
-            floor_map.detach();
-            $($(".swiper-container-map .swiper-wrapper .slide-floor")[index]).append(floor_map);
-            this.rerender_floors_scrolling();
         },
         // set or change current order
         change_current_floor: function(id) {
             if (!this.pos.floors || !this.pos.floors.length) {
                 return false;
             }
-
             var self = this;
-
             var active_floor = $('.slide-floor.swiper-slide-active');
+
             var floor_id = id || active_floor.data('id');
 
             this.gui.screen_instances.floors.floor = this.pos.floors_by_id[floor_id];
             this.gui.screen_instances.floors.renderElement();
 
-            var floor_map = $('.floor-screen .floor-map');
-            if (floor_map.length) {
-                floor_map.detach();
-                $('.slide-floor.swiper-slide-active .floor-map').replaceWith(floor_map);
-            }
             // replace floor selector
             var floor_selector = $('.floor-screen .floor-selector');
             if (floor_selector.length) {
                 floor_selector.detach();
                 $(".mobile-floor-selector .floor-selector").replaceWith(floor_selector);
             }
-
-            this.rerender_floors_scrolling();
 
             // event for menu button
             this.menuButton = $('.menu-button');
@@ -146,11 +133,14 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
 
             // close left menu
             this.swiper_floor_screen.slideTo(1);
-        },
-        rerender_floors_scrolling: function(){
+
+            // set active selector
+            $('.mobile-floor-selector').find('.button-floor.active').removeClass('active');
+            $('.mobile-floor-selector').find('.button-floor[data-id=' + floor_id +']').addClass('active');
+            active_floor.find('.tables').getNiceScroll().doScrollPos(0, 0);
+
             if (!this.pos.iOS) {
-                $('.floor-scroll').remove();
-                $('.tables').niceScroll({
+                active_floor.find('.tables').niceScroll({
                     horizrailenabled: false,
                     scrollCLass: 'floor-scroll',
                 });

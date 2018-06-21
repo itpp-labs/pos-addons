@@ -32,12 +32,11 @@ odoo.define('pos_order_cancel.models', function (require) {
             var self = this;
             this.is_cancelled = true;
             this.reason = reason;
-            this.orderlines.each(function(line){
-                self.save_canceled_line(line);
-                self.save_reason_cancelled_line(line, _t("Order Deleting") + "; " + reason, cancelled_reason_ids);
-            });
             while (this.get_orderlines().length) {
-                self.remove_orderline(this.get_orderlines()[0]);
+                var line = this.get_orderlines()[0];
+                this.save_canceled_line(line);
+                this.save_reason_cancelled_line(line, _t("Order Deleting") + "; " + reason, cancelled_reason_ids);
+                this.remove_orderline(line);
             }
             this.upload_order_as_canceled();
         },
@@ -161,10 +160,13 @@ odoo.define('pos_order_cancel.models', function (require) {
         set_quantity: function(quantity) {
             this.old_quantity = this.quantity;
             _super_orderline.set_quantity.apply(this,arguments);
-            if (this.max_quantity <= Number(quantity)) {
+            this.check_max_quantity(quantity);
+        },
+        check_max_quantity: function(quantity) {
+            if (this.max_quantity && this.max_quantity <= Number(quantity)) {
                 this.max_quantity = Number(quantity);
                 this.order.remove_canceled_lines(this);
-            } else if(this.max_quantity > Number(quantity)) {
+            } else if(this.max_quantity && this.max_quantity > Number(quantity)) {
                 this.order.change_cancelled_quantity(this);
             }
             this.order.ask_cancel_reason = false;
