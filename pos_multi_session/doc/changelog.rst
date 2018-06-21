@@ -1,3 +1,7 @@
+`4.1.0`
+-------
+- **NEW:** Field "Active" to enable/disable synchronization for POSes. The multi-session parameter is required now to provide compatibility with "POS Multi Session Menu" module and other modules that put common settings in "POS Multi Session"
+
 `4.0.6`
 -------
 - **FIX:** Incompatibility with pos_order_cancel_restaurant: it showed *Synchronization error* on removing order
