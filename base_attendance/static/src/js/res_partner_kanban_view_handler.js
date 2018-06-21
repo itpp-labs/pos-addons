@@ -1,4 +1,6 @@
-
+/* Copyright (c) 2004-2015 Odoo S.A.
+   Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('base_attendance.partner_kanban_view_handler', function(require) {
 "use strict";
 

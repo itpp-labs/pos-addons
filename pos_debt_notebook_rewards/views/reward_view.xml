@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
     <record id="view_pos_credit_update_reward_tree" model="ir.ui.view">
         <field name="name">pos.credit.update.reward.tree</field>
