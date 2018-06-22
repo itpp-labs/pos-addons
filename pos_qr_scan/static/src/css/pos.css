@@ -42,11 +42,3 @@
 .fa-qrcode:before {
   content: "\f029";
 }
-
-.footer-qr {
-    position: absolute;
-    bottom: 25px;
-    left: 0;
-    height: 60px;
-    border-top: solid 1px rgba(60,60,60,0.1);
-}

@@ -50,12 +50,7 @@ odoo.define('pos_qr_scan', function(require){
             var qr_scan_popup = this.pos.gui.popup_instances.qr_scan;
             var all_cameras = Instascan.Camera.getCameras();
             $('#preview').on('click',function(){
-//                qr_scan_popup.click_cancel();
-                scanner.start(all_cameras.then(function (cameras) {
-                    if (cameras.length > 0) {
-                        scanner.start(cameras[0]);
-                    }
-                }));
+                self.click_cancel();
             });
             scanner.addListener('scan', function (content) {
                 self.pos.get_order().auth_code = content;
@@ -64,18 +59,6 @@ odoo.define('pos_qr_scan', function(require){
             all_cameras.then(function (cameras) {
                 if (cameras.length > 0) {
                     scanner.start(cameras[0]);
-
-                    var promise = document.querySelector('video').play();
-                    if (promise !== undefined) {
-                        promise.catch(error => {
-                            alert('adsadsadsadsad')
-                            // Auto-play was prevented
-                            // Show a UI element to let the user manually start playback
-                        }).then(() => {
-                            // Auto-play started
-                        });
-                    }
-
                     for (var i = 0; i < cameras.length; i++) {
                         self.add_button(cameras[i]).off().on('click',function(e){
                             scanner.stop();

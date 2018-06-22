@@ -23,10 +23,6 @@
                         <p>Cameras:</p>
                         <p></p>
                     </div>
-                    <div class="footer-qr">
-                        <div class="button confirm">Ok</div>
-                        <div class="button cancel">Cancel</div>
-                    </div>
                 </div>
                 <div class="note">
                     <p> Tap on the video to quit </p>
