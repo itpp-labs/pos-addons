@@ -13,7 +13,7 @@
 
             <div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> <t t-esc="order.name"/></div>
             <br />
-            <t t-esc="widget.pos.company.name"/> (<t t-esc="order.get_receipt_type()"/>)<br />
+            <t t-esc="widget.pos.company.name"/> <span class='receipt-type'>(<t t-esc="order.get_receipt_type()"/>)</span><br />
             <table>
                 <colgroup>
                     <col width='60%' />

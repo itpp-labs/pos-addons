@@ -167,10 +167,12 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
         export_as_JSON: function(){
             var json = _super_order.export_as_JSON.call(this);
             json.first_order_printing = this.first_order_printing;
+            json.table_open_time  = this.table ? this.table.open_time : false;
             return json;
         },
         init_from_JSON: function(json) {
             _super_order.init_from_JSON.apply(this,arguments);
+            this.table.open_time = json.table_open_time;
             this.first_order_printing = json.first_order_printing;
         },
     });

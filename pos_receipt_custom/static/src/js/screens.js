@@ -65,7 +65,16 @@ odoo.define('pos_receipt_custom.screens', function(require){
         },
         render_receipt: function(){
             if (this.pos.config.custom_ticket) {
-                this.$('.pos-receipt-container').html(this.get_custom_ticket());
+                var order = this.pos.get_order();
+                var ticket = this.get_custom_ticket();
+                this.$('.pos-receipt-container').html(ticket);
+                // for compatibility with pos_orders_history_reprint
+                if (this.save_order_receipt) {
+                    var template = $.parseXML(ticket).children[0];
+                    $(template).find(".receipt-type").html("(Supplement)");
+                    ticket = template.outerHTML;
+                    this.save_order_receipt(order, ticket, 'ticket');
+                }
             } else {
                 this._super();
             }
@@ -78,13 +87,12 @@ odoo.define('pos_receipt_custom.screens', function(require){
                 order._printed = true;
 
                 // for compatibility with pos_orders_history_reprint
-                if (this.save_order_xml) {
+                if (this.save_order_receipt) {
                     var template = $.parseXML(receipt).children[0];
                     $(template).find(".receipt-type").html("(Supplement)");
                     receipt = template.outerHTML;
-                    this.save_order_xml(order, receipt);
+                    this.save_order_receipt(order, receipt, 'xml');
                 }
-
                 order.set_receipt_type(false);
             } else {
                 this._super();
