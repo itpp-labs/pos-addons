@@ -43,6 +43,11 @@ odoo.define('pos_qr_scan', function(require){
             new_scan.setAttribute('camera-id', content.id);
             return $('.transparent_sidebar > .body').append(new_scan);
         },
+        get_camera_by_id: function(cameras, id) {
+            return _.find(cameras, function(cam){
+                return cam.id === id;
+            });
+        },
         generate_qr_scanner: function() {
             var self = this;
             this.var_scanner = new Instascan.Scanner({video: document.getElementById('preview')});
@@ -58,13 +63,14 @@ odoo.define('pos_qr_scan', function(require){
             });
             all_cameras.then(function (cameras) {
                 if (cameras.length > 0) {
-                    scanner.start(cameras[0]);
+                    var active_camera_id = localStorage.active_camera_id || cameras[0].id;
+                    scanner.start(self.get_camera_by_id(cameras, active_camera_id));
                     for (var i = 0; i < cameras.length; i++) {
                         self.add_button(cameras[i]).off().on('click',function(e){
                             scanner.stop();
-                            scanner.start(_.find(cameras, function(cam){
-                                return cam.id === e.target.getAttribute('camera-id');
-                            }));
+                            active_camera = self.get_camera_by_id(cameras, e.target.getAttribute('camera-id'));
+                            scanner.start(active_camera);
+                            localStorage.active_camera_id = active_camera.id;
                         });
                     };
                 } else {
