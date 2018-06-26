@@ -10,10 +10,8 @@
     <t t-name="QrScanPopupWidget">
         <div class="modal-dialog">
             <div class="popup popup-qr_scan">
-                <div class="preview-container">
-                    <video  autoplay="autoplay" id="preview" class="active video_preview" style="transform: scaleX(-1);">
-                        Tap to start scanning
-                    </video>
+                <div id="preview-container">
+                    <video id="preview" class="video_preview" autoplay="true"></video>
                 </div>
                 <div class="transparent_sidebar">
                     <div class="title">
@@ -28,6 +26,7 @@
                     <p> Tap on the video to quit </p>
                 </div>
             </div>
+            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px;"></canvas>
         </div>
     </t>
 

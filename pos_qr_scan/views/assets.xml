@@ -5,7 +5,24 @@
         <template id="assets_backend" name="pos_qr_scan assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_qr_scan/static/src/js/qr_scan.js"></script>
-                <script type="text/javascript" src="/pos_qr_scan/static/src/js/instascan.min.js"></script>
+
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/grid.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/version.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/detector.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/formatinf.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/errorlevel.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/bitmat.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/datablock.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/bmparser.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/datamask.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/rsdecoder.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/gf256poly.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/gf256.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/decoder.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/qrcode.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/findpat.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/alignpat.js"></script>
+                <script type="text/javascript" src="/pos_qr_scan/static/src/jsqrcode/databr.js"></script>
             </xpath>
             <xpath expr="//link[@id='pos-stylesheet']" position="after">
               <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css"/>
