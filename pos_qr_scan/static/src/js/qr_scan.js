@@ -72,7 +72,6 @@ odoo.define('pos_qr_scan', function(require){
                            return d.kind === 'videoinput';
                         });
                         _.each(self.video_devices, function(device) {
-                            console.log(device.kind + ": " + device.label +" id = " + device.deviceId);
                             options = options || {'deviceId': {'exact':device.deviceId}};
                             if(device.label.toLowerCase().search("back") > -1) {
                                 options = {'deviceId': {'exact':device.deviceId}, 'facingMode':'environment'} ;
@@ -108,7 +107,6 @@ odoo.define('pos_qr_scan', function(require){
 
         start_webcam: function(options){
             var self = this;
-            console.log(options);
             this.initCanvas(800, 600);
             qrcode.callback = this.read;
             if(navigator.mediaDevices.getUserMedia){
@@ -121,10 +119,10 @@ odoo.define('pos_qr_scan', function(require){
                     });
             // dont know for what this is needed
             } else if(navigator.getUserMedia){
-                webkit=true;
+                webkit = true;
                 navigator.getUserMedia({video: options, audio: false}, success, error);
             } else if(navigator.webkitGetUserMedia){
-                webkit=true;
+                webkit = true;
                 navigator.webkitGetUserMedia({video:options, audio: false}, success, error);
             }
 
