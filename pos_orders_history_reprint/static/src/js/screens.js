@@ -26,14 +26,26 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 paymentlines: order.get_paymentlines()
             };
             var receipt = QWeb.render('XmlReceipt',env);
-            this.save_order_xml(order, receipt);
+            this.save_order_receipt(order, receipt, 'xml');
         },
-        save_order_xml: function (order, receipt) {
-            var name = order.name,
-                receipt = receipt;
-            new Model('pos.xml_receipt').call('save_xml_receipt', [[], name, receipt]).then(function () {
-                console.log('XML receipt has been saved.');
+        save_order_receipt: function (order, receipt, receipt_type) {
+            var name = order.name;
+            new Model('pos.xml_receipt').call('save_xml_receipt', [[], name, receipt, receipt_type]).then(function (result) {
+                console.log(receipt_type, ' receipt has been saved.');
             });
+        },
+        render_receipt: function() {
+            this._super();
+            var order = this.pos.get_order();
+            var env = {
+                widget:  this,
+                order: order,
+                receipt: order.export_for_printing(),
+                orderlines: order.get_orderlines(),
+                paymentlines: order.get_paymentlines()
+            };
+            var ticket = QWeb.render('PosTicket',env);
+            this.save_order_receipt(order, ticket, 'ticket');
         },
     });
 
@@ -41,38 +53,23 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         show: function () {
             var self = this;
             this._super();
-            this.$('.button.reprint').addClass('line-element-hidden');
-
-            this.$('.button.reprint').unbind().click(function (e) {
-                self.reprint_order();
-            });
-        },
-        reprint_order: function () {
-            if (!this.selected_order) {
-                return;
+            if (this.pos.config.reprint_orders) {
+                this.$('.actions.oe_hidden').removeClass('oe_hidden');
+                this.$('.button.reprint').unbind('click');
+                this.$('.button.reprint').click(function (e) {
+                    var parent = $(this).parents('.order-line');
+                    var id = parseInt(parent.data('id'));
+                    self.click_reprint_order(id);
+                });
             }
-            this.gui.show_screen('reprint_receipt');
         },
-        clear_selected_order: function () {
-            this.selected_order = false;
+        click_reprint_order: function (id) {
+            this.gui.show_screen('reprint_receipt', {order_id: id});
         },
-
-        line_select: function (event, $line, id) {
-            this._super(event, $line, id);
-            if ($line.hasClass('active')) {
-                this.$('.button.reprint').removeClass('line-element-hidden');
-            } else {
-                this.$('.button.reprint').addClass('line-element-hidden');
-            }
-        }
     });
 
     screens.ReprintReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
         template: 'ReprintReceiptScreenWidget',
-        init: function (options) {
-            this._super(options);
-            this.orders_history_screen = this.gui.screen_instances.orders_history_screen;
-        },
         show: function () {
             var self = this;
             this._super();
@@ -80,131 +77,110 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 self.gui.show_screen('orders_history_screen');
             });
         },
-        handle_auto_print: function() {
-            if (this.should_auto_print()) {
-                this.print();
-                if (this.should_close_immediately()){
-                    this.click_next();
-                }
-            } else {
-                this.lock_screen(false);
-            }
-        },
-        should_close_immediately: function() {
-            return this.pos.config.iface_print_via_proxy && this.pos.config.iface_print_skip_screen;
-        },
-        should_auto_print: function() {
-            return this.pos.config.iface_print_auto;
-        },
         click_next: function() {
             this.gui.show_screen('orders_history_screen');
         },
         get_order: function () {
-            return this.orders_history_screen.selected_order;
+            var order_id = this.gui.get_current_screen_param('order_id');
+            return this.pos.db.orders_history_by_id[order_id];
         },
-        get_orderlines: function (order) {
-            var self = this,
-                ids = order.lines;
-            return _.map(ids, function (id, index) {
-                return self.pos.db.line_by_id[id];
-            });
-        },
-        get_additional_data: function (id) {
-            var self = this,
-                def = $.Deferred();
-            new Model('pos.order').call('send_pos_ticket_reprint_data', [id])
-            .then(function (res) {
-                def.resolve(res);
-            });
-            return def;
-        },
-        print_xml: function () {
-            var self = this,
-                ref = this.get_order().pos_reference;
-            new Model('pos.xml_receipt')
-                .query(['receipt'])
-                .filter([['pos_reference', '=', ref]])
-                .all().then(function (res) {
-                    if (res && Array.isArray(res) && res[0]) {
-                        var receipt = res[0].receipt.replace('\n', '');
-                        self.pos.proxy.print_receipt(receipt);
+        print_xml: function (receipt) {
+            var self = this;
+            this.show_popup = false;
+            var order = this.get_order();
+            if (receipt) {
+                receipt = receipt.receipt;
+                if (this.pos.config.show_barcode_in_receipt) {
+                    var barcode = this.$el.find('#barcode').parent().html();
+                    if (!barcode) {
+                        var receipt_reference = order.pos_reference.split(" ")[1];
+                        var el = document.createElement('div');
+                        $(el).append("<img id='barcode'></img>");
+                        $(el).find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
+                        $(el).find('#barcode').css({
+                            "width": "100%"
+                        });
+                        barcode = $(el).find('#barcode').parent().html();
+                    }
+                    receipt = receipt.split('<img id="barcode"/>');
+                    receipt[0] = receipt[0] + barcode + '</img>';
+                    receipt = receipt.join('');
+                }
+                this.pos.proxy.print_receipt(receipt);
+            } else {
+                if (self.pos.config.show_posted_orders && order.state === "done") {
+                    new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(receipt) {
+                        if (receipt && receipt.length) {
+                            self.print_xml(receipt[0]);
+                        } else {
+                            self.show_popup = true;
+                            self.click_next();
+                        }
+                    });
+                } else {
+                    var receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
+                    if (receipt) {
+                        this.print_xml(receipt);
                     } else {
-                        self.gui.show_popup('error',{
-                            'title': _t('No XML Receipt.'),
-                            'body': _t('There is no XML receipt for the selected order.'),
+                        this.show_popup = true;
+                        self.click_next();
+                    }
+                }
+            }
+        },
+        click_next: function() {
+            this.gui.show_screen('orders_history_screen');
+            if (this.show_popup) {
+                this.gui.show_popup('error',{
+                    'title': _t('No XML Receipt.'),
+                    'body': _t('There is no XML receipt for the order.'),
+                });
+            }
+        },
+        print_web: function() {
+            window.print();
+        },
+        render_receipt: function (ticket) {
+            var self = this;
+            var order = this.get_order();
+            // remove old html
+            this.$('.pos-receipt-container').html("");
+            if (ticket) {
+                // add new html
+                this.$('.pos-receipt-container').html(ticket.receipt);
+                if (this.pos.config.show_barcode_in_receipt) {
+                    // reference without 'Order'
+                    var receipt_reference = order.pos_reference.split(" ")[1];
+                    this.$el.find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
+                    this.$el.find('#barcode').css({
+                        "width": "100%"
+                    });
+                }
+            } else {
+                if (self.pos.config.show_posted_orders && order.state === "done") {
+                    new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]).then(function(ticket) {
+                        if (ticket && ticket.length) {
+                            self.render_receipt(ticket[0]);
+                        } else {
+                            self.gui.show_popup('error',{
+                                'title': _t('No Ticket.'),
+                                'body': _t('There is no Ticket for the order.'),
+                            });
+                        }
+                    });
+                } else {
+                    var ticket = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'ticket');
+                    if (ticket) {
+                        self.render_receipt(ticket);
+                    } else {
+                        this.gui.show_popup('error',{
+                            'title': _t('No Ticket.'),
+                            'body': _t('There is no Ticket for the order.'),
                         });
                     }
-                });
-        },
-        render_receipt: function () {
-            var self = this,
-                order = this.get_order(),
-                orderlines = this.get_orderlines(order);
-                this.get_additional_data(order.id).then(function (res) {
-                    var data = res;
-                    self.$('.pos-receipt-container').html(QWeb.render('PosTicketReprint', {
-                        widget: self,
-                        order: order,
-                        orderlines: orderlines,
-                        paymentlines: data.paymentlines,
-                        taxes: data.taxes,
-                        receipt: self.pos.get_order()
-                            ? self.pos.get_order().export_for_printing()
-                            : self.get_receipt_data()
-                    }));
-                });
-        },
-        get_receipt_data: function () {
-            function is_xml(subreceipt){
-                return subreceipt ? (subreceipt.split('\n')[0].indexOf('<!DOCTYPE QWEB') >= 0) : false;
-            }
-            var company = this.pos.company,
-                receipt = {
-                    company: {
-                        email: company.email,
-                        website: company.website,
-                        company_registry: company.company_registry,
-                        contact_address: company.partner_id[1],
-                        vat: company.vat,
-                        name: company.name,
-                        phone: company.phone,
-                        logo:  this.pos.company_logo_base64,
-                    },
                 }
-            if (is_xml(this.pos.config.receipt_header)){
-                receipt.header = '';
-                receipt.header_xml = render_xml(this.pos.config.receipt_header);
-            } else {
-                receipt.header = this.pos.config.receipt_header || '';
             }
-
-            if (is_xml(this.pos.config.receipt_footer)){
-                receipt.footer = '';
-                receipt.footer_xml = render_xml(this.pos.config.receipt_footer);
-            } else {
-                receipt.footer = this.pos.config.receipt_footer || '';
-            }
-
-            return receipt;
-        },
-        get_total_discount: function (orderlines) {
-            return round_pr(orderlines.reduce((function (sum, orderLine) {
-                return sum + (orderLine.price_unit * (orderLine.discount/100) * orderLine.qty);
-            }), 0), this.pos.currency.rounding);
-        },
-        get_total_without_tax: function (orderlines) {
-            return round_pr(orderlines.reduce((function (sum, orderLine) {
-                return sum + orderLine.price_unit * orderLine.qty ;
-            }), 0), this.pos.currency.rounding);
-        },
-        get_subtotal: function (orderlines) {
-            return round_pr(orderlines.reduce((function (sum, orderLine) {
-                return sum + orderLine.price_subtotal;
-            }), 0), this.pos.currency.rounding);
-        },
-        render_change: function () {
-            return;
-        },
+        }
     });
 
     gui.define_screen({name:'reprint_receipt', widget: screens.ReprintReceiptScreenWidget});

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Artem Losev
+     Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <templates id="template" xml:space="preserve">
 
-    <t t-extend="OrdersHistoryScreenWidget">
-        <t t-jquery=".button.back" t-operation="after">
-            <span class="button reprint">Reprint</span>
+    <t t-extend="OrderHistory">
+        <t t-jquery=".actions.oe_hidden" t-operation="append">
+            <span class="button reprint"><i class="fa fa-print "></i> Reprint</span>
         </t>
     </t>
 
@@ -122,181 +123,6 @@
                 </div>
             </div>
         </div>
-    </t>
-
-    <t t-name="ReprintXmlReceiptWrappedProductNameLines">
-        <t t-foreach="line.product_name_wrapped.slice(1)" t-as="wrapped_line">
-            <line>
-                <left><t t-esc="wrapped_line"/></left>
-            </line>
-        </t>
-    </t>
-
-    <t t-name="ReprintXmlReceipt">
-        <receipt align='center' width='40' value-thousands-separator='' >
-
-            <t t-if='receipt.company.logo'>
-                <img t-att-src='receipt.company.logo' />
-                <br/>
-            </t>
-            <t t-if='!receipt.company.logo'>
-                <h1><t t-esc='receipt.company.name' /></h1>
-                <br/>
-            </t>
-            <div font='b'>
-                <t t-if='receipt.company.contact_address'>
-                    <div><t t-esc='receipt.company.contact_address' /></div>
-                </t>
-                <t t-if='receipt.company.phone'>
-                    <div>Tel:<t t-esc='receipt.company.phone' /></div>
-                </t>
-                <t t-if='receipt.company.vat'>
-                    <div>VAT:<t t-esc='receipt.company.vat' /></div>
-                </t>
-                <t t-if='receipt.company.email'>
-                    <div><t t-esc='receipt.company.email' /></div>
-                </t>
-                <t t-if='receipt.company.website'>
-                    <div><t t-esc='receipt.company.website' /></div>
-                </t>
-                <t t-if='receipt.header_xml'>
-                    <t t-raw='receipt.header_xml' />
-                </t>
-                <t t-if='!receipt.header_xml and receipt.header'>
-                    <div><t t-esc='receipt.header' /></div>
-                </t>
-                <t t-if='order.create_uid[1]'>
-                    <div class='cashier'>
-                        <div>--------------------------------</div>
-                        <div>Served by <t t-esc='order.create_uid[1]' /></div>
-                    </div>
-                </t>
-            </div>
-            <br /><br />
-
-            <!-- Orderlines -->
-            <div class='orderlines' line-ratio='0.6'>
-                <t t-foreach='orderlines' t-as='line'>
-                    <t t-set='simple' t-value='line.discount === 0 and line.qty === 1 and widget.get_uom(line) === "Unit(s)"' />
-                    <t t-if='simple'>
-                        <line>
-                            <left><t t-esc='line.product_name_wrapped[0]' /></left>
-                            <right>
-                            <value t-att-value-decimals='pos.currency.decimals'>
-                            <t t-esc='line.price_unit' /></value></right>
-                        </line>
-                        <t t-call="XmlReceiptWrappedProductNameLines"/>
-                    </t>
-                    <t t-if='!simple'>
-                        <line><left><t t-esc='line.product_name_wrapped[0]' /></left></line>
-                        <t t-call="XmlReceiptWrappedProductNameLines"/>
-                        <t t-if='line.discount !== 0'>
-                            <line indent='1'><left>Discount: <t t-esc='line.discount' />%</left></line>
-                        </t>
-                        <line indent='1'>
-                            <left>
-                                <value t-att-value-decimals='pos.dp["Product Unit of Measure"]' value-autoint='on'>
-                                    <t t-esc='line.qty' />
-                                </value>
-                                <t t-if='widget.get_uom(line) !== "Unit(s)"'>
-                                    <t t-esc='widget.get_uom(line)' /> 
-                                </t>
-                                <value t-att-value-decimals='pos.dp["Product Price"]'>
-                                    <t t-esc='line.price_unit' />
-                                </value>
-                            </left>
-                            <right>
-                                <value t-att-value-decimals='pos.currency.decimals'><t t-esc='line.price_subtotal' /></value>
-                            </right>
-                        </line>
-                    </t>
-                </t>
-            </div>
-
-            <!-- Subtotal -->
-
-            <t t-set='taxincluded' t-value='order.amount_tax &lt;= 0.000001' />
-            <t t-if='order.amount_tax'>
-                <line><right>--------</right></line>
-                <line><left>Subtotal</left><right><value t-att-value-decimals='pos.currency.decimals'>
-                <t t-esc="widget.get_subtotal(orderlines)" /></value></right></line>
-                <t t-foreach='taxes' t-as='tax'>
-                    <line>
-                        <left><t t-esc='tax.name' /></left>
-                        <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='order.amount_tax' /></value></right>
-                    </line>
-                </t>
-            </t>
-
-            <!-- Total -->
-
-            <line><right>--------</right></line>
-            <line class='total' size='double-height'>
-                <left><pre>        TOTAL</pre></left>
-                <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='order.amount_total' /></value></right>
-            </line>
-            <br/><br/>
-
-            <!-- Payment Lines -->
-
-            <t t-foreach='paymentlines' t-as='line'>
-                <line>
-                    <left><t t-esc='line.name' /></left>
-                    <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='line.amount'/></value></right>
-                </line>
-            </t>
-            <br/> 
-
-            <line size='double-height'>
-                <left><pre>        CHANGE</pre></left>
-                <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='order.amount_return' /></value></right>
-            </line>
-            <br/>
-            
-            <!-- Extra Payment Info -->
-
-            <t t-if='widget.get_total_discount(orderlines)'>
-                <line>
-                    <left>Discounts</left>
-                    <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='widget.get_total_discount(orderlines)'/></value></right>
-                </line>
-            </t>
-            <t t-if='taxincluded'>
-                <t t-foreach='taxes' t-as='tax'>
-                    <line>
-                        <left><t t-esc='tax.name' /></left>
-                        <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='tax.amount' /></value></right>
-                    </line>
-                </t>
-                <line>
-                    <left>Total Taxes</left>
-                    <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='order.amount_tax'/></value></right>
-                </line>
-            </t>
-
-            <div class='before-footer' />
-
-             <!-- Footer -->
-            <t t-if='receipt.footer_xml'>
-                <t t-raw='receipt.footer_xml' />
-            </t>
-
-            <t t-if='!receipt.footer_xml and receipt.footer'>
-                <br/>
-                <t t-esc='receipt.footer' />
-                <br/>
-                <br/>
-            </t>
-
-            <div class='after-footer' />
-
-            <br/>
-            <div font='b'>
-                <div><t t-esc='order.pos_reference' /></div>
-                <div><t t-esc='order.date_order' /></div>
-            </div>
-
-        </receipt>
     </t>
 
 

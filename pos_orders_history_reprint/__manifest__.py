@@ -26,6 +26,7 @@
         "security/ir.model.access.csv",
         "views/template.xml",
         "views/view.xml",
+        "data/base_action_rule.xml",
     ],
     "demo": [
     ],

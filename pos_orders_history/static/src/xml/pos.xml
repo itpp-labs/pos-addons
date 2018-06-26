@@ -131,52 +131,6 @@
         </tr>
     </t>
 
-    <t t-name="OrderLinesHistoryScreenWidget">
-        <div class="orderlines-list-screen screen">
-            <div class="screen-content">
-                <section class="top-content">
-                    <span class='button back'>
-                        <i class='fa fa-angle-double-left'></i>
-                        Back
-                    </span>
-                    <span class='button next oe_hidden highlight'>
-                        Reorder
-                        <i class='fa fa-angle-double-right'></i>
-                    </span>
-                </section>
-                <section class="full-content">
-                    <div class='window'>
-                        <section class='subwindow order-details-content'>
-                        </section>
-
-                        <section class='subwindow'>
-                            <div class='subwindow-container'>
-                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
-                                    <table class='orderline-list'>
-                                        <thead>
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th>Unit Price</th>
-                                                <th>Discount</th>
-                                                <th>Taxes</th>
-                                                <th>Subtotal w/o Tax</th>
-                                                <th>Subtotal</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class='orderline-list-contents'>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </t>
-
     <t t-name="LineHistory">
         <tr class='line-line'>
             <td>

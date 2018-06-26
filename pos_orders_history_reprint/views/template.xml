@@ -6,6 +6,7 @@
     <template id="assets_backend" name="pos_orders_history assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_orders_history_reprint/static/src/js/screens.js"></script>
+            <script type="text/javascript" src="/pos_orders_history_reprint/static/src/js/models.js"></script>
             <link rel="stylesheet" href="/pos_orders_history_reprint/static/src/css/main.css"/>
         </xpath>
     </template>
