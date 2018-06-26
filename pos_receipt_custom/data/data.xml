@@ -20,7 +20,7 @@
                     <col width='40%' />
                 </colgroup>
                 <tr>
-                    <td>Waiter: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/></td>
+                    <td>Waiter: <t t-esc="order.get_last_orderline_user_name()"/></td>
                     <td><t t-if='widget.pos.table'>Table: <t t-esc="widget.pos.table.name"/></t></td>
                 </tr>
                 <tr>
@@ -239,7 +239,7 @@
                     <right class='receipt-type'>(<t t-esc="order.get_receipt_type()"/>)</right>
                 </line>
                 <line>
-                    <left>Waiter: <t t-esc='receipt.cashier' /></left>
+                    <left>Waiter: <t t-esc='order.get_last_orderline_user_name()' /></left>
                     <right><t t-if='receipt.table'>Table: <t t-esc='receipt.table' /></t></right>
                 </line>
                 <line>

@@ -48,7 +48,7 @@ odoo.define('pos_restaurant.print_method', function (require) {
                             changes_new.new = [orderline];
 
                             // This check is required for compatibility with the module https://www.odoo.com/apps/modules/10.0/pos_order_receipt_custom/
-                            if (printer.config.receipt_format_id && self.print_custom_receipt) {
+                            if (printer.config.custom_order_receipt && self.print_custom_receipt) {
                                 self.print_custom_receipt(printer, changes_new);
                             } else {
                                 var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_new, widget:self});
@@ -64,7 +64,7 @@ odoo.define('pos_restaurant.print_method', function (require) {
                             changes_cancelled.cancelled = [orderline];
                             changes_cancelled.new = [];
                             // This check is required for compatibility with the module https://www.odoo.com/apps/modules/10.0/pos_order_receipt_custom/
-                            if (printer.config.receipt_format_id && self.print_custom_receipt) {
+                            if (printer.config.custom_order_receipt && self.print_custom_receipt) {
                                 self.print_custom_receipt(printer, changes_cancelled);
                             } else {
                                 var receipt = QWeb.render('OrderChangeReceipt',{changes:changes_cancelled, widget:self});
