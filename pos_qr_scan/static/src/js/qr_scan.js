@@ -105,6 +105,7 @@ odoo.define('pos_qr_scan', function(require){
         read: function(result){
             console.log(result);
             alert(result);
+            posmodel.gui.popup_instances.qr_scan.click_cancel();
             return result;
         },
 
