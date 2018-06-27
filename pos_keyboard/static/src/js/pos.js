@@ -86,6 +86,23 @@ odoo.define('pos_keyboard.pos', function (require) {
             this.action_callback = undefined;
         },
 
+<<<<<<< HEAD
+=======
+        is_allowed: function(ttype){
+            // pos_disable_payment installed?
+            if (!window.posmodel.config.hasOwnProperty('allow_discount')) {
+                return true;
+            }
+            if (ttype === 'discount') {
+                return window.posmodel.config.allow_discount;
+            } else
+            if (ttype === 'edit_price') {
+                return window.posmodel.config.allow_edit_price;
+            } 
+            return false;
+        },
+        
+>>>>>>> 124d313... Add new funtion to control whether it is allowed that operation
         // starts catching keyboard events and tries to interpret keystrokes,
         // calling the callback when needed.
         connect: function(){
@@ -142,6 +159,7 @@ odoo.define('pos_keyboard.pos', function (require) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.qty;
                         ok = true;
+<<<<<<< HEAD
                     }
                     else if (token == KC_AMT || token == KC_AMT_1) {
                         self.data.type = type.bmode;
@@ -149,6 +167,15 @@ odoo.define('pos_keyboard.pos', function (require) {
                         ok = true;
                     }
                     else if (token == KC_DISC || token == KC_DISC_1) {
+=======
+                    } 
+                    else if ((token == KC_AMT || token == KC_AMT_1) && self.is_allowed('edit_price')) {
+                        self.data.type = type.bmode;
+                        self.data.val = buttonMode.price;
+                        ok = true;
+                    } 
+                    else if ((token == KC_DISC || token == KC_DISC_1) && self.is_allowed('discount')) {
+>>>>>>> 124d313... Add new funtion to control whether it is allowed that operation
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.disc;
                         ok = true;
@@ -187,4 +214,8 @@ odoo.define('pos_keyboard.pos', function (require) {
     return {
         Keypad: Keypad
     };
+<<<<<<< HEAD
 });
+=======
+})();
+>>>>>>> 124d313... Add new funtion to control whether it is allowed that operation

@@ -3,6 +3,10 @@
 Updates
 =======
 
+'5.0.4'
+-------
+
+- Fix: compatibility issue with pos_disable_payment. In this version, a user cannot set a discount or change the prices of products for a customer, if he/she does not have permissions
 `1.0.2`
 -------
 
