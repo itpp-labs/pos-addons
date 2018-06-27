@@ -35,7 +35,9 @@ odoo.define('pos_qr_scan', function(require){
         },
         stop_camera: function(camera){
             this.cam_is_on = false;
-            this.stream.getTracks()[0].stop();
+            if (this.stream){
+                this.stream.getTracks()[0].stop();
+            }
         },
         add_button: function(content) {
             var button = document.createElement('div');
@@ -49,11 +51,11 @@ odoo.define('pos_qr_scan', function(require){
             var button = document.createElement('div');
             active_id = e.target.getAttribute('camera-id');
             this.start_webcam({'deviceId': {'exact': active_id}});
-            localStorage.active_camera_id = active_id;
+            this.pos.db.save('active_camera_id', active_id)
             return button;
         },
         get_camera_by_id: function(id) {
-            return _.find(self.video_devices, function(cam){
+            return _.find(this.video_devices, function(cam){
                 return cam.deviceId === id;
             });
         },
@@ -83,8 +85,9 @@ odoo.define('pos_qr_scan', function(require){
                                     self.add_button_click(e);
                                 });
                         });
-                        if(localStorage.active_camera_id){
-                            options = {'deviceId': {'exact':self.get_camera_by_id(localStorage.active_camera_id)}}
+                        var active_camera_id = self.pos.db.load('active_camera_id', false);
+                        if(active_camera_id && self.get_camera_by_id(active_camera_id)){
+                            options = {'deviceId': {'exact':active_camera_id}}
                         }
                         self.start_webcam(options);
                     });
