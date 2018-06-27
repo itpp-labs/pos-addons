@@ -1,7 +1,7 @@
 `2.0.3`
 -------
 
-- New: Attribute ``unit`` for compute change
+- New: Attribute ``unit`` to compute the change
 
 
 `2.0.2`
