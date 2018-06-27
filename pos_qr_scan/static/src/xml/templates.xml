@@ -26,7 +26,7 @@
                     <p> Tap on the video to quit </p>
                 </div>
             </div>
-            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px;"></canvas>
+            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
         </div>
     </t>
 

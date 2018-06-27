@@ -10,6 +10,9 @@
     height: 100%;
     width: 250px;
 }
+.transparent_sidebar .title{
+    background: none !important;
+}
 .popup.popup-qr_scan {
 	height: 100% !important;
 	width: 100% !important;
@@ -17,9 +20,13 @@
     display: flex;
     align-items: stretch;
     justify-content: stretch;
+    max-width: 100% !important;
+    max-height: 100% !important;
 }
 .qr-content {
     width: 100% !important;
+    overflow: hidden;
+    background: none !important;
 }
 
 .popup.popup-qr_scan .note {
