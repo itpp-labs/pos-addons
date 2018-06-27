@@ -1,3 +1,5 @@
+# Copyright 2018 {DEVELOPER_NAME} <https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Payments in POS via Wechat""",
     "summary": """WeChat payments in POS""",
@@ -19,9 +21,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "demo/pos_w_p_demo.xml",
         "views/assets.xml",
-        "views/views.xml",
     ],
     "qweb": [],
 
