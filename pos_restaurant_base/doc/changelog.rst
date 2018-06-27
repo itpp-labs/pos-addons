@@ -1,7 +1,7 @@
 `2.0.3`
 -------
 
-- New: Attribute ``unit`` to compute the change
+- New: Attribute ``unit`` to display the product UoM on order receipt
 
 
 `2.0.2`
