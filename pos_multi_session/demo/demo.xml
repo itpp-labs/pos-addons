@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright 2016 Ilyas Rakhimkulov
-     Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2016,2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 
 <odoo>
+
     <record id="demo_multi_session" model="pos.multi_session">
-        <field name="name">multi session demo</field>
+        <field name="name">Multi Session Demo</field>
+        <field name="multi_session_active">True</field>
     </record>
+
+    <record id="point_of_sale.pos_config_main" model="pos.config">
+        <field name="multi_session_id" ref="demo_multi_session"/>
+    </record>
+
     <record id="demo_multi_pos_config_one" model="pos.config">
         <field name="name">POS1</field>
         <field name="multi_session_id" ref="demo_multi_session"/>
     </record>
+
     <record id="demo_multi_pos_config_two" model="pos.config">
         <field name="name">POS2</field>
         <field name="multi_session_id" ref="demo_multi_session"/>
     </record>
+
     <record id="demo_multi_pos_config_three" model="pos.config">
         <field name="name">POS3</field>
-    </record>
-    <record id="point_of_sale.pos_config_main" model="pos.config">
-        <field name="multi_session_id" ref="demo_multi_session"/>
+        <field name="multi_session_id" ref="default_multi_session"/>
     </record>
 
     <record id="partner_demo2" model="res.partner">
