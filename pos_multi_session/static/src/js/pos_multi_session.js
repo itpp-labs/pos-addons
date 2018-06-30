@@ -365,13 +365,31 @@ odoo.define('pos_multi_session', function(require){
             }
             _.each(not_found, function(uid){
                 var line = order.orderlines.find(function(r){
-                               return uid === r.uid;
-                           });
-                order.orderlines.remove(line);
+                    return uid === r.uid;
+                });
+                // remove all lines
+                if (pos.config.multi_session_block_exist_order || (!pos.config.multi_session_block_exist_order && !line.offline_orderline)) {
+                    order.orderlines.remove(line);
+                }
             });
             order.order_on_server = true;
             order.new_order = false;
             order.init_locked = false;
+            if (!pos.config.multi_session_block_exist_order) {
+                var offline_orderlines = order.orderlines.filter(function(line) {
+                    return line.offline_orderline;
+                });
+                if (offline_orderlines && offline_orderlines.length) {
+                    offline_orderlines.forEach(function(line) {
+                        line.offline_orderline = false;
+                    });
+                    this.ms_syncing_in_progress = false;
+                    // sync the order
+                    order.trigger('change:sync')
+
+                    this.ms_syncing_in_progress = true;
+                }
+            }
         },
         load_new_partners_by_id: function(partner_id){
             var self = this;
@@ -626,6 +644,16 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
+                    if (!self.pos.config.multi_session_block_exist_order) {
+                        var offline_orderlines = self.get_orderlines().filter(function(line){
+                            return line.offline_orderline;
+                        });
+                        if (offline_orderlines && offline_orderlines.length) {
+                            offline_orderlines.forEach(function(line){
+                                line.offline_orderline = false;
+                            });
+                        }
+                    }
                     if (res && res.action === "update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
@@ -668,6 +696,9 @@ odoo.define('pos_multi_session', function(require){
             }
             if (this.order.ms_check()){
                 this.ms_info.created = this.order.pos.ms_my_info();
+            }
+            if (!self.pos.config.multi_session_block_exist_order) {
+                this.offline_orderline = true;
             }
             this.bind('change', function(line){
                 if (self.order.ms_check() && !line.ms_changing_selected){
@@ -868,7 +899,7 @@ odoo.define('pos_multi_session', function(require){
                         self.pos.sync_bus.longpolling_connection.network_is_off();
                     }
                     if (!self.offline_sync_all_timer) {
-                        if (self.pos.debug){
+                        if (self.pos.debug) {
                             console.log('send, return send_it error');
                         }
                         self.no_connection_warning();
@@ -958,6 +989,9 @@ odoo.define('pos_multi_session', function(require){
         },
         no_connection_warning: function(){
             var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
+            if (!this.pos.config.multi_session_block_exist_order) {
+                warning_message = _t("No connection to the server. If the order will be change by another POS, there will be a synchronization error and updates of current POS will be lost.");
+            }
             this.warning(warning_message);
         }
     });

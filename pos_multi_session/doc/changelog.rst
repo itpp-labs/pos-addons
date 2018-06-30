@@ -1,3 +1,7 @@
+`4.1.1`
+-------
+- **IMP:** New option to save orderlines added to existing orders in offline mode
+
 `4.1.0`
 -------
 - **NEW:** Field "Active" to enable/disable synchronization for POSes. The multi-session parameter is required now to provide compatibility with "POS Multi Session Menu" module and other modules that put common settings in "POS Multi Session"
