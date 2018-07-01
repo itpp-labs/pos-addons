@@ -4,14 +4,14 @@
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "1.0.0",
+    "version": "11.0.1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 490.00,
+    "price": 200.00,
     "currency": "EUR",
 
     "depends": [
@@ -19,6 +19,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/template.xml",
         "views/views.xml",
@@ -37,5 +38,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

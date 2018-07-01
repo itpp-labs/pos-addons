@@ -12,7 +12,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
         content: "Configuration options are available in the Settings app.",
         position: "bottom"
     }, {
-        trigger: '.oe_menu_leaf[data-menu=65]',
+        trigger: '.oe_menu_leaf[data-menu=58]',
         content: "Open the <b>Users</b> menu",
         position: "right"
     }, {
@@ -24,12 +24,12 @@ odoo.define('pos_disable_payment.tour', function(require) {
         content: "Click to edit user",
         position: "bottom"
     }, {
-        trigger: 'a[href="#notebook_page_12"]',
+        trigger: '.nav-tabs a:contains("Point of Sale")',
         content: "Move on <b>Point of Sale</b> tab",
         position: "top"
     }, {
         trigger: 'label:contains("Allow refunds")',
-        extra_trigger: 'input[name="allow_refund"]:propChecked({disabled: true})',
+        extra_trigger: 'div[name="allow_refund"] input:propChecked({disabled: true})',
         content: "Uncheck the box <b>Allow refunds</b>",
         position: "right"
     }, {
@@ -59,7 +59,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
             if (!$('.numpad-minus').css('visibility') === 'hidden') {
                 console.log("error", "The button is not hidden");
             } else {
-                console.log("Everything is ok");
+                console.log("Refunding feature is blocked as configured");
             }
         }
     }

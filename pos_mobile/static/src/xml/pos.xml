@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Chrome">
+        <t t-jquery="div[class='pos-content']" t-operation="prepend">
+            <div class="mobile-order-container">
+                <div class="order-and-products">
+                    <div class="swiper-container-order">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide slide-order"></div>
+                            <div class="swiper-slide slide-products"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-search-bar"></div>
+                <div class="mobile-search-bar-menu">
+                    <div class="mobile-categories"></div>
+                    <div class="swiper-container-numpad">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide slide-numpad"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="header[class='rightpane-header']" t-operation="append">
+            <div class="slide-categories-button">
+                <img class="category-open-menu" src="/pos_mobile/static/src/img/svg/menu-closed.svg"/>
+                <img class="category-close-menu" src="/pos_mobile/static/src/img/svg/menu-opened.svg"/>
+            </div>
+            <div class="slide-numpad-button">
+                <img class="minus-square" src="/pos_mobile/static/src/img/svg/minus-square.svg"/>
+                <img class="plus-square" src="/pos_mobile/static/src/img/svg/plus-square.svg"/>
+            </div>
+        </t>
+        <t t-jquery="span[class='search-clear']" t-operation="append">
+            <i class='fa fa-search'></i>
+        </t>
+        <t t-jquery="div[class='searchbox'] input" t-operation="replace">
+            <input/>
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery="div[class='paymentmethods-container']">
+            $(this).addClass('touch-scrollable scrollable-y');
+        </t>
+        <t t-jquery="section[class='paymentlines-container']">
+            $(this).addClass('touch-scrollable scrollable-y');
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreen-Paymentlines">
+         <t t-jquery="t[t-if='!paymentlines.length']" t-operation="replace">
+            <div class='paymentlines-empty'>
+                <div class='total'>
+                    <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                </div>
+                <div class='message'>
+                    Please select a payment method.
+                </div>
+            </div>
+         </t>
+    </t>
+
+    <t t-extend="ActionpadWidget">
+        <t t-jquery="button[t-attf-class*='button set-customer']" t-operation="replace">
+            <button t-attf-class='button set-customer #{ ( widget.pos.get_client() and widget.pos.get_client().name.length) ? "decentered" : "" }' >
+                <t t-set="order" t-value="widget.pos.get_order()"/>
+                <t t-if="!order">
+                    <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+                </t>
+                <t t-if="order and !order.get_client()">
+                    <img src="/pos_mobile/static/src/img/svg/user-in-a-square.svg"/>
+                </t>
+                <t t-if="widget.pos.get_client()">
+                    <t t-esc="widget.pos.get_client().name" />
+                </t>
+                <t t-if="!widget.pos.get_client()">
+                    Customer
+                </t>
+            </button>
+        </t>
+    </t>
+
+    <t t-extend="OrderSelectorWidget">
+        <t t-jquery="i[class='fa fa-plus']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/plus.svg"/>
+        </t>
+        <t t-jquery="i[class='fa fa-minus']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/minus.svg"/>
+        </t>
+        <t t-jquery="div[class='order-selector']">
+            $(this).addClass('touch-scrollable');
+        </t>
+    </t>
+
+    <t t-extend="ClientListScreenWidget">
+        <t t-jquery="section[class='top-content']">
+            $(this).addClass('touch-scrollable');
+        </t>
+    </t>
+
+    <t t-extend="SynchNotificationWidget">
+        <t t-jquery="div[class='js_connected oe_icon oe_green'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_connected oe_icon oe_green">
+                <img src="/pos_mobile/static/src/img/svg/wifi-connect.svg"/>
+            </div>
+        </t>
+        <t t-jquery="div[class='js_disconnected oe_icon oe_red oe_hidden'] i[class='fa fa-fw fa-wifi']" t-operation="replace">
+            <div class="js_disconnected oe_icon oe_red oe_hidden">
+                <img src="/pos_mobile/static/src/img/svg/wifi-disconnect.svg"/>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="HeaderButtonWidget">
+        <t t-jquery="t[t-esc='widget.label']" t-operation="replace">
+        </t>
+    </t>
+
+    <t t-extend="SaleDetailsButton">
+        <t t-jquery="i[class='fa fa-fw fa-print']" t-operation="replace">
+            <img src="/pos_mobile/static/src/img/svg/printer.svg"/>
+        </t>
+    </t>
+
+    <t t-extend="NumpadWidget">
+        <t t-jquery="button[class='input-button numpad-backspace'] img" t-operation="replace">
+            <img style="pointer-events: none;" src="/pos_mobile/static/src/img/backspace.png" width="60" height="51" />
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreen-Numpad">
+        <t t-jquery="button[class='input-button numpad-backspace'] img" t-operation="replace">
+            <img style="pointer-events: none;" src="/pos_mobile/static/src/img/backspace.png" width="72" height="63" />
+        </t>
+    </t>
+
+    <t t-extend="Product">
+        <t t-jquery="div[class='product-name']" t-operation="after">
+            <t t-set="order" t-value="widget.pos.get_order()"/>
+            <div class="current-order-qty">
+                <t t-if="order">
+                    <t t-set="qty" t-value="order.get_quantity_by_product_id(product.id)"/>
+                    <t t-if="qty != 0">
+                        <t t-esc="qty"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </t>
+
+</templates>

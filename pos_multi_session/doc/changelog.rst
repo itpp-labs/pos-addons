@@ -3,6 +3,20 @@
 Updates
 =======
 
+`4.0.2`
+-------
+- **IMP:** Dramatically improved performance
+
+`4.0.1`
+-------
+- **IMP:** Refactoring the code to fix a slow POS synchronization
+
+`4.0.0`
+-------
+- REF: Server side of synnchronization is moved to the separate module ``pos_multi_session_sync``
+- NEW: Allow to make synnchronization via local server
+- NEW: Fiscal position synnchronization
+
 `3.1.0`
 -------
 

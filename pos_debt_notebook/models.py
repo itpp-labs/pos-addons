@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import datetime
@@ -54,7 +53,7 @@ class ResPartner(models.Model):
 
     @api.model
     def _default_debt_limit(self):
-        debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
+        debt_limit = self.env["ir.config_parameter"].sudo().get_param("pos_debt_notebook.debt_limit", default=0)
         return float(debt_limit)
 
     @api.multi
@@ -130,13 +129,14 @@ class ResPartner(models.Model):
 
         server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
         utc_tz = pytz.utc.localize(server_date, is_dst=False)
-        user_tz = timezone(self.env.user.tz)
+        user_tz = self.env.user.tz
+        user_tz = user_tz and timezone(self.env.user.tz) or timezone('GMT')
         final = utc_tz.astimezone(user_tz)
 
         return final.strftime(fmt)
 
     def _compute_debt_type(self):
-        debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
+        debt_type = self.env["ir.config_parameter"].sudo().get_param("pos_debt_notebook.debt_type", default='debt')
         for partner in self:
             partner.debt_type = debt_type
 
@@ -161,6 +161,37 @@ class ResPartner(models.Model):
         if partner.get('debt_limit') is False:
             del partner['debt_limit']
         return super(ResPartner, self).create_from_ui(partner)
+
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    debt_type = fields.Selection([
+        ('debt', 'Display Debt'),
+        ('credit', 'Display Credit')
+    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
+                                                'In both cases debt will be red, credit - green')
+    debt_limit = fields.Float(
+        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
+        help='Default value for new Customers')
+
+    @api.multi
+    def set_values(self):
+        super(ResConfigSettings, self).set_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        for record in self:
+            config_parameters.set_param("pos_debt_notebook.debt_type", record.debt_type)
+            config_parameters.set_param("pos_debt_notebook.debt_limit", record.debt_limit)
+
+    @api.multi
+    def get_values(self):
+        res = super(ResConfigSettings, self).get_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        res.update(
+            debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
+            debt_limit=float(config_parameters.get_param("pos_debt_notebook.debt_limit", default=0))
+        )
+        return res
 
 
 class PosConfig(models.Model):
@@ -195,7 +226,6 @@ class PosConfig(models.Model):
                 'code': 'XDEBT',
                 'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
                 'company_id': user.company_id.id,
-                'note': 'code "XDEBT" should not be modified as it is used to compute debt',
             })
             self.env['ir.model.data'].create({
                 'name': 'debt_account_for_company' + str(user.company_id.id),
@@ -275,37 +305,6 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     debt = fields.Boolean(string='Debt Payment Method')
-
-
-class PosConfiguration(models.TransientModel):
-    _inherit = 'pos.config.settings'
-
-    debt_type = fields.Selection([
-        ('debt', 'Display Debt'),
-        ('credit', 'Display Credit')
-    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
-                                                'In both cases debt will be red, credit - green')
-    debt_limit = fields.Float(
-        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='Default value for new Customers')
-
-    @api.multi
-    def set_debt_type(self):
-        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", self.debt_type)
-
-    @api.multi
-    def get_default_debt_type(self, fields):
-        debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
-        return {'debt_type': debt_type}
-
-    @api.multi
-    def set_debt_limit(self):
-        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_limit", str(self.debt_limit))
-
-    @api.multi
-    def get_default_debt_limit(self, fields):
-        debt_limit = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_limit", default=0)
-        return {'debt_limit': debt_limit}
 
 
 class Product(models.Model):
