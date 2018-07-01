@@ -93,3 +93,74 @@
     background: black;
     border: 1px solid black;
 }
+.pos .orderlines .cancellation-info {
+    text-align: left;
+    font-size: 80%;
+    color: #ff6868;
+    margin-bottom: 3px;
+}
+/* New Styles for POS Order Cancel if pos_mobile was installed*/
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation {
+    max-width: initial;
+    width: 100%;
+    height: 850px!important;
+    top: initial;
+    background: white;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .title {
+    background-color: #f0eeee;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation textarea {
+    margin-top: 40px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .cancelled-reason {
+    margin-left: 35px;
+    margin-right: 35px;
+    height: 468px;
+    overflow-y: auto;
+    width: calc(100% - 70px);
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .cancelled-reason .reason-button.active{
+    background: #555555;
+    border: 2px solid #555555;
+}
+.pos.mobile .modal-dialog .popup-confirm-cancellation .reason-button {
+    margin: 0px;
+    width: 100%;
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 37px;
+}
+.pos.mobile .popup-confirm-cancellation .cancelled-reason ul {
+    height: 100%;
+    overflow-x: hidden;
+}
+.pos.mobile .popup-confirm-cancellation .cancelled-reason .reason-col{
+    margin: 20px;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .footer {
+    text-align: right;
+    width: calc(100% - 75px);
+    margin-left: 35px!important;
+    margin-right: 40px!important;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .footer .cancel {
+    margin-right: 25px!important;
+}
+.pos.mobile .modal-dialog .popup.popup-confirm-cancellation .footer .button{
+    font-size: 40px;
+}
+/*Mobile ScreenWidget*/
+.pos.mobile .reasonlist-screen .reason-list{
+    font-size: 35px;
+    line-height: 60px;
+}
+.pos.mobile .reasonlist-screen .note-list th,
+.pos.mobile .reasonlist-screen .note-list td {
+    padding: 0 16px;
+}
+.pos.mobile .reasonlist-screen .top-content .button.next {
+    font-size: 35px!important;
+}

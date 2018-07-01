@@ -252,7 +252,7 @@
         <div class="modal-dialog">
             <div class="popup popup-confirm-note">
                 <div class="header title">
-                    <div>
+                    <div class="current-title">
                         <t t-esc="widget.options.title || '' " />
                     </div>
                     <div class="note_type">

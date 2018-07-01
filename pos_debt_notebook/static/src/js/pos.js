@@ -6,7 +6,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var utils = require('web.utils');
-    var Model = require('web.DataModel');
+    var rpc = require('web.rpc');
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -120,7 +120,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             return this.reload_debts_ready;
         },
         _load_debts: function(partner_ids, limit, options){
-            return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
+            return rpc.query({
+                model: 'res.partner',
+                method: 'debt_history',
+                args: [partner_ids, limit, options]
+            }).then(function (res) {
+                return res;
+            });
         },
         _on_load_debts: function(debts){
             var partner_ids = _.map(debts, function(debt){

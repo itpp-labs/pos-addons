@@ -3,15 +3,14 @@
 # * pos_product_category_discount
 # 
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2017
-# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-30 15:22+0000\n"
-"PO-Revision-Date: 2017-09-30 15:22+0000\n"
-"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-04-21 00:08+0000\n"
+"PO-Revision-Date: 2018-04-21 00:08+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +45,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/discount_program.js:375
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:231
 #: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
 #, python-format
 msgid "Apply"
@@ -54,7 +53,7 @@ msgstr "Aplicar"
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/discount_program.js:432
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:291
 #, python-format
 msgid "Apply Change"
 msgstr ""
@@ -75,6 +74,11 @@ msgstr ""
 #. module: pos_product_category_discount
 #: model:ir.actions.act_window,help:pos_product_category_discount.pos_discount_program_action
 msgid "Click to define a new discount program."
+msgstr ""
+
+#. module: pos_product_category_discount
+#: model:ir.model,name:pos_product_category_discount.model_res_partner
+msgid "Contact"
 msgstr ""
 
 #. module: pos_product_category_discount
@@ -209,11 +213,6 @@ msgstr "Otras"
 #: model:ir.ui.menu,name:pos_product_category_discount.menu_pos_discount_program
 msgid "POS Discount Programs"
 msgstr "Programas de Descuento del TPV"
-
-#. module: pos_product_category_discount
-#: model:ir.model,name:pos_product_category_discount.model_res_partner
-msgid "Partner"
-msgstr "Socio"
 
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_category_form_view

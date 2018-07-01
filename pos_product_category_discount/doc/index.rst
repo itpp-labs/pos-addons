@@ -18,7 +18,6 @@ Create Discount Program
 * Specify the fields:
 
   * Name
-  * Number
   * Discount Categories
 
 * Click on ``[Save]``
@@ -51,4 +50,3 @@ Usage
 * Select any discount program
 * Click on ``[Apply]``
 * See discounts applied to corresponding order lines
-
