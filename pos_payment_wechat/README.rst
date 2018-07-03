@@ -1,10 +1,12 @@
-============================
- Payments in POS via Wechat
-============================
+========================
+ WeChat Payments in POS
+========================
 
-Payments in POS via Wechat
+Following workflow is supported:
 
-{Then add more detailed description, technical specifications, any other information that could be interested for other developers. Don't forget that Usage instructions is a separated and has to be located in doc/index.rst file.}
+* Cashier creates order and scan user's QR in user's WeChat mobile app
+* User's receives order information and authorise fund transferring
+* Cashier gets payment confirmation in POS
 
 Credits
 =======

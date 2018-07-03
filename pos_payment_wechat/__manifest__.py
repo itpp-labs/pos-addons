@@ -1,8 +1,8 @@
-# Copyright 2018 {DEVELOPER_NAME} <https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}>
+# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Payments in POS via Wechat""",
-    "summary": """WeChat payments in POS""",
+    "name": """WeChat Payments in POS""",
+    "summary": """Support payment by scanning user's QR""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
