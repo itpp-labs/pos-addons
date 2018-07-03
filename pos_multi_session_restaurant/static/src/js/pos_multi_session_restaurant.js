@@ -40,7 +40,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
                 this._super(order_line);
             } else {
-                order_line.node.parentNode.removeChild(order_line.node);
+                if (order_line.node && order_line.node.parentNode) {
+                    order_line.node.parentNode.removeChild(order_line.node);
+                }
             }
         }
     });
