@@ -1,8 +1,8 @@
-===================
- WeChat API Server
-===================
+============
+ WeChat API
+============
 
-Payments via WeChat
+Basic helpers to integrate Odoo with WeChat
 
 Credits
 =======
@@ -10,6 +10,7 @@ Credits
 Contributors
 ------------
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 
 Sponsors
 --------

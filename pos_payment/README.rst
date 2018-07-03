@@ -2,18 +2,18 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-===============
- {MODULE_NAME}
-===============
+==========================
+ Payment Acquirers in POS
+==========================
 
-The module is the main payment acquire for external payments in POS
+Accept online payments in POS.
 
 Credits
 =======
 
 Contributors
 ------------
-* `{DEVELOPER_NAME} <https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}>`__
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 
 Sponsors
 --------
@@ -25,7 +25,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/payment_wechat/>`__.
 
       Thank you for understanding!
 
@@ -34,14 +34,14 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/{REPO_NAME}/{BRANCH}
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/payment_wechat/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/{REPO_NAME}/commits/{BRANCH}/{TECHNICAL_NAME}.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/{REPO_NAME}/commits/{BRANCH}/{TECHNICAL_NAME}.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/payment_wechat.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/payment_wechat.atom>`_
 
-Tested on Odoo {VERSION} {ODOO_COMMIT_SHA_TO_BE_UPDATED}
+Tested on Odoo 11.0 4d0a1330e05bd688265bea14df4ad12838f9f2d7

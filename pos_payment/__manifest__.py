@@ -1,17 +1,17 @@
-# Copyright 2018 {DEVELOPER_NAME} <https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}>
+# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """{MODULE_NAME}""",
-    "summary": """{SHORT_DESCRIPTION_OF_THE_MODULE}""",
-    "category": "{MODULE_CATEGORY}",
+    "name": """Payment Acquirers in POS""",
+    "summary": """Accept online payments in POS""",
+    "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
-    "version": "{ODOO_BRANCH}.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
-    "author": "IT-Projects LLC, {DEVELOPER_NAME}",
+    "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/{DEVELOPER_GITHUB_USERNAME}",
+    "website": "https://it-projects.info/team/yelizariev",
     "license": "LGPL-3",
     # "price": 9.00,
     # "currency": "EUR",
