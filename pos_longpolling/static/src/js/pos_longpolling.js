@@ -210,7 +210,6 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         start_timer: function(time, type){
-            var response_time = Math.round(time * 3600.0);
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
@@ -221,7 +220,7 @@ odoo.define('pos_longpolling', function(require){
                     }
                     self.network_is_off();
                 }
-            }, response_time * 1000);
+            }, time * 1000);
         },
         response_timer: function() {
             this.stop_timer();
