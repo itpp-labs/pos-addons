@@ -51,8 +51,10 @@ class PosMultiSessionSync(models.Model):
         return res
 
     @api.multi
-    def check_order_revision(self, message, order):
+    def check_order_revision(self, message):
         self.ensure_one()
+        order_uid = message['data']['uid']
+        order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         client_revision_ID = message['data']['revision_ID']
         server_revision_ID = order.revision_ID
         if not server_revision_ID:
@@ -107,9 +109,11 @@ class PosMultiSessionSync(models.Model):
         order_uid = message['data']['uid']
         sequence_number = message['data']['sequence_number']
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
-        revision = self.check_order_revision(message, order)
+        revision = self.check_order_revision(message)
         run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
                      .run_ID or message['data']['run_ID'] or False
+
+
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error', 'order_uid': order_uid}
         if order:  # order already exists
@@ -185,7 +189,7 @@ class PosMultiSessionSync(models.Model):
 
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         if order.state is not 'deleted':
-            revision = self.check_order_revision(message, order)
+            revision = self.check_order_revision(message)
             if not revision:
                 return {'action': 'revision_error', 'order_uid': order_uid}
         if order:
