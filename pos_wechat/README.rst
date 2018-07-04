@@ -2,7 +2,7 @@
  WeChat Payments in POS
 ========================
 
-Following workflow is supported:
+Payment the workflow is as following:
 
 * Cashier creates order and scan user's QR in user's WeChat mobile app
 * User's receives order information and authorise fund transferring
