@@ -24,7 +24,7 @@ odoo.define('pos_longpolling', function(require){
             }
             this.ERROR_DELAY = 10000;
             this.serv_adr = sync_server || '';
-            this.longpolling_connection = new exports.LongpollingConnection(this.pos);
+            this.longpolling_connection = new exports.LongpollingConnection(this.pos, this);
             this.set_activated(false);
             var callback = this.longpolling_connection.network_is_on;
             this.add_channel_callback("pos.longpolling", callback, this.longpolling_connection);
@@ -173,10 +173,11 @@ odoo.define('pos_longpolling', function(require){
         },
     });
     exports.LongpollingConnection = Backbone.Model.extend({
-        initialize: function(pos) {
+        initialize: function(pos, bus) {
             this.pos = pos;
             this.timer = false;
-            this.status = false;
+            this.status = true;
+            this.bus = bus;
             // Is the message "PONG" received from the server
             this.response_status = false;
         },
@@ -203,7 +204,6 @@ odoo.define('pos_longpolling', function(require){
             this.start_timer(this.pos.config.longpolling_max_silence_timeout, 'query');
         },
         stop_timer: function(){
-            var self = this;
             if (this.timer) {
                 clearTimeout(this.timer);
                 this.timer = false;
@@ -216,7 +216,7 @@ odoo.define('pos_longpolling', function(require){
                     self.send_ping();
                 } else if (type === "response") {
                     if (self.pos.debug){
-                        console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
+                        console.log('POS LONGPOLLING start_timer error', self.bus.name, self.pos.config.name);
                     }
                     self.network_is_off();
                 }
@@ -232,19 +232,19 @@ odoo.define('pos_longpolling', function(require){
             var serv_adr = address
                 ? address.serv
                 : this.pos.config.sync_server || '';
-            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:2500}).then(function(){
+            if (self.pos.debug){
+                console.log('POS LONGPOLLING', self.bus.name, self.pos.config.name, "PING");
+            }
+            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                if (self.pos.debug){
-                    console.log('POS LONGPOLLING', self.pos.config.name, serv_adr, "PING");
-                }
                 if (!self.response_status) {
                     self.response_timer();
                 }
             }, function(error, e){
                 e.preventDefault();
                 if (self.pos.debug){
-                    console.log('POS LONGPOLLING send error', self.pos.config.name);
+                    console.log('POS LONGPOLLING send error', self.bus.name, self.pos.config.name);
                 }
                 self.network_is_off();
             });
@@ -274,15 +274,15 @@ odoo.define('pos_longpolling', function(require){
         template: 'AdditionalSynchNotificationWidget',
         start: function(){
             var self = this;
-            var element = this.$('.serv_additional');
+            var element = this.$el;
             if (this.pos.buses && _.keys(this.pos.buses).length){
                 for (var key in this.pos.buses){
                     if (_.has(this.pos.buses, key)){
+                        var selector = '.serv_additional';
                         bus = this.pos.buses[key];
-                        bus.longpolling_connection.set_status(true);
-                        self.set_poll_status(element.selector, bus);
+                        self.set_poll_status(selector, bus);
                         bus.longpolling_connection.on("change:poll_connection", function(status){
-                            self.set_poll_status(element.selector, bus);
+                            self.set_poll_status(selector, bus);
                         });
                     }
                 }
@@ -314,10 +314,10 @@ odoo.define('pos_longpolling', function(require){
             this._super();
             var self = this;
             var selector = '.serv_primary';
+            this.set_poll_status(selector, this.pos.bus);
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 self.set_poll_status(selector, self.pos.bus);
             });
-            this.pos.bus.longpolling_connection.set_status(true);
         },
     });
 
