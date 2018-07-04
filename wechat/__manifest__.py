@@ -17,7 +17,9 @@
     # "currency": "EUR",
 
     "depends": [],
-    "external_dependencies": {"python": [], "bin": []},
+    "external_dependencies": {"python": [
+        'wechatpy',
+    ], "bin": []},
     "data": [],
     "qweb": [],
 

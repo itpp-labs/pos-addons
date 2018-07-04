@@ -6,7 +6,7 @@
  Payment Acquirers in POS
 ==========================
 
-Accept online payments in POS.
+Accept online payments in POS. It works only with invoices created from POS Order.
 
 Credits
 =======

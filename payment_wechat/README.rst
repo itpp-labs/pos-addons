@@ -6,7 +6,12 @@
  WeChat payments
 =================
 
-Technical module to integrate WeChat payments with odoo POS, eCommerce or backend. As in WeChat QR codes are used, addional modules are required to show or scan QR code in POS or eCommerce.
+Technical module to integrate WeChat payments with odoo POS, eCommerce or backend. As in WeChat QR codes are used, addional modules are required to show QR code in POS or eCommerce. Following methods are supported:
+
+* TODO User scans QR and authorise payment
+* TODO User opens eCommerce website via WeChat's browser, fills the cart and is redirected to WeChat App UI to authorise the payment
+
+Note, that this module doesn't implement *Quick Pay* method, i.e. the one where buyer shows QR code and vendor scans.
 
 Credits
 =======
