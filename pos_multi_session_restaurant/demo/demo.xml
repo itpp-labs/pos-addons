@@ -5,15 +5,17 @@
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 
 <odoo>
-        <record id="pos_multi_session.demo_multi_session" model="pos.multi_session">
-            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
-        </record>
 
-        <record id="pos_multi_session.demo_multi_pos_config_three" model="pos.config">
-            <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_patio')])]"/>
-        </record>
+    <record id="pos_multi_session.demo_multi_session" model="pos.multi_session">
+        <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_main')])]"/>
+    </record>
 
-        <record id="point_of_sale.pos_config_main" model="pos.config">
-            <field name="multi_session_id" ref="pos_multi_session.demo_multi_session"/>
-        </record>
+    <record id="pos_multi_session.demo_multi_pos_config_three" model="pos.config">
+        <field name="floor_ids" eval="[(6,0,[ref('pos_restaurant.floor_patio')])]"/>
+    </record>
+
+
+    <record id="point_of_sale.pos_config_main" model="pos.config">
+        <field name="multi_session_id" ref="pos_multi_session.demo_multi_session"/>
+    </record>
 </odoo>
