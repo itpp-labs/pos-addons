@@ -254,6 +254,15 @@ odoo.define('pos_mobile.screens', function (require) {
     });
 
     screens.OrderWidget.include({
+        bind_order_events: function() {
+            this._super();
+            var self = this;
+            var order = this.pos.get_order();
+            var lines = order.orderlines;
+            lines.bind('change', function(line) {
+                self.change_product_qty(line.product.id);
+            });
+        },
         renderElement: function(scrollbottom){
             this._super(scrollbottom);
             var summary = $('.pos.mobile .order-container .summary.clearfix');
