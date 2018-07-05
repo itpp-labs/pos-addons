@@ -957,6 +957,9 @@ odoo.define('pos_multi_session', function(require){
             }, 5000 + (Math.floor((Math.random()*10)+1)*1000));
         },
         no_connection_warning: function(){
+            if (this.pos.sync_bus.sleep) {
+                return;
+            }
             var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
             this.warning(warning_message);
         }
