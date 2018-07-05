@@ -58,6 +58,33 @@ odoo.define('pos_longpolling', function(require){
                 setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
             });
         },
+        check_sleep_mode: function() {
+            var hidden = '';
+            var visibilityChange = '';
+            var self = this;
+
+            function onVisibilityChange() {
+                self.sleep = true;
+            }
+
+            if (typeof document.hidden !== 'undefined') {
+                hidden = 'hidden';
+                visibilityChange = 'visibilitychange';
+            } else if (typeof document.mozHidden !== 'undefined') {
+                hidden = 'mozHidden';
+                visibilityChange = 'mozvisibilitychange';
+            } else if (typeof document.msHidden !== 'undefined') {
+                hidden = 'msHidden';
+                visibilityChange = 'msvisibilitychange';
+            } else if (typeof document.webkitHidden !== 'undefined') {
+                hidden = 'webkitHidden';
+                visibilityChange = 'webkitvisibilitychange';
+            }
+
+            if (visibilityChange !== undefined) {
+                document.addEventListener(visibilityChange, onVisibilityChange, false);
+            }
+        },
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
                 callback = _.bind(callback, thisArg);
@@ -92,6 +119,7 @@ odoo.define('pos_longpolling', function(require){
             this.longpolling_connection.send_ping({serv: this.serv_adr});
             this.start_polling();
             this.set_activated(true);
+            this.check_sleep_mode();
         },
         activate_channel: function(channel_name){
             var channel = this.get_full_channel_name(channel_name);
@@ -187,6 +215,7 @@ odoo.define('pos_longpolling', function(require){
             }
             this.update_timer();
             this.set_status(true);
+            this.bus.sleep = false;
         },
         network_is_off: function() {
             this.update_timer();
