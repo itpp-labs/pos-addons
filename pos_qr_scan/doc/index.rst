@@ -10,12 +10,11 @@ Installation
 Configuration
 =============
 
-Chrome, Firefox support the qr scan feature provided by the module. Not supported on apple devices.
-For correct work of the module server should support SSL.
-Example for NGINX configurations with selfsigned certificate::
+Browser can get access to camera only on using via ``https`` connection. 
+
+Possible NGINX configurations to support ``https``::
 
     server {
-        listen 	       80;
         listen         443 ssl;
         server_name    posadd.odoo11.local;
         ssl_certificate /etc/nginx/ssl/nginx.crt;

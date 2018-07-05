@@ -2,9 +2,18 @@
  POS QR Code Scan
 ==================
 
-Scans QR codes in POS
+Scans QR codes via device's camera.
 
-Script used to scan QR codes in 'Chrome' browser may be used only in https websites or for those who uses ``localhost``
+Usage
+=====
+
+To subscribe to scanning event use following code::
+
+    var core = require('web.core');
+    core.bus.on('qr_scanned', this, function(value){
+        // your handler here
+    })
+
 
 Credits
 =======

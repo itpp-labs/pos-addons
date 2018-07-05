@@ -17,16 +17,18 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_qr_scan"
+        "pos_qr_scan",
+        "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/assets.xml",
     ],
+    "demo": [
+        "views/assets_demo.xml",
+    ],
     "qweb": [],
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
-
-
