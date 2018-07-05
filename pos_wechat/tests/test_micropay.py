@@ -6,8 +6,8 @@ try:
 except ImportError:
     from mock import patch
 
-from odoo.tests.common import HttpCase, HOST, PORT
-from odoo import api
+from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
+from odoo import api, SUPERUSER_ID
 
 from ...models.pos_order import CHANNEL_MICROPAY
 
@@ -24,11 +24,15 @@ class TestBackendAPI(HttpCase):
     def setUp(self):
         super(TestBackendAPI, self).setUp()
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
+
         # patch wechat
         patcher = patch('wechatpy.pay.api.micropay.WeChatMicroPay._post', wraps=self._post)
         patcher.start()
         self.addCleanup(patcher.stop)
 
+    def xmlrpc(self, model, method, args, kwargs=None, login=SUPERUSER_ID, password='admin'):
+        db_name = get_db_name()
+        return self.xmlrpc_object(db_name, login, password, model, method, args, kwargs)
 
     def _get_pos_longpolling_messages(self, channel, pos_id, db_name=None):
         db_name = db_name or self.env.db_name
@@ -77,9 +81,9 @@ class TestBackendAPI(HttpCase):
         """
 
         # make request with scanned qr code (auth_code)
-        response = self.url_open('/wechat/miscropay', data={
+        response = self.xmlrpc('wechat.micropay', 'create_from_qr', [], data={
             'auth_code': DUMMY_AUTH_CODE,
-            'pos_id': DUMMY_POS_ID,
+            'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
         })
 
         # check for error on request
