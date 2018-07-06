@@ -1,3 +1,9 @@
+`2.1.0`
+-------
+
+- **IMP:** Change minutes to seconds for Max Silence Timeout and Pong timeout
+- **NEW:** Correct working after switch a device to sleep mode
+
 `2.0.1`
 -------
 
