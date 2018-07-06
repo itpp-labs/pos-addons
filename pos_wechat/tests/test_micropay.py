@@ -78,10 +78,10 @@ class TestMicropay(HttpCase):
         """
 
         # make request with scanned qr code (auth_code)
-        res = self.pos_create_from_qr_sync({
+        msg = self.env['wechat.micropay'].pos_create_from_qr_sync(**{
             'auth_code': DUMMY_AUTH_CODE,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
             'total_fee': 100,
         })
-        self.assertEqual(msg['data'].get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
+        self.assertEqual(msg.get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
