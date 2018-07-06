@@ -25,7 +25,7 @@ class Micropay(models.Model):
         odoo_async_call(self.create_from_qr,
                         self._send_pos_notification,
                         (body,),
-                        **kwargs)
+                        kwargs)
         return 'ok'
 
     @api.model

@@ -1,6 +1,8 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
+import json
+
 from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
@@ -31,10 +33,11 @@ class Micropay(models.Model):
             auth_code,
         )
 
-        _logger.debug('result_raw', result_json)
+        result_raw = json.dumps(result_json)
+        _logger.debug('result_raw', result_raw)
         vals = {
             'terminal_ref': terminal_ref,
-            'result_raw': result_json.dumps(),
+            'result_raw': result_raw,
         }
         if create_vals:
             vals.update(create_vals)

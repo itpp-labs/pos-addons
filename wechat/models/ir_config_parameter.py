@@ -7,7 +7,7 @@ from odoo import models, fields, api
 
 class Param(models.Model):
 
-    _name = 'ir.config_parameter'
+    _inherit = 'ir.config_parameter'
 
     @api.model
     def get_wechat_pay_object(self):

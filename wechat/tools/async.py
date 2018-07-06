@@ -3,7 +3,7 @@
 import threading
 
 
-from odoo import api
+from odoo import api, tools
 
 __all__ = ['odoo_async_call']
 
@@ -16,7 +16,16 @@ def odoo_async_call(target, callback, args, kwargs):
 
 def odoo_wrapper(target, callback, args, kwargs):
     # db = odoo.sql_db.db_connect(dbname)
-    self = target.im_self
+    try:
+        # python 3
+        self = target.__self__
+    except:
+        # python 2
+        self = target.im_self
+
+    target_name = target.__name__
     with api.Environment.manage(), self.pool.cursor() as cr:
+        if not tools.config['test_enable']:
+            cr = self.registry.test_cr
         self = self.with_env(self.env(cr=cr))
-        callback(target(self, *args, **kwargs))
+        callback(getattr(self, target_name)(*args, **kwargs))

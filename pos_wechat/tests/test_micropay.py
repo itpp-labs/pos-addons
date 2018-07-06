@@ -26,24 +26,24 @@ class TestMicropay(HttpCase):
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         # patch wechat
-        patcher = patch('wechatpy.pay.api.micropay.WeChatMicroPay._post', wraps=self._post)
+        patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
         patcher.start()
         self.addCleanup(patcher.stop)
 
     def xmlrpc(self, model, method, args, kwargs=None, login=SUPERUSER_ID, password='admin'):
         db_name = get_db_name()
-        return self.xmlrpc_object.execute(db_name, login, password, model, method, args, kwargs)
+        return self.xmlrpc_object.execute_kw(db_name, login, password, model, method, args, kwargs)
 
     def _get_pos_longpolling_messages(self, channel, pos_id, db_name=None):
-        db_name = db_name or self.env.db_name
+        db_name = db_name or self.phantom_env.cr.dbname
 
         res = self.url_open_json('/longpolling/poll', )
         return res.json()['result']
 
     def url_open_json(self, url, data=None, timeout=10):
-        headers = [
-            ('Content-Type', 'application/json'),
-        ]
+        headers = {
+            'Content-Type': 'application/json'
+        }
         return self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
 
     def url_open_extra(self, url, data=None, timeout=10, headers=None):
@@ -56,7 +56,7 @@ class TestMicropay(HttpCase):
     def _post(self, url, data):
         MICROPAY_URL = 'pay/micropay'
         self.assertEqual(url, MICROPAY_URL)
-        _logger.debug("data for %s: %s", MICROPAY_URL, data)
+        _logger.debug("Request data for %s: %s", MICROPAY_URL, data)
 
         # see wechatpy/client/base.py::_handle_result for expected result
         # format and tricks that are applied on original _post method
@@ -89,7 +89,7 @@ class TestMicropay(HttpCase):
         })
 
         # check for error on request
-        self.assertEqual(response.status_code, 200, "Error on request")
+        self.assertEqual(response, 'ok', "Error on request")
 
         # check that payment confirmation is sent via longpolling
         messages = self._get_pos_longpolling_messages(CHANNEL_MICROPAY, DUMMY_POS_ID)
