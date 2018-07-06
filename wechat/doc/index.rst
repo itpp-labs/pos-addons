@@ -28,5 +28,8 @@ Configuration
 * Open menu ``[[ Settings ]] >> Parameters >> System Parameters``
 * Create following parameters
 
-  * ``wechat.appid``
-  * ``wechat.appsecret``
+  * ``wechat.app_id``
+  * ``wechat.app_secret``
+  * ``wechat.vendor_id``
+  * ``wechat.sandbox`` -- set to ``0`` to disable and any other value to
+    activate. It's disabled by default.

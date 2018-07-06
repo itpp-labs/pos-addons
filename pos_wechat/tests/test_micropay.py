@@ -9,7 +9,7 @@ except ImportError:
 from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
 from odoo import api, SUPERUSER_ID
 
-from ...models.pos_order import CHANNEL_MICROPAY
+from ...models.wechat_micropay import CHANNEL_MICROPAY
 
 
 _logger = logging.getLogger(__name__)
@@ -17,12 +17,12 @@ DUMMY_AUTH_CODE = '134579302432164181'
 DUMMY_POS_ID = 1
 
 
-class TestBackendAPI(HttpCase):
+class TestMicropay(HttpCase):
     at_install = True
     post_install = True
 
     def setUp(self):
-        super(TestBackendAPI, self).setUp()
+        super(TestMicropay, self).setUp()
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         # patch wechat
@@ -81,9 +81,11 @@ class TestBackendAPI(HttpCase):
         """
 
         # make request with scanned qr code (auth_code)
-        response = self.xmlrpc('wechat.micropay', 'create_from_qr', [], data={
+        response = self.xmlrpc('wechat.micropay', 'pos_create_from_qr', [], data={
             'auth_code': DUMMY_AUTH_CODE,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
+            'pos_id': DUMMY_POS_ID,
+            'total_fee': 100,
         })
 
         # check for error on request
@@ -99,7 +101,7 @@ class TestBackendAPI(HttpCase):
         else:
             raise Exception("event 'payment_result' is not found")
 
-    def test_micropay_ui(self):
+    def _test_micropay_ui(self):
         """POS saves order and payment information to local cache
         and then tries upload it to odoo server via create_from_ui method"""
         main_pos_config = self.phantom_env.ref('point_of_sale.pos_config_main')
