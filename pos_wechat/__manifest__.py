@@ -17,6 +17,7 @@
     # "currency": "EUR",
 
     "depends": [
+        "wechat",
         "pos_qr_scan",
         "pos_longpolling",
     ],

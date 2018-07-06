@@ -24,5 +24,5 @@
     "qweb": [],
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

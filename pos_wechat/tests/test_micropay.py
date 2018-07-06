@@ -9,7 +9,7 @@ except ImportError:
 from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
 from odoo import api, SUPERUSER_ID
 
-from ...models.wechat_micropay import CHANNEL_MICROPAY
+from ..models.wechat_micropay import CHANNEL_MICROPAY
 
 
 _logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ class TestMicropay(HttpCase):
 
     def xmlrpc(self, model, method, args, kwargs=None, login=SUPERUSER_ID, password='admin'):
         db_name = get_db_name()
-        return self.xmlrpc_object(db_name, login, password, model, method, args, kwargs)
+        return self.xmlrpc_object.execute(db_name, login, password, model, method, args, kwargs)
 
     def _get_pos_longpolling_messages(self, channel, pos_id, db_name=None):
         db_name = db_name or self.env.db_name
@@ -81,7 +81,7 @@ class TestMicropay(HttpCase):
         """
 
         # make request with scanned qr code (auth_code)
-        response = self.xmlrpc('wechat.micropay', 'pos_create_from_qr', [], data={
+        response = self.xmlrpc('wechat.micropay', 'pos_create_from_qr', [], {
             'auth_code': DUMMY_AUTH_CODE,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
