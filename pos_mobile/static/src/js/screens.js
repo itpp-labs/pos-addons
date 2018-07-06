@@ -187,7 +187,11 @@ odoo.define('pos_mobile.screens', function (require) {
                 $qty.html(qty);
             }
             var $p = $('span[data-product-id="'+product.id+'"]');
-            $(".product").stop();
+            var $pi = $('span[data-product-id="'+product.id+'"] img');
+
+            $($p).stop();
+            $($pi).stop();
+
             $($p).animate({
                 'opacity': 0.5,
             }, 200, function(){
@@ -195,8 +199,6 @@ odoo.define('pos_mobile.screens', function (require) {
                     'opacity': 1,
                 }, 400);
             });
-            var $pi = $('span[data-product-id="'+product.id+'"] img');
-            $(".product img").stop();
             $($pi).animate({
                 'height': '220px',
                 'width': '220px',
