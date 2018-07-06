@@ -1,6 +1,7 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
+import json
 try:
     from unittest.mock import patch
 except ImportError:
@@ -8,6 +9,7 @@ except ImportError:
 
 from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
 from odoo import api, SUPERUSER_ID
+from odoo.addons.bus.models.bus import dispatch
 
 from ..models.wechat_micropay import CHANNEL_MICROPAY
 
@@ -34,17 +36,12 @@ class TestMicropay(HttpCase):
         db_name = get_db_name()
         return self.xmlrpc_object.execute_kw(db_name, login, password, model, method, args, kwargs)
 
-    def _get_pos_longpolling_messages(self, channel, pos_id, db_name=None):
-        db_name = db_name or self.phantom_env.cr.dbname
-
-        res = self.url_open_json('/longpolling/poll', )
-        return res.json()['result']
-
     def url_open_json(self, url, data=None, timeout=10):
         headers = {
             'Content-Type': 'application/json'
         }
-        return self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
+        res = self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
+        return res.json()
 
     def url_open_extra(self, url, data=None, timeout=10, headers=None):
         if url.startswith('/'):
@@ -81,48 +78,10 @@ class TestMicropay(HttpCase):
         """
 
         # make request with scanned qr code (auth_code)
-        response = self.xmlrpc('wechat.micropay', 'pos_create_from_qr', [], {
+        res = self.pos_create_from_qr_sync({
             'auth_code': DUMMY_AUTH_CODE,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
             'total_fee': 100,
         })
-
-        # check for error on request
-        self.assertEqual(response, 'ok', "Error on request")
-
-        # check that payment confirmation is sent via longpolling
-        messages = self._get_pos_longpolling_messages(CHANNEL_MICROPAY, DUMMY_POS_ID)
-        for msg in messages:
-            if msg.get('event') != 'payment_result':
-                continue
-            self.assertEqual(msg['data'].get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
-            break
-        else:
-            raise Exception("event 'payment_result' is not found")
-
-    def _test_micropay_ui(self):
-        """POS saves order and payment information to local cache
-        and then tries upload it to odoo server via create_from_ui method"""
-        main_pos_config = self.phantom_env.ref('point_of_sale.pos_config_main')
-        # create new session and open it
-        main_pos_config.open_session_cb()
-
-        # needed because tests are run before the module is marked as
-        # installed. In js web will only load qweb coming from modules
-        # that are returned by the backend in module_boot. Without
-        # this you end up with js, css but no qweb.
-        self.phantom_env['ir.module.module'].search([('name', '=', 'pos_wechat')], limit=1).state = 'installed'
-
-        tour = 'pos_wechat.micropay'
-        self.phantom_js(
-            '/pos/web',
-
-            "odoo.__DEBUG__.services['web_tour.tour']"
-            ".run('%s')" % tour,
-
-            "odoo.__DEBUG__.services['web_tour.tour']"
-            ".tours['%s'].ready" % tour,
-
-            login='admin',
-        )
+        self.assertEqual(msg['data'].get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")

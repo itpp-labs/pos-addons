@@ -26,7 +26,6 @@
         "views/assets.xml",
     ],
     "demo": [
-        "views/assets_demo.xml",
     ],
     "qweb": [],
 

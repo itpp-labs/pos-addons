@@ -16,25 +16,43 @@ class Micropay(models.Model):
     pos_id = fields.Many2one('pos.config')
 
     @api.model
-    def pos_create_from_qr(self, **kwargs):
+    def _prepare_pos_create_from_qr(self, **kwargs):
         body = self._body(kwargs['terminal_ref'])
         create_vals = {
             'pos_id': kwargs['pos_id'],
         }
         kwargs.update(create_vals=create_vals)
+        args = (body,)
+        return args, kwargs
+
+    @api.model
+    def pos_create_from_qr_sync(self, **kwargs):
+        args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
+        record = self.create_from_qr(*args, **kwargs)
+        return self._process_pos_create_from_qr(record)
+
+    @api.model
+    def pos_create_from_qr(self, **kwargs):
+        """Async method. Result is sent via longpolling"""
+        args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
         odoo_async_call(self.create_from_qr,
                         self._send_pos_notification,
-                        (body,),
+                        args,
                         kwargs)
         return 'ok'
 
     @api.model
-    def _send_pos_notification(self, record):
+    def _process_pos_create_from_qr(self, record):
         result_json = json.loads(record.result_raw)
         msg = {
             'event': 'payment_result',
             'result_code': result_json['result_code'],
         }
+        return msg
+
+    @api.model
+    def _send_pos_notification(self, record):
+        msg = self._process_pos_create_from_qr(record)
         self.env['pos.config']._send_to_channel_by_id(
             self._cr.dbname,
             record.pos_id.id,
