@@ -1,6 +1,7 @@
 `4.1.1`
 -------
 - **IMP:** Multi-Session methods renamings
+- **FIX:** 'order_line.node' is undefined
 
 `4.1.0`
 -------
