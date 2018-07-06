@@ -20,7 +20,7 @@ class Micropay(models.Model):
         return "%s - Products" % terminal_ref
 
     @api.model
-    def create_from_qr(self, body, auth_code, total_fee, terminal_ref=None, create_vals=None, **kwargs):
+    def create_from_qr(self, body, auth_code, total_fee, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
         """
         :param product_category: is used to prepare "body"
         :param total_fee: Specifies the total order amount. The units are expressed in cents as integers.
@@ -37,7 +37,9 @@ class Micropay(models.Model):
         _logger.debug('result_raw', result_raw)
         vals = {
             'terminal_ref': terminal_ref,
+            'order_ref': order_ref,
             'result_raw': result_raw,
+            'total_fee': result_json['total_fee'],
         }
         if create_vals:
             vals.update(create_vals)

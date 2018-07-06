@@ -47,6 +47,8 @@ class Micropay(models.Model):
         msg = {
             'event': 'payment_result',
             'result_code': result_json['result_code'],
+            'order_ref': record.order_ref,
+            'total_fee': record.total_fee,
         }
         return msg
 
