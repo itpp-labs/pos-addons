@@ -1,5 +1,7 @@
 odoo.define('pos_payment_wechat', function(require){
 
+    var rpc = require('web.rpc');
+    var core = require('web.core');
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
@@ -12,30 +14,30 @@ odoo.define('pos_payment_wechat', function(require){
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.wechat = new exports.WechatPayment(this);
+            this.wechat = new exports.Wechat(this);
+
+            self.bus.add_channel_callback(
+                "micropay",
+                self.on_micropay,
+                self);
+
+        },
+        on_micropay: function(msg){
+            // CONTINUE
         },
     });
 
-    models.load_models({
-        model: 'account.journal',
-        fields: ['id','name','wechat_payment'],
-//        domain: function(self){
-//            return [['pos_config_id','=',self.config.id]]; // TODO how to determine journals of selected pos ?
-//        },
-        loaded: function(self,journals){
-            _.each(self.cashregisters, function(cr){
-                _.each(journals, function(jr){
-                    if ( cr.journal.id === jr.id )
-                        cr.journal.wechat_payment = jr.wechat_payment;
-                });
+    exports.Wechat = Backbone.Model.extend({
+        initialize: function(pos){
+            var self = this;
+            this.pos = pos;
+            core.bus.on('qr_scanned', this, function(value){
+                if (self.check_auth_code(value)){
+                    self.process_qr(value);
+                }
             });
         },
-    });
-
-    var OrderSuper = models.Order;
-    models.Order = models.Order.extend({
-        check_auth_code: function() {
-            var code = this.auth_code;
+        check_auth_code: function(code) {
             if (code && Number.isInteger(+code) &&
                 code.length === 18 &&
                 +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
@@ -43,77 +45,30 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return false;
         },
-    });
+        process_qr: function(auth_code){
+            var order = this.pos.get_order();
+            if (!order){
+                return;
+            }
+            self.micropay(auth_code, order);
+        },
+        micropay: function(auth_code, order){
+            // send request asynchronously
 
-    screens.PaymentScreenWidget.include({
-        click_paymentmethods: function(id) {
-            var cashregister = this.get_journal(id);
-            if (cashregister.journal.wechat_payment && !this.pos.get_order().check_auth_code()) {
-                this.gui.show_popup('qr_scan');
-            } else {
-                this._super(id);
-            }
-        },
-        get_journal: function(id) {
-            var cashregister = null;
-            for ( var i = 0; i < this.pos.cashregisters.length; i++ ) {
-                if ( this.pos.cashregisters[i].journal_id[0] === id ){
-                    cashregister = this.pos.cashregisters[i];
-                    break;
-                }
-            }
-            return cashregister
-        },
-    });
+            var total_fee = order.get_total_with_tax();
 
-    exports.WechatPayment = Backbone.Model.extend({
-        initialize: function(pos){
-            var self = this;
-            this.pos = pos;
-        },
-        send_test: function(){
-            var data = {};
-            var pos = this.pos;
-            data.pos_id = pos.config.id;
-            data.cashier_id = pos.config.id;
-            data.order_id = pos.config.id;
-            data.session_id = pos.pos_session.id;
-            return this.send({data: data}, "/wechat/test");
-        },
-        send_get_key: function(au_c){
-            var data = {};
-            return this.send({data: data}, "/wechat/getsignkey")
-        },
-        send_payment: function(au_c){
-            var data = {};
-            var pos = this.pos;
-            data.pos_id = pos.config.id;
-            data.cashier_id = pos.config.id;
-            data.order_id = pos.config.id;
-            data.session_id = pos.pos_session.id;
-            data.order_short = [];
-            _.each(this.pos.get_order().get_orderlines(), function(line){
-                return data.order_short.push(line.product.display_name);
-            })
-            data.total_fee = Math.round(pos.get_order().get_total_with_tax());
-            data.auth_code = pos.get_order().auth_code || au_c;
-            return this.send({data: data}, "/wechat/payment_commence")
-//            .always(function(res){
-//                console.log(res);
-//            });
-        },
-        send: function(message, address){
-            var current_send_number = 0;
-            if (this.pos.debug){
-                current_send_number = this._debug_send_number++;
-                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
-            }
-            var self = this;
             var send_it = function () {
-                return session.rpc(address, {
-                    message: message,
-                });
+                return rpc.query({
+                    model: 'wechat.micropay',
+                    method: 'pos_create_from_qr',
+                    kwargs: {
+                        'auth_code': auth_code,
+                        'total_fee': total_fee,
+                    },
+                })
             };
+
+            var current_send_number = 0;
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
@@ -123,9 +78,7 @@ odoo.define('pos_payment_wechat', function(require){
                 console.log(res);
                 if (self.pos.debug){
                     console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
-                console.lo
                 }
-                console.log('test')
             });
         },
         warning: function(warning_message){

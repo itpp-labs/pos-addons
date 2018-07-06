@@ -7,7 +7,7 @@ Scans QR codes via device's camera.
 Usage
 =====
 
-To subscribe to scanning event use following code::
+To subscribe to scanning event use following code in js::
 
     var core = require('web.core');
     core.bus.on('qr_scanned', this, function(value){

@@ -50,6 +50,11 @@ Payments
 
 * https://pay.weixin.qq.com/wechatpay_guide/help_docs.shtml
 
+Debugging
+=========
+
+To debug UI, create *System Parameter* ``wechat.local_sandbox`` with value ``1``. All requests to wechat will return fake result without making a request.
+
 Credits
 =======
 
