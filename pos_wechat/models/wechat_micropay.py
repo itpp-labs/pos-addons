@@ -35,10 +35,8 @@ class Micropay(models.Model):
     def pos_create_from_qr(self, **kwargs):
         """Async method. Result is sent via longpolling"""
         args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
-        odoo_async_call(self.create_from_qr,
-                        self._send_pos_notification,
-                        args,
-                        kwargs)
+        odoo_async_call(self.create_from_qr, args, kwargs,
+                        callback=self._send_pos_notification)
         return 'ok'
 
     @api.model

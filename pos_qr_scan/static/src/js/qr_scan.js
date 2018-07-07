@@ -115,7 +115,9 @@ odoo.define('pos_qr_scan', function(require){
         start_webcam: function(options){
             var self = this;
             this.initCanvas(800, 600);
-            qrcode.callback = this.read;
+            qrcode.callback = function(value){
+                self.read(value);
+            }
             if(navigator.mediaDevices.getUserMedia){
                 navigator.mediaDevices.getUserMedia({video: options, audio: false}).
                     then(function(stream){

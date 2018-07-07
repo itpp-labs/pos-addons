@@ -24,6 +24,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/assets.xml",
+        "data/account_journal_data.xml",
     ],
     "demo": [
     ],

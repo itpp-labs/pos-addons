@@ -28,6 +28,7 @@ class TestMicropay(HttpCase):
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         # patch wechat
+        # TODO: We don't need to patch it, if we use ``wechat.local_sandbox`` parameter
         patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
         patcher.start()
         self.addCleanup(patcher.stop)

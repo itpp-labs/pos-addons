@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record id="wechat_journal" model="account.journal">
+        <field name="name">WeChat Payments</field>
+        <field name="wechat" eval="True"/>
+        <field name="code">WECHAT</field>
+        <field name="type">bank</field>
+        <field name="journal_user" eval="True"/>
+    </record>
+</odoo>
