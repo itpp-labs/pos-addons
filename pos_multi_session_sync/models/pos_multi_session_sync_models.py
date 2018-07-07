@@ -114,7 +114,7 @@ class PosMultiSessionSync(models.Model):
                      .run_ID or message['data']['run_ID'] or False
 
         if not revision or (order and order.state == 'deleted'):
-            return {'action': 'revision_error', 'order_uid': order_uid}
+            return {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state}
         if order:  # order already exists
             message = self.set_changes(message, order)
             order.write({
