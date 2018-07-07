@@ -888,9 +888,18 @@ odoo.define('pos_multi_session', function(require){
                 self.client_online = true;
 
                 if (res.action === "revision_error") {
-                    var warning_message = _t('There is a conflict during synchronization, try your action again');
-                    self.warning(warning_message);
-                    self.request_sync_all({'uid': res.order_uid});
+                    if (res.state == 'deleted') {
+                        var removed_order = self.pos.get('orders').find(function(order){
+                             order.uid === res.order_uid;
+                        });
+                        if (removed_order) {
+                            removed_order.destroy({'reason': 'abandon'});
+                        }
+                    } else {
+                        var warning_message = _t('There is a conflict during synchronization, try your action again');
+                        self.warning(warning_message);
+                        self.request_sync_all({'uid': res.order_uid});
+                    }
                 }
                 if (res.action === 'sync_all') {
                     var sync_options = {};
