@@ -23,7 +23,6 @@ class Controller(BusController):
 
     @odoo.http.route('/pos_multi_session_sync/update', type="json", auth="public")
     def multi_session_update(self, multi_session_id, message, dbname, user_ID):
-
         phantomtest = request.httprequest.headers.get('phantomtest')
         ms_model = request.env["pos_multi_session_sync.multi_session"]
         allow_public = request.env['ir.config_parameter'].get_param('pos_longpolling.allow_public')
