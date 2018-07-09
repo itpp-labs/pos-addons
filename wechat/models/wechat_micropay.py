@@ -11,12 +11,13 @@ _logger = logging.getLogger(__name__)
 class Micropay(models.Model):
 
     _name = 'wechat.micropay'
+    _rec_name = 'order_ref'
 
-    terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name')
-    result_raw = fields.Text('Raw result')
-    order_ref = fields.Char('Order Reference')
-    total_fee = fields.Integer('Total Fee', help='Amount in cents')
-    debug = fields.Boolean('Test', help="Payment was not made. It's only for testing purposes", readonly=True)
+    order_ref = fields.Char('Order Reference', readonly=True)
+    terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name', readonly=True)
+    total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
+    debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
+    result_raw = fields.Text('Raw result', readonly=True)
 
     @api.model
     def _body(self, terminal_ref, **kwargs):

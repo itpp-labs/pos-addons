@@ -20,7 +20,9 @@
     "external_dependencies": {"python": [
         'wechatpy',
     ], "bin": []},
-    "data": [],
+    "data": [
+        "views/wechat_micropay_views.xml",
+    ],
     "qweb": [],
 
     "auto_install": False,
