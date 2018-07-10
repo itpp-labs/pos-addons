@@ -16,7 +16,9 @@
     # "price": 9.00,
     # "currency": "EUR",
 
-    "depends": [],
+    "depends": [
+        'product',
+    ],
     "external_dependencies": {"python": [
         'wechatpy',
     ], "bin": []},

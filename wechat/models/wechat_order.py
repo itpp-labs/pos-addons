@@ -34,13 +34,42 @@ class WeChatOrder(models.Model):
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
     order_details_raw = fields.Text('Raw Order', readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
+    line_ids = fields.One2many('wechat.order.line')
+
+
+    def _body(self):
+        """ Example of result:
+
+        {"goods_detail": [
+            {
+                "goods_id": "iphone6s_16G",
+                "wxpay_goods_id": "100 1",
+                "goods_name": "iPhone 6s 16G",
+                "goods_num": 1,
+                "price": 100,
+                "goods_category": "123456",
+                "body": "苹果手机",
+            },
+            {
+                "goods_id": "iphone6s_3 2G",
+                "wxpay_goods_id": "100 2",
+                "goods_name": "iPhone 6s 32G",
+                "quantity": 1,
+                "price": 200,
+                "goods_category": "123789",
+            }
+        ]}"""
+        self.ensure_one()
+        # TODO
+
 
     @api.model
-    def _body(self, terminal_ref, **kwargs):
-        return "%s - Products" % terminal_ref
+    def create_qr(self, lines, total_fee, **kwargs):
+        """Native Payment
 
-    @api.model
-    def create_qr(self):
+        :param lines: list of dictionary
+        :param total_fee: amount in cents
+        """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
@@ -75,3 +104,15 @@ class WeChatOrder(models.Model):
             vals.update(create_vals)
         record = self.create(vals)
         return record
+
+
+class WeChatOrderLine(models.Model):
+    _inherit = 'wechat.order.line'
+
+    name = fields.Char('Name', help="When empty, product's name is used")
+    description = fields.Char('Body')
+    product_id = fields.Many2one('product.product', required=True)
+    wxpay_goods_ID = fields.Char('Wechat Good ID')
+    price = fields.Monetary('Price', required=True, help='Price in currency units (not cents)')
+    quantity = fields.Char('Quantity', default=1)
+    category = fields.Char('Category')
