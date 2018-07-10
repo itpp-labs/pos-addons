@@ -13,24 +13,25 @@ Payment methods
 Quick Pay (micropay)
 --------------------
 
-Buyer presents the pay code, vendor scans the code to finish the transaction.
+Buyer presents the pay code, Vendor scans the code to finish the transaction.
 
 Native Payment (QR Code Payment)
 --------------------------------
-*Not supported yet*
 
-The Vendor generates a transaction QR Code, Buyer scans to finish the transaction.
+The Vendor gets one-time url and shows it to Buyer as a QR Code, Buyer scans to finish the transaction.
 
-In-App Web-based Payment (Official Account Payment)
----------------------------------------------------
-*Not supported yet*
+Official Account Payment
+------------------------
 
-The Payer opens the Vendor's HTML5 pages on their WeChat and calls the WeChat payment module via the JSAPI interface to pay their transaction. 
+There are two types of usage:
+
+* **In-App Web-based Payment** -- The Payer opens the Vendor's HTML5 pages on their WeChat and calls the WeChat payment module via the JSAPI interface to pay their transaction. Client side of this process (i.e. web pages) is not supported. While it could be implemented as additional module, we recommend to develop *Mini programs* instead.
+* **Mini program** -- an application as a part of WeChat App is created via *WeChat Developer tools*.
 
 In-App Payment
 --------------
 
-This payment way is only for native mobile application and not supposed to be implemented in an odoo module
+This payment way is only for native mobile application. This module provides server part of the process.
 
 WeChat Documentation & tools
 ============================
