@@ -273,9 +273,12 @@ odoo.define('pos_mobile.screens', function (require) {
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
             if (!this.pos.iOS) {
-                $('.order-scroller').niceScroll({
-                    horizrailenabled: false,
-                });
+                clearTimeout(this.scroll_timeout);
+                this.scroll_timeout = setTimeout(function() {
+                    $('.order-scroller').niceScroll({
+                        horizrailenabled: false,
+                    });
+                }, 500);
             }
         },
         change_selected_order: function() {
@@ -289,6 +292,9 @@ odoo.define('pos_mobile.screens', function (require) {
             this.change_product_qty();
             this.scroll_to_selected_order();
             this.change_orderlist();
+            $('.order-scroller').niceScroll({
+                horizrailenabled: false,
+            });
         },
         orderline_change: function(line) {
             this._super(line);
