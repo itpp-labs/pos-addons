@@ -25,11 +25,6 @@ class TestWeChatOrder(TransactionCase):
             'name': 'Product2',
         })
 
-        # patch wechat
-        patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
-        patcher.start()
-        self.addCleanup(patcher.stop)
-
         patcher = patch('wechatpy.utils.check_signature', wraps=lambda *args: True)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -54,12 +49,17 @@ class TestWeChatOrder(TransactionCase):
         ]
 
 
-    def _post(self, url, data):
-        result = self.env.context.get('post_result')
-        self.assertIn(url, result)
-        _logger.debug("Request data for %s: %s", url, data)
+    def _patch_post(self, post_result):
 
-        return result[url]
+        def post(url, data):
+            self.assertIn(url, post_result)
+            _logger.debug("Request data for %s: %s", url, data)
+            return post_result[url]
+
+        # patch wechat
+        patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=post)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def _create_order(self):
         post_result = {
@@ -68,8 +68,8 @@ class TestWeChatOrder(TransactionCase):
                 'trade_type': 'NATIVE',
             }
         }
-        order, code_url = self.Order.with_context(post_result=post_result)\
-                                    .create_qr(self.lines, 300)
+        self._patch_post(post_result)
+        order, code_url = self.Order.create_qr(self.lines, 300)
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
