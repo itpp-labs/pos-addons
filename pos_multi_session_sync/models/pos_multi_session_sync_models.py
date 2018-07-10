@@ -61,7 +61,8 @@ class PosMultiSessionSync(models.Model):
             server_revision_ID = 1
         _logger.debug('Client revision ID %s: Server revision ID %s', client_revision_ID, server_revision_ID)
         _logger.debug('Client nonce %s: Server nonce %s', message['data']['nonce'], order.nonce)
-        if client_revision_ID is not server_revision_ID:
+        if int(client_revision_ID) != int(server_revision_ID):
+            _logger.debug('Client revision is not server revision')
             if message['data']['nonce'] == order.nonce:
                 return 'nonce'
             return False
@@ -120,6 +121,7 @@ class PosMultiSessionSync(models.Model):
         if revision == "nonce":
             return {'action': ''}
         elif not revision or (order and order.state == 'deleted'):
+            _logger.debug('Revision error %s %s', order_uid, order.state)
             return {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state}
 
         if order:  # order already exists
