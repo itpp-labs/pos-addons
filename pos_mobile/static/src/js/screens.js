@@ -254,7 +254,7 @@ odoo.define('pos_mobile.screens', function (require) {
         scroll_to_selected_line: function() {
             var order = this.pos.get_order();
             var width = order.get_orderlines().indexOf(order.get_selected_orderline());
-            $('.order-scroller').animate({scrollTop:104 * width}, 200, 'swing');
+            $('.order-scroller').animate({scrollTop:133 * width}, 200, 'swing');
         },
     });
 
