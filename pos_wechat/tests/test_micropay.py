@@ -19,6 +19,7 @@ DUMMY_AUTH_CODE = '134579302432164181'
 DUMMY_POS_ID = 1
 
 
+# TODO clean this up: no need to use HttpCase. Also some helpers are not used.
 class TestMicropay(HttpCase):
     at_install = True
     post_install = True
@@ -28,7 +29,6 @@ class TestMicropay(HttpCase):
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         # patch wechat
-        # TODO: We don't need to patch it, if we use ``wechat.local_sandbox`` parameter
         patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -68,13 +68,15 @@ class TestMicropay(HttpCase):
     def test_micropay_backend(self):
         """Test payment workflow from server side.
 
-        Cashier scanned buyer's QR and upload it to odoo server,
+        * Cashier scanned buyer's QR and upload it to odoo server,
         odoo server sends information to wechat servers and wait for response with result.
 
-        Once user authorize the payment, odoo receives result syncroniosly from
+        * Once user authorize the payment, odoo receives result syncroniosly from
         previously sent request.
 
-        Odoo sends result to POS via longpolling
+        * Odoo sends result to POS via longpolling.
+
+        Due to limititation of testing framework, we use syncronios call for testing
 
         """
 
