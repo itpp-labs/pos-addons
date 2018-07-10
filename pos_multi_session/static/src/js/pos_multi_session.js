@@ -831,6 +831,9 @@ odoo.define('pos_multi_session', function(require){
                 }
             });
         },
+        get_nonce: function() {
+            return (Math.random() + 1).toString(36).substring(7);
+        },
         _debug_send_number: 0,
         send: function(message, options){
             options = options || {};
@@ -845,6 +848,7 @@ odoo.define('pos_multi_session', function(require){
             }
             var self = this;
             message.data.pos_id = this.pos.config.id;
+            message.data.nonce = this.get_nonce();
             var send_it = function () {
                 var temp = self.pos.config.sync_server || '';
                 if (options.address) {

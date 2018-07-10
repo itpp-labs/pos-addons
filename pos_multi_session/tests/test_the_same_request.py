@@ -26,6 +26,7 @@ class TestUi(odoo.tests.TransactionCase):
         message = {
             "action": "update_order",
             "data": {
+                "nonce": 'test_nonce',
                 "name": "Order 00003-001-0001",
                 "amount_paid": 0,
                 "amount_total": 4.8,

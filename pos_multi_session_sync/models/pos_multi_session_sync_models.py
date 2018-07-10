@@ -60,6 +60,8 @@ class PosMultiSessionSync(models.Model):
         if not server_revision_ID:
             server_revision_ID = 1
         if client_revision_ID is not server_revision_ID:
+            if message['data']['nonce'] == order.nonce:
+                return 'nonce'
             return False
         else:
             return True
@@ -113,14 +115,18 @@ class PosMultiSessionSync(models.Model):
         run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
                      .run_ID or message['data']['run_ID'] or False
 
-        if not revision or (order and order.state == 'deleted'):
+        if revision == "nonce":
+            return {'action': ''}
+        elif not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state}
+
         if order:  # order already exists
             message = self.set_changes(message, order)
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
-                'run_ID': message['data']['run_ID']
+                'run_ID': message['data']['run_ID'],
+                'nonce': message['data']['nonce']
             })
         else:
             if self.order_ID + 1 != sequence_number:
@@ -131,6 +137,7 @@ class PosMultiSessionSync(models.Model):
                 'order_uid': order_uid,
                 'multi_session_ID': self.id,
                 'run_ID': run_ID,
+                'nonce': message['data']['nonce']
             })
             self.write({'order_ID': sequence_number})
 
@@ -222,6 +229,7 @@ class PosMultiSessionSyncOrder(models.Model):
     _name = 'pos_multi_session_sync.order'
 
     order = fields.Text('Order JSON format')
+    nonce = fields.Char('Random nonce')
     order_uid = fields.Char(index=True)
     state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
