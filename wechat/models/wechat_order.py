@@ -4,8 +4,10 @@ import logging
 import json
 
 from odoo import models, fields, api
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
+PAYMENT_RESULT_NOTIFICATION_URL = 'wechat/callback'
 
 
 class WeChatOrder(models.Model):
@@ -60,17 +62,55 @@ class WeChatOrder(models.Model):
             }
         ]}"""
         self.ensure_one()
-        # TODO
+        rendered_lines = [{
+            'goods_id': str(line.product_id.id),
+            'wxpay_goods_id': line.wxpay_goods_ID,
+            'goods_name': line.name or line.product_id.name,
+            'goods_num': line.quantity,
+            'price': line.price or line.product_id.id,
+            'goods_category': line.category,
+        } for line in self.line_ids]
+        body = {'goods_detail': rendered_lines}
 
+        return body
+
+    def _total_fee(self, lines):
+        return total_fee
+
+    def _notify_url(self):
+        url = self.env['ir.config_parameter'].get_param('wechat.payment_result_notification_url')
+        if url:
+            return url
+        # Try to compute url automatically
+        try:
+            scheme = request.httprequest.scheme
+        except:
+            scheme = 'http'
+
+        domain = self.env["ir.config_parameter"].get_param('web.base.url')
+        return "{scheme}://domain/{path}".format(
+            scheme=scheme,
+            domain=domain,
+            path=PAYMENT_RESULT_NOTIFICATION_URL,
+        )
 
     @api.model
-    def create_qr(self, lines, total_fee, **kwargs):
+    def create_qr(self, lines, total_fee, create_vals=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
         :param total_fee: amount in cents
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        total_fee = self._total_fee(lines)
+        vals = {
+            'line_ids': [(0, 0, data) for data in lines],
+            'debug': debug,
+        }
+        if create_vals:
+            vals.update(create_vals)
+        order = self.create(vals)
+
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
@@ -81,29 +121,28 @@ class WeChatOrder(models.Model):
                 'total_fee': total_fee,
                 'order_ref': order_ref,
             }
-            if self.env.context.get('debug_micropay_response'):
-                result_json = self.env.context.get('debug_micropay_response')
+            if self.env.context.get('debug_wechat_order_response'):
+                result_json = self.env.context.get('debug_wechat_order_response')
         else:
+            body = order._body()
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
-            result_json = wpay.micropay.create(
+            result_json = wpay.order.create(
+                'NATIVE',
+                total_fee,
                 body,
                 total_fee,
-                auth_code,
+                self._notify_url,
+                out_trade_no=order.id,
+                # TODO fee_type=record.currency_id.name
             )
 
         result_raw = json.dumps(result_json)
         _logger.debug('result_raw: %s', result_raw)
         vals = {
-            'terminal_ref': terminal_ref,
-            'order_ref': order_ref,
             'result_raw': result_raw,
-            'total_fee': result_json['total_fee'],
-            'debug': debug,
         }
-        if create_vals:
-            vals.update(create_vals)
-        record = self.create(vals)
-        return record
+        order.write(vals)
+        return order, code_url
 
 
 class WeChatOrderLine(models.Model):
