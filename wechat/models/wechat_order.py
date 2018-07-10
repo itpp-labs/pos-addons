@@ -34,8 +34,8 @@ class WeChatOrder(models.Model):
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
     order_details_raw = fields.Text('Raw Order', readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
-    line_ids = fields.One2many('wechat.order.line')
-
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
+    line_ids = fields.One2many('wechat.order.line', 'order_id')
 
     def _body(self):
         """ Example of result:
@@ -107,12 +107,14 @@ class WeChatOrder(models.Model):
 
 
 class WeChatOrderLine(models.Model):
-    _inherit = 'wechat.order.line'
+    _name = 'wechat.order.line'
 
     name = fields.Char('Name', help="When empty, product's name is used")
     description = fields.Char('Body')
     product_id = fields.Many2one('product.product', required=True)
     wxpay_goods_ID = fields.Char('Wechat Good ID')
     price = fields.Monetary('Price', required=True, help='Price in currency units (not cents)')
+    currency_id = fields.Many2one('res.currency', related='order_id')
     quantity = fields.Char('Quantity', default=1)
     category = fields.Char('Category')
+    order_id = fields.Many2one('wechat.order')

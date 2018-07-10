@@ -61,7 +61,8 @@ class TestMicropay(HttpCase):
         result = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
-            'openid': '123'
+            'openid': '123',
+            'total_fee': 123,
         }
         return result
 
