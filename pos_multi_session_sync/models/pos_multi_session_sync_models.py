@@ -61,8 +61,7 @@ class PosMultiSessionSync(models.Model):
             server_revision_ID = 1
         _logger.debug('Client revision ID %s: Server revision ID %s', client_revision_ID, server_revision_ID)
         _logger.debug('Client nonce %s: Server nonce %s', message['data']['nonce'], order.nonce)
-        if client_revision_ID is not server_revision_ID:
-            _logger.debug('Client revision type: %s, Server revision type %s', type(client_revision_ID), type(server_revision_ID))
+        if int(client_revision_ID) != server_revision_ID:
             _logger.debug('Client revision is not server revision')
             if message['data']['nonce'] == order.nonce:
                 return 'nonce'
