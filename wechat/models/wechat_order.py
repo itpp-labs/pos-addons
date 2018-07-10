@@ -8,6 +8,7 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 PAYMENT_RESULT_NOTIFICATION_URL = 'wechat/callback'
+SUCCESS = 'SUCCESS'
 
 
 class WeChatOrder(models.Model):
@@ -31,12 +32,18 @@ class WeChatOrder(models.Model):
 
     order_ref = fields.Char('Order Reference', readonly=True)
     total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
-
+    state = fields.Selection([
+        ('draft', 'Unpaid'),
+        ('done', 'Paid'),
+        ('error', 'Error'),
+    ], string='State', default='draft')
     # terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name', readonly=True)
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
     order_details_raw = fields.Text('Raw Order', readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
+    notification_result_raw = fields.Text('Raw Notification result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
+    notification_received = fields.Boolean(help='Set to true on receiving notifcation to avoid repeated processing', default=False)
     line_ids = fields.One2many('wechat.order.line', 'order_id')
 
     def _body(self):
@@ -67,14 +74,18 @@ class WeChatOrder(models.Model):
             'wxpay_goods_id': line.wxpay_goods_ID,
             'goods_name': line.name or line.product_id.name,
             'goods_num': line.quantity,
-            'price': line.price or line.product_id.id,
+            'price': line.get_fee(),
             'goods_category': line.category,
         } for line in self.line_ids]
         body = {'goods_detail': rendered_lines}
 
         return body
 
-    def _total_fee(self, lines):
+    def _total_fee(self):
+        self.ensure_one()
+        total_fee = sum([
+            line.get_fee()
+            for line in self.line_ids])
         return total_fee
 
     def _notify_url(self):
@@ -102,7 +113,6 @@ class WeChatOrder(models.Model):
         :param total_fee: amount in cents
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
-        total_fee = self._total_fee(lines)
         vals = {
             'line_ids': [(0, 0, data) for data in lines],
             'debug': debug,
@@ -110,7 +120,7 @@ class WeChatOrder(models.Model):
         if create_vals:
             vals.update(create_vals)
         order = self.create(vals)
-
+        total_fee = order._total_fee()
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
@@ -126,6 +136,10 @@ class WeChatOrder(models.Model):
         else:
             body = order._body()
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+            # TODO: we probably have make cr.commit() before making request to
+            # be sure that we save data before sending request to avoid
+            # situation when order is sent to wechat server, but was not saved
+            # in our server for any reason
             result_json = wpay.order.create(
                 'NATIVE',
                 total_fee,
@@ -140,9 +154,47 @@ class WeChatOrder(models.Model):
         _logger.debug('result_raw: %s', result_raw)
         vals = {
             'result_raw': result_raw,
+            'total_fee': total_fee,
         }
         order.write(vals)
+        code_url = result_json['code_url']
         return order, code_url
+
+    def on_notification(self, data):
+        """
+        return True if notification changed order
+        """
+        # check signature
+        wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+        if not wpay.check_signature(data):
+            _logger.warning("Notification Signature is not valid:\n", data)
+            return False
+
+        order_id = data.get('out_trade_no')
+        order = None
+        if order_id:
+            order = self.browse(order_id)
+        if not order:
+            _logger.warning("Order %s from notification is not found", order_id)
+            return False
+
+        # check for duplicates
+        if order.notification_received:
+            _logger.warning("Notifcation duplicate is received: %s", order)
+            return False
+
+        vals = {
+            'notification_result_raw': json.dumps(data),
+            'notification_received': True,
+        }
+        if not (data['return_code'] == SUCCESS and data['result_code'] == SUCCESS):
+            vals['state'] = 'error'
+
+        else:
+            vals['state'] = 'done'
+
+        order.write(vals)
+        return True
 
 
 class WeChatOrderLine(models.Model):
@@ -157,3 +209,7 @@ class WeChatOrderLine(models.Model):
     quantity = fields.Char('Quantity', default=1)
     category = fields.Char('Category')
     order_id = fields.Many2one('wechat.order')
+
+    def get_fee(self):
+        self.ensure_one()
+        return int(100*(self.price or self.product_id.price))

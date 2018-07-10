@@ -12,6 +12,6 @@ from wechatpy.exceptions import (
 
 class WechatController(odoo.http.Controller):
 
-    @http.route('/wechat/micropay', methods=['POST'], auth='user', type='json')
-    def micropay(self, auth_code, terminal_ref):
-        pass
+    @http.route('/wechat/callback', methods=['POST'], auth='user', type='json')
+    def micropay(self, **kwargs):
+        request.env['wechat.order'].on_notification(kwargs)

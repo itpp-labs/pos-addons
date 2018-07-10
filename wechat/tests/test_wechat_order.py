@@ -25,7 +25,7 @@ class TestWeChatOrder(TransactionCase):
             'name': 'Product2',
         })
 
-        patcher = patch('wechatpy.utils.check_signature', wraps=lambda *args: True)
+        patcher = patch('wechatpy.WeChatPay.check_signature', wraps=lambda *args: True)
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -80,9 +80,10 @@ class TestWeChatOrder(TransactionCase):
         # simulate notification
         notification = {
             'return_code': 'SUCCESS',
+            'result_code': 'SUCCESS',
             'out_trade_no': order.id,
         }
-        handled = self.Order.no_notification(notification)
+        handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
@@ -97,7 +98,7 @@ class TestWeChatOrder(TransactionCase):
             # 'transaction_id': '121775250120121775250120',
             'out_trade_no': order.id,
         }
-        handled = self.Order.no_notification(notification)
+        handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
-        handled = self.Order.no_notification(notification)
+        handled = self.Order.on_notification(notification)
         self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
