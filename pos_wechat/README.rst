@@ -8,6 +8,14 @@ Payment the workflow is as following:
 * User's receives order information and authorise fund transferring
 * Cashier gets payment confirmation in POS
 
+Debugging
+=========
+
+If you don't have camera, you can executing following code in browser console to simulate scanning::
+
+    odoo.__DEBUG__.services['web.core'].bus.trigger('qr_scanned', '134579302432164181');
+
+
 Credits
 =======
 

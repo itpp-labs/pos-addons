@@ -1,6 +1,7 @@
 odoo.define('pos_qr_scan', function(require){
     var exports = {};
 
+    var core = require('web.core');
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
@@ -103,16 +104,20 @@ odoo.define('pos_qr_scan', function(require){
         },
 
         read: function(result){
-            console.log(result);
-            alert(result);
+            // Trigger event on scanning and close camera window
+            if (this.pos.debug){
+                console.log('QR scanned', result);
+            }
+            core.bus.trigger('qr_scanned', result);
             posmodel.gui.popup_instances.qr_scan.click_cancel();
-            return result;
         },
 
         start_webcam: function(options){
             var self = this;
             this.initCanvas(800, 600);
-            qrcode.callback = this.read;
+            qrcode.callback = function(value){
+                self.read(value);
+            }
             if(navigator.mediaDevices.getUserMedia){
                 navigator.mediaDevices.getUserMedia({video: options, audio: false}).
                     then(function(stream){

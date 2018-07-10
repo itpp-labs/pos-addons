@@ -1,41 +1,123 @@
 odoo.define('pos_payment_wechat', function(require){
+    "use strict";
 
+    var rpc = require('web.rpc');
+    var core = require('web.core');
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
     var session = require('web.session');
 
+    var _t = core._t;
 
-    var exports = {};
+    models.load_fields('account.journal', ['wechat']);
+
+    gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'payment'})[0].widget.include({
+        init: function(parent, options) {
+            this._super(parent, options);
+            this.pos.bind('validate_order',function(){
+                 this.validate_order();
+            },this);
+        }
+    });
+
+
+
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.wechat = new exports.WechatPayment(this);
+            this.wechat = new Wechat(this);
+
+            this.bus.add_channel_callback(
+                "micropay",
+                this.on_micropay,
+                this);
+            this.ready.then(function(){
+                // take out wechat cashregister from cashregisters to avoid
+                // rendering in payment screent
+                var wechat_journal = _.filter(self.journals, function(r){
+                    return r.wechat;
+                });
+                if (wechat_journal.length){
+                    if (wechat_journal.length > 1){
+                        // TODO warning
+                        console.log('error', 'More than one wechat journals found');
+                    }
+                    wechat_journal = wechat_journal[0];
+                } else {
+                    return;
+                }
+                self.wechat_cashregister = _.filter(self.cashregisters, function(r){
+                    return r.journal_id[0] == wechat_journal.id;
+                })[0];
+                self.cashregisters = _.filter(self.cashregisters, function(r){
+                    return r.journal_id[0] != wechat_journal.id;
+                });
+            });
+
+        },
+        on_micropay: function(msg){
+            var order = this.get('orders').find(function(item){
+                return item.uid === msg.order_ref;
+            });
+            if (order){
+                if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
+                    // order is paid and has to be closed
+
+                    // add payment
+                    var newPaymentline = new models.Paymentline({},{
+                        order: order,
+                        micropay_id: msg['micropay_id'],
+                        cashregister: this.wechat_cashregister,
+                        pos: this});
+                    newPaymentline.set_amount( msg['total_fee'] / 100.0 );
+                    order.paymentlines.add(newPaymentline);
+
+                    // validate order
+                    this.trigger('validate_order');
+                } else {
+                    // order was changed before payment result is recieved
+                    // TODO
+                }
+            } else {
+                consoler.log('error', 'Order is not found');
+            }
         },
     });
 
-    models.load_models({
-        model: 'account.journal',
-        fields: ['id','name','wechat_payment'],
-//        domain: function(self){
-//            return [['pos_config_id','=',self.config.id]]; // TODO how to determine journals of selected pos ?
-//        },
-        loaded: function(self,journals){
-            _.each(self.cashregisters, function(cr){
-                _.each(journals, function(jr){
-                    if ( cr.journal.id === jr.id )
-                        cr.journal.wechat_payment = jr.wechat_payment;
-                });
-            });
-        },
-    });
 
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
-        check_auth_code: function() {
-            var code = this.auth_code;
+    });
+
+    var PaymentlineSuper = models.Paymentline;
+    models.Paymentline = models.Paymentline.extend({
+        initialize: function(attributes, options){
+            PaymentlineSuper.prototype.initialize.apply(this, arguments);
+            this.micropay_id = options.micropay_id;
+        },
+        // TODO: do we need to extend init_from_JSON too ?
+        export_as_JSON: function(){
+            var res = PaymentlineSuper.prototype.export_as_JSON.apply(this, arguments);
+            res['micropay_id'] = this.micropay_id;
+            return res;
+        },
+    });
+
+    var Wechat = Backbone.Model.extend({
+        initialize: function(pos){
+            var self = this;
+            this.pos = pos;
+            core.bus.on('qr_scanned', this, function(value){
+                if (self.check_auth_code(value)){
+                    self.process_qr(value);
+                }
+            });
+        },
+        check_auth_code: function(code) {
+            return true; // for DEBUG
             if (code && Number.isInteger(+code) &&
                 code.length === 18 &&
                 +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
@@ -43,89 +125,44 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return false;
         },
-    });
-
-    screens.PaymentScreenWidget.include({
-        click_paymentmethods: function(id) {
-            var cashregister = this.get_journal(id);
-            if (cashregister.journal.wechat_payment && !this.pos.get_order().check_auth_code()) {
-                this.gui.show_popup('qr_scan');
-            } else {
-                this._super(id);
+        process_qr: function(auth_code){
+            var order = this.pos.get_order();
+            if (!order){
+                return;
             }
+            // TODO: block order for editing
+            this.micropay(auth_code, order);
         },
-        get_journal: function(id) {
-            var cashregister = null;
-            for ( var i = 0; i < this.pos.cashregisters.length; i++ ) {
-                if ( this.pos.cashregisters[i].journal_id[0] === id ){
-                    cashregister = this.pos.cashregisters[i];
-                    break;
-                }
-            }
-            return cashregister
-        },
-    });
-
-    exports.WechatPayment = Backbone.Model.extend({
-        initialize: function(pos){
+        micropay: function(auth_code, order){
+            /* send request asynchronously */
             var self = this;
-            this.pos = pos;
-        },
-        send_test: function(){
-            var data = {};
-            var pos = this.pos;
-            data.pos_id = pos.config.id;
-            data.cashier_id = pos.config.id;
-            data.order_id = pos.config.id;
-            data.session_id = pos.pos_session.id;
-            return this.send({data: data}, "/wechat/test");
-        },
-        send_get_key: function(au_c){
-            var data = {};
-            return this.send({data: data}, "/wechat/getsignkey")
-        },
-        send_payment: function(au_c){
-            var data = {};
-            var pos = this.pos;
-            data.pos_id = pos.config.id;
-            data.cashier_id = pos.config.id;
-            data.order_id = pos.config.id;
-            data.session_id = pos.pos_session.id;
-            data.order_short = [];
-            _.each(this.pos.get_order().get_orderlines(), function(line){
-                return data.order_short.push(line.product.display_name);
-            })
-            data.total_fee = Math.round(pos.get_order().get_total_with_tax());
-            data.auth_code = pos.get_order().auth_code || au_c;
-            return this.send({data: data}, "/wechat/payment_commence")
-//            .always(function(res){
-//                console.log(res);
-//            });
-        },
-        send: function(message, address){
-            var current_send_number = 0;
-            if (this.pos.debug){
-                current_send_number = this._debug_send_number++;
-                console.log('MS', this.pos.config.name, 'send #' + current_send_number +' :', JSON.stringify(message));
-            }
-            var self = this;
+
+            // total_fee is amount of cents
+            var total_fee = parseInt(100 * order.get_total_with_tax());
+
+            var terminal_ref = 'POS/' + self.pos.config.name;
+            var pos_id = self.pos.config.id;
+
             var send_it = function () {
-                return session.rpc(address, {
-                    message: message,
-                });
+                return rpc.query({
+                    model: 'wechat.micropay',
+                    method: 'pos_create_from_qr',
+                    kwargs: {
+                        'auth_code': auth_code,
+                        'total_fee': total_fee,
+                        'order_ref': order.uid,
+                        'terminal_ref': terminal_ref,
+                        'pos_id': pos_id,
+                    },
+                })
             };
+
+            var current_send_number = 0;
             return send_it().fail(function (error, e) {
                 if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
+                    console.log('Wechat', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                this.show_warning();
-            }).always(function(res){
-                console.log(res);
-                if (self.pos.debug){
-                    console.log('MS', self.pos.config.name, 'response #'+current_send_number+':', JSON.stringify(res));
-                console.lo
-                }
-                console.log('test')
+                self.show_warning();
             });
         },
         warning: function(warning_message){
@@ -140,5 +177,4 @@ odoo.define('pos_payment_wechat', function(require){
             this.warning(warning_message);
         }
     });
-    return exports;
 });

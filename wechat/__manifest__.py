@@ -1,4 +1,4 @@
-# Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """WeChat API""",
@@ -16,13 +16,17 @@
     # "price": 9.00,
     # "currency": "EUR",
 
-    "depends": [],
+    "depends": [
+        'product',
+    ],
     "external_dependencies": {"python": [
         'wechatpy',
     ], "bin": []},
-    "data": [],
+    "data": [
+        "views/wechat_micropay_views.xml",
+    ],
     "qweb": [],
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
