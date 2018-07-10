@@ -59,6 +59,8 @@ class PosMultiSessionSync(models.Model):
         server_revision_ID = order.revision_ID
         if not server_revision_ID:
             server_revision_ID = 1
+        _logger.debug('Client revision ID %s: Server revision ID %s', client_revision_ID, server_revision_ID)
+        _logger.debug('Client nonce %s: Server nonce %s', message['data']['nonce'], order.nonce)
         if client_revision_ID is not server_revision_ID:
             if message['data']['nonce'] == order.nonce:
                 return 'nonce'
@@ -173,6 +175,7 @@ class PosMultiSessionSync(models.Model):
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
+            _logger.debug('Sync All: Server revision ID %s', order.revision_ID)
             msg['data']['run_ID'] = run_ID
             data.append(msg)
         else:
