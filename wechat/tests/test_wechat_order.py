@@ -94,10 +94,10 @@ class TestWeChatOrder(TransactionCase):
         return self.opener.get(url, timeout=timeout, headers=headers)
 
     def _get_openid(self, data):
-        return self.url_open_json("/wechat/openid/", data)
+        return self.url_open_json("/wechat/miniprogram/openid", data)
 
     def _create_jsapi_order(self, data):
-        return self.url_open_json("/wechat/payment/", data)
+        return self.url_open_json("/wechat/miniprogram/payment", data)
 
     def test_native_payment(self):
 
@@ -121,6 +121,12 @@ class TestWeChatOrder(TransactionCase):
         self.assertTrue(openid, 'openid')
 
         order, data = self._create_jsapi_order({'openid': openid})
+
+        self.assertTrue(data.get('timeStamp'), 'timeStamp')
+        self.assertTrue(data.get('nonceStr'), 'nonceStr')
+        self.assertTrue(data.get('package'), 'package')
+        self.assertTrue(data.get('signType'), 'signType')
+        self.assertTrue(data.get('paySign'), 'paySign')
 
         # simulate notification
         notification = {
