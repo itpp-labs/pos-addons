@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.5.1`
+-------
+- FIX: Error when opening a POS.
+
 `2.5.0`
 -------
 - NEW: New option "Allow manual customer selecting" on user access rights
