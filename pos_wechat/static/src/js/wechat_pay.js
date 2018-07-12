@@ -50,7 +50,7 @@ odoo.define('pos_payment_wechat', function(require){
                     return;
                 }
                 self.cashregisters = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] != micropay_journal.id;
+                    return r.journal_id[0] != self.micropay_journal.id;
                 });
             });
 
