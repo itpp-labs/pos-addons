@@ -114,6 +114,7 @@ class WeChatOrder(models.Model):
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
         vals = {
+            'trade_type': 'NATIVE',
             'line_ids': [(0, 0, data) for data in lines],
             'debug': debug,
         }
@@ -145,7 +146,7 @@ class WeChatOrder(models.Model):
                 total_fee,
                 body,
                 total_fee,
-                self._notify_url,
+                self._notify_url(),
                 out_trade_no=order.id,
                 # TODO fee_type=record.currency_id.name
             )

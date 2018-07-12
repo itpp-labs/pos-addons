@@ -58,6 +58,15 @@ odoo.define('pos_payment_wechat', function(require){
             });
 
         },
+        scan_product: function(parsed_code){
+            // TODO: do we need to make this optional?
+            var value = parsed_code.code;
+            if (this.wechat.check_auth_code(value)){
+                this.wechat.process_qr(value);
+                return true;
+            }
+            return PosModelSuper.prototype.scan_product.apply(this, arguments);
+        },
         on_micropay: function(msg){
             var order = this.get('orders').find(function(item){
                 return item.uid === msg.order_ref;
@@ -117,7 +126,7 @@ odoo.define('pos_payment_wechat', function(require){
             });
         },
         check_auth_code: function(code) {
-            return true; // for DEBUG
+            // TODO: do we need to integrate this with barcode.nomenclature?
             if (code && Number.isInteger(+code) &&
                 code.length === 18 &&
                 +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {

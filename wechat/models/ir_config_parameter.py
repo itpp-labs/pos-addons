@@ -18,12 +18,24 @@ class Param(models.Model):
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
 
+        print ('ARGS', (
+            self.get_param('wechat.app_id'),
+            self.get_param('wechat.app_secret'),
+            self.get_param('wechat.mch_id'),
+            sandbox,
+            self.get_param('wechat.sub_mch_id'),
+            # TODO rest args
+            # self.sub_mch_id = sub_mch_id
+            # self.mch_cert = mch_cert
+            # self.mch_key = mch_key
+            # self.timeout = timeout
+        ))
         return WeChatPay(
             self.get_param('wechat.app_id'),
             self.get_param('wechat.app_secret'),
-            self.get_param('wechat.vendor_id'),
+            self.get_param('wechat.mch_id'),
             sandbox=sandbox,
-            sub_mch_id=self.get_param('wechat.vendor_id'),  # TODO make separate param. Keep this only for testing
+            sub_mch_id=self.get_param('wechat.sub_mch_id'),
             # TODO rest args
             # self.sub_mch_id = sub_mch_id
             # self.mch_cert = mch_cert
