@@ -69,7 +69,7 @@ class TestWeChatOrder(TransactionCase):
             }
         }
         self._patch_post(post_result)
-        order, code_url = self.Order.create_qr(self.lines, 300)
+        order, code_url = self.Order._create_qr(self.lines, total_fee=300)
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 

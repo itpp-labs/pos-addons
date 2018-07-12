@@ -44,6 +44,7 @@ class WeChatOrder(models.Model):
     notification_result_raw = fields.Text('Raw Notification result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
     notification_received = fields.Boolean(help='Set to true on receiving notifcation to avoid repeated processing', default=False)
+    journal_id = fields.Many2one('account.journal')
     line_ids = fields.One2many('wechat.order.line', 'order_id')
 
     def _body(self):
@@ -106,7 +107,12 @@ class WeChatOrder(models.Model):
         )
 
     @api.model
-    def create_qr(self, lines, total_fee, create_vals=None, **kwargs):
+    def create_qr(self, lines, **kwargs):
+        order, code_url = self._create_qr(lines, **kwargs)
+        return code_url
+
+    @api.model
+    def _create_qr(self, lines, create_vals=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
@@ -129,8 +135,7 @@ class WeChatOrder(models.Model):
                 'return_code': 'SUCCESS',
                 'result_code': 'SUCCESS',
                 'openid': '123',
-                'total_fee': total_fee,
-                'order_ref': order_ref,
+                'code_url': 'weixin://wxpay/s/An4baqw',
             }
             if self.env.context.get('debug_wechat_order_response'):
                 result_json = self.env.context.get('debug_wechat_order_response')
@@ -163,7 +168,7 @@ class WeChatOrder(models.Model):
 
     def on_notification(self, data):
         """
-        return True if notification changed order
+        return updated record
         """
         # check signature
         wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
@@ -195,7 +200,7 @@ class WeChatOrder(models.Model):
             vals['state'] = 'done'
 
         order.write(vals)
-        return True
+        return order
 
 
 class WeChatOrderLine(models.Model):

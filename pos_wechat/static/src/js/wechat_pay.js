@@ -31,29 +31,26 @@ odoo.define('pos_payment_wechat', function(require){
             this.wechat = new Wechat(this);
 
             this.bus.add_channel_callback(
-                "micropay",
-                this.on_micropay,
+                "wechat",
+                this.on_wechat,
                 this);
             this.ready.then(function(){
-                // take out wechat cashregister from cashregisters to avoid
+                // take out wechat micropay cashregister from cashregisters to avoid
                 // rendering in payment screent
-                var wechat_journal = _.filter(self.journals, function(r){
-                    return r.wechat;
+                var micropay_journal = _.filter(self.journals, function(r){
+                    return r.wechat == 'micropay';
                 });
-                if (wechat_journal.length){
-                    if (wechat_journal.length > 1){
+                if (micropay_journal.length){
+                    if (micropay_journal.length > 1){
                         // TODO warning
                         console.log('error', 'More than one wechat journals found');
                     }
-                    wechat_journal = wechat_journal[0];
+                    self.micropay_journal = micropay_journal[0];
                 } else {
                     return;
                 }
-                self.wechat_cashregister = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] == wechat_journal.id;
-                })[0];
                 self.cashregisters = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] != wechat_journal.id;
+                    return r.journal_id[0] != self.micropay_journal.id;
                 });
             });
 
@@ -67,19 +64,23 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return PosModelSuper.prototype.scan_product.apply(this, arguments);
         },
-        on_micropay: function(msg){
+        on_wechat: function(msg){
             var order = this.get('orders').find(function(item){
                 return item.uid === msg.order_ref;
             });
             if (order){
                 if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
-                    // order is paid and has to be closed
+                    /* order is paid and has to be closed */
+
+                    creg = _.filter(self.cashregisters, function(r){
+                        return r.journal_id[0] == msg['journal_id'];
+                    })[0];
 
                     // add payment
                     var newPaymentline = new models.Paymentline({},{
                         order: order,
                         micropay_id: msg['micropay_id'],
-                        cashregister: this.wechat_cashregister,
+                        cashregister: creg,
                         pos: this});
                     newPaymentline.set_amount( msg['total_fee'] / 100.0 );
                     order.paymentlines.add(newPaymentline);
@@ -94,11 +95,64 @@ odoo.define('pos_payment_wechat', function(require){
                 consoler.log('error', 'Order is not found');
             }
         },
+        // TODO: move to a separate model?
+        wechat_qr_payment: function(order){
+            /* send request asynchronously */
+            var self = this;
+
+            var pos = this;
+            var terminal_ref = 'POS/' + pos.config.name;
+            var pos_id = pos.config.id;
+
+            var lines = order.orderlines.map(function(r){
+                return {
+                    quantity: r.get_quantity(),
+                    price: r.get_price_with_tax(),
+                    product_id: r.get_product().id,
+                }
+            });
+
+            // Send without repeating on failure
+            return rpc.query({
+                model: 'wechat.order',
+                method: 'create_qr',
+                kwargs: {
+                    'lines': lines,
+                    'order_ref': order.uid,
+                    'terminal_ref': terminal_ref,
+                    'pos_id': pos_id,
+                },
+            }).then(function(code_url){
+                self.show_payment_qr(code_url);
+            });
+        },
+        show_payment_qr: function(code_url){
+            /* ecLevel -- Error Correction Level
+                L - Low (7%)
+                M - Medium (15%)
+                Q - Quartile (25%)
+                H - High (30%)
+            */
+            $('.qr-container').qrcode({
+                'text': code_url,
+                'ecLevel': 'H',
+            });
+        },
+        hide_payment_qr: function(){
+            $('.qr-container').empty();
+        },
     });
 
 
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
+        add_paymentline: function(cashregister){
+            if (cashregister.journal.wechat == 'native'){
+                this.pos.wechat_qr_payment(this);
+                return;
+            }
+            return OrderSuper.prototype.add_paymentline.apply(this, arguments);
+        },
     });
 
     var PaymentlineSuper = models.Paymentline;
