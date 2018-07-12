@@ -3,6 +3,7 @@
 import logging
 from odoo import http
 from odoo.http import request
+import requests
 
 _logger = logging.getLogger(__name__)
 
@@ -12,4 +13,17 @@ class WechatController(http.Controller):
     @http.route('/wechat/callback', methods=['POST'], auth='user', type='json')
     def micropay(self, **kwargs):
         _logger.debug('/wechat/callback request data: %s', kwargs)
-        request.env['wechat.order'].on_notification(kwargs)
+        res = request.env['wechat.order'].on_notification(kwargs)
+        if res:
+            return {"return_code": "SUCCESS"}
+        else:
+            return {"return_code": "FAIL"}
+
+    @http.route('/wechat/miniprogram/openid', methods=['POST'], auth='user', type='json')
+    def openid(self, code):
+        url = self.env['ir.config_parameter'].get_openid_url(code)
+        return requests.get(url)
+
+    @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='user', type='json')
+    def openid(self, openid):
+        return request.env['wechat.order'].create_jsapi_order(openid)

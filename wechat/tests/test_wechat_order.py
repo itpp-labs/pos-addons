@@ -93,9 +93,6 @@ class TestWeChatOrder(TransactionCase):
             return self.opener.post(url, data=data, timeout=timeout, headers=headers)
         return self.opener.get(url, timeout=timeout, headers=headers)
 
-    def _get_openid(self, data):
-        return self.url_open_json("/wechat/miniprogram/openid", data)
-
     def _create_jsapi_order(self, data):
         return self.url_open_json("/wechat/miniprogram/payment", data)
 
@@ -114,11 +111,8 @@ class TestWeChatOrder(TransactionCase):
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
     def test_JSAPI_payment(self):
-        # fake value for a test
-        code = "woqepoqwpoxamsdajsdpoqwpo"
-
-        openid = self._get_openid({"code": code})
-        self.assertTrue(openid, 'openid')
+        # fake values for a test
+        openid = 'qweqwe23e23oi2d393d2sad'
 
         order, data = self._create_jsapi_order({'openid': openid})
 
