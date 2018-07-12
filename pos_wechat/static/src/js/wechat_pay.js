@@ -35,10 +35,10 @@ odoo.define('pos_payment_wechat', function(require){
                 this.on_micropay,
                 this);
             this.ready.then(function(){
-                // take out wechat cashregister from cashregisters to avoid
+                // take out wechat micropay cashregister from cashregisters to avoid
                 // rendering in payment screent
                 var wechat_journal = _.filter(self.journals, function(r){
-                    return r.wechat;
+                    return r.wechat == 'micropay';
                 });
                 if (wechat_journal.length){
                     if (wechat_journal.length > 1){
