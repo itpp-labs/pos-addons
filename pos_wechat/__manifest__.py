@@ -28,7 +28,9 @@
     "demo": [
         "data/account_journal_demo.xml",
     ],
-    "qweb": [],
+    "qweb": [
+        "static/src/xml/pos.xml",
+    ],
 
     "auto_install": False,
     "installable": True,

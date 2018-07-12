@@ -58,6 +58,13 @@ Debugging
 
 To debug UI, create *System Parameter* ``wechat.local_sandbox`` with value ``1``. All requests to wechat will return fake result without making a request.
 
+Showing QR
+==========
+
+The module contains js lib, but don't use it. The js lib can be attached to
+corresponding assets in other modules (e.g. to *pos assets* in ``pos_wechat``
+module).
+
 Credits
 =======
 

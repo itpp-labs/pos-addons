@@ -4,7 +4,7 @@
 <odoo>
     <record id="wechat_micropay_journal" model="account.journal">
         <field name="name">WeChat MicroPay</field>
-        <field name="wechat" eval="True"/>
+        <field name="wechat">micropay</field>
         <field name="code">WMICRO</field>
         <field name="type">bank</field>
         <field name="journal_user" eval="True"/>
@@ -12,7 +12,7 @@
 
     <record id="wechat_native_journal" model="account.journal">
         <field name="name">WeChat Native Payment</field>
-        <field name="wechat" eval="True"/>
+        <field name="wechat">native</field>
         <field name="code">WNATIVE</field>
         <field name="type">bank</field>
         <field name="journal_user" eval="True"/>

@@ -37,23 +37,23 @@ odoo.define('pos_payment_wechat', function(require){
             this.ready.then(function(){
                 // take out wechat micropay cashregister from cashregisters to avoid
                 // rendering in payment screent
-                var wechat_journal = _.filter(self.journals, function(r){
+                var micropay_journal = _.filter(self.journals, function(r){
                     return r.wechat == 'micropay';
                 });
-                if (wechat_journal.length){
-                    if (wechat_journal.length > 1){
+                if (micropay_journal.length){
+                    if (micropay_journal.length > 1){
                         // TODO warning
                         console.log('error', 'More than one wechat journals found');
                     }
-                    wechat_journal = wechat_journal[0];
+                    micropay_journal = micropay_journal[0];
                 } else {
                     return;
                 }
                 self.wechat_cashregister = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] == wechat_journal.id;
+                    return r.journal_id[0] == micropay_journal.id;
                 })[0];
                 self.cashregisters = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] != wechat_journal.id;
+                    return r.journal_id[0] != micropay_journal.id;
                 });
             });
 
@@ -94,11 +94,30 @@ odoo.define('pos_payment_wechat', function(require){
                 consoler.log('error', 'Order is not found');
             }
         },
+        wechat_qr_payment: function(order){
+            // CONTINUE
+        },
+        show_payment_qr: function(code_url){
+            $('.qr-container').qrcode({
+                'text': 'code_url',
+                'minVersion': 10,
+            });
+        },
+        hide_payment_qr: function(){
+            $('.qr-container').empty();
+        },
     });
 
 
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
+        add_paymentline: function(cashregister){
+            if (cashregister.journal.wechat == 'native'){
+                this.pos.wechat_qr_payment(this);
+                return;
+            }
+            return OrderSuper.prototype.add_paymentline.apply(this, arguments);
+        },
     });
 
     var PaymentlineSuper = models.Paymentline;
