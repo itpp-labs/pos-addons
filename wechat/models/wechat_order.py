@@ -44,6 +44,7 @@ class WeChatOrder(models.Model):
     notification_result_raw = fields.Text('Raw Notification result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
     notification_received = fields.Boolean(help='Set to true on receiving notifcation to avoid repeated processing', default=False)
+    journal_id = fields.Many2one('account.journal')
     line_ids = fields.One2many('wechat.order.line', 'order_id')
 
     def _body(self):
@@ -167,7 +168,7 @@ class WeChatOrder(models.Model):
 
     def on_notification(self, data):
         """
-        return True if notification changed order
+        return updated record
         """
         # check signature
         wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
@@ -199,7 +200,7 @@ class WeChatOrder(models.Model):
             vals['state'] = 'done'
 
         order.write(vals)
-        return True
+        return order
 
 
 class WeChatOrderLine(models.Model):

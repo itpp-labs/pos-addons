@@ -1,7 +1,6 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
-import json
 try:
     from unittest.mock import patch
 except ImportError:
@@ -10,8 +9,6 @@ except ImportError:
 from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
 from odoo import api, SUPERUSER_ID
 from odoo.addons.bus.models.bus import dispatch
-
-from ..models.wechat_micropay import CHANNEL_MICROPAY
 
 
 _logger = logging.getLogger(__name__)

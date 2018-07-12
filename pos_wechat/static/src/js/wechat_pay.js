@@ -31,8 +31,8 @@ odoo.define('pos_payment_wechat', function(require){
             this.wechat = new Wechat(this);
 
             this.bus.add_channel_callback(
-                "micropay",
-                this.on_micropay,
+                "wechat",
+                this.on_wechat,
                 this);
             this.ready.then(function(){
                 // take out wechat micropay cashregister from cashregisters to avoid
@@ -45,13 +45,10 @@ odoo.define('pos_payment_wechat', function(require){
                         // TODO warning
                         console.log('error', 'More than one wechat journals found');
                     }
-                    micropay_journal = micropay_journal[0];
+                    self.micropay_journal = micropay_journal[0];
                 } else {
                     return;
                 }
-                self.wechat_cashregister = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] == micropay_journal.id;
-                })[0];
                 self.cashregisters = _.filter(self.cashregisters, function(r){
                     return r.journal_id[0] != micropay_journal.id;
                 });
@@ -67,19 +64,23 @@ odoo.define('pos_payment_wechat', function(require){
             }
             return PosModelSuper.prototype.scan_product.apply(this, arguments);
         },
-        on_micropay: function(msg){
+        on_wechat: function(msg){
             var order = this.get('orders').find(function(item){
                 return item.uid === msg.order_ref;
             });
             if (order){
                 if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
-                    // order is paid and has to be closed
+                    /* order is paid and has to be closed */
+
+                    creg = _.filter(self.cashregisters, function(r){
+                        return r.journal_id[0] == msg['journal_id'];
+                    })[0];
 
                     // add payment
                     var newPaymentline = new models.Paymentline({},{
                         order: order,
                         micropay_id: msg['micropay_id'],
-                        cashregister: this.wechat_cashregister,
+                        cashregister: creg,
                         pos: this});
                     newPaymentline.set_amount( msg['total_fee'] / 100.0 );
                     order.paymentlines.add(newPaymentline);
