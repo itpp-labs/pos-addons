@@ -228,6 +228,10 @@ odoo.define('pos_multi_session', function(require){
         },
         updates_from_server: function(message, sync_all){
             // don't broadcast updates made from this message
+            if (message.login_number === this.pos_session.login_number) {
+                // we dont process updates were send from this device
+                return;
+            }
             this.ms_syncing_in_progress = true;
             var error = false;
             var self = this;
@@ -861,6 +865,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             message.data.nonce = this.get_nonce();
+            message.login_number = this.pos.pos_session.login_number;
             var send_it = function () {
                 var temp = self.pos.config.sync_server || '';
                 if (options.address) {
