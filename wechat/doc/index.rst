@@ -30,6 +30,6 @@ Configuration
 
   * ``wechat.app_id``
   * ``wechat.app_secret``
-  * ``wechat.vendor_id``
-  * ``wechat.sandbox`` -- set to ``0`` to disable and any other value to
-    activate. It's disabled by default.
+  * ``wechat.mch_id`` -- *Vendor ID*
+  * ``wechat.sub_mch_id`` -- *Sub Vendor ID*
+  * ``wechat.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
