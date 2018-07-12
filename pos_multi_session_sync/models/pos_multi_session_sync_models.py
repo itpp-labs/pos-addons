@@ -49,6 +49,7 @@ class PosMultiSessionSync(models.Model):
             res = self.remove_order(message)
         else:
             res = self.broadcast_message(message)
+        _logger.debug('Return result after update: %s', res)
         return res
 
     @api.multi
