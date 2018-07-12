@@ -40,6 +40,7 @@ class PosMultiSessionSync(models.Model):
     @api.multi
     def on_update_message(self, message):
         self.ensure_one()
+        _logger.debug('On update message: %s', message)
         if message['action'] == 'update_order':
             res = self.set_order(message)
         elif message['action'] == 'sync_all':
