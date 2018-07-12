@@ -94,13 +94,47 @@ odoo.define('pos_payment_wechat', function(require){
                 consoler.log('error', 'Order is not found');
             }
         },
+        // TODO: move to a separate model?
         wechat_qr_payment: function(order){
-            // CONTINUE
+            /* send request asynchronously */
+            var self = this;
+
+            var pos = this;
+            var terminal_ref = 'POS/' + pos.config.name;
+            var pos_id = pos.config.id;
+
+            var lines = order.orderlines.map(function(r){
+                return {
+                    quantity: r.get_quantity(),
+                    price: r.get_price_with_tax(),
+                    product_id: r.get_product().id,
+                }
+            });
+
+            // Send without repeating on failure
+            return rpc.query({
+                model: 'wechat.order',
+                method: 'create_qr',
+                kwargs: {
+                    'lines': lines,
+                    'order_ref': order.uid,
+                    'terminal_ref': terminal_ref,
+                    'pos_id': pos_id,
+                },
+            }).then(function(code_url){
+                self.show_payment_qr(code_url);
+            });
         },
         show_payment_qr: function(code_url){
+            /* ecLevel -- Error Correction Level
+                L - Low (7%)
+                M - Medium (15%)
+                Q - Quartile (25%)
+                H - High (30%)
+            */
             $('.qr-container').qrcode({
-                'text': 'code_url',
-                'minVersion': 10,
+                'text': code_url,
+                'ecLevel': 'H',
             });
         },
         hide_payment_qr: function(){

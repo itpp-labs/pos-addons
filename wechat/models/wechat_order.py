@@ -106,7 +106,12 @@ class WeChatOrder(models.Model):
         )
 
     @api.model
-    def create_qr(self, lines, total_fee, create_vals=None, **kwargs):
+    def create_qr(self, lines, **kwargs):
+        order, code_url = self._create_qr(lines, **kwargs)
+        return code_url
+
+    @api.model
+    def _create_qr(self, lines, create_vals=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
@@ -129,8 +134,7 @@ class WeChatOrder(models.Model):
                 'return_code': 'SUCCESS',
                 'result_code': 'SUCCESS',
                 'openid': '123',
-                'total_fee': total_fee,
-                'order_ref': order_ref,
+                'code_url': 'weixin://wxpay/s/An4baqw',
             }
             if self.env.context.get('debug_wechat_order_response'):
                 result_json = self.env.context.get('debug_wechat_order_response')
