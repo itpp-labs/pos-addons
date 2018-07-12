@@ -116,11 +116,11 @@ class TestWeChatOrder(TransactionCase):
 
         order, data = self._create_jsapi_order({'openid': openid})
 
-        self.assertTrue(data.get('timeStamp'), 'timeStamp')
-        self.assertTrue(data.get('nonceStr'), 'nonceStr')
-        self.assertTrue(data.get('package'), 'package')
-        self.assertTrue(data.get('signType'), 'signType')
-        self.assertTrue(data.get('paySign'), 'paySign')
+        self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
+        self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')
+        self.assertIn('package', data, 'JSAPI payment: "package" not found in data')
+        self.assertIn('signType', data, 'JSAPI payment: "signType" not found in data')
+        self.assertIn('paySign', data, 'JSAPI payment: "paySign" not found in data')
 
         # simulate notification
         notification = {
