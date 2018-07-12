@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.1.0`
+-------
+- **NEW:** Added synchronization among the same POS
+
 `4.0.2`
 -------
 - **IMP:** Dramatically improved performance
