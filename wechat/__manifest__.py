@@ -18,6 +18,7 @@
 
     "depends": [
         'product',
+        'account',
     ],
     "external_dependencies": {"python": [
         'wechatpy',

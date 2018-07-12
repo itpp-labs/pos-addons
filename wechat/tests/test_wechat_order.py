@@ -6,7 +6,12 @@ try:
 except ImportError:
     from mock import patch
 from odoo.tests.common import TransactionCase
+from odoo.tests.common import HttpCase, HOST, PORT
 
+APPID = "1312123234235"
+SECRET = "qweqwewerterty"
+
+GRANT_TYPE = "120061098828009406"
 
 _logger = logging.getLogger(__name__)
 
@@ -74,6 +79,26 @@ class TestWeChatOrder(TransactionCase):
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
+    def url_open_json(self, url, data=None, timeout=10):
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        res = self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
+        return res.json()
+
+    def url_open_extra(self, url, data=None, timeout=10, headers=None):
+        if url.startswith('/'):
+            url = "http://%s:%s%s" % (HOST, PORT, url)
+        if data:
+            return self.opener.post(url, data=data, timeout=timeout, headers=headers)
+        return self.opener.get(url, timeout=timeout, headers=headers)
+
+    def _get_openid(self, data):
+        return self.url_open_json("/wechat/openid/", data)
+
+    def _create_jsapi_order(self, data):
+        return self.url_open_json("/wechat/payment/", data)
+
     def test_native_payment(self):
 
         order = self._create_order()
@@ -87,6 +112,27 @@ class TestWeChatOrder(TransactionCase):
         handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
+
+    def test_JSAPI_payment(self):
+        # fake value for a test
+        code = "woqepoqwpoxamsdajsdpoqwpo"
+
+        openid = self._get_openid({"code": code})
+        self.assertTrue(openid, 'openid')
+
+        order, data = self._create_jsapi_order({'openid': openid})
+
+        # simulate notification
+        notification = {
+            'return_code': 'SUCCESS',
+            'result_code': 'SUCCESS',
+            'out_trade_no': order.id,
+        }
+
+        handled = self.Order.on_notification(notification)
+        self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
+        handled = self.Order.on_notification(notification)
+        self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
 
     def test_notification_duplicates(self):
         order = self._create_order()
