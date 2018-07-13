@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.0.3`
+-------
+- **ERR:** Not updated cashier in order lines
+
 `4.0.2`
 -------
 - **IMP:** Dramatically improved performance
