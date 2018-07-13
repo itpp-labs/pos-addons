@@ -170,8 +170,9 @@ class PosMultiSessionSync(models.Model):
         if pos.user_ID != user_ID:
             pos.user_ID = user_ID
         pos.multi_session_message_ID = 0
-        data = []
-        if message.get('uid'):
+        orders = []
+        uid = message.get('uid')
+        if uid:
             order_uid = message['uid']
             order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
             msg = json.loads(order.order)
@@ -179,7 +180,7 @@ class PosMultiSessionSync(models.Model):
             msg['data']['revision_ID'] = order.revision_ID
             _logger.debug('Sync All: Server revision ID %s', order.revision_ID)
             msg['data']['run_ID'] = run_ID
-            data.append(msg)
+            orders.append(msg)
         else:
             for order in self.env['pos_multi_session_sync.order'] \
                              .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
@@ -188,10 +189,22 @@ class PosMultiSessionSync(models.Model):
                 msg['data']['message_ID'] = 0
                 msg['data']['revision_ID'] = order.revision_ID
                 msg['data']['run_ID'] = run_ID
-                data.append(msg)
-        action = 'sync_all'
-        message = {'action': action, 'orders': data, 'order_ID': self.order_ID}
-        return message
+                orders.append(msg)
+
+        data = {
+            'action': 'sync_all',
+            'data': {
+                'orders': orders,
+                'order_ID': self.order_ID,
+                'uid': uid
+            }
+        }
+
+        if message.get('immediate_rerendering'):
+            return data
+        else:
+            self.send_sync_message(data)
+            return {}
 
     @api.multi
     def remove_order(self, message):
@@ -207,6 +220,27 @@ class PosMultiSessionSync(models.Model):
             order.state = 'deleted'
         self.broadcast_message(message)
         return {'order_ID': self.order_ID}
+
+    @api.multi
+    def send_sync_message(self, message):
+        self.ensure_one()
+        notifications = []
+        channel_name = "pos.multi_session"
+        for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '=', self.env.context.get('user_ID')),
+                                                                  ('multi_session_ID', '=', self.multi_session_ID)]):
+            message_ID = pos.multi_session_message_ID
+            message_ID += 1
+            pos.multi_session_message_ID = message_ID
+            message['data']['message_ID'] = message_ID
+            self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
+
+        if self.env.context.get('phantomtest') == 'slowConnection':
+            _logger.info('Delayed notifications from %s: %s', self.env.user.id, notifications)
+            # commit to update values on DB
+            self.env.cr.commit()
+            time.sleep(3)
+
+        return 1
 
     @api.multi
     def broadcast_message(self, message):
