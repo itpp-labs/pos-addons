@@ -262,6 +262,12 @@ odoo.define('pos_multi_session', function(require){
                         order.destroy({'reason': 'abandon'});
                     } else if (action === 'update_order'){
                         this.ms_do_update(order, data);
+                    } else if (action === 'sync_all') {
+                        var sync_options = {};
+                        if (data.uid) {
+                            sync_options.sync_current_order = true;
+                        }
+                        this.multi_session.sync_all(data, sync_options);
                     }
                 }
             }catch(err){
@@ -761,20 +767,26 @@ odoo.define('pos_multi_session', function(require){
             if (options.uid) {
                 message.uid = options.uid;
             }
+            if (options.immediate_rerendering) {
+                message.immediate_rerendering = options.immediate_rerendering;
+            }
             return this.send(message, options).always(function(){
                 self.on_syncing = false;
             });
         },
         sync_all: function(data, options) {
+
             var server_orders_uid = [];
             var self = this;
+
             function delay(ms) {
                 var d = $.Deferred();
-                setTimeout(function(){
+                setTimeout(function () {
                     d.resolve();
                 }, ms);
                 return d.promise();
             }
+
 
             this.q = $.when();
             var done = $.Deferred();
@@ -907,13 +919,10 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (res.action === 'sync_all') {
                     var sync_options = {};
-                    if (options.immediate_rerendering) {
-                        sync_options.immediate_rerendering = options.immediate_rerendering;
+                    if (message.immediate_rerendering) {
+                        sync_options.immediate_rerendering = message.immediate_rerendering;
                     }
-                    if (message.uid) {
-                        sync_options.sync_current_order = true;
-                    }
-                    self.sync_all(res, sync_options);
+                    self.sync_all(res.data, sync_options);
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
