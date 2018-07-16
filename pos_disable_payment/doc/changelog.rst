@@ -3,6 +3,10 @@
 Updates
 =======
 
+`2.5.1`
+-------
+- FIX: Error on opening POS in latest odoo version.
+
 `2.5.0`
 -------
 - NEW: New option "Allow manual customer selecting" on user access rights

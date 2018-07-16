@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <record id="demo_multi_session" model="pos.multi_session">
             <field name="name">multi session demo</field>
         </record>
@@ -42,5 +41,4 @@
             <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
         </record>
 
-    </data>
 </odoo>

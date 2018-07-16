@@ -146,7 +146,7 @@ odoo.define('pos_multi_session', function(require){
             }
         },
         ms_my_info: function(){
-            var user = this.cashier || this.user;
+            var user = this.get_cashier() || this.user;
             return {
                 'user': {
                     'id': user.id,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Cashier Select""",
     "summary": """Forced choose a cashier before switching to payment screen""",
