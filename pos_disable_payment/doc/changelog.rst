@@ -5,7 +5,7 @@ Updates
 
 `2.5.1`
 -------
-- FIX: Error when opening a POS.
+- FIX: Error on opening POS in latest odoo version.
 
 `2.5.0`
 -------
