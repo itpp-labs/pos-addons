@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS discount base""",
     "summary": """Technical module in POS""",
