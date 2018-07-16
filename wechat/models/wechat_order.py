@@ -123,6 +123,10 @@ class WeChatOrder(models.Model):
         )
 
     @api.model
+    def create_jsapi_order(self, openid, data):
+        return self._create_jsapi_order(openid, data)
+
+    @api.model
     def create_qr(self, lines, **kwargs):
         try:
             order, code_url = self._create_qr(lines, **kwargs)
@@ -131,6 +135,55 @@ class WeChatOrder(models.Model):
                     _('Error on sending request to WeChat: %s') % e.response.text
             }
         return {'code_url': code_url}
+
+    @api.model
+    def _create_jsapi_order(self, openid, lines, create_vals=None, **kwargs):
+        """JSAPI Payment
+
+        :param openid:        The WeChat user's unique ID
+        :param lines:         list of dictionary
+        :param create_vals:   User order information
+        :returns order:       Current order
+                 result_json: Payments data for WeChat
+        """
+
+        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        vals = {
+            'trade_type': 'JSAPI',
+            'line_ids': [(0, 0, l) for l in lines],
+            'debug': debug,
+        }
+        if create_vals:
+            vals.update(create_vals)
+
+        order = self.create(vals)
+        total_fee = order._total_fee()
+
+        if debug:
+            _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
+            # Dummy Data. Change it to try different scenarios
+            result_json = {
+                'timeStamp': '1414561699',
+                'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
+                'package': 'prepay_id=123456789',
+                'signType': 'MD5',
+                'paySign': 'C380BEC2BFD727A4B6845133519F3AD6',
+            }
+            if self.env.context.get('debug_wechat_order_response'):
+                result_json = self.env.context.get('debug_wechat_order_response')
+        else:
+            # TODO: send request to WeChat server
+            body = order._body()
+
+        result_raw = json.dumps(result_json)
+        _logger.debug('result_raw: %s', result_raw)
+
+        vals = {
+            'result_raw': result_raw,
+            'total_fee': total_fee,
+        }
+        order.write(vals)
+        return order, result_json
 
     @api.model
     def _create_qr(self, lines, create_vals=None, **kwargs):
