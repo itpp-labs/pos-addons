@@ -46,7 +46,7 @@ Sandbox & Debugging
   * You will get ``appid`` and ``appsecret`` values
   * To work with WeChat payments you also need Merchant ID, which this sandbox
     doesn't provide. It seems, that to work with Payments you need a real
-    account and use *sandbox* mode (*System Parameter ``wechat.sandbox``).
+    account and use *sandbox* mode (*System Parameter* ``wechat.sandbox``).
 
 Payments
 --------
@@ -56,7 +56,15 @@ Payments
 Debugging
 =========
 
+Local Debug
+-----------
+
 To debug UI, create *System Parameter* ``wechat.local_sandbox`` with value ``1``. All requests to wechat will return fake result without making a request.
+
+Native Payments debugging
+-------------------------
+
+* It seems that in sandbox mode it's allowed to use only prices ``1.01`` and ``1.02``.
 
 Showing QR
 ==========

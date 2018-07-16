@@ -66,6 +66,7 @@ class TestWeChatOrder(TransactionCase):
             'pay/unifiedorder': {
                 'code_url': 'weixin://wxpay/s/An4baqw',
                 'trade_type': 'NATIVE',
+                'result_code': 'SUCCESS',
             }
         }
         self._patch_post(post_result)

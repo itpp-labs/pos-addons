@@ -16,6 +16,11 @@ If you don't have camera, you can executing following code in browser console to
     odoo.__DEBUG__.services['web.core'].bus.trigger('qr_scanned', '134579302432164181');
 
 
+Roadmap
+=======
+
+* TODO: In sake of UX, we need to add ``micropay_id`` reference to ``account.bank.statement.line``
+
 Credits
 =======
 

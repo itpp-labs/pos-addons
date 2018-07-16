@@ -49,6 +49,7 @@ odoo.define('pos_payment_wechat', function(require){
                 } else {
                     return;
                 }
+                self.all_cashregisters = self.cashregisters;
                 self.cashregisters = _.filter(self.cashregisters, function(r){
                     return r.journal_id[0] != self.micropay_journal.id;
                 });
@@ -72,7 +73,7 @@ odoo.define('pos_payment_wechat', function(require){
                 if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
                     /* order is paid and has to be closed */
 
-                    creg = _.filter(self.cashregisters, function(r){
+                    var creg = _.filter(this.all_cashregisters, function(r){
                         return r.journal_id[0] == msg['journal_id'];
                     })[0];
 
@@ -80,6 +81,7 @@ odoo.define('pos_payment_wechat', function(require){
                     var newPaymentline = new models.Paymentline({},{
                         order: order,
                         micropay_id: msg['micropay_id'],
+                        journal_id: msg['journal_id'],
                         cashregister: creg,
                         pos: this});
                     newPaymentline.set_amount( msg['total_fee'] / 100.0 );
@@ -106,7 +108,8 @@ odoo.define('pos_payment_wechat', function(require){
 
             var lines = order.orderlines.map(function(r){
                 return {
-                    quantity: r.get_quantity(),
+                    quantity: 1, // always use 1 because quantity is taken into account in price field
+                    quantity_full: r.get_quantity(),
                     price: r.get_price_with_tax(),
                     product_id: r.get_product().id,
                 }
@@ -122,8 +125,14 @@ odoo.define('pos_payment_wechat', function(require){
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
                 },
-            }).then(function(code_url){
-                self.show_payment_qr(code_url);
+            }).then(function(data){
+                if (data.code_url){
+                    self.show_payment_qr(data.code_url);
+                } else if (data.error) {
+                    self.show_warning(data.error);
+                } else {
+                    self.show_warning('Unknown error');
+                }
             });
         },
         show_payment_qr: function(code_url){
@@ -133,6 +142,7 @@ odoo.define('pos_payment_wechat', function(require){
                 Q - Quartile (25%)
                 H - High (30%)
             */
+            this.hide_payment_qr();
             $('.qr-container').qrcode({
                 'text': code_url,
                 'ecLevel': 'H',
@@ -140,6 +150,13 @@ odoo.define('pos_payment_wechat', function(require){
         },
         hide_payment_qr: function(){
             $('.qr-container').empty();
+        },
+        show_warning: function(warning_message){
+            console.info('error', warning_message);
+            this.chrome.gui.show_popup('error',{
+                'title': _t('Warning'),
+                'body': warning_message,
+            });
         },
     });
 
@@ -215,6 +232,7 @@ odoo.define('pos_payment_wechat', function(require){
                         'total_fee': total_fee,
                         'order_ref': order.uid,
                         'terminal_ref': terminal_ref,
+                        'journal_id': self.pos.micropay_journal.id,
                         'pos_id': pos_id,
                     },
                 })
@@ -225,19 +243,8 @@ odoo.define('pos_payment_wechat', function(require){
                 if (self.pos.debug){
                     console.log('Wechat', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                self.show_warning();
+                self.pos.show_warning();
             });
         },
-        warning: function(warning_message){
-            console.info('warning', warning_message);
-            this.pos.chrome.gui.show_popup('error',{
-                'title': _t('Warning'),
-                'body': warning_message,
-            });
-        },
-        show_warning: function(){
-            var warning_message = _t("Some problems have happened. TEST");
-            this.warning(warning_message);
-        }
     });
 });
