@@ -24,6 +24,7 @@
     ], "bin": []},
     "data": [
         "views/wechat_micropay_views.xml",
+        "security/ir.model.access.csv",
     ],
     "qweb": [],
 
