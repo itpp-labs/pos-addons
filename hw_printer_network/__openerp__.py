@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Hardware Network Printer""",
     "summary": """Hardware Driver for Network Printers""",

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'POS fiscal current',
     'version': '1.0.0',
