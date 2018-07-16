@@ -28,7 +28,7 @@ class Micropay(models.Model):
     def pos_create_from_qr_sync(self, **kwargs):
         args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
         record = self.create_from_qr(*args, **kwargs)
-        return self._prepare_message(record)
+        return record._prepare_message()
 
     @api.model
     def pos_create_from_qr(self, **kwargs):
