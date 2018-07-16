@@ -49,6 +49,7 @@ odoo.define('pos_payment_wechat', function(require){
                 } else {
                     return;
                 }
+                self.all_cashregisters = self.cashregisters;
                 self.cashregisters = _.filter(self.cashregisters, function(r){
                     return r.journal_id[0] != self.micropay_journal.id;
                 });
@@ -72,7 +73,7 @@ odoo.define('pos_payment_wechat', function(require){
                 if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
                     /* order is paid and has to be closed */
 
-                    creg = _.filter(self.cashregisters, function(r){
+                    var creg = _.filter(this.all_cashregisters, function(r){
                         return r.journal_id[0] == msg['journal_id'];
                     })[0];
 
@@ -80,6 +81,7 @@ odoo.define('pos_payment_wechat', function(require){
                     var newPaymentline = new models.Paymentline({},{
                         order: order,
                         micropay_id: msg['micropay_id'],
+                        journal_id: msg['journal_id'],
                         cashregister: creg,
                         pos: this});
                     newPaymentline.set_amount( msg['total_fee'] / 100.0 );
@@ -215,6 +217,7 @@ odoo.define('pos_payment_wechat', function(require){
                         'total_fee': total_fee,
                         'order_ref': order.uid,
                         'terminal_ref': terminal_ref,
+                        'journal_id': self.pos.micropay_journal.id,
                         'pos_id': pos_id,
                     },
                 })

@@ -18,6 +18,7 @@ class Micropay(models.Model):
     total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
+    journal_id = fields.Many2one('account.journal')
 
     @api.model
     def _body(self, terminal_ref, **kwargs):
@@ -58,6 +59,7 @@ class Micropay(models.Model):
             'order_ref': order_ref,
             'result_raw': result_raw,
             'total_fee': result_json['total_fee'],
+            'journal_id': kwargs['journal_id'],
             'debug': debug,
         }
         if create_vals:
