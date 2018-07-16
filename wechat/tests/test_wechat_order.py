@@ -8,11 +8,6 @@ except ImportError:
 from odoo.tests.common import TransactionCase
 from odoo.tests.common import HttpCase, HOST, PORT
 
-APPID = "1312123234235"
-SECRET = "qweqwewerterty"
-
-GRANT_TYPE = "120061098828009406"
-
 _logger = logging.getLogger(__name__)
 
 

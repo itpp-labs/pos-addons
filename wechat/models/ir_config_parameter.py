@@ -51,8 +51,6 @@ class Param(models.Model):
     def get_openid_url(self, code):
         appid = self.get_param('wechat.app_id')
         secret = self.get_param('wechat.app_secret')
-        # temp code for testing only
-        authorization_code = "sad12312e12s12123"
         url = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=%s"\
-              % (appid, secret, code, authorization_code)
+              % (appid, secret, code, "authorization_code")
         return url
