@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Confirm POS action by PIN',
     'version': '1.0.0',

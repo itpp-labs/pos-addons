@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Discount Programs""",
     "summary": """Use predefined discount programs for products in POS""",

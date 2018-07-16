@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Print tweets with PosBox""",
     "summary": """Print tweets with specific hashtags""",
