@@ -36,7 +36,7 @@
         <field name="name">wechat.micropay.list</field>
         <field name="model">wechat.micropay</field>
         <field name="arch" type="xml">
-            <tree string="Wechat Micropays">
+            <tree>
                 <field name="order_ref"/>
                 <field name="terminal_ref"/>
                 <field name="total_fee"/>

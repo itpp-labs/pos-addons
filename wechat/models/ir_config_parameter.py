@@ -1,11 +1,16 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
-from wechatpy import WeChatPay
+
+from odoo import models, api
+
 
 _logger = logging.getLogger(__name__)
 
-from odoo import models, fields, api
+try:
+    from wechatpy import WeChatPay
+except ImportError as err:
+    _logger.debug(err)
 
 
 class Param(models.Model):

@@ -142,6 +142,7 @@ odoo.define('pos_payment_wechat', function(require){
                 Q - Quartile (25%)
                 H - High (30%)
             */
+            this.hide_payment_qr();
             $('.qr-container').qrcode({
                 'text': code_url,
                 'ecLevel': 'H',

@@ -2,13 +2,18 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
-from wechatpy.exceptions import WeChatPayException
 
 from odoo import models, fields, api
-from odoo.http import request
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
+
+try:
+    from wechatpy.exceptions import WeChatPayException
+except ImportError as err:
+    _logger.debug(err)
+
+
 PAYMENT_RESULT_NOTIFICATION_URL = 'wechat/callback'
 SUCCESS = 'SUCCESS'
 
