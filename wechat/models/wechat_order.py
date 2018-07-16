@@ -79,6 +79,7 @@ class WeChatOrder(models.Model):
             'goods_num': line.quantity,
             'price': line.get_fee(),
             'goods_category': line.category,
+            'body': line.name or line.product_id.name,
         } for line in self.line_ids]
         body = {'goods_detail': rendered_lines}
 
@@ -153,9 +154,10 @@ class WeChatOrder(models.Model):
             # be sure that we save data before sending request to avoid
             # situation when order is sent to wechat server, but was not saved
             # in our server for any reason
+            _logger.debug('Unified order:\n total_fee: %s\n details: \n %s',
+                          total_fee, body)
             result_json = wpay.order.create(
                 'NATIVE',
-                total_fee,
                 body,
                 total_fee,
                 self._notify_url(),
@@ -219,7 +221,7 @@ class WeChatOrderLine(models.Model):
     wxpay_goods_ID = fields.Char('Wechat Good ID')
     price = fields.Monetary('Price', required=True, help='Price in currency units (not cents)')
     currency_id = fields.Many2one('res.currency', related='order_id')
-    quantity = fields.Char('Quantity', default=1)
+    quantity = fields.Float('Quantity', default=1)
     category = fields.Char('Category')
     order_id = fields.Many2one('wechat.order')
 
