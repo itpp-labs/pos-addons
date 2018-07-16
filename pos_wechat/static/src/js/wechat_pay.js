@@ -127,7 +127,7 @@ odoo.define('pos_payment_wechat', function(require){
                 },
             }).then(function(data){
                 if (data.code_url){
-                    self.show_payment_qr(code_url);
+                    self.show_payment_qr(data.code_url);
                 } else if (data.error) {
                     self.show_warning(data.error);
                 } else {
