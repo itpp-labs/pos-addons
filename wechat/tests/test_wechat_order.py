@@ -110,22 +110,9 @@ class TestWeChatOrder(TransactionCase):
         openid = 'qwe23e23oi2d393d2sad'
 
         # fake info about the user order
+
         data = {
-            'lines': [
-                {
-                    'name': 'Product 1',
-                    'id': 1,
-                    'quantity': 5,
-                    'price': 2.5,
-                    'note': 'Without meat'
-                }, {
-                    'name': 'Product 2',
-                    'id': 2,
-                    'quantity': 1,
-                    'price': 0.9,
-                    'note': ''
-                }
-            ],
+            'lines': self.lines,
             'order_note': 'Double size',
             'table': 1,
             'floor': 1,
