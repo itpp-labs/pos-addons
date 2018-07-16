@@ -19,7 +19,7 @@ class Param(models.Model):
 
     @api.model
     def get_wechat_pay_object(self):
-        sandbox = self.get_param('wechat.sandbox', '0') != '0',
+        sandbox = self.get_param('wechat.sandbox', '0') != '0'
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
 
