@@ -29,7 +29,9 @@ class WechatController(http.Controller):
         return requests.get(url)
 
     @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='user', type='json')
-    def openid(self, openid, data):
+    def openid(self, data):
+        openid = data['openid']
+        data = data['data']
         # openid - The WeChat user's unique ID
         # data - User order information
         return request.env['wechat.order'].create_jsapi_order(openid, data)

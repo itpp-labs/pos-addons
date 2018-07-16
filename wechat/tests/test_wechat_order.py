@@ -107,9 +107,32 @@ class TestWeChatOrder(TransactionCase):
 
     def test_JSAPI_payment(self):
         # fake values for a test
-        openid = 'qweqwe23e23oi2d393d2sad'
+        openid = 'qwe23e23oi2d393d2sad'
 
-        order, data = self._create_jsapi_order({'openid': openid})
+        # fake info about the user order
+        data = {
+            'lines': [
+                {
+                    'name': 'Product 1',
+                    'id': 1,
+                    'quantity': 5,
+                    'price': 2.5,
+                    'note': 'Without meat'
+                }, {
+                    'name': 'Product 2',
+                    'id': 2,
+                    'quantity': 1,
+                    'price': 0.9,
+                    'note': ''
+                }
+            ],
+            'order_note': 'Double size',
+            'table': 1,
+            'floor': 1,
+            'guests': 4
+        }
+
+        order, data = self._create_jsapi_order({'openid': openid, 'data': data})
 
         self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
         self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')
