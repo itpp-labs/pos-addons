@@ -2,9 +2,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
+from wechatpy.exceptions import WeChatPayException
 
 from odoo import models, fields, api
 from odoo.http import request
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 PAYMENT_RESULT_NOTIFICATION_URL = 'wechat/callback'
@@ -108,8 +110,13 @@ class WeChatOrder(models.Model):
 
     @api.model
     def create_qr(self, lines, **kwargs):
-        order, code_url = self._create_qr(lines, **kwargs)
-        return code_url
+        try:
+            order, code_url = self._create_qr(lines, **kwargs)
+        except WeChatPayException as e:
+            return {'error':
+                    _('Error on sending request to WeChat: %s') % e.response.text
+            }
+        return {'code_url': code_url}
 
     @api.model
     def _create_qr(self, lines, create_vals=None, **kwargs):

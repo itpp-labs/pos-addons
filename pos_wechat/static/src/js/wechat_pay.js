@@ -124,8 +124,14 @@ odoo.define('pos_payment_wechat', function(require){
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
                 },
-            }).then(function(code_url){
-                self.show_payment_qr(code_url);
+            }).then(function(data){
+                if (data.code_url){
+                    self.show_payment_qr(code_url);
+                } else if (data.error) {
+                    self.show_warning(data.error);
+                } else {
+                    self.show_warning('Unknown error');
+                }
             });
         },
         show_payment_qr: function(code_url){
@@ -142,6 +148,13 @@ odoo.define('pos_payment_wechat', function(require){
         },
         hide_payment_qr: function(){
             $('.qr-container').empty();
+        },
+        show_warning: function(warning_message){
+            console.info('error', warning_message);
+            this.chrome.gui.show_popup('error',{
+                'title': _t('Warning'),
+                'body': warning_message,
+            });
         },
     });
 
@@ -228,19 +241,8 @@ odoo.define('pos_payment_wechat', function(require){
                 if (self.pos.debug){
                     console.log('Wechat', self.pos.config.name, 'failed request #'+current_send_number+':', error.message);
                 }
-                self.show_warning();
+                self.pos.show_warning();
             });
         },
-        warning: function(warning_message){
-            console.info('warning', warning_message);
-            this.pos.chrome.gui.show_popup('error',{
-                'title': _t('Warning'),
-                'body': warning_message,
-            });
-        },
-        show_warning: function(){
-            var warning_message = _t("Some problems have happened. TEST");
-            this.warning(warning_message);
-        }
     });
 });
