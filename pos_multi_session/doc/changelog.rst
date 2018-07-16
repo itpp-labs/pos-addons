@@ -5,7 +5,7 @@ Updates
 
 `4.0.3`
 -------
-- **ERR:** Not updated cashier in order lines
+- **Fix:** Wrong cashier value in order lines after switching the cashier
 
 `4.0.2`
 -------
