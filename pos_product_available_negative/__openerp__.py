@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Restrict out-of-stock POS Orders',
     'version': '1.0.0',
