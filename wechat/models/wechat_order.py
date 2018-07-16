@@ -72,18 +72,32 @@ class WeChatOrder(models.Model):
             }
         ]}"""
         self.ensure_one()
-        rendered_lines = [{
-            'goods_id': str(line.product_id.id),
-            'wxpay_goods_id': line.wxpay_goods_ID,
-            'goods_name': line.name or line.product_id.name,
-            'goods_num': line.quantity,
-            'price': line.get_fee(),
-            'goods_category': line.category,
-            'body': line.name or line.product_id.name,
-        } for line in self.line_ids]
-        body = {'goods_detail': rendered_lines}
+        rendered_lines = []
+        order_body = []
+        for line in self.line_ids:
+            name = line.name or line.product_id.name
+            body = name
+            if line.quantity_full != '1':
+                body = '%s %s' % (body, line.quantity_full)
+            order_body.append(body)
+            rline = {
+                'goods_id': str(line.product_id.id),
+                'goods_name': name,
+                'goods_num': line.quantity,
+                'price': line.get_fee(),
+                'body': body
+            }
+            if line.category:
+                rline['category'] = line.category
 
-        return body
+            if line.wxpay_goods_ID:
+                rline['wxpay_goods_id'] = line.wxpay_goods_id
+
+            rendered_lines.append(rline)
+        detail = {'goods_detail': rendered_lines}
+        order_body = '; '.join(order_body)
+
+        return order_body, detail
 
     def _total_fee(self):
         self.ensure_one()
@@ -96,16 +110,10 @@ class WeChatOrder(models.Model):
         url = self.env['ir.config_parameter'].get_param('wechat.payment_result_notification_url')
         if url:
             return url
-        # Try to compute url automatically
-        try:
-            scheme = request.httprequest.scheme
-        except:
-            scheme = 'http'
 
-        domain = self.env["ir.config_parameter"].get_param('web.base.url')
-        return "{scheme}://domain/{path}".format(
-            scheme=scheme,
-            domain=domain,
+        base = self.env["ir.config_parameter"].get_param('web.base.url')
+        return "{base}/{path}".format(
+            base=base,
             path=PAYMENT_RESULT_NOTIFICATION_URL,
         )
 
@@ -148,20 +156,21 @@ class WeChatOrder(models.Model):
             if self.env.context.get('debug_wechat_order_response'):
                 result_json = self.env.context.get('debug_wechat_order_response')
         else:
-            body = order._body()
+            body, detail = order._body()
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             # TODO: we probably have make cr.commit() before making request to
             # be sure that we save data before sending request to avoid
             # situation when order is sent to wechat server, but was not saved
             # in our server for any reason
-            _logger.debug('Unified order:\n total_fee: %s\n details: \n %s',
-                          total_fee, body)
+            _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
+                          total_fee, body, detail)
             result_json = wpay.order.create(
                 'NATIVE',
                 body,
                 total_fee,
                 self._notify_url(),
                 out_trade_no=order.id,
+                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
 
@@ -221,7 +230,8 @@ class WeChatOrderLine(models.Model):
     wxpay_goods_ID = fields.Char('Wechat Good ID')
     price = fields.Monetary('Price', required=True, help='Price in currency units (not cents)')
     currency_id = fields.Many2one('res.currency', related='order_id')
-    quantity = fields.Float('Quantity', default=1)
+    quantity = fields.Integer('Quantity', default=1, help='Quantity as Integer (WeChat limitation)')
+    quantity_full = fields.Char('Quantity Value', default='1')
     category = fields.Char('Category')
     order_id = fields.Many2one('wechat.order')
 

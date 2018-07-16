@@ -108,7 +108,8 @@ odoo.define('pos_payment_wechat', function(require){
 
             var lines = order.orderlines.map(function(r){
                 return {
-                    quantity: r.get_quantity(),
+                    quantity: 1, // always use 1 because quantity is taken into account in price field
+                    quantity_full: r.get_quantity(),
                     price: r.get_price_with_tax(),
                     product_id: r.get_product().id,
                 }
