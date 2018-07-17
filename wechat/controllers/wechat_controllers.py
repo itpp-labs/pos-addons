@@ -3,6 +3,7 @@
 import logging
 from odoo import http
 from odoo.http import request
+import json
 import requests
 
 _logger = logging.getLogger(__name__)
@@ -29,24 +30,38 @@ class WechatController(http.Controller):
         The code is exchanged for the openid and session_key.
         :return openid: The WeChat user's unique ID
         """
-        url = self.env['ir.config_parameter'].get_openid_url(code)
+        url = request.env['ir.config_parameter'].get_openid_url(code)
         openid = requests.get(url)
         # TODO: create partner by openid
         return openid
 
-    @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='user', type='json')
-    def payment(self, data, **kwargs):
+    @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='user', type='http', csrf=False)
+    def payment(self, **kwargs):
+
         """Create and Payment a Order
 
         :param data['openid']:      The WeChat user's unique ID, data - User order information
         :param data['lines']:       Order lines
         :param data['create_vals']: info about the user order
-        :returns order:             Current order
+        :returns order:             Current order id
                  data['timeStamp']: Time stamp for the number of seconds from 00:00:00 on January 1, 1970 to the present, that is, the current time
                  data['nonceStr']:  A random string of 32 characters or less.
                  data['package']:   Unifies prepay_id parameter values returned by the order interface, submitted format such as: prepay_id=*
                  data['signType']:  Signature algorithm, temporarily supports MD5
                  data['paySign']:   Signature, refer to the WeChat Official Account Payment Help Document (https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3) for the specific signature scheme
         """
-        order, data = request.env['wechat.order'].create_jsapi_order(data.get('openid'), data.get('lines'), data.get('create_vals') or None, **kwargs)
-        return order, data
+        print(kwargs)
+        print(type(kwargs))
+
+        openid = json.loads(kwargs.get('openid'))
+        lines = json.loads(kwargs.get('lines'))
+        create_vals = json.loads(kwargs.get('create_vals'))
+
+        order, data = request.env['wechat.order'].create_jsapi_order(openid, lines, create_vals)
+
+        print (order, data)
+        # res = {
+        #     "order_id": order.id,
+        #     "data": data
+        # }
+        return "1"

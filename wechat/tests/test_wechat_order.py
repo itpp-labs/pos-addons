@@ -1,27 +1,30 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
+import json
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from odoo.tests.common import TransactionCase
 from odoo.tests.common import HttpCase, HOST, PORT
+from odoo import api
 
 _logger = logging.getLogger(__name__)
 
 
-class TestWeChatOrder(TransactionCase):
+class TestWeChatOrder(HttpCase):
     at_install = True
     post_install = True
 
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
-        self.Order = self.env['wechat.order']
-        self.product1 = self.env['product.product'].create({
+        self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
+
+        self.Order = self.phantom_env['wechat.order']
+        self.product1 = self.phantom_env['product.product'].create({
             'name': 'Product1',
         })
-        self.product2 = self.env['product.product'].create({
+        self.product2 = self.phantom_env['product.product'].create({
             'name': 'Product2',
         })
 
@@ -78,7 +81,7 @@ class TestWeChatOrder(TransactionCase):
         headers = {
             'Content-Type': 'application/json'
         }
-        res = self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
+        res = self.url_open_extra(url, data=data, timeout=timeout)
         return res.json()
 
     def url_open_extra(self, url, data=None, timeout=10, headers=None):
@@ -106,13 +109,25 @@ class TestWeChatOrder(TransactionCase):
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
     def test_JSAPI_payment(self):
+
+        login = "admin"
+        self.authenticate(login, login)
+
         # fake values for a test
         openid = 'qwe23e23oi2d393d2sad'
-
-        # fake info about the user order
         create_vals = {}
 
-        order, data = self._create_jsapi_order({'openid': openid, 'create_vals': create_vals, 'lines': self.lines})
+        # fake info about the user order
+        data = {
+            'openid': json.dumps(openid),
+            'create_vals': json.dumps(create_vals),
+            'lines': json.dumps(self.lines),
+        }
+
+        print("****************************")
+        data = self._create_jsapi_order(data)
+        print("res", data)
+        print("****************************")
 
         self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
         self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')

@@ -123,8 +123,8 @@ class WeChatOrder(models.Model):
         )
 
     @api.model
-    def create_jsapi_order(self, openid, data):
-        return self._create_jsapi_order(openid, data)
+    def create_jsapi_order(self, openid, lines, create_vals):
+        return self._create_jsapi_order(openid, lines, create_vals)
 
     @api.model
     def create_qr(self, lines, **kwargs):
@@ -137,7 +137,7 @@ class WeChatOrder(models.Model):
         return {'code_url': code_url}
 
     @api.model
-    def _create_jsapi_order(self, openid, lines, create_vals=None, **kwargs):
+    def _create_jsapi_order(self, openid, lines, create_vals):
         """JSAPI Payment
 
         :param openid:        The WeChat user's unique ID
@@ -146,11 +146,12 @@ class WeChatOrder(models.Model):
         :returns order:       Current order
                  result_json: Payments data for WeChat
         """
-
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+
+        lines = [(0, 0, l) for l in lines]
         vals = {
             'trade_type': 'JSAPI',
-            'line_ids': [(0, 0, l) for l in lines],
+            'line_ids': lines,
             'debug': debug,
         }
         if create_vals:
@@ -172,8 +173,10 @@ class WeChatOrder(models.Model):
             if self.env.context.get('debug_wechat_order_response'):
                 result_json = self.env.context.get('debug_wechat_order_response')
         else:
-            # TODO: send request to WeChat server
             body = order._body()
+            wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+
+
 
         result_raw = json.dumps(result_json)
         _logger.debug('result_raw: %s', result_raw)
