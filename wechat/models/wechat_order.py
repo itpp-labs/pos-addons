@@ -181,7 +181,7 @@ class WeChatOrder(models.Model):
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
                           total_fee, body, detail)
-            result_json = wpay.order.create(
+            result_raw = wpay.order.create(
                 trade_type='JSAPI',
                 body=body,
                 total_fee=total_fee,
@@ -193,15 +193,12 @@ class WeChatOrder(models.Model):
             )
 
             result_json = wpay.jsapi.get_jsapi_params(
-                prepay_id=result_json.get('prepay_id'),
-                nonce_str=result_json.get('nonce_str')
+                prepay_id=result_raw.get('prepay_id'),
+                nonce_str=result_raw.get('nonce_str')
             )
 
-        result_raw = json.dumps(result_json)
-        _logger.debug('result_raw: %s', result_raw)
-
         vals = {
-            'result_raw': result_raw,
+            'result_raw': json.dumps(result_raw),
             'total_fee': total_fee,
         }
         order.write(vals)

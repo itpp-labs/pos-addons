@@ -99,7 +99,7 @@ class TestWeChatOrder(HttpCase):
             }
         }
         self._patch_post(post_result)
-        res = self.url_open_json("/wechat/miniprogram/payment", data)
+        res = self.url_open_json("/wechat/miniprogram/payment", data, timeout=60)
         order = self.phantom_env["wechat.order"].browse(res.get('order_id'))
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return res
