@@ -25,9 +25,9 @@ class Param(models.Model):
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
 
-        print('ARGS', (
+        _logger.debug('WeChat Credentials', (
             self.get_param('wechat.app_id'),
-            self.get_param('wechat.app_secret'),
+            '%s...' % self.get_param('wechat.app_secret')[:5],
             self.get_param('wechat.mch_id'),
             sandbox,
             self.get_param('wechat.sub_mch_id'),
