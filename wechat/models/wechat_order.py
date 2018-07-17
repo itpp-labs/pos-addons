@@ -181,6 +181,7 @@ class WeChatOrder(models.Model):
                 body=body,
                 total_fee=total_fee,
                 notify_url=self._notify_url(),
+                user_id=openid,
                 out_trade_no=order.id,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
