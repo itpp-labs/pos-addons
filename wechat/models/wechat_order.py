@@ -181,27 +181,24 @@ class WeChatOrder(models.Model):
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
                           total_fee, body, detail)
-            result_json = wpay.order.create(
+            result_raw = wpay.order.create(
                 trade_type='JSAPI',
                 body=body,
                 total_fee=total_fee,
                 notify_url=self._notify_url(),
                 user_id=openid,
-                out_trade_no=order.id,
+                out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
 
             result_json = wpay.jsapi.get_jsapi_params(
-                prepay_id=result_json.get('prepay_id'),
-                nonce_str=result_json.get('nonce_str')
+                prepay_id=result_raw.get('prepay_id'),
+                nonce_str=result_raw.get('nonce_str')
             )
 
-        result_raw = json.dumps(result_json)
-        _logger.debug('result_raw: %s', result_raw)
-
         vals = {
-            'result_raw': result_raw,
+            'result_raw': json.dumps(result_raw),
             'total_fee': total_fee,
         }
         order.write(vals)
@@ -252,7 +249,7 @@ class WeChatOrder(models.Model):
                 body,
                 total_fee,
                 self._notify_url(),
-                out_trade_no=order.id,
+                out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
@@ -277,10 +274,10 @@ class WeChatOrder(models.Model):
             _logger.warning("Notification Signature is not valid:\n", data)
             return False
 
-        order_id = data.get('out_trade_no')
+        order_name = data.get('out_trade_no')
         order = None
-        if order_id:
-            order = self.browse(order_id)
+        if order_name:
+            order = self.search([('name', '=', order_name)])
         if not order:
             _logger.warning("Order %s from notification is not found", order_id)
             return False
