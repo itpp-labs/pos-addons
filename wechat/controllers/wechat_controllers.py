@@ -50,18 +50,12 @@ class WechatController(http.Controller):
                  data['signType']:  Signature algorithm, temporarily supports MD5
                  data['paySign']:   Signature, refer to the WeChat Official Account Payment Help Document (https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3) for the specific signature scheme
         """
-        print(kwargs)
-        print(type(kwargs))
-
         openid = json.loads(kwargs.get('openid'))
         lines = json.loads(kwargs.get('lines'))
         create_vals = json.loads(kwargs.get('create_vals'))
-
         order, data = request.env['wechat.order'].create_jsapi_order(openid, lines, create_vals)
-
-        print (order, data)
-        # res = {
-        #     "order_id": order.id,
-        #     "data": data
-        # }
-        return "1"
+        res = {
+            "order_id": order.id,
+            "data": data
+        }
+        return json.dumps(res)

@@ -18,6 +18,7 @@ class TestWeChatOrder(HttpCase):
 
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
+
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         self.Order = self.phantom_env['wechat.order']
@@ -78,9 +79,6 @@ class TestWeChatOrder(HttpCase):
         return order
 
     def url_open_json(self, url, data=None, timeout=10):
-        headers = {
-            'Content-Type': 'application/json'
-        }
         res = self.url_open_extra(url, data=data, timeout=timeout)
         return res.json()
 
@@ -92,7 +90,19 @@ class TestWeChatOrder(HttpCase):
         return self.opener.get(url, timeout=timeout, headers=headers)
 
     def _create_jsapi_order(self, data):
-        return self.url_open_json("/wechat/miniprogram/payment", data)
+        post_result = {
+            'pay/unifiedorder': {
+                'trade_type': 'JSAPI',
+                'result_code': 'SUCCESS',
+                'prepay_id': 'qweqweqwesadsd2113',
+                'nonce_str': 'wsdasd12312eaqsd21q3'
+            }
+        }
+        self._patch_post(post_result)
+        res = self.url_open_json("/wechat/miniprogram/payment", data)
+        order = self.phantom_env["wechat.order"].browse(res.get('order_id'))
+        self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
+        return res
 
     def test_native_payment(self):
 
@@ -124,10 +134,9 @@ class TestWeChatOrder(HttpCase):
             'lines': json.dumps(self.lines),
         }
 
-        print("****************************")
-        data = self._create_jsapi_order(data)
-        print("res", data)
-        print("****************************")
+        res = self._create_jsapi_order(data)
+        data = res.get('data')
+        order_id = res.get('order_id')
 
         self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
         self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')
@@ -139,7 +148,7 @@ class TestWeChatOrder(HttpCase):
         notification = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
-            'out_trade_no': order.id,
+            'out_trade_no': order_id,
         }
 
         handled = self.Order.on_notification(notification)

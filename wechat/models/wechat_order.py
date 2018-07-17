@@ -148,18 +148,17 @@ class WeChatOrder(models.Model):
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
 
-        lines = [(0, 0, l) for l in lines]
         vals = {
-            'trade_type': 'JSAPI',
-            'line_ids': lines,
+            'trade_type': 'NATIVE',
+            'line_ids': [(0, 0, data) for data in lines],
             'debug': debug,
         }
+
         if create_vals:
             vals.update(create_vals)
 
         order = self.create(vals)
         total_fee = order._total_fee()
-
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
@@ -173,10 +172,24 @@ class WeChatOrder(models.Model):
             if self.env.context.get('debug_wechat_order_response'):
                 result_json = self.env.context.get('debug_wechat_order_response')
         else:
-            body = order._body()
+            body, detail = order._body()
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+            _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
+                          total_fee, body, detail)
+            result_json = wpay.order.create(
+                trade_type='JSAPI',
+                body=body,
+                total_fee=total_fee,
+                notify_url=self._notify_url(),
+                out_trade_no=order.id,
+                detail=detail,
+                # TODO fee_type=record.currency_id.name
+            )
 
-
+            result_json = wpay.jsapi.get_jsapi_params(
+                prepay_id=result_json.get('prepay_id'),
+                nonce_str=result_json.get('nonce_str')
+            )
 
         result_raw = json.dumps(result_json)
         _logger.debug('result_raw: %s', result_raw)
