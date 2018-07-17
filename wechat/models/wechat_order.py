@@ -204,7 +204,10 @@ class WeChatOrder(models.Model):
             'total_fee': total_fee,
         }
         order.write(vals)
-        return order, result_json
+        return {
+            "order_id": order.id,
+            "data": result_json
+        }
 
     @api.model
     def _create_qr(self, lines, create_vals=None, **kwargs):
@@ -284,7 +287,7 @@ class WeChatOrder(models.Model):
         # check for duplicates
         if order.notification_received:
             _logger.warning("Notifcation duplicate is received: %s", order)
-            return False
+            return None
 
         vals = {
             'notification_result_raw': json.dumps(data),

@@ -2,6 +2,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
+import werkzeug.urls
 
 from odoo import models, api
 
@@ -50,8 +51,12 @@ class Param(models.Model):
         )
 
     def get_openid_url(self, code):
-        appid = self.get_param('wechat.app_id')
-        secret = self.get_param('wechat.app_secret')
-        url = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=%s"\
-              % (appid, secret, code, "authorization_code")
+        base_url = 'https://api.weixin.qq.com/sns/jscode2session'
+        param = {
+            'appid': self.get_param('wechat.app_id'),
+            'secret': self.get_param('wechat.app_secret'),
+            'js_code': code,
+            'grant_type': 'authorization_code'
+        }
+        url = '%s?%s' % (base_url, werkzeug.urls.url_encode(param))
         return url
