@@ -16,10 +16,11 @@ class WechatController(http.Controller):
     def micropay(self, **kwargs):
         _logger.debug('/wechat/callback request data: %s', kwargs)
         res = request.env['wechat.order'].on_notification(kwargs)
+
         if res is not False:
-            return {"return_code": "SUCCESS"}
+            return """<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>"""
         else:
-            return {"return_code": "FAIL"}
+            return """<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[Signature failure]]></return_msg></xml>"""
 
     @http.route('/wechat/miniprogram/openid', methods=['POST'], auth='public', type='http', csrf=False)
     def openid(self, code, **kwargs):
