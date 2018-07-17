@@ -3,6 +3,10 @@
 Updates
 =======
 
+`4.1.0`
+-------
+- **NEW:** Added synchronization among the same POS
+
 `4.0.3`
 -------
 - **Fix:** Wrong cashier value in order lines after switching the cashier
