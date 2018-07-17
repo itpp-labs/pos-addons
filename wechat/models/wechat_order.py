@@ -28,6 +28,7 @@ class WeChatOrder(models.Model):
     _description = 'Unified Order'
     _rec_name = 'order_ref'
 
+    name = fields.Char('Name', readonly=True)
     trade_type = fields.Selection([
         ('JSAPI', 'Official Account Payment (Mini Program)'),
         ('NATIVE', 'Native Payment'),
@@ -301,6 +302,11 @@ class WeChatOrder(models.Model):
 
         order.write(vals)
         return order
+
+    @api.model
+    def create(self, vals):
+        vals['name'] = self.env['ir.sequence'].next_by_code('wechat.order')
+        return super(WeChatOrder, self).create(vals)
 
 
 class WeChatOrderLine(models.Model):
