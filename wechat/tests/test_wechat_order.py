@@ -112,7 +112,7 @@ class TestWeChatOrder(HttpCase):
         notification = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
-            'out_trade_no': order.id,
+            'out_trade_no': order.name,
         }
         handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
@@ -137,6 +137,7 @@ class TestWeChatOrder(HttpCase):
         res = self._create_jsapi_order(data)
         data = res.get('data')
         order_id = res.get('order_id')
+        order = self.Order.browse(order_id)
 
         self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
         self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')
@@ -148,7 +149,7 @@ class TestWeChatOrder(HttpCase):
         notification = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
-            'out_trade_no': order_id,
+            'out_trade_no': order.name,
         }
 
         handled = self.Order.on_notification(notification)
@@ -165,7 +166,7 @@ class TestWeChatOrder(HttpCase):
             'result_code': 'FAIL',
             'error_code': 'SYSTEMERR',
             # 'transaction_id': '121775250120121775250120',
-            'out_trade_no': order.id,
+            'out_trade_no': order.name,
         }
         handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')

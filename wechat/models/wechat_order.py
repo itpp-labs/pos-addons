@@ -187,7 +187,7 @@ class WeChatOrder(models.Model):
                 total_fee=total_fee,
                 notify_url=self._notify_url(),
                 user_id=openid,
-                out_trade_no=order.id,
+                out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
@@ -252,7 +252,7 @@ class WeChatOrder(models.Model):
                 body,
                 total_fee,
                 self._notify_url(),
-                out_trade_no=order.id,
+                out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
@@ -277,10 +277,10 @@ class WeChatOrder(models.Model):
             _logger.warning("Notification Signature is not valid:\n", data)
             return False
 
-        order_id = data.get('out_trade_no')
+        order_name = data.get('out_trade_no')
         order = None
-        if order_id:
-            order = self.browse(order_id)
+        if order_name:
+            order = self.search([('name', '=', order_name)])
         if not order:
             _logger.warning("Order %s from notification is not found", order_id)
             return False
