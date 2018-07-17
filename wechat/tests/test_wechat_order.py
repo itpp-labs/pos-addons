@@ -1,4 +1,5 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
@@ -51,7 +52,6 @@ class TestWeChatOrder(HttpCase):
                 "description": "網路白目哈哈",
             }
         ]
-
 
     def _patch_post(self, post_result):
 

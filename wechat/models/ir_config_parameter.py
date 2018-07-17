@@ -1,4 +1,5 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 
@@ -23,7 +24,7 @@ class Param(models.Model):
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
 
-        print ('ARGS', (
+        print('ARGS', (
             self.get_param('wechat.app_id'),
             self.get_param('wechat.app_secret'),
             self.get_param('wechat.mch_id'),

@@ -1,4 +1,5 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
@@ -131,8 +132,8 @@ class WeChatOrder(models.Model):
         try:
             order, code_url = self._create_qr(lines, **kwargs)
         except WeChatPayException as e:
-            return {'error':
-                    _('Error on sending request to WeChat: %s') % e.response.text
+            return {
+                'error': _('Error on sending request to WeChat: %s') % e.response.text
             }
         return {'code_url': code_url}
 
@@ -163,6 +164,9 @@ class WeChatOrder(models.Model):
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
             result_json = {
+                'return_code': 'SUCCESS',
+                'result_code': 'SUCCESS',
+                'openid': '123',
                 'timeStamp': '1414561699',
                 'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
                 'package': 'prepay_id=123456789',
@@ -245,7 +249,7 @@ class WeChatOrder(models.Model):
                 total_fee,
                 self._notify_url(),
                 out_trade_no=order.id,
-                 detail=detail,
+                detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
 

@@ -3,7 +3,7 @@
 import threading
 
 
-from odoo import api, tools
+from odoo import api
 
 __all__ = ['odoo_async_call']
 
