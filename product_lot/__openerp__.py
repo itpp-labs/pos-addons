@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Product lot',
     'version': '1.0.2',

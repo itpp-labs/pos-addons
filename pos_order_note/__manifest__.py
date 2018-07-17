@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Advanced Order Notes""",
     "summary": """Set predefined notes for separate product or entire order""",

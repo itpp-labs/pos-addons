@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <template id="point_of_sale_assets" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
@@ -115,5 +114,4 @@
             </field>
         </record>
 
-    </data>
 </odoo>
