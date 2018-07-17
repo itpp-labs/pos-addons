@@ -196,7 +196,8 @@ class PosMultiSessionSync(models.Model):
             'data': {
                 'orders': orders,
                 'order_ID': self.order_ID,
-                'uid': uid
+                'uid': uid,
+                'login_number': message['login_number'],
             }
         }
 
@@ -226,8 +227,7 @@ class PosMultiSessionSync(models.Model):
         self.ensure_one()
         notifications = []
         channel_name = "pos.multi_session"
-        for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '=', self.env.context.get('user_ID')),
-                                                                  ('multi_session_ID', '=', self.multi_session_ID)]):
+        for pos in self.env['pos_multi_session_sync.pos'].search([('multi_session_ID', '=', self.multi_session_ID)]):
             message_ID = pos.multi_session_message_ID
             message_ID += 1
             pos.multi_session_message_ID = message_ID

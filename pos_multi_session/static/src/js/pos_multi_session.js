@@ -229,7 +229,9 @@ odoo.define('pos_multi_session', function(require){
         ms_on_update: function(message, sync_all){
             // don't broadcast updates made from this message
             if (message.login_number === this.pos_session.login_number) {
-                // we dont process updates were send from this device
+                // we don't process updates were send from this device
+                // keep the same message_ID among the same POS to prevent endless sync_all requests
+                this.message_ID = message.data.message_ID;
                 return;
             }
             this.ms_syncing_in_progress = true;
