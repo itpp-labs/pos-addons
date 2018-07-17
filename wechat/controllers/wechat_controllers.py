@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class WechatController(http.Controller):
 
-    @http.route('/wechat/callback', methods=['POST'], auth='user', type='json')
+    @http.route('/wechat/callback', methods=['POST'], auth='public', type='json', csrf=False)
     def micropay(self, **kwargs):
         _logger.debug('/wechat/callback request data: %s', kwargs)
         res = request.env['wechat.order'].on_notification(kwargs)
@@ -21,7 +21,7 @@ class WechatController(http.Controller):
         else:
             return {"return_code": "FAIL"}
 
-    @http.route('/wechat/miniprogram/openid', methods=['POST'], auth='user', type='json')
+    @http.route('/wechat/miniprogram/openid', methods=['POST'], auth='public', type='http', csrf=False)
     def openid(self, code, **kwargs):
         """Get openid
 
@@ -39,7 +39,7 @@ class WechatController(http.Controller):
         # TODO: create partner by openid
         return openid
 
-    @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='user', type='http', csrf=False)
+    @http.route('/wechat/miniprogram/payment', methods=['POST'], auth='public', type='http', csrf=False)
     def payment(self, **kwargs):
 
         """Create and Payment a Order
