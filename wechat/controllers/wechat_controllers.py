@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class WechatController(http.Controller):
 
-    @http.route('/wechat/callback', methods=['POST'], auth='public', type='json', csrf=False)
+    @http.route('/wechat/callback', methods=['POST'], auth='public', type='http', csrf=False)
     def micropay(self, **kwargs):
         _logger.debug('/wechat/callback request data: %s', kwargs)
         res = request.env['wechat.order'].on_notification(kwargs)
