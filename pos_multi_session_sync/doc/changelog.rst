@@ -1,3 +1,7 @@
+`1.0.3`
+-------
+- **IMP:** Refactoring the code
+
 `1.0.2`
 -------
 - **IMP:** Refactoring the code to fix screen hanging when synchronization

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <record model="ir.ui.view" id="view_pos_config_form">
-            <field name="name">pos.config.form.view.inherit</field>
-            <field name="model">pos.config</field>
-            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='features']" position="after">
-                    <group string="Longpolling">
-                        <group>
-                            <field name="longpolling_max_silence_timeout"  widget="float_time"/>
-                            <field name="longpolling_pong_timeout"  widget="float_time"/>
-                            <field name="autostart_longpolling"/>
-                        </group>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='features']" position="after">
+                <group string="Longpolling">
+                    <group>
+                        <field name="longpolling_max_silence_timeout" widget="integer"/>
+                        <field name="longpolling_pong_timeout" widget="integer"/>
+                        <field name="autostart_longpolling"/>
                     </group>
-                </xpath>
-            </field>
-        </record>
-    </data>
+                </group>
+            </xpath>
+        </field>
+    </record>
 </odoo>
