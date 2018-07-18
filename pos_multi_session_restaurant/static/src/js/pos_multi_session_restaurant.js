@@ -89,7 +89,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
             if (this.multi_session){
                 var current_order = this.get_order();
-                current_order.ms_update();
+                current_order.new_updates_to_send();
                 current_order.save_to_db();
             }
         },
@@ -102,7 +102,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
-        ms_on_update: function(message, sync_all){
+        updates_from_server: function(message, sync_all){
             var self = this;
             var data = message.data || {};
             var order = false;
@@ -117,7 +117,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.transfer = true;
                 order.destroy({'reason': 'abandon'});
             }
-            PosModelSuper.prototype.ms_on_update.apply(this, arguments);
+            PosModelSuper.prototype.updates_from_server.apply(this, arguments);
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
@@ -140,7 +140,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var self = this;
             if (table && this.order_to_transfer_to_different_table) {
                 this.order_to_transfer_to_different_table.table = table;
-                this.order_to_transfer_to_different_table.ms_update();
+                this.order_to_transfer_to_different_table.new_updates_to_send();
                 this.order_to_transfer_to_different_table = null;
                 // set this table
                 this.set_table(table);
@@ -155,18 +155,18 @@ odoo.define('pos_multi_session_restaurant', function(require){
         set_customer_count: function (count, skip_ms_update) {
             OrderSuper.prototype.set_customer_count.apply(this, arguments);
             if (!skip_ms_update) {
-                this.ms_update();
+                this.new_updates_to_send();
             }
         },
-        ms_remove_order: function() {
+        order_removing_to_send: function() {
             if (this.transfer) {
                 return;
             }
-            return OrderSuper.prototype.ms_remove_order.call(this, arguments);
+            return OrderSuper.prototype.order_removing_to_send.call(this, arguments);
         },
         saveChanges: function(){
             OrderSuper.prototype.saveChanges.apply(this, arguments);
-            this.trigger('change:sync');
+            this.trigger('change:new_updates_to_send');
         },
     });
 
