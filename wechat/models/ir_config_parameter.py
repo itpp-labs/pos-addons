@@ -26,11 +26,11 @@ class Param(models.Model):
             _logger.info('Sandbox Mode is used for WeChat API')
 
         _logger.debug('WeChat Credentials', (
-            self.get_param('wechat.app_id'),
-            '%s...' % self.get_param('wechat.app_secret')[:5],
-            self.get_param('wechat.mch_id'),
+            self.get_param('wechat.app_id', ''),
+            '%s...' % self.get_param('wechat.app_secret', '')[:5],
+            self.get_param('wechat.mch_id', ''),
             sandbox,
-            self.get_param('wechat.sub_mch_id'),
+            self.get_param('wechat.sub_mch_id', ''),
             # TODO rest args
             # self.sub_mch_id = sub_mch_id
             # self.mch_cert = mch_cert
@@ -38,11 +38,11 @@ class Param(models.Model):
             # self.timeout = timeout
         ))
         return WeChatPay(
-            self.get_param('wechat.app_id'),
-            self.get_param('wechat.app_secret'),
-            self.get_param('wechat.mch_id'),
+            self.get_param('wechat.app_id', ''),
+            self.get_param('wechat.app_secret', ''),
+            self.get_param('wechat.mch_id', ''),
             sandbox=sandbox,
-            sub_mch_id=self.get_param('wechat.sub_mch_id'),
+            sub_mch_id=self.get_param('wechat.sub_mch_id', ''),
             # TODO rest args
             # self.sub_mch_id = sub_mch_id
             # self.mch_cert = mch_cert
@@ -53,8 +53,8 @@ class Param(models.Model):
     def get_openid_url(self, code):
         base_url = 'https://api.weixin.qq.com/sns/jscode2session'
         param = {
-            'appid': self.get_param('wechat.app_id'),
-            'secret': self.get_param('wechat.app_secret'),
+            'appid': self.get_param('wechat.app_id', ''),
+            'secret': self.get_param('wechat.app_secret', ''),
             'js_code': code,
             'grant_type': 'authorization_code'
         }
