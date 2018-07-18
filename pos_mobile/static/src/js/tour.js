@@ -71,9 +71,6 @@ odoo.define('pos_mobile.tour', function(require) {
             run: function () {
                 // it's a check
             },
-        }, {
-            trigger: '.button.next:visible',
-            content: "next order",
         }];
     }
 
