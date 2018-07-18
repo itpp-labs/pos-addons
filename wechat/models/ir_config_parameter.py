@@ -25,24 +25,24 @@ class Param(models.Model):
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
 
-        _logger.debug('WeChat Credentials', (
+        _logger.debug('WeChat Credentials: app_id=%s, app_secret=%s, mch_id=%s, sub_mch_id=%s, sandbox mode is %s',
             self.get_param('wechat.app_id', ''),
             '%s...' % self.get_param('wechat.app_secret', '')[:5],
             self.get_param('wechat.mch_id', ''),
-            sandbox,
             self.get_param('wechat.sub_mch_id', ''),
+            sandbox,
             # TODO rest args
             # self.sub_mch_id = sub_mch_id
             # self.mch_cert = mch_cert
             # self.mch_key = mch_key
             # self.timeout = timeout
-        ))
+        )
         return WeChatPay(
             self.get_param('wechat.app_id', ''),
             self.get_param('wechat.app_secret', ''),
             self.get_param('wechat.mch_id', ''),
-            sandbox=sandbox,
             sub_mch_id=self.get_param('wechat.sub_mch_id', ''),
+            sandbox=sandbox,
             # TODO rest args
             # self.sub_mch_id = sub_mch_id
             # self.mch_cert = mch_cert

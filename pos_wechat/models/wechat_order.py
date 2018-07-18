@@ -23,7 +23,7 @@ class WeChatOrder(models.Model):
 
     def on_notification(self, data):
         order = super(WeChatOrder, self).on_notification(data)
-        if order:
+        if order and order.pos_id:
             order._send_pos_notification()
         return order
 
