@@ -139,13 +139,32 @@ class WeChatOrder(models.Model):
         return {'code_url': code_url}
 
     @api.model
+    def get_openid(self, code):
+        """Get openid
+
+        :param code: After the user is permitted to log in on the WeChat mini-program, the callback content will
+        bring the code (five-minute validity period). The developer needs to send the code to the backend
+        of their server and use code in exchange for the session_key api.
+        The code is exchanged for the openid and session_key.
+        :return openid: The WeChat user's unique ID
+        """
+        url = self.env['ir.config_parameter'].get_openid_url(code)
+        response = self.get(url)
+        response.raise_for_status()
+        value = response.json()
+        openid = value.get('openid')
+        # session_key = value.get('session_key')
+        # TODO: create partner by openid
+        return openid
+
+    @api.model
     def _create_jsapi_order(self, openid, lines, create_vals):
         """JSAPI Payment
 
         :param openid:        The WeChat user's unique ID
         :param lines:         list of dictionary
         :param create_vals:   User order information
-        :returns order:       Current order
+        :returns order_id:    Current order id
                  result_json: Payments data for WeChat
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'

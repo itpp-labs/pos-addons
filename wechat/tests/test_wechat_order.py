@@ -78,18 +78,7 @@ class TestWeChatOrder(HttpCase):
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
-    def url_open_json(self, url, data=None, timeout=10):
-        res = self.url_open_extra(url, data=data, timeout=timeout)
-        return res.json()
-
-    def url_open_extra(self, url, data=None, timeout=10, headers=None):
-        if url.startswith('/'):
-            url = "http://%s:%s%s" % (HOST, PORT, url)
-        if data:
-            return self.opener.post(url, data=data, timeout=timeout, headers=headers)
-        return self.opener.get(url, timeout=timeout, headers=headers)
-
-    def _create_jsapi_order(self, data):
+    def _create_jsapi_order(self, openid, create_vals, lines):
         post_result = {
             'pay/unifiedorder': {
                 'trade_type': 'JSAPI',
@@ -99,8 +88,8 @@ class TestWeChatOrder(HttpCase):
             }
         }
         self._patch_post(post_result)
-        res = self.url_open_json("/wechat/miniprogram/payment", data, timeout=60)
-        order = self.phantom_env["wechat.order"].browse(res.get('order_id'))
+        res = self.phantom_env['wechat.order'].create_jsapi_order(openid, lines, create_vals)
+        order = self.Order.browse(res.get('order_id'))
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return res
 
@@ -119,22 +108,12 @@ class TestWeChatOrder(HttpCase):
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
     def test_JSAPI_payment(self):
-
-        login = "admin"
-        self.authenticate(login, login)
-
         # fake values for a test
         openid = 'qwe23e23oi2d393d2sad'
         create_vals = {}
 
-        # fake info about the user order
-        data = {
-            'openid': json.dumps(openid),
-            'create_vals': json.dumps(create_vals),
-            'lines': json.dumps(self.lines),
-        }
+        res = self._create_jsapi_order(openid=openid, create_vals=create_vals, lines=self.lines)
 
-        res = self._create_jsapi_order(data)
         data = res.get('data')
         order_id = res.get('order_id')
         order = self.Order.browse(order_id)
