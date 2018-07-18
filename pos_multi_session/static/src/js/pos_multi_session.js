@@ -140,10 +140,9 @@ odoo.define('pos_multi_session', function(require){
                     order.ms_remove_order();
                 });
                 var channel_name = "pos.multi_session";
-                var callback = self.ms_on_update;
+                var callback = self.ms_update_callback;
                 self.bus.add_channel_callback(channel_name, callback, self);
                 if (self.config.sync_server){
-                    callback = self.ms_on_update;
                     self.add_bus('sync_server', self.config.sync_server);
                     self.get_bus('sync_server').add_channel_callback(channel_name, callback, self);
                     self.sync_bus = self.get_bus('sync_server');
@@ -225,6 +224,12 @@ odoo.define('pos_multi_session', function(require){
             }
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
+        },
+        ms_update_callback(message, sync_all){
+            if(message.data.run_ID !== this.multi_session_run_ID) {
+                return;
+            }
+            return this.ms_on_update(message, sync_all);
         },
         ms_on_update: function(message, sync_all){
             // don't broadcast updates made from this message
