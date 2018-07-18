@@ -98,7 +98,7 @@ odoo.define('pos_payment_wechat', function(require){
             }
         },
         // TODO: move to a separate model?
-        wechat_qr_payment: function(order){
+        wechat_qr_payment: function(order, creg){
             /* send request asynchronously */
             var self = this;
 
@@ -124,6 +124,7 @@ odoo.define('pos_payment_wechat', function(require){
                     'order_ref': order.uid,
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
+                    'journal_id': creg.journal.id,
                 },
             }).then(function(data){
                 if (data.code_url){
@@ -165,7 +166,7 @@ odoo.define('pos_payment_wechat', function(require){
     models.Order = models.Order.extend({
         add_paymentline: function(cashregister){
             if (cashregister.journal.wechat == 'native'){
-                this.pos.wechat_qr_payment(this);
+                this.pos.wechat_qr_payment(this, cashregister);
                 return;
             }
             return OrderSuper.prototype.add_paymentline.apply(this, arguments);

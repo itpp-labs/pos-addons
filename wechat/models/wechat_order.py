@@ -238,6 +238,7 @@ class WeChatOrder(models.Model):
             'trade_type': 'NATIVE',
             'line_ids': [(0, 0, data) for data in lines],
             'order_ref': kwargs.get('order_ref'),
+            'journal_id': kwargs.get('journal_id'),
             'debug': debug,
         }
         if create_vals:
