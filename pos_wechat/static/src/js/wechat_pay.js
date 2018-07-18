@@ -94,7 +94,7 @@ odoo.define('pos_payment_wechat', function(require){
                     // TODO
                 }
             } else {
-                consoler.log('error', 'Order is not found');
+                console.log('error', 'Order is not found');
             }
         },
         // TODO: move to a separate model?
