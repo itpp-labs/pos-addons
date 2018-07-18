@@ -13,6 +13,7 @@ class WeChatPos(models.AbstractModel):
     def _send_pos_notification(self):
         self.ensure_one()
         msg = self._prepare_message()
+        assert self.pos_id, "The record has empty value of pos_id field"
         return self.env['pos.config']._send_to_channel_by_id(
             self._cr.dbname,
             self.pos_id.id,
