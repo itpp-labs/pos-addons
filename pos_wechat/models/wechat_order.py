@@ -26,3 +26,12 @@ class WeChatOrder(models.Model):
         if order:
             order._send_pos_notification()
         return order
+
+    @api.model
+    def create_qr(self, lines, **kwargs):
+        pos_id = kwargs.get('pos_id')
+        if pos_id:
+            if 'create_vals' not in kwargs:
+                kwargs['create_vals'] = {}
+            kwargs['create_vals']['pos_id'] = pos_id
+        return super(WeChatOrder, self).create_qr(lines, **kwargs)
