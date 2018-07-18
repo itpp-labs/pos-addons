@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
+<openerp>
+    <data>
+
+        <!--Set field debt to 'credit' in model pos.config.settings via get_default_debt_type-->
+        <function model="ir.config_parameter" name="set_param" eval="('pos_debt_notebook.debt_type', 'credit', ['base.group_system'])" />
+
+        <record id="product_credit_product" model="product.product">
+            <field name="name">Credits top-up</field>
+            <field name="default_code">POS-DEBT</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="available_in_pos" eval="True"/>
+            <field name="list_price">1</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="description">This is a product for purchasing "Credits".</field>
+        </record>
+
+    </data>
+</openerp>

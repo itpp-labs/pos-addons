@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     'live_test_url': 'http://apps.it-projects.info/shop/product/internal-credit-system?version=10.0',
     "images": ['images/credit.png'],
-    "version": "1.1.0",
+    "version": "10.0.1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
