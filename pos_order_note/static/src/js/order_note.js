@@ -33,7 +33,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_note: function(note){
             this.old_note = this.note;
             this.note = note;
-            this.trigger('change',this);
+            this.trigger('change');
             this.trigger('change:sync');
             this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
@@ -76,7 +76,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_note = data.old_note;
             this.custom_notes = data.custom_notes;
             this.old_custom_notes = data.old_custom_notes;
-            if (this.pos.gui.screen_instances.products) {
+            var current_order = this.pos.get_order();
+            if (current_order && this.uid === current_order.uid && this.pos.gui.screen_instances.products) {
                 this.pos.gui.screen_instances.products.order_widget.renderElement(true);
             }
         },

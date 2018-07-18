@@ -1,3 +1,8 @@
+`1.1.7`
+-------
+
+- **FIX:** Compatibility with Pos Restaurant Base
+
 `1.1.6`
 -------
 
