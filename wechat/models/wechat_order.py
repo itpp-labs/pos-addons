@@ -152,6 +152,7 @@ class WeChatOrder(models.Model):
         response = self.get(url)
         response.raise_for_status()
         value = response.json()
+        _logger.debug('get_openid function return parameters: %s', value)
         openid = value.get('openid')
         # session_key = value.get('session_key')
         # TODO: create partner by openid
@@ -210,8 +211,8 @@ class WeChatOrder(models.Model):
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
-
-            result_json = wpay.jsapi.get_jsapi_params(
+            mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
+            result_json = mpay.jsapi.get_jsapi_params(
                 prepay_id=result_raw.get('prepay_id'),
                 nonce_str=result_raw.get('nonce_str')
             )
