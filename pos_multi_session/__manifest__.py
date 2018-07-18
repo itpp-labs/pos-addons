@@ -11,7 +11,7 @@
     "category": "Point Of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=10.0',
     "images": ["images/pos-multi-session.png"],
-    "version": "10.0.4.1.0",
+    "version": "10.0.4.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",

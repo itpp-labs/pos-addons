@@ -5,58 +5,56 @@
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 
 <odoo>
-    <data>
-        <template id="pos_ms_restaurant_assets" name="pos_multi_session_restaurant assets" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js"></script>
-            </xpath>
-        </template>
+    <template id="pos_ms_restaurant_assets" name="pos_multi_session_restaurant assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js"></script>
+        </xpath>
+    </template>
 
-        <template id="assets_backend" name="pos_multi_session_restaurant assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/test_pos_ms_r.js"></script>
-            </xpath>
-        </template>
+    <template id="assets_backend" name="pos_multi_session_restaurant assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_multi_session_restaurant/static/src/js/test_pos_ms_r.js"></script>
+        </xpath>
+    </template>
 
-        <record model="ir.ui.view" id="to_restaurant_floor_inherit_form">
-            <field name="name">to.restaurant.floor.inherit.form</field>
-            <field name="model">restaurant.floor</field>
-            <field name="inherit_id" ref="pos_restaurant.view_restaurant_floor_form"></field>
-            <field name="priority" eval="99" />
-            <field name="arch" type="xml">
-                <field name="pos_config_id" position="replace">
-                    <field name="pos_config_id" invisible="1" />
-                </field>
+    <record model="ir.ui.view" id="to_restaurant_floor_inherit_form">
+        <field name="name">to.restaurant.floor.inherit.form</field>
+        <field name="model">restaurant.floor</field>
+        <field name="inherit_id" ref="pos_restaurant.view_restaurant_floor_form"></field>
+        <field name="priority" eval="99" />
+        <field name="arch" type="xml">
+            <field name="pos_config_id" position="replace">
+                <field name="pos_config_id" invisible="1" />
             </field>
-        </record>
+        </field>
+    </record>
 
-        <record model="ir.ui.view" id="to_pos_config_inherit_form">
-            <field name="name">to.pos.config.inherit.form</field>
-            <field name="model">pos.config</field>
-            <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
-            <field name="priority" eval="99" />
-            <field name="arch" type="xml">
-                <data>
-                    <xpath expr="//field[@name='floor_ids']" position="replace">
-                        <field name="floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
-                        <field name="ms_floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'in', [None,False])]}"/>
-                    </xpath>
-                </data>
-            </field>
-        </record>
+    <record model="ir.ui.view" id="to_pos_config_inherit_form">
+        <field name="name">to.pos.config.inherit.form</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
+        <field name="priority" eval="99" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='floor_ids']" position="replace">
+                    <field name="floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
+                    <field name="ms_floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'in', [None,False])]}"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
 
-        <record id="multi_session_restaurant_form" model="ir.ui.view">
-            <field name="name">pos.multi_session.form</field>
-            <field name="model">pos.multi_session</field>
-            <field name="inherit_id" ref="pos_multi_session.multi_session_form"/>
-            <field name="arch" type="xml">
-                <data>
-                    <xpath expr="//field[@name='pos_ids']" position="after">
-                            <field name="floor_ids" widget="many2many_tags"/>
-                    </xpath>
-                </data>
-            </field>
-        </record>
+    <record id="multi_session_restaurant_form" model="ir.ui.view">
+        <field name="name">pos.multi_session.form</field>
+        <field name="model">pos.multi_session</field>
+        <field name="inherit_id" ref="pos_multi_session.multi_session_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='pos_ids']" position="after">
+                    <field name="floor_ids" widget="many2many_tags"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
 
-    </data>
 </odoo>
