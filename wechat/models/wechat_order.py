@@ -26,7 +26,6 @@ class WeChatOrder(models.Model):
 
     _name = 'wechat.order'
     _description = 'Unified Order'
-    _rec_name = 'order_ref'
 
     name = fields.Char('Name', readonly=True)
     trade_type = fields.Selection([
@@ -129,16 +128,6 @@ class WeChatOrder(models.Model):
         return self._create_jsapi_order(openid, lines, create_vals)
 
     @api.model
-    def create_qr(self, lines, **kwargs):
-        try:
-            order, code_url = self._create_qr(lines, **kwargs)
-        except WeChatPayException as e:
-            return {
-                'error': _('Error on sending request to WeChat: %s') % e.response.text
-            }
-        return {'code_url': code_url}
-
-    @api.model
     def get_openid(self, code):
         """Get openid
 
@@ -228,6 +217,16 @@ class WeChatOrder(models.Model):
         }
 
     @api.model
+    def create_qr(self, lines, **kwargs):
+        try:
+            order, code_url = self._create_qr(lines, **kwargs)
+        except WeChatPayException as e:
+            return {
+                'error': _('Error on sending request to WeChat: %s') % e.response.text
+            }
+        return {'code_url': code_url}
+
+    @api.model
     def _create_qr(self, lines, create_vals=None, **kwargs):
         """Native Payment
 
@@ -238,6 +237,7 @@ class WeChatOrder(models.Model):
         vals = {
             'trade_type': 'NATIVE',
             'line_ids': [(0, 0, data) for data in lines],
+            'order_ref': kwargs.get('order_ref'),
             'debug': debug,
         }
         if create_vals:
