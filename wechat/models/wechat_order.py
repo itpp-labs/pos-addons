@@ -152,6 +152,7 @@ class WeChatOrder(models.Model):
         response = self.get(url)
         response.raise_for_status()
         value = response.json()
+        _logger.debug('get_openid function return parameters: %s', value)
         openid = value.get('openid')
         # session_key = value.get('session_key')
         # TODO: create partner by openid

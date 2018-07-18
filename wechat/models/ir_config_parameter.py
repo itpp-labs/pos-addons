@@ -79,4 +79,5 @@ class Param(models.Model):
             'grant_type': 'authorization_code'
         }
         url = '%s?%s' % (base_url, werkzeug.urls.url_encode(param))
+        _logger.debug('openid url: %s', url)
         return url
