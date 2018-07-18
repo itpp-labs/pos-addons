@@ -3,6 +3,7 @@
 
 - **IMP:** Change minutes to seconds for Max Silence Timeout and Pong timeout
 - **NEW:** Correct working after switch a device to sleep mode
+- **NEW:** Restore longpolling conection by clicking the icon
 
 `2.0.1`
 -------
