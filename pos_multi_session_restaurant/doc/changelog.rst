@@ -1,3 +1,7 @@
+`3.2.3`
+-------
+- **FIX:** 'order_line.node' is undefined
+
 `3.2.2`
 -------
 - **IMP:** Improved performance
