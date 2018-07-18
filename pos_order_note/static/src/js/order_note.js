@@ -34,7 +34,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_note = this.note;
             this.note = note;
             this.trigger('change',this);
-            this.trigger('change:sync');
+            this.trigger('change:new_updates_to_send');
             this.pos.gui.screen_instances.products.order_widget.renderElement(true);
         },
         get_note: function(){
@@ -46,12 +46,12 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_custom_notes: function(notes) {
             this.old_custom_notes = this.custom_notes;
             this.custom_notes = notes;
-            this.trigger('change:sync');
+            this.trigger('change:new_updates_to_send');
             this.trigger('change', this);
         },
         set_old_custom_notes: function(notes) {
             this.old_custom_notes = notes;
-            this.trigger('change:sync');
+            this.trigger('change:new_updates_to_send');
             this.trigger('change', this);
         },
         get_custom_notes: function() {
@@ -240,7 +240,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_custom_notes: function(notes) {
             this.custom_notes = notes;
             this.trigger('change', this);
-            this.order.trigger('change:sync');
+            this.order.trigger('change:new_updates_to_send');
         },
         get_custom_notes: function() {
             if (this.custom_notes && this.custom_notes.length) {
@@ -251,7 +251,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         set_old_custom_notes: function(notes) {
             this.old_custom_notes = notes;
             this.trigger('change', this);
-            this.order.trigger('change:sync');
+            this.order.trigger('change:new_updates_to_send');
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
