@@ -1,3 +1,8 @@
+`2.1.0`
+-------
+
+- **NEW:** Restore longpolling conection by clicking the icon
+
 `2.0.1`
 -------
 
