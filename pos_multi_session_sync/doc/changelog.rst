@@ -1,6 +1,6 @@
-`1.0.3`
+`1.1.0`
 -------
-- **IMP:** Refactoring the code
+- **NEW:** Sync Orders via longpolling
 
 `1.0.2`
 -------
