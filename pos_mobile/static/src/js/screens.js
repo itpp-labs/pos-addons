@@ -249,7 +249,7 @@ odoo.define('pos_mobile.screens', function (require) {
             this._super();
             var payment_method = $(".payment-screen .paymentmethods-container");
             payment_method.detach();
-            $('.payment-screen .paymentlines-container').after(payment_method);
+            $('.payment-screen .payment-numpad').before(payment_method);
         }
     });
 
