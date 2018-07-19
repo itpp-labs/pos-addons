@@ -60,7 +60,7 @@ odoo.define("pos_mobile.chrome", function(require) {
 
             var payment_method = $(".payment-screen .paymentmethods-container");
             payment_method.detach();
-            $(".payment-screen .paymentlines-container").after(payment_method);
+            $(".payment-screen .payment-numpad").before(payment_method);
 
             // Element before the closing button in top header
             $($(".pos-rightheader .oe_status")[0]).css({"margin-right": "70px"});
