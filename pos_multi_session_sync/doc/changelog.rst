@@ -1,6 +1,6 @@
-`1.1.0`
+`1.0.3`
 -------
-- **NEW:** Sync Orders via longpolling
+- **Fix:** Complete synchronization raised conflict error in case of slow connection and receiving new updates on waiting finishing synchronization. Fix it by using the same updates queue (longpolling) for complete synchronization as for small updates.
 
 `1.0.2`
 -------
