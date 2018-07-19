@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
 <odoo>
         <record id="view_report_pos_debt_pivot" model="ir.ui.view">
             <field name="name">report.pos.debt.pivot</field>
@@ -27,10 +33,11 @@
             <field name="name">report.pos.debt.tree</field>
             <field name="model">report.pos.debt</field>
             <field name="arch" type="xml">
-                <tree string="Point of Sale Analysis">
+                <tree>
                     <field name="partner_id"/>
                     <field name="product_list"/>
                     <field name="date"/>
+                    <field name="journal_id"/>
                     <field name="balance"/>
                     <field name="state"/>
                 </tree>
@@ -48,7 +55,7 @@
                         <field name="update_id"/>
                         <field name="credit_product"/>
                         <field name="state"/>
-
+                        <field name="journal_id"/>
                         <field name="partner_id"/>
                         <field name="date"/>
                         <field name="balance"/>
@@ -77,6 +84,8 @@
                     <field name="partner_id"/>
                     <field name="user_id"/>
                     <group expand="1" string="Group By">
+                        <filter string="Journal" context="{'group_by':'journal_id'}"/>
+                        <separator/>
                         <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
                         <filter string="Customer" context="{'group_by':'partner_id'}"/>
                         <separator/>
@@ -105,6 +114,14 @@
             <field name="context">{}</field>
         </record>
 
+        <record id="action_report_pos_debt_partner" model="ir.actions.act_window">
+            <field name="name">Partner Debts / Credits</field>
+            <field name="res_model">report.pos.debt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree,form</field>
+            <field name="search_view_id" ref="view_report_pos_debt_search"/>
+            <field name="context">{'search_default_partner_id': active_id}</field>
+        </record>
 
         <menuitem id="menu_report_pos_debt_all" name="Debts / Credits" action="action_report_pos_debt_all" parent="point_of_sale.menu_point_rep" groups="point_of_sale.group_pos_manager" sequence="10"/>
 </odoo>

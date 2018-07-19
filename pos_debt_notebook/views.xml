@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2014-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
 <openerp>
 <data>
 
@@ -9,13 +15,26 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//field[@name='barcode']" position="after">
-            <field name="debt_type" invisible="1"/>
-            <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
-            <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
-            <field name="debt_limit"/>
-            <field name="debt_company" attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"/>
-            <field name="credit_balance_company" attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"/>
+        <xpath expr="//button[@class='oe_stat_button']" position="after">
+            <button class="oe_stat_button" type="action" name="%(pos_debt_notebook.action_report_pos_debt_partner)d"
+                context="{'group_by':'journal_id'}"
+                icon="fa-money">
+                <div class="o_form_field o_stat_info">
+                    <field name="debt_type" invisible="1"/>
+                    <field name="debt" widget='monetary' options="{'currency_field': 'currency_id'}"
+                           attrs="{'invisible': ['|', ('debt_type', '!=', 'debt'),('is_company', '=', True)]}"/>
+                    <field name="credit_balance" widget='monetary' options="{'currency_field': 'currency_id'}"
+                           attrs="{'invisible': ['|', ('debt_type', '!=', 'credit'),('is_company', '=', True)]}"/>
+                    <field name="debt_company" widget='monetary' options="{'currency_field': 'currency_id'}"
+                           attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"/>
+                    <field name="credit_balance_company" widget='monetary' options="{'currency_field': 'currency_id'}"
+                           attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"/>
+                    <span attrs="{'invisible': ['|', ('debt', '&lt;', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-danger">Debts </span>
+                    <span attrs="{'invisible': ['|', ('debt', '&gt;=', 0),('debt_type', '!=', 'debt')]}" class="o_stat_text text-success">Debts </span>
+                    <span attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-success">Credits </span>
+                    <span attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'credit')]}" class="o_stat_text text-danger">Credits </span>
+                </div>
+            </button>
         </xpath>
     </field>
 </record>
@@ -29,7 +48,6 @@
             <field name="debt_type" invisible="1"/>
             <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
             <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
-            <field name="debt_limit"/>
         </xpath>
     </field>
 </record>
@@ -58,9 +76,16 @@
     <field name="model">account.journal</field>
     <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
     <field name="arch" type="xml">
-        <field name="journal_user" position="after">
-            <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
-        </field>
+        <xpath expr="//notebook[last()]/page[last()]" position="inside">
+            <group string="Credits">
+                <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
+                <field name="pos_cash_out" attrs="{'invisible': ['|',('debt', '!=', True),('credits_via_discount', '=', True)]}"/>
+                <field name="category_ids" attrs="{'invisible': [('debt', '!=', True)]}" widget="many2many_tags"/>
+                <field name="debt_limit" attrs="{'invisible': [('debt', '!=', True)]}"/>
+                <field name="credits_autopay" attrs="{'invisible': [('debt', '!=', True)]}"/>
+                <field name="credits_via_discount" attrs="{'invisible': [('debt', '!=', True)]}" string="Zero transactions"/>
+            </group>
+        </xpath>
     </field>
 </record>
 
@@ -82,7 +107,6 @@
     <field name="arch" type="xml">
         <xpath expr="//field[@name='module_pos_reprint']" position="after">
             <field name="debt_type" widget="radio"/>
-            <field name="debt_limit" class="oe_inline"/>
         </xpath>
     </field>
 </record>
@@ -100,6 +124,39 @@
     </field>
 </record>
 
+    <!--POS ORDER-->
+
+<record id="pos_debt_notebook_order_form" model="ir.ui.view">
+    <field name="name">pos.order.form</field>
+    <field name="model">pos.order</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//page[@name='extra']" position="before">
+            <page name="non_accounting_payments" string="Non-Accounting Payments">
+                <field name="pos_credit_update_ids" colspan="4" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="journal_id"/>
+                        <field name="reversed_balance"/>
+                        <field name="state"/>
+                    </tree>
+                </field>
+            </page>
+        </xpath>
+    </field>
+</record>
+
+    <!--POS SESSION-->
+
+<record id="pos_debt_notebook_session_form" model="ir.ui.view">
+    <field name="name">pos.session.form.view</field>
+    <field name="model">pos.session</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='statement_ids']/tree/field[@name='total_entry_encoding']" position="after">
+            <field name="pos_credit_update_balance"/>
+        </xpath>
+    </field>
+</record>
 
 </data>
 </openerp>
