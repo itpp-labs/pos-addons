@@ -37,8 +37,8 @@ Credentials
   * ``wechat.sub_mch_id`` -- *Sub Vendor ID*
   * ``wechat.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
 
-WeChat Orders sequence
-----------------------
+Internal Numbers
+----------------
 
 If you get error ``invalid out_trade_no``, it means that you use the same
 credentials in new database and odoo sends Wechat Order IDs that were previously
@@ -48,3 +48,5 @@ used in another system. To resolve this do as following:
 * Find record *WeChat Order*
 * Change either **Prefix**, **Suffix** or **Next Number**
 * If you get the error again, try to increase **Next Number**
+
+*The same is true for Refund Numbers*
