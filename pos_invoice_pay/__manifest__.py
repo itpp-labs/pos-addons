@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Artyom Losev
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=11.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -44,7 +43,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Pay Sale Orders & Invoices over POS",
     "demo_addons": [

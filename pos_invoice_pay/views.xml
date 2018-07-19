@@ -3,7 +3,6 @@
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <odoo>
-    <data>
         <record model="ir.ui.view" id="view_pos_config_form">
             <field name="name">pos.config.form.view.inherit</field>
             <field name="model">pos.config</field>
@@ -20,5 +19,4 @@
                 </xpath>
             </field>
         </record>
-    </data>
 </odoo>

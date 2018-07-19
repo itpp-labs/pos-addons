@@ -3,7 +3,6 @@
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <odoo>
-    <data>
 
         <record id="invoice_update_pos_action" model="base.action.rule">
             <field name="name">Update Invoices</field>
@@ -37,5 +36,4 @@
             <field name="server_action_ids" eval="[(6, 0, [ref('action_update_pos_sale_orders')])]"/>
         </record> -->
 
-    </data>
 </odoo>
