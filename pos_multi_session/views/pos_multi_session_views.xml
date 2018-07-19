@@ -6,7 +6,6 @@
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 
 <odoo>
-    <data>
         <template id="point_of_sale_assets" name="pos_multi_session assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_multi_session/static/src/js/pos_multi_session.js"></script>
@@ -121,5 +120,4 @@
             </field>
         </record>
 
-    </data>
 </odoo>

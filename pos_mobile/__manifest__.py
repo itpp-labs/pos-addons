@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Mobile UI""",
     "summary": """Your Point of Sale in the Mobile Version""",

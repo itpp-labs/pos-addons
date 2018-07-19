@@ -19,8 +19,11 @@ odoo.define('pos_disable_payment', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
+            var old_cashier_id = this.db.get_cashier() && this.db.get_cashier().id;
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            this.trigger('change:cashier',this);
+            if (old_cashier_id !== this.db.get_cashier().id) {
+                this.trigger('change:cashier', this);
+            }
         }
     });
 

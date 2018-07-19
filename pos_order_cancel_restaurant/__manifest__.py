@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Analyzing of refunds in Restaurant""",
     "summary": """Waiter specifies refund reason to avoid serving mistakes in future.""",
