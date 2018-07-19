@@ -30,7 +30,7 @@ class WechatController(http.Controller):
         else:
             return """<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[Signature failure]]></return_msg></xml>"""
 
-    @http.route('/wechat/miniprogram/authenticate', type='json', auth='none')
+    @http.route('/wechat/miniprogram/authenticate', type='json', auth='public')
     def authenticate(self, code, user_info):
         """
         :param code: After the user is permitted to log in on the WeChat mini-program, the callback content will
@@ -56,7 +56,7 @@ class WechatController(http.Controller):
             name = user_info.get('nickName')
             login = "wechat_%s" % openid
             city = user_info.get('city')
-            
+
             user = Model.create({
                 'company_id': request.env.ref("base.main_company").id,
                 'name': name,
