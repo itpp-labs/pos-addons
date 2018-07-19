@@ -78,7 +78,7 @@ class TestWeChatOrder(HttpCase):
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
-    def _create_jsapi_order(self, openid, create_vals, lines):
+    def _create_jsapi_order(self, create_vals, lines):
         post_result = {
             'pay/unifiedorder': {
                 'trade_type': 'JSAPI',
@@ -88,7 +88,7 @@ class TestWeChatOrder(HttpCase):
             }
         }
         self._patch_post(post_result)
-        res = self.phantom_env['wechat.order'].create_jsapi_order(openid, lines, create_vals)
+        res = self.phantom_env['wechat.order'].create_jsapi_order(lines, create_vals)
         order = self.Order.browse(res.get('order_id'))
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return res
@@ -139,7 +139,7 @@ class TestWeChatOrder(HttpCase):
         openid = 'qwe23e23oi2d393d2sad'
         create_vals = {}
 
-        res = self._create_jsapi_order(openid=openid, create_vals=create_vals, lines=self.lines)
+        res = self._create_jsapi_order(create_vals=create_vals, lines=self.lines)
 
         data = res.get('data')
         order_id = res.get('order_id')
