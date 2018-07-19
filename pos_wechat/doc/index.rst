@@ -15,7 +15,7 @@ Configuration
 
 * Go to ``[[ Point of Sale ]] >> Configuration >> Point of Sale``
 * Create or select some record
-* Add **Payment Methods** with non-empty value at the field **WeChat Payment**
+* Add **Payment Methods** with non-empty value at the field **WeChat Payment**.
 * Close exising session for updated POSes
 
 Usage
