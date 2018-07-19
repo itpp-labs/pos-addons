@@ -23,6 +23,7 @@ class TestWeChatOrder(HttpCase):
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         self.Order = self.phantom_env['wechat.order']
+        self.Refund = self.phantom_env['wechat.refund']
         self.product1 = self.phantom_env['product.product'].create({
             'name': 'Product1',
         })
@@ -94,6 +95,7 @@ class TestWeChatOrder(HttpCase):
         return res
 
     def test_native_payment(self):
+        """ Create QR, emulate payment, make refund """
 
         order = self._create_order()
 
@@ -106,6 +108,24 @@ class TestWeChatOrder(HttpCase):
         handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
+
+        # refund
+        refund_fee = 100
+        refund_vals = {
+            'order_id': order.id,
+            'total_fee': order.total_fee,
+            'refund_fee': refund_fee,
+        }
+        refund = self.Refund.create(refund_vals)
+        self.assertEqual(order.refund_amount, 0, "Order's refund ammout is not zero when refund is not confirmed")
+        refund.action_confirm()
+        self.assertEqual(refund.state, 'done', "Refund's state is not changed after refund is confirmed")
+        self.assertEqual(order.state, 'order', "Order's state is not changed after refund is confirmed")
+        self.assertEqual(order.refund_amount, refund_fee, "Order's refund amount is computed wrongly")
+
+        refund = self.Refund.create(refund_vals)
+        refund.action_confirm()
+        self.assertEqual(order.refund_amount, 2*refund_fee, "Order's refund amount is computed wrongly")
 
     def test_JSAPI_payment(self):
         # fake values for a test
