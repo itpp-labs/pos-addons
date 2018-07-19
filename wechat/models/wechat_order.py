@@ -44,6 +44,7 @@ class WeChatOrder(models.Model):
         ('draft', 'Unpaid'),
         ('done', 'Paid'),
         ('error', 'Error'),
+        ('refunded', 'Refunded (part of full amount)'),
     ], string='State', default='draft')
     # terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name', readonly=True)
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
@@ -53,7 +54,18 @@ class WeChatOrder(models.Model):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
     notification_received = fields.Boolean(help='Set to true on receiving notifcation to avoid repeated processing', default=False)
     journal_id = fields.Many2one('account.journal')
+    refund_fee = fields.Integer('Refund Amount', compute='_compute_refund_fee')
     line_ids = fields.One2many('wechat.order.line', 'order_id')
+    refund_ids = fields.One2many('wechat.refund', 'order_id')
+
+    @api.depends('refund_ids.refund_fee', 'refund_ids.state')
+    def _compute_refund_fee(self):
+        for r in self:
+            r.refund_fee = sum([
+                ref.refund_fee
+                for ref in r.refund_ids
+                if ref.state == 'done'
+            ])
 
     def _body(self):
         """ Example of result:

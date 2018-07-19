@@ -1,4 +1,4 @@
-f# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
@@ -26,33 +26,51 @@ class WeChatRefund(models.Model):
     _description = 'Unified Refund'
 
     name = fields.Char('Name', readonly=True)
-    trade_type = fields.Selection([
-        ('JSAPI', 'Official Account Payment (Mini Program)'),
-        ('NATIVE', 'Native Payment'),
-        ('APP', 'In-App Payment'),
-    ], help="""
-* Official Account Payment -- Mini Program Payment or In-App Web-based Payment
-* Native Payment -- Customer scans QR for specific refund and confirm payment
-* In-App Payment -- payments in native mobile applications
-    """)
-
     refund_ref = fields.Char('Refund Reference', readonly=True)
-    total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
+    refund_fee = fields.Integer('Refund Fee', help='Amount in cents', readonly=True)
     state = fields.Selection([
-        ('draft', 'Unpaid'),
-        ('done', 'Paid'),
+        ('draft', 'Draft'),
+        ('done', 'Completed'),
         ('error', 'Error'),
     ], string='State', default='draft')
-    # terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name', readonly=True)
-    debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
+    debug = fields.Boolean('Sandbox', help="Refund was not made. It's only for testing purposes", readonly=True)
     refund_details_raw = fields.Text('Raw Refund', readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
-    notification_result_raw = fields.Text('Raw Notification result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
-    notification_received = fields.Boolean(help='Set to true on receiving notifcation to avoid repeated processing', default=False)
+    order_id = fields.Many2one('wechat.order', required=True)
     journal_id = fields.Many2one('account.journal')
 
     @api.model
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('wechat.refund')
         return super(WeChatRefund, self).create(vals)
+
+    def action_confirm(self):
+        self.ensure_one()
+        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+        if debug:
+            _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
+            # Dummy Data. Change it to try different scenarios
+            result_json = {
+                'return_code': 'SUCCESS',
+                'result_code': 'SUCCESS',
+                'transaction_id': '12177525012014',
+                'refund_id': '12312122222',
+            }
+            if self.env.context.get('debug_wechat_refund_response'):
+                result_json = self.env.context.get('debug_wechat_order_response')
+        else:
+            wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+            result_raw = wpay.refund.apply(
+                self.order_id.total_fee,
+                self.refund_fee,
+                self.name,
+            )
+
+        vals = {
+            'result_raw': json.dumps(result_raw),
+            'state': 'done',
+        }
+        self.write(vals)
+        self.order_id.state = 'refunded'

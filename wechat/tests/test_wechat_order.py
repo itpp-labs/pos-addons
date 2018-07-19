@@ -72,7 +72,7 @@ class TestWeChatOrder(HttpCase):
                 'code_url': 'weixin://wxpay/s/An4baqw',
                 'trade_type': 'NATIVE',
                 'result_code': 'SUCCESS',
-            }
+            },
         }
         self._patch_post(post_result)
         order, code_url = self.Order._create_qr(self.lines, total_fee=300)
@@ -110,6 +110,14 @@ class TestWeChatOrder(HttpCase):
         self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
         # refund
+        post_result = {
+            'secapi/pay/refund': {
+                'trade_type': 'NATIVE',
+                'result_code': 'SUCCESS',
+            },
+        }
+        self._patch_post(post_result)
+
         refund_fee = 100
         refund_vals = {
             'order_id': order.id,
@@ -117,15 +125,15 @@ class TestWeChatOrder(HttpCase):
             'refund_fee': refund_fee,
         }
         refund = self.Refund.create(refund_vals)
-        self.assertEqual(order.refund_amount, 0, "Order's refund ammout is not zero when refund is not confirmed")
+        self.assertEqual(order.refund_fee, 0, "Order's refund ammout is not zero when refund is not confirmed")
         refund.action_confirm()
         self.assertEqual(refund.state, 'done', "Refund's state is not changed after refund is confirmed")
-        self.assertEqual(order.state, 'order', "Order's state is not changed after refund is confirmed")
-        self.assertEqual(order.refund_amount, refund_fee, "Order's refund amount is computed wrongly")
+        self.assertEqual(order.state, 'refunded', "Order's state is not changed after refund is confirmed")
+        self.assertEqual(order.refund_fee, refund_fee, "Order's refund amount is computed wrongly")
 
         refund = self.Refund.create(refund_vals)
         refund.action_confirm()
-        self.assertEqual(order.refund_amount, 2*refund_fee, "Order's refund amount is computed wrongly")
+        self.assertEqual(order.refund_fee, 2*refund_fee, "Order's refund amount is computed wrongly")
 
     def test_JSAPI_payment(self):
         # fake values for a test
