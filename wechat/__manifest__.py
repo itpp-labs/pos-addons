@@ -1,4 +1,5 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """WeChat API""",
@@ -29,7 +30,9 @@
         "views/wechat_order_views.xml",
         "views/wechat_refund_views.xml",
         "data/ir_sequence_data.xml",
+        "data/module_data.xml",
         "security/ir.model.access.csv",
+        "security/wechat_security.xml",
     ],
     "qweb": [],
 

@@ -56,8 +56,7 @@ class WechatController(http.Controller):
             name = user_info.get('nickName')
             login = "wechat_%s" % openid
             city = user_info.get('city')
-
-            # TODO: make group_wechat_user
+            
             user = Model.create({
                 'company_id': request.env.ref("base.main_company").id,
                 'name': name,
@@ -66,7 +65,7 @@ class WechatController(http.Controller):
                 'login': login,
                 'country_id': country.id if country else False,
                 'city': city,
-                # 'groups_id': [(6, 0, [self.ref('wechat.group_wechat_user')])]
+                'groups_id': [(4, request.env.ref('wechat.group_miniprogram_user').id)]
             })
 
         request.session.authenticate(request.db, login, session_key)
