@@ -77,7 +77,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             this._super(event);
             this.gui.current_popup.$(".selection-item").click(function(){
-                self.pos.get_order().trigger('change:new_updates_to_send');
+                self.pos.get_order().trigger('new_updates_to_send');
             });
         },
     });
@@ -499,16 +499,16 @@ odoo.define('pos_multi_session', function(require){
             }
             this.ms_replace_empty_order = is_first_order;
             is_first_order = false;
-            this.bind('change:new_updates_to_send', function(){
+            this.bind('new_updates_to_send', function(){
                 self.new_updates_to_send();
             });
         },
         remove_orderline: function(line){
             OrderSuper.prototype.remove_orderline.apply(this, arguments);
-            line.order.trigger('change:new_updates_to_send');
+            line.order.trigger('new_updates_to_send');
         },
         add_product: function(){
-            this.trigger('change:new_updates_to_send');
+            this.trigger('new_updates_to_send');
             OrderSuper.prototype.add_product.apply(this, arguments);
         },
         set_client: function(client){
@@ -518,7 +518,7 @@ odoo.define('pos_multi_session', function(require){
                  So, calling add_product first would lead to saving obsolete values to localStorage.
                  From the other side, new_updates_to_send work asynchronously (via setTimeout) and will get updates from add_product method
              */
-            this.trigger('change:new_updates_to_send');
+            this.trigger('new_updates_to_send');
             OrderSuper.prototype.set_client.apply(this,arguments);
         },
         ms_active: function(){
@@ -676,7 +676,7 @@ odoo.define('pos_multi_session', function(require){
                     var order_lines = line.order.orderlines;
                     // to rerender line
                     order_lines.trigger('change', line);
-                    line.order.trigger('change:new_updates_to_send');
+                    line.order.trigger('new_updates_to_send');
                 }
             });
         },

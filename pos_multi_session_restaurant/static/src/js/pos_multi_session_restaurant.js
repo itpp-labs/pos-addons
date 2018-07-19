@@ -164,7 +164,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         saveChanges: function(){
             OrderSuper.prototype.saveChanges.apply(this, arguments);
-            this.trigger('change:new_updates_to_send');
+            this.trigger('new_updates_to_send');
         },
     });
 
