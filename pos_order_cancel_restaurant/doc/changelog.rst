@@ -1,3 +1,8 @@
+`1.4.1`
+-------
+
+- **IMP:** Multi-Session methods renamings
+
 `1.4.0`
 -------
 

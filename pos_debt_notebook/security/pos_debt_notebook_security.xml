@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
+<odoo>
+
+    <record id="group_pos_credit_update_manager" model="res.groups">
+        <field name="name">Credit Updates Manager</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">The user will gain access to update partner credits.</field>
+    </record>
+
+    <record id="point_of_sale.group_pos_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_pos_credit_update_manager'))]"/>
+    </record>
+
+</odoo>

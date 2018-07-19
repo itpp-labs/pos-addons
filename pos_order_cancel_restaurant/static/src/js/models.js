@@ -110,7 +110,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 this.destroy({'reason':'abandon'});
             }
             //  Read more about this trigger in pos_order_cancel module
-            this.trigger('change:sync');
+            this.trigger('new_updates_to_send');
         },
         upload_order_as_canceled: function() {
             if (this.canceled_lines.length) {
