@@ -176,7 +176,7 @@ odoo.define('pos_longpolling', function(require){
         initialize: function(pos) {
             this.pos = pos;
             this.timer = false;
-            this.status = false;
+            this.status = true;
             // Is the message "PONG" received from the server
             this.response_status = false;
         },
