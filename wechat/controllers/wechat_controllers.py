@@ -29,3 +29,64 @@ class WechatController(http.Controller):
             return """<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>"""
         else:
             return """<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[Signature failure]]></return_msg></xml>"""
+
+    @http.route('/wechat/miniprogram/authenticate', type='json', auth='none')
+    def authenticate(self, code, user_info):
+        """
+        :param code: After the user is permitted to log in on the WeChat mini-program, the callback content will
+        bring the code (five-minute validity period). The developer needs to send the code to the backend
+        of their server and use code in exchange for the session_key api.
+        The code is exchanged for the openid and session_key.
+        :param user_info: User information object, does not contain sensitive information such as openid
+        :return session_info: All information about session such as session_id, uid, etc.
+        """
+        _logger.debug('/wechat/miniprogram/authenticate request: code - %s, user_info - %s', code, user_info)
+        openid, session_key = self.get_openid(code)
+        _logger.debug('Authenticate on WeChat server: openid - %s, session_key - %s', openid, session_key)
+        Model = request.env['res.users'].sudo()
+        user = Model.search([('openid', '=', openid)])
+        if user:
+            user.write({
+                'wechat_session_key': session_key,
+            })
+        else:
+            # TODO: load image like url
+            # image = user_info.get('avatarUrl')
+            country = request.env['res.country'].search([('name', 'ilike' '%'+user_info.get('country')+'%')])
+            name = user_info.get('nickName')
+            login = "wechat_%s" % openid
+            city = user_info.get('city')
+
+            # TODO: make group_wechat_user
+            user = Model.create({
+                'company_id': request.env.ref("base.main_company").id,
+                'name': name,
+                'openid': openid,
+                'wechat_session_key': session_key,
+                'login': login,
+                'country_id': country.id if country else False,
+                'city': city,
+                # 'groups_id': [(6, 0, [self.ref('wechat.group_wechat_user')])]
+            })
+
+        request.session.authenticate(request.db, login, session_key)
+        session_info = request.env['ir.http'].session_info()
+        return session_info
+
+    def get_openid(self, code):
+        """Get openid
+
+        :param code: After the user is permitted to log in on the WeChat mini-program, the callback content will
+        bring the code (five-minute validity period). The developer needs to send the code to the backend
+        of their server and use code in exchange for the session_key api.
+        The code is exchanged for the openid and session_key.
+        :return openid: The WeChat user's unique ID
+        """
+        url = request.env['ir.config_parameter'].get_openid_url(code)
+        response = requests.get(url)
+        response.raise_for_status()
+        value = response.json()
+        _logger.debug('get_openid function return parameters: %s', value)
+        openid = value.get('openid')
+        session_key = value.get('session_key')
+        return openid, session_key
