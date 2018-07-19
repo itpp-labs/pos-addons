@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <template id="assets_backend" name="pos_order_note_assets" inherit_id="point_of_sale.assets">
             <xpath expr="//link[last()]" position="after">
                 <script type="text/javascript" src="/pos_order_note/static/src/js/order_note.js"></script>
@@ -13,5 +12,4 @@
                 <script type="text/javascript" src="/pos_order_note/static/src/js/tour.js"></script>
             </xpath>
         </template>
-    </data>
 </openerp>
