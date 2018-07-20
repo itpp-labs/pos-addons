@@ -10,12 +10,13 @@ class PosMakePayment(models.TransientModel):
 
     def check(self):
         res = super(PosMakePayment, self).check()
-        refund_fee = int(100*self.amount)
-        refund_vals = {
-            'order_id': self.wechat_order_id.id,
-            'total_fee': self.wechat_order_id.total_fee,
-            'refund_fee': refund_fee,
-        }
-        refund = self.env['wechat.refund'].create(refund_vals)
-        refund.action_confirm()
+        if self.wechat_order_id and self.amount < 0:
+            refund_fee = int(-100*self.amount)
+            refund_vals = {
+                'order_id': self.wechat_order_id.id,
+                'total_fee': self.wechat_order_id.total_fee,
+                'refund_fee': refund_fee,
+            }
+            refund = self.env['wechat.refund'].create(refund_vals)
+            refund.action_confirm()
         return res

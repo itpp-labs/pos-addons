@@ -68,6 +68,7 @@ class WeChatRefund(models.Model):
                 self.order_id.total_fee,
                 self.refund_fee,
                 self.name,
+                out_trade_no=self.order_id.name,
             )
 
         vals = {
