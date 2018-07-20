@@ -52,14 +52,16 @@ class WeChatRefund(models.Model):
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
-            result_json = {
-                'return_code': 'SUCCESS',
-                'result_code': 'SUCCESS',
-                'transaction_id': '12177525012014',
-                'refund_id': '12312122222',
-            }
             if self.env.context.get('debug_wechat_refund_response'):
-                result_json = self.env.context.get('debug_wechat_order_response')
+                result_raw = self.env.context.get('debug_wechat_order_response')
+            else:
+                result_raw = {
+                    'return_code': 'SUCCESS',
+                    'result_code': 'SUCCESS',
+                    'transaction_id': '12177525012014',
+                    'refund_id': '12312122222',
+                }
+
         else:
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             result_raw = wpay.refund.apply(
