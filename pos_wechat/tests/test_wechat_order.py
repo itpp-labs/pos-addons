@@ -103,7 +103,7 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # Order are not really equal because I'm lazy
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
-        wechat_order = self._create_pos_order()
+        wechat_order = self._create_wechat_order()
 
         order.wechat_order_id = wechat_order.id
 
