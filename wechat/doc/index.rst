@@ -36,6 +36,10 @@ Credentials
   * ``wechat.mch_id`` -- *Vendor ID*
   * ``wechat.sub_mch_id`` -- *Sub Vendor ID*
   * ``wechat.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
+  * ``wechat.mch_cert``, ``wechat.mch_key`` -- **path** to key and certificate files at server. Example of values:
+
+    * ``wechat.mch_cert``: ``/path/to/apiclient_cert.pem``
+    * ``wechat.mch_key``: ``/path/to/apiclient_key.pem``
 
 Internal Numbers
 ----------------
