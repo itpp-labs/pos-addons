@@ -182,10 +182,13 @@ class WeChatOrder(models.Model):
 
         order = self.create(vals)
         total_fee = order._total_fee()
+        body, detail = order._body()
+        wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
-            result_json = {
+            result_raw = {
                 'return_code': 'SUCCESS',
                 'result_code': 'SUCCESS',
                 'openid': '123',
@@ -193,13 +196,12 @@ class WeChatOrder(models.Model):
                 'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
                 'package': 'prepay_id=123456789',
                 'signType': 'MD5',
+                'prepay_id': '123',
                 'paySign': 'C380BEC2BFD727A4B6845133519F3AD6',
             }
             if self.env.context.get('debug_wechat_order_response'):
-                result_json = self.env.context.get('debug_wechat_order_response')
+                result_raw = self.env.context.get('debug_wechat_order_response')
         else:
-            body, detail = order._body()
-            wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
                           total_fee, body, detail)
             result_raw = wpay.order.create(
@@ -212,11 +214,11 @@ class WeChatOrder(models.Model):
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
-            mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
-            result_json = mpay.jsapi.get_jsapi_params(
-                prepay_id=result_raw.get('prepay_id'),
-                nonce_str=result_raw.get('nonce_str')
-            )
+        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
+        result_json = mpay.jsapi.get_jsapi_params(
+            prepay_id=result_raw.get('prepay_id'),
+            nonce_str=result_raw.get('nonce_str')
+        )
 
         vals = {
             'result_raw': json.dumps(result_raw),
