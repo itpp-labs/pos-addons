@@ -99,8 +99,7 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
-    # TODO: activate it back
-    def _test_refund(self):
+    def test_refund(self):
         # Order are not really equal because I'm lazy
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
