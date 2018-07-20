@@ -140,7 +140,7 @@ odoo.define('pos_multi_session', function(require){
                     order.order_removing_to_send();
                 });
                 var channel_name = "pos.multi_session";
-                var callback = self.ms_update_callback;
+                var callback = self.updates_from_server_callback;
                 self.bus.add_channel_callback(channel_name, callback, self);
                 if (self.config.sync_server){
                     self.add_bus('sync_server', self.config.sync_server);
@@ -225,7 +225,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        ms_update_callback(message, sync_all){
+        updates_from_server_callback(message, sync_all){
             var run_ID = message.data.orders
                 ? _.find(message.data.orders, function(or){
                         return or.data.uid === message.data.uid;
@@ -267,7 +267,7 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (sync_all) {
                     this.message_ID = data.message_ID;
-                    this.ms_do_update(order, data);
+                    this.ms_update_order(order, data);
                 } else {
                     if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
@@ -277,7 +277,7 @@ odoo.define('pos_multi_session', function(require){
                     if (order && action === 'remove_order') {
                         order.destroy({'reason': 'abandon'});
                     } else if (action === 'update_order'){
-                        this.ms_do_update(order, data);
+                        this.ms_update_order(order, data);
                     } else if (action === 'sync_all') {
                         var sync_options = {};
                         if (data.uid) {
@@ -311,11 +311,11 @@ odoo.define('pos_multi_session', function(require){
             options = _.extend({pos: this}, options || {});
             var order = new models.Order({}, options);
             // init_locked blocks execution of save_to_db
-            // the order is unlocked at the end of ms_do_update
+            // the order is unlocked at the end of ms_update_order
             order.init_locked = true;
             return order;
         },
-        ms_do_update: function(order, data){
+        ms_update_order: function(order, data){
             var pos = this;
             this.pos_session.order_ID = data.sequence_number;
             if (order){
