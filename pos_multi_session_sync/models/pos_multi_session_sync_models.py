@@ -196,6 +196,7 @@ class PosMultiSessionSync(models.Model):
                 'order_ID': self.order_ID,
                 'uid': uid,
                 'login_number': message['login_number'],
+                'session_id': message['session_id'],
             }
         }
 

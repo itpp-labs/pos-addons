@@ -125,8 +125,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 this.gui.screen_instances.floors.renderElement();
             }
         },
-        ms_do_update: function(order, data){
-            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+        ms_update_order: function(order, data){
+            PosModelSuper.prototype.ms_update_order.apply(this, arguments);
             if (order) {
                 order.init_locked = true;
                 order.set_customer_count(data.customer_count, true);
