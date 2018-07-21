@@ -26,7 +26,7 @@ msgstr "(aggiornamento)"
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_allow_custom_reason
 msgid "Allow custom cancellation reason"
-msgstr "Consentire motivi personalizzati di annullamento"
+msgstr "Consentire motivi di annullamento personalizzati"
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,help:pos_order_cancel.field_pos_config_show_popup_change_quantity
