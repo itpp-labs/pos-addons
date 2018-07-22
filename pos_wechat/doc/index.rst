@@ -31,3 +31,17 @@ Scanning customer's QR
 * Scan the QR
 * Wait until customer authorise the payment in his WeChat app
 * RESULT: Payment is proceeded. Use your WeChat Seller control panel to see balance update.
+
+Refunds
+-------
+
+* Make Refund Order via backend as usual:
+
+  * Go to ``[[ Point of Sale ]] >> Orders >> Orders``
+  * Open product to be refuned
+  * Click button ``[Return Products]``
+
+* In Refund Order click ``[Payment]``
+* In **Payment Mode** specify a WeChat journal
+* Depending on type of WeChat journal specify either **WeChat Order to refund**
+  or **Micropay to refund**
