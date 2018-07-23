@@ -1,1 +1,2 @@
-wechatpy
+wechatpy[cryptography]
+requests-mock

@@ -33,6 +33,64 @@ In-App Payment
 
 This payment way is only for native mobile application. This module provides server part of the process.
 
+Development mini-program
+========================
+
+Authentication
+--------------
+
+To authenticate a user from the mini-program, you must send a request with a code and user information of the mini-program to the server. To receive the code and send the request, you must use ``wx.login`` provided by mini-program API. Odoo will create a user if one does not exist and assign session_id which has to be sent via a cookie on each RPC request.
+
+.. code-block:: js
+
+    function AuthenticateUser(callback) {
+       // get user code
+       wx.login({
+         success: function(data) {
+            // get user info
+            wx.getUserInfo({
+               success: function(user_info) {
+                  var code = data.code;
+                  var user_info = info.data.info;
+                  var url = 'https://ODOO_HOST/wechat/miniprogram/authenticate';
+                  var data = {
+                     "jsonrpc": "2.0",
+                     "method": "call",
+                     "params": {
+                        "context": {},
+                        "code": code,
+                        "user_info": user_info
+                     },
+                     "id": Math.floor(Math.random() * 1000 * 1000 * 1000),
+                  }
+                  // send request to server
+                  wx.request({
+                     url: url,
+                     dataType: 'json',
+                     method: 'POST',
+                     header: {
+                        'Content-Type': 'application/json'
+                     },
+                     data: JSON.stringify(data),
+                     success: function(session_info) {
+                        // save session id
+                        wx.setStorage({
+                           key: 'session_id',
+                           data: session_info.session_id,
+                           success: callback,
+                        });
+                     }
+                  })
+               }
+            });
+         }
+       });
+    }
+
+
+RPC calls
+---------
+
 WeChat Documentation & tools
 ============================
 
@@ -80,6 +138,7 @@ Contributors
 ------------
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------
