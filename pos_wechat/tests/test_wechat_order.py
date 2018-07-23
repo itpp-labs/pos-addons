@@ -104,8 +104,17 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
         wechat_order = self._create_wechat_order()
-
         order.wechat_order_id = wechat_order.id
+
+        # patch refund api request
+        post_result = {
+            'secapi/pay/refund': {
+                'trade_type': 'NATIVE',
+                'result_code': 'SUCCESS',
+            },
+        }
+        self._patch_post(post_result)
+
 
         # I create a refund
         refund_action = order.refund()
