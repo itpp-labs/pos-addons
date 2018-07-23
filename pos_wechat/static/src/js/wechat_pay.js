@@ -70,28 +70,23 @@ odoo.define('pos_payment_wechat', function(require){
                 return item.uid === msg.order_ref;
             });
             if (order){
-                if (parseInt(100*order.get_total_with_tax()) == msg['total_fee']){
+                var creg = _.filter(this.all_cashregisters, function(r){
+                    return r.journal_id[0] == msg['journal_id'];
+                })[0];
+
+                // add payment
+                var newPaymentline = new models.Paymentline({},{
+                    order: order,
+                    micropay_id: msg['micropay_id'],
+                    journal_id: msg['journal_id'],
+                    cashregister: creg,
+                    pos: this});
+                newPaymentline.set_amount( msg['total_fee'] / 100.0 );
+                order.paymentlines.add(newPaymentline);
+
+                if (parseInt(100*order.get_due()) == 0){
                     /* order is paid and has to be closed */
-
-                    var creg = _.filter(this.all_cashregisters, function(r){
-                        return r.journal_id[0] == msg['journal_id'];
-                    })[0];
-
-                    // add payment
-                    var newPaymentline = new models.Paymentline({},{
-                        order: order,
-                        micropay_id: msg['micropay_id'],
-                        journal_id: msg['journal_id'],
-                        cashregister: creg,
-                        pos: this});
-                    newPaymentline.set_amount( msg['total_fee'] / 100.0 );
-                    order.paymentlines.add(newPaymentline);
-
-                    // validate order
                     this.trigger('validate_order');
-                } else {
-                    // order was changed before payment result is recieved
-                    // TODO
                 }
             } else {
                 console.log('error', 'Order is not found');
@@ -122,6 +117,7 @@ odoo.define('pos_payment_wechat', function(require){
                 kwargs: {
                     'lines': lines,
                     'order_ref': order.uid,
+                    'pay_amount': order.get_due(),
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
                     'journal_id': creg.journal.id,
@@ -221,9 +217,6 @@ odoo.define('pos_payment_wechat', function(require){
             /* send request asynchronously */
             var self = this;
 
-            // total_fee is amount of cents
-            var total_fee = parseInt(100 * order.get_total_with_tax());
-
             var terminal_ref = 'POS/' + self.pos.config.name;
             var pos_id = self.pos.config.id;
 
@@ -233,7 +226,7 @@ odoo.define('pos_payment_wechat', function(require){
                     method: 'pos_create_from_qr',
                     kwargs: {
                         'auth_code': auth_code,
-                        'total_fee': total_fee,
+                        'pay_amount': order.get_due(),
                         'order_ref': order.uid,
                         'terminal_ref': terminal_ref,
                         'journal_id': self.pos.micropay_journal.id,

@@ -241,11 +241,11 @@ class WeChatOrder(models.Model):
         return {'code_url': code_url}
 
     @api.model
-    def _create_qr(self, lines, create_vals=None, **kwargs):
+    def _create_qr(self, lines, create_vals=None, pay_amount=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
-        :param total_fee: amount in cents
+        :param pay_amount: amount in currency (not cents)
         """
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
         vals = {
@@ -258,7 +258,11 @@ class WeChatOrder(models.Model):
         if create_vals:
             vals.update(create_vals)
         order = self.create(vals)
-        total_fee = order._total_fee()
+        if pay_amount:
+            # TODO: make a single method for this
+            total_fee = int(100*pay_amount)
+        else:
+            total_fee = order._total_fee()
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
