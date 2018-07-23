@@ -23,6 +23,10 @@ class TestMicropay(TestPointOfSaleCommon):
 
     def setUp(self):
         super(TestMicropay, self).setUp()
+
+        # create wechat journals
+        self.pos_config.init_pos_wechat_journals()
+
         # patch wechat
         patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
         patcher.start()
@@ -58,7 +62,6 @@ class TestMicropay(TestPointOfSaleCommon):
 
         """
 
-        # journal is created automatically on first session opening, which is done via setUp of TestPointOfSaleCommon
         journal = self.env['account.journal'].search([('wechat', '=', 'micropay')])
 
         # make request with scanned qr code (auth_code)

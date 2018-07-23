@@ -32,10 +32,8 @@ class PosConfig(models.Model):
         demo_is_on = self.env['ir.module.module'].search([('name', '=', MODULE)]).demo
 
         options = {
-            'journal_user': True,
             'noupdate': True,
             'type': 'cash',
-            'journal_user': True,
             'write_statement': demo_is_on,
         }
         wechat_native_journal = self._create_wechat_journal(dict(
@@ -81,7 +79,7 @@ class PosConfig(models.Model):
             'code': vals['code'],
             'type': vals['type'],
             'wechat': vals['wechat'],
-            'journal_user': vals['journal_user'],
+            'journal_user': True,
             'sequence_id': new_sequence.id,
         })
         self.env['ir.model.data'].create({

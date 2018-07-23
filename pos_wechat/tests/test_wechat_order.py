@@ -21,6 +21,9 @@ class TestWeChatOrder(TestPointOfSaleCommon):
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
 
+        # create wechat journals
+        self.pos_config.init_pos_wechat_journals()
+
         self.Order = self.env['wechat.order']
         self.Refund = self.env['wechat.refund']
         self.product1 = self.env['product.product'].create({
@@ -107,7 +110,7 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # I create a refund
         refund_action = order.refund()
         refund = self.PosOrder.browse(refund_action['res_id'])
-        # journal is created automatically on first session opening, which is done via setUp of TestPointOfSaleCommon
+
         wechat_journal = self.env['account.journal'].search([('wechat', '=', 'native')])
 
         payment_context = {"active_ids": refund.ids, "active_id": refund.id}
