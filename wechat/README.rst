@@ -50,37 +50,26 @@ To authenticate a user from the mini-program, you must send a request with a cod
             // get user info
             wx.getUserInfo({
                success: function(user_info) {
-                  var code = data.code;
-                  var user_info = info.data.info;
-                  var url = 'https://ODOO_HOST/wechat/miniprogram/authenticate';
-                  var data = {
-                     "jsonrpc": "2.0",
-                     "method": "call",
-                     "params": {
-                        "context": {},
-                        "code": code,
-                        "user_info": user_info
-                     },
-                     "id": Math.floor(Math.random() * 1000 * 1000 * 1000),
-                  }
-                  // send request to server
-                  wx.request({
-                     url: url,
-                     dataType: 'json',
-                     method: 'POST',
-                     header: {
-                        'Content-Type': 'application/json'
-                     },
-                     data: JSON.stringify(data),
-                     success: function(session_info) {
+                  var options = {
+                     'url': 'https://ODOO_HOST/wechat/miniprogram/authenticate',
+                     'success': function() {
                         // save session id
                         wx.setStorage({
                            key: 'session_id',
                            data: session_info.session_id,
-                           success: callback,
+                           success: function() {
+                              callback(session_info.session_id);
+                           },
                         });
-                     }
-                  })
+                     },
+                  };
+                  var params = {
+                     'context': {},
+                     "code": data.code,
+                     "user_info": user_info.userInfo,
+                  };
+                  // send request to server
+                  wxJsonRpc(params, options);
                }
             });
          }
@@ -90,6 +79,72 @@ To authenticate a user from the mini-program, you must send a request with a cod
 
 RPC calls
 ---------
+
+.. code-block:: js
+
+    function rpc(params, options) {
+
+       function do(session_id) {
+          options.url = 'https://ODOO_HOST/web/dataset/call_kw';
+          options.header = {
+             'Content-Type': 'application/json',
+             'Set-Cookie': 'session_id='+session_id,
+          };
+          wxJsonRpc(params, options);
+       }
+
+       wx.getStorage({
+          key: 'session_id',
+          success: function(res) {
+             do(res.data);
+          },
+          fail: function() {
+             AuthenticateUser(do);
+          },
+       });
+    }
+
+    function wxJsonRpc(params, options) {
+       var data = {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "params": params,
+          "id": Math.floor(Math.random() * 1000 * 1000 * 1000),
+       }
+       options.data = JSON.stringify(data);
+       options.dataType = 'json';
+       options.method = POST';
+       // send request to server
+       wx.request(options);
+    }
+
+**Example:**
+Load Products from Odoo Server
+
+.. code-block:: js
+
+    var params = {
+       models: 'product.product',
+       method: 'search_read',
+       domain: [['sale_ok','=',true],['available_in_pos','=',true]],
+       fields: ['display_name', 'list_price', 'lst_price', 'standard_price', 'categ_id', 'pos_categ_id', 'taxes_id',
+                'barcode', 'default_code', 'to_weight', 'uom_id', 'description_sale', 'description',
+                'product_tmpl_id','tracking'],
+       context: {},
+    }
+
+    var options = {
+       success: function(res) {
+          console.log('Products', res);
+       },
+       fail: function(res) {
+          console.log('Products is not loaded', res);
+       }
+    }
+
+    rpc(params, options)
+
+**Result:** list of Products
 
 WeChat Documentation & tools
 ============================
