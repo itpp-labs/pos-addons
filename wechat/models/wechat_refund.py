@@ -4,15 +4,8 @@ import logging
 import json
 
 from odoo import models, fields, api
-from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
-
-try:
-    from wechatpy.exceptions import WeChatPayException
-except ImportError as err:
-    _logger.debug(err)
-
 
 SUCCESS = 'SUCCESS'
 
@@ -24,6 +17,7 @@ class WeChatRefund(models.Model):
 
     _name = 'wechat.refund'
     _description = 'Unified Refund'
+    _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
     refund_ref = fields.Char('Refund Reference', readonly=True)
@@ -70,7 +64,7 @@ class WeChatRefund(models.Model):
                 record.total_fee,
                 self.refund_fee,
                 self.name,
-                out_trade_no=self.order_id.name,
+                out_trade_no=record.name,
             )
 
         vals = {

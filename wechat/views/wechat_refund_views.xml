@@ -2,17 +2,11 @@
 <!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
-    <!-- Wechat menu in settings -->
-    <menuitem
-        name='Wechat'
-        id='root_wechat_menu'
-        parent='account.menu_finance_configuration'/>
-
-    <record id="micropay_form" model="ir.ui.view">
-        <field name="name">wechat.micropay.form</field>
-        <field name="model">wechat.micropay</field>
+    <record id="refund_form" model="ir.ui.view">
+        <field name="name">wechat.refund.form</field>
+        <field name="model">wechat.refund</field>
         <field name="arch" type="xml">
-            <form string="Wechat Micropay">
+            <form string="Wechat Refund">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
                 </header>
@@ -21,9 +15,10 @@
                         <h1><field name="name"/></h1>
                     </div>
                     <group>
-                        <field name="order_ref"/>
-                        <field name="terminal_ref"/>
-                        <field name="total_fee"/>
+                        <field name="refund_ref"/>
+                        <field name="refund_fee"/>
+                        <field name="order_id"/>
+                        <field name="micropay_id"/>
                         <field name="debug"/>
                     </group>
                     <notebook>
@@ -36,43 +31,42 @@
         </field>
     </record>
 
-    <record id="micropay_list" model="ir.ui.view">
-        <field name="name">wechat.micropay.list</field>
-        <field name="model">wechat.micropay</field>
+    <record id="refund_list" model="ir.ui.view">
+        <field name="name">wechat.refund.list</field>
+        <field name="model">wechat.refund</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="order_ref"/>
-                <field name="terminal_ref"/>
-                <field name="total_fee"/>
+                <field name="refund_ref"/>
+                <field name="refund_fee"/>
             </tree>
         </field>
     </record>
 
-    <record id="micropay_search" model="ir.ui.view">
-        <field name="name">wechat.micropay.search</field>
-        <field name="model">wechat.micropay</field>
+    <record id="refund_search" model="ir.ui.view">
+        <field name="name">wechat.refund.search</field>
+        <field name="model">wechat.refund</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="order_ref"/>
+                <field name="refund_ref"/>
                 <filter string="Sandbox" domain="[('debug','=',True)]"/>
                 <filter string="Non-Sandbox" domain="[('debug','=',False)]"/>
             </search>
         </field>
     </record>
 
-    <record id="action_wechat_micropay" model="ir.actions.act_window">
-        <field name="name">Wechat Micropay</field>
-        <field name="res_model">wechat.micropay</field>
+    <record id="action_wechat_refund" model="ir.actions.act_window">
+        <field name="name">Wechat Refund</field>
+        <field name="res_model">wechat.refund</field>
         <field name='view_type'>form</field>
         <field name='view_mode'>tree,form</field>
     </record>
 
     <menuitem
-        action='action_wechat_micropay'
-        id='wechat_micropay_menu'
+        action='action_wechat_refund'
+        id='wechat_refund_menu'
         parent='root_wechat_menu'
-        sequence='20' />
+        sequence='100' />
 
 </odoo>

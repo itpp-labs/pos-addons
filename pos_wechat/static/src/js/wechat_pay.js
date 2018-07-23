@@ -84,7 +84,7 @@ odoo.define('pos_payment_wechat', function(require){
                 newPaymentline.set_amount( msg['total_fee'] / 100.0 );
                 order.paymentlines.add(newPaymentline);
 
-                if (parseInt(100*order.get_due()) == 0){
+                if (order.is_paid() == 0){
                     /* order is paid and has to be closed */
                     this.trigger('validate_order');
                 }

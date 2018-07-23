@@ -24,7 +24,10 @@
         'wechatpy',
     ], "bin": []},
     "data": [
+        "views/account_menuitem.xml",
         "views/wechat_micropay_views.xml",
+        "views/wechat_order_views.xml",
+        "views/wechat_refund_views.xml",
         "data/ir_sequence_data.xml",
         "security/ir.model.access.csv",
     ],

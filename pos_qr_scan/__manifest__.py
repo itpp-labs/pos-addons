@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS QR Code Scan""",
     "summary": """Scans QR codes in POS""",

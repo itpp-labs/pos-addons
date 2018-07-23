@@ -1,14 +1,21 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import models, api, fields
+from odoo import models, fields
 
 
 class PosMakePayment(models.TransientModel):
     _inherit = 'pos.make.payment'
 
     journal_wechat = fields.Selection(related='journal_id.wechat')
+    order_ref = fields.Char(compute='_compute_order_ref')
     wechat_order_id = fields.Many2one('wechat.order', string='WeChat Order to refund')
     micropay_id = fields.Many2one('wechat.micropay', string='Micropay to refund')
+
+    def _compute_order_ref(self):
+        order = self.env['pos.order'].browse(self.env.context.get('active_id', False))
+        if order:
+            for r in self:
+                r.order_ref = order.pos_reference_uid
 
     def check(self):
         res = super(PosMakePayment, self).check()

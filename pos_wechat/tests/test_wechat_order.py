@@ -6,9 +6,6 @@ try:
 except ImportError:
     from mock import patch
 
-from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
-from odoo import api, SUPERUSER_ID
-from odoo.addons.bus.models.bus import dispatch
 from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
 
 
@@ -125,4 +122,3 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         self.assertEqual(refund.state, 'paid', "The refund is not marked as paid")
 
         self.assertEqual(wechat_order.state, 'refunded', "Wechat Order state is not changed after making refund payment")
-
