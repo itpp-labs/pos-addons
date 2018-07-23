@@ -52,7 +52,7 @@ To authenticate a user from the mini-program, you must send a request with a cod
                success: function(user_info) {
                   var options = {
                      'url': 'https://ODOO_HOST/wechat/miniprogram/authenticate',
-                     'success': function() {
+                     'success': function(session_info) {
                         // save session id
                         wx.setStorage({
                            key: 'session_id',
