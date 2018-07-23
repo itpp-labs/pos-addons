@@ -171,6 +171,15 @@ odoo.define('pos_multi_session', function(require){
 
                 return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
                     done.resolve();
+                }).fail(function(){
+                    var request_interval = setInterval(function(){
+                        return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
+                            done.resolve();
+                        });
+                    }, 2000);
+                    done.done(function(){
+                        clearInterval(request_interval);
+                    });
                 });
             });
             return done;
