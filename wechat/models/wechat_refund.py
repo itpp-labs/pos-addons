@@ -37,7 +37,8 @@ class WeChatRefund(models.Model):
     refund_details_raw = fields.Text('Raw Refund', readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
-    order_id = fields.Many2one('wechat.order', required=True)
+    order_id = fields.Many2one('wechat.order')
+    micropay_id = fields.Many2one('wechat.micropay')
     journal_id = fields.Many2one('account.journal')
 
     @api.model
@@ -49,6 +50,7 @@ class WeChatRefund(models.Model):
         self.ensure_one()
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
         wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+        record = self.order_id or self.micropay_id
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
             # Dummy Data. Change it to try different scenarios
@@ -65,7 +67,7 @@ class WeChatRefund(models.Model):
         else:
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
             result_raw = wpay.refund.apply(
-                self.order_id.total_fee,
+                record.total_fee,
                 self.refund_fee,
                 self.name,
                 out_trade_no=self.order_id.name,
@@ -76,4 +78,4 @@ class WeChatRefund(models.Model):
             'state': 'done',
         }
         self.write(vals)
-        self.order_id.state = 'refunded'
+        record.state = 'refunded'

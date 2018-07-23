@@ -84,6 +84,6 @@ class TestMicropay(HttpCase):
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
             'journal_id': self.env.ref('pos_wechat.wechat_micropay_journal').id,
-            'total_fee': 100,
+            'pay_amount': 1,
         })
         self.assertEqual(msg.get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")

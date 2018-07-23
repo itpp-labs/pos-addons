@@ -19,6 +19,11 @@ class Micropay(models.Model):
     debug = fields.Boolean('Sandbox', help="Payment was not made. It's only for testing purposes", readonly=True)
     result_raw = fields.Text('Raw result', readonly=True)
     journal_id = fields.Many2one('account.journal')
+    state = fields.Selection([
+        ('done', 'Paid'),
+        ('error', 'Error'),
+        ('refunded', 'Refunded (part of full amount)'),
+    ], string='State', default='done')
 
     @api.model
     def _body(self, terminal_ref, **kwargs):

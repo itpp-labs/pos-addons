@@ -19,7 +19,7 @@ If you don't have camera, you can executing following code in browser console to
 Roadmap
 =======
 
-* TODO: **Micropay to refund**
+* TODO: Apply domain on POS refunds for ``wechat.order``, ``wechat.micropay``
 * TODO: Views for wechat.order
 * TODO: In sake of UX, we need to add ``micropay_id`` reference to ``account.bank.statement.line``
 * TODO: in demo installation, Journals are created via ``xml``, which breaks

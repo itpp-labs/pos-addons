@@ -6,16 +6,21 @@ from odoo import models, api, fields
 class PosMakePayment(models.TransientModel):
     _inherit = 'pos.make.payment'
 
+    journal_wechat = fields.Selection(related='journal_id.wechat')
     wechat_order_id = fields.Many2one('wechat.order', string='WeChat Order to refund')
+    micropay_id = fields.Many2one('wechat.micropay', string='Micropay to refund')
 
     def check(self):
         res = super(PosMakePayment, self).check()
-        if self.wechat_order_id and self.amount < 0:
+        record = self.wechat_order_id or self.micropay_id
+        if record and self.amount < 0:
             refund_fee = int(-100*self.amount)
             refund_vals = {
                 'order_id': self.wechat_order_id.id,
-                'total_fee': self.wechat_order_id.total_fee,
+                'micropay_id': self.micropay_id.id,
+                'total_fee': record.total_fee,
                 'refund_fee': refund_fee,
+                'journal_id': self.journal_id.id,
             }
             refund = self.env['wechat.refund'].create(refund_vals)
             refund.action_confirm()
