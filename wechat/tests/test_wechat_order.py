@@ -2,12 +2,11 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
-import json
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from odoo.tests.common import HttpCase, HOST, PORT
+from odoo.tests.common import HttpCase
 from odoo import api
 
 _logger = logging.getLogger(__name__)

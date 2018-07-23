@@ -319,7 +319,7 @@ class WeChatOrder(models.Model):
         if order_name:
             order = self.search([('name', '=', order_name)])
         if not order:
-            _logger.warning("Order %s from notification is not found", order_id)
+            _logger.warning("Order %s from notification is not found", order.id)
             return False
 
         # check for duplicates

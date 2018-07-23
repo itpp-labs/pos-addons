@@ -4,15 +4,8 @@ import logging
 import json
 
 from odoo import models, fields, api
-from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
-
-try:
-    from wechatpy.exceptions import WeChatPayException
-except ImportError as err:
-    _logger.debug(err)
-
 
 SUCCESS = 'SUCCESS'
 
