@@ -118,6 +118,7 @@ RPC calls
        wx.request(options);
     }
 
+
 **Example:**
 Load Products from Odoo Server
 
@@ -143,6 +144,7 @@ Load Products from Odoo Server
     }
 
     odooRpc(params, options)
+
 
 **Result:** list of Products
 
