@@ -27,7 +27,6 @@
         "wizard/pos_payment_views.xml",
     ],
     "demo": [
-        "data/account_journal_demo.xml",
     ],
     "qweb": [
         "static/src/xml/pos.xml",

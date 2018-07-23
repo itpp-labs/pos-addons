@@ -21,9 +21,6 @@ Roadmap
 
 * TODO: Apply domain on POS refunds for ``wechat.order``, ``wechat.micropay``
 * TODO: In sake of UX, we need to add ``micropay_id`` reference to ``account.bank.statement.line``
-* TODO: in demo installation, Journals are created via ``xml``, which breaks
-  normal flow and for example Cash Journal is not created automatically. Those
-  journals have to be created on first session opening
 
 Credits
 =======

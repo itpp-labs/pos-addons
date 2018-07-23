@@ -107,7 +107,8 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # I create a refund
         refund_action = order.refund()
         refund = self.PosOrder.browse(refund_action['res_id'])
-        wechat_journal = self.env.ref('pos_wechat.wechat_native_journal')
+        # journal is created automatically on first session opening, which is done via setUp of TestPointOfSaleCommon
+        wechat_journal = self.env['account.journal'].search([('wechat', '=', 'native')])
 
         payment_context = {"active_ids": refund.ids, "active_id": refund.id}
         refund_payment = self.PosMakePayment.with_context(**payment_context).create({

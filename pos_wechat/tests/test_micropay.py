@@ -8,6 +8,7 @@ except ImportError:
 
 from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
 from odoo import api, SUPERUSER_ID
+from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
 
 
 _logger = logging.getLogger(__name__)
@@ -16,36 +17,16 @@ DUMMY_POS_ID = 1
 
 
 # TODO clean this up: no need to use HttpCase. Also some helpers are not used.
-class TestMicropay(HttpCase):
+class TestMicropay(TestPointOfSaleCommon):
     at_install = True
     post_install = True
 
     def setUp(self):
         super(TestMicropay, self).setUp()
-        self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
-
         # patch wechat
         patcher = patch('wechatpy.pay.base.BaseWeChatPayAPI._post', wraps=self._post)
         patcher.start()
         self.addCleanup(patcher.stop)
-
-    def xmlrpc(self, model, method, args, kwargs=None, login=SUPERUSER_ID, password='admin'):
-        db_name = get_db_name()
-        return self.xmlrpc_object.execute_kw(db_name, login, password, model, method, args, kwargs)
-
-    def url_open_json(self, url, data=None, timeout=10):
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        res = self.url_open_extra(url, data=data, timeout=timeout, headers=headers)
-        return res.json()
-
-    def url_open_extra(self, url, data=None, timeout=10, headers=None):
-        if url.startswith('/'):
-            url = "http://%s:%s%s" % (HOST, PORT, url)
-        if data:
-            return self.opener.post(url, data=data, timeout=timeout, headers=headers)
-        return self.opener.get(url, timeout=timeout, headers=headers)
 
     def _post(self, url, data):
         MICROPAY_URL = 'pay/micropay'
@@ -77,12 +58,15 @@ class TestMicropay(HttpCase):
 
         """
 
+        # journal is created automatically on first session opening, which is done via setUp of TestPointOfSaleCommon
+        journal = self.env['account.journal'].search([('wechat', '=', 'micropay')])
+
         # make request with scanned qr code (auth_code)
         msg = self.env['wechat.micropay'].pos_create_from_qr_sync(**{
             'auth_code': DUMMY_AUTH_CODE,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
-            'journal_id': self.env.ref('pos_wechat.wechat_micropay_journal').id,
+            'journal_id': journal.id,
             'pay_amount': 1,
         })
         self.assertEqual(msg.get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
