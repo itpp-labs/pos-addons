@@ -1,4 +1,5 @@
 // Copyright 2017 Artyom Losev
+// Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 odoo.define('pos_invoices', function (require) {
@@ -50,7 +51,7 @@ models.PosModel = models.PosModel.extend({
                         so.lines = [];
                     }
                     var line_ids = _.pluck(so.lines, 'id');
-                    if (!(line_ids.includes(lines[i].id))) {
+                    if (!_.contains(line_ids, lines[i].id)) {
                         so.lines.push(lines[i]);
                     }
                     def.resolve();
@@ -82,7 +83,7 @@ models.PosModel = models.PosModel.extend({
                         inv.lines = [];
                     }
                     var line_ids = _.pluck(inv.lines, 'id');
-                    if (!(line_ids.includes(lines[i].id))) {
+                    if (!_.contains(line_ids, lines[i].id)) {
                         inv.lines.push(lines[i]);
                     }
                     def.resolve();
@@ -872,7 +873,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     render_paymentlines: function () {
         var self = this;
         var order = this.pos.get_order();
-        if (typeof order !== 'object') {
+        if (!order || typeof order !== 'object') {
             return;
         }
         var lines = order.get_paymentlines();
