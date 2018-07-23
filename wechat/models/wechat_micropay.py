@@ -25,12 +25,13 @@ class Micropay(models.Model):
         return "%s - Products" % terminal_ref
 
     @api.model
-    def create_from_qr(self, body, auth_code, total_fee, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
+    def create_from_qr(self, body, auth_code, pay_amount, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
         """
         :param product_category: is used to prepare "body"
-        :param total_fee: Specifies the total order amount. The units are expressed in cents as integers.
+        :param pay_amount: Specifies the amount to pay. The units are in currency units (not cents)
         :param create_vals: extra args to pass on record creation
         """
+        total_fee = int(100*pay_amount)
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers are not sending')
