@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class Micropay(models.Model):
 
     _name = 'wechat.micropay'
+    _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
     order_ref = fields.Char('Order Reference', readonly=True)
@@ -20,10 +21,11 @@ class Micropay(models.Model):
     result_raw = fields.Text('Raw result', readonly=True)
     journal_id = fields.Many2one('account.journal')
     state = fields.Selection([
+        ('draft', 'New'),
         ('done', 'Paid'),
         ('error', 'Error'),
         ('refunded', 'Refunded (part of full amount)'),
-    ], string='State', default='done')
+    ], string='State', default='draft')
 
     @api.model
     def _body(self, terminal_ref, **kwargs):
@@ -63,6 +65,11 @@ class Micropay(models.Model):
                 result_json = self.env.context.get('debug_micropay_response')
         else:
             wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+            # TODO: we probably have make cr.commit() before making request to
+            # be sure that we save data before sending request to avoid
+            # situation when order is sent to wechat server, but was not saved
+            # in our server for any reason
+
             result_json = wpay.micropay.create(
                 body,
                 total_fee,
@@ -74,6 +81,7 @@ class Micropay(models.Model):
         _logger.debug('result_raw: %s', result_raw)
         vals = {
             'result_raw': result_raw,
+            'state': 'done',
         }
         record.write(vals)
         return record

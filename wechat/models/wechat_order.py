@@ -26,6 +26,7 @@ class WeChatOrder(models.Model):
 
     _name = 'wechat.order'
     _description = 'Unified Order'
+    _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
     trade_type = fields.Selection([

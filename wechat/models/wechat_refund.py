@@ -24,6 +24,7 @@ class WeChatRefund(models.Model):
 
     _name = 'wechat.refund'
     _description = 'Unified Refund'
+    _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
     refund_ref = fields.Char('Refund Reference', readonly=True)

@@ -9,8 +9,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount']" position="after">
                 <field name="journal_wechat" invisible="1"/>
-                <field name="wechat_order_id" attrs="{'invisible': [('journal_wechat', '!=', 'native')]}"/>
-                <field name="micropay_id" attrs="{'invisible': [('journal_wechat', '!=', 'micropay')]}"/>
+                <field name="order_ref" invisible="1"/>
+                <field name="wechat_order_id" attrs="{'invisible': [('journal_wechat', '!=', 'native')]}" domain="[('order_ref', '=', order_ref)]"/>
+                <field name="micropay_id" attrs="{'invisible': [('journal_wechat', '!=', 'micropay')]}" domain="[('order_ref', '=', order_ref)]"/>
             </xpath>
         </field>
     </record>

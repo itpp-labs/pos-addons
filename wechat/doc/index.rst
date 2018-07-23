@@ -52,3 +52,12 @@ used in another system. To resolve this do as following:
 * Find record *WeChat Order*, *Wechat Refund* or *Wechat Micropay*, depending on which request has the problem
 * Change either **Prefix**, **Suffix** or **Next Number**
 * If you get the error again, try to increase **Next Number**
+
+Wechat tracking
+---------------
+Wechat records (Orders, Micropays, Refunds, etc.) can be found at ``[[ Invoicing ]] >> Configuration >> Wechat``. If you don't have that menu, you need to configure ``Show Full Accounting Features`` for your user first:
+
+* `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
+* Open menu ``[[ Settings ]] >> Users & Companies >> Users``
+* Open user you need
+* Activate ``Show Full Accounting Features``
