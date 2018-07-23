@@ -4,7 +4,6 @@
 <odoo>
     <record id="group_miniprogram_user" model="res.groups">
         <field name="name">User</field>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="category_id" ref="wechat.module_category_miniprogram_management"/>
     </record>
 

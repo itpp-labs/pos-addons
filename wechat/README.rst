@@ -33,8 +33,8 @@ In-App Payment
 
 This payment way is only for native mobile application. This module provides server part of the process.
 
-Development mini-program
-========================
+Developing mini-program
+=======================
 
 Authentication
 --------------
@@ -82,7 +82,7 @@ RPC calls
 
 .. code-block:: js
 
-    function rpc(params, options) {
+    function odooRpc(params, options) {
 
        function do(session_id) {
           options.url = 'https://ODOO_HOST/web/dataset/call_kw';
@@ -96,7 +96,7 @@ RPC calls
        wx.getStorage({
           key: 'session_id',
           success: function(res) {
-             do(res.data);
+             do(res.session_id);
           },
           fail: function() {
              AuthenticateUser(do);
@@ -113,7 +113,7 @@ RPC calls
        }
        options.data = JSON.stringify(data);
        options.dataType = 'json';
-       options.method = POST';
+       options.method = 'POST';
        // send request to server
        wx.request(options);
     }
@@ -142,7 +142,7 @@ Load Products from Odoo Server
        }
     }
 
-    rpc(params, options)
+    odooRpc(params, options)
 
 **Result:** list of Products
 
