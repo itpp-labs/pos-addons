@@ -31,8 +31,8 @@
         "views/wechat_refund_views.xml",
         "data/ir_sequence_data.xml",
         "data/module_data.xml",
-        "security/ir.model.access.csv",
         "security/wechat_security.xml",
+        "security/ir.model.access.csv",
     ],
     "qweb": [],
 

@@ -9,11 +9,10 @@
     </record>
 
     <data noupdate="1">
-
         <!-- Rules -->
         <record model="ir.rule" id="miniprogram_user_rule">
             <field name="name">Mini-Program: mini-program user: read POS products only</field>
-            <field name="model_id" ref="model_product_product"/>
+            <field name="model_id" ref="product.model_product_product"/>
             <field name="domain_force">[('sale_ok', '=', True), ('available_in_pos', '=', True)]</field>
             <field name="perm_unlink" eval="0"/>
             <field name="perm_write" eval="0"/>
@@ -21,6 +20,5 @@
             <field name="perm_create" eval="0"/>
             <field name="groups" eval="[(4,ref('wechat.group_miniprogram_user'))]"/>
         </record>
-
     </data>
 </odoo>

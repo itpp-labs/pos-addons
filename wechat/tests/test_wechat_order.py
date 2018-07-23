@@ -2,12 +2,15 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
+import json
+import requests_mock
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from odoo.tests.common import HttpCase
+from odoo.tests.common import HttpCase, HOST, PORT
 from odoo import api
+
 
 _logger = logging.getLogger(__name__)
 
@@ -18,7 +21,9 @@ class TestWeChatOrder(HttpCase):
 
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
-
+        self.requests_mock = requests_mock.Mocker(real_http=True)
+        self.requests_mock.start()
+        self.addCleanup(self.requests_mock.stop)
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
         self.Order = self.phantom_env['wechat.order']
@@ -65,6 +70,9 @@ class TestWeChatOrder(HttpCase):
         patcher.start()
         self.addCleanup(patcher.stop)
 
+    def _patch_get_requests(self, url, response_json):
+        self.requests_mock.register_uri('GET', url, json=response_json)
+
     def _create_order(self):
         post_result = {
             'pay/unifiedorder': {
@@ -92,6 +100,37 @@ class TestWeChatOrder(HttpCase):
         order = self.Order.browse(res.get('order_id'))
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return res
+
+    def url_open_json(self, url, code, user_info, timeout=10):
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        params = {
+            "context": {},
+            "code": code,
+            "user_info": user_info
+        }
+        data = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": params,
+            "id": None
+        }
+        json_data = json.dumps(data)
+        if url.startswith('/'):
+            url = "http://%s:%s%s" % (HOST, PORT, url)
+        return self.opener.post(url, data=json_data, timeout=timeout, headers=headers)
+
+    def _authenticate_miniprogram_user(self, code, user_info):
+        response_json = {
+            'openid': 'qwepo21pei90salje12',
+            'session_key': 'qweafjqwhoieuojeqwe4213',
+        }
+        url = "/wechat/miniprogram/authenticate"
+        base_url = 'https://api.weixin.qq.com/sns/jscode2session'
+        self._patch_get_requests(base_url, response_json)
+        res = self.url_open_json(url, code, user_info)
+        return res.json()
 
     def test_native_payment(self):
         """ Create QR, emulate payment, make refund """
@@ -178,3 +217,14 @@ class TestWeChatOrder(HttpCase):
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
         handled = self.Order.on_notification(notification)
         self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
+
+    def test_authenticate_miniprogram_user(self):
+        # fake values for a test
+        code = "ksdjfwopeiq120jkahs"
+        user_info = {
+            'country': 'Russia',
+            'nickName': 'Test User',
+            'city': 'Moscow',
+        }
+        session_info = self._authenticate_miniprogram_user(code, user_info).get('result')
+        self.assertIn('session_id', session_info, 'Authenticate user: "session_id" not found in data')

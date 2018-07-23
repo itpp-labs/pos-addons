@@ -6,6 +6,7 @@ import logging
 
 from odoo import http
 from odoo.http import request
+import requests
 
 _logger = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class WechatController(http.Controller):
         else:
             return """<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[Signature failure]]></return_msg></xml>"""
 
-    @http.route('/wechat/miniprogram/authenticate', type='json', auth='public')
+    @http.route('/wechat/miniprogram/authenticate', type='json', auth='public', csrf=False)
     def authenticate(self, code, user_info):
         """
         :param code: After the user is permitted to log in on the WeChat mini-program, the callback content will
@@ -52,7 +53,7 @@ class WechatController(http.Controller):
         else:
             # TODO: load image like url
             # image = user_info.get('avatarUrl')
-            country = request.env['res.country'].search([('name', 'ilike' '%'+user_info.get('country')+'%')])
+            country = request.env['res.country'].search([('name', 'ilike', '%'+user_info.get('country')+'%')])
             name = user_info.get('nickName')
             login = "wechat_%s" % openid
             city = user_info.get('city')
@@ -63,7 +64,7 @@ class WechatController(http.Controller):
                 'openid': openid,
                 'wechat_session_key': session_key,
                 'login': login,
-                'country_id': country.id if country else False,
+                'country_id': country.id if country else None,
                 'city': city,
                 'groups_id': [(4, request.env.ref('wechat.group_miniprogram_user').id)]
             })
@@ -81,7 +82,7 @@ class WechatController(http.Controller):
         The code is exchanged for the openid and session_key.
         :return openid: The WeChat user's unique ID
         """
-        url = request.env['ir.config_parameter'].get_openid_url(code)
+        url = request.env['ir.config_parameter'].sudo().get_openid_url(code)
         response = requests.get(url)
         response.raise_for_status()
         value = response.json()
