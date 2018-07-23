@@ -49,8 +49,6 @@ credentials in new database and odoo sends Wechat Order IDs that were previously
 used in another system. To resolve this do as following:
 
 * Go to ``[[ Settings ]] >> Technical >> Sequence & Identifiers >> Sequences``
-* Find record *WeChat Order*
+* Find record *WeChat Order*, *Wechat Refund* or *Wechat Micropay*, depending on which request has the problem
 * Change either **Prefix**, **Suffix** or **Next Number**
 * If you get the error again, try to increase **Next Number**
-
-*The same is true for Refund Numbers*

@@ -11,8 +11,8 @@ _logger = logging.getLogger(__name__)
 class Micropay(models.Model):
 
     _name = 'wechat.micropay'
-    _rec_name = 'order_ref'
 
+    name = fields.Char('Name', readonly=True)
     order_ref = fields.Char('Order Reference', readonly=True)
     terminal_ref = fields.Char('Terminal Reference', help='e.g. POS Name', readonly=True)
     total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
@@ -36,8 +36,19 @@ class Micropay(models.Model):
         :param pay_amount: Specifies the amount to pay. The units are in currency units (not cents)
         :param create_vals: extra args to pass on record creation
         """
-        total_fee = int(100*pay_amount)
         debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        total_fee = int(100*pay_amount)
+        vals = {
+            'journal_id': kwargs['journal_id'],
+            'debug': debug,
+            'terminal_ref': terminal_ref,
+            'order_ref': order_ref,
+            'total_fee': total_fee,
+        }
+        if create_vals:
+            vals.update(create_vals)
+        record = self.create(vals)
+
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers are not sending')
             # Dummy Data. Change it to try different scenarios
@@ -56,19 +67,18 @@ class Micropay(models.Model):
                 body,
                 total_fee,
                 auth_code,
+                out_trade_no=record.name,
             )
 
         result_raw = json.dumps(result_json)
         _logger.debug('result_raw: %s', result_raw)
         vals = {
-            'terminal_ref': terminal_ref,
-            'order_ref': order_ref,
             'result_raw': result_raw,
-            'total_fee': result_json['total_fee'],
-            'journal_id': kwargs['journal_id'],
-            'debug': debug,
         }
-        if create_vals:
-            vals.update(create_vals)
-        record = self.create(vals)
+        record.write(vals)
         return record
+
+    @api.model
+    def create(self, vals):
+        vals['name'] = self.env['ir.sequence'].next_by_code('wechat.micropay')
+        return super(Micropay, self).create(vals)
