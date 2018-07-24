@@ -4,6 +4,7 @@
 import logging
 import json
 import requests_mock
+import requests
 try:
     from unittest.mock import patch
 except ImportError:
@@ -119,7 +120,9 @@ class TestWeChatOrder(HttpCase):
         json_data = json.dumps(data)
         if url.startswith('/'):
             url = "http://%s:%s%s" % (HOST, PORT, url)
-        return self.opener.post(url, data=json_data, timeout=timeout, headers=headers)
+        # Don't need to use self.opener.post because we need to make a request without session cookies.
+        # (Mini-Program don't have session data)
+        return requests.post(url, data=json_data, timeout=timeout, headers=headers)
 
     def _authenticate_miniprogram_user(self, code, user_info):
         response_json = {

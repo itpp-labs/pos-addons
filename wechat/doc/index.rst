@@ -16,6 +16,12 @@ Installation
     # to update existing installation use
     pip install -U wechatpy
 
+Multi database
+--------------
+
+If you have several databases, you need to check that all requests are sent to the desired database. The user authentication request from the Mini-program does not contain session cookies. So, if Odoo cannot determine which database to use, it will return a 404 error (Page not found).
+In order for the requests to send to the desired database, you need to configure `dbfilter <https://odoo-development.readthedocs.io/en/latest/admin/dbfilter.html>`__.
+
 WeChat APP
 ==========
 
@@ -33,6 +39,8 @@ Credentials
 
   * ``wechat.app_id``
   * ``wechat.app_secret``
+  * ``wechat.miniprogram_app_id``
+  * ``wechat.miniprogram_app_secret``
   * ``wechat.mch_id`` -- *Vendor ID*
   * ``wechat.sub_mch_id`` -- *Sub Vendor ID*
   * ``wechat.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
