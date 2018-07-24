@@ -3,4 +3,3 @@ access_wechat_order_line,access_wechat_order_line,model_wechat_order_line,base.g
 access_wechat_micropay,access_wechat_micropay,model_wechat_micropay,base.group_user,1,0,0,0
 access_wechat_order,access_wechat_order,model_wechat_order,base.group_user,1,0,0,0
 access_wechat_refund,access_wechat_refund,model_wechat_refund,base.group_user,1,0,0,0
-access_product_product,access_product_product,product.model_product_product,wechat.group_miniprogram_user,1,0,0,0
