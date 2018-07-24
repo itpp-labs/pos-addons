@@ -39,9 +39,7 @@ Developing mini-program
 Authentication
 --------------
 
-To authenticate a user from the mini-program, you must send a request with a code and user information of the mini-program to the server. To receive the code and send the request, you must use ``wx.login`` provided by mini-program API. Odoo will create a user if one does not exist and assign session_id which has to be sent via a cookie on each RPC request.
-
-.. code-block:: js
+To authenticate a user from the mini-program, you must send a request with a code and user information of the mini-program to the server. To receive the code and send the request, you must use ``wx.login`` provided by mini-program API. Odoo will create a user if one does not exist and assign session_id which has to be sent via a cookie on each RPC request.::
 
     function AuthenticateUser(callback) {
        // get user code
@@ -76,11 +74,10 @@ To authenticate a user from the mini-program, you must send a request with a cod
        });
     }
 
-
 RPC calls
 ---------
 
-.. code-block:: js
+RPC request from mini-program::
 
     function odooRpc(params, options) {
 
@@ -120,9 +117,7 @@ RPC calls
 
 
 **Example:**
-Load Products from Odoo Server
-
-.. code-block:: js
+Load Products from Odoo Server::
 
     var params = {
        models: 'product.product',
@@ -145,7 +140,6 @@ Load Products from Odoo Server
     }
 
     odooRpc(params, options)
-
 
 **Result:** list of Products
 
