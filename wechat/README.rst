@@ -160,6 +160,7 @@ Sandbox & Debugging
 
   * Note: it may not work from non-chinese IP addresses
   * You will get ``appid`` and ``appsecret`` values
+  * You will get ``sub_appid`` and ``sub_appsecret`` values for work with mini-programs
   * To work with WeChat payments you also need Merchant ID, which this sandbox
     doesn't provide. It seems, that to work with Payments you need a real
     account and use *sandbox* mode (*System Parameter* ``wechat.sandbox``).

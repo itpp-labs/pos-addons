@@ -33,6 +33,8 @@ Credentials
 
   * ``wechat.app_id``
   * ``wechat.app_secret``
+  * ``wechat.miniprogram_app_id``
+  * ``wechat.miniprogram_app_secret``
   * ``wechat.mch_id`` -- *Vendor ID*
   * ``wechat.sub_mch_id`` -- *Sub Vendor ID*
   * ``wechat.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
