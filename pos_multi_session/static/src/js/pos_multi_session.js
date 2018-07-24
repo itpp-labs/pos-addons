@@ -587,7 +587,6 @@ odoo.define('pos_multi_session', function(require){
             if (this.new_order) {
                 this.new_order = false;
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
-                this.sequence_number = Math.max(this.sequence_number + 1, this.pos.pos_session.order_ID);
                 this.trigger('change:update_new_order');
             } else {
                 this.trigger('change');
@@ -682,6 +681,7 @@ odoo.define('pos_multi_session', function(require){
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
+                            self.pos.pos_session.sequence_number = Math.max(self.pos.pos_session.sequence_number, order_ID + 1);
                             // rerender order
                             self.trigger('change');
                         }
@@ -854,7 +854,7 @@ odoo.define('pos_multi_session', function(require){
             this.pos.pos_session.order_ID = data.order_ID;
 
             if (data.order_ID !== 0) {
-                this.pos.pos_session.sequence_number = Math.max(this.pos.pos_session.sequence_number, data.order_ID);
+                this.pos.pos_session.sequence_number = Math.max(this.pos.pos_session.sequence_number, data.order_ID + 1);
             }
 
             if (!options.sync_current_order) {
