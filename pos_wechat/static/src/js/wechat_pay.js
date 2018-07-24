@@ -124,7 +124,11 @@ odoo.define('pos_payment_wechat', function(require){
                 },
             }).then(function(data){
                 if (data.code_url){
+                    order.payment_qr = data.code_url;
                     self.show_payment_qr(data.code_url);
+                    if (self.config.iface_customer_facing_display) {
+                        self.send_current_order_to_customer_facing_display();
+                    }
                 } else if (data.error) {
                     self.show_warning(data.error);
                 } else {
@@ -157,6 +161,39 @@ odoo.define('pos_payment_wechat', function(require){
                 'title': _t('Warning'),
                 'body': warning_message,
             });
+        },
+        render_html_for_customer_facing_display: function () {
+            var self = this;
+            var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(this, arguments);
+            var order = this.get_order();
+            if (!order.payment_qr){
+                return res;
+            }
+            return res.then(function(rendered_html){
+                var $rendered_html = $(rendered_html);
+
+                var $elem = $rendered_html.find('.pos-adv');
+                $elem.qrcode({
+                    'render': 'image',
+                    'text': order.payment_qr,
+                    'ecLevel': 'H',
+                    'size': 400,
+                });
+                var image64 = $elem.find('img').attr('src');
+                $elem.find('img').remove();
+                $elem.css('background-image', 'url(' + image64 + ')');
+                $rendered_html.find('.pos-payment_info').css('background-color', '#888');
+
+                // prop only uses the first element in a set of elements,
+                // and there's no guarantee that
+                // customer_facing_display_html is wrapped in a single
+                // root element.
+                rendered_html = _.reduce($rendered_html, function (memory, current_element) {
+                    return memory + $(current_element).prop('outerHTML');
+                }, ""); // initial memory of ""
+
+                return rendered_html;
+            })
         },
     });
 
