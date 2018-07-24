@@ -44,8 +44,8 @@ class WechatController(http.Controller):
         _logger.debug('/wechat/miniprogram/authenticate request: code - %s, user_info - %s', code, user_info)
         openid, session_key = self.get_openid(code)
         _logger.debug('Authenticate on WeChat server: openid - %s, session_key - %s', openid, session_key)
-        Model = request.env['res.users'].sudo()
-        user = Model.search([('openid', '=', openid)])
+        User = request.env['res.users'].sudo()
+        user = User.search([('openid', '=', openid)])
         if user:
             user.write({
                 'wechat_session_key': session_key,
@@ -58,7 +58,7 @@ class WechatController(http.Controller):
             login = "wechat_%s" % openid
             city = user_info.get('city')
 
-            user = Model.create({
+            user = User.create({
                 'company_id': request.env.ref("base.main_company").id,
                 'name': name,
                 'openid': openid,
@@ -69,7 +69,8 @@ class WechatController(http.Controller):
                 'groups_id': [(4, request.env.ref('wechat.group_miniprogram_user').id)]
             })
 
-        request.session.authenticate(request.db, login, session_key)
+        request.session.authenticate(request.db, user.login, user.wechat_session_key)
+        _logger.debug('Current user login: %s, id: %s', request.env.user.login, request.env.user.id)
         session_info = request.env['ir.http'].session_info()
         return session_info
 
