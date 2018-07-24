@@ -62,7 +62,8 @@ To authenticate a user from the mini-program, you must send a request with a cod
                      },
                   };
                   var params = {
-                     'context': {},
+                     'context': {
+                     },
                      "code": data.code,
                      "user_info": user_info.userInfo,
                   };
