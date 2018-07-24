@@ -115,7 +115,6 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         }
         self._patch_post(post_result)
 
-
         # I create a refund
         refund_action = order.refund()
         refund = self.PosOrder.browse(refund_action['res_id'])

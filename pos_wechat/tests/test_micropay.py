@@ -6,8 +6,6 @@ try:
 except ImportError:
     from mock import patch
 
-from odoo.tests.common import HttpCase, HOST, PORT, get_db_name
-from odoo import api, SUPERUSER_ID
 from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
 
 

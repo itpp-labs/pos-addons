@@ -131,7 +131,8 @@ Load Products from Odoo Server
        fields: ['display_name', 'list_price', 'lst_price', 'standard_price', 'categ_id', 'pos_categ_id', 'taxes_id',
                 'barcode', 'default_code', 'to_weight', 'uom_id', 'description_sale', 'description',
                 'product_tmpl_id','tracking'],
-       context: {},
+       context: {
+       },
     }
 
     var options = {
