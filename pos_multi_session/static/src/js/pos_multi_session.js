@@ -237,28 +237,31 @@ odoo.define('pos_multi_session', function(require){
         },
         updates_from_server_callback(message, sync_all){
             var self = this;
-            var check = (message.session_id === this.pos_session.id &&
-             message.login_number === this.pos_session.login_number) ||
-             (message.data.session_id === this.pos_session.id &&
-             message.data.login_number === this.pos_session.login_number);
-            if (check && !(message.action === "sync_all")){
-                // we don't process updates were send from this device
+            var same_session_check = message.session_id === this.pos_session.id ||
+                message.data.session_id === this.pos_session.id;
+            var same_login_check = message.login_number === this.pos_session.login_number ||
+                message.data.login_number === this.pos_session.login_number;
+            if (same_session_check){
                 // keep the same message_ID among the same POS to prevent endless sync_all requests
-                this.message_ID = message.data.message_ID;
-                return;
+                // it will be fully updated in updates_from_server
+                this.message_ID = message.data.message_ID - 1;
+                if (same_login_check && message.action !== "sync_all"){
+                    // we don't process updates were send from this device
+                    return;
+                }
             }
             var obsolete_orders = [],
                 orders = message.data.orders
                     ? message.data.orders
                     : [message.data];
-                orders = _.filter(orders, function(o) {
-                    if ((o.run_ID && o.run_ID !== self.multi_session_run_ID) ||
-                    (o.data && o.data.run_ID !== self.multi_session_run_ID)){
-                        obsolete_orders.push(o.uid);
-                        return false;
-                    }
-                    return true;
-                });
+            orders = _.filter(orders, function(o) {
+                if ((o.run_ID && o.run_ID !== self.multi_session_run_ID) ||
+                (o.data && o.data.run_ID !== self.multi_session_run_ID)){
+                    obsolete_orders.push(o.uid);
+                    return false;
+                }
+                return true;
+            });
             _.each(obsolete_orders, function(o){
                 self.multi_session.request_sync_all({uid: o.uid});
             });
