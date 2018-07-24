@@ -166,21 +166,22 @@ odoo.define('pos_multi_session', function(require){
             var done = new $.Deferred();
 
             $.when(res).then(function() {
+                self.chrome.loading_skip();
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
-                return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
-                    done.resolve();
-                }).fail(function(){
-                    var request_interval = setInterval(function(){
-                        return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
-                            done.resolve();
-                        });
-                    }, 2000);
-                    done.done(function(){
-                        clearInterval(request_interval);
+                var load_sync_all_request = function(){
+                    return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
+                        done.resolve();
+                    }).fail(function(){
+                        setTimeout(function(){
+                            // timeout is set to avoid excessive requests
+                            load_sync_all_request();
+                        }, 2000);
                     });
-                });
+                }
+
+                load_sync_all_request();
             });
             return done;
         },
