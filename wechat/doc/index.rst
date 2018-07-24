@@ -61,3 +61,12 @@ Wechat records (Orders, Micropays, Refunds, etc.) can be found at ``[[ Invoicing
 * Open menu ``[[ Settings ]] >> Users & Companies >> Users``
 * Open user you need
 * Activate ``Show Full Accounting Features``
+
+WeChat Journals
+---------------
+
+WeChat Journals are created automatically on first opening POS session.
+
+* In demo installation: they are availabe in POS immediatly
+* In non-demo installation: add Journals to **Payment Methods** in *Point of
+  Sale*'s Settings, then close existing session if any and open again

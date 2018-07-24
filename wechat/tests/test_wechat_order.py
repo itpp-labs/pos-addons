@@ -171,11 +171,10 @@ class TestWeChatOrder(HttpCase):
 
         refund = self.Refund.create(refund_vals)
         refund.action_confirm()
-        self.assertEqual(order.refund_fee, 2*refund_fee, "Order's refund amount is computed wrongly")
+        self.assertEqual(order.refund_fee, 2 * refund_fee, "Order's refund amount is computed wrongly")
 
     def test_JSAPI_payment(self):
         # fake values for a test
-        openid = 'qwe23e23oi2d393d2sad'
         create_vals = {}
 
         res = self._create_jsapi_order(create_vals=create_vals, lines=self.lines)

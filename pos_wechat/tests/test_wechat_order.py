@@ -21,6 +21,9 @@ class TestWeChatOrder(TestPointOfSaleCommon):
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
 
+        # create wechat journals
+        self.pos_config.init_pos_wechat_journals()
+
         self.Order = self.env['wechat.order']
         self.Refund = self.env['wechat.refund']
         self.product1 = self.env['product.product'].create({
@@ -101,13 +104,22 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
         wechat_order = self._create_wechat_order()
-
         order.wechat_order_id = wechat_order.id
+
+        # patch refund api request
+        post_result = {
+            'secapi/pay/refund': {
+                'trade_type': 'NATIVE',
+                'result_code': 'SUCCESS',
+            },
+        }
+        self._patch_post(post_result)
 
         # I create a refund
         refund_action = order.refund()
         refund = self.PosOrder.browse(refund_action['res_id'])
-        wechat_journal = self.env.ref('pos_wechat.wechat_native_journal')
+
+        wechat_journal = self.env['account.journal'].search([('wechat', '=', 'native')])
 
         payment_context = {"active_ids": refund.ids, "active_id": refund.id}
         refund_payment = self.PosMakePayment.with_context(**payment_context).create({
