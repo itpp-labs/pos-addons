@@ -28,7 +28,7 @@ odoo.define('pos_qr_scan', function(require){
                 'body': warning_message,
             });
         },
-        add_payment_by_journal: function(order_uid, journal_id, amount, payment_vals, validate){
+        add_qr_payment: function(order_uid, journal_id, amount, payment_vals, validate){
             var order = this.get('orders').find(function(item){
                 return item.uid === order_uid;
             });

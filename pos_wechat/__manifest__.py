@@ -19,6 +19,7 @@
     "depends": [
         "wechat",
         "pos_qr_scan",
+        "pos_qr_show",
         "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},

@@ -14,7 +14,8 @@ odoo.define('pos_qr_show', function(require){
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        show_payment_qr: function(order, payment_qr){
+        on_payment_qr: function(order, payment_qr){
+            // TODO shall we save type of qr too?
             // TODO check that order is current order
             order.payment_qr = payment_qr;
             self.show_payment_qr_on_payment_screen(data.code_url);

@@ -8,6 +8,11 @@
 
 Show QR for qr-based payment systems in POS or Customer Screen
 
+Roadmap
+=======
+
+* TODO: allow select payment amount manually. Currently it always use due amount
+
 Credits
 =======
 
