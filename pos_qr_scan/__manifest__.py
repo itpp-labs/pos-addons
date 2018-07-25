@@ -1,6 +1,6 @@
 {
-    "name": """POS QR Code Scan""",
-    "summary": """Scans QR codes in POS""",
+    "name": """QR Code Scanning in POS""",
+    "summary": """Scans QR codes via device's camera""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],

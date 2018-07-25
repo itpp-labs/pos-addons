@@ -1,6 +1,6 @@
-==================
- POS QR Code Scan
-==================
+=========================
+ QR Code Scanning in POS
+=========================
 
 Scans QR codes via device's camera.
 
