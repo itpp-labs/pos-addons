@@ -15,7 +15,7 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_payments",
+        "pos_qr_payments",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
