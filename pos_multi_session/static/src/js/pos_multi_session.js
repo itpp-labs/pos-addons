@@ -166,21 +166,22 @@ odoo.define('pos_multi_session', function(require){
             var done = new $.Deferred();
 
             $.when(res).then(function() {
+                self.chrome.loading_skip();
                 var progress = (self.models.length - 0.5) / self.models.length;
                 self.chrome.loading_message(_t('Sync Orders'), progress);
 
-                return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
-                    done.resolve();
-                }).fail(function(){
-                    var request_interval = setInterval(function(){
-                        return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
-                            done.resolve();
-                        });
-                    }, 2000);
-                    done.done(function(){
-                        clearInterval(request_interval);
+                var load_sync_all_request = function(){
+                    return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
+                        done.resolve();
+                    }).fail(function(){
+                        setTimeout(function(){
+                            // timeout is set to avoid excessive requests
+                            load_sync_all_request();
+                        }, 2000);
                     });
-                });
+                }
+
+                load_sync_all_request();
             });
             return done;
         },
@@ -236,28 +237,31 @@ odoo.define('pos_multi_session', function(require){
         },
         updates_from_server_callback(message, sync_all){
             var self = this;
-            var check = (message.session_id === this.pos_session.id &&
-             message.login_number === this.pos_session.login_number) ||
-             (message.data.session_id === this.pos_session.id &&
-             message.data.login_number === this.pos_session.login_number);
-            if (check && !(message.action === "sync_all")){
-                // we don't process updates were send from this device
+            var same_session_check = message.session_id === this.pos_session.id ||
+                message.data.session_id === this.pos_session.id;
+            var same_login_check = message.login_number === this.pos_session.login_number ||
+                message.data.login_number === this.pos_session.login_number;
+            if (same_session_check){
                 // keep the same message_ID among the same POS to prevent endless sync_all requests
-                this.message_ID = message.data.message_ID;
-                return;
+                // it will be fully updated in updates_from_server
+                this.message_ID = message.data.message_ID - 1;
+                if (same_login_check && message.action !== "sync_all"){
+                    // we don't process updates were send from this device
+                    return;
+                }
             }
             var obsolete_orders = [],
                 orders = message.data.orders
                     ? message.data.orders
                     : [message.data];
-                orders = _.filter(orders, function(o) {
-                    if ((o.run_ID && o.run_ID !== self.multi_session_run_ID) ||
-                    (o.data && o.data.run_ID !== self.multi_session_run_ID)){
-                        obsolete_orders.push(o.uid);
-                        return false;
-                    }
-                    return true;
-                });
+            orders = _.filter(orders, function(o) {
+                if ((o.run_ID && o.run_ID !== self.multi_session_run_ID) ||
+                (o.data && o.data.run_ID !== self.multi_session_run_ID)){
+                    obsolete_orders.push(o.uid);
+                    return false;
+                }
+                return true;
+            });
             _.each(obsolete_orders, function(o){
                 self.multi_session.request_sync_all({uid: o.uid});
             });
@@ -587,7 +591,6 @@ odoo.define('pos_multi_session', function(require){
             if (this.new_order) {
                 this.new_order = false;
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
-                this.sequence_number = Math.max(this.sequence_number + 1, this.pos.pos_session.order_ID);
                 this.trigger('change:update_new_order');
             } else {
                 this.trigger('change');
@@ -682,6 +685,7 @@ odoo.define('pos_multi_session', function(require){
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
+                            self.pos.pos_session.sequence_number = Math.max(self.pos.pos_session.sequence_number, order_ID + 1);
                             // rerender order
                             self.trigger('change');
                         }
@@ -854,7 +858,7 @@ odoo.define('pos_multi_session', function(require){
             this.pos.pos_session.order_ID = data.order_ID;
 
             if (data.order_ID !== 0) {
-                this.pos.pos_session.sequence_number = Math.max(this.pos.pos_session.sequence_number, data.order_ID);
+                this.pos.pos_session.sequence_number = Math.max(this.pos.pos_session.sequence_number, data.order_ID + 1);
             }
 
             if (!options.sync_current_order) {
