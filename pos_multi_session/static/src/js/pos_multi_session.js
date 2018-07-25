@@ -235,42 +235,25 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        updates_from_server_callback(message, sync_all){
+        updates_from_server_callback: function(message, sync_all){
             var self = this;
-            var same_session_check = message.session_id === this.pos_session.id ||
-                message.data.session_id === this.pos_session.id;
-            var same_login_check = message.login_number === this.pos_session.login_number ||
-                message.data.login_number === this.pos_session.login_number;
+            // there are two types of message construction, get_attr extract required data from either of them
+            var get_attr = function(obj, attr){
+                return obj[attr] || obj.data && obj.data[attr];
+            }
+            var same_session_check = get_attr(message, 'session_id') === this.pos_session.id;
+            var same_login_check = get_attr(message, 'login_number') === this.pos_session.login_number;
             if (same_session_check){
                 // keep the same message_ID among the same POS to prevent endless sync_all requests
-                // it will be fully updated in updates_from_server
-                this.message_ID = message.data.message_ID - 1;
-                if (same_login_check && message.action !== "sync_all"){
+                if ((same_login_check && message.action !== "sync_all") ||
+                    (!same_login_check && message.action === "sync_all")){
                     // we don't process updates were send from this device
+                    this.message_ID = message.data.message_ID;
                     return;
+                } else if (same_login_check && message.action === "sync_all") {
+                     this.message_ID = message.data.message_ID - 1;
                 }
             }
-            var obsolete_orders = [],
-                orders = message.data.orders
-                    ? message.data.orders
-                    : [message.data];
-            orders = _.filter(orders, function(o) {
-                if ((o.run_ID && o.run_ID !== self.multi_session_run_ID) ||
-                (o.data && o.data.run_ID !== self.multi_session_run_ID)){
-                    obsolete_orders.push(o.uid);
-                    return false;
-                }
-                return true;
-            });
-            _.each(obsolete_orders, function(o){
-                self.multi_session.request_sync_all({uid: o.uid});
-            });
-            if (message.data.orders) {
-                message.data.orders = orders;
-            } else {
-                message.data = orders[0];
-            }
-
             return this.updates_from_server(message, sync_all);
         },
         updates_from_server: function(message, sync_all){
@@ -871,6 +854,7 @@ odoo.define('pos_multi_session', function(require){
             return done;
         },
         remove_order: function(data){
+            data.run_ID = this.pos.multi_session_run_ID;
             return this.send({action: 'remove_order', data: data});
         },
         update: function(data){
