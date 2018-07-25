@@ -18,9 +18,9 @@ odoo.define('pos_qr_show', function(require){
             // TODO shall we save type of qr too?
             // TODO check that order is current order
             order.payment_qr = payment_qr;
-            self.show_payment_qr_on_payment_screen(data.code_url);
-            if (self.config.iface_customer_facing_display) {
-                self.send_current_order_to_customer_facing_display();
+            this.show_payment_qr_on_payment_screen(payment_qr);
+            if (this.config.iface_customer_facing_display) {
+                this.send_current_order_to_customer_facing_display();
             }
         },
         show_payment_qr_on_payment_screen: function(payment_qr){
@@ -34,7 +34,7 @@ odoo.define('pos_qr_show', function(require){
                For more options see https://larsjung.de/jquery-qrcode/
             */
             $('.qr-container').qrcode({
-                'text': code_url,
+                'text': payment_qr,
                 'ecLevel': 'H',
                 'size': 400,
             });
