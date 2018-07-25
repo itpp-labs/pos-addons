@@ -1,8 +1,11 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_qr_scan', function(require){
+odoo.define('pos_qr_payments', function(require){
     var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');
+    var core = require('web.core');
+
+    var _t = core._t;
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name == 'payment';
@@ -33,14 +36,13 @@ odoo.define('pos_qr_scan', function(require){
                 return item.uid === order_uid;
             });
             if (order){
-                var creg = _.filter(this.hidden_cashregisters + this.cashregisters, function(r){
+                var creg = _.filter(this.hidden_cashregisters.concat(this.cashregisters), function(r){
                     return r.journal_id[0] == journal_id;
                 })[0];
 
                 // add payment
                 payment_vals = _.extend({}, payment_vals, {
                     order: order,
-                    micropay_id: msg['micropay_id'],
                     journal_id: journal_id,
                     cashregister: creg,
                     pos: this
@@ -49,7 +51,7 @@ odoo.define('pos_qr_scan', function(require){
                 newPaymentline.set_amount( amount );
                 order.paymentlines.add(newPaymentline);
 
-                if (validate && order.is_paid() == 0){
+                if (validate && order.is_paid()){
                     /* order is paid and has to be closed */
                     this.trigger('validate_order');
                 }

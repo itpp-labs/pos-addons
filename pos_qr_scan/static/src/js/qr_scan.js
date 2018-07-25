@@ -5,6 +5,7 @@ odoo.define('pos_qr_scan', function(require){
     var exports = {};
 
     var core = require('web.core');
+    var models = require('point_of_sale.models');
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
@@ -194,8 +195,8 @@ odoo.define('pos_qr_scan', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         hide_cashregister: function(journal_filter){
-            var journal = _.filter(self.journals, journal_filter);
             var self = this;
+            var journal = _.filter(this.journals, journal_filter);
             if (journal.length){
                 if (journal.length > 1){
                     // TODO warning

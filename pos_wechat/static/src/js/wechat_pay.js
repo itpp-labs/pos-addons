@@ -1,8 +1,10 @@
 /*- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_payment_wechat', function(require){
+odoo.define('pos_wechat', function(require){
     "use strict";
 
+    require('pos_qr_scan');
+    require('pos_qr_show');
     var rpc = require('web.rpc');
     var core = require('web.core');
     var models = require('point_of_sale.models');
@@ -47,11 +49,11 @@ odoo.define('pos_payment_wechat', function(require){
             this.add_qr_payment(
                 msg.order_ref,
                 msg.journal_id,
-                msg['total_fee'] / 100.0,
+                msg.total_fee / 100.0,
                 {
                     micropay_id: msg.micropay_id
                 },
-                true, // auto validate payment 
+                true, // auto validate payment
             );
         },
         wechat_qr_payment: function(order, creg){
