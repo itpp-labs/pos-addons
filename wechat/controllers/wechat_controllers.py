@@ -48,7 +48,7 @@ class WechatController(http.Controller):
         _logger.debug('Authenticate on WeChat server: openid - %s, session_key - %s', openid, session_key)
 
         if not openid or not session_key:
-            raise UserError(_('Unable to get data from WeChat server : openid - %s, session_key - %s') % openid, session_key)
+            raise UserError(_('Unable to get data from WeChat server : openid - %s, session_key - %s') % (openid, session_key))
 
         User = request.env['res.users'].sudo()
         user = User.search([('openid', '=', openid)])
