@@ -3,8 +3,10 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 from lxml import etree
 import logging
+import base64
+from odoo.exceptions import UserError
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 import requests
 
@@ -44,6 +46,10 @@ class WechatController(http.Controller):
         _logger.debug('/wechat/miniprogram/authenticate request: code - %s, user_info - %s', code, user_info)
         openid, session_key = self.get_openid(code)
         _logger.debug('Authenticate on WeChat server: openid - %s, session_key - %s', openid, session_key)
+
+        if not openid or not session_key:
+            raise UserError(_('Unable to get data from WeChat server : openid - %s, session_key - %s') % (openid, session_key))
+
         User = request.env['res.users'].sudo()
         user = User.search([('openid', '=', openid)])
         if user:
@@ -51,8 +57,6 @@ class WechatController(http.Controller):
                 'wechat_session_key': session_key,
             })
         else:
-            # TODO: load image like url
-            # image = user_info.get('avatarUrl')
             country = request.env['res.country'].search([('name', 'ilike', '%'+user_info.get('country')+'%')])
             name = user_info.get('nickName')
             login = "wechat_%s" % openid
@@ -61,6 +65,7 @@ class WechatController(http.Controller):
             user = User.create({
                 'company_id': request.env.ref("base.main_company").id,
                 'name': name,
+                'image': base64.b64encode(requests.get(user_info.get('avatarUrl')).content) if user_info.get('avatarUrl') else None,
                 'openid': openid,
                 'wechat_session_key': session_key,
                 'login': login,
