@@ -181,6 +181,10 @@ class PosMultiSessionSync(models.Model):
             pos.user_ID = user_ID
         orders = []
         uid = message.get('uid')
+        message_ID = pos.multi_session_message_ID + 1
+        pos.write({
+            'multi_session_message_ID': message_ID
+        })
         if uid:
             order_uid = message['uid']
             order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
@@ -239,10 +243,7 @@ class PosMultiSessionSync(models.Model):
         channel_name = "pos.multi_session"
         for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '=', self.env.context.get('user_ID')),
                                                                   ('multi_session_ID', '=', self.multi_session_ID)]):
-            message_ID = pos.multi_session_message_ID
-            message_ID += 1
-            pos.multi_session_message_ID = message_ID
-            message['data']['message_ID'] = message_ID
+            message['data']['message_ID'] = pos.multi_session_message_ID
             self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
@@ -259,9 +260,10 @@ class PosMultiSessionSync(models.Model):
         notifications = []
         channel_name = "pos.multi_session"
         for pos in self.env['pos_multi_session_sync.pos'].search([('multi_session_ID', '=', self.multi_session_ID)]):
-            message_ID = pos.multi_session_message_ID
-            message_ID += 1
-            pos.multi_session_message_ID = message_ID
+            message_ID = pos.multi_session_message_ID + 1
+            pos.write({
+                'multi_session_message_ID': message_ID
+            })
             message['data']['message_ID'] = message_ID
             self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
 

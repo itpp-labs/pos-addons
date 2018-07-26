@@ -243,16 +243,13 @@ odoo.define('pos_multi_session', function(require){
             }
             var same_session_check = get_attr(message, 'session_id') === this.pos_session.id;
             var same_login_check = get_attr(message, 'login_number') === this.pos_session.login_number;
-            if (same_session_check){
+            if (same_session_check &&
+                ((same_login_check && message.action !== "sync_all") ||
+                (!same_login_check && message.action === "sync_all"))){
+                // we don't process updates were send from this device
                 // keep the same message_ID among the same POS to prevent endless sync_all requests
-                if ((same_login_check && message.action !== "sync_all") ||
-                    (!same_login_check && message.action === "sync_all")){
-                    // we don't process updates were send from this device
-                    this.message_ID = message.data.message_ID;
-                    return;
-                } else if (same_login_check && message.action === "sync_all") {
-                     this.message_ID = message.data.message_ID - 1;
-                }
+                this.message_ID = message.data.message_ID;
+                return;
             }
             return this.updates_from_server(message, sync_all);
         },
