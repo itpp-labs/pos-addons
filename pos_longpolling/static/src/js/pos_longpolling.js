@@ -313,6 +313,9 @@ odoo.define('pos_longpolling', function(require){
                         bus.longpolling_connection.on("change:poll_connection", function(status){
                             self.set_poll_status(selector, bus);
                         });
+                        $(element.selector).on('click', function(event){
+                            bus.longpolling_connection.send_ping({'serv': bus.serv_adr});
+                        });
                     }
                 }
             } else {
@@ -346,6 +349,9 @@ odoo.define('pos_longpolling', function(require){
             this.set_poll_status(selector, this.pos.bus);
             this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
                 self.set_poll_status(selector, self.pos.bus);
+            });
+            $(selector).on('click', function(event){
+                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr});
             });
         },
     });

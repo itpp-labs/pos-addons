@@ -1,6 +1,7 @@
-`4.1.2`
+`4.2.0`
 -------
 - **FIX:** 'order_line.node' is undefined
+- **NEW:** Added synchronization among the same POS
 
 `4.1.1`
 -------
