@@ -8,6 +8,7 @@ odoo.define('pos_longpolling', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
+    var crash_manager = require('web.crash_manager');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -152,9 +153,10 @@ odoo.define('pos_longpolling', function(require){
                         return callback(message);
                     }
                 }catch(err){
-                    this.pos.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
+                    crash_manager.show_error({
+                        type: _t("Longpolling Handling Error"),
+                        message: _t("Longpolling Handling Error"),
+                        data: {debug: err.stack},
                     });
                 }
             }
