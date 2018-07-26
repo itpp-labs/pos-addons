@@ -90,7 +90,7 @@
 
         <record id="server_action_pos_credit_update" model="ir.actions.server">
             <field name="name">Confirm</field>
-            <field name="model_id" ref="point_of_sale.menu_point_config_product"/>
+            <field name="model_id" ref="pos_debt_notebook.model_pos_credit_update"/>
             <field name="state">code</field>
             <field name="code">env['pos.credit.update'].do_confirm()</field>
         </record>

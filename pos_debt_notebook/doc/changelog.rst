@@ -1,3 +1,8 @@
+`5.0.1`
+-------
+
+- **Fix:** installation error in some cases
+
 `5.0.0`
 -------
 
