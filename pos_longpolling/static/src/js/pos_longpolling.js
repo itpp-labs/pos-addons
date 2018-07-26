@@ -266,7 +266,7 @@ odoo.define('pos_longpolling', function(require){
             if (self.pos.debug){
                 console.log('POS LONGPOLLING', self.bus.name, self.pos.config.name, "PING");
             }
-            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
+            return openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
                 if (!self.response_status) {
@@ -299,6 +299,12 @@ odoo.define('pos_longpolling', function(require){
             var element = $(selector);
             element.removeClass('oe_hidden oe_red oe_green').addClass(new_class);
         },
+        set_connecting_status: function(element, status){
+            if (status){
+                return element.find('i').addClass('fa-spin');
+            }
+            element.find('i').removeClass('fa-spin');
+        },
     });
 
     var AdditionalSynchNotificationWidget = Status_Widget.extend({
@@ -315,8 +321,11 @@ odoo.define('pos_longpolling', function(require){
                         bus.longpolling_connection.on("change:poll_connection", function(status){
                             self.set_poll_status(selector, bus);
                         });
-                        $(element.selector).on('click', function(event){
-                            bus.longpolling_connection.send_ping({'serv': bus.serv_adr});
+                        element.on('click', function(event){
+                            self.set_connecting_status(element, true);
+                            bus.longpolling_connection.send_ping({'serv': bus.serv_adr}).always(function(){
+                                self.set_connecting_status(element, false);
+                            });
                         });
                     }
                 }
@@ -353,7 +362,11 @@ odoo.define('pos_longpolling', function(require){
                 self.set_poll_status(selector, self.pos.bus);
             });
             $(selector).on('click', function(event){
-                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr});
+                self.set_connecting_status($(selector), true);
+                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr}).always(function(){
+                    self.set_connecting_status($(selector), false);
+                });
+//                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr});
             });
         },
     });
