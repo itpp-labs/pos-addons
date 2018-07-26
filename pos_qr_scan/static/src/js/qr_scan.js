@@ -1,7 +1,11 @@
+/* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+   Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_qr_scan', function(require){
     var exports = {};
 
     var core = require('web.core');
+    var models = require('point_of_sale.models');
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
@@ -185,4 +189,34 @@ odoo.define('pos_qr_scan', function(require){
     });
 
     gui.define_popup({name:'qr_scan', widget: QrScanPopupWidget});
+
+    // Add some helpers:
+    // * No need to show Cashregister that is used by scanning QR customer's code
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        hide_cashregister: function(journal_filter){
+            var self = this;
+            var journal = _.filter(this.journals, journal_filter);
+            if (journal.length){
+                if (journal.length > 1){
+                    // TODO warning
+                    console.log('error', 'More than one journal to hide is found', journals);
+                }
+                journal = journal[0];
+            } else {
+                return false;
+            }
+            self.cashregisters = _.filter(self.cashregisters, function(r){
+                if (r.journal_id[0] == journal.id){
+                    self.hidden_cashregisters.push(r);
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+
+            return journal;
+        },
+    });
+
 });

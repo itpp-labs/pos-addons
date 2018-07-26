@@ -5,7 +5,7 @@
     <!-- POS -->
     <template id="pos_assets" name="POS assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_wechat/static/src/js/wechat_pay.js"></script>
+            <script type="text/javascript" src="/pos_qr_payments/static/src/js/pos_qr_payments.js"></script>
         </xpath>
     </template>
 </odoo>

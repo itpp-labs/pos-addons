@@ -1,26 +1,17 @@
-odoo.define('pos_payment_wechat', function(require){
+/* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+odoo.define('pos_wechat', function(require){
     "use strict";
 
+    require('pos_qr_scan');
+    require('pos_qr_show');
     var rpc = require('web.rpc');
     var core = require('web.core');
     var models = require('point_of_sale.models');
-    var screens = require('point_of_sale.screens');
-    var gui = require('point_of_sale.gui');
-    var session = require('web.session');
 
     var _t = core._t;
 
     models.load_fields('account.journal', ['wechat']);
-
-    gui.Gui.prototype.screen_classes.filter(function(el) { return el.name == 'payment'})[0].widget.include({
-        init: function(parent, options) {
-            this._super(parent, options);
-            this.pos.bind('validate_order',function(){
-                 this.validate_order();
-            },this);
-        }
-    });
-
 
 
     var PosModelSuper = models.PosModel;
@@ -37,21 +28,8 @@ odoo.define('pos_payment_wechat', function(require){
             this.ready.then(function(){
                 // take out wechat micropay cashregister from cashregisters to avoid
                 // rendering in payment screent
-                var micropay_journal = _.filter(self.journals, function(r){
+                self.micropay_journal = self.hide_cashregister(function(r){
                     return r.wechat == 'micropay';
-                });
-                if (micropay_journal.length){
-                    if (micropay_journal.length > 1){
-                        // TODO warning
-                        console.log('error', 'More than one wechat journals found');
-                    }
-                    self.micropay_journal = micropay_journal[0];
-                } else {
-                    return;
-                }
-                self.all_cashregisters = self.cashregisters;
-                self.cashregisters = _.filter(self.cashregisters, function(r){
-                    return r.journal_id[0] != self.micropay_journal.id;
                 });
             });
 
@@ -66,33 +44,16 @@ odoo.define('pos_payment_wechat', function(require){
             return PosModelSuper.prototype.scan_product.apply(this, arguments);
         },
         on_wechat: function(msg){
-            var order = this.get('orders').find(function(item){
-                return item.uid === msg.order_ref;
-            });
-            if (order){
-                var creg = _.filter(this.all_cashregisters, function(r){
-                    return r.journal_id[0] == msg['journal_id'];
-                })[0];
-
-                // add payment
-                var newPaymentline = new models.Paymentline({},{
-                    order: order,
-                    micropay_id: msg['micropay_id'],
-                    journal_id: msg['journal_id'],
-                    cashregister: creg,
-                    pos: this});
-                newPaymentline.set_amount( msg['total_fee'] / 100.0 );
-                order.paymentlines.add(newPaymentline);
-
-                if (order.is_paid() == 0){
-                    /* order is paid and has to be closed */
-                    this.trigger('validate_order');
-                }
-            } else {
-                console.log('error', 'Order is not found');
-            }
+            this.add_qr_payment(
+                msg.order_ref,
+                msg.journal_id,
+                msg.total_fee / 100.0,
+                {
+                    micropay_id: msg.micropay_id
+                },
+                true // auto validate payment
+            );
         },
-        // TODO: move to a separate model?
         wechat_qr_payment: function(order, creg){
             /* send request asynchronously */
             var self = this;
@@ -107,7 +68,7 @@ odoo.define('pos_payment_wechat', function(require){
                     quantity_full: r.get_quantity(),
                     price: r.get_price_with_tax(),
                     product_id: r.get_product().id,
-                }
+                };
             });
 
             // Send without repeating on failure
@@ -124,76 +85,13 @@ odoo.define('pos_payment_wechat', function(require){
                 },
             }).then(function(data){
                 if (data.code_url){
-                    order.payment_qr = data.code_url;
-                    self.show_payment_qr(data.code_url);
-                    if (self.config.iface_customer_facing_display) {
-                        self.send_current_order_to_customer_facing_display();
-                    }
+                    self.on_payment_qr(order, data.code_url);
                 } else if (data.error) {
                     self.show_warning(data.error);
                 } else {
                     self.show_warning('Unknown error');
                 }
             });
-        },
-        show_payment_qr: function(code_url){
-            /* ecLevel -- Error Correction Level
-                L - Low (7%)
-                M - Medium (15%)
-                Q - Quartile (25%)
-                H - High (30%)
-
-                For more options see https://larsjung.de/jquery-qrcode/
-            */
-            this.hide_payment_qr();
-            $('.qr-container').qrcode({
-                'text': code_url,
-                'ecLevel': 'H',
-                'size': 400,
-            });
-        },
-        hide_payment_qr: function(){
-            $('.qr-container').empty();
-        },
-        show_warning: function(warning_message){
-            console.info('error', warning_message);
-            this.chrome.gui.show_popup('error',{
-                'title': _t('Warning'),
-                'body': warning_message,
-            });
-        },
-        render_html_for_customer_facing_display: function () {
-            var self = this;
-            var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(this, arguments);
-            var order = this.get_order();
-            if (!order.payment_qr){
-                return res;
-            }
-            return res.then(function(rendered_html){
-                var $rendered_html = $(rendered_html);
-
-                var $elem = $rendered_html.find('.pos-adv');
-                $elem.qrcode({
-                    'render': 'image',
-                    'text': order.payment_qr,
-                    'ecLevel': 'H',
-                    'size': 400,
-                });
-                var image64 = $elem.find('img').attr('src');
-                $elem.find('img').remove();
-                $elem.css('background-image', 'url(' + image64 + ')');
-                $rendered_html.find('.pos-payment_info').css('background-color', '#888');
-
-                // prop only uses the first element in a set of elements,
-                // and there's no guarantee that
-                // customer_facing_display_html is wrapped in a single
-                // root element.
-                rendered_html = _.reduce($rendered_html, function (memory, current_element) {
-                    return memory + $(current_element).prop('outerHTML');
-                }, ""); // initial memory of ""
-
-                return rendered_html;
-            })
         },
     });
 
