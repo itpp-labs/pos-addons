@@ -134,6 +134,7 @@ class TestWeChatOrder(HttpCase):
         base_url = 'https://api.weixin.qq.com/sns/jscode2session'
         self._patch_get_requests(base_url, response_json)
         res = self.url_open_json(url, code, user_info, 60)
+        self.assertEqual(res.status_code, 200)
         return res.json()
 
     def test_native_payment(self):
