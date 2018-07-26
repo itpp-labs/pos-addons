@@ -46,7 +46,7 @@ odoo.define('pos_qr_show', function(require){
             var self = this;
             var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(this, arguments);
             var order = this.get_order();
-            if (!order.payment_qr){
+            if (!order || !order.payment_qr){
                 return res;
             }
             return res.then(function(rendered_html){
