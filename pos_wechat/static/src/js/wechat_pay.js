@@ -1,5 +1,5 @@
-/*- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+/* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_wechat', function(require){
     "use strict";
 
@@ -8,13 +8,11 @@ odoo.define('pos_wechat', function(require){
     var rpc = require('web.rpc');
     var core = require('web.core');
     var models = require('point_of_sale.models');
-    var screens = require('point_of_sale.screens');
-    var gui = require('point_of_sale.gui');
-    var session = require('web.session');
 
     var _t = core._t;
 
     models.load_fields('account.journal', ['wechat']);
+
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
