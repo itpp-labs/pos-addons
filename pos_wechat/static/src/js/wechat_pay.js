@@ -51,7 +51,7 @@ odoo.define('pos_wechat', function(require){
                 {
                     micropay_id: msg.micropay_id
                 },
-                true, // auto validate payment
+                true // auto validate payment
             );
         },
         wechat_qr_payment: function(order, creg){
