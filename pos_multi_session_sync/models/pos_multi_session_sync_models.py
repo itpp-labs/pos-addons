@@ -34,12 +34,15 @@ class PosMultiSessionSync(models.Model):
                                            'Keep empty if this POS should not use syncing. '
                                            'Before updating it you need to close active session')
     order_ID = fields.Integer(index=True, string='Order')
+    run_ID = fields.Integer(index=True, string='Session', help='Actual run_id of the multi_session')
     dbname = fields.Char(index=True)
-    order_ids = fields.One2many('pos_multi_session_sync.order', 'multi_session_ID', 'Orders')
 
     @api.multi
     def on_update_message(self, message):
         self.ensure_one()
+        if message['data']['run_ID'] > self.run_ID:
+            self.prepare_new_session(message)
+
         if message['action'] == 'update_order':
             res = self.set_order(message)
         elif message['action'] == 'sync_all':
@@ -49,6 +52,19 @@ class PosMultiSessionSync(models.Model):
         else:
             res = self.broadcast_message(message)
         return res
+
+    @api.multi
+    def prepare_new_session(self, message):
+        self.ensure_one()
+        run_ID = message['data']['run_ID']
+        self.write({
+            'run_ID': run_ID,
+        })
+        old_orders = self.env['pos_multi_session_sync.order'].search([('state', '=', 'draft'),
+                                                                      ('run_ID', '<', run_ID)])
+        if old_orders:
+            old_orders.write({'state': 'unpaid'})
+            self.write({'order_ID': 0})
 
     @api.multi
     def check_order_revision(self, message, order):
@@ -158,23 +174,22 @@ class PosMultiSessionSync(models.Model):
         pos = self.env['pos_multi_session_sync.pos'] \
                   .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
         run_ID = message['data']['run_ID']
-        old_orders = self.order_ids.filtered(lambda x: x.state == "draft" and x.run_ID < run_ID)
-        if old_orders:
-            old_orders.write({'state': 'unpaid'})
-            self.write({'order_ID': 0})
         if not pos:
             pos = self.env['pos_multi_session_sync.pos'] \
                 .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID})
         if pos.user_ID != user_ID:
             pos.user_ID = user_ID
-        pos.multi_session_message_ID = 0
         orders = []
         uid = message.get('uid')
+        message_ID = pos.multi_session_message_ID + 1
+        pos.write({
+            'multi_session_message_ID': message_ID
+        })
         if uid:
             order_uid = message['uid']
             order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
             msg = json.loads(order.order)
-            msg['data']['message_ID'] = 0
+            msg['data']['message_ID'] = pos.multi_session_message_ID
             msg['data']['revision_ID'] = order.revision_ID
             _logger.debug('Sync All: Server revision ID %s', order.revision_ID)
             msg['data']['run_ID'] = run_ID
@@ -184,7 +199,7 @@ class PosMultiSessionSync(models.Model):
                              .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
                                       ('run_ID', '=', run_ID)]):
                 msg = json.loads(order.order)
-                msg['data']['message_ID'] = 0
+                msg['data']['message_ID'] = pos.multi_session_message_ID
                 msg['data']['revision_ID'] = order.revision_ID
                 msg['data']['run_ID'] = run_ID
                 orders.append(msg)
@@ -228,10 +243,7 @@ class PosMultiSessionSync(models.Model):
         channel_name = "pos.multi_session"
         for pos in self.env['pos_multi_session_sync.pos'].search([('user_ID', '=', self.env.context.get('user_ID')),
                                                                   ('multi_session_ID', '=', self.multi_session_ID)]):
-            message_ID = pos.multi_session_message_ID
-            message_ID += 1
-            pos.multi_session_message_ID = message_ID
-            message['data']['message_ID'] = message_ID
+            message['data']['message_ID'] = pos.multi_session_message_ID
             self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
 
         if self.env.context.get('phantomtest') == 'slowConnection':
@@ -248,9 +260,10 @@ class PosMultiSessionSync(models.Model):
         notifications = []
         channel_name = "pos.multi_session"
         for pos in self.env['pos_multi_session_sync.pos'].search([('multi_session_ID', '=', self.multi_session_ID)]):
-            message_ID = pos.multi_session_message_ID
-            message_ID += 1
-            pos.multi_session_message_ID = message_ID
+            message_ID = pos.multi_session_message_ID + 1
+            pos.write({
+                'multi_session_message_ID': message_ID
+            })
             message['data']['message_ID'] = message_ID
             self.env['pos.config']._send_to_channel_by_id(self.dbname, pos.pos_ID, channel_name, message)
 
