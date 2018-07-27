@@ -2,7 +2,6 @@
  Alipay Payments in POS
 ========================
 
-
 Follow instructions of `Alipay API <https://apps.odoo.com/apps/modules/11.0/alipay/>`__ module.
 
 Installation
@@ -13,10 +12,14 @@ Installation
 Configuration
 =============
 
-* Go to ``[[ Point of Sale ]] >> Configuration >> Point of Sale``
-* Create or select some record
-* Add **Payment Methods** with non-empty value at the field **Alipay Payment**.
-* Close exising session for updated POSes
+Alipay Journals
+---------------
+
+Alipay Journals are created automatically on first opening POS session.
+
+* In demo installation: they are availabe in POS immediatly
+* In non-demo installation: add Journals to **Payment Methods** in *Point of
+  Sale*'s Settings, then close existing session if any and open again
 
 Usage
 =====

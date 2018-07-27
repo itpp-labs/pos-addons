@@ -8,19 +8,12 @@
 Installation
 ============
 
-* Install `alipay library<https://github.com/jxtech/alipay>`__::
+* Install `alipay library<https://github.com/fzlee/alipay>`__::
 
-    pip install alipay
-    pip install alipay[cryptography]
+    pip install python-alipay-sdk
 
     # to update existing installation use
-    pip install -U alipay
-
-Multi database
---------------
-
-If you have several databases, you need to check that all requests are sent to the desired database. The user authentication request from the Mini-program does not contain session cookies. So, if Odoo cannot determine which database to use, it will return a 404 error (Page not found).
-In order for the requests to send to the desired database, you need to configure `dbfilter <https://odoo-development.readthedocs.io/en/latest/admin/dbfilter.html>`__.
+    pip install -U python-alipay-sdk
 
 Alipay APP
 ==========
@@ -39,15 +32,11 @@ Credentials
 
   * ``alipay.app_id``
   * ``alipay.app_secret``
-  * ``alipay.miniprogram_app_id``
-  * ``alipay.miniprogram_app_secret``
-  * ``alipay.mch_id`` -- *Vendor ID*
-  * ``alipay.sub_mch_id`` -- *Sub Vendor ID*
-  * ``alipay.sandbox`` -- set to ``0`` or delete to disable. Any other value to means that sandbox is activated.
-  * ``alipay.mch_cert``, ``alipay.mch_key`` -- **path** to key and certificate files at server. Example of values:
-
-    * ``alipay.mch_cert``: ``/path/to/apiclient_cert.pem``
-    * ``alipay.mch_key``: ``/path/to/apiclient_key.pem``
+  * ``alipay.app_private_key`` -- path to file
+  * ``alipay.app_public_key`` -- path to file
+  * ``alipay.alipay_public_key_string`` -- content of public key file. Starts with ``-----BEGIN PUBLIC KEY-----``
+  * ``alipay.app_auth_code``
+  * ``alipay.app_auth_token``
 
 Internal Numbers
 ----------------
@@ -57,24 +46,15 @@ credentials in new database and odoo sends Alipay Order IDs that were previously
 used in another system. To resolve this do as following:
 
 * Go to ``[[ Settings ]] >> Technical >> Sequence & Identifiers >> Sequences``
-* Find record *Alipay Order*, *Alipay Refund* or *Alipay Micropay*, depending on which request has the problem
+* Find record *Alipay Order* or *Alipay Refund**, depending on which request has the problem
 * Change either **Prefix**, **Suffix** or **Next Number**
 * If you get the error again, try to increase **Next Number**
 
 Alipay tracking
 ---------------
-Alipay records (Orders, Micropays, Refunds, etc.) can be found at ``[[ Invoicing ]] >> Configuration >> Alipay``. If you don't have that menu, you need to configure ``Show Full Accounting Features`` for your user first:
+Alipay records (Orders, Refunds, etc.) can be found at ``[[ Invoicing ]] >> Configuration >> Alipay``. If you don't have that menu, you need to configure ``Show Full Accounting Features`` for your user first:
 
 * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
 * Open menu ``[[ Settings ]] >> Users & Companies >> Users``
 * Open user you need
 * Activate ``Show Full Accounting Features``
-
-Alipay Journals
----------------
-
-Alipay Journals are created automatically on first opening POS session.
-
-* In demo installation: they are availabe in POS immediatly
-* In non-demo installation: add Journals to **Payment Methods** in *Point of
-  Sale*'s Settings, then close existing session if any and open again

@@ -4,8 +4,8 @@
 
 The module implements following payment workflows
 
-Quick Pay (micropay)
---------------------
+Barcode Payment
+---------------
 
 * Cashier creates order and scan user's QR in user's Alipay mobile app
 
@@ -16,8 +16,8 @@ Quick Pay (micropay)
 * User's receives order information and authorise fund transferring
 * Cashier gets payment confirmation in POS
 
-Native Payment (QR Code Payment)
---------------------------------
+QR Code Payment
+---------------
 
 * Cashier clicks a button to  get one-time url and shows it to Buyer as a QR Code
 
@@ -51,7 +51,7 @@ To emulate Customer screen do as following:
 Roadmap
 =======
 
-* TODO: In sake of UX, we need to add ``micropay_id`` reference to ``account.bank.statement.line``
+* TODO: In sake of UX, we need to add ``alipay_order_id`` reference to ``account.bank.statement.line``
 
 Credits
 =======
@@ -68,7 +68,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_payment_alipay/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_alipay/>`__.
 
       Thank you for understanding!
 
@@ -84,5 +84,7 @@ HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_payment_alipay/
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_alipay.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_alipay.atom>`_
 
 Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
