@@ -32,7 +32,7 @@ class AlipayRefund(models.Model):
     result_raw = fields.Text('Raw result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
     order_id = fields.Many2one('alipay.order')
-    micropay_id = fields.Many2one('alipay.micropay')
+    scan_id = fields.Many2one('alipay.scan')
     journal_id = fields.Many2one('account.journal')
 
     @api.model
@@ -44,7 +44,7 @@ class AlipayRefund(models.Model):
         self.ensure_one()
         debug = self.env['ir.config_parameter'].get_param('alipay.local_sandbox') == '1'
         wpay = self.env['ir.config_parameter'].get_alipay_pay_object()
-        record = self.order_id or self.micropay_id
+        record = self.order_id
         if debug:
             _logger.info('SANDBOX is activated. Request to alipay servers is not sending')
             # Dummy Data. Change it to try different scenarios

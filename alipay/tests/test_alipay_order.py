@@ -137,7 +137,7 @@ class TestAlipayOrder(HttpCase):
         self.assertEqual(res.status_code, 200)
         return res.json()
 
-    def test_native_payment(self):
+    def test_show_payment(self):
         """ Create QR, emulate payment, make refund """
 
         order = self._create_order()

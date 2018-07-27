@@ -9,7 +9,6 @@ class PosMakePayment(models.TransientModel):
     journal_alipay = fields.Selection(related='journal_id.alipay')
     order_ref = fields.Char(compute='_compute_order_ref')
     alipay_order_id = fields.Many2one('alipay.order', string='Alipay Order to refund')
-    micropay_id = fields.Many2one('alipay.micropay', string='Micropay to refund')
 
     def _compute_order_ref(self):
         order = self.env['pos.order'].browse(self.env.context.get('active_id', False))
@@ -19,12 +18,11 @@ class PosMakePayment(models.TransientModel):
 
     def check(self):
         res = super(PosMakePayment, self).check()
-        record = self.alipay_order_id or self.micropay_id
+        record = self.alipay_order_id
         if record and self.amount < 0:
             refund_fee = int(-100*self.amount)
             refund_vals = {
                 'order_id': self.alipay_order_id.id,
-                'micropay_id': self.micropay_id.id,
                 'total_fee': record.total_fee,
                 'refund_fee': refund_fee,
                 'journal_id': self.journal_id.id,

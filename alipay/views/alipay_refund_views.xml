@@ -18,7 +18,6 @@
                         <field name="refund_ref"/>
                         <field name="refund_fee"/>
                         <field name="order_id"/>
-                        <field name="micropay_id"/>
                         <field name="debug"/>
                     </group>
                     <notebook>

@@ -46,5 +46,4 @@ Refunds
 
 * In Refund Order click ``[Payment]``
 * In **Payment Mode** specify a Alipay journal
-* Depending on type of Alipay journal specify either **Alipay Order to refund**
-  or **Micropay to refund**
+* Specify **Alipay Order to refund**

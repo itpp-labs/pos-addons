@@ -4,7 +4,7 @@
 <odoo>
     <t t-extend="PaymentScreen-Paymentmethods">
         <t t-jquery=".paymentmethod" t-operation="prepend">
-            <t t-if="cashregister.journal.alipay == 'native'">
+            <t t-if="cashregister.journal.alipay == 'show'">
                 <i class="fa fa-qrcode"/>
             </t>
         </t>

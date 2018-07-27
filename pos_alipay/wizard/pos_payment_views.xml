@@ -10,8 +10,7 @@
             <xpath expr="//field[@name='amount']" position="after">
                 <field name="journal_alipay" invisible="1"/>
                 <field name="order_ref" invisible="1"/>
-                <field name="alipay_order_id" attrs="{'invisible': [('journal_alipay', '!=', 'native')]}" domain="[('order_ref', '=', order_ref)]"/>
-                <field name="micropay_id" attrs="{'invisible': [('journal_alipay', '!=', 'micropay')]}" domain="[('order_ref', '=', order_ref)]"/>
+                <field name="alipay_order_id" attrs="{'invisible': [('journal_alipay', '!=', 'show')]}" domain="[('order_ref', '=', order_ref)]"/>
             </xpath>
         </field>
     </record>

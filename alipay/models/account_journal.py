@@ -7,6 +7,6 @@ class Journal(models.Model):
     _inherit = 'account.journal'
 
     alipay = fields.Selection([
-        ('micropay', 'Scanning customer\'s QR'),
-        ('native', 'Showing QR to customer'),
+        ('scan', 'Scanning customer\'s QR'),
+        ('show', 'Showing QR to customer'),
     ], string='Alipay Payment', help='Register for Alipay payment')

@@ -1,6 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_alipay_order_line,access_alipay_order_line,model_alipay_order_line,base.group_user,1,0,0,0
-access_alipay_micropay,access_alipay_micropay,model_alipay_micropay,base.group_user,1,0,0,0
 access_alipay_order,access_alipay_order,model_alipay_order,base.group_user,1,0,0,0
 access_alipay_refund,access_alipay_refund,model_alipay_refund,base.group_user,1,0,0,0
 access_product_product,access_product_product,product.model_product_product,alipay.group_miniprogram_user,1,0,0,0

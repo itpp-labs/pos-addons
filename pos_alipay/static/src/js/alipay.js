@@ -26,10 +26,10 @@ odoo.define('pos_alipay', function(require){
                 this.on_alipay,
                 this);
             this.ready.then(function(){
-                // take out alipay micropay cashregister from cashregisters to avoid
+                // take out alipay scan cashregister from cashregisters to avoid
                 // rendering in payment screent
-                self.micropay_journal = self.hide_cashregister(function(r){
-                    return r.alipay == 'micropay';
+                self.scan_journal = self.hide_cashregister(function(r){
+                    return r.alipay == 'scan';
                 });
             });
 
@@ -49,7 +49,7 @@ odoo.define('pos_alipay', function(require){
                 msg.journal_id,
                 msg.total_fee / 100.0,
                 {
-                    micropay_id: msg.micropay_id
+                    scan_id: msg.scan_id
                 },
                 true // auto validate payment
             );
@@ -99,7 +99,7 @@ odoo.define('pos_alipay', function(require){
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         add_paymentline: function(cashregister){
-            if (cashregister.journal.alipay == 'native'){
+            if (cashregister.journal.alipay == 'show'){
                 this.pos.alipay_qr_payment(this, cashregister);
                 return;
             }
@@ -111,12 +111,12 @@ odoo.define('pos_alipay', function(require){
     models.Paymentline = models.Paymentline.extend({
         initialize: function(attributes, options){
             PaymentlineSuper.prototype.initialize.apply(this, arguments);
-            this.micropay_id = options.micropay_id;
+            this.scan_id = options.scan_id;
         },
         // TODO: do we need to extend init_from_JSON too ?
         export_as_JSON: function(){
             var res = PaymentlineSuper.prototype.export_as_JSON.apply(this, arguments);
-            res['micropay_id'] = this.micropay_id;
+            res['scan_id'] = this.scan_id;
             return res;
         },
     });
@@ -146,9 +146,9 @@ odoo.define('pos_alipay', function(require){
                 return;
             }
             // TODO: block order for editing
-            this.micropay(auth_code, order);
+            this.scan(auth_code, order);
         },
-        micropay: function(auth_code, order){
+        scan: function(auth_code, order){
             /* send request asynchronously */
             var self = this;
 
@@ -157,14 +157,14 @@ odoo.define('pos_alipay', function(require){
 
             var send_it = function () {
                 return rpc.query({
-                    model: 'alipay.micropay',
+                    model: 'alipay.scan',
                     method: 'pos_create_from_qr',
                     kwargs: {
                         'auth_code': auth_code,
                         'pay_amount': order.get_due(),
                         'order_ref': order.uid,
                         'terminal_ref': terminal_ref,
-                        'journal_id': self.pos.micropay_journal.id,
+                        'journal_id': self.pos.scan_journal.id,
                         'pos_id': pos_id,
                     },
                 })

@@ -29,15 +29,13 @@ class AlipayOrder(models.Model):
     _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
-    trade_type = fields.Selection([
-        ('JSAPI', 'Official Account Payment (Mini Program)'),
-        ('NATIVE', 'Native Payment'),
-        ('APP', 'In-App Payment'),
-    ], help="""
-* Official Account Payment -- Mini Program Payment or In-App Web-based Payment
-* Native Payment -- Customer scans QR for specific order and confirm payment
-* In-App Payment -- payments in native mobile applications
-    """)
+#    trade_type = fields.Selection([
+#        ('JSAPI', 'Official Account Payment (Mini Program)'),
+#        ('NATIVE', 'Native Payment'),
+#    ], help="""
+#* Official Account Payment -- Mini Program Payment or In-App Web-based Payment
+#* Native Payment -- Customer scans QR for specific order and confirm payment
+#    """)
 
     order_ref = fields.Char('Order Reference', readonly=True)
     total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)

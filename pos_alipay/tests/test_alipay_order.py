@@ -119,7 +119,7 @@ class TestAlipayOrder(TestPointOfSaleCommon):
         refund_action = order.refund()
         refund = self.PosOrder.browse(refund_action['res_id'])
 
-        alipay_journal = self.env['account.journal'].search([('alipay', '=', 'native')])
+        alipay_journal = self.env['account.journal'].search([('alipay', '=', 'show')])
 
         payment_context = {"active_ids": refund.ids, "active_id": refund.id}
         refund_payment = self.PosMakePayment.with_context(**payment_context).create({

@@ -35,27 +35,27 @@ class PosConfig(models.Model):
             'type': 'cash',
             'write_statement': demo_is_on,
         }
-        alipay_native_journal = self._create_alipay_journal(dict(
-            sequence_name='Alipay Native Payment',
-            prefix='WNATIVE-- ',
-            journal_name='Alipay Native Payment',
-            code='WNATIVE',
-            alipay='native',
+        alipay_show_journal = self._create_alipay_journal(dict(
+            sequence_name='Alipay Payments by Showing QR',
+            prefix='ALISHOW-- ',
+            journal_name='Alipay Payments by Showing QR',
+            code='ALISHOW',
+            alipay='show',
             **options
         ))
-        micropay_journal = self._create_alipay_journal(dict(
-            sequence_name='Alipay Micropay',
-            prefix='WMICRO- ',
-            journal_name='Alipay Micropay',
-            code='WMICRO',
-            alipay='micropay',
+        alipay_scan_journal = self._create_alipay_journal(dict(
+            sequence_name='Alipay Payments by Scanning QR',
+            prefix='ALISCAN- ',
+            journal_name='Alipay Payments by Scanning QR',
+            code='ALISCAN',
+            alipay='scan',
             **options
         ))
         if demo_is_on:
             self.write({
                 'journal_ids': [
-                    (4, alipay_native_journal.id),
-                    (4, micropay_journal.id),
+                    (4, alipay_show_journal.id),
+                    (4, alipay_scan_journal.id),
                 ],
             })
 
