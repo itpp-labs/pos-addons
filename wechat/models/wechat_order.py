@@ -165,6 +165,7 @@ class WeChatOrder(models.Model):
         total_fee = order._total_fee()
         body, detail = order._body()
         wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
         openid = self.env.user.openid
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
@@ -185,7 +186,7 @@ class WeChatOrder(models.Model):
         else:
             _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
                           total_fee, body, detail)
-            result_raw = wpay.order.create(
+            result_raw = mpay.order.create(
                 trade_type='JSAPI',
                 body=body,
                 total_fee=total_fee,
@@ -195,7 +196,6 @@ class WeChatOrder(models.Model):
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
-        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
         result_json = mpay.jsapi.get_jsapi_params(
             prepay_id=result_raw.get('prepay_id'),
             nonce_str=result_raw.get('nonce_str')
