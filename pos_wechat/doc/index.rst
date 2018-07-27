@@ -13,10 +13,14 @@ Installation
 Configuration
 =============
 
-* Go to ``[[ Point of Sale ]] >> Configuration >> Point of Sale``
-* Create or select some record
-* Add **Payment Methods** with non-empty value at the field **WeChat Payment**.
-* Close exising session for updated POSes
+WeChat Journals
+---------------
+
+WeChat Journals are created automatically on first opening POS session.
+
+* In demo installation: they are availabe in POS immediatly
+* In non-demo installation: add Journals to **Payment Methods** in *Point of
+  Sale*'s Settings, then close existing session if any and open again
 
 Usage
 =====
