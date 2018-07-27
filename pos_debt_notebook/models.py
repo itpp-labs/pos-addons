@@ -187,9 +187,6 @@ class ResConfigSettings(models.TransientModel):
         ('credit', 'Display Credit')
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
                                                 'In both cases debt will be red, credit - green')
-    debt_limit = fields.Float(
-        string='Default Max Debt', digits=dp.get_precision('Account'), default=0,
-        help='Default value for new Customers')
 
     @api.multi
     def set_values(self):
@@ -197,7 +194,6 @@ class ResConfigSettings(models.TransientModel):
         config_parameters = self.env["ir.config_parameter"].sudo()
         for record in self:
             config_parameters.sudo().set_param("pos_debt_notebook.debt_type", record.debt_type)
-            config_parameters.sudo().set_param("pos_debt_notebook.debt_limit", record.debt_limit)
 
     @api.multi
     def get_values(self):
@@ -205,7 +201,6 @@ class ResConfigSettings(models.TransientModel):
         config_parameters = self.env["ir.config_parameter"].sudo()
         res.update(
             debt_type=config_parameters.sudo().get_param("pos_debt_notebook.debt_type", default='debt'),
-            debt_limit=float(config_parameters.sudo().get_param("pos_debt_notebook.debt_limit", default=0))
         )
         return res
 
