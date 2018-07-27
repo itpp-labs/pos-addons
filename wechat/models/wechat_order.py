@@ -150,7 +150,7 @@ class WeChatOrder(models.Model):
         :returns order_id:    Current order id
                  result_json: Payments data for WeChat
         """
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].sudo().get_param('wechat.local_sandbox') == '1'
 
         vals = {
             'trade_type': 'NATIVE',
@@ -164,8 +164,7 @@ class WeChatOrder(models.Model):
         order = self.sudo().create(vals)
         total_fee = order._total_fee()
         body, detail = order._body()
-        wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
-        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
+        mpay = self.env['ir.config_parameter'].sudo().get_wechat_miniprogram_pay_object()
         openid = self.env.user.openid
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
