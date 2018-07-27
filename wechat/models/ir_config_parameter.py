@@ -48,7 +48,7 @@ class Param(models.Model):
 
     @api.model
     def get_wechat_miniprogram_pay_object(self):
-        sandbox = self.get_param('wechat.sandbox', '0') != '0'
+        sandbox = self.sudo().get_param('wechat.sandbox', '0') != '0'
         if sandbox:
             _logger.info('Sandbox Mode is used for WeChat API')
         _logger.debug('WeChat Credentials: miniprogram_app_id=%s, miniprogram_app_secret=%s, mch_id=%s, sub_mch_id=%s, sandbox mode is %s',

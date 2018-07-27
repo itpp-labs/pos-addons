@@ -164,7 +164,7 @@ class WeChatOrder(models.Model):
         order = self.sudo().create(vals)
         total_fee = order._total_fee()
         body, detail = order._body()
-        mpay = self.env['ir.config_parameter'].sudo().get_wechat_miniprogram_pay_object()
+        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
         openid = self.env.user.openid
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
