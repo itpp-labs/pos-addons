@@ -10,9 +10,9 @@
     "version": "11.0.1.0.0",
     "application": False,
 
-    "author": "IT-Projects LLC, KolushovAlexandr, Ivan Yelizariev",
+    "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/KolushovAlexandr",
+    "website": "https://it-projects.info/team/yelizariev",
     "license": "LGPL-3",
     # "price": 9.00,
     # "currency": "EUR",
