@@ -126,11 +126,11 @@ class WeChatOrder(models.Model):
         return total_fee
 
     def _notify_url(self):
-        url = self.env['ir.config_parameter'].get_param('wechat.payment_result_notification_url')
+        url = self.env['ir.config_parameter'].sudo().get_param('wechat.payment_result_notification_url')
         if url:
             return url
 
-        base = self.env["ir.config_parameter"].get_param('web.base.url')
+        base = self.env["ir.config_parameter"].sudo().get_param('web.base.url')
         return "{base}/{path}".format(
             base=base,
             path=PAYMENT_RESULT_NOTIFICATION_URL,
@@ -195,6 +195,8 @@ class WeChatOrder(models.Model):
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
             )
+            _logger.debug('JSAPI Order result_raw: %s', result_raw)
+
         result_json = mpay.jsapi.get_jsapi_params(
             prepay_id=result_raw.get('prepay_id'),
             nonce_str=result_raw.get('nonce_str')
