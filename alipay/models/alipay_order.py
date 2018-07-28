@@ -38,7 +38,8 @@ class AlipayOrder(models.Model):
 #    """)
 
     order_ref = fields.Char('Order Reference', readonly=True)
-    total_amount = fields.Float('Total Fee', help='Amount in currency units (not cents)', readonly=True)
+    total_amount = fields.Float('Total Amount', help='Amount in currency units (not cents)', readonly=True)
+    discountable_amount = fields.Float('Discountable Amount', help='Amount in currency units (not cents)', readonly=True)
     state = fields.Selection([
         ('draft', 'Unpaid'),
         ('done', 'Paid'),
@@ -135,13 +136,13 @@ class AlipayOrder(models.Model):
         )
 
     @api.model
-    def create_from_qr(self, auth_code, total_amount, journal_id, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
+    def _create_from_qr(self, auth_code, total_amount, journal_id, subject, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
         """
         :param product_category: is used to prepare "body"
         :param total_amount: Specifies the amount to pay. The units are in currency units (not cents)
         :param create_vals: extra args to pass on record creation
         """
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].get_param('alipay.local_sandbox') == '1'
         total_amount = total_amount
         vals = {
             'journal_id': journal_id,
@@ -159,35 +160,35 @@ class AlipayOrder(models.Model):
             # Dummy Data. Change it to try different scenarios
             # Doc: https://docs.open.alipay.com/140/104626
             result_json = {
-                "alipay_trade_pay_response": {
-                    "code": "10003",
-                    "msg": "订单创建成功支付处理中",
-                    "trade_no": "2013112011001004330000121536",
-                    "out_trade_no": record.name,
-                    "buyer_user_id": "2088102122524333",
-                    "buyer_logon_id": "159****5620",
-                    "total_amount": "88.88"
-                },
-                "sign": "jfAz0Yi0OUvAPqYTzA0DLysx0ri++yf7o/lkHOHaG1Zy2fHBf3j4WM\n+sJWHZUuyInt6V+wn+6IP9AmwRTKi+GGdWjPrsfBjXqR7H5aBnLhMsAltV7v4cYjhug\nuAqh4WkaJO6v6CfdybDpzHlxE6Thoucnad+OsjdCXkNd1g3UuU=\n"
+                "code": "10003",
+                "msg": "订单创建成功支付处理中",
+                "trade_no": "2013112011001004330000121536",
+                "out_trade_no": record.name,
+                "buyer_user_id": "2088102122524333",
+                "buyer_logon_id": "159****5620",
+                "total_amount": "88.88"
             }
             if self.env.context.get('debug_alipay_response'):
                 result_json = self.env.context.get('debug_alipay_response')
         else:
-            wpay = self.env['ir.config_parameter'].get_alipay_object()
+            alipay = self.env['ir.config_parameter'].get_alipay_object()
             # TODO: we probably have make cr.commit() before making request to
             # be sure that we save data before sending request to avoid
             # situation when order is sent to wechat server, but was not saved
             # in our server for any reason
 
-            result_json = wpay.micropay.create(
-                body,
-                total_amount,
-                auth_code,
+            result_json = alipay.api_alipay_trade_pay(
                 out_trade_no=record.name,
+                scene='bar_code',
+                auth_code=auth_code,
+                subject=subject,
+                total_amount=total_amount,
+                discountable_amount=kwargs.get('discountable_amount')
             )
 
         result_raw = json.dumps(result_json)
         _logger.debug('result_raw: %s', result_raw)
+        # TODO state must depend on result_json['code']
         vals = {
             'result_raw': result_raw,
             'state': 'done',

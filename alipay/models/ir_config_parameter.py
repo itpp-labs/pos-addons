@@ -25,11 +25,24 @@ class Param(models.Model):
 
         app_id = self.sudo().get_param('alipay.app_id', '')
         app_auth_code = self.sudo().get_param('alipay.app_auth_code', '')
-        app_secret = self.sudo().get_param('alipay.app_secret', '')
 
-        app_private_key = self.sudo().get_param('alipay.app_private_key', '')
-        app_public_key = self.sudo().get_param('alipay.app_public_key', '')
-        alipay_public_key_string = self.sudo().get_param('alipay.alipay_public_key_string', '')
+        app_private_key_file = self.sudo().get_param('alipay.app_private_key_file', '')
+        alipay_public_key_string = self.sudo().get_param('alipay.alipay_public_key_string', DEFAULT_ALIPAY_PUBLIC_KEY)
+
+        if self.env.context.get('app_private_key_string'):
+            # It's used in tests
+            app_private_key_string = self.env.context.get('app_private_key_string')
+        else:
+            with open(app_private_key_file, 'r') as f:
+                app_private_key_string = f.read()
+
+        options = dict(
+            appid=app_id,
+            app_private_key_string=app_private_key_string,
+            alipay_public_key_string=alipay_public_key_string,
+            sign_type="RSA",
+            debug=sandbox,
+        )
 
         notify_url = self.sudo().get_param('alipay.notify_url')
         if not notify_url:
@@ -39,30 +52,23 @@ class Param(models.Model):
                 path=ALIPAY_NOTIFY_URL,
             )
 
-        _logger.debug(
-            'Alipay Credentials: app_id=%s, app_auth_code=%s, app_secret=%s, app_private_key=%s, app_public_key=%s, alipay_public_key_string=%s, ',
-            app_id,
-            '%s...' % app_auth_code[:5],
-            '%s...' % app_secret[:5],
-            app_private_key,
-            app_public_key,
-            alipay_public_key_string,
-        )
-        options = dict(
-            app_id=app_id,
-            app_secret=app_secret,
+        options['app_notify_url'] = notify_url
 
-            app_private_key=app_private_key,
-            app_public_key=app_public_key,
-            alipay_public_key_string=alipay_public_key_string,
-
-            app_notify_url=notify_url,
-            sign_type="RSA",
-            debug=sandbox,
-        )
         if app_auth_code:
             # ISV
             options['app_auth_code'] = app_auth_code
-            return ISVAliPay(**options)
+            _logger.debug('ISV mode is used for Alipay', options)
+            res = ISVAliPay(**options)
         else:
-            return AliPay(**options)
+            res = AliPay(**options)
+        _logger.debug(
+            'Alipay parameters: %s', options
+        )
+        return res
+
+
+# FROM https://global.alipay.com/service/declaration/8
+DEFAULT_ALIPAY_PUBLIC_KEY="""-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB
+
+-----END PUBLIC KEY-----"""
