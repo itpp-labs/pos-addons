@@ -126,11 +126,11 @@ class WeChatOrder(models.Model):
         return total_fee
 
     def _notify_url(self):
-        url = self.env['ir.config_parameter'].get_param('wechat.payment_result_notification_url')
+        url = self.env['ir.config_parameter'].sudo().get_param('wechat.payment_result_notification_url')
         if url:
             return url
 
-        base = self.env["ir.config_parameter"].get_param('web.base.url')
+        base = self.env["ir.config_parameter"].sudo().get_param('web.base.url')
         return "{base}/{path}".format(
             base=base,
             path=PAYMENT_RESULT_NOTIFICATION_URL,
@@ -150,7 +150,7 @@ class WeChatOrder(models.Model):
         :returns order_id:    Current order id
                  result_json: Payments data for WeChat
         """
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].sudo().get_param('wechat.local_sandbox') == '1'
 
         vals = {
             'trade_type': 'NATIVE',
@@ -164,7 +164,7 @@ class WeChatOrder(models.Model):
         order = self.sudo().create(vals)
         total_fee = order._total_fee()
         body, detail = order._body()
-        wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
+        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
         openid = self.env.user.openid
         if debug:
             _logger.info('SANDBOX is activated. Request to wechat servers is not sending')
@@ -185,17 +185,18 @@ class WeChatOrder(models.Model):
         else:
             _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
                           total_fee, body, detail)
-            result_raw = wpay.order.create(
+            result_raw = mpay.order.create(
                 trade_type='JSAPI',
                 body=body,
                 total_fee=total_fee,
                 notify_url=self._notify_url(),
-                user_id=openid,
                 out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
+                sub_user_id=openid
             )
-        mpay = self.env['ir.config_parameter'].get_wechat_miniprogram_pay_object()
+            _logger.debug('JSAPI Order result_raw: %s', result_raw)
+
         result_json = mpay.jsapi.get_jsapi_params(
             prepay_id=result_raw.get('prepay_id'),
             nonce_str=result_raw.get('nonce_str')

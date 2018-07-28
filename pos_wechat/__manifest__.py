@@ -28,6 +28,7 @@
         "views/assets.xml",
         "wizard/pos_payment_views.xml",
         "security/wechat_security.xml",
+        "security/ir.model.access.csv",
     ],
     "demo": [
     ],
