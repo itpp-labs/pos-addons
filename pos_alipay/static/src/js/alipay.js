@@ -136,9 +136,10 @@ odoo.define('pos_alipay', function(require){
         },
         check_auth_code: function(code) {
             // TODO: do we need to integrate this with barcode.nomenclature?
-            if (code && Number.isInteger(+code) &&
-                code.length === 18 &&
-                +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
+            var beginning = code.substring(0, 2);
+            if (code && Number.isInteger(Number(code)) &&
+                16 <= code.length  && code.length <= 24 &&
+                25 <= Number(beginning) && Number(beginning) <= 30) {
                 return true;
             }
             return false;
