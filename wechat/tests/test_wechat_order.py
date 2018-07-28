@@ -142,7 +142,7 @@ class TestWeChatOrder(HttpCase):
 
         order = self._create_order()
 
-        # simulate notification
+        # emulate notification
         notification = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
