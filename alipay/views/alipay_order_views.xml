@@ -23,7 +23,7 @@
                     </div>
                     <group>
                         <field name="order_ref"/>
-                        <field name="total_fee"/>
+                        <field name="total_amount"/>
                         <field name="debug"/>
                     </group>
                     <notebook>
@@ -43,7 +43,7 @@
             <tree>
                 <field name="name"/>
                 <field name="order_ref"/>
-                <field name="total_fee"/>
+                <field name="total_amount"/>
             </tree>
         </field>
     </record>
