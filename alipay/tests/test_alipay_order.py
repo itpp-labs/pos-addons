@@ -14,6 +14,8 @@ from odoo import api
 
 
 _logger = logging.getLogger(__name__)
+DUMMY_AUTH_CODE = '134579302432164181'
+DUMMY_POS_ID = 1
 
 
 class TestAlipayOrder(HttpCase):
@@ -36,9 +38,9 @@ class TestAlipayOrder(HttpCase):
             'name': 'Product2',
         })
 
-        patcher = patch('alipay.AlipayPay.check_signature', wraps=lambda *args: True)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        #patcher = patch('alipay.AlipayPay.check_signature', wraps=lambda *args: True)
+        #patcher.start()
+        #self.addCleanup(patcher.stop)
 
         self.lines = [
             {
@@ -59,90 +61,40 @@ class TestAlipayOrder(HttpCase):
             }
         ]
 
-    def _patch_post(self, post_result):
+    def test_scan(self):
+        """Test payment workflow from server side.
 
-        def post(url, data):
-            self.assertIn(url, post_result)
-            _logger.debug("Request data for %s: %s", url, data)
-            return post_result[url]
+        * Cashier scanned buyer's QR and upload it to odoo server,
+        odoo server sends information to alipay servers and wait for response with result.
 
-        # patch alipay
-        patcher = patch('alipay.pay.base.BaseAlipayPayAPI._post', wraps=post)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        * Once user authorize the payment, odoo receives result syncroniosly from
+        previously sent request.
 
-    def _patch_get_requests(self, url, response_json):
-        self.requests_mock.register_uri('GET', url, json=response_json)
+        * Odoo sends result to POS via longpolling.
 
-    def _create_order(self):
-        post_result = {
-            'pay/unifiedorder': {
-                'code_url': 'weixin://wxpay/s/An4baqw',
-                'trade_type': 'NATIVE',
-                'result_code': 'SUCCESS',
-            },
-        }
-        self._patch_post(post_result)
-        order, code_url = self.Order._create_qr(self.lines, total_fee=300)
-        self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
-        return order
+        Due to limititation of testing framework, we use syncronios call for testing
 
-    def _create_jsapi_order(self, create_vals, lines):
-        post_result = {
-            'pay/unifiedorder': {
-                'trade_type': 'JSAPI',
-                'result_code': 'SUCCESS',
-                'prepay_id': 'qweqweqwesadsd2113',
-                'nonce_str': 'wsdasd12312eaqsd21q3'
-            }
-        }
-        self._patch_post(post_result)
-        res = self.phantom_env['alipay.order'].create_jsapi_order(lines, create_vals)
-        order = self.Order.browse(res.get('order_id'))
-        self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
-        return res
+        """
 
-    def url_open_json(self, url, code, user_info, timeout=10):
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        params = {
-            "context": {},
-            "code": code,
-            "user_info": user_info,
-            "test_cr": True
-        }
-        data = {
-            "jsonrpc": "2.0",
-            "method": "call",
-            "params": params,
-            "id": None
-        }
-        json_data = json.dumps(data)
-        if url.startswith('/'):
-            url = "http://%s:%s%s" % (HOST, PORT, url)
-        # Don't need to use self.opener.post because we need to make a request without session cookies.
-        # (Mini-Program don't have session data)
-        return requests.post(url, data=json_data, timeout=timeout, headers=headers)
+        journal = self.env['account.journal'].search([('alipay', '=', 'scan')])
 
-    def _authenticate_miniprogram_user(self, code, user_info):
-        response_json = {
-            'openid': 'qwepo21pei90salje12',
-            'session_key': 'qweafjqwhoieuojeqwe4213',
-        }
-        url = "/alipay/miniprogram/authenticate"
-        base_url = 'https://api.weixin.qq.com/sns/jscode2session'
-        self._patch_get_requests(base_url, response_json)
-        res = self.url_open_json(url, code, user_info, 60)
-        self.assertEqual(res.status_code, 200)
-        return res.json()
+        # make request with scanned qr code (auth_code)
+        msg = self.env['alipay.order'].create_from_qr(**{
+            'auth_code': DUMMY_AUTH_CODE,
+            'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
+            'order_ref': 'dummy out_trade_num',
+            'subject': 'dummy subject',
+            'journal_id': journal.id,
+            'pay_amount': 1,
+        })
+        self.assertTrue(msg.get('trade_no'), "Wrong result_code. The patch doesn't work?")
 
-    def test_show_payment(self):
+    def _test_show_payment(self):
         """ Create QR, emulate payment, make refund """
 
         order = self._create_order()
 
-        # simulate notification
+        # emulate notification
         notification = {
             'return_code': 'SUCCESS',
             'result_code': 'SUCCESS',
@@ -178,35 +130,34 @@ class TestAlipayOrder(HttpCase):
         refund.action_confirm()
         self.assertEqual(order.refund_fee, 2 * refund_fee, "Order's refund amount is computed wrongly")
 
-    def test_JSAPI_payment(self):
-        # fake values for a test
-        create_vals = {}
 
-        res = self._create_jsapi_order(create_vals=create_vals, lines=self.lines)
+    # CODE BELOW IS NOT CHECKED
+    def _patch_post(self, post_result):
 
-        data = res.get('data')
-        order_id = res.get('order_id')
-        order = self.Order.browse(order_id)
+        def post(url, data):
+            self.assertIn(url, post_result)
+            _logger.debug("Request data for %s: %s", url, data)
+            return post_result[url]
 
-        self.assertIn('timeStamp', data, 'JSAPI payment: "timeStamp" not found in data')
-        self.assertIn('nonceStr', data, 'JSAPI payment: "nonceStr" not found in data')
-        self.assertIn('package', data, 'JSAPI payment: "package" not found in data')
-        self.assertIn('signType', data, 'JSAPI payment: "signType" not found in data')
-        self.assertIn('paySign', data, 'JSAPI payment: "paySign" not found in data')
+        # patch alipay
+        patcher = patch('alipay.pay.base.BaseAlipayPayAPI._post', wraps=post)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
-        # simulate notification
-        notification = {
-            'return_code': 'SUCCESS',
-            'result_code': 'SUCCESS',
-            'out_trade_no': order.name,
+    def _create_order(self):
+        post_result = {
+            'pay/unifiedorder': {
+                'code_url': 'weixin://wxpay/s/An4baqw',
+                'trade_type': 'NATIVE',
+                'result_code': 'SUCCESS',
+            },
         }
+        self._patch_post(post_result)
+        order, code_url = self.Order._create_qr(self.lines, total_fee=300)
+        self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
+        return order
 
-        handled = self.Order.on_notification(notification)
-        self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
-        handled = self.Order.on_notification(notification)
-        self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
-
-    def test_notification_duplicates(self):
+    def _test_notification_duplicates(self):
         order = self._create_order()
 
         # simulate notification with failing request
@@ -222,13 +173,3 @@ class TestAlipayOrder(HttpCase):
         handled = self.Order.on_notification(notification)
         self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
 
-    def test_authenticate_miniprogram_user(self):
-        # fake values for a test
-        code = "ksdjfwopeiq120jkahs"
-        user_info = {
-            'country': 'Russia',
-            'nickName': 'Test User',
-            'city': 'Moscow',
-        }
-        session_info = self._authenticate_miniprogram_user(code, user_info).get('result')
-        self.assertIn('session_id', session_info, 'Authenticate user: "session_id" not found in data')

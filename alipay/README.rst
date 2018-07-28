@@ -12,12 +12,12 @@ Payment methods
 
 Barcode Payment
 ---------------
-The merchant scans the QR code generated in buyer's Alipay Wallet, to charge the buyer and complete the payment.
+The merchant **scans** the QR code generated in buyer's Alipay Wallet, to charge the buyer and complete the payment.
 
 QR Code Payment
 ---------------
 
-The merchant generates the QR code according to the checkout process. The buyer will scan the QR code with Alipay Wallet and complete the payment process.
+The merchant generates the QR code and **shows** to a buyer. The buyer will scan the QR code with Alipay Wallet and complete the payment process.
 
 Sound Wave Payment
 ------------------
