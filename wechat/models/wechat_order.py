@@ -190,10 +190,10 @@ class WeChatOrder(models.Model):
                 body=body,
                 total_fee=total_fee,
                 notify_url=self._notify_url(),
-                user_id=openid,
                 out_trade_no=order.name,
                 detail=detail,
                 # TODO fee_type=record.currency_id.name
+                sub_user_id=openid
             )
             _logger.debug('JSAPI Order result_raw: %s', result_raw)
 

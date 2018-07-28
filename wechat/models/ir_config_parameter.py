@@ -64,7 +64,7 @@ class Param(models.Model):
             self.sudo().get_param('wechat.mch_id', ''),
             sub_mch_id=self.sudo().get_param('wechat.sub_mch_id', ''),
             sandbox=sandbox,
-            sub_appid=self.sudo().get_param('wechat.miniprogram_app_id', ''),
+            sub_appid=self.sudo().get_param('wechat.miniprogram_app_id', '')
         )
 
     def get_openid_url(self, code):
