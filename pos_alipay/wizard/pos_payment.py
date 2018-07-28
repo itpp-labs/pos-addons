@@ -20,11 +20,11 @@ class PosMakePayment(models.TransientModel):
         res = super(PosMakePayment, self).check()
         record = self.alipay_order_id
         if record and self.amount < 0:
-            refund_fee = int(-100*self.amount)
+            refund_amount = self.amount
             refund_vals = {
                 'order_id': self.alipay_order_id.id,
-                'total_fee': record.total_fee,
-                'refund_fee': refund_fee,
+                'total_amount': record.total_amount,
+                'refund_amount': refund_amount,
                 'journal_id': self.journal_id.id,
             }
             refund = self.env['alipay.refund'].create(refund_vals)

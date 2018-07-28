@@ -1,12 +1,9 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
 
 from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
+from odoo.addons.alipay.tests.test_alipay import DUMMY_RSA_KEY
 
 
 _logger = logging.getLogger(__name__)
@@ -20,29 +17,24 @@ class TestAlipayOrder(TestPointOfSaleCommon):
 
     def setUp(self):
         super(TestAlipayOrder, self).setUp()
+        self.env['ir.config_parameter'].set_param('alipay.local_sandbox', '1')
 
         # create alipay journals
         self.pos_config.init_pos_alipay_journals()
+        context = dict(
+            app_private_key_string=DUMMY_RSA_KEY,
+        )
 
-        self.Order = self.env['alipay.order']
-        self.Refund = self.env['alipay.refund']
+        self.Config = self.env['ir.config_parameter'].with_context(context)
+        self.Order = self.env['alipay.order'].with_context(context)
+        self.Refund = self.env['alipay.refund'].with_context(context)
+        self.PosMakePayment = self.PosMakePayment.with_context(context)
         self.product1 = self.env['product.product'].create({
             'name': 'Product1',
         })
         self.product2 = self.env['product.product'].create({
             'name': 'Product2',
         })
-
-    def _patch_post(self, post_result):
-        def post(url, data):
-            self.assertIn(url, post_result)
-            _logger.debug("Request data for %s: %s", url, data)
-            return post_result[url]
-
-        # patch alipay
-        patcher = patch('alipaypy.pay.base.BaseAlipayPayAPI._post', wraps=post)
-        patcher.start()
-        self.addCleanup(patcher.stop)
 
     def _create_pos_order(self):
         # I create a new PoS order with 2 lines
@@ -81,7 +73,7 @@ class TestAlipayOrder(TestPointOfSaleCommon):
                 "product_id": self.product1.id,
                 "name": "Product 1 Name",
                 "quantity": 2,
-                "price": 450,
+                "price": 4.50,
                 "category": "123456",
                 "description": "翻译服务器错误",
             },
@@ -89,31 +81,21 @@ class TestAlipayOrder(TestPointOfSaleCommon):
                 "product_id": self.product2.id,
                 "name": "Product 2 Name",
                 "quantity": 3,
-                "price": 300,
+                "price": 3.0,
                 "category": "123456",
                 "description": "網路白目哈哈",
             }
         ]
-        self._patch_post(post_result)
-        order, code_url = self.Order._create_qr(self.lines, total_fee=300)
+        order, code_url = self.Order._create_qr(self.lines, total_amount=3.0)
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
-    def _test_refund(self):
+    def test_refund(self):
         # Order are not really equal because I'm lazy
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
         alipay_order = self._create_alipay_order()
         order.alipay_order_id = alipay_order.id
-
-        # patch refund api request
-        post_result = {
-            'secapi/pay/refund': {
-                'trade_type': 'NATIVE',
-                'result_code': 'SUCCESS',
-            },
-        }
-        self._patch_post(post_result)
 
         # I create a refund
         refund_action = order.refund()

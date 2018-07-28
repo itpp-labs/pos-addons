@@ -109,6 +109,7 @@ class TestAlipayOrder(HttpCase):
         result_json = json.loads(order.result_raw)
         self.assertTrue(result_json.get('trade_no'), "Wrong result_code. The patch doesn't work?")
 
+    # CODE BELOW IS NOT CHECKED
     def _test_show_payment(self):
         """ Create QR, emulate payment, make refund """
 
@@ -150,8 +151,6 @@ class TestAlipayOrder(HttpCase):
         refund.action_confirm()
         self.assertEqual(order.refund_fee, 2 * refund_fee, "Order's refund amount is computed wrongly")
 
-
-    # CODE BELOW IS NOT CHECKED
     def _patch_post(self, post_result):
 
         def post(url, data):

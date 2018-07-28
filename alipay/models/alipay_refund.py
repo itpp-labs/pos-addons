@@ -43,7 +43,7 @@ class AlipayRefund(models.Model):
     def action_confirm(self):
         self.ensure_one()
         debug = self.env['ir.config_parameter'].get_param('alipay.local_sandbox') == '1'
-        wpay = self.env['ir.config_parameter'].get_alipay_pay_object()
+        alipay = self.env['ir.config_parameter'].get_alipay_object()
         record = self.order_id
         if debug:
             _logger.info('SANDBOX is activated. Request to alipay servers is not sending')
@@ -59,8 +59,8 @@ class AlipayRefund(models.Model):
                 }
 
         else:
-            wpay = self.env['ir.config_parameter'].get_alipay_pay_object()
-            result_raw = wpay.refund.apply(
+            alipay = self.env['ir.config_parameter'].get_alipay_pay_object()
+            result_raw = alipay.refund.apply(
                 record.total_fee,
                 self.refund_fee,
                 self.name,
