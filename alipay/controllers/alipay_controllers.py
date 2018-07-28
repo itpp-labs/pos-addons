@@ -11,11 +11,12 @@ from odoo.http import request
 import requests
 
 _logger = logging.getLogger(__name__)
+ALIPAY_NOTIFY_URL = '/alipay/callback'
 
 
 class AlipayController(http.Controller):
 
-    @http.route('/alipay/callback', methods=['POST'], auth='public', type='http', csrf=False)
+    @http.route(ALIPAY_NOTIFY_URL, methods=['POST'], auth='public', type='http', csrf=False)
     def alipay_callback(self):
         xml_raw = request.httprequest.get_data().decode(request.httprequest.charset)
         _logger.debug('/alipay/callback request data: %s\nheaders %s: ', xml_raw, request.httprequest.headers)

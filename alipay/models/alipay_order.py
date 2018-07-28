@@ -38,7 +38,7 @@ class AlipayOrder(models.Model):
 #    """)
 
     order_ref = fields.Char('Order Reference', readonly=True)
-    total_fee = fields.Integer('Total Fee', help='Amount in cents', readonly=True)
+    total_amount = fields.Float('Total Fee', help='Amount in currency units (not cents)', readonly=True)
     state = fields.Selection([
         ('draft', 'Unpaid'),
         ('done', 'Paid'),
@@ -116,12 +116,12 @@ class AlipayOrder(models.Model):
 
         return order_body, detail
 
-    def _total_fee(self):
+    def _total_amount(self):
         self.ensure_one()
-        total_fee = sum([
+        total_amount = sum([
             line.get_fee()
             for line in self.line_ids])
-        return total_fee
+        return total_amount
 
     def _notify_url(self):
         url = self.env['ir.config_parameter'].get_param('alipay.payment_result_notification_url')
@@ -135,79 +135,65 @@ class AlipayOrder(models.Model):
         )
 
     @api.model
-    def create_jsapi_order(self, lines, create_vals):
-        return self._create_jsapi_order(lines, create_vals)
-
-    @api.model
-    def _create_jsapi_order(self, lines, create_vals):
-        """JSAPI Payment
-
-        :param openid:        The Alipay user's unique ID
-        :param lines:         list of dictionary
-        :param create_vals:   User order information
-        :returns order_id:    Current order id
-                 result_json: Payments data for Alipay
+    def create_from_qr(self, auth_code, total_amount, journal_id, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
         """
-        debug = self.env['ir.config_parameter'].get_param('alipay.local_sandbox') == '1'
-
+        :param product_category: is used to prepare "body"
+        :param total_amount: Specifies the amount to pay. The units are in currency units (not cents)
+        :param create_vals: extra args to pass on record creation
+        """
+        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        total_amount = total_amount
         vals = {
-            'trade_type': 'NATIVE',
-            'line_ids': [(0, 0, data) for data in lines],
+            'journal_id': journal_id,
             'debug': debug,
+            'terminal_ref': terminal_ref,
+            'order_ref': order_ref,
+            'total_amount': total_amount,
         }
-
         if create_vals:
             vals.update(create_vals)
+        record = self.create(vals)
 
-        order = self.sudo().create(vals)
-        total_fee = order._total_fee()
-        body, detail = order._body()
-        wpay = self.env['ir.config_parameter'].get_alipay_pay_object()
-        openid = self.env.user.openid
         if debug:
-            _logger.info('SANDBOX is activated. Request to alipay servers is not sending')
+            _logger.info('SANDBOX is activated. Request to apipay API servers are not sending')
             # Dummy Data. Change it to try different scenarios
-            result_raw = {
-                'return_code': 'SUCCESS',
-                'result_code': 'SUCCESS',
-                'openid': '123',
-                'timeStamp': '1414561699',
-                'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
-                'package': 'prepay_id=123456789',
-                'signType': 'MD5',
-                'prepay_id': '123',
-                'paySign': 'C380BEC2BFD727A4B6845133519F3AD6',
+            # Doc: https://docs.open.alipay.com/140/104626
+            result_json = {
+                "alipay_trade_pay_response": {
+                    "code": "10003",
+                    "msg": "订单创建成功支付处理中",
+                    "trade_no": "2013112011001004330000121536",
+                    "out_trade_no": record.name,
+                    "buyer_user_id": "2088102122524333",
+                    "buyer_logon_id": "159****5620",
+                    "total_amount": "88.88"
+                },
+                "sign": "jfAz0Yi0OUvAPqYTzA0DLysx0ri++yf7o/lkHOHaG1Zy2fHBf3j4WM\n+sJWHZUuyInt6V+wn+6IP9AmwRTKi+GGdWjPrsfBjXqR7H5aBnLhMsAltV7v4cYjhug\nuAqh4WkaJO6v6CfdybDpzHlxE6Thoucnad+OsjdCXkNd1g3UuU=\n"
             }
-            if self.env.context.get('debug_alipay_order_response'):
-                result_raw = self.env.context.get('debug_alipay_order_response')
+            if self.env.context.get('debug_alipay_response'):
+                result_json = self.env.context.get('debug_alipay_response')
         else:
-            _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
-                          total_fee, body, detail)
-            result_raw = wpay.order.create(
-                trade_type='JSAPI',
-                body=body,
-                total_fee=total_fee,
-                notify_url=self._notify_url(),
-                user_id=openid,
-                out_trade_no=order.name,
-                detail=detail,
-                # TODO fee_type=record.currency_id.name
-            )
-        mpay = self.env['ir.config_parameter'].get_alipay_miniprogram_pay_object()
-        result_json = mpay.jsapi.get_jsapi_params(
-            prepay_id=result_raw.get('prepay_id'),
-            nonce_str=result_raw.get('nonce_str')
-        )
+            wpay = self.env['ir.config_parameter'].get_alipay_object()
+            # TODO: we probably have make cr.commit() before making request to
+            # be sure that we save data before sending request to avoid
+            # situation when order is sent to wechat server, but was not saved
+            # in our server for any reason
 
+            result_json = wpay.micropay.create(
+                body,
+                total_amount,
+                auth_code,
+                out_trade_no=record.name,
+            )
+
+        result_raw = json.dumps(result_json)
+        _logger.debug('result_raw: %s', result_raw)
         vals = {
-            'result_raw': json.dumps(result_raw),
-            'total_fee': total_fee,
+            'result_raw': result_raw,
+            'state': 'done',
         }
-        order.sudo().write(vals)
-        return {
-            "order_id": order.id,
-            "data": result_json
-        }
+        record.write(vals)
+        return record
 
     @api.model
     def create_qr(self, lines, **kwargs):
@@ -220,11 +206,11 @@ class AlipayOrder(models.Model):
         return {'code_url': code_url}
 
     @api.model
-    def _create_qr(self, lines, create_vals=None, pay_amount=None, **kwargs):
+    def _create_qr(self, lines, create_vals=None, total_amount=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
-        :param pay_amount: amount in currency (not cents)
+        :param total_amount: amount in currency (not cents)
         """
         debug = self.env['ir.config_parameter'].get_param('alipay.local_sandbox') == '1'
         vals = {
@@ -237,11 +223,11 @@ class AlipayOrder(models.Model):
         if create_vals:
             vals.update(create_vals)
         order = self.create(vals)
-        if pay_amount:
+        if total_amount:
             # TODO: make a single method for this
-            total_fee = int(100*pay_amount)
+            total_amount = int(100*total_amount)
         else:
-            total_fee = order._total_fee()
+            total_amount = order._total_amount()
         if debug:
             _logger.info('SANDBOX is activated. Request to alipay servers is not sending')
             # Dummy Data. Change it to try different scenarios
@@ -260,12 +246,12 @@ class AlipayOrder(models.Model):
             # be sure that we save data before sending request to avoid
             # situation when order is sent to alipay server, but was not saved
             # in our server for any reason
-            _logger.debug('Unified order:\n total_fee: %s\n body: %s\n, detail: \n %s',
-                          total_fee, body, detail)
+            _logger.debug('Unified order:\n total_amount: %s\n body: %s\n, detail: \n %s',
+                          total_amount, body, detail)
             result_json = wpay.order.create(
                 'NATIVE',
                 body,
-                total_fee,
+                total_amount,
                 self._notify_url(),
                 out_trade_no=order.name,
                 detail=detail,
@@ -276,7 +262,7 @@ class AlipayOrder(models.Model):
         _logger.debug('result_raw: %s', result_raw)
         vals = {
             'result_raw': result_raw,
-            'total_fee': total_fee,
+            'total_amount': total_amount,
         }
         order.write(vals)
         code_url = result_json['code_url']
