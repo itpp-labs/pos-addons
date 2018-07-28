@@ -13,7 +13,7 @@ odoo.define('pos_alipay', function(require){
 
     models.load_fields('account.journal', ['alipay']);
 
-    var exports = {}
+    var exports = {};
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
