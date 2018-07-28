@@ -284,89 +284,64 @@ odoo.define('pos_longpolling', function(require){
 
     var Status_Widget = chrome.StatusWidget;
     Status_Widget.include({
-        set_poll_status: function(selector, current_bus) {
+        set_poll_status: function(current_bus) {
+            var element = this.$el.find('div[bid="' + current_bus.bus_id + '"]');
             if (current_bus.activated) {
                 if (current_bus.longpolling_connection.status) {
-                    this.set_icon_class(selector, 'oe_green');
+                    this.set_icon_class(element, 'oe_green');
                 } else {
-                    this.set_icon_class(selector, 'oe_red');
+                    this.set_icon_class(element, 'oe_red');
                 }
             } else {
-                this.set_icon_class(selector, 'oe_hidden');
+                this.set_icon_class(element, 'oe_hidden');
             }
         },
-        set_icon_class: function(selector, new_class) {
-            var element = $(selector);
+        set_icon_class: function(element, new_class) {
             element.removeClass('oe_hidden oe_red oe_green').addClass(new_class);
         },
         set_connecting_status: function(element, status){
-            if (status){
-                return element.find('i').addClass('fa-spin');
-            }
             element.find('i').removeClass('fa-spin');
-        },
-    });
-
-    var AdditionalSynchNotificationWidget = Status_Widget.extend({
-        template: 'AdditionalSynchNotificationWidget',
-        start: function(){
-            var self = this;
-            var element = this.$el;
-            if (this.pos.buses && _.keys(this.pos.buses).length){
-                for (var key in this.pos.buses){
-                    if (_.has(this.pos.buses, key)){
-                        var selector = '.serv_additional';
-                        bus = this.pos.buses[key];
-                        self.set_poll_status(selector, bus);
-                        bus.longpolling_connection.on("change:poll_connection", function(status){
-                            self.set_poll_status(selector, bus);
-                        });
-                        element.on('click', function(event){
-                            self.set_connecting_status(element, true);
-                            bus.longpolling_connection.send_ping({'serv': bus.serv_adr}).always(function(){
-                                self.set_connecting_status(element, false);
-                            });
-                        });
-                    }
-                }
-            } else {
-                element.addClass('hidden');
+            if (status){
+                element.find('i').addClass('fa-spin');
             }
         },
     });
 
-    chrome.Chrome.include({
-        build_widgets: function(){
-            if (Object.keys(this.pos.buses).length){
-                    var element = _.find(this.widgets, function(w){
-                    return w.name === 'notification';
-                });
-                var index = this.widgets.indexOf(element);
-                this.widgets.splice(index + 1, 0, {
-                    'name':   'AdditionalSynchNotificationWidget',
-                    'widget': AdditionalSynchNotificationWidget,
-                    'append':  '.oe_status.js_synch',
-                });
-            }
-            this._super();
-        },
-    });
 
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
-            var selector = '.serv_primary';
-            this.set_poll_status(selector, this.pos.bus);
-            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(selector, self.pos.bus);
+            var element = this.$el.find('.serv_primary');
+            var bus_id = this.pos.bus.bus_id;
+            this.start_bus(this.pos.bus, element);
+            this.start_additional_buses();
+        },
+        start_bus: function(bus, element){
+            var self = this;
+            element.attr('bid', bus.bus_id)
+            this.set_poll_status(bus);
+            bus.longpolling_connection.on("change:poll_connection", function(status){
+                self.set_poll_status(bus);
             });
-            $(selector).on('click', function(event){
-                self.set_connecting_status($(selector), true);
-                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr}).always(function(){
-                    self.set_connecting_status($(selector), false);
+            element.on('click', function(event){
+                self.set_connecting_status(element, true);
+                bus.longpolling_connection.send_ping({'serv': bus.serv_adr}).always(function(){
+                    self.set_connecting_status(element, false);
                 });
-//                self.pos.bus.longpolling_connection.send_ping({'serv': self.pos.bus.serv_adr});
+            });
+        },
+        start_additional_buses: function(){
+            var self = this;
+            var sync_icon = QWeb.render('synch_icon', {});
+            var div = false;
+            _.each(this.pos.buses, function(bus){
+                div = document.createElement('div');
+                div.innerHTML = sync_icon;
+                var element = $(div)
+                element.addClass('js_poll_connected oe_icon oe_green');
+                self.$el.append(div);
+                self.start_bus(bus, element);
             });
         },
     });
