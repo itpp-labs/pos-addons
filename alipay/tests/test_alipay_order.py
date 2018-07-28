@@ -24,6 +24,7 @@ class TestAlipayOrder(HttpCase):
 
     def setUp(self):
         super(TestAlipayOrder, self).setUp()
+        self.env['ir.config_parameter'].set_param('alipay.local_sandbox', '1')
         self.requests_mock = requests_mock.Mocker(real_http=True)
         self.requests_mock.start()
         self.addCleanup(self.requests_mock.stop)
@@ -61,7 +62,20 @@ class TestAlipayOrder(HttpCase):
             }
         ]
 
-    def test_scan(self):
+    def test_alipay_object(self):
+        """check that alipay object is passing without errors"""
+        demo_user = self.env.ref('base.user_demo')
+        # ISV account
+        self.env['ir.config_parameter'].set_param('alipay.app_auth_code', 'dummycode')
+        alipay = self.env['ir.config_parameter'].sudo(demo_user).get_alipay_object()
+        self.assertTrue(alipay)
+
+        # Normal account
+        self.env['ir.config_parameter'].search([('key', '=', 'alipay.app_auth_code')]).unlink()
+        alipay = self.env['ir.config_parameter'].sudo(demo_user).get_alipay_object()
+        self.assertTrue(alipay)
+
+    def _test_scan(self):
         """Test payment workflow from server side.
 
         * Cashier scanned buyer's QR and upload it to odoo server,
@@ -81,11 +95,11 @@ class TestAlipayOrder(HttpCase):
         # make request with scanned qr code (auth_code)
         msg = self.env['alipay.order'].create_from_qr(**{
             'auth_code': DUMMY_AUTH_CODE,
+            'total_amount': 1,
+            'journal_id': journal.id,
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'order_ref': 'dummy out_trade_num',
             'subject': 'dummy subject',
-            'journal_id': journal.id,
-            'pay_amount': 1,
         })
         self.assertTrue(msg.get('trade_no'), "Wrong result_code. The patch doesn't work?")
 
