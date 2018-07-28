@@ -4,13 +4,11 @@
 import logging
 import json
 import requests_mock
-import requests
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from odoo.tests.common import HttpCase, HOST, PORT
-from odoo import api
+from odoo.tests.common import TransactionCase
 
 
 _logger = logging.getLogger(__name__)
@@ -19,7 +17,7 @@ DUMMY_POS_ID = 1
 STATUS_SUCCESS = "10000"
 
 
-class TestAlipayOrder(HttpCase):
+class TestAlipayOrder(TransactionCase):
     at_install = True
     post_install = True
 
@@ -43,10 +41,6 @@ class TestAlipayOrder(HttpCase):
         self.product2 = self.env['product.product'].create({
             'name': 'Product2',
         })
-
-        #patcher = patch('alipay.AlipayPay.check_signature', wraps=lambda *args: True)
-        #patcher.start()
-        #self.addCleanup(patcher.stop)
 
         self.lines = [
             {

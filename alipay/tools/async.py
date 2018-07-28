@@ -27,7 +27,7 @@ def get_self(method):
     try:
         # python 3
         return method.__self__
-    except:
+    except AttributeError:
         # python 2
         return method.im_self
 

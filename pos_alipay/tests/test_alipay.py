@@ -61,13 +61,6 @@ class TestAlipayOrder(TestPointOfSaleCommon):
         return order
 
     def _create_alipay_order(self):
-        post_result = {
-            'pay/unifiedorder': {
-                'code_url': 'weixin://wxpay/s/An4baqw',
-                'trade_type': 'NATIVE',
-                'result_code': 'SUCCESS',
-            },
-        }
         self.lines = [
             {
                 "product_id": self.product1.id,

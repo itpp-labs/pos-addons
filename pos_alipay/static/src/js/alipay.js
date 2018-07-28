@@ -13,13 +13,14 @@ odoo.define('pos_alipay', function(require){
 
     models.load_fields('account.journal', ['alipay']);
 
+    var exports = {}
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.alipay = new Alipay(this);
+            this.alipay = new exports.Alipay(this);
 
             this.bus.add_channel_callback(
                 "alipay",
@@ -29,7 +30,7 @@ odoo.define('pos_alipay', function(require){
                 // take out alipay scan cashregister from cashregisters to avoid
                 // rendering in payment screent
                 self.scan_journal = self.hide_cashregister(function(r){
-                    return r.alipay == 'scan';
+                    return r.alipay === 'scan';
                 });
             });
 
@@ -51,7 +52,8 @@ odoo.define('pos_alipay', function(require){
                 {
                     scan_id: msg.scan_id
                 },
-                true // auto validate payment
+                // auto validate payment
+                true
             );
         },
         alipay_qr_payment: function(order, creg){
@@ -64,7 +66,8 @@ odoo.define('pos_alipay', function(require){
 
             var lines = order.orderlines.map(function(r){
                 return {
-                    quantity: 1, // always use 1 because quantity is taken into account in price field
+                    // always use 1 because quantity is taken into account in price field
+                    quantity: 1,
                     quantity_full: r.get_quantity(),
                     price: r.get_price_with_tax(),
                     product_id: r.get_product().id,
@@ -99,7 +102,7 @@ odoo.define('pos_alipay', function(require){
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         add_paymentline: function(cashregister){
-            if (cashregister.journal.alipay == 'show'){
+            if (cashregister.journal.alipay === 'show'){
                 this.pos.alipay_qr_payment(this, cashregister);
                 return;
             }
@@ -116,12 +119,12 @@ odoo.define('pos_alipay', function(require){
         // TODO: do we need to extend init_from_JSON too ?
         export_as_JSON: function(){
             var res = PaymentlineSuper.prototype.export_as_JSON.apply(this, arguments);
-            res['scan_id'] = this.scan_id;
+            res.scan_id = this.scan_id;
             return res;
         },
     });
 
-    var Alipay = Backbone.Model.extend({
+    exports.Alipay = window.Backbone.Model.extend({
         initialize: function(pos){
             var self = this;
             this.pos = pos;
@@ -167,7 +170,7 @@ odoo.define('pos_alipay', function(require){
                         'journal_id': self.pos.scan_journal.id,
                         'pos_id': pos_id,
                     },
-                })
+                });
             };
 
             var current_send_number = 0;
@@ -179,4 +182,5 @@ odoo.define('pos_alipay', function(require){
             });
         },
     });
+    return exports;
 });
