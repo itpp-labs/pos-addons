@@ -15,6 +15,8 @@ Installation
     # to update existing installation use
     pip install -U python-alipay-sdk
 
+* Be sure that your server available for requests from outside world (i.e. it shall not be avaialble in local network only) 
+
 Alipay APP
 ==========
 
@@ -31,12 +33,15 @@ Credentials
 * Create following parameters
 
   * ``alipay.app_id``
+  * ``alipay.app_auth_code`` -- optional. Only for ISV (Third-party Service Provider)
   * ``alipay.app_secret``
   * ``alipay.app_private_key`` -- path to file
   * ``alipay.app_public_key`` -- path to file
   * ``alipay.alipay_public_key_string`` -- content of public key file. Starts with ``-----BEGIN PUBLIC KEY-----``
   * ``alipay.app_auth_code``
   * ``alipay.app_auth_token``
+  * ``alipay.notify_url`` -- optional. Use it if doesn't work automatiically. The url must be ``http(s)://YOUR_HOST/alipay/callback``.
+
 
 Internal Numbers
 ----------------

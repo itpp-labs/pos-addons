@@ -16,6 +16,8 @@ Installation
     # to update existing installation use
     pip install -U wechatpy
 
+* Be sure that your server available for requests from outside world (i.e. it shall not be avaialble in local network only) 
+
 Multi database
 --------------
 
@@ -48,6 +50,8 @@ Credentials
 
     * ``wechat.mch_cert``: ``/path/to/apiclient_cert.pem``
     * ``wechat.mch_key``: ``/path/to/apiclient_key.pem``
+
+  * ``wechat.payment_result_notification_url`` -- optional. Use it if doesn't work automatiically. The url must be ``http(s)://YOUR_HOST/wechat/callback``.
 
 Internal Numbers
 ----------------
