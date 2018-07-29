@@ -80,6 +80,7 @@ odoo.define('pos_alipay', function(require){
                 method: 'create_qr',
                 kwargs: {
                     'lines': lines,
+                    'subject': order.name,
                     'order_ref': order.uid,
                     'pay_amount': order.get_due(),
                     'terminal_ref': terminal_ref,
@@ -165,8 +166,9 @@ odoo.define('pos_alipay', function(require){
                     method: 'pos_create_from_qr',
                     kwargs: {
                         'auth_code': auth_code,
-                        'pay_amount': order.get_due(),
+                        'total_amount': order.get_due(),
                         'order_ref': order.uid,
+                        'subject': order.name,
                         'terminal_ref': terminal_ref,
                         'journal_id': self.pos.scan_journal.id,
                         'pos_id': pos_id,

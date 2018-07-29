@@ -10,7 +10,7 @@ from odoo.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 try:
-    from alipay.exceptions import AlipayPayException
+    from alipay.exceptions import AliPayException
 except ImportError as err:
     _logger.debug(err)
 
@@ -112,20 +112,9 @@ class AlipayOrder(models.Model):
     def _total_amount(self):
         self.ensure_one()
         total_amount = sum([
-            line.get_fee()
+            line.get_amount()
             for line in self.line_ids])
         return total_amount
-
-    def _notify_url(self):
-        url = self.env['ir.config_parameter'].get_param('alipay.payment_result_notification_url')
-        if url:
-            return url
-
-        base = self.env["ir.config_parameter"].get_param('web.base.url')
-        return "{base}/{path}".format(
-            base=base,
-            path=PAYMENT_RESULT_NOTIFICATION_URL,
-        )
 
     @api.model
     def _create_from_qr(self, auth_code, total_amount, journal_id, subject, terminal_ref=None, create_vals=None, order_ref=None, **kwargs):
@@ -189,17 +178,17 @@ class AlipayOrder(models.Model):
         return record
 
     @api.model
-    def create_qr(self, lines, **kwargs):
+    def create_qr(self, lines, subject, **kwargs):
         try:
-            order, code_url = self._create_qr(lines, **kwargs)
-        except AlipayPayException as e:
+            order, code_url = self._create_qr(lines, subject, **kwargs)
+        except AliPayException as e:
             return {
                 'error': _('Error on sending request to Alipay: %s') % e.response.text
             }
         return {'code_url': code_url}
 
     @api.model
-    def _create_qr(self, lines, create_vals=None, total_amount=None, **kwargs):
+    def _create_qr(self, lines, subject, create_vals=None, total_amount=None, **kwargs):
         """Native Payment
 
         :param lines: list of dictionary
@@ -216,39 +205,31 @@ class AlipayOrder(models.Model):
         if create_vals:
             vals.update(create_vals)
         order = self.create(vals)
-        if total_amount:
-            # TODO: make a single method for this
-            total_amount = int(100*total_amount)
-        else:
-            total_amount = order._total_amount()
+        total_amount = total_amount or order._total_amount()
         if debug:
-            _logger.info('SANDBOX is activated. Request to alipay servers is not sending')
+            _logger.info('SANDBOX is activated. Request to apipay API servers are not sending')
             # Dummy Data. Change it to try different scenarios
+            # Doc: https://docs.open.alipay.com/api_1/alipay.trade.precreate
             result_json = {
-                'return_code': 'SUCCESS',
-                'result_code': 'SUCCESS',
-                'openid': '123',
-                'code_url': 'weixin://wxpay/s/An4baqw',
+                "code": "10000",
+                "msg": "Success",
+                "out_trade_no": order.name,
+                "qr_code": "https://qr.alipay.com/bavh4wjlxf12tper3a"
             }
-            if self.env.context.get('debug_alipay_order_response'):
-                result_json = self.env.context.get('debug_alipay_order_response')
+            if self.env.context.get('debug_alipay_response'):
+                result_json = self.env.context.get('debug_alipay_response')
         else:
-            body, detail = order._body()
-            wpay = self.env['ir.config_parameter'].get_alipay_pay_object()
+            alipay = self.env['ir.config_parameter'].get_alipay_object()
             # TODO: we probably have make cr.commit() before making request to
             # be sure that we save data before sending request to avoid
-            # situation when order is sent to alipay server, but was not saved
+            # situation when order is sent to wechat server, but was not saved
             # in our server for any reason
-            _logger.debug('Unified order:\n total_amount: %s\n body: %s\n, detail: \n %s',
-                          total_amount, body, detail)
-            result_json = wpay.order.create(
-                'NATIVE',
-                body,
-                total_amount,
-                self._notify_url(),
+
+            result_json = alipay.api_alipay_trade_precreate(
                 out_trade_no=order.name,
-                detail=detail,
-                # TODO fee_type=record.currency_id.name
+                subject=subject,
+                total_amount=total_amount,
+                discountable_amount=kwargs.get('discountable_amount')
             )
 
         result_raw = json.dumps(result_json)
@@ -258,7 +239,7 @@ class AlipayOrder(models.Model):
             'total_amount': total_amount,
         }
         order.write(vals)
-        code_url = result_json['code_url']
+        code_url = result_json['qr_code']
         return order, code_url
 
     def on_notification(self, data):
@@ -317,6 +298,6 @@ class AlipayOrderLine(models.Model):
     category = fields.Char('Category')
     order_id = fields.Many2one('alipay.order')
 
-    def get_fee(self):
+    def get_amount(self):
         self.ensure_one()
-        return int(100*(self.price or self.product_id.price))
+        return self.price or self.product_id.price
