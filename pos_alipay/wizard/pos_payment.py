@@ -1,20 +1,13 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class PosMakePayment(models.TransientModel):
     _inherit = 'pos.make.payment'
 
     journal_alipay = fields.Selection(related='journal_id.alipay')
-    order_ref = fields.Char(compute='_compute_order_ref')
     alipay_order_id = fields.Many2one('alipay.order', string='Alipay Order to refund')
-
-    def _compute_order_ref(self):
-        order = self.env['pos.order'].browse(self.env.context.get('active_id', False))
-        if order:
-            for r in self:
-                r.order_ref = order.pos_reference_uid
 
     def check(self):
         res = super(PosMakePayment, self).check()
@@ -30,3 +23,11 @@ class PosMakePayment(models.TransientModel):
             refund = self.env['alipay.refund'].create(refund_vals)
             refund.action_confirm()
         return res
+
+    @api.onchange('order_ref', 'journal_id')
+    def update_alipay_order(self):
+        if self.journal_alipay:
+            self.alipay_order_id = self.env['alipay.order'].search([
+                ('order_ref', '=', self.order_ref),
+                ('journal_id', '=', self.journal_id.id)
+            ])[:1]
