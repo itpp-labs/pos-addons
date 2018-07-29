@@ -31,12 +31,12 @@ QR Code Payment
 Debugging
 =========
 
-Camera
-------
+Scanning
+--------
 
-If you don't have camera, you can executing following code in browser console to simulate scanning::
+If you don't have camera or scanner, you can executing following code in browser console to simulate scanning::
 
-    odoo.__DEBUG__.services['web.core'].bus.trigger('qr_scanned', '134579302432164181');
+    odoo.__DEBUG__.services['web.core'].bus.trigger('qr_scanned', '28763443825664394');
 
 Customer Screen
 ---------------
