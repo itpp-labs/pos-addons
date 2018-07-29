@@ -65,25 +65,17 @@ Native Payments debugging
 -------------------------
 
 * It seems that in sandbox mode it's allowed to use only prices ``1.01`` and ``1.02``.
-
-Showing QR
-==========
-
-The module contains js lib, but don't use it. The js lib can be attached to
-corresponding assets in other modules (e.g. to *pos assets* in ``pos_wechat``
-module).
-
+ 
 Credits
 =======
 
 Contributors
 ------------
-* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 
 Sponsors
 --------
-* `IT-Projects LLC <https://it-projects.info>`__
+* `Sinomate <http://sinomate.net/>`__
 
 Maintainers
 -----------
