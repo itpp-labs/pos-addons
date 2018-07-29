@@ -62,7 +62,7 @@ Contributors
 
 Sponsors
 --------
-* `IT-Projects LLC <https://it-projects.info>`__
+* `Sinomate <http://sinomate.net/>`__
 
 Maintainers
 -----------
@@ -79,10 +79,13 @@ Further information
 
 Demo: http://runbot.it-projects.info/demo/pos_addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_payment_wechat/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_wechat/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_wechat.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_wechat.atom>`_
+
 
 Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06

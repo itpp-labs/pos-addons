@@ -24,7 +24,7 @@ Contributors
 
 Sponsors
 --------
-* `IT-Projects LLC <https://it-projects.info>`__
+* `Sinomate <http://sinomate.net/>`__
 
 Maintainers
 -----------

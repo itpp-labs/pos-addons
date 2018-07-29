@@ -16,6 +16,8 @@ Installation
     # to update existing installation use
     pip install -U wechatpy
 
+* Be sure that your server available for requests from outside world (i.e. it shall not be avaialble in local network only) 
+
 Multi database
 --------------
 
@@ -49,6 +51,8 @@ Credentials
     * ``wechat.mch_cert``: ``/path/to/apiclient_cert.pem``
     * ``wechat.mch_key``: ``/path/to/apiclient_key.pem``
 
+  * ``wechat.payment_result_notification_url`` -- optional. Use it if doesn't work automatiically. The url must be ``http(s)://YOUR_HOST/wechat/callback``.
+
 Internal Numbers
 ----------------
 
@@ -69,12 +73,3 @@ Wechat records (Orders, Micropays, Refunds, etc.) can be found at ``[[ Invoicing
 * Open menu ``[[ Settings ]] >> Users & Companies >> Users``
 * Open user you need
 * Activate ``Show Full Accounting Features``
-
-WeChat Journals
----------------
-
-WeChat Journals are created automatically on first opening POS session.
-
-* In demo installation: they are availabe in POS immediatly
-* In non-demo installation: add Journals to **Payment Methods** in *Point of
-  Sale*'s Settings, then close existing session if any and open again
