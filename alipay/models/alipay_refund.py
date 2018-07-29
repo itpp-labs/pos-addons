@@ -32,7 +32,6 @@ class AlipayRefund(models.Model):
     result_raw = fields.Text('Raw result', readonly=True)
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id)
     order_id = fields.Many2one('alipay.order')
-    scan_id = fields.Many2one('alipay.scan')
     journal_id = fields.Many2one('account.journal')
 
     @api.model
