@@ -1,21 +1,14 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class PosMakePayment(models.TransientModel):
     _inherit = 'pos.make.payment'
 
     journal_wechat = fields.Selection(related='journal_id.wechat')
-    order_ref = fields.Char(compute='_compute_order_ref')
     wechat_order_id = fields.Many2one('wechat.order', string='WeChat Order to refund')
     micropay_id = fields.Many2one('wechat.micropay', string='Micropay to refund')
-
-    def _compute_order_ref(self):
-        order = self.env['pos.order'].browse(self.env.context.get('active_id', False))
-        if order:
-            for r in self:
-                r.order_ref = order.pos_reference_uid
 
     def check(self):
         res = super(PosMakePayment, self).check()
@@ -32,3 +25,15 @@ class PosMakePayment(models.TransientModel):
             refund = self.env['wechat.refund'].create(refund_vals)
             refund.action_confirm()
         return res
+
+    @api.onchange('order_ref')
+    def update_wechat_order(self):
+        domain = [('order_ref', '=', self.order_ref)]
+        if self.journal_wechat == 'micropay':
+            record = self.env['wechat.micropay'].search(domain)[:1]
+            self.wechat_order_id = record
+            self.micropay_id = False
+        elif self.journal_wechat == 'native':
+            record = self.env['wechat.order'].search(domain)[:1]
+            self.wechat_order_id = False
+            self.micropay_id = record
