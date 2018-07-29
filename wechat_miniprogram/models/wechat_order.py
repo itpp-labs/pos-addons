@@ -3,19 +3,9 @@
 import logging
 import json
 
-from odoo import models, fields, api
-from odoo.tools.translate import _
+from odoo import models, api
 
 _logger = logging.getLogger(__name__)
-
-try:
-    from wechatpy.exceptions import WeChatPayException
-except ImportError as err:
-    _logger.debug(err)
-
-
-PAYMENT_RESULT_NOTIFICATION_URL = 'wechat/callback'
-SUCCESS = 'SUCCESS'
 
 
 class WeChatOrder(models.Model):
