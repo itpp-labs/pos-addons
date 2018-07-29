@@ -79,7 +79,7 @@ class TestAlipayOrder(TestPointOfSaleCommon):
                 "description": "網路白目哈哈",
             }
         ]
-        order, code_url = self.Order._create_qr(self.lines, total_amount=3.0)
+        order, code_url = self.Order._create_qr(self.lines, "Test Order", total_amount=3.0)
         self.assertEqual(order.state, 'draft', 'Just created order has wrong state')
         return order
 
