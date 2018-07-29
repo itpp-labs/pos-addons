@@ -4,7 +4,7 @@ import logging
 import json
 
 from odoo import models, api
-from odoo.addons.wechat.tools import odoo_async_call
+from odoo.addons.qr_payments.tools import odoo_async_call
 
 _logger = logging.getLogger(__name__)
 

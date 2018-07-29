@@ -161,7 +161,7 @@ odoo.define('pos_alipay', function(require){
 
             var send_it = function () {
                 return rpc.query({
-                    model: 'alipay.scan',
+                    model: 'alipay.order',
                     method: 'pos_create_from_qr',
                     kwargs: {
                         'auth_code': auth_code,

@@ -20,6 +20,7 @@
     "depends": [
         'product',
         'account',
+        'qr_payments',
     ],
     "external_dependencies": {"python": [
         'alipay',

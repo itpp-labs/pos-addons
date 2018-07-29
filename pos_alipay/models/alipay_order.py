@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import json
 from odoo import models, api
+from odoo.addons.qr_payments.tools import odoo_async_call
 
 
 class AlipayOrder(models.Model):
