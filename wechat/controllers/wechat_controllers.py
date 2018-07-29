@@ -4,7 +4,7 @@
 from lxml import etree
 import logging
 
-from odoo import http, _
+from odoo import http
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)

@@ -51,7 +51,8 @@ To authenticate a user from the mini-program, you must send a request with a cod
           };
 
           var params = {
-            context: {},
+            context: {
+            },
             code: code,
             user_info: userInfo
           };
@@ -80,7 +81,8 @@ RPC request from mini-program::
 
     function odooRpc(params, options) {
       return new Promise(function(resolve, reject){
-        options = options || {};
+        options = options || {
+        };
         function do_request(session_id) {
           options.url = 'https://ODOO_HOST/web/dataset/call_kw';
           options.header = {
@@ -137,8 +139,10 @@ Load Products from Odoo Server::
     var params = {
       models: 'product.product',
       method: 'search_read',
-      args: [],
-      context: {},
+      args: [
+      ],
+      context: {
+      },
       kwargs: {
         domain: [['sale_ok','=',true],['available_in_pos','=',true]],
         fields: ['display_name', 'list_price', 'lst_price', 'standard_price', 'categ_id', 'pos_categ_id', 'taxes_id',
