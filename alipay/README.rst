@@ -36,6 +36,7 @@ Payments
 --------
 
 * https://docs.open.alipay.com/140
+* https://docs.open.alipay.com/api_1/
 
 Debugging
 =========
