@@ -26,7 +26,7 @@ class PosMakePayment(models.TransientModel):
             refund.action_confirm()
         return res
 
-    @api.onchange('order_ref')
+    @api.onchange('order_ref', 'journal_wechat')
     def update_wechat_order(self):
         domain = [('order_ref', '=', self.order_ref)]
         if self.journal_wechat == 'micropay':
