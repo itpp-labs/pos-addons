@@ -5,7 +5,7 @@
     <!-- POS -->
     <template id="pos_assets" name="POS assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_alipay/static/src/js/alipay_pay.js"></script>
+            <script type="text/javascript" src="/pos_alipay/static/src/js/alipay.js"></script>
         </xpath>
     </template>
 </odoo>
