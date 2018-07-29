@@ -139,7 +139,7 @@ odoo.define('pos_alipay', function(require){
             // TODO: do we need to integrate this with barcode.nomenclature?
             var beginning = code.substring(0, 2);
             if (code && Number.isInteger(Number(code)) &&
-                16 <= code.length  && code.length <= 24 &&
+                16 <= code.length && code.length <= 24 &&
                 25 <= Number(beginning) && Number(beginning) <= 30) {
                 return true;
             }
