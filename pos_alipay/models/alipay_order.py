@@ -15,9 +15,9 @@ class AlipayOrder(models.Model):
         result_json = json.loads(self.result_raw)
         msg = {
             'event': 'payment_result',
-            'result_code': result_json['result_code'],
+            'code': result_json['code'],
             'order_ref': self.order_ref,
-            'total_fee': self.total_fee,
+            'total_amount': self.total_amount,
             'journal_id': self.journal_id.id,
         }
         return msg
@@ -36,3 +36,30 @@ class AlipayOrder(models.Model):
                 kwargs['create_vals'] = {}
             kwargs['create_vals']['pos_id'] = pos_id
         return super(AlipayOrder, self).create_qr(lines, **kwargs)
+
+    @api.model
+    def _prepare_pos_create_from_qr(self, **kwargs):
+        create_vals = {
+            'pos_id': kwargs['pos_id'],
+        }
+        kwargs.update(create_vals=create_vals)
+        args = ()
+        return args, kwargs
+
+    @api.model
+    def pos_create_from_qr_sync(self, **kwargs):
+        args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
+        record = self._create_from_qr(*args, **kwargs)
+        return record._prepare_message()
+
+    @api.model
+    def pos_create_from_qr(self, **kwargs):
+        """Async method. Result is sent via longpolling"""
+        args, kwargs = self._prepare_pos_create_from_qr(**kwargs)
+        odoo_async_call(self._create_from_qr, args, kwargs,
+                        callback=self._send_pos_notification_callback)
+        return 'ok'
+
+    @api.model
+    def _send_pos_notification_callback(self, record):
+        record._send_pos_notification()

@@ -133,6 +133,7 @@ class TestAlipayOrder(TestPointOfSaleCommon):
             'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
             'pos_id': DUMMY_POS_ID,
             'journal_id': journal.id,
-            'pay_amount': 1,
+            'total_amount': 1,
+            'subject': 'Order #1'
         })
-        self.assertEqual(msg.get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
+        self.assertEqual(msg.get('code'), '10003', "Wrong result code. The patch doesn't work?")
