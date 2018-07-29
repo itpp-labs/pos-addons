@@ -21,6 +21,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "wizard/pos_payment_views.xml",
         "views/assets.xml",
     ],
     "demo": [

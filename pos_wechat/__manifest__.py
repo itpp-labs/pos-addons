@@ -20,6 +20,7 @@
         "wechat",
         "pos_qr_scan",
         "pos_qr_show",
+        "pos_qr_payments",
         "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
