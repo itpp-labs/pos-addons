@@ -109,3 +109,30 @@ class TestAlipayOrder(TestPointOfSaleCommon):
         self.assertEqual(refund.state, 'paid', "The refund is not marked as paid")
 
         self.assertEqual(alipay_order.state, 'refunded', "Alipay Order state is not changed after making refund payment")
+
+    def test_scan(self):
+        """Test payment workflow from server side.
+
+        * Cashier scanned buyer's QR and upload it to odoo server,
+        odoo server sends information to alipay servers and wait for response with result.
+
+        * Once user authorize the payment, odoo receives result syncroniosly from
+        previously sent request.
+
+        * Odoo sends result to POS via longpolling.
+
+        Due to limititation of testing framework, we use syncronios call for testing
+
+        """
+
+        journal = self.env['account.journal'].search([('alipay', '=', 'scan')])
+
+        # make request with scanned qr code (auth_code)
+        msg = self.env['alipay.order'].pos_create_from_qr_sync(**{
+            'auth_code': DUMMY_AUTH_CODE,
+            'terminal_ref': 'POS/%s' % DUMMY_POS_ID,
+            'pos_id': DUMMY_POS_ID,
+            'journal_id': journal.id,
+            'pay_amount': 1,
+        })
+        self.assertEqual(msg.get('result_code'), 'SUCCESS', "Wrong result_code. The patch doesn't work?")
