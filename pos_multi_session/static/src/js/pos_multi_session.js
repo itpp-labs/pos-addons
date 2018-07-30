@@ -773,6 +773,10 @@ odoo.define('pos_multi_session', function(require){
                         self.offline_sync_all_timer = false;
                     }
                     self.request_sync_all();
+                    var popup = this.pos.gui.current_popup;
+                    if (popup && popup.options.multi_session_connection_error) {
+                        this.pos.gui.close_popup();
+                    }
                 } else if (!self.offline_sync_all_timer) {
                     self.no_connection_warning();
                     self.start_offline_sync_timer();
@@ -990,6 +994,7 @@ odoo.define('pos_multi_session', function(require){
                 this.pos.chrome.gui.show_popup('error',{
                     'title': _t('Warning'),
                     'body': warning_message,
+                    'multi_session_connection_error': true,
                 });
             }
         },
