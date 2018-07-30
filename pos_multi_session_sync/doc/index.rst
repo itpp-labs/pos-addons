@@ -98,6 +98,7 @@ Configuration
 
 Separate Sync Server
 --------------------
+
 In order to configure access to the sync server do the following on a server:
 
 * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
@@ -120,3 +121,22 @@ Configure sync server in the main server :
 * Click ``[Edit]``
 * Specify an external server url in the field **Sync Server**. Example of a filled-in field ``//localhost:8080``
 * Click ``[Save]``
+
+Number of workers
+-----------------
+
+Both ``Main server`` and ``Separate Sync Server`` are recommended to launch with ``--workers=1`` to avoid synchronization conflicts. 
+
+You can make it in 2 ways:
+
+* set workers parameter in odoo configuration file::
+
+   workers=1
+
+OR
+
+* via terminal directly, e.g.::
+
+   ./odoo-bin --config=path/to/odoo-server.conf --workers=1
+
+
