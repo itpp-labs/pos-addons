@@ -49,7 +49,13 @@ odoo.define('pos_longpolling', function(require){
                     self.poll();
                 }
                 //difference with original
-                self.longpolling_connection.network_is_on();
+                var poll_connection = self.longpolling_connection;
+                if (!poll_connection.poll_response_status && poll_connection.status) {
+                    // condition prevents double triggering in case if status === false;
+                    poll_connection.poll_response_status = true;
+                    poll_connection.trigger("change:poll_connection", true);
+                }
+                poll_connection.network_is_on();
             }, function(unused, e) {
                 //difference with original
                 self.longpolling_connection.network_is_off();
@@ -206,7 +212,6 @@ odoo.define('pos_longpolling', function(require){
         initialize: function(pos, bus) {
             this.pos = pos;
             this.timer = false;
-            this.poll_response = true;
             this.status = true;
             this.bus = bus;
             // Is the message "PONG" received from the server
@@ -217,13 +222,12 @@ odoo.define('pos_longpolling', function(require){
                 this.response_status = true;
             }
             this.update_timer();
-            this.poll_response = true;
             this.set_status(true);
             this.bus.sleep = false;
         },
         network_is_off: function() {
             this.update_timer();
-            this.poll_response = false;
+            this.poll_response_status = false;
             this.set_status(false);
         },
         set_status: function(status) {
@@ -272,6 +276,7 @@ odoo.define('pos_longpolling', function(require){
             return openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
+                self.trigger("change:poll_connection", true);
                 if (!self.response_status) {
                     self.response_timer();
                 }
@@ -291,7 +296,7 @@ odoo.define('pos_longpolling', function(require){
             var element = this.$el.find('div[bid="' + current_bus.bus_id + '"]');
             if (current_bus.activated) {
                 if (current_bus.longpolling_connection.status) {
-                    if (current_bus.longpolling_connection.poll_response){
+                    if (current_bus.longpolling_connection.poll_response_status){
                         this.set_icon_class(element, 'oe_green');
                     } else {
                         this.set_icon_class(element, 'oe_orange');
