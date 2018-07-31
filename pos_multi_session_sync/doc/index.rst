@@ -7,6 +7,23 @@ Installation
 
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
 
+Number of workers
+-----------------
+
+Both ``Main server`` and ``Separate Sync Server`` are recommended to launch with ``--workers=1`` to avoid synchronization conflicts. 
+
+You can make it in 2 ways:
+
+* set workers parameter in odoo configuration file::
+
+   workers=1
+
+OR
+
+* via terminal directly, e.g.::
+
+   ./odoo-bin --config=path/to/odoo-server.conf --workers=1
+
 Separate Sync Server
 --------------------
 
@@ -121,22 +138,5 @@ Configure sync server in the main server :
 * Click ``[Edit]``
 * Specify an external server url in the field **Sync Server**. Example of a filled-in field ``//localhost:8080``
 * Click ``[Save]``
-
-Number of workers
------------------
-
-Both ``Main server`` and ``Separate Sync Server`` are recommended to launch with ``--workers=1`` to avoid synchronization conflicts. 
-
-You can make it in 2 ways:
-
-* set workers parameter in odoo configuration file::
-
-   workers=1
-
-OR
-
-* via terminal directly, e.g.::
-
-   ./odoo-bin --config=path/to/odoo-server.conf --workers=1
 
 
