@@ -138,5 +138,3 @@ Configure sync server in the main server :
 * Click ``[Edit]``
 * Specify an external server url in the field **Sync Server**. Example of a filled-in field ``//localhost:8080``
 * Click ``[Save]``
-
-
