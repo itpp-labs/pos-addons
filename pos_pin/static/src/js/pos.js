@@ -3,7 +3,7 @@ odoo.define('pos_pin.pos', function (require) {
 
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
-    
+
     var _t = core._t;
 
     gui.Gui.include({
