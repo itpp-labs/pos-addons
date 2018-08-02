@@ -1,3 +1,6 @@
+/* Copyright (c) 2004-2015 Odoo S.A.
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_barcode_sync.pos', function (require) {
 
     var session = require('web.session');
