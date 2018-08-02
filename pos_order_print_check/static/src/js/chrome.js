@@ -27,6 +27,7 @@ odoo.define('pos_order_print_check.chrome', function (require) {
             var self = this;
             this.order_print_quantity = 0;
             this.show_warning_message = true;
+            this.isIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i);
             this.pos.on('change:qty_print_orders', function(){
                 self.change_quantity_print_orders();
             });
@@ -52,7 +53,8 @@ odoo.define('pos_order_print_check.chrome', function (require) {
                 }
                 if (this.order_print_quantity === 0) {
                     this.show_warning_message = true;
-                    $(window).off('beforeunload', this.unload);
+                    var eventName = this.isIOS ? "pagehide" : "beforeunload";
+                    $(window).off(eventName, this.unload);
                 } else {
                     this.unloader();
                 }
@@ -60,7 +62,8 @@ odoo.define('pos_order_print_check.chrome', function (require) {
         },
         unloader: function(){
             var self = this;
-            $(window).on('beforeunload', self.unload);
+            var eventName = this.isIOS ? "pagehide" : "beforeunload";
+            $(window).on(eventName, self.unload);
             $('a').on('click', function(){
                 self.resetUnload();
             });
@@ -83,9 +86,10 @@ odoo.define('pos_order_print_check.chrome', function (require) {
         },
         resetUnload: function() {
             var self = this;
-            $(window).off('beforeunload', self.unload);
+            var eventName = this.isIOS ? "pagehide" : "beforeunload";
+            $(window).off(eventName, self.unload);
             setTimeout(function(){
-                $(window).on('beforeunload', self.unload);
+                $(window).on(eventName, self.unload);
             }, 2000);
         }
     });
