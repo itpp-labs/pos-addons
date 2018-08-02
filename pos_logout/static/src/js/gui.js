@@ -1,6 +1,11 @@
+/*  Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
+    Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_logout.gui', function (require) {
     "use strict";
-
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
 

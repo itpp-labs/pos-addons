@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+# Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
+# Copyright 2017-2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Lock POS Screen""",
     "summary": """Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN""",
