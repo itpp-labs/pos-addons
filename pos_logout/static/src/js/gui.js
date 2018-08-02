@@ -14,10 +14,11 @@ odoo.define('pos_logout.gui', function (require) {
     gui.Gui.include({
         ask_password: function(password, args) {
             var self = this;
+            var show_password_popup = function(){};
             if (args && args.deblocking) {
                 var ret = new $.Deferred();
                 if (password) {
-                    function show_password_popup(){
+                    show_password_popup = function(){
                         self.show_popup('password',{
                             'title': _t('Password ?'),
                             confirm: function(pw) {

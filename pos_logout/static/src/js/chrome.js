@@ -31,8 +31,9 @@ odoo.define('pos_logout.chrome', function (require) {
         loading_hide: function() {
             this._super();
             var self = this;
+            var set_logout_interval = function(){};
             if (this.pos.config.logout_interval){
-                function set_logout_interval(time){
+                set_logout_interval = function(time){
                     time = time || self.pos.config.logout_interval * 1000;
                     if (time) {
                         self.pos.logout_timer = setTimeout(function(){
