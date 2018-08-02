@@ -1,3 +1,9 @@
+/*  Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
+    Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_logout.popups', function (require) {
     "use strict";
 
@@ -38,98 +44,22 @@ odoo.define('pos_logout.popups', function (require) {
 
 
         click_unlock: function() {
+            var self = this;
             this.gui.close_popup();
-            this.gui.show_popup('selection_with_pass', {
-                title: 'Select User',
-                list: this.get_list(),
+            this.gui.select_user_custom({
+                'special_group': this.pos.config.group_pos_user_id[0],
+                'security': true,
+                'current_user': false,
+                'arguments': {
+                    'deblocking': true,
+                },
+            }).fail(function(){
+                self.gui.show_popup('block', self.options);
             });
         },
-
-        get_list: function () {
-            var list = [];
-            for (var i = 0; i < this.pos.users.length; i++) {
-                var user = this.pos.users[i];
-                    list.push({
-                        'label': user.name,
-                        'item':  user,
-                    });
-                }
-            return list;
-        }
     });
     BlockPopupWidget.prototype.barcode_cashier_action = barcode_cashier_action;
     gui.define_popup({name:'block', widget: BlockPopupWidget});
-
-    var PassSelectionPopupWidget = PopupWidget.extend({
-        template: 'SelectionPopupWidget',
-        show: function(options){
-            var self = this;
-            options = options || {};
-            this._super(options);
-            this.block = true;
-            this.list = options.list || [];
-            this.is_selected = options.is_selected || function (item) {
-                return false;
-            };
-            this.renderElement();
-            this.pos.barcode_reader.set_action_callback({
-                'cashier': _.bind(self.barcode_cashier_action, self)
-            });
-        },
-
-        click_item: function(event) {
-            var self = this,
-                item = this.list[parseInt($(event.target).data('item-index'))];
-            item = item
-            ? item.item
-            : item;
-            this.gui.close_popup();
-            if (item.pos_security_pin) {
-                this.show_pw_popup(item.pos_security_pin, item);
-            } else {
-                this.set_cashier(item);
-            }
-        },
-
-        click_cancel: function () {
-            this.gui.show_popup('block', {
-                confirm: function() {
-                    var blocking = true;
-                    this.click_username(blocking);
-                },
-            });
-        },
-
-        set_cashier: function (user) {
-            this.pos.set_cashier(user);
-            this.gui.chrome.widget.username.renderElement();
-            return;
-        },
-
-        show_pw_popup: function (password, user) {
-            var self = this;
-            this.gui.show_popup('password',{
-                'title': _t('Password ?'),
-                confirm: function(pw) {
-                    if (pw === password) {
-                        self.set_cashier(user);
-                    } else {
-                        self.show_pw_popup(password);
-                    }
-                },
-                cancel: function() {
-                    self.gui.show_popup('block', {
-                        confirm: function() {
-                            var blocking = true;
-                            self.click_username(blocking);
-                        },
-                    });
-                },
-            });
-        }
-    });
-    PassSelectionPopupWidget.prototype.barcode_cashier_action = barcode_cashier_action;
-    gui.define_popup({name:'selection_with_pass', widget: PassSelectionPopupWidget});
 
     return BlockPopupWidget;
 });

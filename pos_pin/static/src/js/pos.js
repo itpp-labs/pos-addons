@@ -3,7 +3,7 @@ odoo.define('pos_pin.pos', function (require) {
 
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
-    
+
     var _t = core._t;
 
     gui.Gui.include({
@@ -46,7 +46,7 @@ odoo.define('pos_pin.pos', function (require) {
     
             return def.then(function(user){
                 if (options.security && user !== options.current_user && user.pos_security_pin) {
-                    return self.ask_password(user.pos_security_pin).then(function(){
+                    return self.ask_password(user.pos_security_pin, options.arguments).then(function(){
                         return user;
                     });
                 } else {
