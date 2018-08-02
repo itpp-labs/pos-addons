@@ -1,3 +1,6 @@
+# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 import odoo
 from odoo.tests.common import TransactionCase
 # from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon

@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Multiple categories per product in POS""",
     "summary": """Specify as many categories for a product as you need""",
     "category": "Point of Sale",
     "images": [],
-    "version": "1.0.0",
+    "version": "11.0.1.0.0",
 
     "author": "IT-Projects LLC, Pavel Romanchenko",
     "support": "apps@it-projects.info",

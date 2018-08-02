@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 {
     "name": """Internal Credit System""",
     "summary": """Credit payment system for festivals, food courts, etc.""",
     "category": "Point of Sale",
     'live_test_url': 'http://apps.it-projects.info/shop/product/internal-credit-system?version=10.0',
     "images": ['images/credit.png'],
-    "version": "1.1.0",
+    "version": "11.0.1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -16,7 +19,7 @@
     "currency": "EUR",
 
     "depends": [
-        "base_action_rule",
+        "base_automation",
         "pos_longpolling",
         "pos_debt_notebook",
     ],
@@ -33,7 +36,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Internal Credit System",
     "demo_addons": [

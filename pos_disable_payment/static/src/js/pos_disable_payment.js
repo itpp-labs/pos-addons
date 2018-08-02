@@ -19,8 +19,11 @@ odoo.define('pos_disable_payment', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
+            var old_cashier_id = this.db.get_cashier() && this.db.get_cashier().id;
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            this.trigger('change:cashier',this);
+            if (old_cashier_id !== this.db.get_cashier().id) {
+                this.trigger('change:cashier', this);
+            }
         }
     });
 
@@ -58,8 +61,12 @@ odoo.define('pos_disable_payment', function(require){
     screens.OrderWidget.include({
         bind_order_events: function(){
             this._super();
+            var self = this;
             var order = this.pos.get('selectedOrder');
             order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
+            this.pos.bind('change:cashier', function(){
+                self.check_numpad_access();
+            });
         },
         orderline_change: function(line) {
             this._super(line);
@@ -67,37 +74,83 @@ odoo.define('pos_disable_payment', function(require){
             if (line && line.quantity <= 0) {
                 if (user.allow_delete_order_line) {
                     $('.numpad-backspace').removeClass('disable');
-                } else{
+                } else {
                     $('.numpad-backspace').addClass('disable');
                 }
             } else {
                 $('.numpad-backspace').removeClass('disable');
             }
-            this.check_kitchen_access(line);
+            this.check_numpad_access(line);
         },
         click_line: function(orderline, event) {
             this._super(orderline, event);
-            this.check_kitchen_access(orderline);
+            this.check_numpad_access(orderline);
         },
-        check_kitchen_access: function(line){
-            var user = this.pos.get_cashier() || this.pos.user;
-            if (user.allow_decrease_amount || user.allow_decrease_kitchen_only) {
-                return true;
-            }
-            var state = this.getParent().numpad.state;
-            if (line.mp_dirty === false) {
-                $('.numpad').find("[data-mode='quantity']").addClass('disable');
-                if (user.allow_discount) {
-                    state.changeMode('discount');
-                } else if (user.allow_edit_price) {
-                    state.changeMode('price');
-                } else {
-                    state.changeMode("");
+        renderElement:function(scrollbottom){
+            this._super(scrollbottom);
+            this.check_numpad_access();
+        },
+        check_numpad_access: function(line) {
+            var order = this.pos.get_order();
+            if (order) {
+                line = line || order.get_selected_orderline();
+                var user = this.pos.cashier || this.pos.user;
+                var state = this.getParent().numpad.state;
+                if (!line) {
+                    $('.numpad').find('.numpad-backspace').removeClass('disable');
+                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    return false;
                 }
-            } else {
+
+                if (user.allow_decrease_amount) {
+                    // allow all buttons
+                    if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                        $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                        state.changeMode('quantity');
+                    }
+                    if (user.allow_delete_order_line) {
+                        $('.numpad').find('.numpad-backspace').removeClass('disable');
+                    }
+                } else {
+                    // disable the backspace button of numpad
+                    $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                    this.check_kitchen_access(line);
+                }
+            }
+        },
+        orderline_change_line: function(line) {
+            this._super(line);
+            var user = this.pos.cashier || this.pos.user;
+            var order = this.pos.get_order();
+            if (order && !user.allow_decrease_amount) {
+                // disable the backspace button of numpad
+                $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                this.check_kitchen_access(line);
+            }
+        },
+        check_kitchen_access: function(line) {
+            var user = this.pos.cashier || this.pos.user;
+            var state = this.getParent().numpad.state;
+            if (user.allow_decrease_kitchen_only) {
                 $('.numpad').find("[data-mode='quantity']").removeClass('disable');
                 if (state.get('mode') !== 'quantity') {
                     state.changeMode('quantity');
+                }
+            } else if (line.mp_dirty) {
+                if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
+                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    state.changeMode('quantity');
+                }
+            } else {
+                $('.numpad').find("[data-mode='quantity']").addClass('disable');
+                if (state.get('mode') === 'quantity') {
+                    if (user.allow_discount) {
+                        state.changeMode('discount');
+                    } else if (user.allow_edit_price) {
+                        state.changeMode('price');
+                    } else {
+                        state.changeMode("");
+                    }
                 }
             }
         }
@@ -138,9 +191,15 @@ odoo.define('pos_disable_payment', function(require){
         checkDiscountButton: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_discount) {
-                this.$('.control-buttons .js_discount').removeClass('disable');
+                $('.control-button.js_discount').removeClass('disable');
             }else{
-                this.$('.control-buttons .js_discount').addClass('disable');
+                $('.control-button.js_discount').addClass('disable');
+            }
+        },
+        show: function(reset){
+            this._super(reset);
+            if (reset) {
+                this.order_widget.check_numpad_access();
             }
         }
     });
@@ -238,25 +297,12 @@ odoo.define('pos_disable_payment', function(require){
                 this.$el.find('.numpad-minus').addClass('disable');
             }
             if (orderline && orderline.quantity <= 0) {
-                if (user.allow_delete_order_liner) {
+                if (user.allow_delete_order_line) {
                     this.$el.find('.numpad-backspace').removeClass('disable');
-                }else{
+                } else{
                     this.$el.find('.numpad-backspace').addClass('disable');
                 }
             }
-        }
-    });
-
-    screens.NumpadWidget.include({
-        clickDeleteLastChar: function(){
-            var user = this.pos.get_cashier() || this.pos.user;
-            if(!user.allow_decrease_amount && this.state.get('mode') === 'quantity'){
-                return;
-            }
-            if (!user.allow_delete_order_line && this.state.get('buffer') === "" && this.state.get('mode') === 'quantity'){
-                return;
-            }
-            return this._super();
         }
     });
 });

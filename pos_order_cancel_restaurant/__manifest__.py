@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Analyzing of refunds in Restaurant""",
     "summary": """Waiter specifies refund reason to avoid serving mistakes in future.""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_restaurant.png"],
-    "version": "11.0.1.1.0",
+    "version": "11.0.1.4.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

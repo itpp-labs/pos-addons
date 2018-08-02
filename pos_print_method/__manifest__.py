@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Print Method""",
     "summary": """Choose print method for order printing in POS""",
@@ -12,7 +11,7 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 69.00,
+    "price": 34.00,
     "currency": "EUR",
 
     "depends": [

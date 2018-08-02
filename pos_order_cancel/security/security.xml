@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-<data noupdate="1">
+<odoo noupdate="1">
 
     <record model="ir.rule" id="show_cancel_lines_only_for_user_current_company">
         <field name="name">show cancel lines only for the user current company </field>
@@ -9,6 +8,5 @@
         <field name="domain_force">[('order_id.company_id', '=', user.company_id.id)]
         </field>
     </record>
-    
-</data>
+
 </odoo>
