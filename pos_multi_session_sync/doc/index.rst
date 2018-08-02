@@ -10,7 +10,7 @@ Installation
 Number of workers
 -----------------
 
-Both ``Main server`` and ``Separate Sync Server`` are recommended to launch with ``--workers=1`` to avoid synchronization conflicts. 
+``Separate Sync Server`` is recommended to launch with ``--workers=1`` to deactivate multiprocessing leading to concurrency updates in DB, otherwise the synchronization conflicts may appear.
 
 You can make it in 2 ways:
 
