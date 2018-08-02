@@ -23,5 +23,32 @@ odoo.define('pos_logout.chrome', function (require) {
         },
     });
 
+    chrome.Chrome.include({
+        loading_hide: function() {
+            this._super();
+            var self = this;
+            if (this.pos.config.logout_interval){
+                function set_logout_interval(time){
+                    time = time || self.pos.config.logout_interval * 1000;
+                    if (time) {
+                        self.pos.logout_timer = setTimeout(function(){
+                            self.pos.gui.show_popup('block', {
+                                confirm: function() {
+                                    var blocking = true;
+                                    self.pos.click_username(blocking);
+                                },
+                            });
+                        }, time);
+                    }
+                }
+                $(document).on('click', function(event){
+                    clearTimeout(self.pos.logout_timer);
+                    set_logout_interval();
+                });
+                set_logout_interval();
+            }
+        },
+    });
+
     return chrome;
 });
