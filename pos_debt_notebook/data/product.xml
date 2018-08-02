@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+<!--Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
 <openerp>
     <data noupdate="1">
 

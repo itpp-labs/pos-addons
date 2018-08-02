@@ -2,7 +2,12 @@
  POS Longpolling
 =================
 
-Technical module implement instant updates in POS
+Technical module to implement instant updates in POS
+
+Debugging
+=========
+
+If you need to see longpolling requests at browser's Network tool, be sure that you don't have other opened tab to the same address. Otherwise, odoo smartly sends longpolling requests via one of existing tabs only and pass result via ``localStorage``.
 
 Credits
 =======
