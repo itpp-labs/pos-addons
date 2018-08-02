@@ -41,5 +41,5 @@
     "demo_summary": "Update the partner data in POS instantly",
     "demo_images": [
         "images/pos_barcode_sync_main.png",
-]
+    ]
 }
