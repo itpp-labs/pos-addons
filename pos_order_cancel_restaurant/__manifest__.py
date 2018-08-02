@@ -4,7 +4,7 @@
     "summary": """Waiter specifies refund reason to avoid serving mistakes in future.""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_restaurant.png"],
-    "version": "10.0.1.4.0",
+    "version": "10.0.1.4.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

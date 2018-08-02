@@ -67,14 +67,14 @@ odoo.define('pos_order_cancel.models', function (require) {
             line.cancelled_line = new_line;
             this.canceled_lines.push([0, 0, new_line]);
         },
-        /*  If pos_multi_session is installed then trigger('change:sync') is used to sync
+        /*  If pos_multi_session is installed then trigger('new_updates_to_send') is used to sync
             cancelation data accross all POSes
         */
         save_reason_cancelled_line: function(orderline, reason, cancelled_reason_ids) {
             orderline.cancelled_line.reason = reason;
             orderline.cancelled_line.cancelled_reason_ids = cancelled_reason_ids;
             orderline.trigger('change', orderline);
-            this.trigger('change:sync');
+            this.trigger('new_updates_to_send');
         },
         save_canceled_line: function(orderline) {
             if (orderline.cancelled_line && this.is_cancelled) {
@@ -83,7 +83,7 @@ odoo.define('pos_order_cancel.models', function (require) {
             } else {
                 this.add_cancelled_line(orderline);
             }
-            this.trigger('change:sync');
+            this.trigger('new_updates_to_send');
         },
         get_datetime: function() {
             var currentdate = new Date();
@@ -110,7 +110,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                     line.cancelled_line.user_id = this.pos.get_cashier().id;
                     line.cancelled_line.user_name = this.pos.get_cashier().name;
                 }
-                this.trigger('change:sync');
+                this.trigger('new_updates_to_send');
             } else if (this.pos.gui && this.pos.gui.screen_instances.products && this.ask_cancel_reason) {
                 this.save_canceled_line(line);
                 this.pos.gui.screen_instances.products.order_widget.show_popup('product', line);
@@ -123,7 +123,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 });
                 line.cancelled_line = false;
                 line.trigger('change', line);
-                this.trigger('change:sync');
+                this.trigger('new_updates_to_send');
             }
         },
         // This function is used to sync cancelation data accross all POSes
