@@ -6,7 +6,10 @@
  POS Orders History
 ====================
 
-The module allows to display all paid orders in POS interface
+The module allows:
+* to display all paid orders in POS interface
+* to reprint the payment receipt of an order
+* to display the order barcode on payment receipt  
 
 Credits
 =======

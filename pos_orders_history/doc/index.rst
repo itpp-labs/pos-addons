@@ -11,13 +11,19 @@ Installation
 Configuration
 =============
 
-To activate/deactivate ``History`` button for some of POSes do as follows:
-
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
 * Open POS configuration form
-* Click on ``[Edit]``
-* Check/uncheck ``[x] Orders History`` box
-* Click on ``[Save]``
+* Click ``[Edit]``
+* See the options:
+  
+  * ``[x] Orders History`` - to activate/deactivate ``History`` button
+  * ``[x] Current Day Orders Only`` - to display orders for current day only
+  * ``[x] Show Cancelled Orders`` - to display cancelled orders together with paid orders
+  * ``[x] Show Posted Orders`` - to display posted orders together with paid orders
+  * ``[x] Show Barcode on Receipt`` - to display the barcode on payment receipt
+  * ``[x] Reprint Orders`` - to reprint the payment receipt of an order
+    
+* Click ``[Save]``
 
 Usage
 =====
