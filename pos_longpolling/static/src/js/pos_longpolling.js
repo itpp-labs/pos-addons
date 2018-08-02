@@ -50,10 +50,12 @@ odoo.define('pos_longpolling', function(require){
                 }
                 //difference with original
                 var poll_connection = self.longpolling_connection;
-                if (!poll_connection.poll_response_status && poll_connection.status) {
-                    // condition prevents double triggering in case if status === false;
-                    poll_connection.poll_response_status = true;
-                    poll_connection.trigger("change:poll_connection", true);
+                if (poll_connection.waiting_poll_response) {
+                    poll_connection.waiting_poll_response = false;
+                    if (poll_connection.is_online){
+                        // condition prevents double triggering in case if is_online === false;
+                        poll_connection.trigger("change:poll_connection", true);
+                    }
                 }
                 poll_connection.network_is_on();
             }, function(unused, e) {
@@ -150,7 +152,6 @@ odoo.define('pos_longpolling', function(require){
             }
             if(Array.isArray(channel) && (channel[1] in self.channel_callbacks)){
                 try{
-                    self.longpolling_connection.network_is_on();
                     var callback = self.channel_callbacks[channel[1]];
                     if (callback) {
                         if (self.pos.debug){
@@ -170,12 +171,12 @@ odoo.define('pos_longpolling', function(require){
         get_full_channel_name: function(channel_name){
             return JSON.stringify([session.db,channel_name,String(this.pos.config.id)]);
         },
-        set_activated: function(status) {
-            if (this.activated === status) {
+        set_activated: function(is_online) {
+            if (this.activated === is_online) {
                 return;
             }
-            this.activated = status;
-            this.longpolling_connection.trigger("change:poll_connection", status);
+            this.activated = is_online;
+            this.longpolling_connection.trigger("change:poll_connection", is_online);
         },
     });
 
@@ -212,30 +213,31 @@ odoo.define('pos_longpolling', function(require){
         initialize: function(pos, bus) {
             this.pos = pos;
             this.timer = false;
-            this.status = true;
+            this.is_online = true;
             this.bus = bus;
             // Is the message "PONG" received from the server
             this.response_status = false;
+            this.waiting_poll_response = true;
         },
         network_is_on: function(message) {
             if (message) {
                 this.response_status = true;
             }
             this.update_timer();
-            this.set_status(true);
+            this.set_is_online(true);
             this.bus.sleep = false;
         },
         network_is_off: function() {
             this.update_timer();
-            this.poll_response_status = false;
-            this.set_status(false);
+            this.waiting_poll_response = true;
+            this.set_is_online(false);
         },
-        set_status: function(status) {
-            if (this.status === status) {
+        set_is_online: function(is_online) {
+            if (this.is_online === is_online) {
                 return;
             }
-            this.status = status;
-            this.trigger("change:poll_connection", status);
+            this.is_online = is_online;
+            this.trigger("change:poll_connection", is_online);
         },
         update_timer: function(){
             this.stop_timer();
@@ -292,14 +294,14 @@ odoo.define('pos_longpolling', function(require){
 
     var Status_Widget = chrome.StatusWidget;
     Status_Widget.include({
-        set_poll_status: function(current_bus) {
+        rerender_poll_status: function(current_bus) {
             var element = this.$el.find('div[bid="' + current_bus.bus_id + '"]');
             if (current_bus.activated) {
-                if (current_bus.longpolling_connection.status) {
-                    if (current_bus.longpolling_connection.poll_response_status){
-                        this.set_icon_class(element, 'oe_green');
-                    } else {
+                if (current_bus.longpolling_connection.is_online) {
+                    if (current_bus.longpolling_connection.waiting_poll_response){
                         this.set_icon_class(element, 'oe_orange');
+                    } else {
+                        this.set_icon_class(element, 'oe_green');
                     }
                 } else {
                     this.set_icon_class(element, 'oe_red');
@@ -311,7 +313,7 @@ odoo.define('pos_longpolling', function(require){
         set_icon_class: function(element, new_class) {
             element.removeClass('oe_hidden oe_red oe_green oe_orange').addClass(new_class);
         },
-        set_connecting_status: function(element, status){
+        icon_rotating: function(element, status){
             element.find('i').removeClass('fa-spin');
             if (status){
                 element.find('i').addClass('fa-spin');
@@ -332,14 +334,14 @@ odoo.define('pos_longpolling', function(require){
         start_bus: function(bus, element){
             var self = this;
             element.attr('bid', bus.bus_id);
-            this.set_poll_status(bus);
-            bus.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(bus);
+            this.rerender_poll_status(bus);
+            bus.longpolling_connection.on("change:poll_connection", function(is_online){
+                self.rerender_poll_status(bus);
             });
             element.on('click', function(event){
-                self.set_connecting_status(element, true);
+                self.icon_rotating(element, true);
                 bus.longpolling_connection.send_ping({'serv': bus.serv_adr}).always(function(){
-                    self.set_connecting_status(element, false);
+                    self.icon_rotating(element, false);
                 });
             });
         },
