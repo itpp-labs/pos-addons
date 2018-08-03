@@ -2,9 +2,9 @@
 # Copyright (c) 2004-2015 Odoo S.A.
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Sync Barcode in POS""",
+    "name": """Sync Barcodes in POS""",
     "summary": """Update the partner data in POS instantly""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
@@ -16,7 +16,7 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
-    "price": 24.00,
+    "price": 29.00,
     "currency": "EUR",
 
     "depends": [
@@ -36,7 +36,7 @@
     "auto_install": False,
     "installable": True,
 
-    "demo_title": "Sync Barcode in POS",
+    "demo_title": "Sync Barcodes in POS",
     "demo_addons": [
     ],
     "demo_addons_hidden": [

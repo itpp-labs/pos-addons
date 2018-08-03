@@ -2,9 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-=====================
- Sync Barcode in POS
-=====================
+======================
+ Sync Barcodes in POS
+======================
 
 The module allows to instantly update partner data in opened POSes via longpolling connection if partner barcode has been changed in the backend.
 
