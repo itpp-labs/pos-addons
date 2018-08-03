@@ -31,3 +31,15 @@ It's highly recommended to `check odoo and postgresql setttings about connection
     (1 + workers + max_cron_threads) * db_maxconn < max_connections
 
 Where ``max_connections`` is postgresql setting and the rest are from odoo.
+
+Usage
+=====
+
+Longpolling icon meanings:
+
+* *Red* If there is no connection to the internet. Offline mode
+* *Orange* There is a connection to the internet, but we have not received any response from polling
+* *Green* Online
+* *Rotating* Connection is reestablishing
+
+To manually reestablish connection or to check its presence click on the longpolling icon.
