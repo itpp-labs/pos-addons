@@ -37,8 +37,8 @@ Usage
 
 Longpolling icon meanings:
 
-* *Red* If there is no connection to the internet. Offline mode
-* *Orange* There is a connection to the internet, but we have not received any response from polling
+* *Red* If there is no connection to the server. Offline mode
+* *Orange* There is a connection to the server, but we haven't received a response from polling yet
 * *Green* Online
 * *Rotating* Connection is reestablishing
 
