@@ -14,6 +14,7 @@ odoo.define('pos_logout.gui', function (require) {
     gui.Gui.include({
         ask_password: function(password, args) {
             var self = this;
+            var ret = new $.Deferred();
             var show_password_popup = function(){
                 self.show_popup('password',{
                     'title': _t('Password ?'),
@@ -30,7 +31,6 @@ odoo.define('pos_logout.gui', function (require) {
                 });
             };
             if (args && args.deblocking) {
-                var ret = new $.Deferred();
                 if (password) {
                     show_password_popup();
                 } else {
