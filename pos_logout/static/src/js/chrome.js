@@ -31,21 +31,20 @@ odoo.define('pos_logout.chrome', function (require) {
         loading_hide: function() {
             this._super();
             var self = this;
-            var set_logout_interval = function(){};
-            if (this.pos.config.logout_interval){
-                set_logout_interval = function(time){
-                    time = time || self.pos.config.logout_interval * 1000;
-                    if (time) {
-                        self.pos.logout_timer = setTimeout(function(){
-                            self.pos.gui.show_popup('block', {
-                                confirm: function() {
-                                    var blocking = true;
-                                    self.pos.click_username(blocking);
-                                },
-                            });
-                        }, time);
-                    }
+            var set_logout_interval = function(time){
+                time = time || self.pos.config.logout_interval * 1000;
+                if (time) {
+                    self.pos.logout_timer = setTimeout(function(){
+                        self.pos.gui.show_popup('block', {
+                            confirm: function() {
+                                var blocking = true;
+                                self.pos.click_username(blocking);
+                            },
+                        });
+                    }, time);
                 }
+            };
+            if (this.pos.config.logout_interval){
                 $(document).on('click', function(event){
                     clearTimeout(self.pos.logout_timer);
                     set_logout_interval();

@@ -14,25 +14,24 @@ odoo.define('pos_logout.gui', function (require) {
     gui.Gui.include({
         ask_password: function(password, args) {
             var self = this;
-            var show_password_popup = function(){};
+            var show_password_popup = function(){
+                self.show_popup('password',{
+                    'title': _t('Password ?'),
+                    confirm: function(pw) {
+                        if (pw === password) {
+                            ret.resolve();
+                        } else {
+                            show_password_popup();
+                        }
+                    },
+                    cancel: function(pw) {
+                        ret.reject();
+                    },
+                });
+            };
             if (args && args.deblocking) {
                 var ret = new $.Deferred();
                 if (password) {
-                    show_password_popup = function(){
-                        self.show_popup('password',{
-                            'title': _t('Password ?'),
-                            confirm: function(pw) {
-                                if (pw === password) {
-                                    ret.resolve();
-                                } else {
-                                    show_password_popup();
-                                }
-                            },
-                            cancel: function(pw) {
-                                ret.reject();
-                            },
-                        });
-                    }
                     show_password_popup();
                 } else {
                     ret.reject();
