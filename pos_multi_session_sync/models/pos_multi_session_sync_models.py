@@ -208,6 +208,7 @@ class PosMultiSessionSync(models.Model):
             'action': 'sync_all',
             'data': {
                 'orders': orders,
+                'message_ID': pos.multi_session_message_ID,
                 'order_ID': self.order_ID,
                 'uid': uid,
                 'login_number': message['login_number'],

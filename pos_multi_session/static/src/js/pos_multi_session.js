@@ -2,7 +2,7 @@
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016 Gael Torrecillas
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
- * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017-2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 David Arnold
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
@@ -21,6 +21,7 @@ odoo.define('pos_multi_session', function(require){
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var gui = require('point_of_sale.gui');
     var framework = require('web.framework');
+    var posDB = require('point_of_sale.DB');
 
 
     var _t = core._t;
@@ -235,7 +236,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
-        updates_from_server_callback: function(message, sync_all){
+        updates_from_server_callback: function(message){
             var self = this;
             // there are two types of message construction, get_attr extract required data from either of them
             var get_attr = function(obj, attr){
@@ -251,9 +252,9 @@ odoo.define('pos_multi_session', function(require){
                 this.message_ID = message.data.message_ID;
                 return;
             }
-            return this.updates_from_server(message, sync_all);
+            return this.updates_from_server(message);
         },
-        updates_from_server: function(message, sync_all){
+        updates_from_server: function(message){
             // don't broadcast updates made from this message
             this.ms_syncing_in_progress = true;
             var error = false;
@@ -276,9 +277,17 @@ odoo.define('pos_multi_session', function(require){
                         return item.uid === data.uid;
                     });
                 }
-                if (sync_all) {
+                if (action === 'sync_all') {
                     this.message_ID = data.message_ID;
-                    this.ms_update_order(order, data);
+                    _.each(data.orders, function(received_data){
+                        order = self.get('orders').find(function(item){
+                            return item.uid === received_data.data.uid;
+                        }) || false;
+                        self.ms_update_order(order, received_data.data);
+                    });
+                    this.multi_session.destroy_removed_orders(_.map(data.orders, function(o){
+                        return o.data.uid;
+                    }));
                 } else {
                     if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
@@ -289,12 +298,6 @@ odoo.define('pos_multi_session', function(require){
                         order.destroy({'reason': 'abandon'});
                     } else if (action === 'update_order'){
                         this.ms_update_order(order, data);
-                    } else if (action === 'sync_all') {
-                        var sync_options = {};
-                        if (data.uid) {
-                            sync_options.sync_current_order = true;
-                        }
-                        this.multi_session.sync_all(data, sync_options);
                     }
                 }
             }catch(err){
@@ -392,6 +395,7 @@ odoo.define('pos_multi_session', function(require){
                 } else if (dline.is_changed) {
                     line.apply_ms_data(dline);
                 }
+                line.offline_orderline = false;
             });
             if (added_new_lines) {
                 order.trigger('change:newLines', order);
@@ -400,28 +404,22 @@ odoo.define('pos_multi_session', function(require){
                 var line = order.orderlines.find(function(r){
                     return uid === r.uid;
                 });
-                // remove all lines
-                if (pos.config.multi_session_block_exist_order || (!pos.config.multi_session_block_exist_order && !line.offline_orderline)) {
+                if (!line.offline_orderline) {
                     order.orderlines.remove(line);
                 }
             });
             order.order_on_server = true;
             order.new_order = false;
             order.init_locked = false;
-            if (!pos.config.multi_session_block_exist_order) {
-                var offline_orderlines = order.orderlines.filter(function(line) {
-                    return line.offline_orderline;
-                });
-                if (offline_orderlines && offline_orderlines.length) {
-                    offline_orderlines.forEach(function(line) {
-                        line.offline_orderline = false;
-                    });
-                    this.ms_syncing_in_progress = false;
-                    // sync the order
-                    order.trigger('change:sync')
 
-                    this.ms_syncing_in_progress = true;
-                }
+            var offline_orderlines = order.orderlines.filter(function(line) {
+                return line.offline_orderline;
+            });
+            if (offline_orderlines && offline_orderlines.length) {
+                // sync the order
+                this.ms_syncing_in_progress = false;
+                order.new_updates_to_send();
+                order.trigger('new_updates_to_send');
             }
         },
         load_new_partners_by_id: function(partner_id){
@@ -518,6 +516,18 @@ odoo.define('pos_multi_session', function(require){
             this.closing = true;
             this._super();
         }
+    });
+
+    posDB = posDB.include({
+        get_unpaid_orders: function(){
+            var self = this;
+            var res = this._super(arguments);
+            res = _.filter(res, function(o){
+                var pos = window.posmodel;
+                return o.run_ID === pos.multi_session_run_ID;
+            });
+            return res;
+        },
     });
 
     var is_first_order = true;
@@ -676,15 +686,13 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    if (!self.pos.config.multi_session_block_exist_order) {
-                        var offline_orderlines = self.get_orderlines().filter(function(line){
-                            return line.offline_orderline;
+                    var offline_orderlines = self.get_orderlines().filter(function(line){
+                        return line.offline_orderline;
+                    });
+                    if (offline_orderlines && offline_orderlines.length) {
+                        offline_orderlines.forEach(function(line){
+                            line.offline_orderline = false;
                         });
-                        if (offline_orderlines && offline_orderlines.length) {
-                            offline_orderlines.forEach(function(line){
-                                line.offline_orderline = false;
-                            });
-                        }
                     }
                     if (res && res.action === "update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
@@ -693,7 +701,8 @@ odoo.define('pos_multi_session', function(require){
                             self.sequence_number = order_ID;
                             // sequence number replace
                             self.pos.pos_session.order_ID = order_ID;
-                            self.pos.pos_session.sequence_number = Math.max(self.pos.pos_session.sequence_number, order_ID + 1);
+                            var sequence_number = self.pos.pos_session.sequence_number;
+                            self.pos.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, order_ID + 1 || 1);
                             // rerender order
                             self.trigger('change');
                         }
@@ -730,9 +739,7 @@ odoo.define('pos_multi_session', function(require){
             if (this.order.ms_active()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
-            if (!self.pos.config.multi_session_block_exist_order) {
-                this.offline_orderline = true;
-            }
+            this.offline_orderline = this.pos.multi_session && Boolean(this.pos.multi_session.offline_sync_all_timer);
             this.bind('change', function(line){
                 if (self.order.ms_active() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
@@ -832,54 +839,23 @@ odoo.define('pos_multi_session', function(require){
                 self.on_syncing = false;
             });
         },
-        sync_all: function(data, options) {
-
+        sync_all: function(message) {
+            // used only on a pos loading
             var server_orders_uid = [];
             var self = this;
 
-            function delay(ms) {
-                var d = $.Deferred();
-                setTimeout(function () {
-                    d.resolve();
-                }, ms);
-                return d.promise();
-            }
+            self.pos.updates_from_server(message);
 
-
-            this.q = $.when();
-            var done = $.Deferred();
-
-            options = options || {};
-
-            if (options.immediate_rerendering) {
-                data.orders.forEach(function (item) {
-                    self.pos.updates_from_server(item, true);
-                    server_orders_uid.push(item.data.uid);
-                });
-            } else {
-                data.orders.forEach(function (item) {
-                    self.q = self.q.then(function(){
-                        self.pos.updates_from_server(item, true);
-                        return delay(100);
-                    });
-                    server_orders_uid.push(item.data.uid);
-                });
-            }
-
-            this.pos.pos_session.order_ID = data.order_ID;
-
-            if (data.order_ID !== 0) {
-                this.pos.pos_session.sequence_number = Math.max(this.pos.pos_session.sequence_number, data.order_ID + 1);
-            }
-
-            if (!options.sync_current_order) {
-                this.destroy_removed_orders(server_orders_uid);
-            }
-            self.q.then(function() {
-                done.resolve();
+            var data = message.data;
+            data.orders.forEach(function (item) {
+                server_orders_uid.push(item.data.uid);
             });
 
-            return done;
+            this.pos.pos_session.order_ID = data.order_ID;
+            var sequence_number = this.pos.pos_session.sequence_number;
+            this.pos.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, data.order_ID + 1 || 1);
+
+            this.destroy_removed_orders(server_orders_uid);
         },
         remove_order: function(data){
             data.run_ID = this.pos.multi_session_run_ID;
@@ -979,11 +955,7 @@ odoo.define('pos_multi_session', function(require){
                     }
                 }
                 if (res.action === 'sync_all') {
-                    var sync_options = {};
-                    if (message.immediate_rerendering) {
-                        sync_options.immediate_rerendering = message.immediate_rerendering;
-                    }
-                    self.sync_all(res.data, sync_options);
+                    self.sync_all(res);
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
@@ -1043,10 +1015,7 @@ odoo.define('pos_multi_session', function(require){
             if (this.pos.sync_bus && this.pos.sync_bus.sleep) {
                 return;
             }
-            var warning_message = _t("No connection to the server. You can create new orders only. It is forbidden to modify existing orders.");
-            if (!this.pos.config.multi_session_block_exist_order) {
-                warning_message = _t("No connection to the server. If the order will be change by another POS, there will be a synchronization error and updates of current POS will be lost.");
-            }
+            var warning_message = _t("No connection to the server. Changes related to the existing orders like a removing orders or orderlines will be lost after reestablishing the connection");
             this.warning(warning_message);
         }
     });

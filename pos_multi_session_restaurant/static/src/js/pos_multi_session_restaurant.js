@@ -200,11 +200,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
     multi_session.MultiSession = multi_session.MultiSession.extend({
         sync_all: function(data) {
             var self = this;
-            return MultiSessionSuper.prototype.sync_all.apply(this, arguments).then(function(){
-                if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
-                    self.pos.gui.screen_instances.floors.renderElement();
-                }
-            });
+            MultiSessionSuper.prototype.sync_all.apply(this, arguments);
+            if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
+                self.pos.gui.screen_instances.floors.renderElement();
+            }
         }
     });
 
