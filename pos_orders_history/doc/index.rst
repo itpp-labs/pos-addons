@@ -21,7 +21,6 @@ Configuration
   * ``[x] Show Cancelled Orders`` - to display cancelled orders together with paid orders
   * ``[x] Show Posted Orders`` - to display posted orders together with paid orders
   * ``[x] Show Barcode on Receipt`` - to display the barcode on payment receipt
-  * ``[x] Reprint Orders`` - to reprint the payment receipt of an order
     
 * Click ``[Save]``
 
