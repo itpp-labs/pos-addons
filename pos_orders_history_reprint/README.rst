@@ -3,10 +3,10 @@
    :alt: License: LGPL-3
 
 ============================
- POS Orders History Reprint
+ Reprint POS Orders Receipt 
 ============================
 
-Reprint paid POS Orders with POS interface.
+The module allows to reprint payment receipts of paid POS orders.
 
 Credits
 =======
@@ -14,6 +14,7 @@ Credits
 Contributors
 ------------
 * Losev Artyom
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
 Sponsors
 --------

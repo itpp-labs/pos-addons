@@ -1,5 +1,5 @@
 ============================
- POS Orders History Reprint
+ Reprint POS Orders Receipt
 ============================
 
 Installation
@@ -12,17 +12,17 @@ Configuration
 
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
 * Open POS configuration form
-* Click on ``[Edit]``
-* Check ``[x] Orders History`` box
-* Check ``[x] Reprint Orders`` box
-* Click on ``[Save]``
+* Click ``[Edit]``
+* Check the ``[x] Orders History`` box
+* Check the ``[x] Reprint Orders`` box
+* Click ``[Save]``
 
 Usage
 =====
 
 * Go to ``Point of Sale`` menu
 * Open POS session
-* Click on ``History``
-* Select ``Order``
-* Click on ``Reprint``
-* RESULT: The order printed again
+* Click ``History``
+* Select an order
+* Click ``Reprint``
+* RESULT: The order receipt is printed again
