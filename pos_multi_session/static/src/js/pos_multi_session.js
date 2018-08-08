@@ -279,15 +279,20 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (action === 'sync_all') {
                     this.message_ID = data.message_ID;
+                    var server_orders_uids = _.map(data.orders, function(o){
+                        return o.data.uid;
+                    });
                     _.each(data.orders, function(received_data){
                         order = self.get('orders').find(function(item){
                             return item.uid === received_data.data.uid;
                         }) || false;
                         self.ms_update_order(order, received_data.data);
                     });
-                    this.multi_session.destroy_removed_orders(_.map(data.orders, function(o){
-                        return o.data.uid;
-                    }));
+                    this.pos_session.order_ID = data.order_ID;
+                    var sequence_number = this.pos_session.sequence_number;
+                    this.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, data.order_ID + 1 || 1);
+
+                    this.multi_session.destroy_removed_orders(server_orders_uids);
                 } else {
                     if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
@@ -839,24 +844,6 @@ odoo.define('pos_multi_session', function(require){
                 self.on_syncing = false;
             });
         },
-        sync_all: function(message) {
-            // used only on a pos loading
-            var server_orders_uid = [];
-            var self = this;
-
-            self.pos.updates_from_server(message);
-
-            var data = message.data;
-            data.orders.forEach(function (item) {
-                server_orders_uid.push(item.data.uid);
-            });
-
-            this.pos.pos_session.order_ID = data.order_ID;
-            var sequence_number = this.pos.pos_session.sequence_number;
-            this.pos.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, data.order_ID + 1 || 1);
-
-            this.destroy_removed_orders(server_orders_uid);
-        },
         remove_order: function(data){
             data.run_ID = this.pos.multi_session_run_ID;
             return this.send({action: 'remove_order', data: data});
@@ -955,7 +942,7 @@ odoo.define('pos_multi_session', function(require){
                     }
                 }
                 if (res.action === 'sync_all') {
-                    self.sync_all(res);
+                    self.pos.updates_from_server(res);
                 }
                 if (self.offline_sync_all_timer) {
                     clearInterval(self.offline_sync_all_timer);
