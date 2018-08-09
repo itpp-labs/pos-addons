@@ -347,22 +347,15 @@ odoo.define('pos_multi_session', function(require){
                 if (!create_new_order){
                     return;
                 }
-                var json = {
-                    sequence_number: data.sequence_number,
-                    uid: data.uid,
-                    run_ID: data.run_ID,
-                    statement_ids: false,
-                    lines: false,
-                    multiprint_resume: data.multiprint_resume,
-                    new_order: false,
+                var json = _.extend(data, {
                     order_on_server: true,
-                    table_id: data.table_id,
-                    floors_id: data.floor_id
-                };
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, data:data, json:json});
+                });
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, json: json});
+                order.init_locked = false;
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
+                return;
             }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
@@ -607,6 +600,7 @@ odoo.define('pos_multi_session', function(require){
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.trigger('change:update_new_order');
             } else {
+                // 'change' trigger saves order to db
                 this.trigger('change');
             }
             if (!this.ms_active()){

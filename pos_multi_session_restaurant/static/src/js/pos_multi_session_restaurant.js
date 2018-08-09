@@ -96,9 +96,10 @@ odoo.define('pos_multi_session_restaurant', function(require){
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
-            if (options.data.table_id) {
-                order.table = self.tables_by_id[options.data.table_id];
-                order.customer_count = options.data.customer_count;
+            var data = options.json;
+            if (data.table_id) {
+                order.table = self.tables_by_id[data.table_id];
+                order.customer_count = data.customer_count;
             }
             return order;
         },
