@@ -173,6 +173,7 @@ odoo.define('pos_multi_session', function(require){
 
                 var load_sync_all_request = function(){
                     return self.multi_session.request_sync_all({'immediate_rerendering': true}).then(function() {
+                        self.is_loaded = true;
                         done.resolve();
                     }).fail(function(){
                         setTimeout(function(){
@@ -744,7 +745,8 @@ odoo.define('pos_multi_session', function(require){
             if (this.order.ms_active()){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
-            this.offline_orderline = this.pos.multi_session && Boolean(this.pos.multi_session.offline_sync_all_timer);
+            // next line prevents assigning 'orderlines' as offline when pos is loading and data is taken from local storage
+            this.offline_orderline = this.pos.is_loaded;
             this.bind('change', function(line){
                 if (self.order.ms_active() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
