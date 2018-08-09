@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """WeChat API""",
-    "summary": """Technical module to intergrate odoo with WeChat""",
+    "summary": """Technical module to integrate Odoo with WeChat""",
     "category": "Hidden",
     # "live_test_url": "",
     "images": [],
@@ -14,8 +14,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 150.00,
+    "currency": "EUR",
 
     "depends": [
         'product',
