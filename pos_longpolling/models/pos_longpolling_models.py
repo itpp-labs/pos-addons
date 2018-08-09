@@ -49,3 +49,9 @@ class PosConfig(models.Model):
     @api.model
     def _get_full_channel_name_by_id(self, dbname, pos_id, channel_name):
         return '["%s","%s","%s"]' % (dbname, channel_name, pos_id)
+
+    @api.model
+    def send_to_all_poses(self, channel_name, data):
+        active_poses = self.search([])
+        res = active_poses._send_to_channel(channel_name, data)
+        return res
