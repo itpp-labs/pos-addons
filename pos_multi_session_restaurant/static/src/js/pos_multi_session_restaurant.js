@@ -102,7 +102,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             }
             return order;
         },
-        updates_from_server: function(message, sync_all){
+        updates_from_server: function(message){
             var self = this;
             var data = message.data || {};
             var order = false;
@@ -121,7 +121,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
-            if (!sync_all && this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
+            if (this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
                 this.gui.screen_instances.floors.renderElement();
             }
         },
@@ -196,16 +196,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
     });
 
-    var MultiSessionSuper = multi_session.MultiSession;
-    multi_session.MultiSession = multi_session.MultiSession.extend({
-        sync_all: function(data) {
-            var self = this;
-            MultiSessionSuper.prototype.sync_all.apply(this, arguments);
-            if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
-                self.pos.gui.screen_instances.floors.renderElement();
-            }
-        }
-    });
 
     floors.FloorScreenWidget.include({
         init: function(parent, options) {
