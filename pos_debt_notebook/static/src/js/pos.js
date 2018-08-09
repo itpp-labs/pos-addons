@@ -301,6 +301,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }, 0);
         },
         add_paymentline: function(cashregister) {
+            // FIXME: it doesn't call super and make it incompatible with any other module that redefines  add_paymentline
             this.assert_editable();
             var self = this;
             var journal = cashregister.journal;
