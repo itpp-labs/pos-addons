@@ -116,7 +116,7 @@ odoo.define('pos_wechat', function(require){
         // TODO: do we need to extend init_from_JSON too ?
         export_as_JSON: function(){
             var res = PaymentlineSuper.prototype.export_as_JSON.apply(this, arguments);
-            res['micropay_id'] = this.micropay_id;
+            res.micropay_id = this.micropay_id;
             return res;
         },
     });
@@ -167,7 +167,7 @@ odoo.define('pos_wechat', function(require){
                         'journal_id': self.pos.micropay_journal.id,
                         'pos_id': pos_id,
                     },
-                })
+                });
             };
 
             var current_send_number = 0;
