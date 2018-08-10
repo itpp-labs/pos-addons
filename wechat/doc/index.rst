@@ -21,13 +21,13 @@ Installation
 Multi database
 --------------
 
-If you have several databases, you need to check that all requests are sent to the desired database. The user authentication request from the Mini-program does not contain session cookies. So, if Odoo cannot determine which database to use, it will return a 404 error (Page not found).
+If you have several databases, you need to check that all requests are sent to the desired database. The notification request from the WeChat cloud does not contain session cookies. So, if Odoo cannot determine which database to use, it will return a 404 error (Page not found).
 In order for the requests to send to the desired database, you need to configure `dbfilter <https://odoo-development.readthedocs.io/en/latest/admin/dbfilter.html>`__.
 
 WeChat APP
 ==========
 
-TODO
+Check WeChat documentation or contact WeChat Support about obtaining APP credentials.
 
 Configuration
 =============
