@@ -26,14 +26,14 @@ class PosMakePayment(models.TransientModel):
             refund.action_confirm()
         return res
 
-    @api.onchange('order_ref')
+    @api.onchange('order_ref', 'journal_wechat')
     def update_wechat_order(self):
         domain = [('order_ref', '=', self.order_ref)]
         if self.journal_wechat == 'micropay':
             record = self.env['wechat.micropay'].search(domain)[:1]
-            self.wechat_order_id = record
-            self.micropay_id = False
-        elif self.journal_wechat == 'native':
-            record = self.env['wechat.order'].search(domain)[:1]
             self.wechat_order_id = False
             self.micropay_id = record
+        elif self.journal_wechat == 'native':
+            record = self.env['wechat.order'].search(domain)[:1]
+            self.wechat_order_id = record
+            self.micropay_id = False
