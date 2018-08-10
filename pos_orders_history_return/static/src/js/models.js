@@ -22,10 +22,10 @@ odoo.define('pos_orders_history_return.models', function (require) {
             if (this.get_mode() === "return") {
                 var current_return_qty = this.get_current_product_return_qty(product);
                 var quantity = 1;
-                if(options.quantity !== undefined) {
+                if(typeof options.quantity !== 'undefined') {
                     quantity = options.quantity;
                 }
-                if (current_return_qty + quantity <= product.max_return_qty)  {
+                if (current_return_qty + quantity <= product.max_return_qty) {
                     _super_order.add_product.apply(this, arguments);
                     this.change_return_product_limit(product);
                 }
@@ -77,7 +77,7 @@ odoo.define('pos_orders_history_return.models', function (require) {
             } else if (order && order.get_mode() === "return" && quantity !== "remove") {
                 var current_return_qty = this.order.get_current_product_return_qty(this.product);
                 if (this.quantity) {
-                    current_return_qty = current_return_qty + this.quantity;
+                    current_return_qty += this.quantity;
                 }
                 if (quantity && current_return_qty + Number(quantity) <= this.product.max_return_qty) {
                     if (quantity > 0) {
