@@ -26,6 +26,10 @@ class TestWeChatOrder(HttpCase):
         self.addCleanup(self.requests_mock.stop)
         self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
+        patcher = patch('wechatpy.WeChatPay.check_signature', wraps=lambda *args: True)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
         self.Order = self.phantom_env['wechat.order']
         self.product1 = self.phantom_env['product.product'].create({
             'name': 'Product1',
