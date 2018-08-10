@@ -12,17 +12,33 @@ Configuration
 
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
 * Open POS configuration form
-* Click on ``[Edit]``
+* Click ``[Edit]``
 * Check ``[x] Orders History`` box
-* Check ``[x] Orders Return`` box
-* Click on ``[Save]``
+* Check ``[x] Return Orders`` box to activate order returns
+* Check ``[x] Show Returned Orders`` box to display all previously returned orders
+* Click ``[Save]``
 
 Usage
 =====
 
 * Go to ``Point of Sale`` menu
 * Open POS session
-* Click on ``History``
-* Click on ``Order``
-* Click on ``Return``
-* RESULT: the order are displayed on POS
+* Click ``History``
+* Select an order
+* Click ``Return``
+* RESULT: the order opens in Return Mode with the products it contains
+
+No Receipt Return
+-----------------
+
+* Click ``History``
+* Click ``No Receipt``
+* RESULT: the order opens in Return mode with all products
+
+Search by Receipt Barcode
+-------------------------
+
+* Click ``History``
+* Take a receipt
+* Scan the receipt barcode
+* RESULT: it automatically selects the order and opens it in Return mode

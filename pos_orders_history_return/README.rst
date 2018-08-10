@@ -6,7 +6,7 @@
  POS Orders Return
 ===================
 
-The module allows to return paid orders in POS interface
+The module allows to make order returns from POS interface by convenient way.
 
 Credits
 =======

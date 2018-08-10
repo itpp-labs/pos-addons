@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """POS Orders Return""",
-    "summary": """The module allows to return paid orders in POS interface""",
+    "summary": """The module allows to make order returns from POS interface by quick & easy way""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": [],
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=10.0",
+    "images": ["images/pos_orders_return_main.jpg"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -14,8 +15,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 39.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_orders_history",
@@ -38,4 +39,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "POS Orders Refund",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-orders-return",
+    "demo_summary": "The module allows to make order returns from POS interface by convenient way",
+    "demo_images": [
+        "images/pos_orders_return_main.jpg",
+    ]
 }
