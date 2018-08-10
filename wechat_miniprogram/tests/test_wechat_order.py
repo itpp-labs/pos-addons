@@ -118,8 +118,7 @@ class TestWeChatOrder(HttpCase):
         self.assertEqual(res.status_code, 200)
         return res.json()
 
-    # the test is not used until the https://github.com/jxtech/wechatpy/pull/380 not merged
-    def _test_JSAPI_payment(self):
+    def test_JSAPI_payment(self):
         # fake values for a test
         create_vals = {}
 

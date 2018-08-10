@@ -65,7 +65,7 @@ Native Payments debugging
 -------------------------
 
 * It seems that in sandbox mode it's allowed to use only prices ``1.01`` and ``1.02``.
- 
+
 Credits
 =======
 

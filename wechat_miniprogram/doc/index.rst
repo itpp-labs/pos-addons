@@ -7,18 +7,11 @@ Follow instructions of `WeChat API <https://apps.odoo.com/apps/modules/11.0/wech
 Installation
 ============
 
-* `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
-
 Multi database
 --------------
 
 If you have several databases, you need to check that all requests are sent to the desired database. The user authentication request from the Mini-program does not contain session cookies. So, if Odoo cannot determine which database to use, it will return a 404 error (Page not found).
 In order for the requests to send to the desired database, you need to configure `dbfilter <https://odoo-development.readthedocs.io/en/latest/admin/dbfilter.html>`__.
-
-Wechatpy
---------
-
-You need to use the wechatpy library with the changes: https://github.com/jxtech/wechatpy/pull/380
 
 Configuration
 =============
