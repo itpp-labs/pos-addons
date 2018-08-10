@@ -66,7 +66,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order___last_update
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos___last_update
 msgid "Last Modified on"
-msgstr "Ultima modifica su"
+msgstr "Ultima modifica il"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_write_uid
@@ -80,7 +80,7 @@ msgstr "Ultimo aggiornamento di"
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_write_date
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_write_date
 msgid "Last Updated on"
-msgstr "Ultimo aggiornamento su"
+msgstr "Ultimo aggiornamento il"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_message_ID
@@ -105,9 +105,9 @@ msgid ""
 "in Multi-session is closed. It's used to prevent synchronization of old "
 "orders"
 msgstr ""
-"Numero di avvii del multi sessione. Viene incrementato dopo la chiusura "
-"dell'ultima sessione per evitare la sincronizzazione di ordini vecchi in un "
-"multi sessione"
+"Numero di avvii della multi sessione. Viene incrementato dopo la chiusura "
+"dell'ultima sessione per evitare la sincronizzazione di ordini vecchi in una"
+" multi sessione"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order_revision_ID

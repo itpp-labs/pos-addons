@@ -33,7 +33,7 @@
                         <field name="discount_program_name"/>
                         <field name="discount_program_active"/>
                         <field name="discount_category_ids">
-                            <tree string="Discount category">
+                            <tree>
                                 <field name="discount_category_id"/>
                                 <field name="category_discount_pc"/>
                             </tree>
@@ -64,7 +64,7 @@
         <field name="name">pos.discount_program.tree</field>
         <field name="model">pos.discount_program</field>
         <field name="arch" type="xml">
-            <tree string="Pos Discount Program" decoration-muted="discount_program_active == False">
+            <tree decoration-muted="discount_program_active == False">
                 <field name="discount_program_number" widget="handle"/>
                 <field name="discount_program_name"/>
                 <field name="discount_program_active"/>

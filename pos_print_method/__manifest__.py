@@ -11,7 +11,7 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 69.00,
+    "price": 34.00,
     "currency": "EUR",
 
     "depends": [

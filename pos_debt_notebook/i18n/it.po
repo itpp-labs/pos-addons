@@ -414,7 +414,7 @@ msgstr "Registro"
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update___last_update
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_report_pos_debt___last_update
 msgid "Last Modified on"
-msgstr "Ultima modifica su"
+msgstr "Ultima modifica il"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_write_uid
@@ -428,7 +428,7 @@ msgstr "Ultimo aggiornamento di"
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_write_date
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_write_date
 msgid "Last Updated on"
-msgstr "Ultimo aggiornamento su"
+msgstr "Ultimo aggiornamento il"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_ids
@@ -671,7 +671,7 @@ msgstr ""
 #: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:11
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "Pronto a lanciare il <b>punto vendita</b>? <i>Fai clic qui</i>."
+msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fare clic qui</i>."
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_report_pos_debt_credit_product

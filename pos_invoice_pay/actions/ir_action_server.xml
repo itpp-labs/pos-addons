@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017 Artyom Losev
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+
+<openerp>
+        <record id="action_update_pos_invoices" model="ir.actions.server">
+            <field name="name">Update pos invoices</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">object.action_updated_invoice()</field>
+        </record>
+
+        <record id="action_update_pos_sale_orders" model="ir.actions.server">
+            <field name="name">Update pos sale_order</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">object.action_updated_sale_order()</field>
+        </record>
+
+
+</openerp>

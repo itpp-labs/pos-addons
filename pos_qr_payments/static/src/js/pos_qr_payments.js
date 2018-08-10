@@ -8,7 +8,7 @@ odoo.define('pos_qr_payments', function(require){
     var _t = core._t;
 
     gui.Gui.prototype.screen_classes.filter(function(el) {
-        return el.name == 'payment';
+        return el.name === 'payment';
     })[0].widget.include({
         init: function(parent, options) {
             this._super(parent, options);
@@ -37,7 +37,7 @@ odoo.define('pos_qr_payments', function(require){
             });
             if (order){
                 var creg = _.filter(this.hidden_cashregisters.concat(this.cashregisters), function(r){
-                    return r.journal_id[0] == journal_id;
+                    return r.journal_id[0] === journal_id;
                 })[0];
 
                 // add payment
@@ -56,12 +56,10 @@ odoo.define('pos_qr_payments', function(require){
                     this.trigger('validate_order');
                 }
                 return order;
-            } else {
-                console.log('error', 'Order is not found');
-                return false;
             }
-
+            console.log('error', 'Order is not found');
+            return false;
         },
     });
 
-})
+});

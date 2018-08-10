@@ -1,9 +1,13 @@
+# Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 {
     "name": """Hardware Network Printer""",
     "summary": """Hardware Driver for Network Printers""",
     "category": "Point of Sale",
     "images": [],
-    "version": "11.0.2.0.0",
+    "version": "11.0.2.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

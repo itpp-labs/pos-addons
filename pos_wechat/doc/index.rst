@@ -16,7 +16,7 @@ Configuration
 WeChat Journals
 ---------------
 
-WeChat Journals are created automatically on first opening POS session.
+WeChat Journals are created automatically on first opening new POS session.
 
 * In demo installation: they are availabe in POS immediatly
 * In non-demo installation: add Journals to **Payment Methods** in *Point of
@@ -24,6 +24,15 @@ WeChat Journals are created automatically on first opening POS session.
 
 Usage
 =====
+
+Show QR to customer
+-------------------
+
+* Start POS
+* Create some Order
+* Go to Payment screen
+* Click on journal *Wechat Native Payment*
+* RESULT: QR is shown on Screen and Customer Screen (when available)
 
 Scanning customer's QR
 ----------------------

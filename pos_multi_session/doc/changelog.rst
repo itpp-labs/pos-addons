@@ -3,9 +3,18 @@
 Updates
 =======
 
+`4.0.5`
+-------
+- **IMP:** Improved performance
+
+`4.0.4`
+-------
+- **FIX:** Remove some orders after revision error
+
 `4.0.3`
 -------
-- **Fix:** Wrong cashier value in order lines after switching the cashier
+- **IMP:** All data are updated during POS loading
+- **IMP:** Improved orderline updating speed after synchronization with server
 
 `4.0.2`
 -------
@@ -17,9 +26,9 @@ Updates
 
 `4.0.0`
 -------
-- REF: Server side of synnchronization is moved to the separate module ``pos_multi_session_sync``
-- NEW: Allow to make synnchronization via local server
-- NEW: Fiscal position synnchronization
+- REF: Server side of synchronization is moved to the separate module ``pos_multi_session_sync``
+- NEW: Allow to make synchronization via local server
+- NEW: Fiscal position synchronization
 
 `3.1.0`
 -------

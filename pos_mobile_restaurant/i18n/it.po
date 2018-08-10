@@ -41,7 +41,7 @@ msgstr "Mostrare il numero di coperti"
 #: model:ir.model.fields,help:pos_mobile_restaurant.field_pos_config_show_number_guests
 #: model:ir.ui.view,arch_db:pos_mobile_restaurant.view_pos_config_form
 msgid "Show the number of guests in popup for empty table"
-msgstr "Mostra il numero di coperti per i tavoli vuoti nel menù a comparsa"
+msgstr "Mostra il numero di coperti dei tavoli vuoti nel menù a comparsa"
 
 #. module: pos_mobile_restaurant
 #: model:ir.model,name:pos_mobile_restaurant.model_pos_config

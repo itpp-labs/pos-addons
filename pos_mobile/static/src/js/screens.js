@@ -123,7 +123,7 @@ odoo.define('pos_mobile.screens', function (require) {
 
             $('.searchbox input').on("focusout", self.touch_searchbox);
             $('.searchbox input').on("focus input", self.touch_searchbox);
-            $('.searchbox').click(function(){
+            $('.searchbox input').click(function(){
                 self.reset_category();
             });
             var breadcrumbs = $('.window .rightpane .breadcrumbs');
