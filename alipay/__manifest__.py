@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Alipay API""",
-    "summary": """Technical module to intergrate odoo with Alipay""",
+    "summary": """Technical module to integrate odoo with Alipay""",
     "category": "Hidden",
     # "live_test_url": "",
     "images": [],

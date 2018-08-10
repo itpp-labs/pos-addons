@@ -2,19 +2,19 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """WeChat Payments in POS""",
-    "summary": """Support payment by scanning user's QR""",
+    "summary": """Support WeChat QR-based payments (scan and show)""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
     "version": "11.0.1.0.0",
     "application": False,
 
-    "author": "IT-Projects LLC, Kolushov Alexandr",
+    "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/KolushovAlexandr",
+    "website": "https://it-projects.info/team/yelizariev",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 330.00,
+    "currency": "EUR",
 
     "depends": [
         "wechat",
