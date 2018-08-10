@@ -37,7 +37,7 @@ class WechatMiniProgramController(http.Controller):
                 'wechat_session_key': session_key,
             })
         else:
-            country = request.env['res.country'].search([('name', 'ilike', '%'+user_info.get('country')+'%')])
+            country = request.env['res.country'].search([('name', 'like', '%'+user_info.get('country')+'%')], limit=1)
             name = user_info.get('nickName')
             login = "wechat_%s" % openid
             city = user_info.get('city')
