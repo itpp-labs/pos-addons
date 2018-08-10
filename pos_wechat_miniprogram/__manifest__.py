@@ -18,7 +18,7 @@
 
     "depends": [
         "wechat_miniprogram",
-        "point_of_sale",
+        "pos_wechat",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
