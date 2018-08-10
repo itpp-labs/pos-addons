@@ -46,7 +46,7 @@ odoo.define('pos_qr_scan', function(require){
         },
         add_button: function(content) {
             var button = document.createElement('div');
-            button.className = 'button qr-content'
+            button.className = 'button qr-content';
             button.innerHTML = content.name;
             button.setAttribute('camera-id', content.id);
             button = $('.transparent_sidebar > .body').append(button);
@@ -56,7 +56,7 @@ odoo.define('pos_qr_scan', function(require){
             var button = document.createElement('div');
             active_id = e.target.getAttribute('camera-id');
             this.start_webcam({'deviceId': {'exact': active_id}});
-            this.pos.db.save('active_camera_id', active_id)
+            this.pos.db.save('active_camera_id', active_id);
             return button;
         },
         get_camera_by_id: function(id) {
@@ -177,12 +177,12 @@ odoo.define('pos_qr_scan', function(require){
             }
         },
         initCanvas: function(w,h){
-            gCanvas = document.getElementById("qr-canvas");
+            var gCanvas = document.getElementById("qr-canvas");
             gCanvas.style.width = w + "px";
             gCanvas.style.height = h + "px";
             gCanvas.width = w;
             gCanvas.height = h;
-            gCtx = gCanvas.getContext("2d");
+            var gCtx = gCanvas.getContext("2d");
             gCtx.clearRect(0, 0, w, h);
         }
 
@@ -200,19 +200,18 @@ odoo.define('pos_qr_scan', function(require){
             if (journal.length){
                 if (journal.length > 1){
                     // TODO warning
-                    console.log('error', 'More than one journal to hide is found', journals);
+                    console.log('error', 'More than one journal to hide is found', journal);
                 }
                 journal = journal[0];
             } else {
                 return false;
             }
             self.cashregisters = _.filter(self.cashregisters, function(r){
-                if (r.journal_id[0] == journal.id){
+                if (r.journal_id[0] === journal.id){
                     self.hidden_cashregisters.push(r);
                     return false;
-                } else {
-                    return true;
                 }
+                return true;
             });
 
             return journal;

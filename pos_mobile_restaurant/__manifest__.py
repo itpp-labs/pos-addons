@@ -4,7 +4,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
     "images": ["images/pos_mobile_restaurant.png"],
-    "version": "11.0.1.2.5",
+    "version": "11.0.1.2.6",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -15,7 +15,7 @@
     "currency": "EUR",
 
     "depends": [
-        "pos_restaurant",
+        "pos_restaurant_base",
         "pos_mobile",
     ],
     "external_dependencies": {"python": [], "bin": []},

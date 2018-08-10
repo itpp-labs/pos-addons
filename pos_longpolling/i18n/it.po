@@ -63,7 +63,7 @@ msgstr "Timeout per il 'pong'"
 #: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:10
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "Pronto a lanciare il <b>punto vendita</b>? <i>Fai clic qui</i>."
+msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fare clic qui</i>."
 
 #. module: pos_longpolling
 #: model:ir.model.fields,help:pos_longpolling.field_pos_config_longpolling_max_silence_timeout

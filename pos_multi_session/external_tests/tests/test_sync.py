@@ -1,3 +1,7 @@
+# Copyright 2016-2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from .common import TestCommon
 
 

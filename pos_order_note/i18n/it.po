@@ -166,7 +166,7 @@ msgstr "Ultimo aggiornamento di"
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_write_date
 msgid "Last Updated on"
-msgstr "Ultimo aggiornamento su"
+msgstr "Ultimo aggiornamento il"
 
 #. module: pos_order_note
 #. openerp-web
@@ -267,7 +267,7 @@ msgstr "Modello prodotto"
 #: code:addons/pos_order_note/static/src/js/tour.js:14
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fate clic qui</i>."
+msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fare clic qui</i>."
 
 #. module: pos_order_note
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_sequence

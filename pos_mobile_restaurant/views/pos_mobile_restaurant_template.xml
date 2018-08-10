@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <template id="pos_restaurant_assets" name="pos_mobile_restaurant assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/pos_mobile_restaurant/static/src/css/restaurant.css"/>
@@ -28,5 +27,4 @@
                 <script type="text/javascript" src="/pos_mobile_restaurant/static/src/js/tour.js"></script>
             </xpath>
         </template>
-    </data>
 </odoo>

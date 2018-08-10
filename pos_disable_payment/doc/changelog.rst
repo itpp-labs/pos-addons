@@ -3,9 +3,17 @@
 Updates
 =======
 
-`2.5.1`
+`3.6.1`
 -------
-- FIX: Error on opening POS in latest odoo version.
+- IMP: Compatibility with pos_restaurant_base module
+
+`2.6.1`
+-------
+- FIX: Option "Allow remove order line" didn't work correctly after the previous updates
+
+`2.6.0`
+-------
+- NEW: New option "Allow change Qty for kitchen orders"
 
 `2.5.0`
 -------

@@ -236,6 +236,9 @@ odoo.define('pos_longpolling', function(require){
             session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
+                if (self.pos.debug){
+                    console.log('POS LONGPOLLING', self.pos.config.name, serv_adr, "PING");
+                }
                 if (!self.response_status) {
                     self.response_timer();
                 }
@@ -263,7 +266,7 @@ odoo.define('pos_longpolling', function(require){
             }
         },
         set_icon_class: function(selector, new_class) {
-            var element = this.$(selector);
+            var element = $(selector);
             element.removeClass('oe_hidden oe_red oe_green').addClass(new_class);
         },
     });

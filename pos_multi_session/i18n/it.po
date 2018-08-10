@@ -172,7 +172,7 @@ msgstr "ID"
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session___last_update
 msgid "Last Modified on"
-msgstr "Ultima modifica su"
+msgstr "Ultima modifica il"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_write_uid
@@ -182,7 +182,7 @@ msgstr "Ultimo aggiornamento di"
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_write_date
 msgid "Last Updated on"
-msgstr "Ultimo aggiornamento su"
+msgstr "Ultimo aggiornamento il"
 
 #. module: pos_multi_session
 #: model:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
@@ -281,7 +281,7 @@ msgstr "Quantità"
 #: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:20
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fate clic qui</i>."
+msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fare clic qui</i>."
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_replace_empty_order
@@ -321,8 +321,7 @@ msgstr "Server di sincronizzazione"
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
-"Rilevato un conflitto durante la sincronizzazione, ripetere di nuovo "
-"l'operazione"
+"Rilevato un conflitto durante la sincronizzazione, ripetere l'operazione"
 
 #. module: pos_multi_session
 #: model:ir.ui.view,arch_db:pos_multi_session.multi_session_form

@@ -76,7 +76,7 @@ msgstr "Consentire rimozione righe d'ordine"
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_is_restaurant_installed
 msgid "Is Restaurant Installed"
-msgstr "È installato Ristorante"
+msgstr "Modulo ristorante installato"
 
 #. module: pos_disable_payment
 #: model:ir.model,name:pos_disable_payment.model_res_users

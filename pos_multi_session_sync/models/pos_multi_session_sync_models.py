@@ -1,3 +1,7 @@
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 import logging
 import json
 import time
@@ -58,6 +62,45 @@ class PosMultiSessionSync(models.Model):
             return True
 
     @api.multi
+    def dict_compare(self, d1, d2):
+        self.ensure_one()
+        d1_keys = set(d1.keys())
+        d2_keys = set(d2.keys())
+        intersect_keys = d1_keys.intersection(d2_keys)
+
+        # ID does not need to compare because the line can be
+        # with different id as each POS creates its own separate line
+
+        # is_changed does not need to be compared because this value is not updated after being written to the server
+        added = d1_keys - d2_keys
+        added.discard('is_changed')
+
+        removed = d2_keys - d1_keys
+        removed.discard('is_changed')
+
+        modified = {o: (d1[o], d2[o]) for o in intersect_keys if d1[o] != d2[o]}
+        if modified.get('id'):
+            modified.pop('id')
+
+        return modified, added, removed
+
+    @api.multi
+    def set_changes(self, message, order):
+        self.ensure_one()
+        order = json.loads(order.order)
+        data = order.get('data')
+        lines = data.get('lines')
+        lines_list = {l[2]['uid']: l[2] for l in lines}
+
+        for e in message['data']['lines']:
+            line = lines_list.get(e[2]['uid'])
+            if line:
+                modified, added, removed = self.dict_compare(e[2], line)
+                if modified or added or removed:
+                    e[2]['is_changed'] = True
+        return message
+
+    @api.multi
     def set_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
@@ -69,6 +112,7 @@ class PosMultiSessionSync(models.Model):
         if not revision or (order and order.state == 'deleted'):
             return {'action': 'revision_error', 'order_uid': order_uid}
         if order:  # order already exists
+            message = self.set_changes(message, order)
             order.write({
                 'order': json.dumps(message),
                 'revision_ID': order.revision_ID + 1,
@@ -112,15 +156,14 @@ class PosMultiSessionSync(models.Model):
             pos.user_ID = user_ID
         pos.multi_session_message_ID = 0
         data = []
-        if message['uid']:
+        if message.get('uid'):
             order_uid = message['uid']
             order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
             msg = json.loads(order.order)
             msg['data']['message_ID'] = 0
             msg['data']['revision_ID'] = order.revision_ID
             msg['data']['run_ID'] = run_ID
-            data = msg
-            action = 'sync_order'
+            data.append(msg)
         else:
             for order in self.env['pos_multi_session_sync.order'] \
                              .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
@@ -130,7 +173,7 @@ class PosMultiSessionSync(models.Model):
                 msg['data']['revision_ID'] = order.revision_ID
                 msg['data']['run_ID'] = run_ID
                 data.append(msg)
-            action = 'sync_all'
+        action = 'sync_all'
         message = {'action': action, 'orders': data, 'order_ID': self.order_ID}
         return message
 
