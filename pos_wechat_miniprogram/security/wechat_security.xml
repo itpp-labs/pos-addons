@@ -11,6 +11,6 @@
         <field name="perm_write" eval="0"/>
         <field name="perm_read" eval="1"/>
         <field name="perm_create" eval="0"/>
-        <field name="groups" eval="[(4,ref('wechat.group_miniprogram_user'))]"/>
+        <field name="groups" eval="[(4,ref('wechat_miniprogram.group_miniprogram_user'))]"/>
     </record>
 </odoo>
