@@ -143,8 +143,7 @@ class TestWeChatOrder(HttpCase):
 
         handled = self.Order.on_notification(notification)
         self.assertTrue(handled, 'Notification was not handled (error in checking for duplicates?)')
-        handled = self.Order.on_notification(notification)
-        self.assertFalse(handled, 'Duplicate was not catched and handled as normal notificaiton')
+        self.assertEqual(order.state, 'done', "Order's state is not changed after notification about update")
 
     def test_authenticate_miniprogram_user(self):
         # fake values for a test
