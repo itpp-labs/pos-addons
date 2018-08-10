@@ -330,9 +330,6 @@ odoo.define('pos_multi_session', function(require){
         ms_create_order: function(options){
             options = _.extend({pos: this}, options || {});
             var order = new models.Order({}, options);
-            // init_locked blocks execution of save_to_db
-            // the order is unlocked at the end of ms_update_order
-            order.init_locked = true;
             return order;
         },
         ms_update_order: function(order, data){
@@ -351,7 +348,6 @@ odoo.define('pos_multi_session', function(require){
                     order_on_server: true,
                 });
                 order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, json: json});
-                order.init_locked = false;
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
@@ -740,7 +736,7 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_info.created = this.order.pos.ms_my_info();
             }
             // next line prevents assigning 'orderlines' as offline when pos is loading and data is taken from local storage
-            this.offline_orderline = this.pos.is_loaded;
+            this.offline_orderline = this.pos.ready.state() === "resolved";
             this.bind('change', function(line){
                 if (self.order.ms_active() && !line.ms_changing_selected){
                     line.ms_info.changed = line.order.pos.ms_my_info();
