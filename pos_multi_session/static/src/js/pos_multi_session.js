@@ -292,7 +292,7 @@ odoo.define('pos_multi_session', function(require){
                     this.pos_session.order_ID = data.order_ID;
                     var sequence_number = this.pos_session.sequence_number;
                     this.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, data.order_ID + 1 || 1);
-
+                    this.ms_syncing_in_progress = false;
                     this.multi_session.destroy_removed_orders(server_orders_uids);
                 } else {
                     if (self.message_ID + 1 === data.message_ID) {
