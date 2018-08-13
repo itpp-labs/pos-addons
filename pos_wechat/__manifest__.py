@@ -5,7 +5,7 @@
     "summary": """Support WeChat QR-based payments (scan and show)""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/main.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
