@@ -39,7 +39,7 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
             if (!(receipts instanceof Array)) {
                 receipts = [receipts];
             }
-            if (this.orders_history_receipt.length !== 0) {
+            if (this.orders_history_receipt.length) {
                 receipts.forEach(function(receipt) {
                     var exist_receipt = self.get_receipt_by_id(receipt.id);
                     if (exist_receipt) {
@@ -60,7 +60,7 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
         fields: [],
         domain: function(self) {
             // load all active receipts
-            return [['status','in',true]]
+            return [['status','in',true]];
         },
         loaded: function (self, receipts) {
             self.update_orders_history_receipt(receipts);

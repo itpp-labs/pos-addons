@@ -127,7 +127,9 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_orders_by_filter: function(filter, orders) {
             var self = this;
             if (filter === "user") {
-                var user_id = this.pos.cashier ? this.pos.cashier.id : this.pos.user.id;
+                var user_id = this.pos.cashier
+                    ? this.pos.cashier.id
+                    : this.pos.user.id;
                 if (this.pos.cashier && this.pos.cashier.id) {
                     user_id = this.pos.cashier.id;
                 }
@@ -150,12 +152,11 @@ odoo.define('pos_orders_history.screens', function (require) {
             }
         },
         render_list: function(orders) {
-            var self = this,
-                contents = this.$el[0].querySelector('.order-list-contents');
-
+            var contents = this.$el[0].querySelector('.order-list-contents');
             contents.innerHTML = "";
 
-            for (var i = 0, len = Math.min(orders.length,1000); i < len; i++){
+            for (var i = 0, len = Math.min(orders.length,1000); i < len; i++) {
+
                 var order = orders[i];
                 var orderline = this.orders_history_cache.get_node(order.id);
                 var lines_table = this.orders_history_cache.get_node(order.id + '_table');
@@ -185,6 +186,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                     this.orders_history_cache.cache_node(order.id, orderline);
                     this.orders_history_cache.cache_node(order.id + '_table', lines_table);
                 }
+
                 contents.appendChild(orderline);
                 contents.appendChild(lines_table);
             }

@@ -26,16 +26,18 @@ odoo.define('pos_orders_history.db', function (require) {
                 return [];
             }
             var results = [];
-            for(var i = 0; i < this.limit; i++){
-                var r = re.exec(this.order_search_string);
-                if(r) {
-                    var id = Number(r[1]);
-                    var exist_order = this.orders_history_by_id[id];
-                    if (exist_order) {
-                        results.push(exist_order);
+            for(var i = 0; i < this.limit; i++) {
+                if (re) {
+                    var r = re.exec(this.order_search_string);
+                    if (r) {
+                        var id = Number(r[1]);
+                        var exist_order = this.orders_history_by_id[id];
+                        if (exist_order) {
+                            results.push(exist_order);
+                        }
+                    } else {
+                        break;
                     }
-                }else{
-                    break;
                 }
             }
             return results;
