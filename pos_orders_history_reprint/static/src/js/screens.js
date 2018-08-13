@@ -104,24 +104,22 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                     receipt = receipt.join('');
                 }
                 this.pos.proxy.print_receipt(receipt);
-            } else {
-                if (self.pos.config.show_posted_orders && order.state === "done") {
-                    new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(receipt) {
-                        if (receipt && receipt.length) {
-                            self.print_xml(receipt[0]);
-                        } else {
-                            self.show_popup = true;
-                            self.click_next();
-                        }
-                    });
-                } else {
-                    var receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
-                    if (receipt) {
-                        this.print_xml(receipt);
+            } else if (self.pos.config.show_posted_orders && order.state === "done") {
+                new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(r) {
+                    if (r && r.length) {
+                        self.print_xml(r[0]);
                     } else {
-                        this.show_popup = true;
+                        self.show_popup = true;
                         self.click_next();
                     }
+                });
+            } else {
+                receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
+                if (receipt) {
+                    this.print_xml(receipt);
+                } else {
+                    this.show_popup = true;
+                    self.click_next();
                 }
             }
         },
@@ -153,28 +151,26 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         "width": "100%"
                     });
                 }
-            } else {
-                if (self.pos.config.show_posted_orders && order.state === "done") {
-                    new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]).then(function(ticket) {
-                        if (ticket && ticket.length) {
-                            self.render_receipt(ticket[0]);
-                        } else {
-                            self.gui.show_popup('error',{
-                                'title': _t('No Ticket.'),
-                                'body': _t('There is no Ticket for the order.'),
-                            });
-                        }
-                    });
-                } else {
-                    ticket = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'ticket');
-                    if (ticket) {
-                        self.render_receipt(ticket);
+            } else if (self.pos.config.show_posted_orders && order.state === "done") {
+                new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]).then(function(t) {
+                    if (t && t.length) {
+                        self.render_receipt(t[0]);
                     } else {
-                        this.gui.show_popup('error',{
+                        self.gui.show_popup('error',{
                             'title': _t('No Ticket.'),
                             'body': _t('There is no Ticket for the order.'),
                         });
                     }
+                });
+            } else {
+                ticket = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'ticket');
+                if (ticket) {
+                    self.render_receipt(ticket);
+                } else {
+                    this.gui.show_popup('error',{
+                        'title': _t('No Ticket.'),
+                        'body': _t('There is no Ticket for the order.'),
+                    });
                 }
             }
         }

@@ -173,12 +173,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                     lines_table.classList.add('line-element-hidden');
                     lines_table.classList.add('line-element-container');
 
-                    var line_data = _.map(order.lines, function (id) {
-                        var line = self.pos.db.line_by_id[id];
-                        line.image = self.get_product_image_url(line.product_id[0]);
-                        return line;
-                    });
-
+                    var line_data = this.get_order_line_data(order);
                     var $table = this.render_lines_table(line_data);
 
                     $td.appendChild($table);
@@ -193,6 +188,13 @@ odoo.define('pos_orders_history.screens', function (require) {
                 contents.appendChild(orderline);
                 contents.appendChild(lines_table);
             }
+        },
+        get_order_line_data: function(order) {
+            return _.map(order.lines, function (id) {
+                var line = self.pos.db.line_by_id[id];
+                line.image = self.get_product_image_url(line.product_id[0]);
+                return line;
+            });
         },
         render_lines_table: function (data_lines) {
             var $table = document.createElement('table'),
