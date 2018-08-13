@@ -273,11 +273,6 @@ odoo.define('pos_multi_session', function(require){
                 action = message.action;
                 data = message.data || {};
                 var order = false;
-                if (data.uid){
-                    order = this.get('orders').find(function(item){
-                        return item.uid === data.uid;
-                    });
-                }
                 if (action === 'sync_all') {
                     this.message_ID = data.message_ID;
                     var server_orders_uids = _.map(data.orders, function(o){
@@ -291,10 +286,18 @@ odoo.define('pos_multi_session', function(require){
                     });
                     this.pos_session.order_ID = data.order_ID;
                     var sequence_number = this.pos_session.sequence_number;
-                    this.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, data.order_ID + 1 || 1);
+                    this.pos_session.sequence_number = data.order_ID + 1 || 1;
                     this.ms_syncing_in_progress = false;
-                    this.multi_session.destroy_removed_orders(server_orders_uids);
+                    if (!data.uid){
+                        // if it wasnt sync for only one order
+                        this.multi_session.destroy_removed_orders(server_orders_uids);
+                    }
                 } else {
+                    if (data.uid){
+                        order = this.get('orders').find(function(item){
+                            return item.uid === data.uid;
+                        });
+                    }
                     if (self.message_ID + 1 === data.message_ID) {
                         self.message_ID = data.message_ID;
                     } else {
@@ -999,7 +1002,7 @@ odoo.define('pos_multi_session', function(require){
             if (this.pos.sync_bus && this.pos.sync_bus.sleep) {
                 return;
             }
-            var warning_message = _t("No connection to the server. Changes related to the existing orders like a removing orders or orderlines will be lost after reestablishing the connection");
+            var warning_message = _t("No connection to the server.");
             this.warning(warning_message);
         }
     });
