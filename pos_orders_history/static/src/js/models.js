@@ -36,16 +36,14 @@ odoo.define('pos_orders_history.models', function (require) {
         },
         update_orders_history: function (orders) {
             var self = this,
-                all_orders,
                 orders_to_update = [];
             if (!(orders instanceof Array)) {
                 orders = [orders];
             }
             if (this.db.pos_orders_history.length !== 0) {
-                    _.each(orders, function (updated_order) {
-                    var i,
-                        max = self.db.pos_orders_history.length;
-                    for (i = 0; i < max; i++) {
+                _.each(orders, function (updated_order) {
+                    var max = self.db.pos_orders_history.length;
+                    for (var i = 0; i < max; i++) {
                         if (updated_order.id === self.db.pos_orders_history[i].id) {
                             self.db.pos_orders_history.splice(i, 1);
                             delete self.db.orders_history_by_id[updated_order.id];
@@ -56,7 +54,7 @@ odoo.define('pos_orders_history.models', function (require) {
                 });
             }
 
-            all_orders = this.db.pos_orders_history.concat(orders);
+            var all_orders = this.db.pos_orders_history.concat(orders);
             this.db.pos_orders_history = all_orders;
             this.db.sorted_orders_history(all_orders);
             all_orders.forEach(function (current_order) {
@@ -124,7 +122,7 @@ odoo.define('pos_orders_history.models', function (require) {
             if (self.config.show_posted_orders) {
                 state.push('done');
             }
-            return [['state','in',state]]
+            return [['state','in',state]];
         },
         loaded: function (self, orders) {
             var order_ids = [];
@@ -143,7 +141,7 @@ odoo.define('pos_orders_history.models', function (require) {
         model: 'pos.order.line',
         fields: [],
         domain: function(self) {
-            return [['order_id', 'in', self.order_ids]]
+            return [['order_id', 'in', self.order_ids]];
         },
         loaded: function (self, lines) {
             self.update_orders_history_lines(lines);
