@@ -17,10 +17,11 @@ odoo.define('pos_orders_history.db', function (require) {
             this._super.apply(this, arguments);
         },
         search_order: function(query){
+            var re = '';
             try {
                 query = query.replace(/[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,'.');
                 query = query.replace(' ','.+');
-                var re = RegExp("([0-9]+):.*?"+query,"gi");
+                re = RegExp("([0-9]+):.*?"+query,"gi");
             }catch(e){
                 return [];
             }

@@ -73,7 +73,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                 if ($(this).hasClass('actions')) {
                     return false;
                 }
-                var parent = $(this).parent()
+                var parent = $(this).parent();
                 self.line_select(event, parent, parseInt(parent.data('id')));
             });
 
@@ -156,25 +156,24 @@ odoo.define('pos_orders_history.screens', function (require) {
             contents.innerHTML = "";
 
             for (var i = 0, len = Math.min(orders.length,1000); i < len; i++){
-                var order = orders[i],
-                    orderline = false;
-                    orderline = this.orders_history_cache.get_node(order.id),
-                    lines_table = this.orders_history_cache.get_node(order.id + '_table');
+                var order = orders[i];
+                var orderline = this.orders_history_cache.get_node(order.id);
+                var lines_table = this.orders_history_cache.get_node(order.id + '_table');
 
                 if ((!orderline) || (!lines_table)) {
-                    var orderline_html = QWeb.render('OrderHistory',{widget: this, order:orders[i]});
+                    var orderline_html = QWeb.render('OrderHistory',{widget: this, order:order});
                     orderline = document.createElement('tbody');
+                    lines_table = document.createElement('tr');
+                    var $td = document.createElement('td');
 
-                    var lines_table = document.createElement('tr');
-                    if (orders[i].lines) {
-                        var $td = document.createElement('td');
+                    if (order.lines) {
                         $td.setAttribute("colspan", 8);
                     }
 
                     lines_table.classList.add('line-element-hidden');
                     lines_table.classList.add('line-element-container');
 
-                    var line_data = _.map(orders[i].lines, function (id) {
+                    var line_data = _.map(order.lines, function (id) {
                         var line = self.pos.db.line_by_id[id];
                         line.image = self.get_product_image_url(line.product_id[0]);
                         return line;
@@ -236,8 +235,7 @@ odoo.define('pos_orders_history.screens', function (require) {
             if ($line.hasClass('active')) {
                 $line.removeClass('active');
                 $line.removeClass('highlight');
-
-                this.hide_order_details($line)
+                this.hide_order_details($line);
                 this.selected_order = false;
             } else {
                 $line.addClass('active');
@@ -265,19 +263,17 @@ odoo.define('pos_orders_history.screens', function (require) {
         update_list_items: function (ids) {
             var self = this;
             _.each(ids, function (id) {
-                var $el = $('.order-list').find('[data-id=' + id + ']'),
-                    data = self.pos.db.orders_history_by_id[id],
-                    new_el_html,
-                    selected = false,
-                    orderline;
+                var $el = $('.order-list').find('[data-id=' + id + ']');
+                var data = self.pos.db.orders_history_by_id[id];
+                var selected = false;
                 if (($el.length === 0) || (!data)) {
                     return;
                 }
-                new_el_html = QWeb.render('OrderHistory', {widget: self, order:data});
+                var new_el_html = QWeb.render('OrderHistory', {widget: self, order:data});
                 if ($el.hasClass('active')) {
                     selected = true;
                 }
-                orderline = document.createElement('tbody');
+                var orderline = document.createElement('tbody');
                 orderline.innerHTML = new_el_html;
                 orderline = orderline.childNodes[1];
                 $el.replaceWith(orderline);
@@ -307,8 +303,8 @@ odoo.define('pos_orders_history.screens', function (require) {
     screens.ScreenWidget.include({
         barcode_product_action: function(code) {
             // TODO: Check it
-            var order = this.pos.db.get_sorted_orders_history(1000).find(function(order) {
-                var pos_reference = order.pos_reference.split(' ')[1].replace(/\-/g, '');
+            var order = this.pos.db.get_sorted_orders_history(1000).find(function(o) {
+                var pos_reference = o.pos_reference.split(' ')[1].replace(/\-/g, '');
                 return pos_reference === code.code.replace(/\-/g, '');
             });
             var screen_name = this.gui.get_current_screen();

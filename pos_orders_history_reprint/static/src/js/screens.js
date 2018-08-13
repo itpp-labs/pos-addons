@@ -77,9 +77,6 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 self.gui.show_screen('orders_history_screen');
             });
         },
-        click_next: function() {
-            this.gui.show_screen('orders_history_screen');
-        },
         get_order: function () {
             var order_id = this.gui.get_current_screen_param('order_id');
             return this.pos.db.orders_history_by_id[order_id];
@@ -169,7 +166,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         }
                     });
                 } else {
-                    var ticket = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'ticket');
+                    ticket = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'ticket');
                     if (ticket) {
                         self.render_receipt(ticket);
                     } else {
