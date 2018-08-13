@@ -3,7 +3,7 @@
     "summary": """Scans QR codes via device's camera""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/main.png"],
     "version": "11.0.1.0.0",
     "application": False,
 
