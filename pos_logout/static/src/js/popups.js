@@ -24,7 +24,7 @@ odoo.define('pos_logout.popups', function (require) {
                 return true;
             }
         }
-        this.barcode_error_action(code);
+        this.gui.current_screen.barcode_error_action(code);
         return false;
     };
 
