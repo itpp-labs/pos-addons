@@ -16,15 +16,19 @@
 	  <ul class="list-unstyled">
 	    <li>
 	      <i class="fa fa-check-square-o text-primary"></i>
-	      lock POS screen if necessary
+	      Lock POS screen at any time
 	    </li>
 	    <li>
 	      <i class="fa fa-check-square-o text-primary"></i>
-	      unlock screen using barcode
+	      Unlock screen using barcode
 	    </li>
 	    <li>
 	      <i class="fa fa-check-square-o text-primary"></i>
-	      unlock screen using security PIN
+	      Unlock screen using security PIN
+	    </li>
+	    <li>
+	      <i class="fa fa-check-square-o text-primary"></i>
+	      Set autolock time
 	    </li>
 	  </ul>
 	</div>
@@ -54,10 +58,11 @@
 
 <section class="oe_container">
   <div class="oe_row oe_spaced">
+    <h4 class="oe_slogan">Lock POS Screen</h4>
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
-	  Go to <em>Point of Sale &rarr; Dashboard</em> and open POS session. Click on user name at the top of POS screen. Then click the logout icon to lock the screen.
+	  Open POS session and click on user name at the top of POS screen. Then click the logout icon to lock the screen.
 	</font>
       </p>		
     </div>
@@ -75,6 +80,7 @@
 
 <section class="oe_container oe_dark">
   <div class="oe_row oe_spaced">
+    <h4 class="oe_slogan">Unlock POS Screen</h4>
     <div class="oe_span12">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
@@ -82,19 +88,55 @@
 	    <b>To unlock it</b>, you have to make one of the following:
 	  </p>
 	  <ul>
-	    <li><b>scan user barcode</b> when screen locked</li>
-	    <li>tap on the screen and <b>scan user barcode</b> when user selector popup opened</li>
+	    <li><b>scan user barcode</b> when screen locked or user selector popup opened</li>
 	    <li>select a user and <b>input security PIN</b></li>
 	  </ul>
+	</font>
+      </p>		
+    </div>
+    <br/>
+    <div class="oe_span12 text-center">
+      <p class="oe_mt32">
+ 	<font style="font-size: 120%;">
+	  <b>Unlock by Barcode</b>
 	</font>
       </p>		
     </div>
     <div class="oe_screenshot" align="center">
       <img style="max-width: 80%" src="pos_user_select.png?1"/>
     </div>
+    <div class="oe_span12 text-center">
+      <p class="oe_mt32">
+ 	<font style="font-size: 120%;">
+	  The warning if <b>barcode</b> is incorrect
+	</font>
+      </p>		
+    </div>
+    <div class="oe_screenshot" align="center">
+      <img style="max-width: 80%" src="pos_barcode_warning.png"/>
+    </div>
+    
     <br/>
+    
+    <div class="oe_span12 text-center">
+      <p class="oe_mt32">
+ 	<font style="font-size: 120%;">
+	  <b>Unlock by PIN</b>
+	</font>
+      </p>		
+    </div>
     <div class="oe_screenshot" align="center">
       <img style="max-width: 80%" src="pos_pin.png"/>
+    </div>
+    <div class="oe_span12 text-center">
+      <p class="oe_mt32">
+ 	<font style="font-size: 120%;">
+	  The warning if <b>PIN</b> is incorrect
+	</font>
+      </p>		
+    </div>
+    <div class="oe_screenshot" align="center">
+      <img style="max-width: 80%" src="pass_warning.png"/>
     </div>
   </div>
 </section>
@@ -105,22 +147,31 @@
   <div class="oe_row oe_spaced">
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
- 	<font style="font-size: 120%;">If the barcode or pin is correct, POS is unlocked succesfully.</font>
+ 	<font style="font-size: 120%;">If <b>Barcode</b> or <b>PIN</b> is valid, POS is unlocked succesfully.</font>
       </p>		
     </div>
     <div class="oe_screenshot" align="center">
       <img style="max-width: 80%" src="pos_unlocked.png"/>
     </div>
-    <br/>
+  </div>
+</section>
+
+<br/>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h4 class="oe_slogan">Screen Autolock</h4>
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
- 	<font style="font-size: 120%;">Otherwise, you will face the warning.</font>
+ 	<font style="font-size: 120%;">
+	  In POS configuration form you can set a last activity interval to lock the screen automatically.
+	</font>
       </p>		
     </div>
     <div class="oe_screenshot" align="center">
-      <img style="max-width: 80%" src="pass_warning.png"/>
+      <img style="max-width: 80%" src="autolock_pos_screen.png"/>
     </div>
-  </div>
+   </div>
 </section>
 
 <br/>
