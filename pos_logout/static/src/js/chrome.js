@@ -12,17 +12,9 @@ odoo.define('pos_logout.chrome', function (require) {
             this._super();
             var self = this;
             this.gui.current_popup.cashiers = true;
-            // if (block) {
-            //     this.gui.current_popup.block = true;
-            // }
             this.gui.current_popup.renderElement();
             this.gui.current_popup.$(".exit").click(function(){
-                self.gui.show_popup('block', {
-                    confirm: function() {
-                        var blocking = true;
-                        self.click_username(blocking);
-                    },
-                });
+                self.gui.show_popup('block');
             });
         },
     });
@@ -35,12 +27,7 @@ odoo.define('pos_logout.chrome', function (require) {
                 time = time || self.pos.config.logout_interval * 1000;
                 if (time) {
                     self.pos.logout_timer = setTimeout(function(){
-                        self.pos.gui.show_popup('block', {
-                            confirm: function() {
-                                var blocking = true;
-                                self.pos.click_username(blocking);
-                            },
-                        });
+                        self.pos.gui.show_popup('block');
                     }, time);
                 }
             };
