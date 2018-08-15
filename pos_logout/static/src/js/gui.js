@@ -12,41 +12,36 @@ odoo.define('pos_logout.gui', function (require) {
     var _t = core._t;
 
     gui.Gui.include({
-        show_password_popup: function(password){
+        show_password_popup: function(password, lock){
             var self = this;
-            var ret = new $.Deferred();
             this.show_popup('password',{
                 'title': _t('Password ?'),
                 confirm: function(pw) {
                     if (pw === password) {
-                        ret.resolve();
+                        lock.resolve();
                     } else {
                         self.show_popup('error', {
                             'title': _t('Incorrect Password'),
-                            confirm: _.bind(self.show_password_popup, self, password),
-                            cancel: _.bind(self.show_password_popup, self, password),
+                            confirm: _.bind(self.show_password_popup, self, password, lock),
+                            cancel: _.bind(self.show_password_popup, self, password, lock),
                         });
                     }
                 },
                 cancel: function(pw) {
                     self.show_popup('block', {});
-                    ret.reject();
+                    lock.reject();
                 },
             });
-            return ret;
+            return lock;
         },
 
         ask_password: function(password, args) {
             var self = this;
-            var ret = new $.Deferred();
+            var lock = new $.Deferred();
 
-            if (args && args.deblocking) {
-                if (password) {
-                    return this.show_password_popup(password);
-                } else {
-                    ret.reject();
-                }
-                return ret;
+            if (args && args.deblocking && password) {
+                this.show_password_popup(password, lock);
+                return lock;
             }
 
             return this._super(password);
