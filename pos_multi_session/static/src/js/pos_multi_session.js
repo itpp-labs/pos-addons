@@ -685,14 +685,9 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    var offline_orderlines = self.get_orderlines().filter(function(line){
-                        return line.offline_orderline;
+                    _.map(self.get_orderlines(), function(line){
+                        line.offline_orderline = false;
                     });
-                    if (offline_orderlines && offline_orderlines.length) {
-                        offline_orderlines.forEach(function(line){
-                            line.offline_orderline = false;
-                        });
-                    }
                     if (res && res.action === "update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
