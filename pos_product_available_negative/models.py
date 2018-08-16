@@ -1,4 +1,8 @@
-from openerp import models, fields, api
+# Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+# Copyright 2016 manawi <https://github.com/manawi>
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+
+from odoo import models, fields, api
 
 
 class PosConfig(models.Model):

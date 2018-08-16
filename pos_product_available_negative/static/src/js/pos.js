@@ -1,3 +1,5 @@
+/*  Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).*/
 odoo.define('pos_product_available_negative.pos', function (require) {
     "use strict";
 
