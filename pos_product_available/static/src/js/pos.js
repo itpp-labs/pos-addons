@@ -1,3 +1,9 @@
+/*  Copyright 2014-2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2016 gaelTorrecillas <https://github.com/gaelTorrecillas>
+    Copyright 2016 manawi <https://github.com/manawi>
+    Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_product_available.PosModel', function(require){
 "use strict";
 
