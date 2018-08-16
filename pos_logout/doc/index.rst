@@ -26,4 +26,15 @@ Usage
   * Scan user barcode or select manually to input security PIN
   * RESULT:
     If the barcode/PIN is correct, POS screen is unlocked. Otherwise you will see the warning "Incorrect Password".
-  
+
+Screen Autolock
+---------------
+
+The last activity interval to activate the automatic screen lock. Zero if autolocking is not needed
+
+* Open menu ``[[ Point of Sale ]] >> Configuration >> Point of Sale``
+
+  * Open POS configuration form
+  * Click ``[Edit]``
+  * Input in **Autolock** a number of seconds before autolocking. Zero if autolocking is not needed
+  * Click ``[Save]``
