@@ -1,6 +1,6 @@
-# Copyright 2017 Artyom Losev
+# Copyright 2018 Artyom Losev
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 import datetime
 from odoo import api, fields, models
 
@@ -11,7 +11,7 @@ class ReportSaleDetails(models.AbstractModel):
 
     @api.model
     def get_sale_details(self, date_start=False, date_stop=False, configs=False):
-        res = super(ReportSaleDetails, self).get_sale_details(date_start=False, date_stop=False, configs=False)
+        res = super(ReportSaleDetails, self).get_sale_details(date_start, date_stop, configs)
 
         if date_start:
             date_start = fields.Datetime.from_string(date_start)
@@ -35,25 +35,25 @@ class ReportSaleDetails(models.AbstractModel):
 
         res['invoices'] = []
         unique = []
-        total = 0.0
+        res['total_invoices'] = res['total_invoices_cash'] = 0.0
         for p in payments:
-            if (p.invoice_ids.id not in unique):
+            if p.invoice_ids.id not in unique:
                 invoice = p.invoice_ids
                 cashier = p.cashier
-                amount = p.amount if (p.amount <= invoice.amount_total) else invoice.amount_total
-
-                data = {
-                    'invoice_no': invoice.number,
-                    'so_origin': invoice.origin,
-                    'customer': invoice.partner_id.name,
-                    'cashier': cashier.name or cashier.partner_id.name,
-                    'amount_total': invoice.amount_total,
-                    'amount': amount
-                }
-                res['invoices'].append(data)
+                for pay in invoice.payment_ids:
+                    data = {
+                        'invoice_no': invoice.number,
+                        'so_origin': invoice.origin,
+                        'customer': invoice.partner_id.name,
+                        'payment_method': pay.journal_id.name,
+                        'cashier': cashier.name or cashier.partner_id.name,
+                        'amount_total': invoice.amount_total,
+                        'amount': pay.amount
+                    }
+                    res['invoices'].append(data)
+                    res['total_invoices'] += pay.amount
+                    if pay.journal_id.type == 'cash':
+                        res['total_invoices_cash'] += pay.amount
                 unique.append(p.invoice_ids.id)
-                total += amount
-        user_currency = self.env.user.company_id.currency_id
-        res['total_paid'] = user_currency.round(total)
 
         return res

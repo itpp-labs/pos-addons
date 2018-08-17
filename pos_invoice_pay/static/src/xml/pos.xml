@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Copyright 2017 Artyom Losev
+<!--Copyright 2018 Artyom Losev
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <templates id="template" xml:space="preserve">
 
     <t t-name="SaleOrdersButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt '/> Sale Orders
+            <i class='fa fa-list-alt'/> Fetch Orders
         </div>
     </t>
 
-        <t t-name="InvoicesButton">
+    <t t-name="InvoicesButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt '/> Invoices
+            <i class='fa fa-list-alt'/> Fetch Invoices
         </div>
     </t>
 

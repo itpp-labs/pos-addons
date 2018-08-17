@@ -3,7 +3,6 @@
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 {
     "name": """Sync POS orders across multiple sessions""",
     "summary": """Use multiple POS for handling orders""",

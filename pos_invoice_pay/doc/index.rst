@@ -13,9 +13,8 @@ Configuration
 * Go to ``[[Point of Sale]] >> Configuration >> Point of Sale`` menu
 
   * Click ``[Edit]``
-  * Activate ``Show Sale Orders in POS`` option
-  * Activate ``Show Invoices in POS`` option
-  * Set ``Difference Account`` - used for the difference between paid and due amount
+  * Activate ``Show Sale Orders`` option
+  * Activate ``Show Invoices`` option
   * Click ``[Save]``
 
 Usage
@@ -68,3 +67,4 @@ Pay Invoices
 * Close POS session
 * Open ``[[Invoicing]] >> Sales >> Customer Invoices`` menu
 * RESULT: See the corresponding paid invoice
+
