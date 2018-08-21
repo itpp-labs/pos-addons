@@ -354,6 +354,7 @@ odoo.define('pos_multi_session', function(require){
                 var current_order = this.get_order();
                 this.get('orders').add(order);
                 this.ms_on_add_order(current_order);
+                order.set_orderlines_offline();
                 return;
             }
             var not_found = order.orderlines.map(function(r){
@@ -577,8 +578,16 @@ odoo.define('pos_multi_session', function(require){
                  So, calling add_product first would lead to saving obsolete values to localStorage.
                  From the other side, new_updates_to_send work asynchronously (via setTimeout) and will get updates from add_product method
              */
-            this.trigger('new_updates_to_send');
+            var old_client = this.get_client();
+            if (client || old_client) {
+                this.trigger('new_updates_to_send');
+            }
             OrderSuper.prototype.set_client.apply(this,arguments);
+        },
+        set_orderlines_offline: function() {
+            _.map(this.get_orderlines(), function(line){
+                line.offline_orderline = false;
+            });
         },
         ms_active: function(){
             if (! this.pos.multi_session ){
@@ -685,9 +694,7 @@ odoo.define('pos_multi_session', function(require){
                 var data = self.export_as_JSON();
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
-                    _.map(self.get_orderlines(), function(line){
-                        line.offline_orderline = false;
-                    });
+                    self.set_orderlines_offline();
                     if (res && res.action === "update_revision_ID") {
                         var server_revision_ID = res.revision_ID;
                         var order_ID = res.order_ID;
