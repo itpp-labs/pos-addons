@@ -739,27 +739,25 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
     },
     create_invoice: function (sale_order) {
         var self = this;
-        new Model('pos.order').call('process_invoices_creation', [sale_order.id]).
-            then(function (created_invoice_id) {
-                self.pos.update_or_fetch_invoice(created_invoice_id).
-                    then(function (new_invoice_id) {
-                        self.render_data(self.pos.db.sale_orders);
-                        self.pos.validate_invoice(new_invoice_id).then(function (validated_invoice_id) {
-                            self.pos.update_or_fetch_invoice(validated_invoice_id).then(function(res) {
-                                self.pos.selected_invoice = self.pos.db.get_invoice_by_id(res);
-                                self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
-                                self.gui.show_screen('invoice_payment');
-                            });
-                        });
+        new Model('pos.order').call('process_invoices_creation', [sale_order.id]).then(function (created_invoice_id) {
+            self.pos.update_or_fetch_invoice(created_invoice_id).then(function (new_invoice_id) {
+                self.render_data(self.pos.db.sale_orders);
+                self.pos.validate_invoice(new_invoice_id).then(function (validated_invoice_id) {
+                    self.pos.update_or_fetch_invoice(validated_invoice_id).then(function(res) {
+                        self.pos.selected_invoice = self.pos.db.get_invoice_by_id(res);
+                        self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
+                        self.gui.show_screen('invoice_payment', {type: 'orders'});
                     });
-            }, function (err, event) {
-                self.gui.show_popup('error', {
-                    'title': _t(err.message),
-                    'body': _t(err.data.arguments[0])
                 });
-                console.log(err);
-                event.preventDefault();
             });
+        }, function (err, event) {
+            self.gui.show_popup('error', {
+                'title': _t(err.message),
+                'body': _t(err.data.arguments[0])
+            });
+            console.log(err);
+            event.preventDefault();
+        });
     },
     _search: function (query) {
         var sale_orders = [];
@@ -1063,15 +1061,44 @@ gui.define_screen({name:'invoice_payment', widget: InvoicePayment});
 
 var InvoiceReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
     template: 'InvoiceReceiptScreenWidget',
-    render_receipt: function () {
+    render_invoice_ticket: function(){
         var order = this.pos.get_order();
-        this.$('.pos-receipt-container').html(QWeb.render('PosInvoiceTicket',{
+        return QWeb.render('PosInvoiceTicket',{
                 widget:this,
                 order: order,
                 receipt: order.export_for_printing(),
                 orderlines: order.get_orderlines(),
                 paymentlines: order.get_paymentlines(),
-            }));
+            });
+    },
+    render_invoice_receipt: function(){
+        var order = this.pos.get_order();
+        return QWeb.render('PosInvoiceReceipt',{
+                widget:this,
+                order: order,
+                receipt: order.export_for_printing(),
+                orderlines: order.get_orderlines(),
+                paymentlines: order.get_paymentlines(),
+            });
+    },
+    render_receipt: function () {
+        var order = this.pos.get_order();
+        if (order.invoice_to_pay) {
+            var receipt = this.render_invoice_ticket();
+            this.$('.pos-receipt-container').html(receipt);
+        } else {
+            this._super();
+        }
+    },
+    print_xml: function() {
+        var order = this.pos.get_order();
+        if (order.invoice_to_pay) {
+            var receipt = this.render_invoice_receipt();
+            this.pos.proxy.print_receipt(receipt);
+            order._printed = true;
+        } else {
+            this._super();
+        }
     },
     render_change: function () {
         var order = this.pos.get_order();
