@@ -23,6 +23,7 @@ class HrExpenseSheet(models.Model):
 
     processed_by_pos = fields.Boolean()
     cashier = fields.Char()
+    payment_datetime = fields.Datetime(required=True, string="Datetime")
 
     def process_expense_from_pos(self, cashier):
         if (self.state == 'approve'):
@@ -65,3 +66,10 @@ class HrExpenseSheet(models.Model):
 
     def action_updated_expense(self):
         self.env['pos.config'].notify_expenses_updates(self.id)
+
+    @api.multi
+    def set_to_paid(self):
+        super(HrExpenseSheet, self).set_to_paid()
+        self.write({
+            'payment_datetime': fields.Datetime.now(),
+        })

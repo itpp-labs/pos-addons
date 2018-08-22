@@ -348,7 +348,7 @@ odoo.define('pos_orders_history', function (require) {
             }).fail(function (type, error) {
                 self.gui.show_popup('error', {
                     'title': _t(error.message),
-                    'body': _t(error.data.arguments[0])
+                    'body': _t(type.data.arguments[0])
                 });
                 event.preventDefault();
             });
