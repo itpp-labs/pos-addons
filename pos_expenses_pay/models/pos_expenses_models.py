@@ -23,7 +23,7 @@ class HrExpenseSheet(models.Model):
 
     processed_by_pos = fields.Boolean()
     cashier = fields.Char()
-    payment_datetime = fields.Datetime(required=True, string="Datetime")
+    payment_datetime = fields.Datetime(string="Datetime")
 
     def process_expense_from_pos(self, cashier):
         if (self.state == 'approve'):
