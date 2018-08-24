@@ -7,7 +7,10 @@
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
     'website': 'https://it-projects.info',
-    'depends': ['pos_pin'],
+    'depends': [
+        'pos_pin',
+        'pos_product_available',
+    ],
     'data': [
         'data.xml',
         'views.xml',
