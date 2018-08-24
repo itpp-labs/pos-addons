@@ -132,7 +132,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (isDebt && currentOrder.get_total_paid() > currentOrder.get_total_with_tax()) {
+            if (this.debt_change_check()) {
                 this.gui.show_popup('error', {
                     'title': _t('Unable to return the change with a debt payment method'),
                     'body': _t('Please enter the exact or lower debt amount than the cost of the order.')
@@ -141,6 +141,18 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }
             client && this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(client.id);
             this._super(options);
+        },
+
+        debt_change_check: function () {
+             var order = this.pos.get_order(),
+                paymentlines = order.get_paymentlines(),
+                flag = false;
+            for (var i = 0; i < paymentlines.length; i++) {
+                if (paymentlines[i].cashregister.journal.debt && order.get_change(paymentlines[i]) > 0) {
+                    flag = true;
+                }
+            }
+            return flag;
         },
 
         pay_full_debt: function(){
@@ -215,7 +227,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     ? client.name
                     : _t('Customer')
             );
-            $pay_full_debt.on('click', function() {
+            $pay_full_debt.unbind().on('click', function() {
                 self.pay_full_debt();
             });
             $pay_full_debt.addClass('oe_hidden');
@@ -282,7 +294,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this.$('#set-customer-pay-full-debt').click(function(){
                 self.save_changes();
 //                self.gui.back();
-                if (self.new_client.debt <= 0) {
+                var partner = self.new_client || self.old_client;
+                if (partner.debt <= 0) {
                     self.gui.show_popup('error',{
                         'title': _t('Error: No Debt'),
                         'body': _t('The selected customer has no debt.'),
@@ -297,6 +310,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         var dummy_product = self.pos.db.get_product_by_id(
                             self.pos.config.debt_dummy_product_id[0]);
                         order.add_product(dummy_product, {'price': 0});
+                    }
+                    if (!order.get_client()){
+                        order.set_client(partner);
                     }
                 }
 
@@ -324,7 +340,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
 
                 var newDebtPaymentline = new models.Paymentline({},{order: order, cashregister: debtjournal, pos: self.pos});
-                newDebtPaymentline.set_amount(self.new_client.debt * -1);
+                newDebtPaymentline.set_amount(partner.debt * -1);
                 order.paymentlines.add(newDebtPaymentline);
                 self.gui.show_screen('payment');
             });
