@@ -192,6 +192,7 @@ odoo.define('pos_orders_history.screens', function (require) {
             }
         },
         get_order_line_data: function(order) {
+            var self = this;
             return _.map(order.lines, function (id) {
                 var line = self.pos.db.line_by_id[id];
                 line.image = self.get_product_image_url(line.product_id[0]);
