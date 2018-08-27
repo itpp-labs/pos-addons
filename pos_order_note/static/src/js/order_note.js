@@ -255,7 +255,7 @@ odoo.define('pos_cancel_order.order_note', function (require) {
         },
         can_be_merged_with: function(orderline){
             var res = _super_orderline.can_be_merged_with.call(this, orderline);
-            if(this.get_note() || this.get_custom_notes()){
+            if(this.get_note() || this.get_custom_notes() || orderline.get_note()){
                 return false;
             }
             return res;
