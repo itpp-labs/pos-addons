@@ -1,7 +1,7 @@
-`1.1.4`
+`1.2.0`
 -------
 
-- **IMP:** Do not merger orderlines (with the same product) if the orderline has note
+- **NEW:** Do not merger orderlines (with the same product) if the orderline has note
 
 `1.1.3`
 -------
