@@ -1,3 +1,8 @@
+`1.2.0`
+-------
+
+- **NEW:** Do not merger orderlines (with the same product) if the orderline has note
+
 `1.1.3`
 -------
 
