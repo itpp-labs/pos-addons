@@ -253,6 +253,13 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.trigger('change', this);
             this.order.trigger('new_updates_to_send');
         },
+        can_be_merged_with: function(orderline){
+            var res = _super_orderline.can_be_merged_with.call(this, orderline);
+            if(this.get_note() || this.get_custom_notes()){
+                return false;
+            }
+            return res;
+        },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
             data.custom_notes = this.custom_notes;
