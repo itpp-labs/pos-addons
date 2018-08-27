@@ -1,3 +1,8 @@
+`1.1.4`
+-------
+
+- **IMP:** Do not merger orderlines (with the same product) if the orderline has note
+
 `1.1.3`
 -------
 
