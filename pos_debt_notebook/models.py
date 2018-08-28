@@ -31,19 +31,26 @@ class ResPartner(models.Model):
             for partner_id, val in self._cr.fetchall():
                 res[partner_id] += val
 
-        statements = self.env['account.bank.statement'].search(
-            [('journal_id', 'in', [j.id for j in debt_journal]), ('state', '=', 'open')])
+        # orders = self.env['pos.order'].search([('', 'in', self.ids)])
+        statements = self.env['account.bank.statement.line'].search([('journal_id', 'in', [j.id for j in debt_journal]),
+                                                                     ('state', '=', 'open'),
+                                                                     ('pos_statement_id.partner_id', 'in', self.ids)])
 
         if statements:
             self._cr.execute(
-                """SELECT l.partner_id, SUM(l.amount)
-                FROM account_bank_statement_line l
-                WHERE l.statement_id IN %s AND l.partner_id IN %s
-                GROUP BY l.partner_id
+                """SELECT po.partner_id, SUM(absl.amount)
+                FROM account_bank_statement_line AS absl
+                    LEFT JOIN pos_order po ON (absl.pos_statement_id=po.id)
+                WHERE po.partner_id IN %s
+                     AND absl.id IN %s
+                     AND absl.pos_statement_id = po.id
+                GROUP BY po.partner_id
                 """,
-                (tuple(statements.ids), tuple(self.ids)))
+                (tuple(self.ids), tuple(statements.ids)))
+
             for partner_id, val in self._cr.fetchall():
                 res[partner_id] += val
+
         for partner in self:
             partner.debt = res[partner.id]
             partner.credit_balance = - res[partner.id]

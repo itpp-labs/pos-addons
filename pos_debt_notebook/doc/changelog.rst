@@ -1,3 +1,7 @@
+`4.0.3`
+-------
+- **FIX:** Wrong partner debt displaying: debts were assigned on the company, now debts are assigned personally on the customer
+
 `4.0.2`
 -------
 - **FIX:** TypeError: self.new_client is null when `Pay Full Debt`
