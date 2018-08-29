@@ -4,7 +4,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Restrict out-of-stock POS Orders""",
-    "summary": """{SHORT_DESCRIPTION_OF_THE_MODULE}""",
+    "summary": """Restrict payments for out-of-stock products in POS""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": [],
