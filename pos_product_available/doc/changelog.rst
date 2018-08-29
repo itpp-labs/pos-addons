@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.5`
+-------
+
+- **FIX:** Product quantities representation according to the set location
+
 `1.0.4`
 -------
 
