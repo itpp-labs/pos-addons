@@ -1,4 +1,5 @@
-# Copyright 2017 Artyom Losev
+# Copyright 2018 Artyom Losev
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
@@ -17,20 +18,16 @@
     "currency": "EUR",
 
     "depends": [
-        "account",
-        "base_action_rule",
-        "bus",
-        "point_of_sale",
-        "sale",
-        "pos_longpolling"
+        "base_automation",
+        "sale_management",
+        "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "data.xml",
-        "actions/ir_action_server.xml",
         "actions/base_action_rules.xml",
         "report/report.xml",
-        "views.xml",
+        "view.xml"
     ],
     "qweb": [
         'static/src/xml/pos.xml'
@@ -43,7 +40,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Pay Sale Orders & Invoices over POS",
     "demo_addons": [
