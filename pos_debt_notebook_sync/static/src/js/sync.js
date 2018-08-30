@@ -21,7 +21,7 @@ odoo.define('pos_debt_sync', function(require){
             this.bus.add_channel_callback("pos_debt_notebook_sync", this.on_debt_updates, this);
             // poll connection handlers
             this.ready.then(function () {
-                var longpolling_connection = self.bus.longpolling_connection
+                var longpolling_connection = self.bus.longpolling_connection;
                 // reload_debts request passed, but longpoll status is offline
                 self.on('updateDebtHistory', function(partner_ids){
                     if (!longpolling_connection.status){

@@ -14,6 +14,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
     var gui = require('point_of_sale.gui');
     var utils = require('web.utils');
     var rpc = require('web.rpc');
+    var PopupWidget = require('point_of_sale.popups');
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -117,8 +118,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 setTimeout(function(){
                     reload_ready_def.resolve();
                 }, typeof options.postpone === 'number'
-                    ? options.postpone
-                    : 1000);
+                ? options.postpone
+                : 1000);
             }
             this.reload_debts_ready = this.reload_debts_ready.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
@@ -872,8 +873,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.$('#client-list-debt').remove();
             }
             var selected_partner = this.selected_line
-                ? this.pos.db.get_partner_by_id(this.selected_line[2])
-                : this.new_client;
+            ? this.pos.db.get_partner_by_id(this.selected_line[2])
+            : this.new_client;
             if (selected_partner){
                 this.old_client = selected_partner;
             }
@@ -891,8 +892,8 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 ? -1
                 : 1;
             this.history_length = debt_history
-                ? debt_history.length
-                : 0;
+            ? debt_history.length
+            : 0;
             if (debt_type === 'debt'){
                 this.$el.find('th:contains(Total Balance)').text('Total Debt');
             }
