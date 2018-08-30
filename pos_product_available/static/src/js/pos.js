@@ -9,15 +9,39 @@ odoo.define('pos_product_available.PosModel', function(require){
     models.PosModel = models.PosModel.extend({
         load_server_data: function(){
             var self = this;
+
             var loaded = PosModelSuper.load_server_data.call(this);
+
+            var set_prod_qtys = function(products) {
+                _.each(products, function(pr){
+                    self.db.get_product_by_id(pr.id).qty_available = pr.qty_available;
+                });
+            };
+
+            var prod_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
+            if (prod_model) {
+                prod_model.fields.push('qty_available');
+                var context_super = prod_model.context;
+                prod_model.context = function(that){
+                    var ret = context_super(that);
+                    ret.location = that.config.stock_location_id[0];
+                    return ret;
+                };
+                var loaded_super = prod_model.loaded;
+                prod_model.loaded = function(that, products){
+                    loaded_super(that, products);
+                    set_prod_qtys(products);
+                };
+                return loaded;
+            }
 
             return loaded.then(function(){
                 return new Model('product.product').query(['qty_available']).
                     filter([['sale_ok','=',true],['available_in_pos','=',true]]).
-                    context({'location': self.config.stock_location_id[0]}).all().then(function(data){
-                        _.each(data, function(pr){
-                            self.db.get_product_by_id(pr.id).qty_available = pr.qty_available;
-                        });
+                    context({'location': self.config.stock_location_id[0]}).all().then(function(products){
+                        set_prod_qtys(products);
                     });
             });
         },
