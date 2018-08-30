@@ -1,3 +1,10 @@
+`4.2.0`
+-------
+- **FIX:** 'order_line.node' is undefined
+- **NEW:** Added synchronization among the same POS
+- **IMP:** Orderlines added to existing orders in offline mode won't be lost after reestablishing a connection
+- **IMP:** Warning message "No connection to the server..." is automatically closing after connection is reestablished
+
 `4.1.1`
 -------
 - **IMP:** Multi-Session methods renamings

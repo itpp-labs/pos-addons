@@ -85,6 +85,11 @@ odoo.define('pos_mobile.screens', function (require) {
             }
             // open mobile-search-bar-menu
             $('.mobile-order-container').addClass('swipe-is-open');
+            if (!this.pos.iOS) {
+                setTimeout(function(){
+                    $('.order-scroller').getNiceScroll().resize();
+                }, 300)
+            }
         },
         close_bottom_menu: function() {
             // remove class
@@ -92,6 +97,11 @@ odoo.define('pos_mobile.screens', function (require) {
             $('.mobile-order-container').removeClass('open-categories-slide');
             $('.mobile-order-container').removeClass('swipe-is-open');
             this.current_bottom_slide = false;
+            if (!this.pos.iOS) {
+                setTimeout(function(){
+                    $('.order-scroller').getNiceScroll().resize();
+                }, 500)
+            }
         },
         change_categories_slide: function() {
             if (this.current_bottom_slide === "categories") {
@@ -187,6 +197,11 @@ odoo.define('pos_mobile.screens', function (require) {
                 $qty.html(qty);
             }
             var $p = $('span[data-product-id="'+product.id+'"]');
+            var $pi = $('span[data-product-id="'+product.id+'"] img');
+
+            $($p).stop();
+            $($pi).stop();
+
             $($p).animate({
                 'opacity': 0.5,
             }, 200, function(){
@@ -194,7 +209,6 @@ odoo.define('pos_mobile.screens', function (require) {
                     'opacity': 1,
                 }, 400);
             });
-            var $pi = $('span[data-product-id="'+product.id+'"] img');
             $($pi).animate({
                 'height': '220px',
                 'width': '220px',
@@ -240,7 +254,7 @@ odoo.define('pos_mobile.screens', function (require) {
         scroll_to_selected_line: function() {
             var order = this.pos.get_order();
             var width = order.get_orderlines().indexOf(order.get_selected_orderline());
-            $('.order-scroller').animate({scrollTop:104 * width}, 200, 'swing');
+            $('.order-scroller').animate({scrollTop:133 * width}, 200, 'swing');
         },
     });
 
@@ -254,15 +268,27 @@ odoo.define('pos_mobile.screens', function (require) {
     });
 
     screens.OrderWidget.include({
+        bind_order_events: function() {
+            this._super();
+            var self = this;
+            var order = this.pos.get_order();
+            var lines = order.orderlines;
+            lines.bind('change', function(line) {
+                self.change_product_qty(line.product.id);
+            });
+        },
         renderElement: function(scrollbottom){
             this._super(scrollbottom);
             var summary = $('.pos.mobile .order-container .summary.clearfix');
             summary.detach();
             $('.pos.mobile .order-container').append(summary);
             if (!this.pos.iOS) {
-                $('.order-scroller').niceScroll({
-                    horizrailenabled: false,
-                });
+                clearTimeout(this.scroll_timeout);
+                this.scroll_timeout = setTimeout(function() {
+                    $('.order-scroller').niceScroll({
+                        horizrailenabled: false,
+                    });
+                }, 500);
             }
         },
         change_selected_order: function() {
@@ -276,6 +302,11 @@ odoo.define('pos_mobile.screens', function (require) {
             this.change_product_qty();
             this.scroll_to_selected_order();
             this.change_orderlist();
+            if (!this.pos.iOS) {
+                $('.order-scroller').niceScroll({
+                    horizrailenabled: false,
+                });
+            }
         },
         orderline_change: function(line) {
             this._super(line);

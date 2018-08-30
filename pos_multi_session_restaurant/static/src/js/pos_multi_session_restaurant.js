@@ -40,7 +40,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
                 this._super(order_line);
             } else {
-                order_line.node.parentNode.removeChild(order_line.node);
+                if (order_line.node && order_line.node.parentNode) {
+                    order_line.node.parentNode.removeChild(order_line.node);
+                }
             }
         }
     });
@@ -94,13 +96,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
-            if (options.data.table_id) {
-                order.table = self.tables_by_id[options.data.table_id];
-                order.customer_count = options.data.customer_count;
+            var data = options.json;
+            if (data.table_id) {
+                order.table = self.tables_by_id[data.table_id];
+                order.customer_count = data.customer_count;
             }
             return order;
         },
-        updates_from_server: function(message, sync_all){
+        updates_from_server: function(message){
             var self = this;
             var data = message.data || {};
             var order = false;
@@ -119,12 +122,12 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
-            if (!sync_all && this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
+            if (this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
                 this.gui.screen_instances.floors.renderElement();
             }
         },
-        ms_do_update: function(order, data){
-            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+        ms_update_order: function(order, data){
+            PosModelSuper.prototype.ms_update_order.apply(this, arguments);
             if (order) {
                 order.init_locked = true;
                 order.set_customer_count(data.customer_count, true);
@@ -194,17 +197,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
     });
 
-    var MultiSessionSuper = multi_session.MultiSession;
-    multi_session.MultiSession = multi_session.MultiSession.extend({
-        sync_all: function(data) {
-            var self = this;
-            return MultiSessionSuper.prototype.sync_all.apply(this, arguments).then(function(){
-                if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
-                    self.pos.gui.screen_instances.floors.renderElement();
-                }
-            });
-        }
-    });
 
     floors.FloorScreenWidget.include({
         init: function(parent, options) {
