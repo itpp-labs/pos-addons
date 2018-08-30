@@ -1,3 +1,7 @@
+`1.2.1`
+-------
+- **FIX:** Scrolling Order after getting updates from Multi-Session
+
 `1.2.0`
 -------
 
