@@ -133,6 +133,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                             // In case this function was called from saved_client_details load_new_partners may work asynchronously
                             // because saved_client_details works with deferred objects but returns nothing, so we cannot wait for it
                             // rejection means that all new partners data was already previously updated, otherwise, they were updated now
+                            // related PR: https://github.com/odoo/odoo/pull/26220
                             def.resolve();
                         });
                     } else {
