@@ -100,7 +100,7 @@
                 <field name="multi_session_id"/>
             </xpath>
 
-            <xpath expr="//div[@class='o_primary']" position="inside">
+            <xpath expr="//div[hasclass('o_primary')]" position="inside">
                 <t t-esc=" record.multi_session_id.value and ' (' + record.multi_session_id.value + ')' or ''"/>
             </xpath>
         </field>
