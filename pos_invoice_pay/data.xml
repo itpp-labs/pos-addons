@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Copyright 2018 Artyom Losev
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <odoo>
@@ -8,5 +9,10 @@
       <link rel="stylesheet" href="/pos_invoice_pay/static/src/css/styles.css"/>
       <script type="text/javascript" src="/pos_invoice_pay/static/src/js/main.js"></script>
             </xpath>
+  </template>
+  <template id="assets_backend_web" name="pos_invoice_backend_assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        <script type="text/javascript" src="/pos_invoice_pay/static/src/js/test_pos_invoice.js"></script>
+    </xpath>
   </template>
 </odoo>
