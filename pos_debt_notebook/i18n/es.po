@@ -510,7 +510,6 @@ msgstr "Deuda Máxima *"
 #. module: pos_debt_notebook
 #. openerp-web
 #: code:addons/pos_debt_notebook/static/src/js/pos.js:290
->>>>>>> 3781e6b954c3acb4c9b2ecf37dc50bb42d63448f
 #, python-format
 msgid "Max Debt exceeded"
 msgstr "Deuda Máxima Excedida"
