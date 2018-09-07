@@ -2,7 +2,6 @@
 //  Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 //  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 //  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 odoo.define('pos_invoices', function (require) {
 'use_strict';
 
@@ -259,9 +258,9 @@ models.PosModel = models.PosModel.extend({
                 muted_invoices_ids.push(id);
             }
         }
-        if (muted_invoices_ids) {
+        if (muted_invoices_ids && muted_invoices_ids.length) {
             invoices = _.filter(invoices, function (inv) {
-                return !muted_invoices_ids.includes(inv.id);
+                return !_.contains(muted_invoices_ids, inv.id);
             });
         }
         if (client) {
