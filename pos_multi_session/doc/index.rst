@@ -44,3 +44,7 @@ After completing previous paragraphs and adding at least two poses to a multi-se
 * In the opened POSes you will see the product in order list and underline note signifying that it was added by the first POS and the number of the order was changed from ``NEW`` to a number
 * In the second POS click on the orderline and click a number by using numpad to change quantity of that product
 * In opened POSes you will see the changed quantity of the product and information about the orderline was added by the first and changed by the second POSes
+
+Same POS can be used on the different devices, but be sure you do not launch them simultaneously.
+You need to wait for the POS loading on one device before start it on the another.
+Otherwise you may lose an order data. Fix for the problem: https://github.com/odoo/odoo/pull/24486

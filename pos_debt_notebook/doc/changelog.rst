@@ -1,3 +1,12 @@
+`5.0.2`
+-------
+- **FIX:** Error related to debt loading after creating a new partner in POS
+
+`5.0.1`
+-------
+
+- **Fix:** installation error in some cases
+
 `5.0.0`
 -------
 

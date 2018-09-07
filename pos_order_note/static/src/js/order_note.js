@@ -76,7 +76,8 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_note = data.old_note;
             this.custom_notes = data.custom_notes;
             this.old_custom_notes = data.old_custom_notes;
-            if (this.pos.gui.screen_instances.products) {
+            var current_order = this.pos.get_order();
+            if (current_order && this.uid === current_order.uid && this.pos.gui.screen_instances.products) {
                 this.pos.gui.screen_instances.products.order_widget.renderElement(true);
             }
         },
@@ -252,6 +253,13 @@ odoo.define('pos_cancel_order.order_note', function (require) {
             this.old_custom_notes = notes;
             this.trigger('change', this);
             this.order.trigger('new_updates_to_send');
+        },
+        can_be_merged_with: function(orderline){
+            var res = _super_orderline.can_be_merged_with.call(this, orderline);
+            if(this.get_note() || this.get_custom_notes() || orderline.get_note()){
+                return false;
+            }
+            return res;
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);

@@ -7,7 +7,10 @@
     'category': 'Point Of Sale',
     "support": "apps@it-projects.info",
     'website': 'https://it-projects.info',
-    'depends': ['pos_pin'],
+    'depends': [
+        'pos_pin',
+        'pos_product_available',
+    ],
     'data': [
         'data.xml',
         'views.xml',
