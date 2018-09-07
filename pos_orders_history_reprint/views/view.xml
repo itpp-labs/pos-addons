@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="pos_orders_history.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='orders_history_actions']" position="inside">
+                <field name="reprint_orders" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
