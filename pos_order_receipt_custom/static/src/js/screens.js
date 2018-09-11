@@ -39,13 +39,16 @@ odoo.define('pos_order_receipt_custom.screens', function(require){
         printbill_print_xml: function() {
             if (this.pos.config.custom_xml_receipt) {
                 var order = this.pos.get_order();
-                order.set_receipt_type(_t('Pre-receipt'));
-                this.getParent().screens.receipt.print_xml();
+                if(order.get_orderlines().length > 0) {
+                    order.set_receipt_type(_t('Pre-receipt'));
+                    this.pos.chrome.screens.receipt.print_xml();
+                }
             } else {
                 var order = this.pos.get('selectedOrder');
                 if(order.get_orderlines().length > 0){
                     var receipt = order.export_for_printing();
                     receipt.bill = true;
+                    var printbill = this.gui.screen_instances.products.action_buttons.print_bill;
                     this.pos.proxy.print_receipt(QWeb.render('BillReceipt',{
                         receipt: receipt, widget: printbill, pos: this.pos, order: order,
                     }));
