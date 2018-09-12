@@ -74,7 +74,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(add_product_to_order('Miscellaneous'));
     steps = steps.concat(set_customer('Agrolait'));
-    steps = steps.concat(debt_method_paying('Debt Journal'));
+    steps = steps.concat(debt_method_paying('Credits (USD)'));
 
     tour.register('tour_pos_debt_notebook', { test: true, url: '/web' }, steps);
 

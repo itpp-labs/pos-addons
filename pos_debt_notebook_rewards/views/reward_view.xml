@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
+    <record id="view_pos_credit_update_reward_tree" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.tree</field>
+        <field name="model">pos.credit.update.reward</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="company_id"/>
+                <field name="currency_id"/>
+                <field name="journal_id"/>
+                <field name="attendance_ids"/>
+                <field name="state"/>
+                <field name="id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pos_credit_update_reward_form" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.form</field>
+        <field name="model">pos.credit.update.reward</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Confirm" type="object" name="switch_to_confirm" attrs="{'invisible': [('state', '==', 'confirm')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
+                    <button string="Cancel" type="object" name="switch_to_cancel" attrs="{'invisible': [('state', '==', 'cancel')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
+                    <button string="Draft" type="object" name="switch_to_draft" attrs="{'invisible': [('state', '==', 'draft')]}" groups='pos_debt_notebook_rewards.group_reward_officer'/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'barcode_search': 1}"/>
+                            <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id"  readonly="1"/>
+                            <field name="reward_type_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="journal_id"  readonly="1"/>
+                            <field name="attendance_ids"  attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   widget="many2many_tags"
+                                   options="{'no_create': True}"
+                                   domain="[('partner_id', '=', partner_id),
+                                            ('reward_ids', '=', False)]">
+                            </field>
+                            <field name="note"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="_barcode_scanned" widget="barcode_handler" invisible="1"/>
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_credit_update_reward_search" model="ir.ui.view">
+        <field name="name">pos.credit.update.reward.search</field>
+        <field name="model">pos.credit.update.reward</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date"/>
+                <filter string="This Year" name="year" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" help="POS ordered created during current year"/>
+                <filter string="Today" name="today" domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                <separator/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="journal_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
+                    <filter string="Customer" context="{'group_by':'partner_id'}"/>
+                    <separator/>
+                    <filter string="Month" context="{'group_by':'date:month'}"/>
+                    <filter string="Week" context="{'group_by':'date:week'}"/>
+                    <filter string="Day" context="{'group_by':'date:day'}"/>
+                    <filter string="Hour" context="{'group_by':'date:hour'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pos_credit_update_reward" model="ir.actions.act_window">
+        <field name="name">Reward Credit Updates</field>
+        <field name="res_model">pos.credit.update.reward</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_pos_credit_update_reward_search"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="server_action_pos_credit_update_reward" model="ir.actions.server">
+        <field name="name">Confirm</field>
+        <field name="model_id" ref="point_of_sale.menu_point_config_product"/>
+        <field name="state">code</field>
+        <field name="code">env['pos.credit.update.reward'].do_confirm()</field>
+    </record>
+
+    <record id="option_pos_credit_update_reward" model="ir.values">
+        <field name="name">Confirm</field>
+        <field name="key2">client_action_multi</field>
+        <field name="model">pos.credit.update.reward</field>
+        <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update_reward"/>
+    </record>
+
+    <menuitem id="menu_pos_credit_update_reward" name="Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_user" sequence="100"/>
+
+
+</odoo>

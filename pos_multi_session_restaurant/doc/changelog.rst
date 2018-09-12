@@ -1,3 +1,11 @@
+`3.2.4`
+-------
+- **FIX:** 'order_line.node' is undefined
+
+`3.2.3`
+-------
+- **IMP:** Multi-Session methods renamings
+
 `3.2.2`
 -------
 - **IMP:** Improved performance
