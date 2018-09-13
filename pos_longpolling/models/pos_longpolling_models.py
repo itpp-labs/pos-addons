@@ -7,14 +7,11 @@ _logger = logging.getLogger(__name__)
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    # 5/60 = 0.0833 = 5 min - default value
-    longpolling_max_silence_timeout = fields.Float(string='Max Silence timeout', default=0.0833,
+    longpolling_max_silence_timeout = fields.Float(string='Max Silence timeout (sec)', default=60,
                                                    help="Waiting period for any message from poll "
                                                         "(if we have not received a message at this period, "
                                                         "poll will send message ('PING') to check the connection)")
-
-    # 1/60 = 0.01666 = 1 min - default value
-    longpolling_pong_timeout = fields.Float(string='Pong timeout', default=0.01666,
+    longpolling_pong_timeout = fields.Float(string='Pong timeout (sec)', default=10,
                                             help="Waiting period to receive PONG message after sending PING request."
                                                  "When this timeout occurs, the icon turns "
                                                  "color to red. Once the connection is restored, the icon changes its color "
@@ -48,3 +45,9 @@ class PosConfig(models.Model):
     @api.model
     def _get_full_channel_name_by_id(self, dbname, pos_id, channel_name):
         return '["%s","%s","%s"]' % (dbname, channel_name, pos_id)
+
+    @api.model
+    def send_to_all_poses(self, channel_name, data):
+        active_poses = self.search([])
+        res = active_poses._send_to_channel(channel_name, data)
+        return res

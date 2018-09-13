@@ -1,3 +1,9 @@
+`1.1.7`
+-------
+
+- **FIX:** Compatibility with Pos Restaurant Base
+- **FIX:** Touch scrolling for Android after opening bottom menu
+
 `1.1.6`
 -------
 

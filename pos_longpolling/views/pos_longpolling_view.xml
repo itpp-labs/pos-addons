@@ -13,7 +13,7 @@
                                 <label for="longpolling_max_silence_timeout"/>
                                 <div class="content-group">
                                     <div class="mt16 row">
-                                        <field name="longpolling_max_silence_timeout" class="col-xs-3 col-md-3" widget="float_time"/>
+                                        <field name="longpolling_max_silence_timeout" class="col-xs-3 col-md-3" widget="integer"/>
                                     </div>
                                 </div>
                             </div>
@@ -23,7 +23,7 @@
                                 <label for="longpolling_pong_timeout"/>
                                 <div class="content-group">
                                     <div class="mt16 row">
-                                        <field name="longpolling_pong_timeout" class="col-xs-3 col-md-3" widget="float_time"/>
+                                        <field name="longpolling_pong_timeout" class="col-xs-3 col-md-3" widget="integer"/>
                                     </div>
                                 </div>
                             </div>

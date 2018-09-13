@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Artem Losev
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<templates id="template" xml:space="preserve">
+
+    <t t-name="OrdersHistoryButton">
+        <div class='control-button orders-history'>
+            <i class='fa fa-list-alt '/> History
+        </div>
+    </t>
+
+    <t t-name="OrdersHistoryScreenWidget">
+        <div class="orders-list-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Back
+                    </span>
+                    <span class="filters">
+                        <i class='fa fa-filter'></i>
+                        Filters
+                        <span class="button user-filter">
+                            User
+                        </span>
+                        <span class="button pos-filter">
+                            POS
+                        </span>
+                        <span class="button table-filter">
+                            Table
+                        </span>
+                    </span>
+                    <span class='searchbox'>
+                        <input placeholder='Search Orders' />
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div class='subwindow-container-fix orders-details-contents'>
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='order-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Order Ref</th>
+                                                <th>Customer</th>
+                                                <th>POS</th>
+                                                <th>Order Date</th>
+                                                <th>Salesman</th>
+                                                <th>Status</th>
+                                                <th class="actions oe_hidden">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='order-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="OrderHistory">
+        <tr class='order-line' t-att-data-id='order.id'>
+            <td>
+                <span class='details' >
+                    <t t-esc='order.pos_reference'/>
+                </span>
+            </td>
+
+            <td>
+                <t t-if='order.partner_id' t-esc='order.partner_id[1]'/>
+                <t t-if='!order.partner_id' t-esc='""'/>
+            </td>
+            <td><t t-esc='order.pos_name'/></td>
+            <td><t t-esc='order.date_order' /></td>
+            <td><t t-esc='order.user_id[1]' /></td>
+            <t t-if="!order.computed_state">
+                <td>
+                    <t t-if="order.state == 'done'">
+                        Posted
+                    </t>
+                    <t t-if="order.state == 'paid'">
+                        Paid
+                    </t>
+                    <t t-if="order.state == 'cancel'">
+                        Cancelled
+                    </t>
+                </td>
+            </t>
+            <t t-if="order.computed_state">
+                <td>
+                    <t t-if="order.computed_state == 'done'">
+                        Posted
+                    </t>
+                    <t t-if="order.computed_state == 'paid'">
+                        Paid
+                    </t>
+                    <t t-if="order.computed_state == 'cancel'">
+                        Cancelled
+                    </t>
+                </td>
+            </t>
+            <td class="actions oe_hidden">
+            </td>
+        </tr>
+    </t>
+
+    <t t-name="LinesHeader">
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Discount</th>
+            <th>Taxes</th>
+            <th>Subtotal w/o Tax</th>
+            <th>Subtotal</th>
+        </tr>
+    </t>
+
+    <t t-name="LineHistory">
+        <tr class='line-line'>
+            <td>
+                <div class="line_image">
+                    <img t-att-src="line.image" />
+                </div>
+            </td>
+            <td><t t-esc='line.product_id[1]'/></td>
+            <td><t t-esc='line.qty'/></td>
+            <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
+            <td><t t-esc='line.discount'/></td>
+            <td><t t-esc='line.tax_ids'/></td>
+            <td><t t-esc='widget.format_currency(line.price_subtotal)'/></td>
+            <td><t t-esc='widget.format_currency(line.price_subtotal_incl)'/></td>
+        </tr>
+    </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery="t[t-if*='receipt.footer']" t-operation="before">
+            <span>
+                <img id="barcode"/>
+            </span>
+        </t>
+    </t>
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-if*='receipt.footer_xml']" t-operation="before">
+            <img id="barcode"/>
+        </t>
+    </t>
+
+</templates>
