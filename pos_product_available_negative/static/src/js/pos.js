@@ -15,11 +15,12 @@ odoo.define('pos_product_available_negative.pos', function (require) {
             var has_negative_product = false;
             for (var i = 0; i < orderlines.length; i++) {
                 var line = orderlines[i];
-                if (line.product.qty_available < line.quantity) {
+                if (line.product.type === 'product' && line.product.qty_available < line.quantity) {
                     has_negative_product = true;
                     self.gui.sudo_custom({
                         'title': _t('Order has out-of-stock product and must be approved by supervisor'),
-                        'special_group': this.pos.config.negative_order_group_id[0]
+                        'special_group': this.pos.config.negative_order_group_id[0],
+                        'arguments': {'ask_untill_correct': true},
                     }).done(function(user){
                         order.negative_stock_user_id = user;
                         _super.call(self, force_validation);
