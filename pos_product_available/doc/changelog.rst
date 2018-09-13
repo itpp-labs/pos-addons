@@ -7,6 +7,7 @@ Updates
 -------
 
 - **FIX:** Product quantities representation according to the set location
+- **FIX:** Product quantities representation only for stockable products
 
 `1.0.4`
 -------
