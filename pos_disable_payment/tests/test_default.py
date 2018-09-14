@@ -10,7 +10,7 @@ class TestUi(odoo.tests.HttpCase):
             '/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
-            ".run('pos_disable_payment_tour', 1000)",
+            ".run('pos_disable_payment_tour')",
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".tours.pos_disable_payment_tour.ready",
