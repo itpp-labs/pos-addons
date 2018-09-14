@@ -19,7 +19,7 @@ class TestUi(odoo.tests.HttpCase):
             '/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
-            ".run('pos_printer_network_tour', 1000)",
+            ".run('pos_printer_network_tour')",
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".tours.pos_printer_network_tour.ready",

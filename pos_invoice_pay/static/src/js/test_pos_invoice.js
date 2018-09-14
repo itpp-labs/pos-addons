@@ -19,6 +19,7 @@ odoo.define('pos_invoice_pay.tour', function (require) {
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
+            timeout: 15000,
         }];
     }
 
