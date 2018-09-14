@@ -8,6 +8,7 @@ odoo.define('pos_longpolling', function(require){
     var models = require('point_of_sale.models');
     var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
+    var crash_manager = require('web.crash_manager');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -24,7 +25,7 @@ odoo.define('pos_longpolling', function(require){
             }
             this.ERROR_DELAY = 10000;
             this.serv_adr = sync_server || '';
-            this.longpolling_connection = new exports.LongpollingConnection(this.pos);
+            this.longpolling_connection = new exports.LongpollingConnection(this.pos, this);
             this.set_activated(false);
             var callback = this.longpolling_connection.network_is_on;
             this.add_channel_callback("pos.longpolling", callback, this.longpolling_connection);
@@ -48,7 +49,15 @@ odoo.define('pos_longpolling', function(require){
                     self.poll();
                 }
                 //difference with original
-                self.longpolling_connection.network_is_on();
+                var poll_connection = self.longpolling_connection;
+                if (poll_connection.waiting_poll_response) {
+                    poll_connection.waiting_poll_response = false;
+                    if (poll_connection.is_online){
+                        // condition prevents double triggering in case if is_online === false;
+                        poll_connection.trigger("change:poll_connection", true);
+                    }
+                }
+                poll_connection.network_is_on();
             }, function(unused, e) {
                 //difference with original
                 self.longpolling_connection.network_is_off();
@@ -57,6 +66,33 @@ odoo.define('pos_longpolling', function(require){
                 // random delay to avoid massive longpolling
                 setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
             });
+        },
+        check_sleep_mode: function() {
+            var hidden = '';
+            var visibilityChange = '';
+            var self = this;
+
+            function onVisibilityChange() {
+                self.sleep = true;
+            }
+
+            if (typeof document.hidden !== 'undefined') {
+                hidden = 'hidden';
+                visibilityChange = 'visibilitychange';
+            } else if (typeof document.mozHidden !== 'undefined') {
+                hidden = 'mozHidden';
+                visibilityChange = 'mozvisibilitychange';
+            } else if (typeof document.msHidden !== 'undefined') {
+                hidden = 'msHidden';
+                visibilityChange = 'msvisibilitychange';
+            } else if (typeof document.webkitHidden !== 'undefined') {
+                hidden = 'webkitHidden';
+                visibilityChange = 'webkitvisibilitychange';
+            }
+
+            if (visibilityChange !== undefined) {
+                document.addEventListener(visibilityChange, onVisibilityChange, false);
+            }
         },
         add_channel_callback: function(channel_name, callback, thisArg) {
             if (thisArg){
@@ -92,6 +128,7 @@ odoo.define('pos_longpolling', function(require){
             this.longpolling_connection.send_ping({serv: this.serv_adr});
             this.start_polling();
             this.set_activated(true);
+            this.check_sleep_mode();
         },
         activate_channel: function(channel_name){
             var channel = this.get_full_channel_name(channel_name);
@@ -115,7 +152,6 @@ odoo.define('pos_longpolling', function(require){
             }
             if(Array.isArray(channel) && (channel[1] in self.channel_callbacks)){
                 try{
-                    self.longpolling_connection.network_is_on();
                     var callback = self.channel_callbacks[channel[1]];
                     if (callback) {
                         if (self.pos.debug){
@@ -124,9 +160,10 @@ odoo.define('pos_longpolling', function(require){
                         return callback(message);
                     }
                 }catch(err){
-                    this.pos.chrome.gui.show_popup('error',{
-                        'title': _t('Error'),
-                        'body': err,
+                    crash_manager.show_error({
+                        type: _t("Longpolling Handling Error"),
+                        message: _t("Longpolling Handling Error"),
+                        data: {debug: err.stack},
                     });
                 }
             }
@@ -134,12 +171,12 @@ odoo.define('pos_longpolling', function(require){
         get_full_channel_name: function(channel_name){
             return JSON.stringify([session.db,channel_name,String(this.pos.config.id)]);
         },
-        set_activated: function(status) {
-            if (this.activated === status) {
+        set_activated: function(is_online) {
+            if (this.activated === is_online) {
                 return;
             }
-            this.activated = status;
-            this.longpolling_connection.trigger("change:poll_connection", status);
+            this.activated = is_online;
+            this.longpolling_connection.trigger("change:poll_connection", is_online);
         },
     });
 
@@ -173,55 +210,57 @@ odoo.define('pos_longpolling', function(require){
         },
     });
     exports.LongpollingConnection = Backbone.Model.extend({
-        initialize: function(pos) {
+        initialize: function(pos, bus) {
             this.pos = pos;
             this.timer = false;
-            this.status = false;
+            this.is_online = true;
+            this.bus = bus;
             // Is the message "PONG" received from the server
             this.response_status = false;
+            this.waiting_poll_response = true;
         },
         network_is_on: function(message) {
             if (message) {
                 this.response_status = true;
             }
             this.update_timer();
-            this.set_status(true);
+            this.set_is_online(true);
+            this.bus.sleep = false;
         },
         network_is_off: function() {
             this.update_timer();
-            this.set_status(false);
+            this.waiting_poll_response = true;
+            this.set_is_online(false);
         },
-        set_status: function(status) {
-            if (this.status === status) {
+        set_is_online: function(is_online) {
+            if (this.is_online === is_online) {
                 return;
             }
-            this.status = status;
-            this.trigger("change:poll_connection", status);
+            this.is_online = is_online;
+            this.trigger("change:poll_connection", is_online);
         },
         update_timer: function(){
             this.stop_timer();
             this.start_timer(this.pos.config.longpolling_max_silence_timeout, 'query');
         },
         stop_timer: function(){
-            var self = this;
             if (this.timer) {
                 clearTimeout(this.timer);
                 this.timer = false;
             }
         },
         start_timer: function(time, type){
-            var response_time = Math.round(time * 3600.0);
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
                     self.send_ping();
                 } else if (type === "response") {
                     if (self.pos.debug){
-                        console.log('POS LONGPOLLING start_timer error', self.pos.config.name);
+                        console.log('POS LONGPOLLING start_timer error', self.bus.name, self.pos.config.name);
                     }
                     self.network_is_off();
                 }
-            }, response_time * 1000);
+            }, time * 1000);
         },
         response_timer: function() {
             this.stop_timer();
@@ -233,19 +272,20 @@ odoo.define('pos_longpolling', function(require){
             var serv_adr = address
                 ? address.serv
                 : this.pos.config.sync_server || '';
-            openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:2500}).then(function(){
+            if (self.pos.debug){
+                console.log('POS LONGPOLLING', self.bus.name, self.pos.config.name, "PING");
+            }
+            return openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                if (self.pos.debug){
-                    console.log('POS LONGPOLLING', self.pos.config.name, serv_adr, "PING");
-                }
+                self.trigger("change:poll_connection", true);
                 if (!self.response_status) {
                     self.response_timer();
                 }
             }, function(error, e){
                 e.preventDefault();
                 if (self.pos.debug){
-                    console.log('POS LONGPOLLING send error', self.pos.config.name);
+                    console.log('POS LONGPOLLING send error', self.bus.name, self.pos.config.name);
                 }
                 self.network_is_off();
             });
@@ -254,71 +294,69 @@ odoo.define('pos_longpolling', function(require){
 
     var Status_Widget = chrome.StatusWidget;
     Status_Widget.include({
-        set_poll_status: function(selector, current_bus) {
+        rerender_poll_status: function(current_bus) {
+            var element = this.$el.find('div[bid="' + current_bus.bus_id + '"]');
             if (current_bus.activated) {
-                if (current_bus.longpolling_connection.status) {
-                    this.set_icon_class(selector, 'oe_green');
-                } else {
-                    this.set_icon_class(selector, 'oe_red');
-                }
-            } else {
-                this.set_icon_class(selector, 'oe_hidden');
-            }
-        },
-        set_icon_class: function(selector, new_class) {
-            var element = $(selector);
-            element.removeClass('oe_hidden oe_red oe_green').addClass(new_class);
-        },
-    });
-
-    var AdditionalSynchNotificationWidget = Status_Widget.extend({
-        template: 'AdditionalSynchNotificationWidget',
-        start: function(){
-            var self = this;
-            var element = this.$('.serv_additional');
-            if (this.pos.buses && _.keys(this.pos.buses).length){
-                for (var key in this.pos.buses){
-                    if (_.has(this.pos.buses, key)){
-                        bus = this.pos.buses[key];
-                        bus.longpolling_connection.set_status(true);
-                        self.set_poll_status(element.selector, bus);
-                        bus.longpolling_connection.on("change:poll_connection", function(status){
-                            self.set_poll_status(element.selector, bus);
-                        });
+                if (current_bus.longpolling_connection.is_online) {
+                    if (current_bus.longpolling_connection.waiting_poll_response){
+                        this.set_icon_class(element, 'oe_orange');
+                    } else {
+                        this.set_icon_class(element, 'oe_green');
                     }
+                } else {
+                    this.set_icon_class(element, 'oe_red');
                 }
             } else {
-                element.addClass('hidden');
+                this.set_icon_class(element, 'oe_hidden');
+            }
+        },
+        set_icon_class: function(element, new_class) {
+            element.removeClass('oe_hidden oe_red oe_green oe_orange').addClass(new_class);
+        },
+        icon_rotating: function(element, status){
+            element.find('i').removeClass('fa-spin');
+            if (status){
+                element.find('i').addClass('fa-spin');
             }
         },
     });
 
-    chrome.Chrome.include({
-        build_widgets: function(){
-            if (Object.keys(this.pos.buses).length){
-                    var element = _.find(this.widgets, function(w){
-                    return w.name === 'notification';
-                });
-                var index = this.widgets.indexOf(element);
-                this.widgets.splice(index + 1, 0, {
-                    'name':   'AdditionalSynchNotificationWidget',
-                    'widget': AdditionalSynchNotificationWidget,
-                    'append':  '.oe_status.js_synch',
-                });
-            }
-            this._super();
-        },
-    });
 
     chrome.SynchNotificationWidget.include({
         start: function(){
             this._super();
             var self = this;
-            var selector = '.serv_primary';
-            this.pos.bus.longpolling_connection.on("change:poll_connection", function(status){
-                self.set_poll_status(selector, self.pos.bus);
+            var element = this.$el.find('.serv_primary');
+            var bus_id = this.pos.bus.bus_id;
+            this.start_bus(this.pos.bus, element);
+            this.start_additional_buses();
+        },
+        start_bus: function(bus, element){
+            var self = this;
+            element.attr('bid', bus.bus_id);
+            this.rerender_poll_status(bus);
+            bus.longpolling_connection.on("change:poll_connection", function(is_online){
+                self.rerender_poll_status(bus);
             });
-            this.pos.bus.longpolling_connection.set_status(true);
+            element.on('click', function(event){
+                self.icon_rotating(element, true);
+                bus.longpolling_connection.send_ping({'serv': bus.serv_adr}).always(function(){
+                    self.icon_rotating(element, false);
+                });
+            });
+        },
+        start_additional_buses: function(){
+            var self = this;
+            var sync_icon = QWeb.render('synch_icon', {});
+            var div = false;
+            _.each(this.pos.buses, function(b){
+                div = document.createElement('div');
+                div.innerHTML = sync_icon;
+                var element = $(div);
+                element.addClass('js_poll_connected oe_icon oe_green');
+                self.$el.append(div);
+                self.start_bus(b, element);
+            });
         },
     });
 

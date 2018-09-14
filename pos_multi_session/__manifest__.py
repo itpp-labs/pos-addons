@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2017-2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -11,14 +11,14 @@
     "category": "Point Of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=10.0',
     "images": ["images/pos-multi-session.png"],
-    "version": "10.0.4.1.1",
+    "version": "10.0.4.2.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "LGPL-3",
-    "price": 160.00,
+    "price": 360.00,
     "currency": "EUR",
 
     "depends": [
