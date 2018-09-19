@@ -7,7 +7,7 @@
     "name": "POS Orders History",
     "summary": """See all paid orders from special menu in POS""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=11.0",
     "images": ['images/pos_orders_history_main.png'],
     "version": "11.0.1.0.1",
     "application": False,

@@ -34,7 +34,7 @@ Further information
 
 Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10/pos_orders_history_return/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_orders_history_return/
 
 Usage instructions: `<doc/index.rst>`_
 
