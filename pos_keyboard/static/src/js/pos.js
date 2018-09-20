@@ -81,14 +81,14 @@ function pos_keyboard_widgets(instance, module){
 
         is_allowed: function(ttype){
             // pos_disable_payment installed?
-            if (!window.posmodel.config.hasOwnProperty('allow_discount')) {
+            if (!this.pos.config.hasOwnProperty('allow_discount')) {
                 return true;
             }
             if (ttype === 'discount') {
-                return window.posmodel.config.allow_discount;
+                return this.pos.config.allow_discount;
             } else
             if (ttype === 'edit_price') {
-                return window.posmodel.config.allow_edit_price;
+                return this.pos.config.allow_edit_price;
             } 
             return false;
         },
