@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_product,access_product_product,product.model_product_product,wechat_miniprogram.group_miniprogram_user,1,0,0,0
+access_product_template,access_product_template,product.model_product_template,wechat_miniprogram.group_miniprogram_user,1,0,0,0
+access_product_attribute_value,access_product_attribute_value,product.model_product_attribute_value,wechat_miniprogram.group_miniprogram_user,1,0,0,0
+access_product_attribute_price,access_product_attribute_price,product.model_product_attribute_price,wechat_miniprogram.group_miniprogram_user,1,0,0,0
