@@ -16,6 +16,9 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             this.swiper_order = new window.Swiper(".swiper-container-order", {
                 spaceBetween: 0,
+                resistanceRatio: 0,
+                touchAngle: 30,
+                threshold: 10,
             });
 
             this.swiper_numpad = new window.Swiper(".swiper-container-numpad", {

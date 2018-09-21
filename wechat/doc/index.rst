@@ -27,7 +27,7 @@ In order for the requests to send to the desired database, you need to configure
 WeChat APP
 ==========
 
-Contact WeChat documentation or support about obtaining APP credentials.
+Check WeChat documentation or contact WeChat Support about obtaining APP credentials.
 
 Configuration
 =============

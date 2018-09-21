@@ -1,7 +1,21 @@
-.. _changelog:
+`4.2.0`
+-------
+- **FIX:** 'order_line.node' is undefined
+- **NEW:** Added synchronization among the same POS
+- **IMP:** Orderlines added to existing orders in offline mode won't be lost after reestablishing a connection
+- **IMP:** Warning message "No connection to the server..." is automatically closing after connection is reestablished
 
-Updates
-=======
+`4.1.1`
+-------
+- **IMP:** Multi-Session methods renamings
+
+`4.1.0`
+-------
+- **NEW:** Field "Active" to enable/disable synchronization for POSes. The multi-session parameter is required now to provide compatibility with "POS Multi Session Menu" module and other modules that put common settings in "POS Multi Session"
+
+`4.0.6`
+-------
+- **FIX:** Incompatibility with pos_order_cancel_restaurant: it showed *Synchronization error* on removing order
 
 `4.0.5`
 -------

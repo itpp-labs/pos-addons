@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+        <template id="pos_assets" name="pos_logout assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/pos_logout/static/src/css/pos_logout.css"/>
+                <script type="text/javascript" src="/pos_logout/static/src/js/chrome.js"></script>
+                <script type="text/javascript" src="/pos_logout/static/src/js/popups.js"></script>
+                <script type="text/javascript" src="/pos_logout/static/src/js/gui.js"></script>
+            </xpath>
+        </template>
+
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='iface_big_scrollbars']/../.." position="after">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="logout_interval"/>
+                        <div class="text-muted">
+                            The last activity interval to activate the automatic screen lock. Zero if autolocking is not needed
+                        </div>
+                        <div>
+                            <field name="logout_interval"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

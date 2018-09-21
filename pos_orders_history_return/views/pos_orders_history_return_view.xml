@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="pos_orders_history.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='orders_history_actions']" position="before">
+                <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="return_orders"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="return_orders"/>
+                        <div class="content-group mt16" attrs="{'invisible' : ['|', ('orders_history', '=', False),('return_orders', '=', False)]}">
+                            <div>
+                                <field name="show_returned_orders" class="oe_inline"/><label for="show_returned_orders" class="oe_inline"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2004-2015 Odoo S.A.
+     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).-->
+<odoo>
+    <template id="assets_backend" name="pos_barcode_sync_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_barcode_sync/static/src/js/pos_barcode_sync.js"></script>
+        </xpath>
+    </template>
+</odoo>

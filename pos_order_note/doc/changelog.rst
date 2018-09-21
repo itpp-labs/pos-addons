@@ -1,3 +1,17 @@
+`1.2.1`
+-------
+- **FIX:** Scrolling Order after getting updates from Multi-Session
+
+`1.2.0`
+-------
+
+- **NEW:** Do not merger orderlines (with the same product) if the orderline has note
+
+`1.1.3`
+-------
+
+- **IMP:** Multi-Session methods renamings
+
 `1.1.2`
 -------
 

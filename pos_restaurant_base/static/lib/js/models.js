@@ -56,7 +56,8 @@ odoo.define('pos_restaurant_base.models', function (require) {
             var product_id = line.get_product().id;
             var product_name_wrapped = line.generate_wrapped_product_name();
             var line_id = line.id;
-            return {qty: qty, note: note, product_id: product_id, product_name_wrapped: product_name_wrapped, line_id: line_id};
+            var unit = line.get_unit().name;
+            return {qty: qty, note: note, product_id: product_id, product_name_wrapped: product_name_wrapped, line_id: line_id, unit: unit};
         },
         computeChanges: function(categories, config){
             //  DIFFERENCES FROM ORIGINAL: 
@@ -67,6 +68,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
             //
             // * new attributes in return: new_all and cancelled_all - lines without filtration with categories
             // * new attributes in return: line_id - id the changed line
+            // * new attributes in return: unit - product unit of line
             var current_res = this.build_line_resume();
             var old_res     = this.saved_resume || {};
             var json        = this.export_as_JSON();
@@ -86,6 +88,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                         'note':     curr.note,
                         'qty':      curr.qty,
                         'line_id':  curr.line_id,
+                        'unit':     curr.unit,
                     });
                 } else if (old.qty < curr.qty) {
                     add.push({
@@ -95,6 +98,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                         'note':     curr.note,
                         'qty':      curr.qty - old.qty,
                         'line_id':  curr.line_id,
+                        'unit':     curr.unit,
                     });
                 } else if (old.qty > curr.qty) {
                     rem.push({
@@ -104,6 +108,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                         'note':     curr.note,
                         'qty':      old.qty - curr.qty,
                         'line_id':  curr.line_id,
+                        'unit':     curr.unit,
                     });
                 }
             }
@@ -118,6 +123,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
                         'note':     old.note,
                         'qty':      old.qty,
                         'line_id':  old.line_id,
+                        'unit':     old.unit,
                     });
                 }
             }

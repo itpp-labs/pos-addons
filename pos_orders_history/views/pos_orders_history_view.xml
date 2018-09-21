@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Artem Losev
+     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='iface_display_categ_images']/../../.." position="after">
+                <h2 name="orders_history">Orders History</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="orders_history"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="orders_history"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="current_day_orders_only"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="current_day_orders_only"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="show_cancelled_orders"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_cancelled_orders"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="show_posted_orders"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_posted_orders"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="show_barcode_in_receipt"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_barcode_in_receipt"/>
+                            </div>
+                        </div>
+                        <div  name="orders_history_actions"/>
+                    </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
