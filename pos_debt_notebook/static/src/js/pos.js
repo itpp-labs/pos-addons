@@ -516,7 +516,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         check_discount_credits_for_taxed_products: function(){
             var order = this.pos.get_order(),
                 discount_pl = order.paymentlines_with_credits_via_discounts();
-            if (discount_pl.length === order.get_paymentlines().length) {
+            if (!discount_pl.length || discount_pl.length === order.get_paymentlines().length) {
                 return false;
             }
             var taxes_id = false;
