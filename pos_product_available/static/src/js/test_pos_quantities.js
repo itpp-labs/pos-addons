@@ -12,7 +12,7 @@ odoo.define('pos_product_available.tour', function (require) {
             position: "bottom"
         }, {
             content: "Switch to table or make dummy action",
-            trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
+            trigger: '.table, .order-button.selected',
             position: "bottom"
         }, {
             content: 'waiting for loading to finish',

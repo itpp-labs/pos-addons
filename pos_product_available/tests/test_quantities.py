@@ -17,6 +17,10 @@ class TestUi(odoo.tests.HttpCase):
         env = Environment(cr, self.uid, {})
         env['ir.module.module'].search([('name', '=', 'pos_product_available')], limit=1).state = 'installed'
         cr.release()
+
+        env['product.template'].search([('name', '=', 'Zucchini')]).write({
+            'type': 'product',
+        })
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
         self.phantom_js("/web",
