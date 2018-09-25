@@ -7,4 +7,10 @@ License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
             <script type="text/javascript" src="/pos_cashbox/static/src/js/cashbox.js"></script>
         </xpath>
     </template>
+
+    <template id="qunit_suite" name="pos_cashbox tests" inherit_id="web.qunit_suite">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/pos_cashbox/static/tests/cashbox_test.js"></script>
+        </xpath>
+    </template>
 </odoo>
