@@ -10,10 +10,9 @@ License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
             <xpath expr="//form/header/button[@name='action_pos_session_open']" position="before">
                 <field name="iface_cashdrawer" invisible="1"/>
                 <field name="proxy_ip" invisible="1"/>
-                <button name="open_backend_cashbox" type="object" string="Open CashBox"
+                <button name="open_backend_cashbox" icon="fa-archive" type="object" string="Open CashBox"
                         attrs="{'invisible':['|','|', ('iface_cashdrawer', '=', False), ('cash_control', '=', False), ('state', 'not in', ['opening_control', 'closing_control'])]}"
-                        class="oe_highlight o_wow" special="open_backend_cashbox">
-                    <i class='fa fa-archive' />
+                        class="oe_highlight" special="open_backend_cashbox">
                 </button>
             </xpath>
         </field>

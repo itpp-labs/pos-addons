@@ -3,38 +3,44 @@
 odoo.define('pos_cashbox.open', function (require) {
     "use strict";
 
-    var WidgetButton = require('web.form_widgets').WidgetButton;
-    var Session = require('web.Session');
-    var Model = require('web.DataModel');
-    var core = require('web.core');
+    var FormController = require('web.FormController');
     var CrashManager = require('web.CrashManager');
-
+    var Session = require('web.Session');
+    var core = require('web.core');
     var _t = core._t;
 
-
-    WidgetButton.include({
-        on_click: function(){
+    FormController.include({
+        _onButtonClicked: function (event) {
             var self = this;
-            if (this.node.attrs.special === 'open_backend_cashbox'){
-                var proxy_ip = this.view.datarecord.proxy_ip;
+            if (event.data.attrs && event.data.attrs.special === 'open_backend_cashbox') {
+                event.stopPropagation();
+                this._disableButtons();
+
+                var data = this.initialState.data;
+                var proxy_ip = data.proxy_ip;
                 if (!proxy_ip) {
+                    this._enableButtons();
                     return this.show_warning_message(_t('Connection Refused. Please check the IP address to PosBox'));
                 }
                 var url = this.get_full_url(proxy_ip);
                 this.connect(url);
-                this.open_cashbox().done(function(){
-                    if (self.$el.hasClass('o_wow')) {
-                        self.show_wow();
-                    }
-                }).fail(function(){
+                this.open_cashbox().done(function() {
+                    self.trigger_up('show_effect', {
+                        message: _t('The CashBox is open!'),
+                        type: 'rainbow_man'
+                    });
+                    self._enableButtons();
+                }).fail(function() {
+                    self._enableButtons();
                     return self.show_warning_message(_t("Connection Refused. Please check the connection to CashBox"));
                 });
+
             } else {
                 this._super.apply(this, arguments);
             }
         },
         show_warning_message: function(message) {
-            new CrashManager().show_warning({data: {
+            new CrashManager().show_warning({ data: {
                 exception_type: _t("Incorrect Operation"),
                 message: message
             }});
@@ -69,6 +75,8 @@ odoo.define('pos_cashbox.open', function (require) {
                 return done;
             }
             return send_opening_job(3);
-        },
+        }
     });
+
+    return FormController;
 });
