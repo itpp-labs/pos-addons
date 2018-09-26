@@ -2,6 +2,9 @@ odoo.define('pos_pin.pos', function (require) {
     "use strict";
 
     var gui = require('point_of_sale.gui');
+    var core = require('web.core');
+
+    var _t = core._t;
 
     gui.Gui.include({
         sudo_custom: function(options) {
@@ -10,12 +13,10 @@ odoo.define('pos_pin.pos', function (require) {
             if ($.inArray(options.special_group, user.groups_id) >= 0) {
                 return new $.Deferred().resolve(user);
             } else {
-                return this.select_user_custom({
+                return this.select_user_custom(_.extend(options, {
                     'security': true,
                     'current_user': this.pos.get_cashier(),
-                    'title': options.title,
-                    'special_group': options.special_group
-                });
+                }));
             }
         },
         select_user_custom: function(options){
@@ -43,14 +44,55 @@ odoo.define('pos_pin.pos', function (require) {
     
             return def.then(function(user){
                 if (options.security && user !== options.current_user && user.pos_security_pin) {
-                    return self.ask_password(user.pos_security_pin).then(function(){
-                        return user;
+                    return self.ask_password(user.pos_security_pin, options.arguments).then(function(){
+                        return self.set_and_render_cashier(user);
                     });
                 } else {
-                    return user;
+                    return self.set_and_render_cashier(user);
                 }
             });
-        }
+        },
+        set_and_render_cashier: function(user){
+            if (this.pos.get_cashier().id !== user.id) {
+                this.pos.set_cashier(user);
+                this.pos.chrome.widget.username.renderElement();
+            }
+            return user;
+        },
+
+        show_password_popup: function(password, lock, cancel_function){
+            var self = this;
+            this.show_popup('password',{
+                'title': _t('Password ?'),
+                confirm: function(pw) {
+                    if (pw === password) {
+                        lock.resolve();
+                    } else {
+                        self.show_popup('error', {
+                            'title': _t('Incorrect Password'),
+                            confirm: _.bind(self.show_password_popup, self, password, lock),
+                            cancel: _.bind(self.show_password_popup, self, password, lock),
+                        });
+                    }
+                },
+                cancel: cancel_function,
+            });
+            return lock;
+        },
+
+        ask_password: function(password, options) {
+            var self = this;
+            var lock = new $.Deferred();
+
+            if (options && options.ask_untill_correct && password) {
+                this.show_password_popup(password, lock);
+                return lock;
+            }
+
+            return this._super(password);
+        },
     });
+
+    return gui;
 
 });
