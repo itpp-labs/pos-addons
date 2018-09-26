@@ -7,35 +7,55 @@
 odoo.define('pos_product_available.PosModel', function(require){
 "use strict";
 
-
+    var rpc = require('web.rpc');
     var models = require('point_of_sale.models');
+
     var PosModelSuper = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
+        load_server_data: function(){
             var self = this;
-            models.load_fields('product.product',['qty_available']);
-//  pos_cache caches 'product.product' model and removes it from the models, what leads to incorrect product quantity displaying.
-//  for compatibility added a new 'product.product' model with the only field 'qty_available' to prevent incorrect displaying
-            PosModelSuper.initialize.call(this, session, attributes);
-            if (!_.find(this.models, function(model){
+
+            var loaded = PosModelSuper.load_server_data.call(this);
+
+            var prod_model = _.find(this.models, function(model){
                 return model.model === 'product.product';
-            })){
-                models.load_models({
-                    model: 'product.product',
-                    fields: ['qty_available'],
-                    domain: [['sale_ok','=',true],['available_in_pos','=',true]],
-                    loaded: function(_self, products){
-                        self.product_quantities = products;
-                    },
-                });
-            }
-            this.ready.then(function () {
-                if (self.product_quantities) {
-                    _.each(self.product_quantities, function(prod){
-                        _.extend(self.db.get_product_by_id(prod.id), prod);
-                    });
-                }
             });
+            if (prod_model) {
+                prod_model.fields.push('qty_available', 'type');
+                var context_super = prod_model.context;
+                prod_model.context = function(that){
+                    var ret = context_super(that);
+                    ret.location = that.config.stock_location_id[0];
+                    return ret;
+                };
+                var loaded_super = prod_model.loaded;
+                prod_model.loaded = function(that, products){
+                    loaded_super(that, products);
+                    self.db.product_qtys = products;
+                };
+                return loaded;
+            }
+
+            return loaded.then(function(){
+                return rpc.query({
+                        model: 'product.product',
+                        method: 'search_read',
+                        args: [],
+                        fields: ['qty_available', 'type'],
+                        domain: [['sale_ok','=',true],['available_in_pos','=',true]],
+                        context: {'location': self.config.stock_location_id[0]},
+                    }).then(function(products){
+                        self.db.product_qtys = products;
+                    });
+            });
+        },
+        after_load_server_data: function() {
+            var self = this;
+            var res = PosModelSuper.after_load_server_data.apply(this, arguments);
+            _.each(this.db.product_qtys, function(v){
+                _.extend(self.db.get_product_by_id(v.id), v);
+            });
+            return res;
         },
         refresh_qty_available:function(product){
             var $elem = $("[data-product-id='"+product.id+"'] .qty-tag");
