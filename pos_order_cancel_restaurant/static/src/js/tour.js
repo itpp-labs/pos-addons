@@ -21,7 +21,7 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
                     trigger: ".product-list .product",
                     content: "<p>Click product 1</p>",
                     position: "bottom",
-                },
+                }
             );
             break;
         }
