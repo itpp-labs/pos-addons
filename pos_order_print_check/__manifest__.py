@@ -18,7 +18,7 @@
     # "currency": "EUR",
 
     "depends": [
-        "pos_restaurant",
+        "pos_restaurant_base",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
@@ -27,7 +27,6 @@
     "demo": [
     ],
     "qweb": [
-        "static/src/xml/pos.xml"
     ],
 
     "post_load": None,
