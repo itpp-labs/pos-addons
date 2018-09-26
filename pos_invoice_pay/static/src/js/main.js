@@ -495,6 +495,10 @@ PosDb.include({
 var InvoicesButton = screens.ActionButtonWidget.extend({
     template: 'InvoicesButton',
     button_click: function () {
+        if (!this.pos.config.invoice_cashier_selection){
+            this.gui.show_screen('invoices_list');
+            return;
+        }
         var self = this;
         self.gui.select_user({
             'security':     true,
@@ -519,6 +523,10 @@ screens.define_action_button({
 var SaleOrdersButton = screens.ActionButtonWidget.extend({
     template: 'SaleOrdersButton',
     button_click: function () {
+        if (!this.pos.config.sale_order_cashier_selection){
+            this.gui.show_screen('sale_orders_list');
+            return;
+        }
         var self = this;
         self.gui.select_user({
             'security':     true,
