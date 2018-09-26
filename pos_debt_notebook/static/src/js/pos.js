@@ -377,6 +377,12 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         validate_order: function(options) {
             var currentOrder = this.pos.get_order();
+            var zero_paymentlines = _.filter(currentOrder.get_paymentlines(), function(p){
+                return p.amount === 0;
+            });
+            _.each(zero_paymentlines, function(p){
+                currentOrder.remove_paymentline(p);
+            });
             var isDebt = currentOrder.updates_debt();
             var debt_amount = currentOrder.get_debt_delta();
             var client = currentOrder.get_client();
