@@ -16,7 +16,7 @@ odoo.define('pos_invoice_pay.tour', function (require) {
             content: "Switch to table or make dummy action",
             trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
             position: "bottom",
-            timeout: 15000,
+            timeout: 20000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',

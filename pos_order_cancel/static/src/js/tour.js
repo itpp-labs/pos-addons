@@ -20,7 +20,7 @@ odoo.define('pos_order_cancel.tour', function(require) {
         trigger: ".product-list .product",
         content: "<p>Click product 1</p>",
         position: "bottom",
-        timeout: 15000,
+        timeout: 20000,
     }, {
         trigger: ".product-list .product:not(:first)",
         content: "<p>Click product 2</p>",
