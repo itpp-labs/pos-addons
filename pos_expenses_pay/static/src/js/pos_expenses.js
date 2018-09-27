@@ -59,7 +59,7 @@ odoo.define('pos_orders_history', function (require) {
             }
             delete this.db.expenses_by_id[expense.id];
             var def = $.Deferred();
-            if (((expense.state === 'post') || (expense.state === 'approve')) && !expense.processed_by_pos) {
+            if (((expense.state === 'post') || (expense.state === 'approve')) && !expense.pos_session_id) {
                 this.db.expenses.unshift(expense);
                 this.db.expenses_by_id[expense.id] = expense;
                 if (!this.db.expenses_by_id[expense.id].expense_lines) {
@@ -337,11 +337,12 @@ odoo.define('pos_orders_history', function (require) {
         click_confirm: function () {
             var self = this,
                 id = this.options.expense_id,
-                cashier = this.pos.get_cashier();
+                cashier = this.pos.get_cashier(),
+                session_id = this.pos.pos_session.id;
             rpc.query({
                 model: 'hr.expense.sheet',
                 method: 'process_expense_from_pos',
-                args: [id, cashier.name],
+                args: [id, cashier.name, session_id],
             }).then(function (res) {
                 self.gui.close_popup();
                 self.gui.show_screen('products');                

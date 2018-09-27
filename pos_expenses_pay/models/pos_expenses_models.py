@@ -21,11 +21,11 @@ class PosConfig(models.Model):
 class HrExpenseSheet(models.Model):
     _inherit = 'hr.expense.sheet'
 
-    processed_by_pos = fields.Boolean()
+    pos_session_id = fields.Many2one('pos.session', string='POS session')
     cashier = fields.Char()
     payment_datetime = fields.Datetime(string="Datetime")
 
-    def process_expense_from_pos(self, cashier):
+    def process_expense_from_pos(self, cashier, session_id):
         if (self.state == 'approve'):
             self.action_sheet_move_create()
         vals = self.get_vals_for_payment(cashier)
@@ -42,7 +42,7 @@ class HrExpenseSheet(models.Model):
             if line.account_id.internal_type == 'payable':
                 account_move_lines_to_reconcile |= line
         account_move_lines_to_reconcile.reconcile()
-        self.processed_by_pos = True
+        self.pos_session_id = session_id
         return self.id
 
     def get_vals_for_payment(self, cashier):

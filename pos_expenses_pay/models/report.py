@@ -17,7 +17,8 @@ class ReportSaleDetails(models.AbstractModel):
         expenses = self.env['hr.expense.sheet'].search([
             ('payment_datetime', '>=', date_start),
             ('payment_datetime', '<=', date_stop),
-            ('state', '=', 'done')
+            ('state', '=', 'done'),
+            ('pos_session_id', 'in', configs.mapped('session_ids').ids)
         ])
         res['expenses_total'] = 0
         res['expenses'] = []
