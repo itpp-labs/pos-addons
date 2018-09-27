@@ -19,7 +19,7 @@ odoo.define('pos_order_printer_product.tour', function(require) {
         trigger: ".tables .table",
         content: "<p>Click <b>table</b></p>",
         position: "bottom",
-        timeout: 15000,
+        timeout: 20000,
     }, {
         trigger: "span[data-category-id='1']",
         content: "<p>Click <b>Fruits and Vegetables</b> category.</p>",

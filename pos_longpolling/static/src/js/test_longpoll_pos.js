@@ -17,7 +17,7 @@ odoo.define('pos_longpolling.tour', function (require) {
             content: " Notification widget is visible",
             trigger: ".js_poll_connected",
             auto: true,
-            timeout: 15000,
+            timeout: 20000,
         }
     ];
 

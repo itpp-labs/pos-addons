@@ -88,7 +88,7 @@ odoo.define('pos_cashier_select.tour', function(require) {
     steps = steps.concat({
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
-        timeout: 15000,
+        timeout: 20000,
         run: function () {
             // it's a check
         },

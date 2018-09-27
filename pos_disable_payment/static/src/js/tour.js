@@ -48,7 +48,7 @@ odoo.define('pos_disable_payment.tour', function(require) {
         content: "Switch to table or make dummy action",
         trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
         position: "bottom",
-        timeout: 15000,
+        timeout: 20000,
     }, {
         trigger: '.product-list .product',
         content: "Add the first product",
