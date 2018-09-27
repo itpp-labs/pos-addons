@@ -14,6 +14,9 @@ import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools import float_is_zero
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
@@ -322,6 +325,7 @@ class PosConfig(models.Model):
     def create_journal(self, vals):
         if self.env['account.journal'].search([('code', '=', vals['code'])]):
             return
+        _logger.info("Creating '" + vals['journal_name'] + "' journal")
         user = vals['user']
         debt_account = vals['debt_account']
         new_sequence = self.env['ir.sequence'].create({
