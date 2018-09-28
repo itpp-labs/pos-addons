@@ -17,7 +17,7 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     1, {
         content: "click on a table",
         trigger: ".table",
-        timeout: 15000,
+        timeout: 20000,
     }, {
         content: 'waiting for loading to finish',
         trigger: '.neworder-button > .fa-plus',

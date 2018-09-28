@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<!--Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
 
     <record id="view_pos_product_available_negative_config_form" model="ir.ui.view">
         <field name="name">pos.pin.config.form.view</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
-            <field name="currency_id" position="after">
-                <field name="negative_order_group_id"/>
-            </field>
+            <xpath expr="//field[@name='journal_ids']/../../.." position="before">
+                <div class="col-xs-12 col-md-6 o_setting_box" id="payment_methods">
+                    <div class="o_setting_right_pane">
+                        <label for="negative_order_group_id"/>
+                        <div class="content-group mt16">
+                            <field name="negative_order_group_id"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 
@@ -23,4 +33,4 @@
         </field>
     </record>
 
-</openerp>
+</odoo>
