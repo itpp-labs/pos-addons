@@ -495,6 +495,10 @@ PosDb.include({
 var InvoicesButton = screens.ActionButtonWidget.extend({
     template: 'InvoicesButton',
     button_click: function () {
+        if (!this.pos.config.invoice_cashier_selection){
+            this.gui.show_screen('invoices_list');
+            return;
+        }
         var self = this;
         self.gui.select_user({
             'security':     true,
@@ -519,6 +523,10 @@ screens.define_action_button({
 var SaleOrdersButton = screens.ActionButtonWidget.extend({
     template: 'SaleOrdersButton',
     button_click: function () {
+        if (!this.pos.config.sale_order_cashier_selection){
+            this.gui.show_screen('sale_orders_list');
+            return;
+        }
         var self = this;
         self.gui.select_user({
             'security':     true,
@@ -713,7 +721,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
         rpc.query({
             model: 'pos.order',
             method: 'process_invoices_creation',
-            args: [sale_order.id],
+            args: [sale_order.id, self.pos.pos_session.id],
         }).then(function (created_invoice_id) {
             // Explicitly update the db to avoid race condition.
             self.pos.update_or_fetch_invoice(created_invoice_id).then(function (res) {
@@ -721,7 +729,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
                 self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
                 self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
-        }).fail(function (type, err) {
+        }).fail(function (err, type) {
             self.gui.show_popup('error', {
                 'title': _t(err.message),
                 'body': _t(err.data.arguments[0])
