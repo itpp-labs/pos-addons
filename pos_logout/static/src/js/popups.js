@@ -71,7 +71,10 @@ odoo.define('pos_logout.popups', function (require) {
                 'security': true,
                 'current_user': false,
                 'arguments': {
-                    'deblocking': true,
+                    'ask_untill_correct': true,
+                    'cancel_function': function(pw) {
+                        this.show_popup('block', {});
+                    },
                 },
             }).fail(function(){
                 self.gui.show_popup('block', self.options);
