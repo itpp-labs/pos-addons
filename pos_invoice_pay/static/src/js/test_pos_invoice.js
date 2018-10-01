@@ -29,7 +29,7 @@ odoo.define('pos_invoice_pay.tour', function (require) {
             trigger: '.subwindow-container-fix.pads .control-button:contains("Fetch Invoices")',
         }, {
             content: "Choose Administrator",
-            trigger: '.modal-dialog:not(.oe_hidden) .popup-selection .selection-item:contains("Administrator")',
+            trigger: '.modal-dialog:not(.oe_hidden) .popup-selection .selection-item:contains("Administrator"), #invoice_list_screen:not(".oe_hidden") .client-list thead:first()',
         }, {
             content: "Select Invoice",
             trigger: '#invoice_list_screen tbody.client-list-contents tr.invoice:first',
