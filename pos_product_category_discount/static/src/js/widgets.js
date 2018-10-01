@@ -139,6 +139,13 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             var self = this;
             this._super(options);
             this.popup_discount = false;
+
+            if (typeof options === 'string') {
+                options = {title: options};
+            } else {
+                options = options || {};
+            }
+
             if (options.disc_program) {
                 this.popup_discount = true;
                 this.events = _.extend(this.events || {}, {
