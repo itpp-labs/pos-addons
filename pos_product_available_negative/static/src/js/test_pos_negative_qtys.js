@@ -80,7 +80,7 @@ odoo.define('pos_product_available_negative.tour', function (require) {
         }];
 
     steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(add_product_to_order('Yellow Pepper'));
+    steps = steps.concat(add_product_to_order('Yellow Peppers'));
     steps = steps.concat(change_cashier('Demo User'));
     steps = steps.concat(payment('Demo User', 'Cash (USD)'));
     steps = steps.concat(check_popup());

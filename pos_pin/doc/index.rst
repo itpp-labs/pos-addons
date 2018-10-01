@@ -9,6 +9,7 @@ Installation
 
 Configuration
 =============
+
 * Go to ``[[Settings]] >> Users >> Users``
 
   * Open user form
@@ -19,10 +20,11 @@ Configuration
 
 Usage
 =====
-* Go to ``[[Point of Sale]] >> Dashboard``
 
+* Go to ``[[Point of Sale]] >> Dashboard``
+  
   * Open POS session
   * Change the user using switcher at the top left corner
   * Input PIN
 
- RESULT: If the PIN is correct, the user is switched successfully
+RESULT: If the PIN is correct, the user is switched successfully
