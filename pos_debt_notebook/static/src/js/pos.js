@@ -786,6 +786,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             this._super();
             var self = this;
             var order = this.pos.get_order();
+            $(this.next_button_html).hide();
             if (order && order.autopay_validated) {
                 $(this.next_button_html).show();
                 var button_next = this.next_button_html.find('.autopay');
