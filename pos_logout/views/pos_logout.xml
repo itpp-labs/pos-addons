@@ -9,7 +9,6 @@
                 <link rel="stylesheet" href="/pos_logout/static/src/css/pos_logout.css"/>
                 <script type="text/javascript" src="/pos_logout/static/src/js/chrome.js"></script>
                 <script type="text/javascript" src="/pos_logout/static/src/js/popups.js"></script>
-                <script type="text/javascript" src="/pos_logout/static/src/js/gui.js"></script>
             </xpath>
         </template>
 

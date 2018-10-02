@@ -16,8 +16,6 @@ class TestUi(odoo.tests.HttpCase):
         env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
         cr.release()
 
-        env['res.partner'].search([('id', '=', 9)]).debt_limit = 100
-
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
         self.phantom_js("/web",

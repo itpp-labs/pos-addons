@@ -1,3 +1,5 @@
+/*  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_product_available.tour', function (require) {
     "use strict";
 
@@ -12,8 +14,9 @@ odoo.define('pos_product_available.tour', function (require) {
             position: "bottom"
         }, {
             content: "Switch to table or make dummy action",
-            trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
-            position: "bottom"
+            trigger: '.table, .order-button.selected',
+            position: "bottom",
+            timeout: 20000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
@@ -36,7 +39,7 @@ odoo.define('pos_product_available.tour', function (require) {
             content: _t("Open the payment screen"),
         }, {
             content: "Choose Administrator like a cashier or make a dummy action",
-            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")'
+            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
         }, {
             extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',

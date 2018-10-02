@@ -15,11 +15,12 @@ odoo.define('pos_order_cancel.tour', function(require) {
     }, {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
         content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
-        position: "bottom"
+        position: "bottom",
     }, {
         trigger: ".product-list .product",
         content: "<p>Click product 1</p>",
-        position: "bottom"
+        position: "bottom",
+        timeout: 20000,
     }, {
         trigger: ".product-list .product:not(:first)",
         content: "<p>Click product 2</p>",

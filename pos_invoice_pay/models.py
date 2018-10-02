@@ -32,9 +32,9 @@ class PosOrder(models.Model):
             writeoff_acc_id = False
             payment_difference_handling = 'open'
 
-            # if amount > inv_obj.residual:
-            #     writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
-            #     payment_difference_handling = 'reconcile'
+            if amount > inv_obj.residual:
+                writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
+                payment_difference_handling = 'reconcile'
 
             vals = {
                 'journal_id': journal.id,
@@ -49,14 +49,14 @@ class PosOrder(models.Model):
                 'partner_type': 'customer',
                 'payment_difference_handling': payment_difference_handling,
                 'writeoff_account_id': writeoff_acc_id,
-                'paid_by_pos': True,
-                'cashier': cashier
+                'pos_session_id': invoice['data']['pos_session_id'],
+                'cashier': cashier,
             }
             payment = self.env['account.payment'].create(vals)
             payment.post()
 
     @api.model
-    def process_invoices_creation(self, sale_order_id):
+    def process_invoices_creation(self, sale_order_id, session_id):
         order = self.env['sale.order'].browse(sale_order_id)
         inv_id = order.action_invoice_create()
         self.env['account.invoice'].browse(inv_id).action_invoice_open()
@@ -66,8 +66,9 @@ class PosOrder(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    paid_by_pos = fields.Boolean(default=False)
+    pos_session_id = fields.Many2one('pos.session', string='POS session')
     cashier = fields.Many2one('res.users')
+    datetime = fields.Datetime(string="Datetime", default=fields.Datetime.now)
 
 
 class AccountInvoice(models.Model):
@@ -143,5 +144,16 @@ class SaleOrder(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
+    def _get_default_writeoff_account(self):
+        acc = self.env['account.account'].search([('code', '=', 220000)]).id
+        return acc if acc else False
+
     show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
     show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
+    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account",
+                                                          help="The account is used for the difference between due and paid amount",
+                                                          default=_get_default_writeoff_account)
+    invoice_cashier_selection = fields.Boolean(string='Select Invoice Cashier',
+                                               help='Ask for a cashier when fetch invoices', defaul=True)
+    sale_order_cashier_selection = fields.Boolean(string='Select Sale Order Cashier',
+                                                  help='Ask for a cashier when fetch orders', defaul=True)

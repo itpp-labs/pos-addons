@@ -35,11 +35,25 @@ Where ``max_connections`` is postgresql setting and the rest are from odoo.
 Usage
 =====
 
-Longpolling icon meanings:
+Status Icons
+------------
 
-* *Red* If there is no connection to the server. Offline mode
-* *Orange* There is a connection to the server, but we haven't received a response from polling yet
-* *Green* Online
-* *Rotating* Connection is reestablishing
+Longpolling Icon:
+
+* *Red -* There is no connection to the server. Offline mode
+* *Orange -* There is a connection to the server, but we haven't received a response from polling yet
+* *Green -* Online
+* *Rotating -* Connection is updating
 
 To manually reestablish connection or to check its presence click on the longpolling icon.
+
+*Wi-Fi* Icon:
+
+Shows the correctness of the order sending to the server
+
+* *Red -* There are some unsent paid orders.
+* *Green -* All paid orders were sent.
+
+*Wi-Fi* sign can be reestablished only manually, or after the one another order is paid.
+If it is red make sure that the internet connection is on and click on the icon to send orders before turning off the device in order to prevent data loss.
+If internet connection is present but orders are not sending, it could mean that the error has occurred.
