@@ -2,7 +2,7 @@
 -------
 
 - **FIX:** Compatibility with other pos modules
-- **FIX:** Issue with error message displaying on zero price discount credit paymentlines
+- **FIX:** Error message displaying on discount credit paymentlines with zero price 
 - **FIX:** Lost overrides of the `order` and `session` forms
 
 `5.0.2`
