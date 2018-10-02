@@ -10,7 +10,8 @@ Installation
 Configuration
 =============
 
-  * Go to ``[[Point of Sale]] >> Configuration >> Point of Sale``
+* Go to ``[[Point of Sale]] >> Configuration >> Point of Sale``
+
   * Open POS config form
   * Click ``[Edit]``
   * Set **Negative Order Group**
@@ -19,10 +20,11 @@ Configuration
 Usage
 =====
 
-  * Go to ``[[Point of Sale]] >> Dashboard``
+* Go to ``[[Point of Sale]] >> Dashboard``
+  
   * Open POS session
   * Select a product with negative qty
   * Click ``Payment``
   * Click ``Validate``
 
- RESULT: If the user doesn't belong to ``Negative Order Group``, the popup appears prompting to confirm the action by autorised user
+RESULT: If the user doesn't belong to ``Negative Order Group``, the popup appears prompting to confirm the action by autorised user
