@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 `5.0.2`
 -------
 - **FIX:** Error related to debt loading after creating a new partner in POS
@@ -31,6 +32,13 @@
 - **ADD:** Compatibility with Pos Mobile
 
 `4.4.1`
+=======
+`4.0.3`
+-------
+- **FIX:** Wrong partner debt displaying: debts were assigned on the company, now debts are assigned personally on the customer
+
+`4.0.2`
+>>>>>>> origin/9.0
 -------
 
 - **FIX:** Extra Debt payment lines when using "Pay Full Debt" method.

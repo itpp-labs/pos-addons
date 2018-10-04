@@ -39,6 +39,7 @@ class ResPartner(models.Model):
             r.debt = -res_index[r.id]['balance']
             r.credit_balance = -r.debt
 
+<<<<<<< HEAD
     @api.multi
     @api.depends('report_pos_debt_ids')
     def _compute_debt_company(self):
@@ -63,6 +64,46 @@ class ResPartner(models.Model):
         for r in partners:
             r.debt_company = -res_index[r.id]
             r.credit_balance_company = -r.debt_company
+=======
+        res = {}
+        for partner in self:
+            res[partner.id] = 0
+        if len(debt_account) > 0:
+            self._cr.execute(
+                """SELECT l.partner_id, SUM(l.debit - l.credit)
+                FROM account_move_line l
+                WHERE l.account_id IN %s AND l.partner_id IN %s
+                GROUP BY l.partner_id
+                """,
+                (tuple(debt_account), tuple(self.ids)))
+
+            for partner_id, val in self._cr.fetchall():
+                res[partner_id] += val
+
+        # orders = self.env['pos.order'].search([('', 'in', self.ids)])
+        statements = self.env['account.bank.statement.line'].search([('journal_id', 'in', [j.id for j in debt_journal]),
+                                                                     ('state', '=', 'open'),
+                                                                     ('pos_statement_id.partner_id', 'in', self.ids)])
+
+        if statements:
+            self._cr.execute(
+                """SELECT po.partner_id, SUM(absl.amount)
+                FROM account_bank_statement_line AS absl
+                    LEFT JOIN pos_order po ON (absl.pos_statement_id=po.id)
+                WHERE po.partner_id IN %s
+                     AND absl.id IN %s
+                     AND absl.pos_statement_id = po.id
+                GROUP BY po.partner_id
+                """,
+                (tuple(self.ids), tuple(statements.ids)))
+
+            for partner_id, val in self._cr.fetchall():
+                res[partner_id] += val
+
+        for partner in self:
+            partner.debt = res[partner.id]
+            partner.credit_balance = - res[partner.id]
+>>>>>>> origin/9.0
 
     @api.multi
     def debt_history(self, limit=0):
