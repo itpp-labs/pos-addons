@@ -146,7 +146,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 options = options || {};
             }
 
-            if (options.disc_program) {
+            if (options && options.disc_program) {
                 this.popup_discount = true;
                 this.events = _.extend(this.events || {}, {
                     'click .discount-program-list .button': 'click_discount_program',
