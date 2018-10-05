@@ -37,6 +37,7 @@
         'views.xml',
         'views/pos_credit_update.xml',
         'wizard/pos_credit_invoices_views.xml',
+        'wizard/pos_credit_company_invoices_views.xml',
         'data.xml',
         'security/ir.model.access.csv',
     ],
