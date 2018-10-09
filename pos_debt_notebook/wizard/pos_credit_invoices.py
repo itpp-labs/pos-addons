@@ -82,7 +82,7 @@ class PosCreditInvoices(models.TransientModel):
         for line in self.line_ids:
             if not line.amount:
                 continue
-            self.env['account.invoice'].create({
+            invoice = self.env['account.invoice'].create({
                 'partner_id': line.partner_id.id,
                 'invoice_line_ids': [
                     (0, None, {
@@ -93,6 +93,8 @@ class PosCreditInvoices(models.TransientModel):
                     })
                 ]
             })
+            invoice.action_invoice_open()
+            invoice.pay_and_reconcile(self.journal_id)
 
 
 class PosCreditInvoicesLine(models.TransientModel):
