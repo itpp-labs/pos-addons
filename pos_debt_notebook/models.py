@@ -29,7 +29,6 @@ class ResPartner(models.Model):
             domain,
             fields,
             'partner_id')
-
         res_index = dict((id, {'balance': 0}) for id in self.ids)
         for data in res:
             res_index[data['partner_id'][0]] = data
@@ -648,3 +647,9 @@ class PosCreditUpdate(models.Model):
         active_ids = self._context.get('active_ids')
         for r in self.env['pos.credit.update'].browse(active_ids):
             r.switch_to_confirm()
+
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    has_invoices = fields.Boolean(store=True)
