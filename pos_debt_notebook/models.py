@@ -150,8 +150,6 @@ class ResPartner(models.Model):
     ])
     report_pos_debt_ids = fields.One2many('pos.credit.update', 'partner_id',
                                           help='Technical field for proper recomputations of computed fields')
-    journal_debt = fields.Float(string='Debt per Journal')
-    journal_credit_balance = fields.Float(string='Credit Balance per Journal')
 
     def _get_date_formats(self, report):
 
@@ -181,7 +179,6 @@ class ResPartner(models.Model):
         return super(ResPartner, self).create_from_ui(partner)
 
     @api.multi
-    @api.depends('journal_debt', 'journal_credit_balance')
     def _compute_partner_journal_debt(self, journal_id):
         domain = [('partner_id', 'in', self.ids),
                   ('journal_id', '=', journal_id)]
@@ -195,9 +192,7 @@ class ResPartner(models.Model):
 
         for data in res:
             res_index[data['partner_id'][0]] = data
-        for r in self:
-            r['journal_debt'] = -res_index[r.id]['balance']
-            r['journal_credit_balance'] = -r.journal_debt
+        return res_index
 
 
 class PosConfig(models.Model):

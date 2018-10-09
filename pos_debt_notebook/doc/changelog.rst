@@ -2,7 +2,6 @@
 -------
 
 - **NEW:** Wizard allow to create invoices for sets of partners: `Balance update`, `New Balance`
-- **NEW:** Field for computing partner debts per journal
 - **FIX:** Error related to paying with not discount credit journals in POS
 - **FIX:** Invoices paid with credit journals now counts in partner debts
 

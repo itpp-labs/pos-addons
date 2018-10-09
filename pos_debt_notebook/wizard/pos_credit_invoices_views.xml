@@ -23,7 +23,15 @@
                     <tree>
                         <field name="name"/>
                         <field name="credit_balance"/>
-                        <field name="journal_credit_balance"/>
+                    </tree>
+                </field>
+
+                <field name="line_ids">
+                    <tree editable="bottom" create="false" delete="false">
+                        <field name="partner_id"/>
+                        <field name="current_balance"/>
+                        <field name="amount"/>
+                        <field name="total_balance"/>
                     </tree>
                 </field>
 
@@ -35,14 +43,6 @@
                     </group>
                 </group>
 
-                <field name="line_ids">
-                    <tree editable="bottom" create="false" delete="false">
-                        <field name="partner_id"/>
-                        <field name="current_balance"/>
-                        <field name="amount"/>
-                        <field name="total_balance"/>
-                    </tree>
-                </field>
                 <footer>
                     <button name="apply" string="Generate" type="object" class="btn-primary"/>
                     <button special="cancel" string="Cancel" class="btn-default"/>
@@ -61,5 +61,5 @@
     </record>
 
 
-    <menuitem id="menu_pos_credit_invoices" name="POS Credits Invoices" action="action_pos_credit_invoices" parent="account.menu_finance_receivables" sequence="200"/>
+    <menuitem id="menu_pos_credit_invoices" name="Write-off Credits" action="action_pos_credit_invoices" parent="account.menu_finance_receivables" sequence="200"/>
 </odoo>

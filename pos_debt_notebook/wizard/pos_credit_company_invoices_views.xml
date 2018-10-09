@@ -45,5 +45,5 @@
     </record>
 
 
-    <menuitem id="menu_pos_credit_invoices_company" name="Generate POS Credits Invoices" action="action_pos_credit_invoices_company" parent="account.menu_finance_receivables" sequence="200"/>
+    <menuitem id="menu_pos_credit_invoices_company" name="Pay for company's employees" action="action_pos_credit_invoices_company" parent="account.menu_finance_receivables" sequence="200"/>
 </odoo>
