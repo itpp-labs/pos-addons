@@ -1,3 +1,7 @@
+`5.0.3`
+-------
+- **FIX:** Error related to invoices created in the "Generate POS Credit Invoices" wizard. Invoices were created with wrong type.
+
 `5.0.2`
 -------
 - **FIX:** Error related to debt loading after creating a new partner in POS

@@ -63,6 +63,7 @@ class PosCreditInvoices(models.TransientModel):
             if not line.amount:
                 continue
             self.env['account.invoice'].create({
+                'type': 'out_invoice',
                 'partner_id': line.partner_id.id,
                 'invoice_line_ids': [
                     (0, None, {
