@@ -27,7 +27,6 @@
     "external_dependencies": {"python": [], "bin": []},
     'depends': [
         'point_of_sale',
-        'base_groupby_extra',
     ],
     'data': [
         'security/pos_debt_notebook_security.xml',
