@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS discount base""",
     "summary": """Technical module in POS""",
@@ -32,5 +31,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

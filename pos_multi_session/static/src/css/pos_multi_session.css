@@ -1,3 +1,6 @@
+/* Copyright 2015 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+
 .pos .order .orderline .ms_info {
 	text-align: right;
 	width: 100%;
@@ -18,6 +21,10 @@
 }
 .pos .order-button.selected .ms_info{
 	color:black;
+	width: 75px;
+	right: 0;
+	left: -5px;
+	bottom: -5px;
 }
 .pos .oe_status .oe_gray,
 .pos .oe_icon.oe_gray {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <template id="assets_backend" name="pos_order_printer_product assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_order_printer_product/static/src/js/pos.js"></script>
@@ -11,5 +10,4 @@
             <script type="text/javascript" src="/pos_order_printer_product/static/src/js/tour.js"></script>
           </xpath>
         </template>
-    </data>
 </odoo>

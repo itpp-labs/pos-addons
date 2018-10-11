@@ -1,3 +1,18 @@
+`1.2.2`
+-------
+
+- **IMP:** Multi-Session methods renamings
+
+`1.2.1`
+-------
+
+- **IMP:** option to show cancelation information for orders sent to kitchen
+
+`1.1.1`
+-------
+
+- **FIX:** The "Specify Quantity to Cancel" option didn't work correctly when "Allow remove order line" is active
+
 `1.1.0`
 -------
 

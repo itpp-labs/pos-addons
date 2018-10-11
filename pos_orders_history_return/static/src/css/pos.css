@@ -1,0 +1,24 @@
+/* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).*/
+
+/*OrdersHistoryScreenWidget*/
+.pos .return-no-receipt {
+    left: 214px;
+    font-size: 18px!important;
+}
+.pos .breadcrumb-order {
+    font-size: 18px;
+    padding-right: 10px;
+    color: #5b5b5b;
+}
+.pos .max-return-qty {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    vertical-align: top;
+    color: white;
+    line-height: 13px;
+    background: #7f82ac;
+    padding: 2px 5px;
+    border-radius: 2px;
+}

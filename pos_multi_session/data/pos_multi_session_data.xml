@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
+<odoo noupdate="1">
+
+    <record id="default_multi_session" model="pos.multi_session">
+        <field name="name">Default Multi Session</field>
+        <field name="multi_session_active">False</field>
+    </record>
+
+    <record id="point_of_sale.pos_config_main" model="pos.config">
+        <field name="multi_session_id" ref="default_multi_session"/>
+    </record>
+
+    <!-- Default multi session for exist POSes -->
+    <function model="pos.multi_session" name="action_set_default_multi_session" eval="[[ref('default_multi_session')]]"/>
+
+</odoo>

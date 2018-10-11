@@ -1,6 +1,14 @@
+/* Copyright 2015-2016,2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * Copyright 2015-2016 Ilyas Rakhimkulov
+ * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017 Attila Szöllősi
+ * Copyright 2017 Thomas Paul
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_multi_session_restaurant', function(require){
-    var screens = require('point_of_sale.screens');
-    var models = require('point_of_sale.models');
+    var screens = require('pos_restaurant_base.screens');
+    var models = require('pos_restaurant_base.models');
     var multiprint = require('pos_restaurant.multiprint');
     var floors = require('pos_restaurant.floors');
     var core = require('web.core');
@@ -32,7 +40,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (this.pos.get_order() && this.pos.get_order().get_orderlines().length === 0){
                 this._super(order_line);
             } else {
-                order_line.node.parentNode.removeChild(order_line.node);
+                if (order_line.node && order_line.node.parentNode) {
+                    order_line.node.parentNode.removeChild(order_line.node);
+                }
             }
         }
     });
@@ -79,21 +89,21 @@ odoo.define('pos_multi_session_restaurant', function(require){
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
             if (this.multi_session){
                 var current_order = this.get_order();
-                current_order.ms_update();
+                current_order.new_updates_to_send();
                 current_order.save_to_db();
             }
         },
         ms_create_order: function(options){
             var self = this;
             var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
-            if (options.data.table_id) {
-                order.table = self.tables_by_id[options.data.table_id];
-                order.customer_count = options.data.customer_count;
-                order.save_to_db();
+            var data = options.json;
+            if (data.table_id) {
+                order.table = self.tables_by_id[data.table_id];
+                order.customer_count = data.customer_count;
             }
             return order;
         },
-        ms_on_update: function(message, sync_all){
+        updates_from_server: function(message){
             var self = this;
             var data = message.data || {};
             var order = false;
@@ -108,20 +118,22 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.transfer = true;
                 order.destroy({'reason': 'abandon'});
             }
-            PosModelSuper.prototype.ms_on_update.apply(this, arguments);
+            PosModelSuper.prototype.updates_from_server.apply(this, arguments);
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
             }
-            if (!sync_all && this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
+            if (this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
                 this.gui.screen_instances.floors.renderElement();
             }
         },
-        ms_do_update: function(order, data){
-            PosModelSuper.prototype.ms_do_update.apply(this, arguments);
+        ms_update_order: function(order, data){
+            PosModelSuper.prototype.ms_update_order.apply(this, arguments);
             if (order) {
+                order.init_locked = true;
                 order.set_customer_count(data.customer_count, true);
                 order.saved_resume = data.multiprint_resume;
                 order.trigger('change');
+                order.init_locked = false;
             }
         },
         // changes the current table.
@@ -129,7 +141,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var self = this;
             if (table && this.order_to_transfer_to_different_table) {
                 this.order_to_transfer_to_different_table.table = table;
-                this.order_to_transfer_to_different_table.ms_update();
+                this.order_to_transfer_to_different_table.new_updates_to_send();
                 this.order_to_transfer_to_different_table = null;
                 // set this table
                 this.set_table(table);
@@ -144,14 +156,18 @@ odoo.define('pos_multi_session_restaurant', function(require){
         set_customer_count: function (count, skip_ms_update) {
             OrderSuper.prototype.set_customer_count.apply(this, arguments);
             if (!skip_ms_update) {
-                this.ms_update();
+                this.new_updates_to_send();
             }
         },
-        ms_remove_order: function() {
+        order_removing_to_send: function() {
             if (this.transfer) {
                 return;
             }
-            return OrderSuper.prototype.ms_remove_order.call(this, arguments);
+            return OrderSuper.prototype.order_removing_to_send.call(this, arguments);
+        },
+        saveChanges: function(){
+            OrderSuper.prototype.saveChanges.apply(this, arguments);
+            this.trigger('new_updates_to_send');
         },
     });
 
@@ -181,19 +197,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
     });
 
-    var MultiSessionSuper = multi_session.MultiSession;
-    multi_session.MultiSession = multi_session.MultiSession.extend({
-        sync_all: function(data) {
-            MultiSessionSuper.prototype.sync_all.apply(this, arguments);
-            var self = this;
-            this.q.then(function(){
-                if (self.pos.gui.screen_instances.floors && self.pos.gui.get_current_screen() === "floors") {
-                    self.pos.gui.screen_instances.floors.renderElement();
-                }
-            });
-
-        }
-    });
 
     floors.FloorScreenWidget.include({
         init: function(parent, options) {

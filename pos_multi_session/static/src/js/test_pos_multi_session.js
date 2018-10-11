@@ -1,3 +1,6 @@
+/* Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_multi_session.tour', function (require) {
     "use strict";
 
@@ -26,6 +29,7 @@ odoo.define('pos_multi_session.tour', function (require) {
         }, {
             content: 'waiting for loading to finish',
             trigger: '.neworder-button > .fa-plus',
+            timeout: 20000,
         }
     ];
 

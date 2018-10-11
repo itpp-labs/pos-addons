@@ -1,3 +1,7 @@
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from odoo import models, fields, api
 
 
@@ -5,18 +9,11 @@ class PosCreditInvoices(models.TransientModel):
     _name = 'pos.credit.invoices'
     _description = 'Generate invoices to pay Pos Credits'
 
-    def _default_product_id(self):
-        product = self.env['product.product'].search([('credit_product', '=', True)], limit=1)
-        if product:
-            return product.id
-
     partner_id = fields.Many2one('res.partner', 'Company', domain="[('is_company', '=', True)]", required=True)
     product_id = fields.Many2one(
         'product.product',
         'Credit Product',
-        domain="[('credit_product', '=', True)]",
-        context="{'default_credit_product': True}",
-        default=_default_product_id,
+        domain="[('credit_product', 'not in', [0, None, False])]",
         required="True",
         help="This product will be used on creating invoices."
     )

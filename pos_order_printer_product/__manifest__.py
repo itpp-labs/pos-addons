@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Print certain products on Order Printers""",
     "summary": """Specify certain products to be allowed to print on order printers""",
@@ -35,5 +34,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

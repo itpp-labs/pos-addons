@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
         <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_pin/static/src/js/pos.js"></script>
             </xpath>
         </template>
+        <template id="assets_backend_web" name="pos_product_available_backend_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_pin/static/src/js/test_pos_pin.js"></script>
+            </xpath>
+        </template>
 
-    </data>
-</openerp>
+</odoo>

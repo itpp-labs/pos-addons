@@ -7,9 +7,14 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_pos_debt(self):
-
-        env = Environment(self.registry.test_cr, self.uid, {})
-        env['res.partner'].search([('id', '=', 9)]).debt_limit = 100
+        # needed because tests are run before the module is marked as
+        # installed. In js web will only load qweb coming from modules
+        # that are returned by the backend in module_boot. Without
+        # this you end up with js, css but no qweb.
+        cr = self.registry.cursor()
+        env = Environment(cr, self.uid, {})
+        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
+        cr.release()
 
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action

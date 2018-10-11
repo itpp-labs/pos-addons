@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Discount Programs""",
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-product-category-discount?version=11.0',
     "images": ['images/dp3.png'],
-    "version": "11.0.1.2.2",
+    "version": "11.0.1.2.5",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -36,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "POS Discount Programs",
     "demo_addons": [

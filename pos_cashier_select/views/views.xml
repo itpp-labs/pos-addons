@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <template id="assets_backend" name="pos_choosing_cashier assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/pos_cashier_select/static/src/css/styles.css"/>
@@ -12,5 +11,4 @@
                 <script type="text/javascript" src="/pos_cashier_select/static/src/js/tour.js"></script>
             </xpath>
         </template>
-    </data>
 </odoo>

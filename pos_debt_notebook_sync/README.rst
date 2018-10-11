@@ -1,3 +1,7 @@
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl
+   :alt: License: LGPL-3
+
 ========================
  Internal Credit System
 ========================
@@ -9,12 +13,23 @@ Credits
 
 Contributors
 ------------
-* gabbasov@it-projects.info
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------
 * `IT-Projects LLC <https://it-projects.info>`__
 
+Maintainers
+-----------
+* `IT-Projects LLC <https://it-projects.info>`__
+
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_sync/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
+  
 Further information
 ===================
 
@@ -26,4 +41,4 @@ Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 10.0 6a7c05112bf0c07ffa7dadfe76be08f3121fd4c8
+Tested on Odoo 11.0 e9454e79e27d0b85546132cbe00b391e974c66bf

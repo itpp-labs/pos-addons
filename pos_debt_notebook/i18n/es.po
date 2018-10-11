@@ -3,15 +3,14 @@
 # * pos_debt_notebook
 # 
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2017
-# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-20 13:24+0000\n"
-"PO-Revision-Date: 2017-10-20 13:24+0000\n"
-"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +24,16 @@ msgstr ""
 #, python-format
 msgid "* Some fields are editable only for POS managers."
 msgstr "* Algunos campos son editables solo para los gerentes del POS"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:15
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
+msgstr ""
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_amount
@@ -72,6 +81,20 @@ msgstr ""
 "Marcar si el contacto es una compañía, de lo contrario es una persona."
 
 #. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:43
+#, python-format
+msgid "Click the customer"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:61
+#, python-format
+msgid "Click the payment method"
+msgstr ""
+
+#. module: pos_debt_notebook
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 msgid "Closed"
 msgstr "Cerrada"
@@ -93,6 +116,11 @@ msgstr ""
 #: selection:pos.credit.update,state:0
 msgid "Confirmed"
 msgstr "Confirmada"
+
+#. module: pos_debt_notebook
+#: model:ir.model,name:pos_debt_notebook.model_res_partner
+msgid "Contact"
+msgstr ""
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_create_uid
@@ -175,7 +203,7 @@ msgstr "Monto personalizado por cada empleado"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:368
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:395
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_search
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 #, python-format
@@ -183,11 +211,9 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: pos_debt_notebook
-#. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:150
-#, python-format
-msgid "Customer:"
-msgstr "Cliente:"
+#: model:ir.ui.view,arch_db:pos_debt_notebook.res_config_settings_view_form
+msgid "Customer Debts"
+msgstr ""
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_date
@@ -224,7 +250,9 @@ msgid "Debt Payment Method"
 msgstr "Método de Pago Deuda"
 
 #. module: pos_debt_notebook
-#: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_config_settings_debt_type
+#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_config_settings_debt_type
+#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner_debt_type
+#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users_debt_type
 msgid "Debt Type"
 msgstr "Tipo de Deuda"
 
@@ -233,12 +261,6 @@ msgstr "Tipo de Deuda"
 #: model:ir.model.fields,help:pos_debt_notebook.field_res_users_debt
 msgid "Debt of this partner only."
 msgstr "Deuda solo de este conacto."
-
-#. module: pos_debt_notebook
-#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner_debt_type
-#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users_debt_type
-msgid "Debt type"
-msgstr "Tipo de deuda"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_res_partner_debt_company
@@ -263,22 +285,22 @@ msgid "Debts / Credits Analysis"
 msgstr "Análisis Débitos / Créditos"
 
 #. module: pos_debt_notebook
-#: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_config_settings_debt_limit
+#: model:ir.model.fields,field_description:pos_debt_notebook.field_res_config_settings_debt_limit
 msgid "Default Max Debt"
 msgstr "Deuda Máxima por Defecto"
 
 #. module: pos_debt_notebook
-#: model:ir.model.fields,help:pos_debt_notebook.field_pos_config_settings_debt_limit
+#: model:ir.model.fields,help:pos_debt_notebook.field_res_config_settings_debt_limit
 msgid "Default value for new Customers"
 msgstr "Valor por defecto para nuevos Clientes"
 
 #. module: pos_debt_notebook
-#: selection:pos.config.settings,debt_type:0 selection:res.partner,debt_type:0
+#: selection:res.config.settings,debt_type:0 selection:res.partner,debt_type:0
 msgid "Display Credit"
 msgstr "Mostrar Crédito"
 
 #. module: pos_debt_notebook
-#: selection:pos.config.settings,debt_type:0 selection:res.partner,debt_type:0
+#: selection:res.config.settings,debt_type:0 selection:res.partner,debt_type:0
 msgid "Display Debt"
 msgstr "Mostrar Deuda"
 
@@ -292,7 +314,7 @@ msgstr "Mostrar Nombre"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:273
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:283
 #, python-format
 msgid "Don't forget to specify Customer when sell Credits."
 msgstr "No olvides especificar un Cliente cuando vendas a Crédito."
@@ -321,14 +343,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:279
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:289
 #, python-format
 msgid "Empty Order"
 msgstr "Orden vacía"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:538
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:565
 #, python-format
 msgid "Error: No Debt"
 msgstr "Error: No hay Deuda"
@@ -413,7 +435,7 @@ msgstr "Última Actualización en"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_ids
-msgid "Line ids"
+msgid "Line"
 msgstr ""
 
 #. module: pos_debt_notebook
@@ -454,7 +476,7 @@ msgstr "Deuda Máxima *"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:286
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:296
 #, python-format
 msgid "Max Debt exceeded"
 msgstr "Deuda Máxima Excedida"
@@ -481,7 +503,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:163
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:155
 #, python-format
 msgid "New"
 msgstr "Actual"
@@ -498,7 +520,7 @@ msgid "Note"
 msgstr "Nota"
 
 #. module: pos_debt_notebook
-#: code:addons/pos_debt_notebook/models.py:147
+#: code:addons/pos_debt_notebook/models.py:146
 #, python-format
 msgid "Only POS managers can change a debt limit value!"
 msgstr "Solo el gestor del TPV puede cambiar el límite de la Deuda!"
@@ -508,6 +530,20 @@ msgstr "Solo el gestor del TPV puede cambiar el límite de la Deuda!"
 #: selection:report.pos.debt,state:0
 msgid "Open"
 msgstr "Abierta"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:40
+#, python-format
+msgid "Open the customer screen"
+msgstr ""
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:54
+#, python-format
+msgid "Open the payment screen"
+msgstr ""
 
 #. module: pos_debt_notebook
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
@@ -536,7 +572,6 @@ msgid "POS ordered created during current year"
 msgstr ""
 
 #. module: pos_debt_notebook
-#: model:ir.model,name:pos_debt_notebook.model_res_partner
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_partner_id
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_partner_id
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_report_pos_debt_partner_id
@@ -569,12 +604,12 @@ msgstr "Pagar el mismo monto para cada empleado"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_payment_type
-msgid "Payment type"
-msgstr "Tipo de pago"
+msgid "Payment Type"
+msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:294
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:304
 #, python-format
 msgid ""
 "Please enter the exact or lower debt amount than the cost of the order."
@@ -602,7 +637,7 @@ msgstr "Órdenes del Punto de Venta"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:159
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:151
 #, python-format
 msgid "Prev"
 msgstr "Anterior"
@@ -635,6 +670,13 @@ msgstr "Productos"
 #, python-format
 msgid "Purchased Credits (In)"
 msgstr "Créditos Compraods (Entrante)"
+
+#. module: pos_debt_notebook
+#. openerp-web
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:11
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,help:pos_debt_notebook.field_report_pos_debt_credit_product
@@ -682,14 +724,14 @@ msgstr "El contacto no tiene permitido tener una deuda mayor que este valor"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:539
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:566
 #, python-format
 msgid "The selected customer has no debt."
 msgstr "El cliente seleccionado no tiene deuda."
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:280
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:290
 #, python-format
 msgid ""
 "There must be at least one product in your order before it can be validated."
@@ -753,22 +795,22 @@ msgstr "Total a Pagar"
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:293
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:303
 #, python-format
 msgid "Unable to return the change with a debt payment method"
 msgstr "No se puede devolver cambio con un método de pago a crédito."
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:265
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:272
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:275
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:282
 #, python-format
 msgid "Unknown customer"
 msgstr "Cliente desconocido"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update_update_type
-msgid "Update type"
+msgid "Update Type"
 msgstr ""
 
 #. module: pos_debt_notebook
@@ -782,7 +824,7 @@ msgid "Value to set balance to. Used only in Draft state."
 msgstr ""
 
 #. module: pos_debt_notebook
-#: model:ir.model.fields,help:pos_debt_notebook.field_pos_config_settings_debt_type
+#: model:ir.model.fields,help:pos_debt_notebook.field_res_config_settings_debt_type
 msgid ""
 "Way to display debt value (label and sign of the amount). In both cases debt"
 " will be red, credit - green"
@@ -798,12 +840,12 @@ msgstr "Semana"
 
 #. module: pos_debt_notebook
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_line_wizard_id
-msgid "Wizard id"
+msgid "Wizard"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:287
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:297
 #, python-format
 msgid ""
 "You cannot sell products on credit to the customer, because his max debt "
@@ -814,13 +856,13 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:266
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:276
 #, python-format
 msgid "You cannot use Debt payment. Select customer first."
 msgstr "No puede pagar a Crédito. Primero seleccione un cliente."
 
 #. module: pos_debt_notebook
-#: code:addons/pos_debt_notebook/__init__.py:15
+#: code:addons/pos_debt_notebook/__init__.py:14
 #, python-format
 msgid "You have open session of Point of Sale. Please close them first."
 msgstr ""
@@ -832,11 +874,11 @@ msgid "pos.config"
 msgstr "pos.config"
 
 #. module: pos_debt_notebook
-#: model:ir.model,name:pos_debt_notebook.model_pos_config_settings
-msgid "pos.config.settings"
-msgstr "pos.config.settings"
-
-#. module: pos_debt_notebook
 #: model:ir.model,name:pos_debt_notebook.model_pos_credit_invoices_line
 msgid "pos.credit.invoices.line"
 msgstr "pos.credit.invoices.line"
+
+#. module: pos_debt_notebook
+#: model:ir.model,name:pos_debt_notebook.model_res_config_settings
+msgid "res.config.settings"
+msgstr ""

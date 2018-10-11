@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 Ilyas Rakhimkulov
+     Copyright 2016,2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
 <odoo>
-    <data>
         <record id="demo_multi_session" model="pos.multi_session">
             <field name="name">multi session demo</field>
         </record>
@@ -42,5 +47,4 @@
             <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
         </record>
 
-    </data>
 </odoo>

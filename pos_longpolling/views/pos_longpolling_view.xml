@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <record model="ir.ui.view" id="view_pos_config_form">
             <field name="name">pos.config.form.view.inherit</field>
             <field name="model">pos.config</field>
@@ -14,7 +13,7 @@
                                 <label for="longpolling_max_silence_timeout"/>
                                 <div class="content-group">
                                     <div class="mt16 row">
-                                        <field name="longpolling_max_silence_timeout" class="col-xs-3 col-md-3" widget="float_time"/>
+                                        <field name="longpolling_max_silence_timeout" class="col-xs-3 col-md-3" widget="integer"/>
                                     </div>
                                 </div>
                             </div>
@@ -24,7 +23,7 @@
                                 <label for="longpolling_pong_timeout"/>
                                 <div class="content-group">
                                     <div class="mt16 row">
-                                        <field name="longpolling_pong_timeout" class="col-xs-3 col-md-3" widget="float_time"/>
+                                        <field name="longpolling_pong_timeout" class="col-xs-3 col-md-3" widget="integer"/>
                                     </div>
                                 </div>
                             </div>
@@ -41,5 +40,4 @@
                 </xpath>
             </field>
         </record>
-    </data>
 </odoo>

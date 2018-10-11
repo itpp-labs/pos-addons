@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+
 <templates id="template" xml:space="preserve">
     <t t-name="PaypadButtonWidget">
         <button t-attf-class="paypad-button #{widget.cashregister.journal.debt and 'debt' or ''}" t-att-cash-register-id="widget.cashregister.id">
@@ -6,19 +12,61 @@
         </button>
     </t>
 
+    <t t-name="CreditLine">
+        <!--deb.balance value sign correlates with credit sign-->
+        <div t-if="widget.pos.config.debt_type == 'debt' and deb.balance!=0" class="client-detail">
+            <span t-attf-class="label increased_width notbold client-debt">
+                <t t-if='deb.journal_id'>
+                    <t t-esc="deb.journal_id[1]"/>
+                </t>
+            </span>
+            <span t-attf-class="detail client-debt #{deb.balance lt 0 and 'positive' or deb.balance gt 0 and 'negative' or 'empty'}">
+                <t t-esc='widget.format_currency(- deb.balance)'/>
+            </span>
+        </div>
+        <div t-if="widget.pos.config.debt_type == 'credit' and deb.balance!=0" class="client-detail">
+            <span t-attf-class="label increased_width notbold detail client-credit">
+                <t t-if='deb.journal_id'>
+                    <t t-esc="deb.journal_id[1]"/>
+                </t>
+            </span>
+            <span t-attf-class="detail client-credit #{deb.balance gt 0 and 'positive' or deb.balance lt 0 and 'negative' or 'empty'}">
+                <t t-esc='widget.format_currency(deb.balance)'/>
+            </span>
+        </div>
+    </t>
+
+    <t t-name="CreditList">
+        <t t-foreach="_.values(debts)" t-as="deb">
+            <t t-call="CreditLine"/>
+        </t>
+    </t>
+
     <t t-extend="ClientDetails">
-        <t t-jquery=".client-details-right" t-operation="append">
-            <div t-if="partner.debt_type == 'debt'" class="client-detail">
-                <span class='label'>Debt</span>
-                <span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
-                    <t t-esc='widget.format_currency(partner.debt)'/>
-                </span>
-            </div>
-            <div t-if="partner.debt_type == 'credit'" class="client-detail">
-                <span class='label'>Credit</span>
-                <span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
-                    <t t-esc='widget.format_currency(- partner.debt)'/>
-                </span>
+        <t t-jquery=".client-details-right" t-operation="after">
+            <div class="client-details-debt">
+                <!--<div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail">-->
+                <!--<span class='label'>Debts:</span>-->
+                <!--</div>-->
+                <!--<div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail">-->
+                <!--<span class='label'>Credits:</span>-->
+                <!--</div>-->
+                <div class="credit_list client-detail">
+                    <t t-set="debts" t-value="partner.debts"/>
+                    <t t-if="debts" t-call="CreditList"/>
+                </div>
+                <div t-if="widget.pos.config.debt_type == 'debt'" class="client-detail total">
+                    <span class='label increased_width'>Total Debt</span>
+                    <b><span t-attf-class="detail client-debt #{partner.debt gt 0 and 'positive' or partner.debt lt 0 and 'negative' or 'empty'}">
+                        <t t-esc='widget.format_currency(partner.debt)'/>
+                    </span></b>
+                </div>
+                <div t-if="widget.pos.config.debt_type == 'credit'" class="client-detail total">
+                    <span class='label increased_width'>Total Credit</span>
+                    <b><span t-attf-class="detail client-debt #{partner.debt lt 0 and 'negative' or partner.debt gt 0 and 'positive' or 'empty'}">
+                        <t t-esc='widget.format_currency(- partner.debt)'/>
+                    </span></b>
+                </div>
             </div>
         </t>
         <t t-jquery=".client-details-box" t-operation="after">
@@ -27,24 +75,46 @@
     </t>
 
     <t t-extend="ActionpadWidget">
-        <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
+        <t t-jquery="t[t-esc*='widget.pos.get_client().name']" t-operation="after">
             <br/>
-            <span t-attf-class="client-debt #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'positive' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'debt' ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
-            </span>
-            <span t-attf-class="client-credit #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'negative' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
-            </span>
+            <t t-set="client" t-value="widget.pos.get_client()"/>
+            <t t-if="client.debt">
+                <t t-if="widget.pos.config.debt_type == 'debt'">
+                    <span t-attf-class="client-debt #{client.debt lt 0 and 'negative' or client.debt gt 0 and 'positive' or ''}">
+                        <t t-esc="(' [Debt: ' + widget.format_currency(client.debt) + ']' || '')"/>
+                    </span>
+                </t>
+                <t t-if="widget.pos.config.debt_type == 'credit'">
+                    <span t-attf-class="client-credit #{client.debt lt 0 and 'positive' or client.debt gt 0 and 'negative' or ''}">
+                        <t t-esc="(' [Credit: ' + widget.format_currency(- client.debt) + ']' || '')"/>
+                    </span>
+                </t>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="CreditNote">
+        <t t-if="debt != 0">
+            <t t-if="widget.pos.config.debt_type == 'debt'">
+                <span t-attf-class="client-debt #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''}">
+                    <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(debt * 100) / 100).toString() + ']': '')"/>
+                </span>
+            </t>
+            <t t-if="widget.pos.config.debt_type == 'credit'">
+                <span t-attf-class="client-credit #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''}">
+                    <t t-esc="(widget.pos.get_client() ? ' [Credit: ' + (- Math.round(debt * 100) / 100).toString() + ']': '')"/>
+                </span>
+            </t>
         </t>
     </t>
 
     <t t-extend="PaymentScreenWidget">
         <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
             <span t-attf-class="client-debt #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'positive' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'debt' ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'debt' ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
             </span>
             <span t-attf-class="client-credit #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'negative' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.get_client().debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
             </span>
         </t>
 
@@ -53,6 +123,11 @@
                 <i class='fa fa-money' /> Pay Full Debt
             </div>
         </t>
+
+        <!--<t t-jquery=".screen-content" t-operation="after">-->
+            <!--<t t-call="ValidationButton"/>-->
+        <!--</t>-->
+
     </t>
 
     <t t-extend="ClientListScreenWidget">
@@ -72,18 +147,18 @@
         <t t-jquery="table.client-list tr" t-operation="append">
             <th id="client-list-debt">Debt</th>
             <th id="client-list-credit">Credit</th>
-            <th>Max Debt</th>
         </t>
         <t t-jquery="table.client-list" t-operation="after">
             <table id="debt_history" class='client-list oe_hidden'>
                 <thead>
                     <tr>
                         <th>Date/Time</th>
-                        <th>Point of Sale</th>
+                        <th>POS</th>
                         <th>Products</th>
-                        <th>Purchased Credits (In)</th>
-                        <th>Credits Spent (Out)</th>
-                        <th>Balance</th>
+                        <th>Credit Payments</th>
+                        <th>Journal</th>
+                        <th>Journal Balance</th>
+                        <th>Total Balance</th>
                     </tr>
                 </thead>
                 <tbody id='debt_history_contents'>
@@ -94,29 +169,10 @@
 
     <t t-extend="ClientLine">
         <t t-jquery="tr.client-line" t-operation="append">
-            <td t-attf-class="client-debt #{((partner.debt_type == 'debt' and partner.debt lt 0) or (partner.debt_type == 'credit' and partner.debt lt 0)) ? 'negative' : ''} #{((partner.debt_type == 'debt' and partner.debt gt 0) or (partner.debt_type == 'credit' and partner.debt gt 0)) ? 'positive' : ''}">
-                <t t-if="partner.debt_type == 'debt'" t-esc='widget.round(partner.debt)'/>
-                <t t-if="partner.debt_type == 'credit'" t-esc='widget.round(-partner.debt)'/>
+            <td t-attf-class="client-debt #{((widget.pos.config.debt_type == 'debt' and partner.debt lt 0) or (widget.pos.config.debt_type == 'credit' and partner.debt lt 0)) ? 'negative' : ''} #{((widget.pos.config.debt_type == 'debt' and partner.debt gt 0) or (widget.pos.config.debt_type == 'credit' and partner.debt gt 0)) ? 'positive' : ''}">
+                <t t-if="widget.pos.config.debt_type == 'debt'" t-esc='widget.format_currency(partner.debt)'/>
+                <t t-if="widget.pos.config.debt_type == 'credit'" t-esc='widget.format_currency(-partner.debt)'/>
             </td>
-            <td>
-                <t t-esc='partner.debt_limit'/>
-            </td>
-        </t>
-    </t>
-
-    <t t-extend="ClientDetailsEdit">
-        <t t-jquery=".client-details-left" t-operation="append">
-            <div class='client-detail'>
-                <span class='label label_nowrap'>Max Debt *</span>
-                <input t-attf-class="detail client-credit-limit #{widget.check_user_in_group(widget.pos.config.group_pos_manager_id[0], widget.pos.user.groups_id) ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
-                <!--<input t-attf-class="detail client-credit-limit #{widget.pos.config.group_pos_manager_id[0] in widget.pos.user.groups_id ? '' : 'disabled'}" name='debt_limit' t-att-value='partner.debt_limit || ""' placeholder='Max Debt'/>
-                This construction will not work after the user's POS right are changed -->
-            </div>
-        </t>
-        <t t-jquery=".client-details-box" t-operation="append">
-            <div class='client-detail-notice'>
-                * Some fields are editable only for POS managers.
-            </div>
         </t>
     </t>
 
@@ -125,10 +181,19 @@
             <td><t t-esc="line ? line.date : ''"/></td>
             <td><t t-esc="line ? line.config_id[1] : ''"/></td>
             <td><t t-esc="line ? line.product_list : ''"/></td>
-            <td><t t-esc="((line and line.balance gt 0) ? (line.balance).toString() : '')"/></td>
-            <td><t t-esc="((line and line.balance lt 0) ? (-line.balance).toString() : '')"/></td>
-            <td>
-                <span t-attf-class="client-#{partner.debt_type} #{(line and line.total_balance lt 0) ? 'negative' : ''} #{(line and line.total_balance gt 0) ? 'positive' : ''}"><t t-esc="(line and line.total_balance ? (line.total_balance).toString() : '')"/></span>
+            <td class="pos_text_center">
+                <t t-esc="line and line.balance ? widget.format_currency(line.balance) : ''"/>
+            </td>
+            <td><t t-esc="line ? line.journal_code : ''"/></td>
+            <td class="pos_text_center">
+                <span t-attf-class="client-credit #{(line and line.total_journal lt 0) ? 'negative' : ''} #{(line and line.total_journal gt 0) ? 'positive' : ''}">
+                    <t t-esc="line and line.total_journal ? widget.format_currency(line.total_journal) : ''"/>
+                </span>
+            </td>
+            <td class="pos_text_center">
+                <span t-attf-class="client-#{debt_type} #{(line and line.total_balance lt 0) ? 'negative' : ''} #{(line and line.total_balance gt 0) ? 'positive' : ''}">
+                    <t t-esc="line and line.total_balance ? widget.format_currency(line.total_balance) : ''"/>
+                </span>
             </td>
         </tr>
     </t>
@@ -158,6 +223,97 @@
             </div>
 
         </t>
-
     </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery="table.receipt-paymentlines" t-operation="replace">
+            <table class='receipt-paymentlines'>
+                <t t-foreach='paymentlines' t-as='line'>
+                    <t t-if="!line.cashregister.journal.credits_via_discount">
+                        <tr>
+                          <td>
+                              <t t-esc="line.name"/>
+                          </td>
+                          <td class="pos-right-align">
+                              <t t-esc="widget.format_currency(line.get_amount())"/>
+                          </td>
+                      </tr>
+                    </t>
+                </t>
+            </table>
+        </t>
+        <t t-jquery="table.receipt-change" t-operation="replace">
+            <t t-set="credits_via_discounts_presence" t-value="order.paymentlines_with_credits_via_discounts()"/>
+            <t t-set="credits_via_discounts_amount" t-value="Math.max(order.get_summary_for_discount_credits(), 0)"/>
+            <table class='receipt-change'>
+                <tr><td>Change:</td><td class="pos-right-align">
+                    <t t-esc="widget.format_currency(order.get_change())"/>
+                    </td></tr>
+            </table>
+            <t t-if="credits_via_discounts_presence.length">
+                <left><pre>Payments by bonuses:</pre></left>
+                <table class='receipt-paymentlines'>
+                    <t t-foreach='credits_via_discounts_presence' t-as='line'>
+                        <tr>
+                          <td>
+                              <t t-esc="line.name"/>
+                          </td>
+                          <td class="pos-right-align">
+                              <t t-esc="widget.format_currency(line.get_amount())"/>
+                          </td>
+                      </tr>
+                    </t>
+                </table>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="ValidationButton">
+        <div class="bottom-left-content">
+            <div class="button autopay">
+                <div class="button-content">
+                    <span class="title"></span>
+                    <span>
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="ThumbUpPopupWidget">
+        <div class="modal-dialog thumb-up-modal">
+            <div class="popup thumb-up-popup">
+                <div class="container thumb-up-1">
+                    <div class="icon-wrapper">
+                        <span class="icon"><i class="fa fa-thumbs-up"></i></span>
+                        <div class="border"><span></span></div>
+                        <div class="satellite">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container thumb-up-2">
+                    <div class="icon-wrapper-2">
+                        <span class="icon"><i class="fa fa-thumbs-up"></i></span>
+                        <div class="border"><span></span></div>
+                        <div class="spark">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
 </templates>

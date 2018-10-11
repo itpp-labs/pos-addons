@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Network Printer""",
     "summary": """The time has come. Print POS orders and receipts by using network printers""",
@@ -32,5 +31,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

@@ -11,11 +11,16 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
         if (steps[position].trigger === ".product-list .product") {
             steps.splice(
                 position,
-                0,
+                1,
                 {
                     trigger: ".tables .table",
                     content: "<p>Click <b>table</b></p>",
-                    position: "bottom"
+                    position: "bottom",
+                    timeout: 20000,
+                }, {
+                    trigger: ".product-list .product",
+                    content: "<p>Click product 1</p>",
+                    position: "bottom",
                 }
             );
             break;

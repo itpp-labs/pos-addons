@@ -17,7 +17,8 @@ odoo.define('pos_debt_notebook.tour', function (require) {
         }, {
             content: "Switch to table or make dummy action",
             trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
-            position: "bottom"
+            position: "bottom",
+            timeout: 20000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
@@ -50,11 +51,14 @@ odoo.define('pos_debt_notebook.tour', function (require) {
 
     function debt_method_paying(pay_method) {
         return [{
+            content: "Make a dummy action",
+            trigger: '.order-button.selected',
+        }, {
             trigger: '.button.pay',
             content: _t("Open the payment screen"),
         }, {
             content: "Choose Administrator like a cashier or make a dummy action",
-            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")'
+            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
         }, {
             extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
@@ -74,7 +78,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(add_product_to_order('Miscellaneous'));
     steps = steps.concat(set_customer('Agrolait'));
-    steps = steps.concat(debt_method_paying('Debt Journal'));
+    steps = steps.concat(debt_method_paying('Credits (USD)'));
 
     tour.register('tour_pos_debt_notebook', { test: true, url: '/web' }, steps);
 

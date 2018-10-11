@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Discount for total amount of pos order',
-    'version': '1.0.0',
+    'version': '11.0.1.0.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
@@ -13,6 +12,6 @@
     'data': [
         'data.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

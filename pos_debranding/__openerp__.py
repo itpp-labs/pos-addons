@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 {
     'name': "POS debranding",
-    'version': '1.0.0',
+    'version': '11.0.1.0.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Debranding',
@@ -16,5 +15,5 @@
     'qweb': [
         'static/src/xml/pos_debranding.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

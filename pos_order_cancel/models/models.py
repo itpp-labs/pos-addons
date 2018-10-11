@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
@@ -111,6 +110,10 @@ class PosOrderLineCanceled(models.Model):
     price_subtotal_incl = fields.Float(compute='_compute_amount_line_all', digits=0, string='Subtotal', store=True)
     cancelled_reason_ids = fields.Many2many('pos.cancelled_reason', 'reason_cancelled_lines_rel',
                                             'canceled_line_id', 'cancelled_reason_id', string='Predefined Reasons')
+
+    # the absolute_discount field is needed for compatibility
+    # with <https://www.odoo.com/apps/modules/10.0/pos_orderline_absolute_discount/> module
+    absolute_discount = fields.Float(string='Discount (abs)', digits=0, default=0.0, readonly=True)
 
     @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
     def _compute_amount_line_all(self):

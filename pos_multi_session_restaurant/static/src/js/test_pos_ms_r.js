@@ -1,3 +1,6 @@
+/* Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_multi_session_restaurant.tour', function (require) {
     "use strict";
 
@@ -11,9 +14,13 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     });
 
     steps.splice(steps.indexOf(element) + 1,
-    0, {
+    1, {
         content: "click on a table",
         trigger: ".table",
+        timeout: 20000,
+    }, {
+        content: 'waiting for loading to finish',
+        trigger: '.neworder-button > .fa-plus',
     });
 
     tour.register('open_pos_ms_r_tour', { test: true, url: '/web' }, steps);

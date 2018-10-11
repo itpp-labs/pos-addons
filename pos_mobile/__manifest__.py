@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Mobile UI""",
     "summary": """Your Point of Sale in the Mobile Version""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
     "images": ["images/pos_mobile.png"],
-    "version": "11.0.1.1.5",
+    "version": "11.0.1.1.7",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -34,7 +33,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "POS Mobile UI",
     "demo_addons": ["pos_mobile_restaurant"],
