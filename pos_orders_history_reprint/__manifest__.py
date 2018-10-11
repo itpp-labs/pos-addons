@@ -40,7 +40,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Reprint POS Orders Receipt",
     "demo_addons": [

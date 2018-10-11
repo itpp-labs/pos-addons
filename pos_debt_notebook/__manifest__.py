@@ -45,7 +45,7 @@
     "demo": [
         'data/demo.xml',
     ],
-    'installable': True,
+    'installable': False,
     'uninstall_hook': 'pre_uninstall',
 
     "demo_title": "POS Debt/Credit Notebook",
