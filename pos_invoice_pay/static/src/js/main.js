@@ -1000,7 +1000,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
         if (!this.pos.config.pos_invoice_pay_writeoff_account_id && order.invoice_to_pay && order.get_total_paid() > this.get_invoice_residual()) {
             this.gui.show_popup('error', {
                 'title': _t('Excessive payment amount.'),
-                'body': _t('Difference account is not set. You can not validate the order with change. Please enter the exact payment amount'),
+                'body': _t('You can not validate the order with a change because difference account is not set. Please enter the exact payment amount.'),
             });
             return;
         }
