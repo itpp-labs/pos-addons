@@ -36,19 +36,18 @@ class PosReceipt(models.Model):
         })
 
 
-class PosOrder(models.Model):
-    _inherit = "pos.order"
-    order_receipt_id = fields.Many2one('pos.xml_receipt', 'Order Receipt')  # In fact is one2one
+class PosSession(models.Model):
+    _inherit = 'pos.session'
 
-    def _create_account_move_line(self, session=None, move=None):
-        orders = self.filtered(lambda o: not o.account_move or o.state == 'paid')
-        res = super(PosOrder, self)._create_account_move_line(session, move)
+    @api.multi
+    def action_pos_session_close(self):
+        orders = self.env['pos.order'].search([('state', '=', 'paid')])
+        res = super(PosSession, self).action_pos_session_close()
         references = [order.pos_reference for order in orders]
         receipts = self.env['pos.xml_receipt'].search([('pos_reference', 'in', references), ('status', '=', True)])
-        for r in receipts:
-            r.write({
-                'status': False
-            })
+        receipts.write({
+            'status': False
+        })
         return res
 
 
