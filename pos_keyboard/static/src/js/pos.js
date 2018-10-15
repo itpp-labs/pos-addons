@@ -210,4 +210,3 @@ odoo.define('pos_keyboard.pos', function (require) {
         Keypad: Keypad
     };
 });
-})();
