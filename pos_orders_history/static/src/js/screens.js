@@ -127,11 +127,9 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_orders_by_filter: function(filter, orders) {
             var self = this;
             if (filter === "user") {
-                var user_id = this.pos.cashier
-                ? this.pos.cashier.id
-                : this.pos.user.id;
-                if (this.pos.cashier && this.pos.cashier.id) {
-                    user_id = this.pos.cashier.id;
+                var user_id = this.pos.user.id;
+                if (this.pos.get_cashier()) {
+                    user_id = this.pos.get_cashier().id;
                 }
                 return orders.filter(function(order) {
                     return order.user_id[0] === user_id;
