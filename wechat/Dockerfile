@@ -1,5 +1,5 @@
 # Use this docker for development
-FROM itprojectsllc/install-odoo:11.0-dev
+FROM itprojectsllc/install-odoo:10.0-dev
 
 USER root
 
