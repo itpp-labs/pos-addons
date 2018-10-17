@@ -54,4 +54,22 @@
                 </xpath>
             </field>
         </record>
+
+<!--POS SESSION-->
+
+    <record id="pos_invoice_pay_session_form_invoice" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div/button[@name='action_stock_picking']" position="after">
+                <field name="session_payments" invisible="1"/>
+                <button name="action_invoice_payments" type="object"
+                        class="oe_stat_button" icon="fa-list-alt">
+                    <field name="session_invoices_total" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

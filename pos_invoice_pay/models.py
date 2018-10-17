@@ -1,7 +1,7 @@
 # Copyright 2017 Artyom Losev
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 
 SO_CHANNEL = 'pos_sale_orders'
 INV_CHANNEL = 'pos_invoices'
@@ -157,3 +157,30 @@ class PosConfig(models.Model):
                                                help='Ask for a cashier when fetch invoices', defaul=True)
     sale_order_cashier_selection = fields.Boolean(string='Select Sale Order Cashier',
                                                   help='Ask for a cashier when fetch orders', defaul=True)
+
+
+class PosSession(models.Model):
+    _inherit = 'pos.session'
+
+    session_payments = fields.One2many('account.payment', 'pos_session_id',
+                                       string='Invoice Payments', help="Show invoices paid in the Session")
+    session_invoices_total = fields.Float('Invoices', compute='_compute_session_invoices_total')
+
+    @api.multi
+    def _compute_session_invoices_total(self):
+        for rec in self:
+            rec.session_invoices_total = sum(rec.session_payments.mapped('invoice_ids').mapped('amount_total') + [0])
+
+    @api.multi
+    def action_invoice_payments(self):
+        payments = self.env['account.payment'].search([('pos_session_id', 'in', self.ids)])
+        invoices = payments.mapped('invoice_ids').ids
+        domain = [('id', 'in', invoices)]
+        return {
+            'name': _('Invoice Payments'),
+            'type': 'ir.actions.act_window',
+            'domain': domain,
+            'res_model': 'account.invoice',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+        }
