@@ -6,7 +6,7 @@
     "website": "https://it-projects.info",
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
-    'version': '1.0.2',
+    'version': '8.0.1.0.3',
     'depends': ['point_of_sale'],
     "price": 15.00,
     "currency": "EUR",
