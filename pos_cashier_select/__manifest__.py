@@ -3,7 +3,7 @@
     "summary": """Forced choose a cashier before switching to payment screen""",
     "category": "Point of Sale",
     "images": ['images/pos_cashier_select.png'],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -29,5 +29,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
