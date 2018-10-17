@@ -3,7 +3,6 @@
 odoo.define('pos_qr_show', function(require){
     "use strict";
 
-    var rpc = require('web.rpc');
     var core = require('web.core');
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
@@ -70,10 +69,12 @@ odoo.define('pos_qr_show', function(require){
                 // root element.
                 rendered_html = _.reduce($rendered_html, function (memory, current_element) {
                     return memory + $(current_element).prop('outerHTML');
-                }, ""); // initial memory of ""
+                },
+                // initial memory of ""
+                "");
 
                 return rendered_html;
-            })
+            });
         },
     });
 

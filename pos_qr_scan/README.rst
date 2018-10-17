@@ -33,12 +33,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_qr_scan/
+HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_qr_scan/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 c7171795f891335e8a8b6d5a6b796c28cea77fea
+Tested on Odoo 10.0 52ab504a5b28f3ca2a075c83a3efcc166ea30497

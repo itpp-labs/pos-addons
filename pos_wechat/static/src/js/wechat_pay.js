@@ -5,7 +5,7 @@ odoo.define('pos_wechat', function(require){
 
     require('pos_qr_scan');
     require('pos_qr_show');
-    var rpc = require('web.rpc');
+    var Model = require('web.DataModel');
     var core = require('web.core');
     var models = require('point_of_sale.models');
 
@@ -72,18 +72,16 @@ odoo.define('pos_wechat', function(require){
             });
 
             // Send without repeating on failure
-            return rpc.query({
-                model: 'wechat.order',
-                method: 'create_qr',
-                kwargs: {
+            return (new Model('wechat.order')).call('create_qr',
+                {
                     'lines': lines,
                     'order_ref': order.uid,
                     'pay_amount': order.get_due(),
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
                     'journal_id': creg.journal.id,
-                },
-            }).then(function(data){
+                }
+            ).then(function(data){
                 if (data.code_url){
                     self.on_payment_qr(order, data.code_url);
                 } else if (data.error) {
@@ -156,10 +154,8 @@ odoo.define('pos_wechat', function(require){
             var pos_id = self.pos.config.id;
 
             var send_it = function () {
-                return rpc.query({
-                    model: 'wechat.micropay',
-                    method: 'pos_create_from_qr',
-                    kwargs: {
+                return (new Model('wechat.micropay')).call('pos_create_from_qr',
+                    {
                         'auth_code': auth_code,
                         'pay_amount': order.get_due(),
                         'order_ref': order.uid,
@@ -167,7 +163,7 @@ odoo.define('pos_wechat', function(require){
                         'journal_id': self.pos.micropay_journal.id,
                         'pos_id': pos_id,
                     },
-                });
+                );
             };
 
             var current_send_number = 0;
