@@ -78,6 +78,20 @@ function pos_keyboard_widgets(instance, module){
         reset_action_callback: function(){
             this.action_callback = undefined;
         },
+
+        is_allowed: function(ttype){
+            // pos_disable_payment installed?
+            if (!this.pos.config.hasOwnProperty('allow_discount')) {
+                return true;
+            }
+            if (ttype === 'discount') {
+                return this.pos.config.allow_discount;
+            } else
+            if (ttype === 'edit_price') {
+                return this.pos.config.allow_edit_price;
+            } 
+            return false;
+        },
         
         // starts catching keyboard events and tries to interpret keystrokes,
         // calling the callback when needed.
@@ -145,12 +159,12 @@ function pos_keyboard_widgets(instance, module){
                         self.data.val = buttonMode.qty;
                         ok = true;
                     } 
-                    else if (token == KC_AMT || token == KC_AMT_1) {
+                    else if ((token == KC_AMT || token == KC_AMT_1) && self.is_allowed('edit_price')) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.price;
                         ok = true;
                     } 
-                    else if (token == KC_DISC || token == KC_DISC_1) {
+                    else if ((token == KC_DISC || token == KC_DISC_1) && self.is_allowed('discount')) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.disc;
                         ok = true;
