@@ -2,7 +2,7 @@
 # Copyright 2018 Tom Blauwendraat <tom@sunflowerweb.nl>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from openerp import http
+from odoo import http
 import logging
 import time
 import socket
@@ -15,11 +15,11 @@ _logger = logging.getLogger(__name__)
 
 
 try:
-    from openerp.addons.hw_escpos.escpos import escpos
-    from openerp.addons.hw_escpos.controllers.main import EscposProxy
-    from openerp.addons.hw_escpos.controllers.main import EscposDriver
-    from openerp.addons.hw_escpos.escpos.printer import Network
-    import openerp.addons.hw_proxy.controllers.main as hw_proxy
+    from odoo.addons.hw_escpos.escpos import escpos
+    from odoo.addons.hw_escpos.controllers.main import EscposProxy
+    from odoo.addons.hw_escpos.controllers.main import EscposDriver
+    from odoo.addons.hw_escpos.escpos.printer import Network
+    import odoo.addons.hw_proxy.controllers.main as hw_proxy
 except ImportError:
     EscposProxy = object
     EscposDriver = object
@@ -180,8 +180,3 @@ class UpdatedEscposProxy(EscposProxy):
     @http.route('/hw_proxy/status_network_printers', type='json', auth='none', cors='*')
     def network_printers_status(self):
         return network_driver.network_printers
-
-    @http.route('/hw_proxy/without_usb', type='http', auth='none', cors='*')
-    def without_usb(self):
-        """ Old pos_printer_network module expects this to work """
-        return "ping"
