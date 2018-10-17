@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo noupdate="1">
+    <record id="seq_wechat_micropay" model="ir.sequence">
+        <field name="name">WeChat Micropay</field>
+        <field name="code">wechat.micropay</field>
+        <field name="prefix">WMP-</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+    <record id="seq_wechat_order" model="ir.sequence">
+        <field name="name">WeChat Order</field>
+        <field name="code">wechat.order</field>
+        <field name="prefix">WO-</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+    <record id="seq_wechat_refund" model="ir.sequence">
+        <field name="name">WeChat Refund</field>
+        <field name="code">wechat.refund</field>
+        <field name="prefix">WR-</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False" />
+    </record>
+</odoo>
