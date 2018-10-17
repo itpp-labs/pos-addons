@@ -47,7 +47,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 if (self.pos.get_order()) {
                     self.pos.get_order().input_disc_program = false;
                 }
-            }
+            };
         },
         get_discount_program_by_id: function(id) {
             return _.find(this.pos.discount_program, function (item) {
