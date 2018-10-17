@@ -1,7 +1,7 @@
 `1.2.0`
 -------
 
-- **NEW:** Smart button on the pos session form to show paid here invoices
+- **NEW:** Smart button on the pos session form to show paid regular invoices
 
 `1.1.1`
 -------
