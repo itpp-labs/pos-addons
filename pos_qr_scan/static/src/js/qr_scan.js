@@ -128,7 +128,10 @@ odoo.define('pos_qr_scan', function(require){
                         self.stream = stream;
                         self.success(stream);
                     }).catch(function(error){
-                        error(error);
+                        self.gui.show_popup('error-traceback',{
+                            'title': error.name + ' ' + error.code,
+                            'body':  error.message
+                        });
                     });
             // dont know for what this is needed
             } else if(navigator.getUserMedia){
