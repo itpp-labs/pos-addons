@@ -340,7 +340,7 @@ odoo.define('pos_multi_session', function(require){
             return order;
         },
         ms_update_order: function(order, data){
-            if (order.finalized) {
+            if (order && order.finalized) {
                 // if true, cannot be modified. - According to Odoo
                 return;
             }
