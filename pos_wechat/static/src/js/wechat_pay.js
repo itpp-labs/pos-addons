@@ -5,7 +5,7 @@ odoo.define('pos_wechat', function(require){
 
     require('pos_qr_scan');
     require('pos_qr_show');
-    var rpc = require('web.rpc');
+    var Model = require('web.DataModel');
     var core = require('web.core');
     var models = require('point_of_sale.models');
 
@@ -72,18 +72,16 @@ odoo.define('pos_wechat', function(require){
             });
 
             // Send without repeating on failure
-            return rpc.query({
-                model: 'wechat.order',
-                method: 'create_qr',
-                kwargs: {
+            return (new Model('wechat.order')).call('create_qr',
+                {
                     'lines': lines,
                     'order_ref': order.uid,
                     'pay_amount': order.get_due(),
                     'terminal_ref': terminal_ref,
                     'pos_id': pos_id,
                     'journal_id': creg.journal.id,
-                },
-            }).then(function(data){
+                }
+            ).then(function(data){
                 if (data.code_url){
                     self.on_payment_qr(order, data.code_url);
                 } else if (data.error) {

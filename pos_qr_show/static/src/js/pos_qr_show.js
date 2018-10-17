@@ -3,7 +3,6 @@
 odoo.define('pos_qr_show', function(require){
     "use strict";
 
-    var rpc = require('web.rpc');
     var core = require('web.core');
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
