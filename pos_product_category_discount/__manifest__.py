@@ -4,7 +4,7 @@
     "category": "Point of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-product-category-discount?version=11.0',
     "images": ['images/dp3.png'],
-    "version": "11.0.1.2.5",
+    "version": "12.0.1.2.5",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -15,7 +15,7 @@
     "currency": "EUR",
 
     "depends": [
-        "pos_discount_base",
+        "pos_discount",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
@@ -35,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "POS Discount Programs",
     "demo_addons": [
