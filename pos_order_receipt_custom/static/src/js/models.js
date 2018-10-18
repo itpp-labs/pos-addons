@@ -54,6 +54,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
                 if (_.contains(printer.config.product_categories_ids, line.product.pos_categ_id[0]) && line.mp_dirty === false) {
                     return true;
                 }
+                return false;
             });
             var products = [];
             lines.forEach(function(line) {
@@ -79,7 +80,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             return _super_order.initialize.apply(this, arguments);
         },
         print_order_receipt: function(printer, changes) {
-            if (printer.config.custom_order_receipt && (changes['new'].length > 0 || changes['cancelled'].length > 0 || changes.changes_table)) {
+            if (printer.config.custom_order_receipt && (changes['new'].length > 0 || changes.cancelled.length > 0 || changes.changes_table)) {
                 this.print_custom_receipt(printer, changes);
             } else {
                 _super_order.print_order_receipt.apply(this,arguments);
@@ -106,10 +107,14 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             }
 
             if (!changes.time) {
-                var hours   = '' + d.getHours();
-                    hours   = hours.length < 2 ? ('0' + hours) : hours;
-                var minutes = '' + d.getMinutes();
-                    minutes = minutes.length < 2 ? ('0' + minutes) : minutes;
+                var hours = '' + String(d.getHours());
+                    hours = hours.length < 2
+                    ? ('0' + hours)
+                    : hours;
+                var minutes = '' + String(d.getMinutes());
+                    minutes = minutes.length < 2
+                    ? ('0' + minutes)
+                    : minutes;
                 changes.time = {
                     'hours':   hours,
                     'minutes': minutes,
@@ -167,12 +172,18 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
         export_as_JSON: function(){
             var json = _super_order.export_as_JSON.call(this);
             json.first_order_printing = this.first_order_printing;
-            json.table_open_time  = this.table ? this.table.open_time : false;
+            json.table_open_time = this.table
+            ? this.table.open_time
+            : false;
             return json;
         },
         init_from_JSON: function(json) {
             _super_order.init_from_JSON.apply(this,arguments);
-            this.table.open_time = json.table_open_time;
+            if (!this.table){
+                // the condition is made for compatibility with pos_orders_history_reprint
+                this.table = {floor: {}};
+            }
+            this.table.open_time = json.table_open_time || json.create_date;
             this.first_order_printing = json.first_order_printing;
         },
     });
