@@ -9,7 +9,7 @@ odoo.define('pos_receipt_custom.screens', function(require){
     screens.ReceiptScreenWidget.include({
         get_custom_receipt: function(){
             if (this.pos.table) {
-                var open_time = this.pos.table.open_time;
+                var open_time = this.pos.table.open_time || this.pos.get_current_datetime();
                 var payment_time = this.pos.get_current_datetime();
 
                 var display_time = {time: open_time.time + "-" + payment_time.time};
