@@ -47,7 +47,7 @@
     "installable": True,
 
     "demo_title": "Sync POS orders across multiple sessions",
-    "demo_addons": [
+    "demo_addons": [cashregisters_by_id
         "pos_disable_payment",
         "pos_multi_session_sync",
         "pos_multi_session_restaurant",
