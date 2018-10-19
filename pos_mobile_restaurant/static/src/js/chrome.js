@@ -124,13 +124,9 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             }
 
             // event for menu button
-            this.menuButton = $('.menu-button');
+            this.menuButton = $('.mobile-floor-selector .menu-button');
             this.menu_is_opened = false;
 
-            // Each time a function is called, the click event is recorded without removing the previous event.
-            // When you click the menu button, the event was generated many times, which led to a hang.
-            // Therefore, before each function call, you must remove the event.
-            this.menuButton.off("click");
             this.menuButton.click(function() {
                 self.menu_button_click();
             });
