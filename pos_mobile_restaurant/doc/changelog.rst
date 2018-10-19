@@ -1,3 +1,8 @@
+`1.3.7`
+-------
+
+- **FIX:** The menu does not open after changing a floor
+
 `1.3.6`
 -------
 
