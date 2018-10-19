@@ -1,3 +1,10 @@
+`1.1.8`
+-------
+
+- **FIX:** Font size of buttons
+- **FIX:** Order list scrolling
+- **FIX:** Scrollbar of Products after opening bottom menu
+
 `1.1.7`
 -------
 
