@@ -165,6 +165,7 @@ odoo.define('pos_mobile.screens', function (require) {
             }
 
             if (!this.pos.iOS) {
+                // add product list scrolling
                 $('.product-list-scroller').niceScroll({
                     horizrailenabled: false,
                 });
