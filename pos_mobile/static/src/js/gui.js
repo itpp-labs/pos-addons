@@ -58,13 +58,15 @@ odoo.define('pos_mobile.gui', function (require) {
                 // automatic define height. 20 the size of the indentation from the bottom block
                 $('.paymentlines-container').css({height: height - paymentmethods - numpad - 20});
                 // add custom scrolling
-                var payment_scroll = $('.payment-screen .touch-scrollable').getNiceScroll();
-                if (payment_scroll) {
-                    payment_scroll.remove();
+                var payment_el = $('.payment-screen .touch-scrollable');
+                var payment_scroll = payment_el.getNiceScroll();
+                if (payment_scroll.length) {
+                    payment_scroll.resize();
+                } else {
+                    payment_el.niceScroll({
+                        horizrailenabled: false,
+                    });
                 }
-                $('.payment-screen .touch-scrollable').niceScroll({
-                    horizrailenabled: false,
-                });
             }
         }
     });
