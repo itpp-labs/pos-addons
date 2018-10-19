@@ -107,8 +107,13 @@ odoo.define('pos_mobile.chrome', function (require) {
     chrome.OrderSelectorWidget.include({
         renderElement: function(){
             this._super();
-            $('.pos-topheader .nicescroll-rails').remove();
-            this.$('.orders').niceScroll();
+            var scroll = this.$('.orders').getNiceScroll();
+            if (scroll) {
+                scroll.remove();
+            }
+            this.$('.orders').niceScroll({
+                horizrailenabled: false,
+            });
         }
     });
 
