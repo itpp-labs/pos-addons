@@ -124,7 +124,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             }
 
             // event for menu button
-            this.menuButton = $('.mobile-floor-selector .menu-button');
+            this.menuButton = $('.slide-floor-content .menu-button');
             this.menu_is_opened = false;
 
             this.menuButton.click(function() {
