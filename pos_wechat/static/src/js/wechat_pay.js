@@ -154,10 +154,8 @@ odoo.define('pos_wechat', function(require){
             var pos_id = self.pos.config.id;
 
             var send_it = function () {
-                return rpc.query({
-                    model: 'wechat.micropay',
-                    method: 'pos_create_from_qr',
-                    kwargs: {
+                return (new Model('wechat.micropay')).call('pos_create_from_qr',
+                    {
                         'auth_code': auth_code,
                         'pay_amount': order.get_due(),
                         'order_ref': order.uid,
@@ -165,7 +163,7 @@ odoo.define('pos_wechat', function(require){
                         'journal_id': self.pos.micropay_journal.id,
                         'pos_id': pos_id,
                     },
-                });
+                );
             };
 
             var current_send_number = 0;
