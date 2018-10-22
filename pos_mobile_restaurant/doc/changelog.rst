@@ -1,7 +1,7 @@
 `1.3.1`
 -------
 
-- **FIX:** Scrollbar of Product list for Android
+- **FIX:** Scrollbar of Product list for Android 
 
 `1.3.0`
 -------
