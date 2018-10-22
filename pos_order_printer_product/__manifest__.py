@@ -4,7 +4,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": ['images/pos_order_printer_product_main.png'],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -26,7 +26,6 @@
     "qweb": [
     ],
     "demo": [
-        "data/pos_order_printer_product_demo.xml",
     ],
 
     "post_load": None,
@@ -34,5 +33,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
