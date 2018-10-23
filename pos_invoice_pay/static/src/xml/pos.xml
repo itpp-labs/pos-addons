@@ -86,7 +86,7 @@
     </t>
 
     <t t-name="SaleOrdersWidget">
-        <div class="clientlist-screen screen">
+        <div id="sale_order_list_screen" class="clientlist-screen screen">
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
@@ -152,7 +152,7 @@
     </t>
 
     <t t-name="InvoicesWidget">
-        <div class="clientlist-screen screen">
+        <div id="invoice_list_screen" class="clientlist-screen screen">
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
@@ -208,7 +208,7 @@
     </t>
 
     <t t-name="InvoicePaymentScreenWidget">
-        <div class='payment-screen screen'>
+        <div id="invoice_payment_screen" class='payment-screen screen'>
             <div class='screen-content'>
                 <div class='top-content'>
                     <span class='button back'>

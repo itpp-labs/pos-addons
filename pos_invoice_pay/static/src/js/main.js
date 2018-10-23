@@ -871,6 +871,8 @@ gui.define_screen({name:'invoices_list', widget: InvoicesWidget});
 
 var InvoicePayment = screens.PaymentScreenWidget.extend({
     template: 'InvoicePaymentScreenWidget',
+    original_payment_screen: false,
+
     get_invoice_residual: function () {
         if (this.pos.selected_invoice) {
             return this.pos.selected_invoice.residual;
@@ -996,8 +998,13 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     },
 
     validate_order: function () {
-        if (this.order_is_valid()) {
+        if (this.order_is_valid() && this.pos.selected_invoice && this.pos.selected_invoice.id) {
             this.finalize_validation();
+        } else if (!this.pos.selected_invoice) {
+            this.gui.show_popup('error', {
+                'title': _t('Invoice is not selected'),
+                'body': _t('You can not validate the order.'),
+            });
         }
     },
 

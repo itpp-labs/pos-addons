@@ -10,11 +10,16 @@ odoo.define('pos_qr_payments', function(require){
     gui.Gui.prototype.screen_classes.filter(function(el) {
         return el.name === 'payment';
     })[0].widget.include({
+        // add variable to differ original screen from inherited ones. Look pos_invoice_pay
+        original_payment_screen: true,
+
         init: function(parent, options) {
             this._super(parent, options);
-            this.pos.bind('validate_order',function(){
-                this.validate_order();
-            },this);
+            if (this.original_payment_screen) {
+                this.pos.bind('validate_order',function(){
+                    this.validate_order();
+                },this);
+            }
         }
     });
 

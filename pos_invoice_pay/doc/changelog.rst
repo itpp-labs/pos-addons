@@ -1,3 +1,8 @@
+`1.0.2`
+-------
+
+- **FIX:** Compatibility with pos_wechat
+
 `1.0.1`
 -------
 
