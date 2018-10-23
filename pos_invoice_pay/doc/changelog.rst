@@ -3,6 +3,7 @@
 
 **Fix:** Don't auto-complete the current order after paying the invoice
 **Fix:** Incorrect receipt printing in the PosBox
+**FIX:** Compatibility with pos_wechat
 
 `1.0.2`
 -------
