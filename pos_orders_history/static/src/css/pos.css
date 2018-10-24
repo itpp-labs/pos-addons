@@ -8,6 +8,10 @@
     width: 100%;
     line-height: 40px;
 }
+.pos .orders-list-screen .update_history{
+    display: inline-block;
+    position: relative;
+}
 .pos .orders-list-screen .order-list th,
 .pos .orders-list-screen .order-list td {
     padding: 0px 8px;
