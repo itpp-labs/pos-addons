@@ -25,16 +25,17 @@ class PosOrder(models.Model):
     def process_invoice_payment(self, invoice):
         for statement in invoice['data']['statement_ids']:
             inv_id = invoice['data']['invoice_to_pay']['id']
-            inv_obj = self.env['account.invoice'].search([('id', '=', inv_id)])
+            inv_obj = self.env['account.invoice'].browse(inv_id)
             journal_id = statement[2]['journal_id']
-            journal = self.env['account.journal'].search([('id', '=', journal_id)])
+            journal = self.env['account.journal'].browse(journal_id)
             amount = statement[2]['amount']
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
 
             if amount > inv_obj.residual:
-                writeoff_acc_id = self._default_session().config_id.pos_invoice_pay_writeoff_account_id.id
+                session_id = self.env['pos.session'].browse(invoice['data']['pos_session_id'])
+                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id.id
                 payment_difference_handling = 'reconcile'
 
             vals = {

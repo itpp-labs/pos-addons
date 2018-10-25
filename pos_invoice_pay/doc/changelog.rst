@@ -1,3 +1,8 @@
+`1.0.2`
+-------
+
+ - **FIX:** Issue related to unset difference account
+
 `1.0.1`
 -------
 
