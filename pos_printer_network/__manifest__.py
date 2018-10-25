@@ -8,7 +8,7 @@
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_printer_network/",
     "license": "LGPL-3",
     "price": 340.00,
     "currency": "EUR",
