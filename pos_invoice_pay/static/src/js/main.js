@@ -870,7 +870,11 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
 gui.define_screen({name:'invoices_list', widget: InvoicesWidget});
 
 var InvoicePayment = screens.PaymentScreenWidget.extend({
-    template: 'InvoicePaymentScreenWidget',
+    template: 'PaymentScreenWidget',
+    show: function(){
+        this._super();
+        this.$el.find('.js_set_customer').remove();
+    },
     get_invoice_residual: function () {
         if (this.pos.selected_invoice) {
             return this.pos.selected_invoice.residual;

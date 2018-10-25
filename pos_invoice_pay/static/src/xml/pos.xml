@@ -207,58 +207,6 @@
         </div>
     </t>
 
-    <t t-name="InvoicePaymentScreenWidget">
-        <div class='payment-screen screen'>
-            <div class='screen-content'>
-                <div class='top-content'>
-                    <span class='button back'>
-                        <i class='fa fa-angle-double-left'></i>
-                        Back
-                    </span>
-                    <h1>Payment</h1>
-                    <span class='button next'>
-                        Validate
-                        <i class='fa fa-angle-double-right'></i>
-                    </span>
-                </div>
-                <div class='left-content pc40 touch-scrollable scrollable-y'>
-
-                    <div class='paymentmethods-container'>
-                    </div>
-
-                </div>
-                <div class='right-content pc60 touch-scrollable scrollable-y'>
-
-                    <section class='paymentlines-container'>
-                    </section>
-
-                    <section class='payment-numpad invoice'>
-                    </section>
-
-                    <div class='payment-buttons'>
-                        <t t-if='widget.pos.config.iface_invoicing'>
-                            <t t-if='widget.pos.get_order()'>
-                                <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
-                                    <i class='fa fa-file-text-o' /> Invoice
-                                </div>
-                            </t>
-                        </t>
-                        <t t-if='widget.pos.config.tip_product_id'>
-                            <div class='button js_tip'>
-                                <i class='fa fa-heart' /> Tip 
-                            </div>
-                        </t>
-                        <t t-if='widget.pos.config.iface_cashdrawer'>
-                            <div class='button js_cashdrawer'>
-                                <i class='fa fa-archive' /> Open Cashbox
-                            </div>
-                        </t>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </t>
-
      <t t-name="InvoicePaymentScreen-Paymentlines">
         <t t-if="!paymentlines.length">
             <div class='paymentlines-empty'>
