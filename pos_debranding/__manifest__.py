@@ -5,7 +5,7 @@
     'license': 'LGPL-3',
     'category': 'Debranding',
     "support": "apps@it-projects.info",
-    'website': 'https://twitter.com/yelizariev',
+    'website': 'https://www.odoo.com/apps/modules/12.0/pos_debranding/',
     'depends': ['point_of_sale'],
     # 'price': 30.00,
     # 'currency': 'EUR',
