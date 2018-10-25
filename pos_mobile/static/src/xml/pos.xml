@@ -45,12 +45,16 @@
     </t>
 
     <t t-extend="PaymentScreenWidget">
-        <t t-jquery="div[class='paymentmethods-container']">
-            $(this).addClass('touch-scrollable scrollable-y');
+        <t t-jquery="div[class='paymentmethods-container']" t-operation="replace">
+        </t>
+        <t t-jquery="section[class='paymentlines-container']" t-operation="after">
+            <div class='paymentmethods-container touch-scrollable scrollable-y'>
+            </div>
         </t>
         <t t-jquery="section[class='paymentlines-container']">
             $(this).addClass('touch-scrollable scrollable-y');
         </t>
+
     </t>
 
     <t t-extend="PaymentScreen-Paymentlines">

@@ -1,3 +1,8 @@
+`1.1.9`
+-------
+
+- **FIX:** Compatibility with pos_invoice_pay
+
 `1.1.8`
 -------
 
