@@ -8,12 +8,12 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=11.0",
     "images": ["images/pos_orders_reprint_main.png"],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_reprint/",
     "license": "LGPL-3",
     "price": 20.00,
     "currency": "EUR",
@@ -40,7 +40,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Reprint POS Orders Receipt",
     "demo_addons": [
