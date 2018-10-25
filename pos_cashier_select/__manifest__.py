@@ -8,7 +8,7 @@
 
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/",
     "license": "LGPL-3",
     "price": 39.00,
     "currency": "EUR",
