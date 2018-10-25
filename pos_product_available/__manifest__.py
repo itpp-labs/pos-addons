@@ -14,7 +14,7 @@
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/yelizariev",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available/",
     "license": "LGPL-3",
     # "price": 9.00,
     # "currency": "EUR",
