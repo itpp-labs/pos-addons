@@ -8,7 +8,7 @@
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_cancel_restaurant/",
     "license": "LGPL-3",
     "price": 50.00,
     "currency": "EUR",
