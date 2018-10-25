@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <template id="point_of_sale_assets" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_longpolling/static/src/js/pos_longpolling.js"></script>
-            </xpath>
-        </template>
+    <template id="point_of_sale_assets" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/longpolling.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/longpolling_bus.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/crosstab_bus.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/pos.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/widgets.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/sync_bus_service.js"></script>
+        </xpath>
+    </template>
 
-        <template id="assets_backend" name="pos_longpolling backend_assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_longpolling/static/src/js/test_longpoll_pos.js"></script>
-            </xpath>
-        </template>
+    <template id="assets_backend" name="pos_longpolling backend_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/test_longpoll_pos.js"></script>
+        </xpath>
+    </template>
 </odoo>
