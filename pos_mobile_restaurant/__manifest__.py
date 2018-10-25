@@ -9,7 +9,7 @@
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_mobile_restaurant/",
     "license": "LGPL-3",
     "price": 100.00,
     "currency": "EUR",
