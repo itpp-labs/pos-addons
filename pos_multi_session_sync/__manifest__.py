@@ -7,12 +7,12 @@
     "category": "Point of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": [],
-    "version": "11.0.1.0.3",
+    "version": "12.0.1.0.3",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/KolushovAlexandr",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_multi_session_sync/",
     "license": "LGPL-3",
     "price": 60.00,
     "currency": "EUR",
@@ -34,5 +34,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
