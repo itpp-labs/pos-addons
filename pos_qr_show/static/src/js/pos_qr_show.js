@@ -76,4 +76,12 @@ odoo.define('pos_qr_show', function(require){
         },
     });
 
+    screens.PaymentScreenWidget.include({
+        show: function() {
+            // remove old QR code
+            this.pos.hide_payment_qr_on_payment_screen();
+            this._super();
+        }
+    });
+
 });
