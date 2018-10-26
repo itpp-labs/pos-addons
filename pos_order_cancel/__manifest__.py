@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Saving removed products of POS order""",
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "10.0.1.2.2",
+    "version": "11.0.1.2.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 from . import models
 from . import report
 from . import wizard
 
-from openerp import SUPERUSER_ID
-from openerp import api
-from openerp.tools.translate import _
+from odoo import SUPERUSER_ID
+from odoo import api
+from odoo.tools.translate import _
 from odoo.exceptions import UserError
 
 
 def pre_uninstall(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+    env = api.Environment({})
     if env['pos.session'].search([('state', '=', 'opened')]):
         raise UserError(_('You have open session of Point of Sale. Please close them first.'))
 

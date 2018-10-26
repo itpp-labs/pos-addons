@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Keyboard support in Point Of Sale",
     'author': "IT-Projects LLC, Ivan Yelizariev",
@@ -15,6 +14,6 @@
     'data': [
         'data.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

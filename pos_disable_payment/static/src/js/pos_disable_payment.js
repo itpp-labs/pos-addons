@@ -19,8 +19,11 @@ odoo.define('pos_disable_payment', function(require){
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         set_cashier: function(){
+            var old_cashier_id = this.db.get_cashier() && this.db.get_cashier().id;
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
-            this.trigger('change:cashier',this);
+            if (old_cashier_id !== this.db.get_cashier().id) {
+                this.trigger('change:cashier', this);
+            }
         }
     });
 
@@ -31,7 +34,7 @@ odoo.define('pos_disable_payment', function(require){
             this.pos.bind('change:cashier', this.check_allow_delete_order, this);
         },
         check_allow_delete_order: function(){
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             var order = this.pos.get_order();
             if (order) {
                  // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
@@ -67,7 +70,7 @@ odoo.define('pos_disable_payment', function(require){
         },
         orderline_change: function(line) {
             this._super(line);
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (line && line.quantity <= 0) {
                 if (user.allow_delete_order_line) {
                     $('.numpad-backspace').removeClass('disable');
@@ -168,7 +171,7 @@ odoo.define('pos_disable_payment', function(require){
             this.pos.bind('change:cashier', this.checkDiscountButton, this);
         },
         checkCreateOrderLine: function () {
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_create_order_line) {
                 $('.numpad').show();
                 $('.rightpane').show();
@@ -178,7 +181,7 @@ odoo.define('pos_disable_payment', function(require){
             }
         },
         checkPayAllowed: function () {
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
                 this.actionpad.$('.pay').removeClass('disable');
             }else{
@@ -186,7 +189,7 @@ odoo.define('pos_disable_payment', function(require){
             }
         },
         checkDiscountButton: function() {
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_discount) {
                 $('.control-button.js_discount').removeClass('disable');
             }else{
@@ -203,7 +206,7 @@ odoo.define('pos_disable_payment', function(require){
     screens.ScreenWidget.include({
         renderElement: function () {
             this._super();
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
                 $('.pay').removeClass('disable');
             }else{
@@ -225,7 +228,7 @@ odoo.define('pos_disable_payment', function(require){
             this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
         },
         checkManualCustomerSelecting: function() {
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_manual_customer_selecting) {
                 this.$('.set-customer').removeClass('disable');
             } else {
@@ -234,7 +237,7 @@ odoo.define('pos_disable_payment', function(require){
         },
         renderElement: function () {
             this._super();
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
                 $('.pay').removeClass('disable');
             } else{
@@ -250,7 +253,7 @@ odoo.define('pos_disable_payment', function(require){
             this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
         },
         checkManualCustomerSelecting: function() {
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_manual_customer_selecting) {
                 this.$('.js_set_customer').removeClass('disable');
             } else {
@@ -272,7 +275,7 @@ odoo.define('pos_disable_payment', function(require){
             this.check_access();
         },
         check_access: function(){
-            var user = this.pos.cashier || this.pos.user;
+            var user = this.pos.get_cashier() || this.pos.user;
             var order = this.pos.get_order();
             var orderline = false;
             if (order) {

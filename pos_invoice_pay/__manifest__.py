@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
-# Copyright 2017 Artyom Losev
+# Copyright 2018 Artyom Losev
+# Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=11.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.1",
+    "version": "11.0.1.2.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -18,20 +18,16 @@
     "currency": "EUR",
 
     "depends": [
-        "account",
-        "base_action_rule",
-        "bus",
-        "point_of_sale",
-        "sale",
-        "pos_longpolling"
+        "base_automation",
+        "sale_management",
+        "pos_longpolling",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "data.xml",
-        "actions/ir_action_server.xml",
         "actions/base_action_rules.xml",
         "report/report.xml",
-        "views.xml",
+        "view.xml"
     ],
     "qweb": [
         'static/src/xml/pos.xml'

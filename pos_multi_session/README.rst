@@ -140,9 +140,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
 
 Usage instructions: `<doc/index.rst>`_
 
@@ -150,4 +150,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Tests: `<external_tests/README.rst>`__
 
-Tested on Odoo 10.0 33a04354eb2b3897035c7206411fa0130b312313
+Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e

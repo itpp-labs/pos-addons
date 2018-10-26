@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Print Method""",
     "summary": """Choose print method for order printing in POS""",
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pm1.png"],
-    "version": "10.0.1.0.1",
+    "version": "11.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

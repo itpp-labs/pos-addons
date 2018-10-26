@@ -3,14 +3,14 @@
 # * pos_order_cancel
 # 
 # Translators:
-# Dinar <gabbasov@it-projects.info>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 09:02+0000\n"
-"PO-Revision-Date: 2017-11-24 09:02+0000\n"
-"Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
+"POT-Creation-Date: 2018-04-21 00:08+0000\n"
+"PO-Revision-Date: 2018-04-21 00:08+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
 "Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,63 +24,13 @@ msgid "(update)"
 msgstr ""
 
 #. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:41
-#: code:addons/pos_order_cancel/static/src/js/tour.js:53
-#, python-format
-msgid "<p>Click confirm button"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:33
-#: code:addons/pos_order_cancel/static/src/js/tour.js:37
-#: code:addons/pos_order_cancel/static/src/js/tour.js:49
-#, python-format
-msgid "<p>Click predefined reason</p>"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:21
-#, python-format
-msgid "<p>Click product 1</p>"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:25
-#, python-format
-msgid "<p>Click product 2</p>"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:45
-#, python-format
-msgid "<p>Click remove order button"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:17
-#, python-format
-msgid ""
-"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
-msgstr ""
-
-#. module: pos_order_cancel
-#. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:29
-#, python-format
-msgid "<p>Remove orderline</p>"
-msgstr ""
-
-#. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_allow_custom_reason
 msgid "Allow custom cancellation reason"
+msgstr ""
+
+#. module: pos_order_cancel
+#: model:ir.model.fields,help:pos_order_cancel.field_pos_config_show_popup_change_quantity
+msgid "Allow to specify a quantity for products to cancel"
 msgstr ""
 
 #. module: pos_order_cancel
@@ -95,8 +45,8 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:244
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:61
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:282
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:63
 #, python-format
 msgid "Apply"
 msgstr "Применить"
@@ -104,10 +54,22 @@ msgstr "Применить"
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:35
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:58
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:59
 #, python-format
 msgid "Cancel"
 msgstr "Отменить"
+
+#. module: pos_order_cancel
+#. openerp-web
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:95
+#, python-format
+msgid "Cancel by"
+msgstr ""
+
+#. module: pos_order_cancel
+#: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_allow_cancel_deletion
+msgid "Cancel the deletion"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_canceled_date
@@ -120,6 +82,7 @@ msgid "Canceled"
 msgstr ""
 
 #. module: pos_order_cancel
+#: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_canceled_line_ids
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_line_canceled_form
 msgid "Canceled Line"
 msgstr ""
@@ -139,13 +102,8 @@ msgid "Canceled Order lines"
 msgstr ""
 
 #. module: pos_order_cancel
-#: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_canceled_line_ids
-msgid "Canceled line ids"
-msgstr ""
-
-#. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:57
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:56
 #, python-format
 msgid "Cancellation Reason"
 msgstr ""
@@ -204,6 +162,18 @@ msgid "Display Name"
 msgstr "Отображаемое Имя"
 
 #. module: pos_order_cancel
+#: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_show_cancel_info
+msgid "Display the Cancellation Information"
+msgstr ""
+
+#. module: pos_order_cancel
+#: model:ir.model.fields,help:pos_order_cancel.field_pos_config_show_cancel_info
+msgid ""
+"Display the information of canceled products in order in POS (format: Qty - "
+"User - Table)"
+msgstr ""
+
+#. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Group By"
 msgstr ""
@@ -212,6 +182,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_id
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_id
 msgid "ID"
+msgstr ""
+
+#. module: pos_order_cancel
+#. openerp-web
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:188
+#, python-format
+msgid "Indicate the reason for cancellation."
 msgstr ""
 
 #. module: pos_order_cancel
@@ -254,7 +231,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:74
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:76
 #, python-format
 msgid "Name"
 msgstr "Имя"
@@ -347,9 +324,9 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/tour.js:13
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:93
 #, python-format
-msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgid "Quantity for Cancellation"
 msgstr ""
 
 #. module: pos_order_cancel
@@ -386,7 +363,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.menu,name:pos_order_cancel.menu_report_cancelations_details
-#: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_config_form
+#: model:ir.ui.view,arch_db:pos_order_cancel.pos_config_view_form
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_pos_form
 msgid "Refunds / Cancellations"
 msgstr ""
@@ -410,6 +387,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_sequence
 msgid "Sequence"
 msgstr "Порядок"
+
+#. module: pos_order_cancel
+#: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_show_popup_change_quantity
+msgid "Specify Quantity to Cancel"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_is_cancelled
@@ -473,6 +455,13 @@ msgid "Users"
 msgstr ""
 
 #. module: pos_order_cancel
+#. openerp-web
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:187
+#, python-format
+msgid "Warning"
+msgstr ""
+
+#. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Week of canceled date"
 msgstr ""
@@ -480,6 +469,13 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Weeks"
+msgstr ""
+
+#. module: pos_order_cancel
+#: model:ir.model.fields,help:pos_order_cancel.field_pos_config_allow_cancel_deletion
+msgid ""
+"When not active, a user will have to select predefined reasons without the "
+"possibility to cancel this action"
 msgstr ""
 
 #. module: pos_order_cancel

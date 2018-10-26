@@ -1,10 +1,11 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history.models', function (require) {
     "use strict";
     var models = require('point_of_sale.models');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var longpolling = require('pos_longpolling');
 
     var _super_pos_model = models.PosModel.prototype;
@@ -29,10 +30,18 @@ odoo.define('pos_orders_history.models', function (require) {
             });
         },
         get_order_history: function (id) {
-            return new Model('pos.order').call('search_read', [[['id', '=', id]]]);
+            return rpc.query({
+                model: 'pos.order',
+                method: 'search_read',
+                args: [[['id', '=', id]]]
+            });
         },
         get_order_history_lines_by_order_id: function (id) {
-            return new Model('pos.order.line').call('search_read', [[['order_id', '=', id]]]);
+            return rpc.query({
+                model: 'pos.order.line',
+                method: 'search_read',
+                args: [[['order_id', '=', id]]]
+            });
         },
         update_orders_history: function (orders) {
             var self = this,

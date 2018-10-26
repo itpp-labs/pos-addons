@@ -18,10 +18,10 @@ Sponsors
 Further information
 ===================
 
-HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_category_multi/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_category_multi/
 
 Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 9.0 d3dd4161ad0598ebaa659fbd083457c77aa9448d
+Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06

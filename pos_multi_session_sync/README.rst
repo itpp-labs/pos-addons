@@ -8,7 +8,7 @@
 
 Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 
-The module is used for `Sync POS orders across multiple sessions <https://apps.odoo.com/apps/modules/10.0/pos_multi_session>`__. It provides the synchronization for POS multi-session and allows to use a separate sync server for data storage and processing.
+The module is used for `Sync POS orders across multiple sessions <https://apps.odoo.com/apps/modules/11.0/pos_multi_session>`__. It provides the synchronization for POS multi-session and allows to use a separate sync server for data storage and processing.
 Separate sync server provides uninterrupted synchronization in case of main server is shut down.
 
 Credits
@@ -29,12 +29,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session_sync/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session_sync/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 33a04354eb2b3897035c7206411fa0130b312313
+Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e

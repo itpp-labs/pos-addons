@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 import datetime
 import logging
 import json
@@ -25,7 +23,7 @@ class Controller(BusController):
     def multi_session_update(self, multi_session_id, message, dbname, user_ID):
         phantomtest = request.httprequest.headers.get('phantomtest')
         ms_model = request.env["pos_multi_session_sync.multi_session"]
-        allow_public = request.env['ir.config_parameter'].get_param('pos_longpolling.allow_public')
+        allow_public = request.env['ir.config_parameter'].sudo().get_param('pos_longpolling.allow_public')
         if allow_public:
             ms_model = ms_model.sudo()
         ms = ms_model.search([('multi_session_ID', '=', int(multi_session_id)),
@@ -40,7 +38,7 @@ class Controller(BusController):
 
     @odoo.http.route('/pos_multi_session/test/gc', type="http", auth="user")
     def pos_multi_session_test_gc(self):
-        allow_external_tests = request.env['ir.config_parameter'].get_param('pos_multi_session.allow_external_tests')
+        allow_external_tests = request.env['ir.config_parameter'].sudo().get_param('pos_multi_session.allow_external_tests')
         if not allow_external_tests:
             _logger.warning('Create System Parameter "pos_multi_session.allow_external_tests" to use test GC')
             return 'Create System Parameter "pos_multi_session.allow_external_tests" to use test GC'

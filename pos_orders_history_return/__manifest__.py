@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -6,9 +5,9 @@
     "name": """POS Orders Return""",
     "summary": """The module allows to make order returns from POS interface by quick & easy way""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=11.0",
     "images": ["images/pos_orders_return_main.jpg"],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

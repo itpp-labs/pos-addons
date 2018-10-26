@@ -78,7 +78,7 @@ odoo.define('pos_choosing_cashier', function(require){
         },
 
         payment: function () {
-            // This method has been added to encapsulate the original widget's logic 
+            // This method has been added to encapsulate the original widget's logic
             // just to make code more clean and readable
             var self = this;
             var order = self.pos.get_order();
@@ -113,26 +113,6 @@ odoo.define('pos_choosing_cashier', function(require){
                 self.payment();
             });
         }
-    });
-
-    PopupWidget.include({
-        show: function(options){
-            if(this.$el){
-                this.$el.removeClass('oe_hidden');
-            }
-            if (typeof options === 'string') {
-                this.options = {title: options};
-            } else {
-                this.options = options || {};
-            }
-
-            this.renderElement();
-            // popups block the barcode reader ...
-            if (this.pos.barcode_reader && !(this.pos.barcode_reader.on_cashier_screen)) {
-                this.pos.barcode_reader.save_callbacks();
-                this.pos.barcode_reader.reset_action_callbacks();
-            }
-        },
     });
 
     ScreenWidget.include({

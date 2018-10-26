@@ -93,15 +93,8 @@
             <field name="model_id" ref="pos_debt_notebook.model_pos_credit_update"/>
             <field name="state">code</field>
             <field name="code">env['pos.credit.update'].do_confirm()</field>
+            <field name="binding_model_id" ref="pos_debt_notebook.model_pos_credit_update" />
         </record>
-
-        <record id="option_pos_credit_update" model="ir.values">
-            <field name="name">Confirm</field>
-            <field name="key2">client_action_multi</field>
-            <field name="model">pos.credit.update</field>
-            <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update"/>
-        </record>
-
 
         <menuitem id="menu_pos_credit_update" name="Manual Credit Updates" action="action_pos_credit_update" parent="point_of_sale.menu_point_config_product" groups="point_of_sale.group_pos_manager" sequence="100"/>
 </odoo>

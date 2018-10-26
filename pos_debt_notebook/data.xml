@@ -4,8 +4,7 @@
     Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 
-<openerp>
-    <data>
+<odoo>
 
         <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
@@ -14,5 +13,10 @@
             </xpath>
         </template>
 
-    </data>
-</openerp>
+        <template id="demo_assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_debt_notebook/static/src/js/test_pos_debt.js"></script>
+            </xpath>
+        </template>
+
+</odoo>
