@@ -101,6 +101,8 @@ odoo.define('pos_wechat', function(require){
                 this.pos.wechat_qr_payment(this, cashregister);
                 return;
             }
+            // hide QR code
+            this.pos.hide_payment_qr_on_payment_screen();
             return OrderSuper.prototype.add_paymentline.apply(this, arguments);
         },
     });
