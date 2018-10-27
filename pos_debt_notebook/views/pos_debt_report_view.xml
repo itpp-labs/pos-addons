@@ -84,7 +84,7 @@
                     <field name="partner_id"/>
                     <field name="user_id"/>
                     <group expand="1" string="Group By">
-                        <filter string="Journal" context="{'group_by':'journal_id'}"/>
+                        <filter string="Journal" name="journal" context="{'group_by':'journal_id'}"/>
                         <separator/>
                         <filter string="Salesperson" name="user" context="{'group_by':'user_id'}"/>
                         <filter string="Customer" name="partner" context="{'group_by':'partner_id'}"/>
