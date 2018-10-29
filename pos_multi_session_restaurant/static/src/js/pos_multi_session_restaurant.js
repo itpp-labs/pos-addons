@@ -28,6 +28,15 @@ odoo.define('pos_multi_session_restaurant', function(require){
         }
     });
 
+    chrome.OrderSelectorWidget.include({
+        renderElement: function(){
+            if (this.pos.config.iface_floorplan && this.pos.get_order() && this.pos.table && this.pos.table.floor) {
+                this.$('.floor-button').remove();
+            }
+            this._super();
+        },
+    });
+
     screens.OrderWidget.include({
         update_summary: function(){
             var order = this.pos.get('selectedOrder');
