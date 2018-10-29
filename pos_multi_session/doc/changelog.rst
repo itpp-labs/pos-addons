@@ -1,6 +1,16 @@
-`4.2.1`
+`4.2.3`
 -------
 - **FIX:** Rerendering the Products list after change a current order
+
+`4.2.2`
+-------
+- **FIX:** `Longpoll Handling Error` related to property of undefined
+
+`4.2.1`
+-------
+
+- **FIX:** Error related to longpoll updates of paid orders
+- **FIX:** Cannot read property then of undefined or request_sync_all is undefined
 
 `4.2.0`
 -------
