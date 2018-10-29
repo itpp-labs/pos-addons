@@ -404,7 +404,7 @@ odoo.define('pos_multi_session', function(require){
                 }
                 line.offline_orderline = false;
             });
-            if (added_new_lines) {
+            if (added_new_lines && this.get_order() && order.uid === this.get_order().uid) {
                 order.trigger('change:newLines', order);
             }
             _.each(not_found, function(uid){
