@@ -15,6 +15,8 @@ When POS becomes offline, i.e. don't have connection to *Sync Server*, it is onl
 
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
+We recommend using the module together with the `pos_access_right <https://www.odoo.com/apps/modules/12.0/pos_access_right/>`__ module.
+
 Modules compatibility
 ---------------------
 
