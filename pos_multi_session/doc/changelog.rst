@@ -1,3 +1,7 @@
+`4.2.1`
+-------
+- **FIX:** Rerendering the Products list after change a current order
+
 `4.2.0`
 -------
 - **FIX:** 'order_line.node' is undefined
