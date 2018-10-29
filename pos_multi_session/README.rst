@@ -15,6 +15,8 @@ When POS becomes offline, i.e. don't have connection to *Sync Server*, it is onl
 
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
+We recommend using the module together with the `pos_access_right <https://www.odoo.com/apps/modules/12.0/pos_access_right/>`__ module.
+
 Modules compatibility
 ---------------------
 
@@ -60,7 +62,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
 
 The example above synchronizes ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
 
-The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__:
+The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/12.0/pos_order_note/>`__:
 
 .. code-block:: js
 
@@ -137,17 +139,25 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_multi_session/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
+
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_multi_session/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tests: `<external_tests/README.rst>`__
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session.atom>`_
 
-Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e
+Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545

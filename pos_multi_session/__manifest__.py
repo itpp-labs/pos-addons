@@ -14,13 +14,12 @@
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://yelizariev.github.io",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_multi_session/",
     "license": "LGPL-3",
     "price": 360.00,
     "currency": "EUR",
 
     "depends": [
-        "pos_disable_payment",
         "pos_multi_session_sync"
     ],
     "external_dependencies": {"python": [], "bin": []},
@@ -42,7 +41,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Sync POS orders across multiple sessions",
     "demo_addons": [
