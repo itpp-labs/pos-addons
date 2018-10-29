@@ -395,7 +395,7 @@ odoo.define('pos_multi_session', function(require){
                 }
                 line.offline_orderline = false;
             });
-            if (added_new_lines) {
+            if (added_new_lines && this.get_order() && order.uid === this.get_order().uid) {
                 order.trigger('change:newLines', order);
             }
             _.each(not_found, function(uid){
@@ -610,8 +610,8 @@ odoo.define('pos_multi_session', function(require){
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.trigger('change:update_new_order');
             } else {
-                // 'change' trigger saves order to db
-                this.trigger('change');
+                // save order to the local storage
+                this.save_to_db();
             }
             if (!this.ms_active()){
                 return;
