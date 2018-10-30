@@ -120,6 +120,22 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
         }
     });
 
+Also it's possible to trigger multi_session events from other modules, for example code from `pos_product_available <https://www.odoo.com/apps/modules/10.0/pos_product_available/>`__:
+
+.. code-block:: js
+
+    update_product_qty_from_order_lines: function(order) {
+        var self = this;
+        order.orderlines.each(function(line){
+            var product = line.get_product();
+            product.qty_available -= line.get_quantity();
+            self.refresh_qty_available(product);
+        });
+        // compatibility with pos_multi_session
+        order.trigger('new_updates_to_send');
+
+    },
+
 Credits
 =======
 
