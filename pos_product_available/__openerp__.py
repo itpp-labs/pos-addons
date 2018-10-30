@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Available quantity of products in POS',
-    'version': '10.0.1.0.5',
+    'version': '10.0.1.0.6',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
