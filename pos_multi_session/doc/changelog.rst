@@ -2,7 +2,7 @@
 `4.2.2`
 -------
 
-- **FIX:** Automatic scrolling of the current order when changing other orders
+- **FIX:** Don't make automatic scrolling of the current order on changing other orders
 
 `4.2.1`
 -------
