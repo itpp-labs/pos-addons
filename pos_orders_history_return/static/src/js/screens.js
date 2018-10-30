@@ -96,6 +96,8 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 return false;
             }
 
+            var partner_id = order.partner_id || false;
+
             if (products.length > 0) {
                 // create new order for return
                 var json = _.extend({}, order);
@@ -109,6 +111,14 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 var options = _.extend({pos: this.pos}, {json: json});
                 order = new models.Order({}, options);
                 order.temporary = true;
+                var client = null;
+                if (partner_id) {
+                    client = this.pos.db.get_partner_by_id(partner_id[0]);
+                    if (!client) {
+                        console.error('ERROR: trying to load a parner not available in the pos');
+                    }
+                }
+                order.set_client(client);
                 this.pos.get('orders').add(order);
                 this.pos.gui.back();
                 this.pos.set_order(order);
