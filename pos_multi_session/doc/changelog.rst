@@ -1,4 +1,9 @@
 
+`4.2.2`
+-------
+
+- **FIX:** Don't make automatic scrolling of the current order on changing other orders
+
 `4.2.1`
 -------
 
