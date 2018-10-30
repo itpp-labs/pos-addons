@@ -41,4 +41,23 @@
         </t>
     </t>
 
+    <t t-extend="Product">
+        <t t-jquery="t[t-if='!product.to_weight'] t[t-esc*='widget.format_currency']" t-operation="replace">
+            <t t-if="widget.return_mode and product.old_price">
+                <t t-esc="widget.format_currency(product.old_price,'Product Price')"/>
+            </t>
+            <t t-if="!widget.return_mode || !product.old_price">
+                <t t-esc="widget.format_currency(product.price,'Product Price')"/>
+            </t>
+        </t>
+        <t t-jquery="t[t-if='product.to_weight'] t[t-esc*='widget.format_currency']" t-operation="replace">
+            <t t-if="widget.return_mode and product.old_price">
+                <t t-esc="widget.format_currency(product.old_price,'Product Price')"/>
+            </t>
+            <t t-if="!widget.return_mode || !product.old_price">
+                <t t-esc="widget.format_currency(product.price,'Product Price')"/>
+            </t>
+        </t>
+    </t>
+
 </templates>

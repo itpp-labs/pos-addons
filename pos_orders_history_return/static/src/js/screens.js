@@ -71,10 +71,15 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 lines.push(self.pos.db.line_by_id[line_id]);
             });
 
+            var product_list_widget = this.pos.chrome.screens.products.product_list_widget;
+
             var products = [];
             var current_products_qty_sum = 0;
             lines.forEach(function(line) {
                 var product = self.pos.db.get_product_by_id(line.product_id[0]);
+                if (line.price_unit !== product.price) {
+                    product.old_price = line.price_unit;
+                }
                 current_products_qty_sum +=line.qty;
                 products.push(product);
             });
@@ -122,7 +127,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 this.pos.get('orders').add(order);
                 this.pos.gui.back();
                 this.pos.set_order(order);
-                this.pos.chrome.screens.products.product_list_widget.set_product_list(products);
+                product_list_widget.set_product_list(products);
             } else {
                 this.pos.gui.show_popup('error', _t('Order Is Empty'));
             }
@@ -143,6 +148,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                         o.lines.forEach(function(line_id) {
                             var line = self.pos.db.line_by_id[line_id];
                             var product = self.pos.db.get_product_by_id(line.product_id[0]);
+
                             var exist_product = products.find(function(r){
                                 return r.id === product.id;
                             });
@@ -150,6 +156,9 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                                 exist_product.max_return_qty += line.qty;
                             } else {
                                 product.max_return_qty = line.qty;
+                                if (line.price_unit !== product.price) {
+                                    product.old_price = line.price_unit;
+                                }
                                 products.push(product);
                             }
                         });
@@ -165,6 +174,9 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                         exist_product.max_return_qty += line.qty;
                     } else {
                         product.max_return_qty = line.qty;
+                        if (line.price_unit !== product.price) {
+                            product.old_price = line.price_unit;
+                        }
                         products.push(product);
                     }
                 });
@@ -177,16 +189,26 @@ odoo.define('pos_orders_history_return.screens', function (require) {
 
     screens.ProductListWidget.include({
         render_product: function(product){
-            var cached = this._super(product);
             var order = this.pos.get_order();
+            this.return_mode = false;
+            if (order && order.get_mode() === "return") {
+                this.return_mode = true;
+            }
+            if (this.return_mode) {
+                this.product_cache.clear_node(product.id);
+            }
+            var cached = this._super(product);
             var el = $(cached).find('.max-return-qty');
             if (el.length) {
                 el.remove();
             }
-            if (order && order.get_mode() === "return" && typeof product.max_return_qty !== 'undefined') {
+            if (this.return_mode && typeof product.max_return_qty !== 'undefined') {
                 var current_return_qty = order.get_current_product_return_qty(product);
                 var qty = product.max_return_qty - current_return_qty;
                 $(cached).find('.product-img').append('<div class="max-return-qty">' + qty + '</div>');
+            }
+            if (this.return_mode) {
+                this.product_cache.clear_node(product.id);
             }
             return cached;
         },
