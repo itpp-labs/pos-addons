@@ -48,8 +48,8 @@
             <search>
                 <field name="name"/>
                 <field name="order_ref"/>
-                <filter string="Sandbox" domain="[('debug','=',True)]"/>
-                <filter string="Non-Sandbox" domain="[('debug','=',False)]"/>
+                <filter string="Sandbox" name="sandbox" domain="[('debug','=',True)]"/>
+                <filter string="Non-Sandbox" name="nonsandbox" domain="[('debug','=',False)]"/>
             </search>
         </field>
     </record>
