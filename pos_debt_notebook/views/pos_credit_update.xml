@@ -68,12 +68,12 @@
                     <field name="user_id"/>
                     <group expand="1" string="Group By">
                         <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
-                        <filter string="Customer" context="{'group_by':'partner_id'}"/>
+                        <filter string="Customer" name="customer" context="{'group_by':'partner_id'}"/>
                         <separator/>
-                        <filter string="Month" context="{'group_by':'date:month'}"/>
-                        <filter string="Week" context="{'group_by':'date:week'}"/>
-                        <filter string="Day" context="{'group_by':'date:day'}"/>
-                        <filter string="Hour" context="{'group_by':'date:hour'}"/>
+                        <filter string="Month" name="month" context="{'group_by':'date:month'}"/>
+                        <filter string="Week" name="week" context="{'group_by':'date:week'}"/>
+                        <filter string="Day" name="day" context="{'group_by':'date:day'}"/>
+                        <filter string="Hour" name="hour" context="{'group_by':'date:hour'}"/>
                     </group>
                 </search>
             </field>

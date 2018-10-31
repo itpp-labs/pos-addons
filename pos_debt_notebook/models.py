@@ -405,12 +405,12 @@ class PosConfig(models.Model):
                              'pos_cash_out': False,
                              'credits_autopay': True,
                              })
-        allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
+        allowed_category = self.env.ref('point_of_sale.pos_category_desks').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
                              'prefix': 'CRD ',
                              'user': user,
                              'noupdate': True,
-                             'journal_name': 'Credits (Fruits & Vegetables only)',
+                             'journal_name': 'Credits (Desks only)',
                              'code': 'FCRD',
                              'type': 'cash',
                              'debt': True,
@@ -535,7 +535,7 @@ class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
 
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'account_bank_statement_id', string='Non-Accounting Transactions')
-    pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions', store=True)
+    pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions (Balance)', store=True)
 
     @api.multi
     @api.depends('pos_credit_update_ids', 'pos_credit_update_ids.balance')

@@ -1,5 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -11,10 +10,8 @@ class TestUi(odoo.tests.HttpCase):
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
-        cr = self.registry.cursor()
-        env = Environment(cr, self.uid, {})
+        env = self.env
         env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
-        cr.release()
 
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
