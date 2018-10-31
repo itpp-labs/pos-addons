@@ -71,11 +71,11 @@
             <field name="arch" type="xml">
                 <search string="Point of Sale Analysis">
                     <field name="date"/>
-                    <filter string="Open" domain="[('state','=','open')]"/>
-                    <filter string="Closed" domain="[('state','=','confirm')]"/>
+                    <filter string="Open" name="open" domain="[('state','=','open')]"/>
+                    <filter string="Closed" name="closed" domain="[('state','=','confirm')]"/>
                     <separator/>
-                    <filter string="Inbound" domain="[('balance','&gt;',0)]"/>
-                    <filter string="Outbound" domain="[('balance','&lt;',0)]"/>
+                    <filter string="Inbound" name="inbound" domain="[('balance','&gt;',0)]"/>
+                    <filter string="Outbound" name="outbound" domain="[('balance','&lt;',0)]"/>
                     <separator/>
                     <filter string="This Year" name="year" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" help="POS ordered created during current year"/>
                     <filter string="Today" name="today" domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
@@ -84,15 +84,15 @@
                     <field name="partner_id"/>
                     <field name="user_id"/>
                     <group expand="1" string="Group By">
-                        <filter string="Journal" context="{'group_by':'journal_id'}"/>
+                        <filter string="Journal" name="journal" context="{'group_by':'journal_id'}"/>
                         <separator/>
                         <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
-                        <filter string="Customer" context="{'group_by':'partner_id'}"/>
+                        <filter string="Customer" name="customer" context="{'group_by':'partner_id'}"/>
                         <separator/>
-                        <filter string="Month" context="{'group_by':'date:month'}"/>
-                        <filter string="Week" context="{'group_by':'date:week'}"/>
-                        <filter string="Day" context="{'group_by':'date:day'}"/>
-                        <filter string="Hour" context="{'group_by':'date:hour'}"/>
+                        <filter string="Month" name="month" context="{'group_by':'date:month'}"/>
+                        <filter string="Week" name="week" context="{'group_by':'date:week'}"/>
+                        <filter string="Day" name="day" context="{'group_by':'date:day'}"/>
+                        <filter string="Hour" name="hour" context="{'group_by':'date:hour'}"/>
                     </group>
                 </search>
             </field>
