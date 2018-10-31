@@ -8,12 +8,12 @@
     "category": "Point of Sale",
     'live_test_url': 'http://apps.it-projects.info/shop/product/internal-credit-system?version=10.0',
     "images": ['images/credit.png'],
-    "version": "11.0.1.1.0",
+    "version": "12.0.1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/",
     "license": "LGPL-3",
     "price": 510.00,
     "currency": "EUR",
@@ -36,7 +36,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Internal Credit System",
     "demo_addons": [
