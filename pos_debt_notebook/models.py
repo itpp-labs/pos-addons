@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
 # Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
@@ -8,13 +7,16 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import models, fields, api, SUPERUSER_ID
+from odoo import models, fields, api
 from datetime import datetime
 from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools import float_is_zero
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
@@ -161,11 +163,11 @@ class ResPartner(models.Model):
 
         server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
         utc_tz = pytz.utc.localize(server_date, is_dst=False)
-        root = self.env['res.users'].browse(SUPERUSER_ID)
-        user_tz = timezone(self.env.user.tz or root.tz or 'UTC')
+        user_tz = self.env.user.tz
+        user_tz = user_tz and timezone(self.env.user.tz) or timezone('GMT')
         final = utc_tz.astimezone(user_tz)
 
-        return final.strftime(fmt.encode('utf-8'))
+        return final.strftime(fmt)
 
     def _compute_debt_type(self):
         debt_type = self.env["ir.config_parameter"].sudo().get_param("pos_debt_notebook.debt_type", default='debt')
@@ -193,6 +195,32 @@ class ResPartner(models.Model):
         for data in res:
             res_index[data['partner_id'][0]] = data
         return res_index
+
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    debt_type = fields.Selection([
+        ('debt', 'Display Debt'),
+        ('credit', 'Display Credit')
+    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
+                                                'In both cases debt will be red, credit - green')
+
+    @api.multi
+    def set_values(self):
+        super(ResConfigSettings, self).set_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        for record in self:
+            config_parameters.sudo().set_param("pos_debt_notebook.debt_type", record.debt_type)
+
+    @api.multi
+    def get_values(self):
+        res = super(ResConfigSettings, self).get_values()
+        config_parameters = self.env["ir.config_parameter"].sudo()
+        res.update(
+            debt_type=config_parameters.sudo().get_param("pos_debt_notebook.debt_type", default='debt'),
+        )
+        return res
 
 
 class PosConfig(models.Model):
@@ -312,6 +340,7 @@ class PosConfig(models.Model):
     def create_journal(self, vals):
         if self.env['account.journal'].search([('code', '=', vals['code'])]):
             return
+        _logger.info("Creating '" + vals['journal_name'] + "' journal")
         user = vals['user']
         debt_account = vals['debt_account']
         new_sequence = self.env['ir.sequence'].create({
@@ -436,25 +465,6 @@ class AccountJournal(models.Model):
             self.pos_cash_out = False
 
 
-class PosConfiguration(models.TransientModel):
-    _inherit = 'pos.config.settings'
-
-    debt_type = fields.Selection([
-        ('debt', 'Display Debt'),
-        ('credit', 'Display Credit')
-    ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount).'
-                                                'In both cases debt will be red, credit - green')
-
-    @api.multi
-    def set_debt_type(self):
-        self.env["ir.config_parameter"].set_param("pos_debt_notebook.debt_type", self.debt_type)
-
-    @api.multi
-    def get_default_debt_type(self, fields):
-        debt_type = self.env["ir.config_parameter"].get_param("pos_debt_notebook.debt_type", default='debt')
-        return {'debt_type': debt_type}
-
-
 class Product(models.Model):
 
     _inherit = 'product.template'
@@ -512,7 +522,7 @@ class PosOrder(models.Model):
     @api.model
     def _order_fields(self, ui_order):
         res = super(PosOrder, self)._order_fields(ui_order)
-        res['amount_via_discount'] = ui_order['amount_via_discount']
+        res['amount_via_discount'] = ui_order.get('amount_via_discount', 0)
         return res
 
     def action_pos_order_paid(self):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>

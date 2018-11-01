@@ -23,7 +23,7 @@ odoo.define('pos_pin.pos', function (require) {
             options = options || {};
             var self = this;
             var def  = new $.Deferred();
-    
+
             var list = [];
             for (var i = 0; i < this.pos.users.length; i++) {
                 var user = this.pos.users[i];
@@ -34,14 +34,14 @@ odoo.define('pos_pin.pos', function (require) {
                     });
                 }
             }
-    
+
             this.show_popup('selection',{
                 'title': options.title || _t('Select User'),
                 'list': list,
                 'confirm': function(user){ def.resolve(user); },
                 'cancel':  function(){ def.reject(); }
             });
-    
+
             return def.then(function(user){
                 if (options.security && user !== options.current_user && user.pos_security_pin) {
                     return self.ask_password(user.pos_security_pin, options.arguments).then(function(){
@@ -70,12 +70,15 @@ odoo.define('pos_pin.pos', function (require) {
                     } else {
                         self.show_popup('error', {
                             'title': _t('Incorrect Password'),
-                            confirm: _.bind(self.show_password_popup, self, password, lock),
-                            cancel: _.bind(self.show_password_popup, self, password, lock),
+                            confirm: _.bind(self.show_password_popup, self, password, lock, cancel_function),
+                            cancel: _.bind(self.show_password_popup, self, password, lock, cancel_function),
                         });
                     }
                 },
-                cancel: cancel_function,
+                cancel: function() {
+                    cancel_function.call(self);
+                    lock.reject();
+                },
             });
             return lock;
         },
@@ -85,7 +88,7 @@ odoo.define('pos_pin.pos', function (require) {
             var lock = new $.Deferred();
 
             if (options && options.ask_untill_correct && password) {
-                this.show_password_popup(password, lock);
+                this.show_password_popup(password, lock, options.cancel_function);
                 return lock;
             }
 

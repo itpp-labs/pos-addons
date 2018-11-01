@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Print tweets with PosBox""",
     "summary": """Print tweets with specific hashtags""",
@@ -30,5 +29,5 @@
     "post_init_hook": 'post_init',
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

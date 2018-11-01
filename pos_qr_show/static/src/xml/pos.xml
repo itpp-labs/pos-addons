@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery=".paymentlines-container" t-operation="after">
+            <section class='qr-container' style="text-align:center">
+            </section>
+        </t>
+    </t>
+</odoo>

@@ -29,20 +29,20 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="to_pos_config_inherit_form">
-        <field name="name">to.pos.config.inherit.form</field>
-        <field name="model">pos.config</field>
-        <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
-        <field name="priority" eval="99" />
-        <field name="arch" type="xml">
-            <data>
-                <xpath expr="//field[@name='floor_ids']" position="replace">
-                    <field name="floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
-                    <field name="ms_floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'in', [None,False])]}"/>
-                </xpath>
-            </data>
-        </field>
-    </record>
+        <record model="ir.ui.view" id="to_pos_config_inherit_form">
+            <field name="name">to.pos.config.inherit.form</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="pos_restaurant.pos_config_view_form_inherit_restaurant"></field>
+            <field name="priority" eval="99" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='floor_ids']" position="replace">
+                        <field name="floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'not in', [None,False])]}"/>
+                        <field name="ms_floor_ids" widget="many2many_tags" attrs="{'invisible':[('multi_session_id', 'in', [None,False])]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
 
     <record id="multi_session_restaurant_form" model="ir.ui.view">
         <field name="name">pos.multi_session.form</field>

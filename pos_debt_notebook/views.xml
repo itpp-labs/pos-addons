@@ -5,8 +5,7 @@
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 
-<openerp>
-<data>
+<odoo>
 
 
 <!-- RES PARTNER -->
@@ -15,7 +14,7 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//button[@class='oe_stat_button']" position="after">
+        <xpath expr="//button[hasclass('oe_stat_button')]" position="after">
             <button class="oe_stat_button" type="action" name="%(pos_debt_notebook.action_report_pos_debt_partner)d"
                 context="{'group_by':'journal_id'}"
                 icon="fa-money">
@@ -62,7 +61,7 @@
             <field name="debt" attrs="{'invisible': [('debt_type', '!=', 'debt')]}"/>
             <field name="credit_balance" attrs="{'invisible': [('debt_type', '!=', 'credit')]}"/>
         </xpath>
-        <xpath expr="//div[@class='oe_kanban_details']/ul" position="inside">
+        <xpath expr="//div[hasclass('oe_kanban_details')]/ul" position="inside">
             <li t-if="record.debt_type.raw_value == 'debt' and record.debt.raw_value">Debt: <field name="debt"/></li>
             <li t-if="record.debt_type.raw_value == 'credit' and record.credit_balance.raw_value">Credit: <field name="credit_balance"/></li>
         </xpath>
@@ -89,24 +88,20 @@
     </field>
 </record>
 
-<record id="view_pos_config_form" model="ir.ui.view">
-    <field name="name">pos.payment.terminal.config.form</field>
+<record id="pos_config_view_form" model="ir.ui.view">
+    <field name="name">pos.config.form.view</field>
     <field name="model">pos.config</field>
-    <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+    <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
     <field name="arch" type="xml">
-        <field name="currency_id" position="after">
-            <field name="debt_dummy_product_id"/>
-        </field>
-    </field>
-</record>
-
-<record id="view_debt_sale_config_settings_form_pos" model="ir.ui.view">
-    <field name="name">pos.config.settings.form</field>
-    <field name="model">pos.config.settings</field>
-    <field name="inherit_id" ref="point_of_sale.view_sale_config_settings_form_pos"/>
-    <field name="arch" type="xml">
-        <xpath expr="//field[@name='module_pos_reprint']" position="after">
-            <field name="debt_type" widget="radio"/>
+        <xpath expr="//div[@id='payment_methods']" position="after">
+            <div class="col-xs-12 col-md-6 o_setting_box">
+                <div class="o_setting_right_pane">
+                    <label for="debt_dummy_product_id"/>
+                    <div class="content-group mt16">
+                        <field name='debt_dummy_product_id'/>
+                    </div>
+                </div>
+            </div>
         </xpath>
     </field>
 </record>
@@ -124,7 +119,29 @@
     </field>
 </record>
 
-    <!--POS ORDER-->
+<record id="res_config_settings_view_form" model="ir.ui.view">
+    <field name="name">res.config.settings.view.form.inherit</field>
+    <field name="model">res.config.settings</field>
+    <field name="priority" eval="50"/>
+    <field name="inherit_id" ref="base.res_config_settings_view_form" />
+    <field name="arch" type="xml">
+        <xpath expr="//div[@id='production_lot_info']" position="after">
+            <h2>Customer Debts</h2>
+            <div class="row mt16 o_settings_container" id="customer_debts">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="debt_type"/>
+                        <div class="content-group mt16">
+                            <field name='debt_type' class="o_light_label" widget="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </field>
+</record>
+
+<!--POS ORDER-->
 
 <record id="pos_debt_notebook_order_form" model="ir.ui.view">
     <field name="name">pos.order.form</field>
@@ -145,7 +162,7 @@
     </field>
 </record>
 
-    <!--POS SESSION-->
+<!--POS SESSION-->
 
 <record id="pos_debt_notebook_session_form" model="ir.ui.view">
     <field name="name">pos.session.form.view</field>
@@ -158,5 +175,4 @@
     </field>
 </record>
 
-</data>
-</openerp>
+</odoo>

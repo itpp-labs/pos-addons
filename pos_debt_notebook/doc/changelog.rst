@@ -7,7 +7,20 @@
 
 `5.0.3`
 -------
+
 - **FIX:** Error related to invoices created in the "Generate POS Credit Invoices" wizard. Invoices were created with wrong type.
+
+`5.0.4`
+-------
+
+- **FIX:** compatibility with pos_category_multi
+
+`5.0.3`
+-------
+
+- **FIX:** Compatibility with other pos modules
+- **FIX:** Error message displaying on discount credit paymentlines with zero price 
+- **FIX:** Lost overrides of the `order` and `session` forms
 
 `5.0.2`
 -------

@@ -10,7 +10,6 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     var PosOrderCancelWidget = require('pos_order_cancel.widgets');
 
-    var Model = require('web.DataModel');
     var QWeb = core.qweb;
     var _t = core._t;
 

@@ -20,7 +20,8 @@ odoo.define('pos_order_note.tour', function(require) {
     }, {
         trigger: ".tables .table",
         content: _t("<p>Click on <b>table</b></p>"),
-        position: "bottom"
+        position: "bottom",
+        timeout: 20000,
     }, {
         trigger: ".product-list .product",
         content: _t("<p>Select the first product in the product list</p>"),

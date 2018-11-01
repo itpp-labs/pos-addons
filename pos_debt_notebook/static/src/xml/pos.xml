@@ -208,14 +208,6 @@
     </t>
 
     <t t-extend="XmlReceipt">
-        <t t-jquery="t[t-if='receipt.cashier']" t-operation="after">
-            <t t-if='receipt.client'>
-                <div class='client'>
-                    <div>--------------------------------</div>
-                    <div>Customer: <t t-esc='receipt.client' /></div>
-                </div>
-            </t>
-        </t>
         <t t-jquery=".before-footer" t-operation="before">
             <div t-if="receipt.debt_before or receipt.debt_after" class="debt">
                 <t t-set="debt_label" t-value="receipt.debt_type=='debt' and 'Debt' or 'Credits'"/>

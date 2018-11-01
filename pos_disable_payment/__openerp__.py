@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Disable payments in POS",
     'summary': "Control access to the POS payments",
-    'version': '10.0.3.6.1',
+    'version': '11.0.3.6.1',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
+    'live_test_url': 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "support": "apps@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'depends': [

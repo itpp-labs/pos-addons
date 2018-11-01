@@ -1,8 +1,12 @@
+`4.2.3`
+-------
+
+- **FIX:** Don't make automatic scrolling of the current order on changing other orders
 
 `4.2.2`
 -------
 
-- **FIX:** Don't make automatic scrolling of the current order on changing other orders
+- **FIX:** `Longpoll Handling Error` related to property of undefined
 
 `4.2.1`
 -------
