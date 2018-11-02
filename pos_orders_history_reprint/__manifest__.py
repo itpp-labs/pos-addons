@@ -12,7 +12,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/",
     "license": "LGPL-3",
     "price": 20.00,

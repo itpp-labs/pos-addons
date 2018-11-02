@@ -5,7 +5,7 @@
     'author': 'IT-Projects LLC',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     'website': 'https://yelizariev.github.io',
     'data': ['views.xml'],
     'depends': ['base', 'point_of_sale', 'pos_restaurant'],
