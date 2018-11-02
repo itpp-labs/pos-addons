@@ -11,7 +11,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
     # "price": 9.00,

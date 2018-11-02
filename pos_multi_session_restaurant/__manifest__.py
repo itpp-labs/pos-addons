@@ -14,7 +14,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "LGPL-3",
     "price": 140.00,

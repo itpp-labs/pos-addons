@@ -11,7 +11,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
     "price": 89.00,
