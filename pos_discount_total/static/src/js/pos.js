@@ -27,7 +27,7 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
         set_value: function(val){
             var self = this;
             var order = this.pos.get_order();
-    	    if (!order.get_selected_orderline()) {
+          if (!order.get_selected_orderline()) {
                 if (!this.discount_summary_selected)
                     return this._super(val);
                 var mode = this.numpad_state.get('mode');
@@ -63,3 +63,4 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
     });
 
 });
+

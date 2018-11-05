@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+
         <record id="view_restaurant_printer_form" model="ir.ui.view">
             <field name="name">Order Printer</field>
             <field name="model">restaurant.printer</field>
@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='product_categories_ids']" position="after">
                     <field name="product_ids" context="{'search_default_group_by_category':1}" domain="[('available_in_pos', '=', True)]">
-                        <tree string="POS products">
+                        <tree>
                             <field name="name"/>
                             <field name="list_price"/>
                             <field name="pos_categ_id"/>
@@ -44,5 +44,5 @@
             </field>
         </record>
 
-    </data>
+
 </odoo>

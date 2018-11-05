@@ -5,7 +5,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": ['images/pos_order_printer_product_main.png'],
-    "version": "1.0.0",
+    "version": "10.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
