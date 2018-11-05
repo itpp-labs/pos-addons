@@ -120,7 +120,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
         }
     });
 
-Also it's possible to trigger multi_session events from other modules, for example code from `pos_product_available <https://www.odoo.com/apps/modules/10.0/pos_product_available/>`__:
+Also it's possible to trigger ``new_updates_to_send`` event on data changes to force pos_multi_session module start syncronization process. Example code from `pos_product_available <https://www.odoo.com/apps/modules/10.0/pos_product_available/>`__:
 
 .. code-block:: js
 
@@ -131,7 +131,7 @@ Also it's possible to trigger multi_session events from other modules, for examp
             product.qty_available -= line.get_quantity();
             self.refresh_qty_available(product);
         });
-        // compatibility with pos_multi_session
+        // for pos_multi_session: send updates to other POSes
         order.trigger('new_updates_to_send');
 
     },
