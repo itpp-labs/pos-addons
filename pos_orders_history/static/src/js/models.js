@@ -19,9 +19,19 @@ odoo.define('pos_orders_history.models', function (require) {
         },
         on_orders_history_updates: function(message) {
             var self = this;
+            // state of orders
+            var state = ['paid'];
+            if (this.config.show_cancelled_orders) {
+                state.push('cancel');
+            }
+            if (this.config.show_posted_orders) {
+                state.push('done');
+            }
             message.updated_orders.forEach(function (id) {
                 self.get_order_history(id).done(function(order) {
-                    self.update_orders_history(order);
+                    if (state.indexOf(order.state) !== -1) {
+                        self.update_orders_history(order);
+                    }
                 });
                 self.get_order_history_lines_by_order_id(id).done(function (lines) {
                     self.update_orders_history_lines(lines);
