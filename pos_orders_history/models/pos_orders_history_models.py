@@ -13,7 +13,10 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     orders_history = fields.Boolean("Orders History", help="Show all orders list in POS", default=True)
-    current_day_orders_only = fields.Boolean("Current Day Orders Only", help="Show current day orders only", default=True)
+
+    load_orders_of_last_n_days = fields.Boolean("Orders of last 'n' days", default=False)
+    number_of_days = fields.Integer("Number of days", default=0, help='0 - load orders of current day')
+
     show_cancelled_orders = fields.Boolean("Show Cancelled Orders", default=True)
     show_posted_orders = fields.Boolean("Show Posted Orders", default=False)
     show_barcode_in_receipt = fields.Boolean("Show Barcode in Receipt", default=True)

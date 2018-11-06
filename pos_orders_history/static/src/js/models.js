@@ -115,6 +115,9 @@ odoo.define('pos_orders_history.models', function (require) {
         model: 'pos.order',
         fields: [],
         domain: function(self) {
+            var domain = [];
+
+            // state of orders
             var state = ['paid'];
             if (self.config.show_cancelled_orders) {
                 state.push('cancel');
@@ -122,17 +125,22 @@ odoo.define('pos_orders_history.models', function (require) {
             if (self.config.show_posted_orders) {
                 state.push('done');
             }
-            return [['state','in',state]];
+
+            domain.push(['state','in',state]);
+
+            // number of orders
+            if (self.config.load_orders_of_last_n_days) {
+                var today = new Date();
+                today.setHours(0,0,0,0);
+                // load orders from the last date
+                var last_date = new Date(today.setDate(today.getDate()-self.config.number_of_days)).toISOString();
+                domain.push(['date_order','>=',last_date]);
+            }
+
+            return domain;
         },
         loaded: function (self, orders) {
-            var order_ids = [];
-            if (self.config.current_day_orders_only) {
-                orders = orders.filter(function(order) {
-                    return self.get_date() === order.date_order.split(" ")[0];
-                });
-            }
             self.update_orders_history(orders);
-
             self.order_ids = _.pluck(orders, 'id');
         },
     });
