@@ -18,7 +18,7 @@
     'version': '11.0.5.1.0',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
     'license': 'LGPL-3',
     "price": 280.00,
