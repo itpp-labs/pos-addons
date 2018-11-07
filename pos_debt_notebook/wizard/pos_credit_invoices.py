@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -36,7 +35,7 @@ class PosCreditInvoices(models.TransientModel):
 
     @api.multi
     @api.onchange('journal_id')
-    @api.depends('partner_ids', 'journal_id')
+    @api.depends('partner_ids', 'journal_id', 'amount', 'update_type')
     def _compute_totals(self):
         partners = self.partner_ids
         debts = partners._compute_partner_journal_debt(self.journal_id.id)
@@ -68,20 +67,19 @@ class PosCreditInvoices(models.TransientModel):
             def p2amount(p):
                 return debts[p.id]['balance'] > self.new_balance and debts[p.id]['balance'] - self.new_balance or 0
 
-        self.line_ids = [
-            # remove old lines
-            (5, None, None)
-        ] + [
-            (0, None, {
+        lines = []
+        for p in self.partner_ids:
+            line = self.line_ids.create({
                 'partner_id': p.id,
                 'amount': p2amount(p),
                 'current_balance': p2balance(p)
             })
-            for p in self.partner_ids
-        ]
+            lines.append(line.id)
+        self.line_ids = [(6, 0, lines)]
+
 
     @api.multi
-    def apply(self):
+    def generate_invoices(self):
         product = self.product_id
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
         for line in self.line_ids:
@@ -107,13 +105,13 @@ class PosCreditInvoicesLine(models.TransientModel):
     _name = 'pos.credit.invoices.line'
     _order = 'partner_name'
 
-    wizard_id = fields.Many2one('pos.credit.invoices')
+    wizard_id = fields.Many2one('pos.credit.invoices', required=True)
     partner_name = fields.Char('Name', related='partner_id.name', readonly=True)
 
-    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
+    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True, required=True)
     current_balance = fields.Float('Current Credits', readonly=True)
 
-    amount = fields.Float('Write-off amount', readonly=True)
+    amount = fields.Float('Write-off amount', readonly=True, required=True)
     total_balance = fields.Float('Total Credits', compute='_compute_total_balance', readonly=True)
 
     @api.multi

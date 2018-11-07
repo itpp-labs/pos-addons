@@ -10,6 +10,7 @@
             <form>
                 <group>
                     <group>
+                        <field name="partner_id"/>
                         <field name="credit_balance_company"/>
                         <field name="product_id"/>
                         <field name="payment_type" widget="radio"/>
