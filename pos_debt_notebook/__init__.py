@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 
 
 def pre_uninstall(cr, registry):
-    env = api.Environment({})
+    env = api.Environment(cr, SUPERUSER_ID, {})
     if env['pos.session'].search([('state', '=', 'opened')]):
         raise UserError(_('You have open session of Point of Sale. Please close them first.'))
 
