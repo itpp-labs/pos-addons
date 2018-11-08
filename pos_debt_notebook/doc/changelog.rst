@@ -1,3 +1,8 @@
+`5.0.5`
+-------
+
+- **FIX:** Error on module deleting
+
 `5.0.4`
 -------
 
