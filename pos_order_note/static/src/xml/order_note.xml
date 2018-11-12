@@ -4,7 +4,7 @@
     <t t-extend="OrderWidget">
         <t t-jquery='div[class="line"]' t-operation="after">
             <t t-if="order.note">
-                <t t-if="order.get_custom_notes()">
+                <t t-if="order.get_custom_notes and order.get_custom_notes()">
                     <div class="order-note-line">
                         <div class='entry note'>
                             <span class="label">Note:</span>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </t>
-                <t t-if="!order.get_custom_notes()">
+                <t t-if="order.get_custom_notes and !order.get_custom_notes()">
                     <div class="order-note-line">
                         <div class='entry note'>
                             <span class="label">Note:</span>
@@ -31,7 +31,7 @@
                 </t>
             </t>
             <t t-if="!order.note">
-                <t t-if="order.get_custom_notes()">
+                <t t-if="order.get_custom_notes and order.get_custom_notes()">
                     <div class="order-note-line">
                         <div class='entry note'>
                             <span class="label">Note:</span>
@@ -56,7 +56,7 @@
     <t t-extend="Orderline">
         <t t-jquery="t[t-if*='line.get_note()']" t-operation="replace">
             <t t-if="line.get_note()">
-                <t t-if="line.get_custom_notes()">
+                <t t-if="line.get_custom_notes and line.get_custom_notes()">
                     <li class="info orderline-note">
                         <i class='fa fa-tag'/><t t-esc="line.get_note()" />,
                         <t t-foreach="line.get_custom_notes()" t-as="custom_note">
@@ -69,14 +69,14 @@
                         </t>
                     </li>
                 </t>
-                <t t-if="!line.get_custom_notes()">
+                <t t-if="line.get_custom_notes and !line.get_custom_notes()">
                     <li class="info orderline-note">
                         <i class='fa fa-tag'/><t t-esc="line.get_note()" />
                     </li>
                 </t>
             </t>
             <t t-if="!line.get_note()">
-                <t t-if="line.get_custom_notes()">
+                <t t-if="line.get_custom_notes and line.get_custom_notes()">
                     <li class="info orderline-note">
                         <i class='fa fa-tag'/><t t-foreach="line.get_custom_notes()" t-as="custom_note">
                         <t t-if="custom_note_last">
