@@ -36,7 +36,7 @@ Maintainers
 
       `IT-Projects Team <https://www.it-projects.info/team>`__
 
-* The module is not maintained since Odoo 12.0. All changes to the module have been migrated to  `Point of Sale - Extra Access Right <https://github.com/OCA/pos/tree/12.0/pos_access_right/>`__ module. Read more `here. <https://github.com/OCA/pos/issues/232>`__
+* The module is not maintained since Odoo 12.0. All changes of the module have been migrated to  `Point of Sale - Extra Access Right <https://github.com/OCA/pos/tree/12.0/pos_access_right/>`__ module. Read more `here. <https://github.com/OCA/pos/issues/232>`__
   
 Further information
 ===================
