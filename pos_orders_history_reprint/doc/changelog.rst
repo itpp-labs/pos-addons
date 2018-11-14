@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.2`
+-------
+
+- **IMP:** Improved a speed loading of receipts
+
 `1.0.1`
 -------
 

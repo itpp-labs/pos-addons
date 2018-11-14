@@ -1,3 +1,8 @@
+`4.2.2`
+-------
+
+- **FIX:** `Longpoll Handling Error` related to property of undefined
+
 `4.2.1`
 -------
 
