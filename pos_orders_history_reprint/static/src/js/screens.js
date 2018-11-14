@@ -69,7 +69,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             }
         },
         click_reprint_order: function (id) {
-            this.gui.show_screen('reprint_receipt', {order_id: id});
+            this.gui.show_screen('history_reprint_receipt', {order_id: id});
         },
     });
 
@@ -189,7 +189,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         }
     });
 
-    gui.define_screen({name:'reprint_receipt', widget: screens.ReprintReceiptScreenWidget});
+    gui.define_screen({name:'history_reprint_receipt', widget: screens.ReprintReceiptScreenWidget});
 
     return screens;
 });
