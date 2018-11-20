@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import models, fields, api
-
+import wdb
 
 class PosCreditInvoices(models.TransientModel):
     _name = 'pos.credit.invoices'
@@ -31,7 +31,7 @@ class PosCreditInvoices(models.TransientModel):
     full_charge = fields.Float(string='Total Write-off Amount', compute='_compute_totals')
     total_credit = fields.Float('Total', compute='_compute_totals', help='Only credits are counted')
 
-    line_ids = fields.One2many('pos.credit.invoices.line', 'wizard_id')
+    line_ids = fields.Many2many('pos.credit.invoices.line', copy=True)
 
     @api.multi
     @api.onchange('journal_id')
@@ -39,7 +39,6 @@ class PosCreditInvoices(models.TransientModel):
     def _compute_totals(self):
         partners = self.partner_ids
         debts = partners._compute_partner_journal_debt(self.journal_id.id)
-
         self['partner_credits'] = sum([debts[p.id]['balance'] for p in partners] + [0])
 
         if self.update_type == 'balance_update':
@@ -53,7 +52,6 @@ class PosCreditInvoices(models.TransientModel):
     @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id')
     def update_lines(self):
         p2amount = None
-
         debts = self.partner_ids._compute_partner_journal_debt(self.journal_id.id)
 
         def p2balance(p):
@@ -67,19 +65,22 @@ class PosCreditInvoices(models.TransientModel):
             def p2amount(p):
                 return debts[p.id]['balance'] > self.new_balance and debts[p.id]['balance'] - self.new_balance or 0
 
-        lines = []
-        for p in self.partner_ids:
-            line = self.line_ids.create({
+        self.line_ids = [
+            # remove old lines
+            (5, None, None)
+        ] + [
+            (0, None, {
                 'partner_id': p.id,
                 'amount': p2amount(p),
                 'current_balance': p2balance(p)
             })
-            lines.append(line.id)
-        self.line_ids = [(6, 0, lines)]
+            for p in self.partner_ids
+        ]
 
-
-    @api.multi
     def generate_invoices(self):
+        if self.line_ids and self.line_ids[0] and not self.line_ids[0].partner_id:
+            # some strange case when data does not pass from form and lines are created empty
+            self.update_lines()
         product = self.product_id
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
         for line in self.line_ids:
@@ -105,13 +106,13 @@ class PosCreditInvoicesLine(models.TransientModel):
     _name = 'pos.credit.invoices.line'
     _order = 'partner_name'
 
-    wizard_id = fields.Many2one('pos.credit.invoices', required=True)
+    wizard_id = fields.Many2one('pos.credit.invoices')
     partner_name = fields.Char('Name', related='partner_id.name', readonly=True)
 
-    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True, required=True)
+    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
     current_balance = fields.Float('Current Credits', readonly=True)
 
-    amount = fields.Float('Write-off amount', readonly=True, required=True)
+    amount = fields.Float('Write-off amount', readonly=True)
     total_balance = fields.Float('Total Credits', compute='_compute_total_balance', readonly=True)
 
     @api.multi

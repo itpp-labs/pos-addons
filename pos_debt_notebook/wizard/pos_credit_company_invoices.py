@@ -24,7 +24,10 @@ class PosCreditInvoices(models.TransientModel):
         ('pay_per_employee', 'Pay same amount for each employee'),
         ('custom', 'Custom amount per each employee'),
     ], default='custom', required=True)
-    line_ids = fields.One2many('pos.credit.invoices.company.line', 'wizard_id')
+    line_ids = fields.Many2many('pos.credit.invoices.company.line',
+                                relation='pos_cr_inv_comp_line_ids_rel',
+                                column1='pos_credit_invoices_company_id',
+                                column2='pos_credit_invoices_company_line_id')
     total = fields.Float('Total to pay', compute='_compute_total')
 
     @api.onchange('partner_id', 'amount', 'payment_type')
@@ -56,6 +59,9 @@ class PosCreditInvoices(models.TransientModel):
 
     @api.multi
     def apply(self):
+        if self.line_ids and self.line_ids[0] and not self.line_ids[0].partner_id:
+            # some strange case when data does not pass from form and lines are created empty
+            self.update_lines()
         product = self.product_id
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
         for line in self.line_ids:
