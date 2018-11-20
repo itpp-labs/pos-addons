@@ -22,7 +22,16 @@ odoo.define('pos_orders_history.models', function (require) {
             var self = this;
             message.updated_orders.forEach(function (id) {
                 self.get_order_history(id).done(function(order) {
-                    self.update_orders_history(order);
+                    var states = ['paid'];
+                    if (self.config.show_cancelled_orders) {
+                        states.push('cancel');
+                    }
+                    if (self.config.show_posted_orders) {
+                        states.push('done');
+                    }
+                    if (order.length && states.indexOf(order[0].state) !==-1) {
+                        self.update_orders_history(order);
+                    }
                 });
                 self.get_order_history_lines_by_order_id(id).done(function (lines) {
                     self.update_orders_history_lines(lines);
@@ -41,6 +50,53 @@ odoo.define('pos_orders_history.models', function (require) {
                 model: 'pos.order.line',
                 method: 'search_read',
                 args: [[['order_id', '=', id]]]
+            });
+        },
+        manual_update_order_history: function() {
+            var self = this;
+            var def = new $.Deferred();
+            this.get_order_histories().then(function(data) {
+                if (!data) {
+                    def.resolve();
+                    return;
+                }
+
+                self.update_orders_history(data);
+                self.get_order_lines(_.pluck(data, 'id')).then(function(lines){
+                    self.update_orders_history_lines(lines);
+                    def.resolve();
+                });
+
+            });
+            return def;
+        },
+        get_order_histories: function() {
+            var domain = function(self) {
+                var state = ['paid'];
+                if (self.config.show_cancelled_orders) {
+                    state.push('cancel');
+                }
+                if (self.config.show_posted_orders) {
+                    state.push('done');
+                }
+                var res = [['state','in',state]];
+                if (self.config.current_day_orders_only) {
+                    res.push(['date_order', '>=', self.get_date()]);
+                }
+                return res;
+            };
+
+            return rpc.query({
+                model: 'pos.order',
+                method: 'search_read',
+                args: [domain(this)]
+            });
+        },
+        get_order_lines: function(order_ids) {
+            return rpc.query({
+                model: 'pos.order.line',
+                method: 'search_read',
+                args: [[['order_id','in',order_ids]]]
             });
         },
         update_orders_history: function (orders) {

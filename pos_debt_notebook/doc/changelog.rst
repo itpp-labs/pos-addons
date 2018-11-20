@@ -5,9 +5,10 @@
 - **FIX:** Error related to paying with not discount credit journals in POS
 - **FIX:** Invoices paid with credit journals now counts in partner debts
 
-`5.0.3`
+`5.0.5`
 -------
 
+- **FIX:** Error on module deleting
 - **FIX:** Error related to invoices created in the "Generate POS Credit Invoices" wizard. Invoices were created with wrong type.
 
 `5.0.4`
