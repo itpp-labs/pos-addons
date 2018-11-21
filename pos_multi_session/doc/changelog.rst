@@ -1,7 +1,7 @@
 `4.2.3`
 -------
 
-**Improvement:** Code refactoring to support the "Sync restaurant orders" module
+**Improvement:** Code refactoring for pay technical debt
 
 `4.2.2`
 -------
