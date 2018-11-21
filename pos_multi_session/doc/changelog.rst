@@ -1,7 +1,7 @@
 `4.2.3`
 -------
 
-**Improvement:** Code refactoring for pay technical debt
+**Improvement:** Code refactoring to pay technical debt
 
 `4.2.2`
 -------
