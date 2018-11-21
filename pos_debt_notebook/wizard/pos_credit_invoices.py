@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import models, fields, api
-import wdb
+
 
 class PosCreditInvoices(models.TransientModel):
     _name = 'pos.credit.invoices'
