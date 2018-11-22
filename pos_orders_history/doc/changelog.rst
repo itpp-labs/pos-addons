@@ -5,8 +5,8 @@ Updates
 
 `1.1.1`
 -------
-**Fix:** Orders history is not updated instantly
-**Fix:** The time is not displayed in the current time zone
+**Fix:** Orders history has not been updated instantly
+**Fix:** The time has not been displayed in the current time zone
 
 `1.1.0`
 -------
