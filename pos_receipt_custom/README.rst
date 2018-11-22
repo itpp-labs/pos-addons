@@ -2,11 +2,11 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-====================
- POS Receipt Custom
-====================
+==========================
+ Customizable POS Receipt
+==========================
 
-POS Receipt Custom
+The module allows to make custom POS Receipt
 
 Credits
 =======

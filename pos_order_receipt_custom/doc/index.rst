@@ -1,6 +1,6 @@
-==========================
- POS Order Receipt Custom
-==========================
+=================================
+ Customizable POS Kitchen Ticket
+=================================
 
 Installation
 ============
@@ -11,9 +11,17 @@ Usage
 =====
 
 * Open menu ``[[ Point of Sale ]]>> Configuration >> Order Printers``
-* Click ``Create`` or edit existing one
-* Select ``Print Template`` or create new one
-* RESULT: The Order Receipt has been printed in the format selected
+
+  * Click ``[Create]`` or edit an existing one
+  * Check the box **[x] Custom Order Receipt**
+  * Select ``Print Template`` or create new one
+  * Click ``[Save]``
+
+* Open POS session
+* Add a product
+* Click ``[Order]``
+
+RESULT: The Order Receipt has been printed in the format selected
 
 Note
 ====

@@ -2,11 +2,11 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """POS Receipt Custom""",
-    "summary": """POS Receipt Custom""",
+    "name": """Customizable POS Receipt""",
+    "summary": """Customize POS receipt view to your taste""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/pos_receipt_custom_main.png"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -14,8 +14,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 49.00,
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",

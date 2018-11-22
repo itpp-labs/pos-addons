@@ -2,11 +2,11 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-==========================
- POS Order Receipt Custom
-==========================
+=================================
+ Customizable POS Kitchen Ticket
+=================================
 
-POS Order Receipt Custom
+The module allows to customize POS kitchen ticket
 
 Credits
 =======
