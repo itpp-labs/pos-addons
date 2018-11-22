@@ -151,6 +151,10 @@ odoo.define('pos_orders_history.screens', function (require) {
                 });
             }
         },
+        get_datetime_format: function(datetime) {
+            var d = new Date(datetime);
+            return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toLocaleString();
+        },
         render_list: function(orders) {
             var contents = this.$el[0].querySelector('.order-list-contents');
             contents.innerHTML = "";

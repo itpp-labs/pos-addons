@@ -29,6 +29,9 @@ odoo.define('pos_orders_history.models', function (require) {
             }
             message.updated_orders.forEach(function (id) {
                 self.get_order_history(id).done(function(order) {
+                    if (order instanceof Array) {
+                        order = order[0];
+                    }
                     if (state.indexOf(order.state) !== -1) {
                         self.update_orders_history(order);
                     }
