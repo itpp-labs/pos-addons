@@ -35,7 +35,7 @@ class PosCreditInvoices(models.TransientModel):
 
     @api.multi
     @api.onchange('journal_id')
-    @api.depends('partner_ids', 'journal_id', 'amount', 'update_type')
+    @api.depends('partner_ids', 'journal_id', 'amount', 'update_type', 'new_balance')
     def _compute_totals(self):
         partners = self.partner_ids
         debts = partners._compute_partner_journal_debt(self.journal_id.id)
@@ -49,7 +49,7 @@ class PosCreditInvoices(models.TransientModel):
                 debts[p.id]['balance'] - self.new_balance or 0 for p in partners] + [0])
         self['total_credit'] = self['partner_credits'] - self['full_charge']
 
-    @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id')
+    @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id', 'new_balance')
     def update_lines(self):
         p2amount = None
         debts = self.partner_ids._compute_partner_journal_debt(self.journal_id.id)
