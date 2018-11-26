@@ -68,13 +68,13 @@
                 <field name="user_id"/>
                 <field name="journal_id"/>
                 <group expand="1" string="Group By">
-                    <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
-                    <filter string="Customer" context="{'group_by':'partner_id'}"/>
+                    <filter string="Salesperson" name="group_by_user" context="{'group_by':'user_id'}"/>
+                    <filter string="Customer" name="group_by_customer" context="{'group_by':'partner_id'}"/>
                     <separator/>
-                    <filter string="Month" context="{'group_by':'date:month'}"/>
-                    <filter string="Week" context="{'group_by':'date:week'}"/>
-                    <filter string="Day" context="{'group_by':'date:day'}"/>
-                    <filter string="Hour" context="{'group_by':'date:hour'}"/>
+                    <filter string="Month" name="group_by_month" context="{'group_by':'date:month'}"/>
+                    <filter string="Week" name="group_by_week" context="{'group_by':'date:week'}"/>
+                    <filter string="Day" name="group_by_day" context="{'group_by':'date:day'}"/>
+                    <filter string="Hour" name="group_by_hour" context="{'group_by':'date:hour'}"/>
                 </group>
             </search>
         </field>
@@ -99,6 +99,5 @@
     </record>
 
     <menuitem id="menu_pos_credit_update_reward" name="Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_user" sequence="100"/>
-
 
 </odoo>
