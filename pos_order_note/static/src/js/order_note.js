@@ -1,4 +1,4 @@
-odoo.define('pos_cancel_order.order_note', function (require) {
+odoo.define('pos_order_note', function (require) {
     "use strict";
 
     var models = require('pos_restaurant_base.models');

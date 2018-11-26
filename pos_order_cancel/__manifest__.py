@@ -3,7 +3,7 @@
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "12.0.1.2.2",
+    "version": "12.0.1.2.3",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
