@@ -1,3 +1,7 @@
+`1.2.2`
+-------
+- **FIX:** get_custom_notes is not a function
+
 `1.2.1`
 -------
 - **FIX:** Scrolling Order after getting updates from Multi-Session
