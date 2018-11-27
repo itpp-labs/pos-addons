@@ -160,7 +160,7 @@ odoo.define('pos_absolute_discount.models', function(require){
             };
         },
         apply_ms_data: function(data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/12.0/pos_multi_session/
             if (_super_orderline.apply_ms_data) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
