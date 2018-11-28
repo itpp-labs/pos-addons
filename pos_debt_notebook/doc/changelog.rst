@@ -1,3 +1,8 @@
+`5.0.4`
+-------
+
+- **FIX:** Error after clicking "Show Debt History" for a customer
+
 `5.0.3`
 -------
 
