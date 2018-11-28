@@ -23,6 +23,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             var popup = this.gui.current_popup;
             popup.disc_program = this.pos.discount_program.slice(0,4);
             this.current_disc_program = false;
+            popup.show_discount_program_popup = true;
             popup.renderElement();
             popup.$('.popup-number').addClass("popup-discount");
             var order = this.pos.get_order();
@@ -30,6 +31,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 popup.$('.value').text(order.discount_percent);
                 popup.inputbuffer = String(order.discount_percent);
             }
+            popup.show_discount_program_popup = false;
             popup.$('.discount-program-list .button').click(function() {
                 self.click_discount_program($(this));
             });
