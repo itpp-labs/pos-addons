@@ -12,8 +12,8 @@
     "support": "apps@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_discount_total/",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 15.00,
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",
