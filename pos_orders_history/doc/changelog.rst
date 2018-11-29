@@ -12,6 +12,8 @@ Updates
 -------
 - **FIX:** displaying posted orders after open new POS session
 - **FIX:** error determining the current cashier
+- **IMP:** load orders for the last specified days
+- **FIX:** filtering an order after receiving the order from another POS
 
 `1.0.1`
 -------

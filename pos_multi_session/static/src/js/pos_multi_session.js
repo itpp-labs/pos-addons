@@ -334,37 +334,14 @@ odoo.define('pos_multi_session', function(require){
                 this.set('selectedOrder', current_order);
             }
         },
-        ms_create_order: function(options){
+        ms_create_order: function(options) {
             options = _.extend({pos: this}, options || {});
             var order = new models.Order({}, options);
             return order;
         },
-        ms_update_order: function(order, data){
-            if (order && order.finalized) {
-                // if true, cannot be modified. - According to Odoo
-                return;
-            }
+        ms_update_existing_order: function(order, data) {
+            // update existing order
             var pos = this;
-            this.pos_session.order_ID = data.sequence_number;
-            if (order){
-                // init_locked blocks execution of save_to_db
-                order.init_locked = true;
-                order.apply_ms_data(data);
-            } else {
-                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
-                if (!create_new_order){
-                    return;
-                }
-                var json = _.extend(data, {
-                    order_on_server: true,
-                });
-                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, json: json});
-                var current_order = this.get_order();
-                this.get('orders').add(order);
-                this.ms_on_add_order(current_order);
-                order.set_orderlines_offline();
-                return;
-            }
             var not_found = order.orderlines.map(function(r){
                 return r.uid;
             });
@@ -427,6 +404,36 @@ odoo.define('pos_multi_session', function(require){
                 this.ms_syncing_in_progress = false;
                 order.new_updates_to_send();
                 order.trigger('new_updates_to_send');
+            }
+        },
+        ms_update_order: function(order, data) {
+            if (order && order.finalized) {
+                // if true, cannot be modified. - According to Odoo
+                return;
+            }
+            var pos = this;
+            this.pos_session.order_ID = data.sequence_number;
+            if (order){
+                // init_locked blocks execution of save_to_db
+                order.init_locked = true;
+                order.apply_ms_data(data);
+                this.ms_update_existing_order(order, data);
+            } else {
+                var create_new_order = pos.config.multi_session_accept_incoming_orders || !(data.ms_info && data.ms_info.created.user.id !== pos.ms_my_info().user.id);
+                if (!create_new_order){
+                    return;
+                }
+                var json = _.extend(data, {
+                    order_on_server: true,
+                });
+                order = this.ms_create_order({ms_info:data.ms_info, revision_ID:data.revision_ID, json: json});
+                if (order) {
+                    var current_order = this.get_order();
+                    this.get('orders').add(order);
+                    this.ms_on_add_order(current_order);
+                    order.set_orderlines_offline();
+                }
+                return;
             }
         },
         load_new_partners_by_id: function(partner_id){
