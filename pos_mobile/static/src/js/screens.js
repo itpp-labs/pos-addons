@@ -224,6 +224,21 @@ odoo.define('pos_mobile.screens', function (require) {
         },
     });
 
+    screens.ProductListWidget.include({
+        renderElement: function() {
+            this._super.apply(this, arguments);
+            var el = $('.product-list-scroller');
+            var scroll = el.getNiceScroll();
+            if (scroll.length) {
+                scroll.resize();
+            } else {
+                el.niceScroll({
+                    horizrailenabled: false,
+                });
+            }
+        }
+    });
+
     screens.ClientListScreenWidget.include({
         partner_icon_url: function(id){
             return '/web/image?model=res.partner&id='+id+'&field=image_medium';
@@ -303,7 +318,6 @@ odoo.define('pos_mobile.screens', function (require) {
                 this.getParent().product_categories_widget.close_bottom_menu();
             }
             this.change_product_qty();
-            this.scroll_to_selected_order();
             if (!this.pos.iOS) {
                 $('.order-scroller').niceScroll({
                     horizrailenabled: false,
@@ -334,12 +348,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 });
             }
         },
-        scroll_to_selected_order: function() {
-            var orders = this.pos.get('orders');
-            var selected_order = this.pos.get_order();
-            var width = orders.indexOf(selected_order);
-            $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
-        },
+
     });
     return screens;
 });

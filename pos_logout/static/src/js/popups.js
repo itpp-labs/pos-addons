@@ -9,9 +9,6 @@ odoo.define('pos_logout.popups', function (require) {
 
     var PopupWidget = require('point_of_sale.popups');
     var gui = require('point_of_sale.gui');
-    var core = require('web.core');
-
-    var _t = core._t;
 
     var barcode_cashier_action = function (code) {
         var self = this,
