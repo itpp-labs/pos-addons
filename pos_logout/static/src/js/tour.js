@@ -31,7 +31,7 @@ odoo.define('pos_logout.tour', function(require) {
         trigger: '.popups .block',
         content: 'Click for unblock the screen',
     }, {
-        trigger: '.modal-dialog:visible .selection-item:contains("Demo User")',
+        trigger: '.modal-dialog:visible .selection-item:contains("Administrator")',
         content: 'Change current cashier',
     }]);
 
