@@ -5,7 +5,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
     "use strict";
 
     var models = require('pos_restaurant_base.models');
-    require('pos_receipt_custom.models')
+    require('pos_receipt_custom.models');
     var core = require('web.core');
 
     var Qweb = core.qweb;
@@ -80,7 +80,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             return _super_order.initialize.apply(this, arguments);
         },
         print_order_receipt: function(printer, changes) {
-            if (printer.config.custom_order_receipt && (changes['new'].length > 0 || changes.cancelled.length > 0 || changes.changes_table)) {
+            if (printer.config.custom_order_receipt && (changes.new.length > 0 || changes.cancelled.length > 0 || changes.changes_table)) {
                 this.print_custom_receipt(printer, changes);
             } else {
                 _super_order.print_order_receipt.apply(this,arguments);
@@ -107,14 +107,15 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             }
 
             if (!changes.time) {
-                var hours = '' + String(d.getHours());
-                    hours = hours.length < 2
-                    ? ('0' + hours)
-                    : hours;
-                var minutes = '' + String(d.getMinutes());
-                    minutes = minutes.length < 2
-                    ? ('0' + minutes)
-                    : minutes;
+                var hours = String(d.getHours());
+                if (hours.length < 2) {
+                    hours = '0' + hours;
+                }
+                var minutes = String(d.getMinutes());
+                if (minutes.length < 2) {
+                    minutes = '0' + minutes;
+                }
+
                 changes.time = {
                     'hours':   hours,
                     'minutes': minutes,
@@ -174,9 +175,10 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
         export_as_JSON: function(){
             var json = _super_order.export_as_JSON.call(this);
             json.first_order_printing = this.first_order_printing;
-            json.table_open_time = this.table
-            ? this.table.open_time
-            : false;
+            json.table_open_time = false;
+            if (this.table) {
+                json.table_open_time = this.table.open_time;
+            }
             return json;
         },
         init_from_JSON: function(json) {
