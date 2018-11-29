@@ -79,7 +79,7 @@ odoo.define('pos_receipt_custom.models', function(require){
             return Qweb.render(template_name, options);
         },
         get_receipt_template_by_id: function(id, type) {
-            return this.pos.custom_receipt_templates.find(function(receipt){
+            return _.find(this.pos.custom_receipt_templates, function(receipt) {
                 return receipt.id === id && receipt.type === type;
             });
         },

@@ -30,9 +30,8 @@ odoo.define('pos_receipt_custom.screens', function(require){
                 paymentlines: order.get_paymentlines(),
                 display_time: display_time || false,
             };
-
             var receipt_template = order.get_receipt_template_by_id(this.pos.config.custom_xml_receipt_id[0], 'receipt');
-            var template = $.parseXML(receipt_template.qweb_template).children[0];
+            var template = this.convert_to_xml(receipt_template.qweb_template);
             var receipt = order.custom_qweb_render(template, env);
             return receipt;
         },
@@ -52,7 +51,7 @@ odoo.define('pos_receipt_custom.screens', function(require){
 
             var order = this.pos.get_order();
             var ticket_template = order.get_receipt_template_by_id(this.pos.config.custom_ticket_id[0], 'ticket');
-            var template = $.parseXML(ticket_template.qweb_template).children[0];
+            var template = this.convert_to_xml(ticket_template.qweb_template);
             var ticket = order.custom_qweb_render(template, {
                 widget: this,
                 order: order,
@@ -70,7 +69,7 @@ odoo.define('pos_receipt_custom.screens', function(require){
                 this.$('.pos-receipt-container').html(ticket);
                 // for compatibility with pos_orders_history_reprint
                 if (this.save_order_receipt) {
-                    var template = $.parseXML(ticket).children[0];
+                    var template = this.convert_to_xml(ticket);
                     $(template).find(".receipt-type").html("(Supplement)");
                     ticket = template.outerHTML;
                     this.save_order_receipt(order, ticket, 'ticket');
@@ -88,7 +87,7 @@ odoo.define('pos_receipt_custom.screens', function(require){
 
                 // for compatibility with pos_orders_history_reprint
                 if (this.save_order_receipt) {
-                    var template = $.parseXML(receipt).children[0];
+                    var template = this.convert_to_xml(receipt);
                     $(template).find(".receipt-type").html("(Supplement)");
                     receipt = template.outerHTML;
                     this.save_order_receipt(order, receipt, 'xml');
@@ -97,6 +96,11 @@ odoo.define('pos_receipt_custom.screens', function(require){
             } else {
                 this._super();
             }
+        },
+        convert_to_xml: function(template) {
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(template, "text/xml");
+            return xmlDoc.documentElement;
         },
     });
 

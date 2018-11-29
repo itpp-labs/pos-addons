@@ -8,4 +8,10 @@
             <script type="text/javascript" src="/pos_receipt_custom/static/src/js/screens.js"></script>
         </xpath>
     </template>
+
+    <template id="demo_assets_backend" name="pos_receipt_custom demo assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_receipt_custom/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
 </odoo>
