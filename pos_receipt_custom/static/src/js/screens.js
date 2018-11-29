@@ -7,12 +7,13 @@ odoo.define('pos_receipt_custom.screens', function(require){
     var screens = require('point_of_sale.screens');
 
     screens.ReceiptScreenWidget.include({
-        get_custom_receipt: function(){
+        get_custom_receipt: function() {
+            var display_time = false;
             if (this.pos.table) {
                 var open_time = this.pos.table.open_time || this.pos.get_current_datetime();
                 var payment_time = this.pos.get_current_datetime();
 
-                var display_time = {time: open_time.time + "-" + payment_time.time};
+                display_time = {time: open_time.time + "-" + payment_time.time};
 
                 if (open_time.date === payment_time.date) {
                     display_time.date = open_time.date;
@@ -28,19 +29,20 @@ odoo.define('pos_receipt_custom.screens', function(require){
                 order: order,
                 receipt: order.export_for_printing(),
                 paymentlines: order.get_paymentlines(),
-                display_time: display_time || false,
+                display_time: display_time,
             };
             var receipt_template = order.get_receipt_template_by_id(this.pos.config.custom_xml_receipt_id[0], 'receipt');
             var template = this.convert_to_xml(receipt_template.qweb_template);
             var receipt = order.custom_qweb_render(template, env);
             return receipt;
         },
-        get_custom_ticket: function(){
+        get_custom_ticket: function() {
+            var display_time = false;
             if (this.pos.table) {
                 var open_time = this.pos.table.open_time || this.pos.get_current_datetime();
                 var payment_time = this.pos.get_current_datetime();
 
-                var display_time = {time: open_time.time + "-" + payment_time.time};
+                display_time = {time: open_time.time + "-" + payment_time.time};
 
                 if (open_time.date === payment_time.date) {
                     display_time.date = open_time.date;
@@ -58,7 +60,7 @@ odoo.define('pos_receipt_custom.screens', function(require){
                 receipt: order.export_for_printing(),
                 orderlines: order.get_orderlines(),
                 paymentlines: order.get_paymentlines(),
-                display_time: display_time || false,
+                display_time: display_time,
             });
             return ticket;
         },

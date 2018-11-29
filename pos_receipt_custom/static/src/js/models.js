@@ -52,20 +52,23 @@ odoo.define('pos_receipt_custom.models', function(require){
                 month = '0' + month;
             }
 
-            var hours   = '' + d.getHours();
-                hours   = hours.length < 2 ? ('0' + hours) : hours;
+            var hours = String(d.getHours());
+            if (hours.length < 2) {
+                hours = '0' + hours;
+            }
 
-            var minutes = '' + d.getMinutes();
-                minutes = minutes.length < 2 ? ('0' + minutes) : minutes;
-
-            return {'date': year + '.' + month + '.' + date, 'time': hours + ':' + minutes}
+            var minutes = String(d.getMinutes());
+            if (minutes.length < 2) {
+                minutes = '0' + minutes;
+            }
+            return {'date': year + '.' + month + '.' + date, 'time': hours + ':' + minutes};
         },
     });
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         custom_qweb_render: function(template, options) {
-            var code = Qweb.compile(template), tcompiled;
+            var code = Qweb.compile(template), tcompiled = '';
             var template_name = $(template).attr('t-name');
             try {
                 tcompiled = new Function(['dict'], code);
@@ -73,7 +76,7 @@ odoo.define('pos_receipt_custom.models', function(require){
                 Qweb.tools.exception("Error evaluating template: " + error, { template: template_name });
             }
             if (!tcompiled) {
-                Qweb.tools.exception("Error evaluating template: (IE?)" + error, { template: template_name });
+                Qweb.tools.exception("Error evaluating template: (IE?)", { template: template_name });
             }
             Qweb.compiled_templates[template_name] = tcompiled;
             return Qweb.render(template_name, options);
