@@ -1,3 +1,8 @@
+`1.3.8`
+-------
+
+**Improvement:** Scrolling of Order list
+
 `1.3.7`
 -------
 
