@@ -85,7 +85,7 @@
                 <t t-if='!order.partner_id' t-esc='""'/>
             </td>
             <td><t t-esc='order.pos_name'/></td>
-            <td><t t-esc='order.date_order' /></td>
+            <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
             <td><t t-esc='order.user_id[1]' /></td>
             <t t-if="!order.computed_state">
                 <td>
