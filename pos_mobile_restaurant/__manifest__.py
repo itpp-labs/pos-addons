@@ -4,12 +4,12 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
     "images": ["images/pos_mobile_restaurant.png"],
-    "version": "11.0.1.2.6",
+    "version": "12.0.1.3.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_mobile_restaurant/",
     "license": "LGPL-3",
     "price": 100.00,
     "currency": "EUR",
@@ -34,5 +34,5 @@
     "post_init_hook": None,
 
     "auto_install": True,
-    "installable": False,
+    "installable": True,
 }

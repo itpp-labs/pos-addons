@@ -5,7 +5,7 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
     "use strict";
     var models = require('pos_orders_history.models');
     var rpc = require('web.rpc');
-    var longpolling = require('pos_longpolling');
+    var longpolling = require('pos_longpolling.connection');
 
     var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({

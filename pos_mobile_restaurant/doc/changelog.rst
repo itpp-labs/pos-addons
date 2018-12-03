@@ -1,8 +1,12 @@
-`1.3.6`
+`1.3.1`
+-------
+
+- **FIX:** Scrollbar of Product list for Android
+
+`1.3.0`
 -------
 
 - **IMP:** Code refactoring to speed up order sending to the kitchen
-
 
 `1.2.6`
 -------

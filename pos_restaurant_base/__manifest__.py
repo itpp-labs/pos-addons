@@ -4,12 +4,12 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "11.0.2.0.3",
+    "version": "12.0.2.0.3",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_restaurant_base/",
     "license": "LGPL-3",
     "price": 35.00,
     "currency": "EUR",
@@ -31,5 +31,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

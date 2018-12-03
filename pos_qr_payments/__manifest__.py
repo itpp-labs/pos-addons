@@ -6,12 +6,12 @@
     "category": "Hidden",
     # "live_test_url": "",
     "images": [],
-    "version": "11.0.1.0.1",
+    "version": "12.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/yelizariev",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_payments/",
     "license": "LGPL-3",
     "price": 20.00,
     "currency": "EUR",
@@ -35,5 +35,5 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

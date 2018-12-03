@@ -7,6 +7,8 @@ sudo: false
 cache: pip
 
 addons:
+  # odoo 12.0+ uses command "INSERT ... ON CONFLICT ...", which is available in 9.5+ only
+  postgresql: "9.5"
   apt:
     packages:
       - expect-dev  # provides unbuffer utility

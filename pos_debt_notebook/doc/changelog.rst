@@ -7,6 +7,7 @@
 -------
 
 - **FIX:** compatibility with pos_category_multi
+- **FIX:** Error after clicking "Show Debt History" for a customer
 
 `5.0.3`
 -------

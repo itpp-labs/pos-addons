@@ -4,12 +4,12 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-note?version=11.0",
     "images": ["images/pos_order_note_main.png"],
-    "version": "11.0.1.2.1",
+    "version": "12.0.1.2.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_note/",
     "license": "LGPL-3",
     "price": 34.00,
     "currency": "EUR",
@@ -35,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "POS Advanced Order Notes",
     "demo_addons": [

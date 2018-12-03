@@ -2,8 +2,6 @@ odoo.define('pos_restaurant_base.models', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
-    var multiprint = require('pos_restaurant.multiprint');
-    var screens = require('point_of_sale.screens');
     var core = require('web.core');
 
     var QWeb = core.qweb;

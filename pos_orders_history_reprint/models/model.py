@@ -21,6 +21,7 @@ class PosConfig(models.Model):
 
 class PosReceipt(models.Model):
     _name = 'pos.xml_receipt'
+    _description = 'XML Receipt'
 
     receipt = fields.Char("Receipt")
     pos_reference = fields.Char("Reference")

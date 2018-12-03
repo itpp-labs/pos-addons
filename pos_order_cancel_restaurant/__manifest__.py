@@ -3,12 +3,12 @@
     "summary": """Waiter specifies refund reason to avoid serving mistakes in future.""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_restaurant.png"],
-    "version": "11.0.1.4.1",
+    "version": "12.0.1.4.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://twitter.com/gabbasov_dinar",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_cancel_restaurant/",
     "license": "LGPL-3",
     "price": 50.00,
     "currency": "EUR",
@@ -34,5 +34,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
