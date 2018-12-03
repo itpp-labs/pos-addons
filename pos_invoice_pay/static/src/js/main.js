@@ -995,10 +995,16 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
         }
     },
 
-    validate_order: function () {
-        if (this.order_is_valid()) {
-            this.finalize_validation();
+    validate_order: function (force_validation) {
+        var order = this.pos.get_order();
+        if (!this.pos.config.pos_invoice_pay_writeoff_account_id && order.invoice_to_pay && order.get_total_paid() > this.get_invoice_residual()) {
+            this.gui.show_popup('error', {
+                'title': _t('Excessive payment amount.'),
+                'body': _t('You can not validate the order with a change because difference account is not set. Please enter the exact payment amount.'),
+            });
+            return;
         }
+        this._super();
     },
 
     order_is_valid: function () {

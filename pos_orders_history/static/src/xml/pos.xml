@@ -18,6 +18,9 @@
                         <i class='fa fa-angle-double-left'></i>
                         Back
                     </span>
+                    <span class='button update_history'>
+                        Update List
+                    </span>
                     <span class="filters">
                         <i class='fa fa-filter'></i>
                         Filters

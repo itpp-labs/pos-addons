@@ -1,7 +1,7 @@
 # Copyright 2017 Artyom Losev
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 
 SO_CHANNEL = 'pos_sale_orders'
 INV_CHANNEL = 'pos_invoices'
@@ -24,16 +24,16 @@ class PosOrder(models.Model):
     def process_invoice_payment(self, invoice):
         for statement in invoice['data']['statement_ids']:
             inv_id = invoice['data']['invoice_to_pay']['id']
-            inv_obj = self.env['account.invoice'].search([('id', '=', inv_id)])
+            inv_obj = self.env['account.invoice'].browse(inv_id)
             journal_id = statement[2]['journal_id']
-            journal = self.env['account.journal'].search([('id', '=', journal_id)])
+            journal = self.env['account.journal'].browse(journal_id)
             amount = statement[2]['amount']
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
-
             if amount > inv_obj.residual:
-                writeoff_acc_id = self.env['account.account'].search([('code', '=', 220000)]).id
+                session_id = self.env['pos.session'].browse(invoice['data']['pos_session_id'])
+                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id.id
                 payment_difference_handling = 'reconcile'
 
             vals = {
@@ -157,3 +157,30 @@ class PosConfig(models.Model):
                                                help='Ask for a cashier when fetch invoices', defaul=True)
     sale_order_cashier_selection = fields.Boolean(string='Select Sale Order Cashier',
                                                   help='Ask for a cashier when fetch orders', defaul=True)
+
+
+class PosSession(models.Model):
+    _inherit = 'pos.session'
+
+    session_payments = fields.One2many('account.payment', 'pos_session_id',
+                                       string='Invoice Payments', help="Show invoices paid in the Session")
+    session_invoices_total = fields.Float('Invoices', compute='_compute_session_invoices_total')
+
+    @api.multi
+    def _compute_session_invoices_total(self):
+        for rec in self:
+            rec.session_invoices_total = sum(rec.session_payments.mapped('invoice_ids').mapped('amount_total') + [0])
+
+    @api.multi
+    def action_invoice_payments(self):
+        payments = self.env['account.payment'].search([('pos_session_id', 'in', self.ids)])
+        invoices = payments.mapped('invoice_ids').ids
+        domain = [('id', 'in', invoices)]
+        return {
+            'name': _('Invoice Payments'),
+            'type': 'ir.actions.act_window',
+            'domain': domain,
+            'res_model': 'account.invoice',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+        }
