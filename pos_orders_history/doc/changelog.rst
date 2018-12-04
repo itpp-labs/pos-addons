@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.1.1`
+-------
+**Fix:** Orders history has not been updated instantly
+**Fix:** The time has not been displayed in the current time zone
+
 `1.1.0`
 -------
 
@@ -17,9 +22,9 @@ Updates
 
 `1.0.1`
 -------
-- **FIX:** self.pos.db is undefined
+**Fix:** self.pos.db is undefined
 
 `1.0.0`
 -------
 
-- init version
+**Init version**
