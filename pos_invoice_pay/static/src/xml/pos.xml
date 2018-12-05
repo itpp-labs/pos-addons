@@ -32,7 +32,7 @@
             <tr>
                 <th>Product</th>
                 <th>Description</th>
-                <th>Ordered Qty</th>
+                <th>Qty</th>
                 <th>Delivered</th>
                 <th>Invoiced</th>
                 <th>Unit Price</th>
@@ -86,7 +86,7 @@
     </t>
 
     <t t-name="SaleOrdersWidget">
-        <div class="clientlist-screen screen">
+        <div class="sale-orders-list-screen list-screen screen">
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
@@ -105,27 +105,21 @@
                 </section>
                 <section class="full-content">
                     <div class='window'>
-                        <section class='subwindow collapsed'>
-                            <div class='subwindow-container collapsed'>
-                                <div class='subwindow-container-fix client-details-contents'>
-                                </div>
-                            </div>
-                        </section>
                         <section class='subwindow'>
                             <div class='subwindow-container'>
                                 <div class='subwindow-container-fix touch-scrollable scrollable-y'>
-                                    <table class='client-list'>
+                                    <table class='list'>
                                         <thead>
                                             <tr>
-                                                <th>Order Number</th>
-                                                <th>Order Date</th>
+                                                <th>Order</th>
+                                                <th>Date</th>
                                                 <th>Customer</th>
                                                 <th>Salesperson</th>
                                                 <th>Total</th>
-                                                <th>Invoice Status</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody class='client-list-contents'>
+                                        <tbody class='list-contents'>
                                         </tbody>
                                     </table>
                                 </div>
@@ -152,7 +146,7 @@
     </t>
 
     <t t-name="InvoicesWidget">
-        <div class="clientlist-screen screen">
+        <div class="invoice-list-screen list-screen screen">
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
@@ -173,16 +167,10 @@
                 </section>
                 <section class="full-content">
                     <div class='window'>
-                        <section class='subwindow collapsed'>
-                            <div class='subwindow-container collapsed'>
-                                <div class='subwindow-container-fix client-details-contents'>
-                                </div>
-                            </div>
-                        </section>
                         <section class='subwindow'>
                             <div class='subwindow-container'>
                                 <div class='subwindow-container-fix touch-scrollable scrollable-y'>
-                                    <table class='client-list'>
+                                    <table class='list'>
                                         <thead>
                                             <tr>
                                                 <th>Customer</th>
@@ -195,7 +183,7 @@
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody class='client-list-contents'>
+                                        <tbody class='list-contents'>
                                         </tbody>
                                     </table>
                                 </div>
@@ -208,7 +196,7 @@
     </t>
 
     <t t-name="InvoicePaymentScreenWidget">
-        <div class='payment-screen screen'>
+        <div class='invoice-payment-screen screen'>
             <div class='screen-content'>
                 <div class='top-content'>
                     <span class='button back'>
@@ -337,7 +325,7 @@
     </t>
 
     <t t-name="InvoiceReceiptScreenWidget">
-        <div class='receipt-screen screen'>
+        <div class='invoice-receipt-screen screen'>
             <div class='screen-content'>
                 <div class='top-content'>
                     <h1>Change: <span class='change-value'>0.00</span></h1>
@@ -375,30 +363,6 @@
                 </div>
                 <br />
             </t>
-            <!-- <table class='receipt-orderlines'>
-                <colgroup>
-                    <col width='50%' />
-                    <col width='25%' />
-                    <col width='25%' />
-                </colgroup>
-                <tr t-foreach="orderlines" t-as="orderline">
-                    <td>
-                        <t t-esc="orderline.get_product().display_name"/>
-                         <t t-if="orderline.get_discount() > 0">
-                            <div class="pos-disc-font">
-                                With a <t t-esc="orderline.get_discount()"/>% discount
-                            </div>
-                        </t>
-                    </td>
-                    <td class="pos-right-align">
-                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
-                    </td>
-                    <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
-                    </td>
-                </tr>
-            </table>
-            <br /> -->
             <table class='receipt-total'>
                 <tr>
                     <td>Subtotal:</td>
@@ -420,12 +384,6 @@
                         </td>
                     </tr>
                 </t>
-<!--                 <tr>
-                    <td>Discount:</td>
-                    <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(order.get_total_discount())"/>
-                    </td>
-                </tr> -->
                 <tr class="emph">
                     <td>Total:</td>
                     <td class="pos-right-align">
