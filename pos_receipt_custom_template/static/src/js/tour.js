@@ -1,4 +1,4 @@
-odoo.define('pos_receipt_custom.tour', function(require) {
+odoo.define('pos_receipt_custom_template.tour', function(require) {
     "use strict";
 
     var tour = require('web_tour.tour');
@@ -113,5 +113,5 @@ odoo.define('pos_receipt_custom.tour', function(require) {
         },
     }]);
 
-    tour.register('pos_receipt_custom_tour', {test: true, url: '/pos/web' }, steps);
+    tour.register('pos_receipt_custom_template_tour', {test: true, url: '/pos/web' }, steps);
 });

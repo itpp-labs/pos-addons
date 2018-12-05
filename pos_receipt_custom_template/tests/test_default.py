@@ -35,10 +35,10 @@ class TestUi(odoo.tests.HttpCase):
             '/pos/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
-            ".run('pos_receipt_custom_tour')",
+            ".run('pos_receipt_custom_template_tour')",
 
             "odoo.__DEBUG__.services['web_tour.tour']"
-            ".tours.pos_receipt_custom_tour.ready",
+            ".tours.pos_receipt_custom_template_tour.ready",
 
             login="admin",
             timeout=240,

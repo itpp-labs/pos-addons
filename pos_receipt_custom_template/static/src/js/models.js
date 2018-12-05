@@ -1,7 +1,7 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
-odoo.define('pos_receipt_custom.models', function(require){
+odoo.define('pos_receipt_custom_template.models', function(require){
 
     var models = require('point_of_sale.models');
     var core = require('web.core');
