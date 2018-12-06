@@ -5,7 +5,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
     "use strict";
 
     var models = require('pos_restaurant_base.models');
-    require('pos_receipt_custom.models');
+    require('pos_receipt_custom_template.models');
     var core = require('web.core');
 
     var Qweb = core.qweb;

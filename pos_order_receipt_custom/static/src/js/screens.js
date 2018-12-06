@@ -3,7 +3,7 @@
 
 odoo.define('pos_order_receipt_custom.screens', function(require){
 
-    var screens = require('pos_receipt_custom.screens');
+    var screens = require('pos_receipt_custom_template.screens');
     var gui = require('point_of_sale.gui');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
     require('pos_restaurant.printbill');

@@ -19,7 +19,7 @@
 
     "depends": [
         "pos_restaurant_base",
-        "pos_receipt_custom",
+        "pos_receipt_custom_template",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
