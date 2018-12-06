@@ -72,6 +72,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         template: 'ReprintReceiptScreenWidget',
         show: function () {
             var self = this;
+            this.reprint_receipt = false;
             this._super();
             this.$('.back').click(function () {
                 self.gui.show_screen('orders_history_screen');
@@ -80,6 +81,26 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         get_order: function () {
             var order_id = this.gui.get_current_screen_param('order_id');
             return this.pos.db.orders_history_by_id[order_id];
+        },
+        handle_auto_print: function() {
+            var self = this;
+            var order = this.get_order();
+            this.$('.pos-sale-ticket').hide();
+            new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(r) {
+                self.$('.pos-sale-ticket').show();
+                self.reprint_receipt = r;
+                self.check_handle_auto_print();
+            });
+        },
+        check_handle_auto_print: function() {
+            if (this.should_auto_print() && this.reprint_receipt && this.reprint_receipt.length) {
+                this.print();
+                if (this.should_close_immediately()){
+                    this.click_next();
+                }
+            } else {
+                this.lock_screen(false);
+            }
         },
         print_xml: function (receipt) {
             var self = this;
@@ -105,14 +126,12 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 }
                 this.pos.proxy.print_receipt(receipt);
             } else if (self.pos.config.show_posted_orders && order.state === "done") {
-                new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(r) {
-                    if (r && r.length) {
-                        self.print_xml(r[0]);
-                    } else {
-                        self.show_popup = true;
-                        self.click_next();
-                    }
-                });
+                if (self.reprint_receipt && self.reprint_receipt.length) {
+                    self.print_xml(self.reprint_receipt[0]);
+                } else {
+                    self.show_popup = true;
+                    self.click_next();
+                }
             } else {
                 receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
                 if (receipt) {
