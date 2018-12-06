@@ -53,6 +53,7 @@ odoo.define('pos_order_receipt_custom.screens', function(require){
                     receipt: receipt, widget: printbill, pos: this.pos, order: order,
                 }));
             }
+            order.set_receipt_type(false);
         },
     });
 });
