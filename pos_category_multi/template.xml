@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
-        <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_category_multi/static/src/js/db.js"></script>
-                <script type="text/javascript" src="/pos_category_multi/static/src/js/models.js"></script>
-            </xpath>
-        </template>
-    </data>
-</openerp>
+<odoo>
+    <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_category_multi/static/src/js/db.js"></script>
+            <script type="text/javascript" src="/pos_category_multi/static/src/js/models.js"></script>
+        </xpath>
+    </template>
+
+    <template id="tour_assets_backend" name="pos_category_multi tour assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_category_multi/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
+</odoo>
