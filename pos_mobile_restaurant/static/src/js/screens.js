@@ -15,6 +15,22 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
         },
     });
 
+    screens.ProductListWidget.include({
+        renderElement: function() {
+            this._super();
+            if (!this.pos.iOS) {
+                var scroll = $('.product-list-scroller').getNiceScroll();
+                if(scroll && scroll.length) {
+                    scroll.resize();
+                } else {
+                    $('.product-list-scroller').niceScroll({
+                        horizrailenabled: false,
+                    });
+                }
+            }
+        },
+    });
+
     screens.ActionpadWidget.include({
         renderElement: function() {
             var self = this;

@@ -1,5 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -7,11 +6,7 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
-        # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
-        cr = self.registry.cursor()
-        assert cr == self.registry.test_cr
-        env = Environment(cr, self.uid, {})
-
+        env = self.env
         # get exist pos_config
         main_pos_config = env.ref('point_of_sale.pos_config_main')
         # create new session and open it
@@ -24,7 +19,6 @@ class TestUi(odoo.tests.HttpCase):
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         env['ir.module.module'].search([('name', '=', 'pos_mobile_restaurant')], limit=1).state = 'installed'
-        self.registry.test_cr.release()
 
         self.phantom_js(
             '/pos/web?m=1',

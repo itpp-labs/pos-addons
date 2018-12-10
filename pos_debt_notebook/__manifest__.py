@@ -15,10 +15,11 @@
     'category': 'Point Of Sale',
     'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=10.0',
     "images": ['images/debt_notebook.png'],
-    'version': '11.0.5.1.0',
+    'version': '12.0.5.1.0',
+
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "pos@it-projects.info",
-    'website': 'https://it-projects.info',
+    'website': 'https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook/',
     'license': 'LGPL-3',
     "price": 280.00,
     "currency": "EUR",
@@ -26,7 +27,6 @@
     "external_dependencies": {"python": [], "bin": []},
     'depends': [
         'point_of_sale',
-        'base_groupby_extra',
     ],
     'data': [
         'security/pos_debt_notebook_security.xml',

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 `4.2.4`
 -------
 
@@ -19,6 +20,7 @@
 
 **Fix:** Error related to longpoll updates of paid orders
 **Fix:** Cannot read property then of undefined or request_sync_all is undefined
+**Fix:** Before this fix if we have a rerender of the product list every time, then we will get a hang and slow response of the system.
 
 `4.2.0`
 -------

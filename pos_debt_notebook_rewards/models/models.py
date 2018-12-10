@@ -74,6 +74,7 @@ class PosCreditUpdateReward(models.Model):
 
 class RewardType(models.Model):
     _name = 'pos.credit.update.reward.type'
+    _description = 'Manual Credit Updates Type'
 
     name = fields.Char('Name', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,

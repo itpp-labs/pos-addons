@@ -193,14 +193,14 @@ odoo.define('pos_mobile.screens', function (require) {
     screens.ProductScreenWidget.include({
         click_product: function(product) {
             this._super.apply(this, arguments);
-            var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+            var $qty = $('article[data-product-id="'+product.id+'"] .current-order-qty');
             var order = this.pos.get_order();
             var qty = order.get_quantity_by_product_id(product.id);
             if (qty) {
                 $qty.html(qty);
             }
-            var $p = $('span[data-product-id="'+product.id+'"]');
-            var $pi = $('span[data-product-id="'+product.id+'"] img');
+            var $p = $('article[data-product-id="'+product.id+'"]');
+            var $pi = $('article[data-product-id="'+product.id+'"] img');
 
             $($p).stop();
             $($pi).stop();
@@ -339,7 +339,7 @@ odoo.define('pos_mobile.screens', function (require) {
                     products = [this.pos.db.get_product_by_id(product_id)];
                 }
                 products.forEach(function(product){
-                    var $qty = $('span[data-product-id="'+product.id+'"] .current-order-qty');
+                    var $qty = $('article[data-product-id="'+product.id+'"] .current-order-qty');
                     var qty = order.get_quantity_by_product_id(product.id);
                     $qty.html('');
                     if (qty) {

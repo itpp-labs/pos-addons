@@ -8,7 +8,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-logout?version=11.0",
     "images": ["images/pos_logout_main.png"],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

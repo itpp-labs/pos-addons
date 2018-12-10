@@ -35,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Absolute Discounts in POS",
     "demo_addons": [
