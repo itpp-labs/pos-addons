@@ -1,3 +1,13 @@
+`1.3.8`
+-------
+
+**Improvement:** Scrolling of Order list
+
+`1.3.7`
+-------
+
+- **FIX:** The menu is not opened after changing a floor
+
 `1.3.6`
 -------
 

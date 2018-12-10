@@ -676,16 +676,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 if (debt_type === 'debt') {
                     if (debt > 0) {
                         $pay_full_debt.removeClass('oe_hidden');
-                        $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + this.format_currency(debt) + ']</span>');
                     } else if (debt < 0) {
-                        $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + this.format_currency(debt) + ']</span>');
                     }
                 } else if (debt_type === 'credit') {
                     if (debt > 0) {
-                        $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + this.format_currency(debt) + ']</span>');
                     } else if (debt < 0) {
                         $pay_full_debt.removeClass('oe_hidden');
-                        $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + this.format_currency(debt) + ']</span>');
                     }
                 }
             }

@@ -31,7 +31,6 @@ class ResPartner(models.Model):
             domain,
             fields,
             'partner_id')
-
         res_index = dict((id, {'balance': 0}) for id in self.ids)
         for data in res:
             res_index[data['partner_id'][0]] = data
@@ -180,6 +179,22 @@ class ResPartner(models.Model):
         if partner.get('debt_limit') is False:
             del partner['debt_limit']
         return super(ResPartner, self).create_from_ui(partner)
+
+    @api.multi
+    def _compute_partner_journal_debt(self, journal_id):
+        domain = [('partner_id', 'in', self.ids),
+                  ('journal_id', '=', journal_id)]
+        fields = ['partner_id', 'balance', 'journal_id']
+        res = self.env['report.pos.debt'].read_group(
+            domain,
+            fields,
+            'partner_id')
+
+        res_index = dict((id, {'balance': 0}) for id in self.ids)
+
+        for data in res:
+            res_index[data['partner_id'][0]] = data
+        return res_index
 
 
 class ResConfigSettings(models.TransientModel):
@@ -637,3 +652,9 @@ class PosCreditUpdate(models.Model):
         active_ids = self._context.get('active_ids')
         for r in self.env['pos.credit.update'].browse(active_ids):
             r.switch_to_confirm()
+
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    has_invoices = fields.Boolean(store=True)

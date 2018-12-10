@@ -63,8 +63,6 @@ odoo.define('pos_mobile.chrome', function (require) {
 
             // element before the closing button in top header
             $($('.pos-rightheader .oe_status')[0]).css({'margin-right': '70px'});
-
-            this.gui.screen_instances.products.order_widget.change_orderlist();
         },
     });
 
@@ -95,21 +93,17 @@ odoo.define('pos_mobile.chrome', function (require) {
         },
     });
 
-    chrome.UsernameWidget.include({
-        renderElement: function(){
-            this._super();
-            if (this.gui.screen_instances && this.gui.screen_instances.products && this.gui.screen_instances.products.order_widget) {
-                this.gui.screen_instances.products.order_widget.change_orderlist();
-            }
-        },
-     });
-
     chrome.OrderSelectorWidget.include({
-        renderElement: function(){
-            this._super();
-            $('.pos-topheader .nicescroll-rails').remove();
-            this.$('.orders').niceScroll();
-        }
+        renderElement: function() {
+            this._super.apply(this, arguments);
+            this.scroll_to_selected_order();
+        },
+        scroll_to_selected_order: function() {
+            var orders = this.pos.get('orders');
+            var selected_order = this.pos.get_order();
+            var width = orders.indexOf(selected_order);
+            $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
+        },
     });
 
     return chrome;

@@ -1,6 +1,12 @@
+`4.2.4`
+-------
+
+**Improvement:** Code refactoring to pay technical debt
+
 `4.2.3`
 -------
 
+**Fix:** Don't make automatic scrolling of the current order on changing other orders
 **Fix:** Before this fix if we have a rerender of the product list every time, then we will get a hang and slow response of the system.
 
 `4.2.2`

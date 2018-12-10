@@ -4,11 +4,11 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/main.png"],
-    "version": "11.0.1.0.1",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, KolushovAlexandr",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
     "price": 20.00,

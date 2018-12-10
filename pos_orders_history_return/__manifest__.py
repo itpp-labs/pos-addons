@@ -7,11 +7,11 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=11.0",
     "images": ["images/pos_orders_return_main.jpg"],
-    "version": "11.0.1.0.0",
+    "version": "11.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
     "price": 39.00,

@@ -16,6 +16,7 @@ class PosDebtReport(models.Model):
 
     order_id = fields.Many2one('pos.order', string='POS Order', readonly=True)
     invoice_id = fields.Many2one('account.invoice', string='Invoice', readonly=True)
+    payment_id = fields.Many2one('account.payment', string='Payment', readonly=True)
     update_id = fields.Many2one('pos.credit.update', string='Manual Update', readonly=True)
 
     date = fields.Datetime(string='Date', readonly=True)
@@ -45,6 +46,7 @@ class PosDebtReport(models.Model):
                     st_line.id as id,
                     o.id as order_id,
                     NULL::integer as invoice_id,
+                    NULL::integer as payment_id,
                     NULL::integer as update_id,
                     -st_line.amount as balance,
                     st.state as state,
@@ -80,6 +82,7 @@ class PosDebtReport(models.Model):
                     -pos_line.id as id,
                     o.id as order_id,
                     NULL::integer as invoice_id,
+                    NULL::integer as payment_id,
                     NULL::integer as update_id,
                     -- FIXME: price_subtotal cannot be used, because it's not stored field
                     pos_line.price_unit * qty as balance,
@@ -123,6 +126,7 @@ class PosDebtReport(models.Model):
                     (2147483647 - inv_line.id) as id,
                     NULL::integer as order_id,
                     inv.id as invoice_id,
+                    NULL::integer as payment_id,
                     NULL::integer as update_id,
                     inv_line.price_subtotal as balance,
                     'confirm' as state,
@@ -157,6 +161,7 @@ class PosDebtReport(models.Model):
                     (-2147483647 + record.id) as id,
                     record.order_id as order_id,
                     NULL::integer as invoice_id,
+                    NULL::integer as payment_id,
                     record.id as update_id,
                     record.balance as balance,
                     record.state as state,
@@ -175,6 +180,39 @@ class PosDebtReport(models.Model):
                 FROM pos_credit_update as record
                 WHERE
                     record.state in ('confirm')
+                )
+                UNION ALL
+                (
+                --
+                -- Invoices paid by credit journal
+                --
+                SELECT
+                    (-1073741823 - pay.id) as id,
+                    NULL::integer as order_id,
+                    NULL::integer as invoice_id,
+                    pay.id as payment_id,
+                    NULL::integer as update_id,
+                    -pay.amount as balance,
+                    'confirm' as state,
+                    false as credit_product,
+
+                    pay.payment_date as date,
+                    pay.partner_id as partner_id,
+                    NULL::integer as user_id,
+                    NULL::integer as session_id,
+                    NULL::integer as config_id,
+                    pay.company_id as company_id,
+                    pay.currency_id as currency_id,
+                    '' as product_list,
+
+                    pay.journal_id as journal_id
+
+                FROM account_payment as pay
+                    LEFT JOIN account_journal journal ON (journal.id=pay.journal_id)
+                WHERE
+                    journal.debt=true
+                    AND pay.state != 'cancelled'
+                    AND pay.has_invoices = true
                 )
             )
         """)

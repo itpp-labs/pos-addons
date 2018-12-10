@@ -57,7 +57,7 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             order_button.detach();
             $(".mobile-order-container .mobile-search-bar .searchbox").prepend(order_button);
 
-            // show first floor
+            // // show first floor
             if (this.pos.floors && this.pos.floors.length) {
                 this.change_current_floor(this.pos.floors[0].id);
             }
@@ -124,15 +124,16 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
             }
 
             // event for menu button
-            this.menuButton = $('.menu-button');
+            this.menuButton = $('.slide-floor-content .menu-button');
             this.menu_is_opened = false;
 
-            this.menuButton.click(function(){
+            this.menuButton.click(function() {
                 self.menu_button_click();
             });
 
             // close left menu
             this.swiper_floor_screen.slideTo(1);
+            this.menuButton.removeClass('cross');
 
             // set active selector
             $('.mobile-floor-selector').find('.button-floor.active').removeClass('active');
@@ -144,6 +145,20 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
                     horizrailenabled: false,
                     scrollCLass: 'floor-scroll',
                 });
+            }
+        }
+    });
+
+    chrome.OrderSelectorWidget.include({
+        scroll_to_selected_order: function() {
+            if (this.pos.table) {
+                var orders = this.pos.get_table_orders(this.pos.table);
+                var selected_order = this.pos.get_order();
+                var width = orders.indexOf(selected_order);
+                var floor_button_width = $('.pos-rightheader .floor-button').width() + 50;
+                $('.pos-rightheader .orders.touch-scrollable').scrollLeft(floor_button_width + (105 * width));
+            } else {
+                this._super();
             }
         }
     });

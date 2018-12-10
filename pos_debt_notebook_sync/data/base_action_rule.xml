@@ -46,5 +46,4 @@
             <field name="state">code</field>
             <field name="code">env['pos.config'].notify_debt_updates()</field>
         </record>
-
 </odoo>

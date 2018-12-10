@@ -1,5 +1,6 @@
-Disable orders restoring
-========================
+==========================
+ Disable orders restoring
+==========================
 
 The module disables restoring unpaid orders on startup.
 

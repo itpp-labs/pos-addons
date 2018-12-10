@@ -9,11 +9,11 @@
     "category": "Point Of Sale",
     "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": ["images/pos-multi-session.png"],
-    "version": "11.0.4.2.3",
+    "version": "11.0.4.2.4",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "LGPL-3",
     "price": 360.00,

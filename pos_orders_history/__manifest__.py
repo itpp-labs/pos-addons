@@ -9,11 +9,11 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=11.0",
     "images": ['images/pos_orders_history_main.png'],
-    "version": "11.0.1.1.0",
+    "version": "11.0.1.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 59.00,
