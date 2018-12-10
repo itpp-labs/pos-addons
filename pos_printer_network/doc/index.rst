@@ -6,7 +6,6 @@ Installation
 ============
 
 * Install the pos_printer_network module on Odoo instance
-Note: Some languages are not supported in IoTBox 18_10. Try using an earlier version of POSBox. You may find a solution here: https://github.com/odoo/odoo/issues/25007#issuecomment-395700893
 
 Configuration
 =============
@@ -70,3 +69,6 @@ Note
 ====
 
 In the POS interface you can see the connection status of your printers by clicking on posbox icon at the top right corner.
+
+Some languages are not supported in IoTBox 18_10. Try using an earlier version of POSBox. You may find a solution here: https://github.com/odoo/odoo/issues/25007#issuecomment-395700893
+
