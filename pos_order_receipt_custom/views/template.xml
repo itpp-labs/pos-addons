@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
+<odoo>
+    <template id="assets_backend" name="pos_order_receipt_custom_assets" inherit_id="point_of_sale.assets">
+        <xpath expr="//link[last()]" position="after">
+            <script type="text/javascript" src="/pos_order_receipt_custom/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_order_receipt_custom/static/src/js/screens.js"></script>
+        </xpath>
+    </template>
+
+    <template id="demo_assets_backend" name="pos_order_receipt_custom demo assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_order_receipt_custom/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

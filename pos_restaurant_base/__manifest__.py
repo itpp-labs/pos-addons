@@ -5,11 +5,11 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "10.0.2.0.3",
+    "version": "10.0.2.0.4",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 35.00,

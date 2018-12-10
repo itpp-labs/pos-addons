@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -8,52 +7,77 @@ from odoo import models, fields, api
 
 class PosCreditInvoices(models.TransientModel):
     _name = 'pos.credit.invoices'
-    _description = 'Generate invoices to pay Pos Credits'
+    _description = 'Write-off Credits'
 
-    partner_id = fields.Many2one('res.partner', 'Company', domain="[('is_company', '=', True)]", required=True)
+    update_type = fields.Selection([
+        ('balance_update', 'Balance Update'),
+        ('new_balance', 'New Balance')
+    ], default='balance_update', required=True,
+        string='Update Type', help='Make equal Invoices for partners or set them all the same credit value.'
+                                   ' Applies only if partner amount will be decreased')
+    amount = fields.Float('Write-off Amount', default=0)
+    new_balance = fields.Float('New Balance', default=0)
+
+    journal_id = fields.Many2one('account.journal', string='Journal', domain="[('debt', '=', True)]", required=True)
     product_id = fields.Many2one(
         'product.product',
         'Credit Product',
-        domain="[('credit_product', 'not in', [0, None, False])]",
         required="True",
         help="This product will be used on creating invoices."
     )
-    credit_balance_company = fields.Float(related='partner_id.credit_balance_company')
-    amount = fields.Float('Amount')
-    payment_type = fields.Selection([
-        ('pay_debts', 'Pay debts only'),
-        ('pay_per_employee', 'Pay same amount for each employee'),
-        ('custom', 'Custom amount per each employee'),
-    ], default='custom', required=True)
-    line_ids = fields.One2many('pos.credit.invoices.line', 'wizard_id')
-    total = fields.Float('Total to pay', compute='_compute_total')
 
-    @api.onchange('partner_id', 'amount', 'payment_type')
+    partner_ids = fields.Many2many('res.partner', string='Partners', required=True)
+    partner_credits = fields.Float('Total Partner Credit', compute='_compute_totals', help='Only credits are counted')
+    full_charge = fields.Float(string='Total Write-off Amount', compute='_compute_totals')
+    total_credit = fields.Float('Total', compute='_compute_totals', help='Only credits are counted')
+
+    line_ids = fields.One2many('pos.credit.invoices.line', 'wizard_id')
+
+    @api.multi
+    @api.onchange('journal_id')
+    @api.depends('partner_ids', 'journal_id')
+    def _compute_totals(self):
+        partners = self.partner_ids
+        debts = partners._compute_partner_journal_debt(self.journal_id.id)
+
+        self['partner_credits'] = sum([debts[p.id]['balance'] for p in partners] + [0])
+
+        if self.update_type == 'balance_update':
+            self['full_charge'] = self.amount * len(partners)
+        elif self.update_type == 'new_balance':
+            self['full_charge'] = sum([
+                debts[p.id]['balance'] > self.new_balance and
+                debts[p.id]['balance'] - self.new_balance or 0 for p in partners] + [0])
+        self['total_credit'] = self['partner_credits'] - self['full_charge']
+
+    @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id')
     def update_lines(self):
         p2amount = None
-        if self.payment_type == 'custom':
-            def p2amount(p):
-                return 0
 
-        if self.payment_type == 'pay_debts':
-            def p2amount(p):
-                return p.debt
+        debts = self.partner_ids._compute_partner_journal_debt(self.journal_id.id)
 
-        if self.payment_type == 'pay_per_employee':
+        def p2balance(p):
+            return debts[p.id]['balance']
+
+        if self.update_type == 'balance_update':
             def p2amount(p):
                 return self.amount
+
+        elif self.update_type == 'new_balance':
+            def p2amount(p):
+                return debts[p.id]['balance'] > self.new_balance and debts[p.id]['balance'] - self.new_balance or 0
 
         self.line_ids = [
             # remove old lines
             (5, None, None)
         ] + [
-            (0, None, {'partner_id': p.id, 'amount': p2amount(p)})
-            for p in (self.partner_id + self.partner_id.child_ids)
+            (0, None, {
+                'partner_id': p.id,
+                'amount': p2amount(p),
+                'current_balance': p2balance(p)
+            })
+            for p in self.partner_ids
         ]
-
-    @api.onchange('line_ids')
-    def _compute_total(self):
-        self.total = sum((line.amount for line in self.line_ids))
 
     @api.multi
     def apply(self):
@@ -62,7 +86,7 @@ class PosCreditInvoices(models.TransientModel):
         for line in self.line_ids:
             if not line.amount:
                 continue
-            self.env['account.invoice'].create({
+            invoice = self.env['account.invoice'].create({
                 'type': 'out_invoice',
                 'partner_id': line.partner_id.id,
                 'invoice_line_ids': [
@@ -74,15 +98,25 @@ class PosCreditInvoices(models.TransientModel):
                     })
                 ]
             })
+            invoice.action_invoice_open()
+            invoice.pay_and_reconcile(self.journal_id)
 
 
 class PosCreditInvoicesLine(models.TransientModel):
     _name = 'pos.credit.invoices.line'
-    _order = 'is_company DESC, partner_name'
+    _order = 'partner_name'
 
     wizard_id = fields.Many2one('pos.credit.invoices')
-    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
     partner_name = fields.Char('Name', related='partner_id.name', readonly=True)
-    is_company = fields.Boolean(related='partner_id.is_company', readonly=True)
-    credit_balance = fields.Float('Current Credits', related='partner_id.credit_balance', readonly=True)
-    amount = fields.Float('Credits to add')
+
+    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
+    current_balance = fields.Float('Current Credits', readonly=True)
+
+    amount = fields.Float('Write-off amount', readonly=True)
+    total_balance = fields.Float('Total Credits', compute='_compute_total_balance', readonly=True)
+
+    @api.multi
+    @api.depends('wizard_id', 'amount', 'partner_id')
+    def _compute_total_balance(self):
+        for rec in self:
+            rec['total_balance'] = rec.current_balance - rec.amount

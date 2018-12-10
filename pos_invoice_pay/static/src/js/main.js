@@ -14,10 +14,25 @@ var bus = require('bus.bus').bus;
 var Model = require('web.Model');
 var screens = require('point_of_sale.screens');
 var longpolling = require('pos_longpolling');
+var chrome = require('point_of_sale.chrome');
 
 var QWeb = core.qweb;
 var _t = core._t;
 var round_pr = utils.round_precision;
+
+    chrome.Chrome.include({
+        build_widgets: function() {
+            this._super();
+            // for compatibility with https://www.odoo.com/apps/modules/12.0/pos_mobile/
+            if (odoo.is_mobile) {
+                var payment_method = $(".invoice-payment-screen .paymentmethods-container");
+                payment_method.detach();
+                $('.invoice-payment-screen .paymentlines-container').after(payment_method);
+
+                $('.invoice-payment-screen .touch-scrollable').niceScroll();
+            }
+        },
+    });
 
 
 var _super_posmodel = models.PosModel.prototype;
@@ -548,37 +563,31 @@ screens.define_action_button({
     return this.pos.config.show_sale_orders;
 },
 });
-
-var InvoicesAndOrdersBaseWidget = screens.ClientListScreenWidget.extend({
+var InvoicesAndOrdersBaseWidget = screens.ScreenWidget.extend({
     show: function () {
         var self = this;
         this._super();
         this.renderElement();
-        this.details_visible = false;
-        this.old_client = this.pos.get_order().get_client();
 
-        this.$('.next').click(function(e){
+        this.$('.next').click(function(e) {
             e.preventDefault();
-            self.handle_next();
+            self.click_next(e);
         });
 
         this.render_data(this.get_data());
 
-        this.$('.client-list-contents').delegate(this.$listEl,'click',function(event){
+        this.$('.list-contents').delegate(this.$listEl,'click',function(event){
             self.select_line(event,$(this),parseInt($(this).data('id')));
         });
-
-        var search_timeout = null;
 
         if(this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard){
             this.chrome.widget.keyboard.connect(this.$('.searchbox input'));
         }
 
-        this.$('.searchbox input').on('keypress',function(event){
-            clearTimeout(search_timeout);
-
+        var search_timeout = null;
+        this.$('.searchbox input').on('keypress', function(event) {
             var query = this.value;
-
+            clearTimeout(search_timeout);
             search_timeout = setTimeout(function () {
                 self._search(query);
             }, 70);
@@ -587,14 +596,30 @@ var InvoicesAndOrdersBaseWidget = screens.ClientListScreenWidget.extend({
         this.$('.searchbox .search-clear').click(function () {
             self._clear_search();
         });
-    },
 
+        if (odoo.is_mobile) {
+            // for compatibility with https://www.odoo.com/apps/modules/12.0/pos_mobile/
+            setTimeout(function(){
+                var width = self.$('.screen-content').width();
+                var height = self.$('table.list').height();
+                var max_height = self.$('.full-content').height();
+                if (height > max_height) {
+                    height = max_height;
+                }
+                self.$('.subwindow-container-fix.touch-scrollable.scrollable-y').css({
+                    'width': width,
+                    'height': height
+                });
+                self.$('.touch-scrollable').niceScroll();
+            }, 0);
+        }
+    },
     render_data: function (data) {
-        var contents = this.$el[0].querySelector('.client-list-contents');
+        var contents = this.$el[0].querySelector('.list-contents');
         contents.innerHTML = "";
         for(var i = 0, len = Math.min(data.length,1000); i < len; i++){
             var item = data[i];
-                var item_html = QWeb.render(this.itemTemplate,{widget: this, item:data[i]});
+                var item_html = QWeb.render(this.itemTemplate, {widget: this, item:data[i]});
                 var item_line = document.createElement('tbody');
 
                 var $tr = document.createElement('tr');
@@ -614,28 +639,22 @@ var InvoicesAndOrdersBaseWidget = screens.ClientListScreenWidget.extend({
 
             contents.appendChild(item_line);
             contents.appendChild($tr);
-
         }
     },
-
     render_lines_table: function (data_lines) {
         var $table = document.createElement('table'),
         $header = this.render_header(),
         $tableData = this.render_product_lines(data_lines);
-
         $table.classList.add('lines-table');
-
         $table.appendChild($header);
         $table.appendChild($tableData);
         return $table;
     },
-
     render_header: function () {
         var $header = document.createElement('thead');
         $header.innerHTML = QWeb.render(this.linesHeaderTemplate);
         return $header;
     },
-
     render_product_lines: function (data_lines) {
         var $body = document.createElement('tbody'),
         lines = '',
@@ -647,7 +666,6 @@ var InvoicesAndOrdersBaseWidget = screens.ClientListScreenWidget.extend({
         $body.innerHTML = lines;
         return $body;
     },
-
 });
 
 var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
@@ -659,25 +677,22 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
         this.linesHeaderTemplate = 'SaleOrderLinesHeader';
         this.lineTemplate = 'SaleOrderLine';
         this.num_columns = 6;
-
         this.selected_SO = false;
     },
-
     show: function () {
         var self = this;
-        this._super.apply(this, arguments);
+        this._super();
+
         this.$('.back').click(function () {
             self.gui.show_screen('products');
         });
     },
-
     get_data: function () {
         return this.pos.get_sale_order_to_render(this.pos.db.sale_orders);
     },
-
     select_line: function (event,$line,id) {
         var sale_order = this.pos.db.get_sale_order_by_id(id);
-        this.$('.client-list .lowlight').removeClass('lowlight');
+        this.$('.list .lowlight').removeClass('lowlight');
         if ( $line.hasClass('highlight') ){
             this.selected_SO = false;
             $line.removeClass('highlight');
@@ -685,14 +700,25 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
             $line.next().addClass('line-element-hidden');
 
         }else{
-            this.$('.client-list .highlight').removeClass('highlight');
+            this.$('.list .highlight').removeClass('highlight');
             $line.addClass('highlight');
             this.selected_SO = sale_order;
             $line.next().removeClass('line-element-hidden');
+            $line.next().addClass('line-element');
         }
         this.toggle_save_button(this.selected_SO);
+        if (odoo.is_mobile) {
+            var height = this.$('table.list').height();
+            var max_height = this.$('.full-content').height();
+            if (height > max_height) {
+                height = max_height;
+            }
+            this.$('.subwindow-container-fix.touch-scrollable.scrollable-y').css({
+                'height': height
+            });
+            this.$('.subwindow-container-fix.touch-scrollable.scrollable-y').getNiceScroll().resize();
+        }
     },
-
     toggle_save_button: function (selected_invoice) {
         var $button = this.$('.button.next');
         if (selected_invoice) {
@@ -701,9 +727,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
             $button.addClass('oe_hidden');
         }
     },
-
-    handle_next: function () {
-        var self = this;
+    click_next: function () {
         if (this.selected_SO) {
             this.create_invoice(this.selected_SO);
         } else {
@@ -714,7 +738,6 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
             return false;
         }
     },
-
     create_invoice: function (sale_order) {
         var self = this;
         new Model('pos.order').call('process_invoices_creation', [sale_order.id]).
@@ -739,7 +762,6 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
                 event.preventDefault();
             });
     },
-
     _search: function (query) {
         var sale_orders = [];
         if(query){
@@ -774,13 +796,14 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
         this.selected_invoice = false;
     },
 
-     get_data: function () {
+    get_data: function () {
         return this.pos.get_invoices_to_render(this.pos.db.invoices);
-     },
+    },
 
     show: function () {
         var self = this;
-        this._super.apply(this, arguments);
+        this._super();
+
         this.$('.back').click(function () {
             self.gui.back();
         });
@@ -788,19 +811,31 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
 
     select_line: function (event,$line,id) {
         var invoice = this.pos.db.get_invoice_by_id(id);
-        this.$('.client-list .lowlight').removeClass('lowlight');
+        this.$('.list .lowlight').removeClass('lowlight');
         if ($line.hasClass('highlight')){
             this.selected_invoice = false;
             $line.removeClass('highlight');
             $line.addClass('lowlight');
             $line.next().addClass('line-element-hidden');
         } else {
-            this.$('.client-list .highlight').removeClass('highlight');
+            this.$('.list .highlight').removeClass('highlight');
             $line.addClass('highlight');
             this.selected_invoice = invoice;
             $line.next().removeClass('line-element-hidden');
+            $line.next().addClass('line-element');
         }
         this.toggle_save_button(this.selected_invoice);
+        if (odoo.is_mobile) {
+            var height = this.$('table.list').height();
+            var max_height = this.$('.full-content').height();
+            if (height > max_height) {
+                height = max_height;
+            }
+            this.$('.subwindow-container-fix.touch-scrollable.scrollable-y').css({
+                'height': height
+            });
+            this.$('.subwindow-container-fix.touch-scrollable.scrollable-y').getNiceScroll().resize();
+        }
     },
 
     toggle_save_button: function (selected_invoice) {
@@ -832,7 +867,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
         this.$('.searchbox input').focus();
     },
 
-    handle_next: function () {
+    click_next: function () {
         var self = this;
         if (this.selected_invoice) {
             this.pos.selected_invoice = this.selected_invoice;
@@ -1039,7 +1074,6 @@ var InvoiceReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
                 paymentlines: order.get_paymentlines(),
             }));
     },
-
     render_change: function () {
         var order = this.pos.get_order();
         this.$('.change-value').html(this.format_currency(order.invoice_to_pay.get_change()));

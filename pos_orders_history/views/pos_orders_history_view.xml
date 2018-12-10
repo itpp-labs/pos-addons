@@ -12,7 +12,8 @@
                 <group string="Orders History" name="orders_history">
                     <group name="orders_history">
                         <field name="orders_history"/>
-                        <field name="current_day_orders_only" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
+                        <field name="load_orders_of_last_n_days" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
+                        <field name="number_of_days" attrs="{'invisible' : ['|', ('orders_history', '=', False), ('load_orders_of_last_n_days', '=', False)]}"/>
                         <field name="show_cancelled_orders" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
                         <field name="show_posted_orders" attrs="{'invisible' : [('orders_history', '=', False)]}"/>
                         <field name="show_barcode_in_receipt" attrs="{'invisible' : [('orders_history', '=', False)]}"/>

@@ -8,11 +8,11 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=10.0",
     "images": ["images/pos_orders_reprint_main.png"],
-    "version": "10.0.1.0.0",
+    "version": "10.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/",
     "license": "LGPL-3",
     "price": 20.00,

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-if='simple'] line" t-operation="after">
+            <t t-set="second_product_name" t-value="line.second_product_name"/>
+            <t t-if="pos.config.show_second_product_name_in_receipt and second_product_name">
+                <line>
+                    <left>(<t t-esc='second_product_name' />)</left>
+                </line>
+            </t>
+        </t>
+        <t t-jquery="t[t-if='!simple'] line:first" t-operation="after">
+            <t t-set="second_product_name" t-value="line.second_product_name"/>
+            <t t-if="pos.config.show_second_product_name_in_receipt and second_product_name">
+                <line>
+                    <left>(<t t-esc='second_product_name' />)</left>
+                </line>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery=".receipt-orderlines tr[t-foreach='orderlines']" t-operation="append">
+            <t t-set="second_product_name" t-value="orderline.get_product().second_product_name"/>
+            <t t-if="widget.pos.config.show_second_product_name_in_receipt and second_product_name">
+                <tr><td>(<t t-esc="second_product_name"/>)</td></tr>
+            </t>
+        </t>
+    </t>
+
+</templates>

@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-    <data>
         <!-- call notify_debt_updates() -->
         <record id="action_notify_pos_about_debt_updates" model="ir.actions.server">
             <field name="name">Notify POS about Debt updates</field>
@@ -66,7 +65,4 @@
             <field name="kind">on_create_or_write</field>
             <field name="server_action_ids" eval="[(6,0,[ref('action_notify_pos_about_debt_updates')])]"/>
         </record>
-
-
-    </data>
 </odoo>

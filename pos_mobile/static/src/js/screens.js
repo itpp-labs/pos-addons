@@ -88,6 +88,7 @@ odoo.define('pos_mobile.screens', function (require) {
             if (!this.pos.iOS) {
                 setTimeout(function(){
                     $('.order-scroller').getNiceScroll().resize();
+                    $('.product-list-scroller').getNiceScroll().resize();
                 }, 300)
             }
         },
@@ -100,6 +101,7 @@ odoo.define('pos_mobile.screens', function (require) {
             if (!this.pos.iOS) {
                 setTimeout(function(){
                     $('.order-scroller').getNiceScroll().resize();
+                    $('.product-list-scroller').getNiceScroll().resize();
                 }, 500)
             }
         },
@@ -163,6 +165,7 @@ odoo.define('pos_mobile.screens', function (require) {
             }
 
             if (!this.pos.iOS) {
+                // add product list scrolling
                 $('.product-list-scroller').niceScroll({
                     horizrailenabled: false,
                 });
@@ -301,7 +304,6 @@ odoo.define('pos_mobile.screens', function (require) {
             }
             this.change_product_qty();
             this.scroll_to_selected_order();
-            this.change_orderlist();
             if (!this.pos.iOS) {
                 $('.order-scroller').niceScroll({
                     horizrailenabled: false,
@@ -338,17 +340,6 @@ odoo.define('pos_mobile.screens', function (require) {
             var width = orders.indexOf(selected_order);
             $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
         },
-        change_orderlist: function() {
-            var width = 0;
-            var header_width = $('.pos.mobile .pos-rightheader').width();
-            $('.pos.mobile .pos-rightheader').children().each(function(index, el) {
-                if (!$(el).hasClass('order-selector')) {
-                    width += $(el).width();
-                    width += 3;
-                }
-            });
-            $('.pos.mobile .order-selector').css({'max-width': header_width - width - 70});
-        }
     });
     return screens;
 });

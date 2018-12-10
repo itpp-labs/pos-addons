@@ -5,11 +5,11 @@
     "category": "Point of Sale",
     'live_test_url': 'http://apps.it-projects.info/shop/product/internal-credit-system?version=10.0',
     "images": ['images/credit.png'],
-    "version": "10.0.1.1.0",
+    "version": "10.0.1.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 510.00,
