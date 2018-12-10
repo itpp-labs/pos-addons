@@ -626,8 +626,8 @@ odoo.define('pos_multi_session', function(require){
                 this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
                 this.trigger('change:update_new_order');
             } else {
-                // 'change' trigger saves order to db
-                this.trigger('change');
+                // save order to the local storage
+                this.save_to_db();
             }
             if (!this.ms_active()){
                 return;
