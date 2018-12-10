@@ -6,12 +6,12 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pos_receipt_custom_main.png"],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "support": "pos@it-projects.info",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_receipt_custom_template/",
     "license": "LGPL-3",
     "price": 49.00,
     "currency": "EUR",
@@ -38,5 +38,5 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
