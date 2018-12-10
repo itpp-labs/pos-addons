@@ -83,6 +83,7 @@ class PosCreditInvoices(models.TransientModel):
 class PosCreditInvoicesLine(models.TransientModel):
     _name = 'pos.credit.invoices.company.line'
     _order = 'is_company DESC, partner_name'
+    _description = 'Partner invoice lines'
 
     wizard_id = fields.Many2one('pos.credit.invoices.company')
     partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)

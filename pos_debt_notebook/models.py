@@ -654,3 +654,4 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     has_invoices = fields.Boolean(store=True)
+    company_id = fields.Many2one(store=True)
