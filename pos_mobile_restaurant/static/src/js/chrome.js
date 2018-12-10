@@ -149,5 +149,19 @@ odoo.define('pos_mobile_restaurant.chrome', function (require) {
         }
     });
 
+    chrome.OrderSelectorWidget.include({
+        scroll_to_selected_order: function() {
+            if (this.pos.table) {
+                var orders = this.pos.get_table_orders(this.pos.table);
+                var selected_order = this.pos.get_order();
+                var width = orders.indexOf(selected_order);
+                var floor_button_width = $('.pos-rightheader .floor-button').width() + 50;
+                $('.pos-rightheader .orders.touch-scrollable').scrollLeft(floor_button_width + (105 * width));
+            } else {
+                this._super();
+            }
+        }
+    });
+
     return chrome;
 });

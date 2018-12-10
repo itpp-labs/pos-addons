@@ -93,5 +93,18 @@ odoo.define('pos_mobile.chrome', function (require) {
         },
     });
 
+    chrome.OrderSelectorWidget.include({
+        renderElement: function() {
+            this._super.apply(this, arguments);
+            this.scroll_to_selected_order();
+        },
+        scroll_to_selected_order: function() {
+            var orders = this.pos.get('orders');
+            var selected_order = this.pos.get_order();
+            var width = orders.indexOf(selected_order);
+            $('.pos-rightheader .orders.touch-scrollable').scrollLeft(105 * width);
+        },
+    });
+
     return chrome;
 });
