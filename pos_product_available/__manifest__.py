@@ -5,7 +5,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Available quantity of products in POS""",
-    "summary": """Adds available quantity at products in POS""",
+    "summary": """Adds Quantity label to each product in POS""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": [],
