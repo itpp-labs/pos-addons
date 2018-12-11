@@ -2,6 +2,7 @@
 <!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
+    
     <template id="assets_backend" name="pos_order_print_check_assets" inherit_id="point_of_sale.assets">
         <xpath expr="//link[last()]" position="after">
             <script type="text/javascript" src="/pos_order_print_check/static/src/js/widget.js"></script>
@@ -9,4 +10,5 @@ License MIT (https://opensource.org/licenses/MIT). -->
             <script type="text/javascript" src="/pos_order_print_check/static/src/js/multiprint.js"></script>
         </xpath>
     </template>
+    
 </odoo>
