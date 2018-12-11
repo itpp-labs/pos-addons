@@ -16,18 +16,52 @@
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='receipt_header']" position="before">
-                <field name="show_second_product_name_in_receipt"/>
-                <field name="show_discount_in_receipt"/>
-                <field name="custom_ticket"/>
-                <field name="custom_ticket_id" attrs="{'invisible' : [('custom_ticket', '=', False)],'required': [('custom_ticket', '=', True)]}"/>
+            <xpath expr="//field[@name='iface_print_via_proxy']/.." position="after">
+                <div class="row" attrs="{'invisible' : [('iface_print_via_proxy', '=', False)]}">
+                    <label string="Custom Receipt" for="custom_xml_receipt" class="col-lg-3 o_light_label"/>
+                    <field name="custom_xml_receipt"/>
+                </div>
+                <div class="row" attrs="{'invisible' : ['|',('custom_xml_receipt', '=', False),('iface_print_via_proxy', '=', False)]}">
+                    <label string="Custom Receipt Template" for="custom_xml_receipt_id" class="col-lg-3 o_light_label"/>
+                    <field name="custom_xml_receipt_id" attrs="{'required': [('custom_xml_receipt', '=', True),('iface_print_via_proxy', '=', True)]}"/>
+                </div>
             </xpath>
-            <xpath expr="//field[@name='iface_print_via_proxy']" position="after">
-                <field name="custom_xml_receipt" attrs="{'invisible' : [('iface_print_via_proxy', '=', False)]}"/>
-                <field name="custom_xml_receipt_id" attrs="{'invisible' : ['|',('custom_xml_receipt', '=', False),('iface_print_via_proxy', '=', False)],'required': [('custom_xml_receipt', '=', True),('iface_print_via_proxy', '=', True)]}"/>
+            <xpath expr="//div[@id='receipt']" position="inside">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="show_second_product_name_in_receipt"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="show_second_product_name_in_receipt"/>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="show_discount_in_receipt"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="show_discount_in_receipt"/>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="custom_ticket"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label string="Custom Ticket" for="custom_ticket"/>
+                        <div class="content-group" attrs="{'invisible' : [('custom_ticket', '=', False)]}">
+                            <div class="row" attrs="{'invisible' : [('custom_ticket', '=', False)]}">
+                                <label string="Custom Ticket Template" for="custom_ticket_id" class="col-lg-3 o_light_label"/>
+                                <field name="custom_ticket_id" attrs="{'required': [('custom_ticket', '=', True)]}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
+
         </field>
     </record>
 

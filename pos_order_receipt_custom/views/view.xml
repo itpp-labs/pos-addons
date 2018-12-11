@@ -15,17 +15,20 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="to_pos_config_inherit_form">
+    <record model="ir.ui.view" id="pos_config_view_form_inherit_restaurant">
         <field name="name">to.pos.config.inherit.form</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="pos_restaurant.view_pos_config_form"></field>
+        <field name="inherit_id" ref="pos_restaurant.pos_config_view_form_inherit_restaurant"></field>
         <field name="priority" eval="99" />
         <field name="arch" type="xml">
-            <data>
-                <xpath expr="//field[@name='printer_ids']" position="after">
-                    <field name="print_transfer_info_in_kitchen" attrs="{'invisible':[('printer_ids', '=', [])]}"/>
+                <xpath expr="//field[@name='printer_ids']/../.." position="after">
+                    <div class="content-group" attrs="{'invisible': [('is_order_printer', '=', False)]}">
+                        <div class="mt16" attrs="{'invisible':[('printer_ids', '=', [])]}">
+                            <label for="print_transfer_info_in_kitchen" class="o_light_label"/>
+                            <field name="print_transfer_info_in_kitchen"/>
+                        </div>
+                    </div>
                 </xpath>
-            </data>
         </field>
     </record>
 </odoo>
