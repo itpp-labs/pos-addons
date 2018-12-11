@@ -51,7 +51,7 @@ odoo.define('pos_orders_history_return.models', function (require) {
             if (this.get_mode() === "return_without_receipt") {
                 return;
             }
-            var el = $('span[data-product-id="'+product.id+'"] .max-return-qty');
+            var el = $('article[data-product-id="'+product.id+'"] .max-return-qty');
             var qty = this.get_current_product_return_qty(product);
             el.html(product.max_return_qty - qty);
         },

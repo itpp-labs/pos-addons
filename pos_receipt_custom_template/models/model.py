@@ -6,6 +6,7 @@ from odoo import fields, models
 
 class PosCustomReceipt(models.Model):
     _name = "pos.custom_receipt"
+    _description = "POS Custom Receipt/Ticket"
 
     name = fields.Char('Name')
     type = fields.Selection(string="Type", selection=[('receipt', 'Receipt'), ('ticket', 'Ticket')])
