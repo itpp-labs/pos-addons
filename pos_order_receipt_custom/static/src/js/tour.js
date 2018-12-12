@@ -26,6 +26,7 @@ odoo.define('pos_order_receipt_custom.tour', function(require) {
     var steps = [{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
+        timeout: 20000,
         run: function () {
             // it's a check
         },
@@ -37,7 +38,7 @@ odoo.define('pos_order_receipt_custom.tour', function(require) {
         position: "bottom"
     });
 
-    steps = steps.concat(add_product_to_order('Peaches'));
+    steps = steps.concat(add_product_to_order('LED Lamp'));
 
     steps = steps.concat(send_order_to_kitchen());
 
