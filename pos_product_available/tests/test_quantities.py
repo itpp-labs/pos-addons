@@ -17,7 +17,7 @@ class TestUi(odoo.tests.HttpCase):
         env = self.env
         env['ir.module.module'].search([('name', '=', 'pos_product_available')], limit=1).state = 'installed'
 
-        env['product.template'].search([('name', '=', 'Zucchini')]).write({
+        env['product.template'].search([('name', '=', 'LED Lamp')]).write({
             'type': 'product',
         })
 

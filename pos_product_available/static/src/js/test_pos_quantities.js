@@ -39,7 +39,7 @@ odoo.define('pos_product_available.tour', function (require) {
             content: _t("Open the payment screen"),
         }, {
             content: "Choose Administrator like a cashier or make a dummy action",
-            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Administrator"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
+            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Mitchell Admin"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
         }, {
             extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
@@ -76,18 +76,24 @@ odoo.define('pos_product_available.tour', function (require) {
     function check_quantity() {
         return [{
             content: 'check quantity',
-            extra_trigger: '.product-list .product:contains("Zucchini") .qty-tag.not-available:contains("-1")',
+            extra_trigger: '.product-list .product:contains("LED Lamp") .qty-tag.not-available:contains("-1")',
             trigger: '.order-button.selected',
         }];
     }
 
-    var steps = [{
-            trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
-            position: 'bottom',
-        }];
+    var steps = [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
+        position: 'right',
+        edition: 'community'
+    }, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
+        position: 'bottom',
+        edition: 'enterprise'
+    }];
     steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(add_product_to_order('Zucchini'));
+    steps = steps.concat(add_product_to_order('LED Lamp'));
     steps = steps.concat(payment('Cash (USD)'));
     steps = steps.concat(close_pos());
     steps = steps.concat(open_pos_neworder());
