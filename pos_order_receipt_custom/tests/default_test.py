@@ -1,5 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -8,7 +7,7 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded_and_print_order_to_kitchen(self):
         # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
-        env = Environment(self.registry.test_cr, self.uid, {})
+        env = self.env
 
         kitchen_printer = env.ref('pos_restaurant.kitchen_printer')
         receipt_template = env.ref('pos_order_receipt_custom.simple_kitchen_receipt')

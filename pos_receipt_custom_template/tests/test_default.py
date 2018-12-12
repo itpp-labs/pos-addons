@@ -1,5 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -8,7 +7,7 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
         # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
-        env = Environment(self.registry.test_cr, self.uid, {})
+        env = self.env
 
         pos_receipt = env['pos.custom_receipt'].search([('type', '=', 'receipt')], limit=1)
         self.assertTrue(pos_receipt, 'Receipt Not Found')
