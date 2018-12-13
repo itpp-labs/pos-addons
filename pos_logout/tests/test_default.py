@@ -1,6 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
-
 
 @odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
