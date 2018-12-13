@@ -1,5 +1,6 @@
 import odoo.tests
 
+
 @odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
