@@ -67,7 +67,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             content: "Make a dummy action",
             trigger: '.order-button.selected',
         }, {
-            trigger: '.button.pay',
+            trigger: '.product-screen .actionpad .pay',
             content: _t("Open the payment screen"),
         }];
 

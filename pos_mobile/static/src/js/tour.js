@@ -77,7 +77,7 @@ odoo.define('pos_mobile.tour', function(require) {
     var steps = [{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
-        timeout: 20000,
+        timeout: 60000,
         run: function () {
             // it's a check
         },

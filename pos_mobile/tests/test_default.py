@@ -27,5 +27,5 @@ class TestUi(odoo.tests.HttpCase):
             ".tours.pos_mobile_tour.ready",
 
             login="admin",
-            timeout=240,
+            timeout=1000,
         )
