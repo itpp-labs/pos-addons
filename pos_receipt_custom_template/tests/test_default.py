@@ -27,10 +27,8 @@ class TestUi(odoo.tests.HttpCase):
             'custom_ticket_id': pos_ticket.id
         })
 
-        main_pos_config.open_session_cb()
-
         self.phantom_js(
-            '/pos/web',
+            '/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".run('pos_receipt_custom_template_tour')",
