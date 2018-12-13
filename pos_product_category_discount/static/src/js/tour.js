@@ -113,7 +113,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
     steps = steps.concat({
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
-        timeout: 20000,
+        timeout: 60000,
         run: function () {
             // it's a check
         },
@@ -149,5 +149,5 @@ odoo.define('pos_product_category_discount.tour', function(require) {
         },
     }]);
 
-    tour.register('pos_product_category_discount_tour', {test: true, url: '/web' }, steps);
+    tour.register('pos_product_category_discount_tour', {test: true, url: '/pos/web' }, steps);
 });
