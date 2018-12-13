@@ -55,17 +55,27 @@ odoo.define('pos_debt_notebook.tour', function (require) {
         }];
     }
 
-    function debt_method_paying(pay_method) {
+    function cashier_select() {
         return [{
+            trigger: '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
+            content: 'select first cashier',
+        }];
+    }
+
+    function debt_method_paying(pay_method) {
+        var steps = [{
             content: "Make a dummy action",
             trigger: '.order-button.selected',
         }, {
             trigger: '.button.pay',
             content: _t("Open the payment screen"),
-        }, {
-            content: "Choose Administrator like a cashier or make a dummy action",
-            trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Mitchell Admin"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
-        }, {
+        }];
+
+        if (odoo._modules.indexOf('pos_cashier_select') !== -1) {
+            steps = steps.concat(cashier_select());
+        }
+        steps = steps.concat([
+            {
             extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             content: _t("Click the payment method"),
@@ -77,7 +87,8 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             extra_trigger: '.pos-sale-ticket',
             trigger: '.button.next.highlight:contains("Next Order")',
             content: 'Check proceeded validation',
-        }];
+        }]);
+        return steps;
     }
 
     var steps = [];

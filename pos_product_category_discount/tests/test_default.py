@@ -11,8 +11,6 @@ class TestUi(odoo.tests.HttpCase):
         main_pos_config.write({
             'module_pos_discount': True,
         })
-        main_pos_config.discount_product_id = env.ref('point_of_sale.magnetic_board')
-        main_pos_config.open_session_cb()
         env['ir.module.module'].search([('name', '=', 'pos_product_category_discount')], limit=1).state = 'installed'
 
         self.phantom_js(
