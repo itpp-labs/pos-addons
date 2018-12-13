@@ -9,6 +9,7 @@ CHANNEL = "pos_orders_history_receipt"
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'
+    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)
 
     # ir.actions.server methods:
     @api.model
@@ -50,9 +51,3 @@ class PosSession(models.Model):
             'status': False
         })
         return res
-
-
-class PosConfig(models.Model):
-    _inherit = 'pos.config'
-
-    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)
