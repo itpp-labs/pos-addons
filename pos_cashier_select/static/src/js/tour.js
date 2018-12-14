@@ -30,7 +30,7 @@ odoo.define('pos_cashier_select.tour', function(require) {
         }];
         steps = steps.concat(cashier_select());
         steps = steps.concat([{
-            trigger: '.paymentmethod:contains("Cash")',
+            trigger: '.paymentmethod:contains("Cash (USD)")',
             content: "pay with cash",
         }]);
         return steps;

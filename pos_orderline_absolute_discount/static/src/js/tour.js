@@ -32,7 +32,7 @@ odoo.define('pos_orderline_absolute_discount_tour.tour', function(require) {
             steps = steps.concat(cashier_select());
         }
         steps = steps.concat([{
-            trigger: '.paymentmethod:contains("Cash")',
+            trigger: '.paymentmethod:contains("Cash (USD)")',
             content: "pay with cash",
         }]);
         return steps;
