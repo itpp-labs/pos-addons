@@ -70,8 +70,7 @@ odoo.define('pos_debt_notebook.tour', function (require) {
             trigger: '.product-screen .actionpad .pay',
             content: _t("Open the payment screen"),
         }];
-
-        if (odoo._modules.indexOf('pos_cashier_select') !== -1) {
+        if ('pos_choosing_cashier' in odoo.__DEBUG__.services) {
             steps = steps.concat(cashier_select());
         }
         steps = steps.concat([

@@ -14,7 +14,7 @@ class TestUi(odoo.tests.HttpCase):
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         env = self.env
-        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
+        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook_sync')], limit=1).state = 'installed'
 
         # without a delay there might be problems caused by a not yet loaded button's action
         self.phantom_js("/web",
