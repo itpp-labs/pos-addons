@@ -18,7 +18,7 @@ odoo.define('pos_orders_history_reprint.tour', function(require) {
 
     function cashier_select() {
         return [{
-            trigger: '.modal-dialog.cashier .selection-item',
+            trigger: '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
             content: 'select first cashier',
         }];
     }

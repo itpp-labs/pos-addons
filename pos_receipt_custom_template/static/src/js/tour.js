@@ -18,7 +18,7 @@ odoo.define('pos_receipt_custom_template.tour', function(require) {
 
     function cashier_select() {
         return [{
-            trigger: '.modal-dialog.cashier .selection-item',
+            trigger: '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
             content: 'select first cashier',
         }];
     }
