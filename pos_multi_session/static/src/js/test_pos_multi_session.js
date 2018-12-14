@@ -39,7 +39,7 @@ odoo.define('pos_multi_session.tour', function (require) {
         }
     ];
 
-    steps = steps.concat(add_product_to_order('Ekomurz.nl'));
+    steps = steps.concat(add_product_to_order('LED Lamp'));
 
     tour.register('tour_pos_multi_session', { test: true, url: '/web' }, steps);
 
