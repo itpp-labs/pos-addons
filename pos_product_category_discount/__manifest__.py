@@ -8,7 +8,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_category_discount/",
     "license": "LGPL-3",
     "price": 39.00,

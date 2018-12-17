@@ -11,9 +11,7 @@ odoo.define('pos_orders_history.screens', function (require) {
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
         template: 'OrdersHistoryButton',
         button_click: function () {
-            if (this.pos.db.pos_orders_history.length) {
-                this.gui.show_screen('orders_history_screen');
-            }
+            this.gui.show_screen('orders_history_screen');
         },
     });
     screens.define_action_button({
@@ -66,6 +64,13 @@ odoo.define('pos_orders_history.screens', function (require) {
             this.$('.filters .table-filter').click(function (e) {
                 e.stopImmediatePropagation();
                 self.change_filter('table', $(this));
+            });
+
+            this.$('.button.update_history').off().click(function (e) {
+                self.pos.manual_update_order_history().then(function() {
+                    orders = self.pos.db.get_sorted_orders_history(1000);
+                    self.render_list(orders);
+                });
             });
 
             this.$('.order-list-contents').delegate('.order-line td', 'click', function (event) {
@@ -127,11 +132,9 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_orders_by_filter: function(filter, orders) {
             var self = this;
             if (filter === "user") {
-                var user_id = this.pos.cashier
-                ? this.pos.cashier.id
-                : this.pos.user.id;
-                if (this.pos.cashier && this.pos.cashier.id) {
-                    user_id = this.pos.cashier.id;
+                var user_id = this.pos.user.id;
+                if (this.pos.get_cashier()) {
+                    user_id = this.pos.get_cashier().id;
                 }
                 return orders.filter(function(order) {
                     return order.user_id[0] === user_id;
@@ -150,6 +153,10 @@ odoo.define('pos_orders_history.screens', function (require) {
                     return !order.table_id;
                 });
             }
+        },
+        get_datetime_format: function(datetime) {
+            var d = new Date(datetime);
+            return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toLocaleString();
         },
         render_list: function(orders) {
             var contents = this.$el[0].querySelector('.order-list-contents');

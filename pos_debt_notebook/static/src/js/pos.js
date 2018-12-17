@@ -298,7 +298,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 category_list = _.union(category_list, _.flatten(_.map(category_list, function(cl){
                     return self.pos.db.get_category_childs_ids(cl);
                 })));
-                if (_.contains(category_list, ol.product.pos_categ_id[0])) {
+
+                //compatibility with pos_category_multi
+                var product_categories = [];
+                if (ol.product.pos_categ_id) {
+                    product_categories = [ol.product.pos_categ_id[0]];
+                } else {
+                    product_categories = ol.product.pos_category_ids;
+                }
+
+                if (_.intersection(category_list, product_categories)) {
                     return memo + ol.get_price_with_tax();
                 }
                 return memo;
@@ -667,16 +676,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 if (debt_type === 'debt') {
                     if (debt > 0) {
                         $pay_full_debt.removeClass('oe_hidden');
-                        $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-debt positive"> [Debt: ' + this.format_currency(debt) + ']</span>');
                     } else if (debt < 0) {
-                        $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-debt negative"> [Debt: ' + this.format_currency(debt) + ']</span>');
                     }
                 } else if (debt_type === 'credit') {
                     if (debt > 0) {
-                        $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-credit positive"> [Credit: ' + this.format_currency(debt) + ']</span>');
                     } else if (debt < 0) {
                         $pay_full_debt.removeClass('oe_hidden');
-                        $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + debt + ']</span>');
+                        $js_customer_name.append('<span class="client-credit negative"> [Credit: ' + this.format_currency(debt) + ']</span>');
                     }
                 }
             }

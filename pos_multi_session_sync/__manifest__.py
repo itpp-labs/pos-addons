@@ -11,7 +11,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_multi_session_sync/",
     "license": "LGPL-3",
     "price": 60.00,

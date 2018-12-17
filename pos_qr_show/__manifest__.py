@@ -10,7 +10,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_show/",
     "license": "LGPL-3",
     "price": 40.00,

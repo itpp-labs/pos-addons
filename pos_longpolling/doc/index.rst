@@ -7,7 +7,7 @@ Longpolling
 
 Check following resources about activating longpolling:
 
-* Official doc: https://www.odoo.com/documentation/8.0/setup/deploy.html#builtin-server
+* Official doc: https://www.odoo.com/documentation/11.0/setup/deploy.html#builtin-server
 * Non-official doc: https://odoo-development.readthedocs.io/en/latest/admin/longpolling.html
 
 In short, you need to start server with non-zero ``workers`` parameter:::
@@ -26,7 +26,7 @@ and configure nginx: ::
 Database connections limit
 ==========================
 
-It's highly recommended to `check odoo and postgresql setttings about connections limits <https://odoo-development.readthedocs.io/en/latest/admin/db_maxconn.html>`__. In short, it must satisfy following condition::
+It's highly recommended to `check odoo and postgresql settings about connections limits <https://odoo-development.readthedocs.io/en/latest/admin/db_maxconn.html>`__. In short, it must satisfy following condition::
 
     (1 + workers + max_cron_threads) * db_maxconn < max_connections
 

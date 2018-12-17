@@ -1,5 +1,6 @@
-Sale orders in POS
-==================
+====================
+ Sale orders in POS
+====================
 
 Fill pos cart by sale order ID.
 

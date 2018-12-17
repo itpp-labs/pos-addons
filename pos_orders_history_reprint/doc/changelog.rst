@@ -3,6 +3,17 @@
 Updates
 =======
 
+`1.0.2`
+-------
+
+- **IMP:** Improved a speed loading of receipts
+
+`1.0.1`
+-------
+
+- **FIX:** Compatibility with Point of Sale Receipt Reprinting
+- **IMP** Show order ticket after clicking the reprint button if the receipt of the order does not exist
+
 `1.0.0`
 -------
 

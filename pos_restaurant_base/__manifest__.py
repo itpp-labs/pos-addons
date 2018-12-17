@@ -4,11 +4,11 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "12.0.2.0.3",
+    "version": "12.0.2.0.4",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_restaurant_base/",
     "license": "LGPL-3",
     "price": 35.00,

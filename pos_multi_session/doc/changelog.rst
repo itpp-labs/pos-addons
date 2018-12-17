@@ -1,5 +1,25 @@
+<<<<<<< HEAD
+`4.2.4`
+-------
+
+**Improvement:** Code refactoring to pay technical debt
+
+`4.2.3`
+-------
+
+**Fix:** Don't make automatic scrolling of the current order on changing other orders
+**Fix:** Before this fix if we have a rerender of the product list every time, then we will get a hang and slow response of the system.
+
+`4.2.2`
+-------
+
+**Fix:** `Longpoll Handling Error` related to property of undefined
+
 `4.2.1`
 -------
+
+**Fix:** Error related to longpoll updates of paid orders
+**Fix:** Cannot read property then of undefined or request_sync_all is undefined
 **Fix:** Before this fix if we have a rerender of the product list every time, then we will get a hang and slow response of the system.
 
 `4.2.0`

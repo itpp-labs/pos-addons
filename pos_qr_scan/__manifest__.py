@@ -8,7 +8,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, KolushovAlexandr",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_scan/",
     "license": "LGPL-3",
     "price": 20.00,

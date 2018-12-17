@@ -7,11 +7,11 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=11.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "11.0.1.1.0",
+    "version": "11.0.1.2.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
     "price": 89.00,

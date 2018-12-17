@@ -1,5 +1,6 @@
-POS debranding
-==============
+================
+ POS debranding
+================
 
 Removes references to odoo.com:
 

@@ -7,7 +7,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_longpolling/",
     "license": "LGPL-3",
     # "price": 0.00,

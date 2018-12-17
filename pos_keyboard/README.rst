@@ -1,5 +1,6 @@
-Keyboard support in Point Of Sale
-================================================================
+===================================
+ Keyboard support in Point Of Sale
+===================================
 Module allows to use usual keyboard (not virtual one) in Point of Sale.
 
 Usage:

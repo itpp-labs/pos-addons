@@ -1,7 +1,3 @@
-# Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
-# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Restrict out-of-stock POS Orders""",
     "summary": """Restrict payments for out-of-stock products in POS""",
@@ -12,7 +8,7 @@
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available_negative/",
     "license": "LGPL-3",
     "price": 50.00,
@@ -22,22 +18,10 @@
         "pos_pin",
         "pos_product_available",
     ],
-    "external_dependencies": {"python": [], "bin": []},
-    "data": [
+    'data': [
         'data.xml',
         'views.xml',
     ],
-    "demo": [
-    ],
-    "qweb": [
-    ],
 
-    "post_load": None,
-    "pre_init_hook": None,
-    "post_init_hook": None,
-    "uninstall_hook": None,
-
-    "auto_install": False,
-    "installable": True,
-
+    'installable': True,
 }

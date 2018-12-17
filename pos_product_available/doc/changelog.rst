@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.6`
+-------
+
+- **FIX:** Added compatibility with pos_multi_session
+
 `1.0.5`
 -------
 

@@ -6,7 +6,7 @@
     'summary': 'Technical module for confirmation any action by user of specific group',
     'license': 'LGPL-3',
     'category': 'Hidden',
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale'],
     'data': [

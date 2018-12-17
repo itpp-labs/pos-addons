@@ -51,7 +51,7 @@ odoo.define('pos_orders_history_return.models', function (require) {
             if (this.get_mode() === "return_without_receipt") {
                 return;
             }
-            var el = $('span[data-product-id="'+product.id+'"] .max-return-qty');
+            var el = $('article[data-product-id="'+product.id+'"] .max-return-qty');
             var qty = this.get_current_product_return_qty(product);
             el.html(product.max_return_qty - qty);
         },
@@ -68,6 +68,13 @@ odoo.define('pos_orders_history_return.models', function (require) {
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
+        initialize: function(attr,options){
+            _super_orderline.initialize.apply(this, arguments);
+            var order = this.pos.get_order();
+            if (order && order.get_mode() === "return" && this.product.old_price && this.product.price !== this.product.old_price) {
+                this.set_unit_price(this.product.old_price);
+            }
+        },
         set_quantity: function(quantity) {
             var order = this.pos.get_order();
             var old_quantity = String(quantity);
