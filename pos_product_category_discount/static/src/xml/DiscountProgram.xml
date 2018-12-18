@@ -2,14 +2,14 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="NumberPopupWidget">
         <t t-jquery="div[class='button cancel']" t-operation="after">
-            <t t-if="widget.disc_program">
+            <t t-if="widget.show_discount_program_popup">
                 <div class="button reset">
                     Reset
                 </div>
             </t>
         </t>
         <t t-jquery="footer[class='footer centered']" t-operation="after">
-            <t t-if="widget.disc_program">
+            <t t-if="widget.show_discount_program_popup">
                 <div class="discount-program-content">
                     <p class="title">Load Discount Program</p>
                     <div class="discount-program-list">
