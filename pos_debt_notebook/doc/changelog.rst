@@ -1,3 +1,7 @@
+`5.1.1`
+-------
+- **FIX:** Compatibility with pos_orders_history_return module
+
 `5.1.0`
 -------
 - **NEW:** Wizard allow to create invoices for sets of partners: `Balance update`, `New Balance`
