@@ -512,7 +512,7 @@ class PosOrder(models.Model):
     @api.model
     def _order_fields(self, ui_order):
         res = super(PosOrder, self)._order_fields(ui_order)
-        res['amount_via_discount'] = ui_order['amount_via_discount']
+        res['amount_via_discount'] = ui_order.get('amount_via_discount', 0)
         return res
 
     def action_pos_order_paid(self):
