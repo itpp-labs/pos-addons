@@ -1,3 +1,7 @@
+`3.2.6`
+-------
+**Improvement:** Compatibility with Customizable POS Kitchen Ticket module
+
 `3.2.5`
 -------
 **Improvement:** Synchronize the process of deleting or adding tables

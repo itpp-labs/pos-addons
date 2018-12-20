@@ -212,16 +212,14 @@ odoo.define('pos_multi_session_restaurant', function(require){
         },
         // changes the current table.
         set_table: function(table) {
-            var self = this;
-            if (table && this.order_to_transfer_to_different_table) {
-                this.order_to_transfer_to_different_table.table = table;
-                this.order_to_transfer_to_different_table.new_updates_to_send();
-                this.order_to_transfer_to_different_table = null;
-                // set this table
-                this.set_table(table);
-            } else {
-                PosModelSuper.prototype.set_table.apply(this, arguments);
+            var order = this.order_to_transfer_to_different_table;
+            if (table && order) {
+                var old_table = order.table;
+                order.table = table;
+                order.new_updates_to_send();
+                order.table = old_table;
             }
+            PosModelSuper.prototype.set_table.apply(this, arguments);
         }
     });
 
