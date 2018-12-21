@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     "name": """POS Cashier Select""",
     "summary": """Forced choose a cashier before switching to payment screen""",
     "category": "Point of Sale",
     "images": ['images/pos_cashier_select.png'],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",

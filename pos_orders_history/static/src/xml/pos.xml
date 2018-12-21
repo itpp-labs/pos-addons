@@ -16,7 +16,10 @@
                 <section class="top-content">
                     <span class='button back'>
                         <i class='fa fa-angle-double-left'></i>
-                        Cancel
+                        Back
+                    </span>
+                    <span class='button update_history'>
+                        Update List
                     </span>
                     <span class="filters">
                         <i class='fa fa-filter'></i>

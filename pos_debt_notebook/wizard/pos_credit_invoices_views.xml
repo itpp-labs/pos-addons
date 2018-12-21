@@ -44,7 +44,7 @@
                 </group>
 
                 <footer>
-                    <button name="apply" string="Generate" type="object" class="btn-primary"/>
+                    <button name="generate_invoices" string="Generate" type="object" class="btn-primary"/>
                     <button special="cancel" string="Cancel" class="btn-default"/>
                 </footer>
             </form>

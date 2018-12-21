@@ -2,7 +2,6 @@ odoo.define('pos_product_category_discount.models', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
-    var Model = require('web.Model');
 
     models.load_models({
         model: 'pos.discount_program',
@@ -41,7 +40,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
             });
         },
         set_discount_categories_by_program_id: function(id) {
-            if (this.config.iface_discount) {
+            if (this.config.module_pos_discount && this.config.discount_product_id) {
                 var self = this;
                 var discount_categories = this.get_discount_categories(id);
                 var order = this.get_order();
@@ -74,7 +73,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
     var OrderSuper = models.Order;
     models.Order = models.Order.extend({
         remove_all_discounts: function() {
-            if (this.pos.config.iface_discount) {
+            if (this.pos.config.module_pos_discount && this.pos.config.discount_product_id) {
                 this.discount_program_id = false;
                 this.get_orderlines().forEach(function(line){
                     if (line.discount_program_name) {

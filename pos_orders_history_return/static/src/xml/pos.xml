@@ -6,7 +6,7 @@
     <t t-extend="OrderHistory">
         <t t-jquery=".actions.oe_hidden" t-operation="append">
             <t t-if="!order.returned_order">
-                <span class="button return">Return</span>
+                <span class="button return"><i class="fa fa-undo"></i> Return</span>
             </t>
         </t>
     </t>
@@ -47,7 +47,7 @@
                 <t t-esc="widget.format_currency(product.old_price,'Product Price')"/>
             </t>
             <t t-if="!widget.return_mode || !product.old_price">
-                <t t-esc="widget.format_currency(product.price,'Product Price')"/>
+                <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')"/>
             </t>
         </t>
         <t t-jquery="t[t-if='product.to_weight'] t[t-esc*='widget.format_currency']" t-operation="replace">
@@ -55,7 +55,7 @@
                 <t t-esc="widget.format_currency(product.old_price,'Product Price')"/>
             </t>
             <t t-if="!widget.return_mode || !product.old_price">
-                <t t-esc="widget.format_currency(product.price,'Product Price')"/>
+                <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')"/>
             </t>
         </t>
     </t>

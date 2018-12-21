@@ -8,7 +8,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
     var gui = require('point_of_sale.gui');
     var screens = require('pos_orders_history.screens');
     var core = require('web.core');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var utils = require('web.utils');
 
     var round_pr = utils.round_precision;
@@ -31,7 +31,11 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         },
         save_order_receipt: function (order, receipt, receipt_type) {
             var name = order.name;
-            new Model('pos.xml_receipt').call('save_xml_receipt', [[], name, receipt, receipt_type]).then(function (result) {
+            rpc.query({
+                model: 'pos.xml_receipt',
+                method: 'save_xml_receipt',
+                args: [[], name, receipt, receipt_type]
+            }).then(function (result) {
                 console.log(receipt_type, ' receipt has been saved.');
             });
         },
@@ -65,7 +69,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             }
         },
         click_reprint_order: function (id) {
-            this.gui.show_screen('reprint_receipt', {order_id: id});
+            this.gui.show_screen('history_reprint_receipt', {order_id: id});
         },
     });
 
@@ -87,7 +91,11 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             var self = this;
             var order = this.get_order();
             this.$('.pos-sale-ticket').hide();
-            new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]).then(function(r) {
+            rpc.query({
+                model: 'pos.xml_receipt',
+                method: 'search_read',
+                args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]
+            }).then(function(r) {
                 self.$('.pos-sale-ticket').show();
                 self.reprint_receipt = r;
                 self.check_handle_auto_print();
@@ -176,7 +184,11 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                     });
                 }
             } else if (self.pos.config.show_posted_orders && order.state === "done") {
-                new Model('pos.xml_receipt').call('search_read', [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]).then(function(t) {
+                rpc.query({
+                    model: 'pos.xml_receipt',
+                    method: 'search_read',
+                    args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]
+                }).then(function(t) {
                     if (t && t.length) {
                         self.render_receipt(t[0]);
                     } else {
@@ -200,7 +212,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         }
     });
 
-    gui.define_screen({name:'reprint_receipt', widget: screens.ReprintReceiptScreenWidget});
+    gui.define_screen({name:'history_reprint_receipt', widget: screens.ReprintReceiptScreenWidget});
 
     return screens;
 });

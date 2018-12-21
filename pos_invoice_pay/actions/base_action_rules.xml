@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Copyright 2017 Artyom Losev
+<!--Copyright 2018 Artyom Losev
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <odoo>
-
-        <record id="invoice_update_pos_action" model="base.action.rule">
+        <record id="invoice_update_pos_action" model="base.automation">
             <field name="name">Update Invoices</field>
             <field name="model_id" ref="account.model_account_invoice"/>
-            <field name="sequence">1</field>
-            <field name="kind">on_create_or_write</field>
-            <field name="server_action_ids" eval="[(6, 0, [ref('action_update_pos_invoices')])]"/>
+            <field name="state">code</field>
+            <field name="code">
+                record.action_updated_invoice()
+            </field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="active" eval="True"/>
         </record>
 
-<!--         <record id="invoice_update_pos_action" model="base.action.rule">
-            <field name="name">Update Invoices on delete</field>
-            <field name="model_id" ref="account.model_account_invoice"/>
-            <field name="sequence">1</field>
-            <field name="kind">on_unlink</field>
-            <field name="server_action_ids" eval="[(6, 0, [ref('action_update_pos_invoices')])]"/>
-        </record> -->
-
-        <record id="so_update_pos_action" model="base.action.rule">
+        <record id="so_update_pos_action" model="base.automation">
             <field name="name">Update Sale Order</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="sequence">1</field>
-            <field name="kind">on_create_or_write</field>
-            <field name="server_action_ids" eval="[(6, 0, [ref('action_update_pos_sale_orders')])]"/>
+            <field name="state">code</field>
+            <field name="code">
+                record.action_updated_sale_order()
+            </field>
+            <field name="trigger">on_create_or_write</field>
+            <field name="active" eval="True"/>
         </record>
-
-<!--         <record id="so_update_pos_action" model="base.action.rule">
-            <field name="name">Update Sale Order</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="sequence">1</field>
-            <field name="kind">on_unlink</field>
-            <field name="server_action_ids" eval="[(6, 0, [ref('action_update_pos_sale_orders')])]"/>
-        </record> -->
-
 </odoo>

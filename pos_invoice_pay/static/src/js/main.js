@@ -1,7 +1,7 @@
-// Copyright 2017 Artyom Losev
-// Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-// License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
+//  Copyright 2018 Artyom Losev
+//  Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+//  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+//  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 odoo.define('pos_invoices', function (require) {
 'use_strict';
 
@@ -11,8 +11,8 @@ var models = require('point_of_sale.models');
 var PosDb = require('point_of_sale.DB');
 var utils = require('web.utils');
 var bus = require('bus.bus').bus;
-var Model = require('web.Model');
 var screens = require('point_of_sale.screens');
+var rpc = require('web.rpc');
 var longpolling = require('pos_longpolling');
 var chrome = require('point_of_sale.chrome');
 
@@ -35,16 +35,50 @@ var round_pr = utils.round_precision;
     });
 
 
+models.load_models({
+    model: 'sale.order',
+    fields: ['name', 'partner_id', 'date_order', 'user_id',
+    'amount_total', 'order_line', 'invoice_status'],
+    domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
+    loaded: function (self, sale_orders) {
+        var so_ids = _.pluck(sale_orders, 'id');
+        self.prepare_so_data(sale_orders);
+        self.sale_orders = sale_orders;
+        self.db.add_sale_orders(sale_orders);
+        self.get_sale_order_lines(so_ids);
+    }
+});
+
+models.load_models({
+    model: 'account.invoice',
+    fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
+    'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
+    domain: [['state', '=', 'open'],
+    ['type','=', 'out_invoice']],
+    loaded: function (self, invoices) {
+        var invoices_ids = _.pluck(invoices, 'id');
+        self.prepare_invoices_data(invoices);
+        self.invoices = invoices;
+        self.db.add_invoices(invoices);
+        self.get_invoice_lines(invoices_ids);
+    }
+});
+
 var _super_posmodel = models.PosModel.prototype;
 models.PosModel = models.PosModel.extend({
     initialize: function (session, attributes) {
+        var self = this;
         _super_posmodel.initialize.apply(this, arguments);
         this.bus.add_channel_callback("pos_sale_orders", this.on_notification, this);
         this.bus.add_channel_callback("pos_invoices", this.on_notification, this);
     },
 
     get_lines: function (ids, model_name, method_name) {
-        return new Model(model_name).call(method_name, [ids]);
+        return rpc.query({
+            model: model_name,
+            method: method_name,
+            args: [ids],
+        });
     },
 
     get_sale_order_lines: function (ids) {
@@ -107,20 +141,17 @@ models.PosModel = models.PosModel.extend({
         return def.promise();
     },
 
-    on_notification: function(notification) {
+    on_notification: function (notification) {
         var invoices_to_update = [];
         var sale_orders_to_update = [];
-
         var channel = notification.channel;
         var message = notification.id;
-
         if (channel === 'pos_invoices') {
             invoices_to_update.push(message);
         }
         if (channel === 'pos_sale_orders') {
             sale_orders_to_update.push(message);
         }
-
         if (invoices_to_update.length > 0) {
             this.update_invoices_from_poll(_.unique(invoices_to_update));
         }
@@ -177,11 +208,13 @@ models.PosModel = models.PosModel.extend({
     get_res: function (model_name, id) {
         var fields = _.find(this.models, function (model) {
             return model.model === model_name;
-        }).fields;
-        return new Model(model_name).
-            query(fields).
-            filter([['id', '=', id]]).
-            all();
+        }).fields,
+            domain = [['id', '=', id]];
+        return rpc.query({
+            model: model_name,
+            method: 'search_read',
+            args: [domain, fields],
+        });
     },
 
     update_or_fetch_invoice: function (id) {
@@ -216,16 +249,11 @@ models.PosModel = models.PosModel.extend({
 
     validate_invoice: function (id) {
         var result = $.Deferred();
-        new Model('account.invoice').
-            call('action_invoice_open', [id]).
-            then(function (res) {
-                if (res) {
-                    result.resolve(id);
-                } else {
-                    result.reject();
-                }
-            });
-        return result.promise();
+        return rpc.query({
+            model: 'account.invoice',
+            method: 'action_invoice_open',
+            args: [id]
+        });
     },
 
     get_invoices_to_render: function (invoices) {
@@ -245,9 +273,9 @@ models.PosModel = models.PosModel.extend({
                 muted_invoices_ids.push(id);
             }
         }
-        if (muted_invoices_ids) {
+        if (muted_invoices_ids && muted_invoices_ids.length) {
             invoices = _.filter(invoices, function (inv) {
-                return !muted_invoices_ids.includes(inv.id);
+                return !_.contains(muted_invoices_ids, inv.id);
             });
         }
         if (client) {
@@ -279,35 +307,6 @@ models.PosModel = models.PosModel.extend({
 
     stop_invoice_processing: function () {
         this.add_itp_data = false;
-    }
-});
-
-models.load_models({
-    model: 'sale.order',
-    fields: ['name', 'partner_id', 'date_order', 'user_id',
-    'amount_total', 'order_line', 'invoice_status'],
-    domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
-    loaded: function (that, sale_orders) {
-        var so_ids = _.pluck(sale_orders, 'id');
-        that.prepare_so_data(sale_orders);
-        that.sale_orders = sale_orders;
-        that.db.add_sale_orders(sale_orders);
-        that.get_sale_order_lines(so_ids);
-    }
-});
-
-models.load_models({
-    model: 'account.invoice',
-    fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
-    'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
-    domain: [['state', '=', 'open'],
-    ['type','=', 'out_invoice']],
-    loaded: function (that, invoices) {
-        var invoices_ids = _.pluck(invoices, 'id');
-        that.prepare_invoices_data(invoices);
-        that.invoices = invoices;
-        that.db.add_invoices(invoices);
-        that.get_invoice_lines(invoices_ids);
     }
 });
 
@@ -629,6 +628,8 @@ var InvoicesAndOrdersBaseWidget = screens.ScreenWidget.extend({
 
                     $tr.classList.add('line-element-hidden');
 
+                    $tr.classList.add("line-element-container");
+
                     var $table = this.render_lines_table(data[i].lines);
 
                     $td.appendChild($table);
@@ -698,7 +699,6 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
             $line.removeClass('highlight');
             $line.addClass('lowlight');
             $line.next().addClass('line-element-hidden');
-
         }else{
             this.$('.list .highlight').removeClass('highlight');
             $line.addClass('highlight');
@@ -740,27 +740,24 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
     },
     create_invoice: function (sale_order) {
         var self = this;
-        new Model('pos.order').call('process_invoices_creation', [sale_order.id]).
-            then(function (created_invoice_id) {
-                self.pos.update_or_fetch_invoice(created_invoice_id).
-                    then(function (new_invoice_id) {
-                        self.render_data(self.pos.db.sale_orders);
-                        self.pos.validate_invoice(new_invoice_id).then(function (validated_invoice_id) {
-                            self.pos.update_or_fetch_invoice(validated_invoice_id).then(function(res) {
-                                self.pos.selected_invoice = self.pos.db.get_invoice_by_id(res);
-                                self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
-                                self.gui.show_screen('invoice_payment');
-                            });
-                        });
-                    });
-            }, function (err, event) {
-                self.gui.show_popup('error', {
-                    'title': _t(err.message),
-                    'body': _t(err.data.arguments[0])
-                });
-                console.log(err);
-                event.preventDefault();
+        rpc.query({
+            model: 'pos.order',
+            method: 'process_invoices_creation',
+            args: [sale_order.id, self.pos.pos_session.id],
+        }).then(function (created_invoice_id) {
+            // Explicitly update the db to avoid race condition.
+            self.pos.update_or_fetch_invoice(created_invoice_id).then(function (res) {
+                self.pos.selected_invoice = self.pos.db.get_invoice_by_id(res);
+                self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
+                self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
+        }).fail(function (err, type) {
+            self.gui.show_popup('error', {
+                'title': _t(err.message),
+                'body': _t(err.data.arguments[0])
+            });
+            event.preventDefault();
+        });
     },
     _search: function (query) {
         var sale_orders = [];
@@ -875,12 +872,11 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
             case "Draft":
                 this.pos.validate_invoice(this.selected_invoice.id).
                     then(function (id) {
-                        self.pos.update_or_fetch_invoice(id).
-                        then(function () {
+                        self.pos.update_or_fetch_invoice(id).then(function () {
                             self.render_data(self.pos.get_invoices_to_render(self.pos.db.invoices));
                             self.toggle_save_button();
                             self.pos.selected_invoice = self.pos.db.get_invoice_by_id(self.selected_invoice.id);
-                            self.gui.show_screen('invoice_payment');
+                            self.gui.show_screen('invoice_payment', {type: 'invoices'});
                         });
                     }).fail(function () {
                         this.gui.show_popup('error',{
@@ -890,7 +886,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
                     });
                 break;
             case "Open":
-                this.gui.show_screen('invoice_payment');
+                this.gui.show_screen('invoice_payment', {type: 'invoices'});
             }
         } else {
             this.gui.show_popup('error',{
@@ -1014,12 +1010,14 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
             this.pos.push_order(order).then(function () {
                 self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
                 self.gui.show_screen('invoice_receipt');
-                 new Model('account.invoice').
-                    call('invoice_print', [order.invoice_to_pay.id]).
-                    then(function (action) {
-                        self.chrome.do_action(action);
-                        self.pos.stop_invoice_processing();
-                    });
+                rpc.query({
+                    model: 'account.invoice',
+                    method: 'invoice_print',
+                    args: [order.invoice_to_pay.id]
+                }).then(function (action) {
+                    self.chrome.do_action(action);
+                    self.pos.stop_invoice_processing();
+                });
             });
         } else {
             this.pos.push_order(order).then(function (res) {
@@ -1030,10 +1028,16 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
         }
     },
 
-    validate_order: function () {
-        if (this.order_is_valid()) {
-            this.finalize_validation();
+    validate_order: function (force_validation) {
+        var order = this.pos.get_order();
+        if (!this.pos.config.pos_invoice_pay_writeoff_account_id && order.invoice_to_pay && order.get_total_paid() > this.get_invoice_residual()) {
+            this.gui.show_popup('error', {
+                'title': _t('Excessive payment amount.'),
+                'body': _t('You can not validate the order with a change because difference account is not set. Please enter the exact payment amount.'),
+            });
+            return;
         }
+        this._super();
     },
 
     order_is_valid: function () {
@@ -1057,6 +1061,20 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
             }
         }
         return true;
+    },
+    get_type: function(){
+        return this.gui.get_current_screen_param('type');
+    },
+    show: function(){
+        this._super();
+        if (this.pos.config.iface_invoicing) {
+            var order = this.pos.get_order();
+            if (!order.is_to_invoice() && this.get_type() === "orders") {
+                this.click_invoice();
+            } else if (order.is_to_invoice() && this.get_type() === "invoices") {
+                this.click_invoice();
+            }
+        }
     }
 });
 
