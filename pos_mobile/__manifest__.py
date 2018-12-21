@@ -4,7 +4,7 @@
     "summary": """Your Point of Sale in the Mobile Version""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=10.0",
-    "images": ["images/pos_mobile.png"],
+    "version": "11.0.1.1.10",
     "version": "10.0.1.1.10",
     "application": False,
 
