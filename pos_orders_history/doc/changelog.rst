@@ -3,6 +3,14 @@
 Updates
 =======
 
+`1.1.3`
+-------
+**Fix:** Error related to different localizations
+
+`1.1.2`
+-------
+**Fix:** There is no need to load the orders history if the “Order history” parameter in POS Config is disabled
+
 `1.1.1`
 -------
 **Fix:** Orders history has not been updated instantly

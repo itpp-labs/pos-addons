@@ -8,6 +8,7 @@ odoo.define('pos_orders_history.models', function (require) {
     var rpc = require('web.rpc');
     var longpolling = require('pos_longpolling');
 
+
     var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function () {
@@ -208,6 +209,9 @@ odoo.define('pos_orders_history.models', function (require) {
 
             return domain;
         },
+        condition: function(self) {
+            return self.config.orders_history;
+        },
         loaded: function (self, orders) {
             self.update_orders_history(orders);
             self.order_ids = _.pluck(orders, 'id');
@@ -219,6 +223,9 @@ odoo.define('pos_orders_history.models', function (require) {
         fields: [],
         domain: function(self) {
             return [['order_id', 'in', self.order_ids]];
+        },
+        condition: function(self) {
+            return self.config.orders_history;
         },
         loaded: function (self, lines) {
             self.update_orders_history_lines(lines);
