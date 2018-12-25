@@ -1,5 +1,6 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history.screens', function (require) {
     "use strict";
@@ -316,7 +317,9 @@ odoo.define('pos_orders_history.screens', function (require) {
         barcode_product_action: function(code) {
             // TODO: Check it
             var order = this.pos.db.get_sorted_orders_history(1000).find(function(o) {
-                var pos_reference = o.pos_reference.split(' ')[1].replace(/\-/g, '');
+                var pos_reference = o.pos_reference &&
+                    o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                    o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0].replace(/\-/g, '');
                 return pos_reference === code.code.replace(/\-/g, '');
             });
             var screen_name = this.gui.get_current_screen();

@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=11.0",
     "images": ['images/pos_orders_history_main.png'],
-    "version": "11.0.1.1.1",
+    "version": "11.0.1.1.3",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

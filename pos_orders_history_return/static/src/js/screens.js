@@ -1,5 +1,5 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-   Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history_return.screens', function (require) {
     "use strict";
@@ -50,7 +50,9 @@ odoo.define('pos_orders_history_return.screens', function (require) {
         click_return_order_by_id: function(id) {
             var self = this;
             var order = self.pos.db.orders_history_by_id[id];
-            var uid = order.pos_reference.split(' ')[1];
+            var uid = order.pos_reference &&
+                    order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                    order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0];
             var split_sequence_number = uid.split('-');
             var sequence_number = split_sequence_number[split_sequence_number.length - 1];
 
