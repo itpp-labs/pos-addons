@@ -52,7 +52,11 @@
             <td><t t-esc='line.qty_delivered'/></td>
             <td><t t-esc='line.qty_invoiced'/></td>
             <td><t t-esc='widget.format_currency(line.total)'/></td>
-            <td><t t-esc='line.tax'/></td>
+            <td>
+                <t t-foreach="line.tax" t-as="tax">
+                    <t t-esc='tax'/>
+                </t>
+            </td>
             <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.subtotal)'/></td>
         </tr>
@@ -80,7 +84,11 @@
             <td><t t-esc='line.account'/></td>
             <td><t t-esc='line.qty'/></td>
             <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
-            <td><t t-esc='line.tax'/></td>
+            <td>
+                <t t-foreach="line.tax" t-as="tax">
+                    <t t-esc='tax'/>
+                </t>
+            </td>
             <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.amount)'/></td>
         </tr>
