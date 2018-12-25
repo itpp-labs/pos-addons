@@ -1496,7 +1496,7 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .order-selector {
     display: flex;
     float: left;
-    max-width: 674px;
+    max-width: 670px;
     white-space: nowrap;
 }
 .pos.mobile .orders.touch-scrollable{

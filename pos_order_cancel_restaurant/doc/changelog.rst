@@ -1,3 +1,8 @@
+`1.4.2`
+-------
+
+- **FIX:** Error setting a cancellation reason after sending an order to the kitchen
+
 `1.4.1`
 -------
 

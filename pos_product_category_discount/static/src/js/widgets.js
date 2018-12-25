@@ -1,24 +1,93 @@
 odoo.define('pos_product_category_discount.widgets', function (require) {
     "use strict";
 
-    var PopupWidget = require('point_of_sale.popups');
-    var models = require('pos_product_category_discount.models');
-    var screens = require('pos_discount_base.screens');
     var gui = require('point_of_sale.gui');
-    var Widget = require('web.Widget');
     var core = require('web.core');
-    var PosDiscountWidget = require('pos_discount.pos_discount');
+    var discount = require('pos_discount.pos_discount');
+    var screens = require('point_of_sale.screens');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
 
     var QWeb = core.qweb;
     var _t = core._t;
 
-    screens.OrderWidget.include({
+
+    discount.DiscountButton.include({
+        button_click: function() {
+            this._super();
+            if (this.pos.discount_program && this.pos.discount_program.length) {
+                this.render_discount_popup();
+            }
+        },
+        render_discount_popup: function() {
+            var self = this;
+            var popup = this.gui.current_popup;
+            popup.disc_program = this.pos.discount_program.slice(0,4);
+            this.current_disc_program = false;
+            popup.show_discount_program_popup = true;
+            popup.renderElement();
+            popup.$('.popup-number').addClass("popup-discount");
+            var order = this.pos.get_order();
+            if (order && order.discount_percent) {
+                popup.$('.value').text(order.discount_percent);
+                popup.inputbuffer = String(order.discount_percent);
+            }
+            popup.show_discount_program_popup = false;
+            popup.$('.discount-program-list .button').click(function() {
+                self.click_discount_program($(this));
+            });
+            popup.$('.reset').click(function(){
+                self.click_reset();
+            });
+            popup.click_numpad = function(event) {
+                var newbuf = self.gui.numpad_input(popup.inputbuffer, $(event.target).data('action'), {'firstinput': popup.firstinput});
+                popup.firstinput = (newbuf.length === 0);
+                if (newbuf !== popup.inputbuffer) {
+                    popup.inputbuffer = newbuf;
+                    popup.$('.value').text(this.inputbuffer);
+                }
+                popup.$('.value').removeClass('discount-name');
+                if (self.pos.get_order()) {
+                    self.pos.get_order().input_disc_program = false;
+                }
+            };
+        },
+        get_discount_program_by_id: function(id) {
+            return _.find(this.pos.discount_program, function (item) {
+                return item.id === Number(id);
+            });
+        },
+        click_discount_program: function(element) {
+            var popup = this.gui.current_popup;
+            var order = this.pos.get_order();
+            var id = element.attr('id');
+            if (id === 'other') {
+                this.gui.show_screen('discountlist');
+            } else {
+                this.current_disc_program = this.get_discount_program_by_id(id);
+                popup.$('.value').text(this.current_disc_program.discount_program_name);
+                popup.$('.value').addClass('discount-name');
+                popup.inputbuffer = '';
+                order.input_disc_program = true;
+            }
+        },
+        click_reset: function() {
+            var popup = this.gui.current_popup;
+            popup.$('.value').removeClass('discount-name');
+            var order = this.pos.get_order();
+            if (order.discount_program_id) {
+                order.remove_all_discounts();
+                this.gui.close_popup();
+            } else {
+                popup.$('.value').text(0);
+                popup.inputbuffer = '0';
+                popup.firstinput = true;
+            }
+        },
         apply_discount: function(pc) {
             var order = this.pos.get_order();
             order.discount_percent = pc;
             if (order.input_disc_program) {
-                this.apply_discount_category(order.discount_program_id);
+                this.apply_discount_category(this.current_disc_program.id);
             }
             if (pc === 0) {
                 order.product_discount = 0;
@@ -50,8 +119,13 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 order.trigger('change', order);
             }
         },
+        apply_discount_category: function(discount_program_id) {
+            this.pos.set_discount_categories_by_program_id(discount_program_id);
+        },
+    });
+
+    screens.OrderWidget.include({
         set_value: function(val) {
-            var self = this;
             var order = this.pos.get_order();
             if (order.get_selected_orderline()) {
                 var mode = this.numpad_state.get('mode');
@@ -87,113 +161,7 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
                 order.product_discount = line.price;
             }
             this._super(line);
-        },
-        discount_button_click: function() {
-            var self = this;
-            if (this.pos.discount_program && this.pos.discount_program.length) {
-                this.discount_options.disc_program = this.pos.discount_program.slice(0,4);
-            }
-            this._super();
-        },
-        confirm_discount: function(val) {
-            if (val) {
-                val = Math.round(Math.max(0, Math.min(100, val)));
-            } else {
-                val = null;
-            }
-            this._super(val);
-        },
-        apply_discount_category: function(discount_program_id) {
-            this.pos.set_discount_categories_by_program_id(discount_program_id);
-        },
-    });
-
-    PosBaseWidget.include({
-        init:function(parent,options){
-            var self = this;
-            this._super(parent,options);
-            if (this.gui && this.gui.popup_instances.number) {
-                var num_widget = this.gui.popup_instances.number;
-                this.gui.popup_instances.number.click_numpad = function(event){
-                    var newbuf = self.gui.numpad_input(
-                        num_widget.inputbuffer,
-                        $(event.target).data('action'),
-                        {'firstinput': num_widget.firstinput});
-
-                    num_widget.firstinput = (newbuf.length === 0);
-
-                    if (newbuf !== num_widget.inputbuffer) {
-                        num_widget.inputbuffer = newbuf;
-                        num_widget.$('.value').text(this.inputbuffer);
-                    }
-                    if (this.pos.get_order()) {
-                        this.pos.get_order().input_disc_program = false;
-                    }
-                };
-            }
-        },
-    });
-
-    PopupWidget.include({
-        show: function (options) {
-            var self = this;
-            this._super(options);
-            this.popup_discount = false;
-
-            if (typeof options === 'string') {
-                options = {title: options};
-            } else {
-                options = options || {};
-            }
-
-            if (options && options.disc_program) {
-                this.popup_discount = true;
-                this.events = _.extend(this.events || {}, {
-                    'click .discount-program-list .button': 'click_discount_program',
-                    'click .reset': function() {
-                        var order = self.pos.get_order();
-                        if (order.discount_program_id) {
-                            order.remove_all_discounts();
-                            self.gui.close_popup();
-                        } else {
-                            self.$('.value').text(0);
-                            self.inputbuffer = 0;
-                        }
-                    },
-                });
-            }
-        },
-        renderElement: function(){
-            this._super();
-            if (this.popup_discount) {
-                this.$('.popup.popup-number').addClass("popup-discount");
-                var order = this.pos.get_order();
-                if (order && order.discount_percent) {
-                    this.$('.value').text(order.discount_percent);
-                    this.inputbuffer = String(order.discount_percent);
-                }
-            }
-        },
-        get_discount_program_by_id: function(id) {
-            return _.find(this.options.disc_program, function (item) {
-                return item.id === Number(id);
-            });
-        },
-        click_discount_program: function(e) {
-            var self = this;
-            var id = e.currentTarget.id;
-            if (id === 'other') {
-                self.gui.show_screen('discountlist');
-            } else {
-                this.current_disc_program = this.get_discount_program_by_id(id);
-                this.discount_program_name = this.current_disc_program.discount_program_name;
-                this.$('.value').text(this.discount_program_name);
-                var order = this.pos.get_order();
-                order.input_disc_program = true;
-                this.inputbuffer = '';
-                order.discount_program_id = this.current_disc_program.id;
-            }
-        },
+        }
     });
 
     var DiscountProgramScreenWidget = screens.ScreenWidget.extend({

@@ -8,6 +8,9 @@
 .popup-discount {
     width: 600px !important;
 }
+.popup-discount .value.discount-name {
+    font-size: 18px;
+}
 .popup-discount .title {
     width: 260px !important;
 }

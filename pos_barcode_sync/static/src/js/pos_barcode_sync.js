@@ -3,15 +3,9 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_barcode_sync.pos', function (require) {
 
-    var session = require('web.session');
-    var Backbone = window.Backbone;
-    var core = require('web.core');
-    var screens = require('point_of_sale.screens');
-    var models = require('point_of_sale.models');
-    var longpolling = require('pos_longpolling');
+    var models = require('pos_longpolling.pos');
+    var longpolling = require('pos_longpolling.connection');
     var gui = require('point_of_sale.gui');
-
-    var _t = core._t;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({

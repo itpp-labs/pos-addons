@@ -9,6 +9,7 @@ CHANNEL = "pos_orders_history_receipt"
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'
+    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)
 
     reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)
 
@@ -23,6 +24,7 @@ class PosConfig(models.Model):
 
 class PosReceipt(models.Model):
     _name = 'pos.xml_receipt'
+    _description = 'XML Receipt'
 
     receipt = fields.Char("Receipt")
     pos_reference = fields.Char("Reference")
