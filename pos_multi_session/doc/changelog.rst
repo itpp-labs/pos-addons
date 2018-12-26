@@ -1,3 +1,8 @@
+`4.2.4`
+-------
+
+**Fix:** Do not create a new order after removing the last order from another POS if you are on the Floor
+
 `4.2.3`
 -------
 
