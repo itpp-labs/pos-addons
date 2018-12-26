@@ -80,7 +80,7 @@ odoo.define('pos_receipt_custom_template.models', function(require){
         get_last_orderline_user_name: function(){
             var lastorderline = this.get_last_orderline();
             var name = this.pos.get_cashier().name;
-            if (lastorderline && lastorderline.ms_info) {
+            if (lastorderline && lastorderline.ms_info && lastorderline.ms_info.created) {
                 name = lastorderline.ms_info.created.user.name;
             }
             return name;
