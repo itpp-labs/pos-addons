@@ -11,7 +11,7 @@
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_receipt_custom/",
+    "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
     "price": 20.00,
     "currency": "EUR",

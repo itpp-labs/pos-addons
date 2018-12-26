@@ -120,7 +120,9 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 if (this.pos.config.show_barcode_in_receipt) {
                     var barcode = this.$el.find('#barcode').parent().html();
                     if (!barcode) {
-                        var receipt_reference = order.pos_reference.split(" ")[1];
+                        var receipt_reference = order.pos_reference &&
+                            order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                            order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0];
                         var el = document.createElement('div');
                         $(el).append("<img id='barcode'></img>");
                         $(el).find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
@@ -173,7 +175,9 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 this.$('.pos-receipt-container').html(ticket.receipt);
                 if (this.pos.config.show_barcode_in_receipt) {
                     // reference without 'Order'
-                    var receipt_reference = order.pos_reference.split(" ")[1];
+                    var receipt_reference = order.pos_reference &&
+                        order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                        order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0];
                     this.$el.find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
                     this.$el.find('#barcode').css({
                         "width": "100%"

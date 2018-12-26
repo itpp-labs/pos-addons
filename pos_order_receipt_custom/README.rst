@@ -38,6 +38,7 @@ Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
 HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_receipt_custom/
 
+
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_

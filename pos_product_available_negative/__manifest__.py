@@ -1,3 +1,7 @@
+# Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Restrict out-of-stock POS Orders""",
     "summary": """Restrict payments for out-of-stock products in POS""",
@@ -18,9 +22,14 @@
         "pos_pin",
         "pos_product_available",
     ],
-    'data': [
+    "external_dependencies": {"python": [], "bin": []},
+    "data": [
         'data.xml',
         'views.xml',
+    ],
+    "demo": [
+    ],
+    "qweb": [
     ],
 
     'installable': True,
