@@ -8,6 +8,8 @@ odoo.define('pos_orders_history.screens', function (require) {
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var QWeb = core.qweb;
+    var Model = require('web.Model');
+    var _t = core._t;
 
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
         template: 'OrdersHistoryButton',
@@ -315,6 +317,7 @@ odoo.define('pos_orders_history.screens', function (require) {
 
     screens.ScreenWidget.include({
         barcode_product_action: function(code) {
+            var self = this;
             // TODO: Check it
             var order = this.pos.db.get_sorted_orders_history(1000).find(function(o) {
                 var pos_reference = o.pos_reference &&
@@ -323,8 +326,36 @@ odoo.define('pos_orders_history.screens', function (require) {
                 return pos_reference === code.code.replace(/\-/g, '');
             });
             var screen_name = this.gui.get_current_screen();
-            if (order && screen_name === "orders_history_screen") {
-                this.search_order_on_history(order);
+            if (screen_name === "orders_history_screen") {
+                if (order) {
+                    this.search_order_on_history(order);
+                } else {
+                    // send request to server
+                    new Model('pos.order').call('search_read', [[['pos_history_reference_uid', '=', code.code]]]).then(function(o) {
+                        if (o && o.length) {
+                            self.pos.update_orders_history(o);
+                            if (o instanceof Array) {
+                                o = o[0];
+                            }
+                            self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                                self.pos.update_orders_history_lines(lines);
+                                self.search_order_on_history(o);
+                            });
+                        } else {
+                            self.gui.show_popup('error',{
+                                'title': _t('Error: Could not find the Order'),
+                                'body': _t('There is no order with this barcode.')
+                            });
+                        }
+                    }, function(err, event) {
+                        event.preventDefault();
+                        console.error(err);
+                        self.gui.show_popup('error',{
+                            'title': _t('Error: Could not find the Order'),
+                            'body': err.data,
+                        });
+                    });
+                }
             } else {
                 this._super(code);
             }
