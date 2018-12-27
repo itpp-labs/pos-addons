@@ -59,18 +59,28 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             var self = this;
             this._super();
             if (this.pos.config.reprint_orders) {
-                this.$('.actions.oe_hidden').removeClass('oe_hidden');
-                this.$('.button.reprint').unbind('click');
-                this.$('.button.reprint').click(function (e) {
-                    var parent = $(this).parents('.order-line');
-                    var id = parseInt(parent.data('id'));
-                    self.click_reprint_order(id);
-                });
+                this.set_reprint_action();
             }
+        },
+        set_reprint_action: function() {
+            var self = this;
+            this.$('.actions.oe_hidden').removeClass('oe_hidden');
+            this.$('.button.reprint').unbind('click');
+            this.$('.button.reprint').click(function (e) {
+                var parent = $(this).parents('.order-line');
+                var id = parseInt(parent.data('id'));
+                self.click_reprint_order(id);
+            });
         },
         click_reprint_order: function (id) {
             this.gui.show_screen('history_reprint_receipt', {order_id: id});
         },
+        render_list: function(orders) {
+            this._super(orders);
+            if (this.pos.config.reprint_orders) {
+                this.set_reprint_action();
+            }
+        }
     });
 
     screens.ReprintReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
