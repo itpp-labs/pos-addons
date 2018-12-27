@@ -1063,7 +1063,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
         }
         return true;
     },
-    get_type: function(){
+    get_type: function() {
         return this.gui.get_current_screen_param('type');
     },
     show: function(){
