@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2017 Artyom Losev
+# Copyright 2018 Artyom Losev
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
@@ -18,12 +18,9 @@
     "currency": "EUR",
 
     "depends": [
-        "account",
-        "base_action_rule",
-        "bus",
-        "point_of_sale",
         "sale",
-        "pos_longpolling"
+        "pos_longpolling",
+        "base_action_rule"
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

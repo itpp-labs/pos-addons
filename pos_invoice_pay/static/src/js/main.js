@@ -1,4 +1,5 @@
-// Copyright 2017 Artyom Losev
+// Copyright 2018 Artyom Losev
+// Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 odoo.define('pos_invoices', function (require) {
@@ -627,6 +628,7 @@ var InvoicesAndOrdersBaseWidget = screens.ScreenWidget.extend({
                     $td.setAttribute("colspan", this.num_columns);
 
                     $tr.classList.add('line-element-hidden');
+                    $tr.classList.add("line-element-container");
 
                     var $table = this.render_lines_table(data[i].lines);
 
@@ -692,6 +694,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
     select_line: function (event,$line,id) {
         var sale_order = this.pos.db.get_sale_order_by_id(id);
         this.$('.list .lowlight').removeClass('lowlight');
+        this.$(".line-element-container").addClass('line-element-hidden');
         if ( $line.hasClass('highlight') ){
             this.selected_SO = false;
             $line.removeClass('highlight');
@@ -809,6 +812,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
     select_line: function (event,$line,id) {
         var invoice = this.pos.db.get_invoice_by_id(id);
         this.$('.list .lowlight').removeClass('lowlight');
+        this.$(".line-element-container").addClass('line-element-hidden');
         if ($line.hasClass('highlight')){
             this.selected_invoice = false;
             $line.removeClass('highlight');
@@ -877,7 +881,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
                             self.render_data(self.pos.get_invoices_to_render(self.pos.db.invoices));
                             self.toggle_save_button();
                             self.pos.selected_invoice = self.pos.db.get_invoice_by_id(self.selected_invoice.id);
-                            self.gui.show_screen('invoice_payment');
+                            self.gui.show_screen('invoice_payment', {type: 'invoices'});
                         });
                     }).fail(function () {
                         this.gui.show_popup('error',{
@@ -887,7 +891,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
                     });
                 break;
             case "Open":
-                this.gui.show_screen('invoice_payment');
+                this.gui.show_screen('invoice_payment', {type: 'invoices'});
             }
         } else {
             this.gui.show_popup('error',{
@@ -1054,6 +1058,20 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
             }
         }
         return true;
+    },
+    get_type: function() {
+        return this.gui.get_current_screen_param('type');
+    },
+    show: function(){
+        this._super();
+        if (this.pos.config.iface_invoicing) {
+            var order = this.pos.get_order();
+            if (!order.is_to_invoice() && this.get_type() === "orders") {
+                this.click_invoice();
+            } else if (order.is_to_invoice() && this.get_type() === "invoices") {
+                this.click_invoice();
+            }
+        }
     }
 });
 
