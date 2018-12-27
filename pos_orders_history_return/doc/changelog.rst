@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.4`
+-------
+
+**Fix:** Error 'table_id is undefined' if POS Restaurant has not been activated
+
 `1.0.3`
 -------
 
