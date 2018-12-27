@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.0`
+-------
+
+**New:** The option to load specific order after barcode scanning instead of all existing orders
+
 `1.1.3`
 -------
 **Fix:** Error related to different localizations
