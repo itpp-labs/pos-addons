@@ -1,3 +1,9 @@
+`1.0.3`
+-------
+
+**Fix:** Don't auto-complete the current order after paying the invoice
+**Fix:** Incorrect receipt printing in the PosBox
+
 `1.0.2`
 -------
 
