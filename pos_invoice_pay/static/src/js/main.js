@@ -1125,7 +1125,10 @@ var InvoiceReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
     render_change: function () {
         var order = this.pos.get_order();
         this.$('.change-value').html(this.format_currency(order.invoice_to_pay.get_change()));
-    }
+    },
+    click_next: function() {
+        this.gui.show_screen('products');
+    },
 });
 
 gui.define_screen({name:'invoice_receipt', widget: InvoiceReceiptScreenWidget});
