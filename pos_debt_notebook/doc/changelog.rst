@@ -1,3 +1,7 @@
+`5.1.2`
+-------
+- **FIX:** Availability to buy credit top-up products with discount credits
+
 `5.1.1`
 -------
 - **FIX:** Compatibility with pos_orders_history_return module

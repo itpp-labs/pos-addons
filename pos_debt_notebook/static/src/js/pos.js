@@ -209,7 +209,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return line.cashregister.journal.debt;
                 });
         },
-        paymentlines_with_credits_via_discounts: function(){
+        has_paymentlines_with_credits_via_discounts: function(){
             return _.filter(this.get_paymentlines(), function(pl){
                 return pl.cashregister.journal.credits_via_discount;
             });
@@ -388,13 +388,16 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 });
                 return;
             }
-            if (this.check_discount_credits_for_taxed_products()){
-                var text = _.map(currentOrder.paymentlines_with_credits_via_discounts(), function(pl){
+            var paymentlines_with_credits_via_discounts = currentOrder.has_paymentlines_with_credits_via_discounts();
+            if (paymentlines_with_credits_via_discounts) {
+                var paymentlines_with_credits_via_discounts_text = _.map(paymentlines_with_credits_via_discounts, function(pl){
                     return pl.name;
                 }).join(', ');
+            }
+            if (this.check_discount_credits_for_taxed_products()){
                 this.gui.show_popup('error',{
-                    'title': _t('Unable to validate with the "Credits via Discounts" payment method'),
-                    'body': _t('You cannot use ' + text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
+                    'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
+                    'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
                 });
                 return;
             }
@@ -402,6 +405,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
                     'body': _t("Don't forget to specify Customer when sell Credits."),
+                });
+                return;
+            }
+            if (currentOrder.has_credit_product() && paymentlines_with_credits_via_discounts){
+                this.gui.show_popup('error',{
+                    'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
+                    'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for credit top-up products. Use an another non-discount payment method'),
                 });
                 return;
             }
@@ -448,7 +458,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return pl.cashregister.journal.debt;
             });
             if (debt_pl && partner){
-                var disc_credits_pl = order.paymentlines_with_credits_via_discounts();
+                var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
                 this._super();
                 // offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl){
@@ -509,7 +519,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         },
         check_discount_credits_for_taxed_products: function(){
             var order = this.pos.get_order(),
-                discount_pl = order.paymentlines_with_credits_via_discounts();
+                discount_pl = order.has_paymentlines_with_credits_via_discounts();
             if (!discount_pl.length || discount_pl.length === order.get_paymentlines().length) {
                 return false;
             }
