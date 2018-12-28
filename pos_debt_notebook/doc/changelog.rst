@@ -1,6 +1,7 @@
 `5.1.2`
 -------
 - **FIX:** Availability to buy credit top-up products with discount credits
+- **FIX:** Error related to automatic receipt printing
 
 `5.1.1`
 -------
