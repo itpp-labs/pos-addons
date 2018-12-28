@@ -12,6 +12,22 @@ odoo.define('pos_receipt_custom_template.models', function(require){
     models.load_models({
         model: 'pos.custom_receipt',
         fields: ['name','qweb_template', 'type'],
+        domain: function(self) {
+            var domain = [];
+            var type = [];
+            if (self.config.custom_ticket) {
+                type.push('ticket');
+            }
+            if (self.config.custom_xml_receipt) {
+                type.push('receipt');
+            }
+
+            domain.push(['type','in',type]);
+            return domain;
+        },
+        condition: function(self) {
+            return self.config.custom_ticket || self.config.custom_xml_receipt;
+        },
         loaded: function(self, templates) {
             self.custom_receipt_templates = templates;
         },

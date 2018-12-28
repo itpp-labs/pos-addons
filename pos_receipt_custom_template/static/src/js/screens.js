@@ -69,8 +69,16 @@ odoo.define('pos_receipt_custom_template.screens', function(require){
                 var order = this.pos.get_order();
                 var ticket = this.get_custom_ticket();
                 this.$('.pos-receipt-container').html(ticket);
-                // for compatibility with pos_orders_history_reprint
+                if (this.pos.config.show_barcode_in_receipt) {
+                    // for compatibility with pos_orders_history
+                    var receipt_reference = order.uid;
+                    this.$el.find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
+                    this.$el.find('#barcode').css({
+                        "width": "100%"
+                    });
+                }
                 if (this.save_order_receipt) {
+                    // for compatibility with pos_orders_history_reprint
                     var template = this.convert_to_xml(ticket);
                     $(template).find(".receipt-type").html("(Supplement)");
                     ticket = template.outerHTML;
@@ -84,11 +92,20 @@ odoo.define('pos_receipt_custom_template.screens', function(require){
             if (this.pos.config.custom_xml_receipt) {
                 var order = this.pos.get_order();
                 var receipt = this.get_custom_receipt();
+                if (this.pos.config.show_barcode_in_receipt) {
+                    // for compatibility with pos_orders_history
+                    var barcode = this.$el.find('#barcode').parent().html();
+                    if (barcode && receipt.indexOf('<img id="barcode"/>') !== -1) {
+                        receipt = receipt.split('<img id="barcode"/>');
+                        receipt[0] = receipt[0] + barcode + '</img>';
+                        receipt = receipt.join('');
+                    }
+                }
                 this.pos.proxy.print_receipt(receipt);
                 order._printed = true;
 
-                // for compatibility with pos_orders_history_reprint
                 if (this.save_order_receipt) {
+                    // for compatibility with pos_orders_history_reprint
                     var template = this.convert_to_xml(receipt);
                     $(template).find(".receipt-type").html("(Supplement)");
                     receipt = template.outerHTML;
