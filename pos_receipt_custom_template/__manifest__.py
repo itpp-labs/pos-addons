@@ -7,7 +7,7 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pos_receipt_custom_main.png"],
-    "version": "10.0.1.0.1",
+    "version": "10.0.1.0.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
