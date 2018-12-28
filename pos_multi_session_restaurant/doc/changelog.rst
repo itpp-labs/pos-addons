@@ -1,3 +1,7 @@
+`3.2.6`
+-------
+**Improvement:** Compatibility with pos_order_receipt_custom module
+
 `3.2.5`
 -------
 **Improvement:** Synchronize the process of deleting or adding tables
