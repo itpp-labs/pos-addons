@@ -32,7 +32,7 @@
                             <right><t t-esc="change.qty" /> <t t-esc="change.unit" /></right>
                         </line>
                         <t t-call="NameWrapped"/>
-                        <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
+                        <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                         <t t-if="change.note and !change.custom_notes">
                             <t t-set="notes" t-value="widget.get_string_array_by_len(40, '---'+change.note)"/>
                             <t t-foreach="notes" t-as="note">
@@ -74,7 +74,7 @@
                     </div>
                     <br/>
                 </t>
-                <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
+                <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                 <div size="double-height">
                     <t t-if="changes.order_note and !changes.order_custom_notes">
                         <t t-set="notes" t-value="widget.get_string_array_by_len(40, 'Order note: ---'+changes.order_note)"/>
@@ -148,8 +148,7 @@
                                 <right><t t-esc="change.qty" /> <t t-esc="change.unit" /></right>
                             </line>
                             <t t-call="NameWrapped"/>
-                            <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
-
+                            <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                             <t t-if="change.note and !change.custom_notes">
                                 <t t-set="notes" t-value="widget.get_string_array_by_len(40, '---'+change.note)"/>
                                 <t t-foreach="notes" t-as="note">
@@ -199,7 +198,7 @@
                             <pre align='left'>    Reason: <t t-esc="changes.reason" /></pre>
                         </t>
                     </div>
-                    <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
+                    <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                     <div size="double-height">
                         <t t-if="changes.old_order_note and !changes.old_order_custom_notes">
                             <t t-set="notes" t-value="widget.get_string_array_by_len(40, 'Order note: ---'+changes.old_order_note)"/>
@@ -280,8 +279,7 @@
                             <right><t t-esc="change.qty" /> <t t-esc="change.unit" /></right>
                         </line>
                         <t t-call="NameWrapped"/>
-                        <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
-
+                        <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                         <t t-if="change.note and !change.custom_notes">
                             <t t-set="notes" t-value="widget.get_string_array_by_len(40, '---'+change.note)"/>
                             <t t-foreach="notes" t-as="note">
@@ -323,7 +321,7 @@
                     </div>
                     <br/>
                 </t>
-                <!--For compatibility with the https://www.odoo.com/apps/modules/11.0/pos_order_note/ module-->
+                <!--For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module-->
                 <div size="double-height">
 
                     <t t-if="changes.order_note and !changes.order_custom_notes">

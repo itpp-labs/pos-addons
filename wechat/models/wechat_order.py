@@ -252,17 +252,18 @@ class WeChatOrder(models.Model):
 
 class WeChatOrderLine(models.Model):
     _name = 'wechat.order.line'
+    _description = 'WeChat Order Line'
 
     name = fields.Char('Name', help="When empty, product's name is used")
     description = fields.Char('Body')
     product_id = fields.Many2one('product.product', required=True)
     wxpay_goods_ID = fields.Char('Wechat Good ID')
     price = fields.Monetary('Price', required=True, help='Price in currency units (not cents)')
-    currency_id = fields.Many2one('res.currency', related='order_id')
+    currency_id = fields.Many2one('res.currency', related='order_id', string='Currency')
     quantity = fields.Integer('Quantity', default=1, help='Quantity as Integer (WeChat limitation)')
     quantity_full = fields.Char('Quantity Value', default='1')
     category = fields.Char('Category')
-    order_id = fields.Many2one('wechat.order')
+    order_id = fields.Many2one('wechat.order', string='Order')
 
     def get_fee(self):
         self.ensure_one()

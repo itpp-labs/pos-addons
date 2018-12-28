@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class Micropay(models.Model):
 
     _name = 'wechat.micropay'
+    _description = 'WeChat Micropay'
     _order = 'id desc'
 
     name = fields.Char('Name', readonly=True)
