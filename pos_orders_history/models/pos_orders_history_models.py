@@ -14,8 +14,8 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     orders_history = fields.Boolean("Orders History", help="Show all orders list in POS", default=True)
-    load_barcode_order_only = fields.Boolean("Load an Order after scan barcode",
-                                             help="Load an Order after scan barcode of the Order.", default=False)
+    load_barcode_order_only = fields.Boolean("Load Specific Orders only",
+                                             help="Load an order after scan the barcode only rather than all existing orders", default=False)
 
     load_orders_of_last_n_days = fields.Boolean("Orders of last 'n' days", default=False)
     number_of_days = fields.Integer("Number of days", default=0, help='0 - load orders of current day')
