@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.3`
+-------
+
+- **Improvement:** Compatibility with pos_receipt_custom_template module
+
 `1.0.2`
 -------
 

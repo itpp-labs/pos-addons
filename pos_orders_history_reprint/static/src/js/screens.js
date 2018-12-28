@@ -123,9 +123,11 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         });
                         barcode = $(el).find('#barcode').parent().html();
                     }
-                    receipt = receipt.split('<img id="barcode"/>');
-                    receipt[0] = receipt[0] + barcode + '</img>';
-                    receipt = receipt.join('');
+                    if (receipt.indexOf('<img id="barcode"/>') !== -1) {
+                        receipt = receipt.split('<img id="barcode"/>');
+                        receipt[0] = receipt[0] + barcode + '</img>';
+                        receipt = receipt.join('');
+                    }
                 }
                 this.pos.proxy.print_receipt(receipt);
             } else if (self.pos.config.show_posted_orders && order.state === "done") {
