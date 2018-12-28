@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2017 Artyom Losev
+# Copyright 2018 Artyom Losev
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
@@ -7,7 +7,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.2",
+    "version": "10.0.1.0.3",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -18,12 +18,9 @@
     "currency": "EUR",
 
     "depends": [
-        "account",
-        "base_action_rule",
-        "bus",
-        "point_of_sale",
         "sale",
-        "pos_longpolling"
+        "pos_longpolling",
+        "base_action_rule"
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

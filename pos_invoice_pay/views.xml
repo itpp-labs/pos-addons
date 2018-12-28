@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Copyright 2017 Artyom Losev
+<!--Copyright 2018 Artyom Losev
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
@@ -14,7 +14,6 @@
                         <group>
                             <field name="show_invoices"/>
                             <field name="show_sale_orders"/>
-                            <field name="pos_invoice_pay_writeoff_account_id"/>
                         </group>
                         <group>
                             <field name="invoice_cashier_selection" attrs="{'invisible':[('show_invoices','=',False)]}"/>
