@@ -43,6 +43,8 @@ odoo.define('pos_order_receipt_custom.screens', function(require){
             }
             if (this.pos.config.custom_xml_receipt) {
                 order.set_receipt_type(_t('Pre-receipt'));
+                // remove the last order barcode
+                this.pos.chrome.screens.receipt.$el.find('#barcode').parent().remove();
                 this.pos.chrome.screens.receipt.print_xml();
                 order._printed = false;
             } else {

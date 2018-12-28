@@ -1,3 +1,8 @@
+`1.0.2`
+-------
+
+**Improvement:** Optimization of speed loading of Order Receipts
+
 `1.0.1`
 -------
 
