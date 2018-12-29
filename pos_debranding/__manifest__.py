@@ -12,6 +12,7 @@
     # 'currency': 'EUR',
     'data': [
         'views.xml',
+        'template.xml'
     ],
     'qweb': [
         'static/src/xml/pos_debranding.xml',
