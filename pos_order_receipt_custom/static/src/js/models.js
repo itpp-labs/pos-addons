@@ -14,6 +14,32 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            var receipt_model = _.find(this.models, function(model) {
+                return model.model === 'pos.custom_receipt';
+            });
+            // update domain
+            receipt_model.domain = function(self) {
+                var domain = [];
+                var type = [];
+                if (self.config.custom_ticket) {
+                    type.push('ticket');
+                }
+                if (self.config.custom_xml_receipt) {
+                    type.push('receipt');
+                }
+                if (self.config.custom_kitchen_receipt) {
+                    type.push('order_receipt');
+                }
+                domain.push(['type','in',type]);
+                return domain;
+            };
+            // update condition
+            receipt_model.condition = function(self) {
+                return self.config.custom_ticket || self.config.custom_xml_receipt || self.config.custom_kitchen_receipt;
+            };
+            _super_posmodel.initialize.apply(this, arguments);
+        },
         transfer_order_to_different_table: function () {
             this.order_to_transfer_to_different_table = this.get_order();
             if (this.order_to_transfer_to_different_table) {
