@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_discount_total/static/src/js/pos.js"></script>
@@ -9,5 +8,9 @@
               <link rel="stylesheet" href="/pos_discount_total/static/src/css/pos.css"/>
             </xpath>
         </template>
-    </data>
+        <template id="demo_assets_backend" name="pos_discount_total demo assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_discount_total/static/src/js/tour.js"></script>
+            </xpath>
+        </template>
 </openerp>
