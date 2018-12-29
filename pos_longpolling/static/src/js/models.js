@@ -74,7 +74,7 @@ odoo.define('pos_longpolling.model', function(require){
             return session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                self.trigger("change:poll_connection", true);
+                self.set_is_online(true);
                 if (!self.response_status) {
                     self.response_timer();
                 }
