@@ -9,8 +9,9 @@
 **Fix:** Issue related to difference account
 
 `1.1.0`
-
+-------
 **Fix:** Ask cashier when click on fetch orders/invoices in POS
+
 `1.0.3`
 -------
 
