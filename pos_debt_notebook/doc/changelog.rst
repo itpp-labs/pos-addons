@@ -1,7 +1,9 @@
 `5.1.2`
 -------
 - **FIX:** Availability to buy credit top-up products with discount credits
+- **FIX:** Availability to return products with discount credits
 - **FIX:** Error related to automatic receipt printing
+- **ADD:** Mandatory Payment Method selection for return orders
 
 `5.1.1`
 -------

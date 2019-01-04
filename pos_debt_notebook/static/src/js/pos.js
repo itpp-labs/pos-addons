@@ -219,6 +219,11 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return line.product.credit_product;
             });
         },
+        has_return_product: function(){
+            return this.get_orderlines().some(function(line){
+                return line.quantity < 0;
+            });
+        },
         get_debt_delta: function(){
             var debt_amount = 0;
             var plines = this.get_paymentlines();
@@ -389,29 +394,37 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 return;
             }
             var paymentlines_with_credits_via_discounts = currentOrder.has_paymentlines_with_credits_via_discounts();
-            if (paymentlines_with_credits_via_discounts) {
+            if (paymentlines_with_credits_via_discounts.length) {
                 var paymentlines_with_credits_via_discounts_text = _.map(paymentlines_with_credits_via_discounts, function(pl){
                     return pl.name;
                 }).join(', ');
+
+                if (this.check_discount_credits_for_taxed_products()){
+                    this.gui.show_popup('error',{
+                        'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
+                        'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
+                    });
+                    return;
+                }
+                if (currentOrder.has_credit_product()){
+                    this.gui.show_popup('error',{
+                        'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
+                        'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for credit top-up products. Use an another non-discount payment method'),
+                    });
+                    return;
+                }
             }
-            if (this.check_discount_credits_for_taxed_products()){
-                this.gui.show_popup('error',{
-                    'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
-                    'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for products with taxes. Use an another payment method, or pay the full price with only discount credits'),
-                });
-                return;
-            }
+            if (!currentOrder.get_paymentlines().length && currentOrder.has_return_product()){
+                    this.gui.show_popup('error',{
+                        'title': _t('Unable to validate return order'),
+                        'body': _t('Specify Payment Method'),
+                    });
+                    return;
+                }
             if (currentOrder.has_credit_product() && !client){
                 this.gui.show_popup('error',{
                     'title': _t('Unknown customer'),
                     'body': _t("Don't forget to specify Customer when sell Credits."),
-                });
-                return;
-            }
-            if (currentOrder.has_credit_product() && paymentlines_with_credits_via_discounts){
-                this.gui.show_popup('error',{
-                    'title': _t('Unable to validate with the ' + paymentlines_with_credits_via_discounts_text + ' payment method'),
-                    'body': _t('You cannot use ' + paymentlines_with_credits_via_discounts_text + ' for credit top-up products. Use an another non-discount payment method'),
                 });
                 return;
             }
