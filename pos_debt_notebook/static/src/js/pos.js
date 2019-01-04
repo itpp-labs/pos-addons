@@ -25,7 +25,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
         initialize: function (session, attributes) {
             var self = this;
             this.reload_debts_partner_ids = [];
-            this.reload_debts_ready = $.when();
+            this.reload_debts_timer = $.when();
             models.load_fields('account.journal',['debt', 'debt_limit','credits_via_discount','pos_cash_out',
                                                   'category_ids','credits_autopay']);
             models.load_fields('product.product',['credit_product']);
@@ -42,10 +42,9 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var progress = (this.models.length - 0.5) / this.models.length;
             this.chrome.loading_message(_t('Loading Credits data'), progress);
             this.reload_debts(partner_ids, 0, {"postpone": false}).then(function(){
+                var result = _super_posmodel.after_load_server_data.apply(self, arguments);
                 done.resolve();
-            });
-            done.then(function(){
-                return _super_posmodel.after_load_server_data.apply(self, arguments);
+                return result;
             });
             return done;
         },
@@ -109,19 +108,19 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             if (typeof options.shadow === "undefined"){
                 options.shadow = true;
             }
-
+            var download_debts_ready = options.deferred || $.Deferred();
             this.reload_debts_partner_ids = this.reload_debts_partner_ids.concat(partner_ids);
-            if (options.postpone && this.reload_debts_ready.state() === 'resolved'){
+            if (options.postpone && this.reload_debts_timer.state() === 'resolved'){
                 // add timeout to gather requests before reloading
                 var reload_ready_def = $.Deferred();
-                this.reload_debts_ready = reload_ready_def;
+                this.reload_debts_timer = reload_ready_def;
                 setTimeout(function(){
                     reload_ready_def.resolve();
                 }, typeof options.postpone === 'number'
                     ? options.postpone
                     : 1000);
             }
-            this.reload_debts_ready = this.reload_debts_ready.then(function(){
+            this.reload_debts_timer = this.reload_debts_timer.then(function(){
                 if (self.reload_debts_partner_ids.length > 0) {
                     var load_partner_ids = _.uniq(self.reload_debts_partner_ids.splice(0));
                     var new_partners = _.any(load_partner_ids, function(id){
@@ -142,22 +141,23 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     return def.then(function(){
                         var request_finished = $.Deferred();
 
-                        self._load_debts(load_partner_ids, limit, options).then(function (data) {
+                        self._load_debts(load_partner_ids, limit, options).done(function(data){
                             // success
+                            download_debts_ready.resolve();
                             self._on_load_debts(data);
                         }).always(function(){
                             // allow to do next call
                             request_finished.resolve();
                         }).fail(function () {
                             // make request again, Timeout is set to allow properly work in offline mode
-                            self.reload_debts(load_partner_ids, 0, {"postpone": 4000, "shadow": false});
+                            self.reload_debts(load_partner_ids, 0, {"postpone": 4000, "shadow": false, 'deferred': download_debts_ready});
                             self.trigger('updateDebtHistoryFail');
                         });
                         return request_finished;
                     });
                 }
             });
-            return this.reload_debts_ready;
+            return download_debts_ready;
         },
         _load_debts: function(partner_ids, limit, options){
             return new Model('res.partner').call('debt_history', [partner_ids], {'limit': limit}, {'shadow': options.shadow});
