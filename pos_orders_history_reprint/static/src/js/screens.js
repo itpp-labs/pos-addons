@@ -101,15 +101,25 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             var self = this;
             var order = this.get_order();
             this.$('.pos-sale-ticket').hide();
-            rpc.query({
-                model: 'pos.xml_receipt',
-                method: 'search_read',
-                args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]
-            }).then(function(r) {
+            var receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
+            if (receipt) {
                 self.$('.pos-sale-ticket').show();
-                self.reprint_receipt = r;
+                self.reprint_receipt = receipt;
                 self.check_handle_auto_print();
-            });
+            } else {
+                rpc.query({
+                    model: 'pos.xml_receipt',
+                    method: 'search_read',
+                    args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]
+                }).then(function(r) {
+                    self.$('.pos-sale-ticket').show();
+                    self.reprint_receipt = r;
+                    self.check_handle_auto_print();
+                }, function() {
+                    self.show_popup = true;
+                    self.click_next();
+                });
+            }
         },
         check_handle_auto_print: function() {
             if (this.should_auto_print() && this.reprint_receipt && this.reprint_receipt.length) {
