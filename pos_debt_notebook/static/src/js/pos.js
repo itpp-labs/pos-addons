@@ -297,7 +297,10 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 category_list = _.union(category_list, _.flatten(_.map(category_list, function(cl){
                     return self.pos.db.get_category_childs_ids(cl);
                 })));
-                if (_.contains(category_list, ol.product.pos_categ_id[0])) {
+                var categories = ol.product.pos_categ_id
+                ? [ol.product.pos_categ_id[0]]
+                : ol.product.pos_category_ids;
+                if (_.intersection(category_list, categories)) {
                     return memo + ol.get_price_with_tax();
                 }
                 return memo;
