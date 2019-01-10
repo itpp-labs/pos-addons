@@ -154,7 +154,7 @@ odoo.define('pos_orders_history.models', function (require) {
             return domain;
         },
         condition: function(self) {
-            return self.config.orders_history;
+            return self.config.orders_history && !self.config.load_barcode_order_only;
         },
         loaded: function (self, orders) {
             self.update_orders_history(orders);
@@ -169,7 +169,7 @@ odoo.define('pos_orders_history.models', function (require) {
             return [['order_id', 'in', self.order_ids]];
         },
         condition: function(self) {
-            return self.config.orders_history;
+            return self.config.orders_history && !self.config.load_barcode_order_only;
         },
         loaded: function (self, lines) {
             self.update_orders_history_lines(lines);
