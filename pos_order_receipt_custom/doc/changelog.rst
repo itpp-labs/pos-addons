@@ -1,3 +1,8 @@
+`1.0.3`
+-------
+
+**Improvement:** Compatibility with pos_category_multi module
+
 `1.0.2`
 -------
 

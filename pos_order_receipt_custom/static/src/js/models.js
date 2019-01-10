@@ -84,13 +84,28 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             }
         },
         get_order_product_list_of_printer: function(printer, order) {
+            var self = this;
             var orderlines = order.get_orderlines();
             var lines = orderlines.filter(function(line) {
-                if (_.contains(printer.config.product_categories_ids, line.product.pos_categ_id[0]) && line.mp_dirty === false) {
+                // for compatibility with pos_category_multi
+                if (line.product.pos_category_ids && line.product.pos_category_ids.length && line.mp_dirty === false) {
+                    var res = printer.config.product_categories_ids.filter(function(cat) {
+                        return line.product.pos_category_ids.indexOf(cat) !== -1;
+                    });
+                    if (res && res.length) {
+                        return true;
+                    }
+                }
+                // for compatibility with pos_order_printer_product
+                if(self.is_product_in_product_list && self.is_product_in_product_list(line.product.id, printer.config.product_ids) && line.mp_dirty === false) {
+                    return true;
+                }
+                if (line.product.pos_categ_id && _.contains(printer.config.product_categories_ids, line.product.pos_categ_id[0]) && line.mp_dirty === false) {
                     return true;
                 }
                 return false;
             });
+
             var products = [];
             lines.forEach(function(line) {
                 products.push({
