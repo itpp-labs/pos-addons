@@ -627,7 +627,6 @@ var InvoicesAndOrdersBaseWidget = screens.ScreenWidget.extend({
                     $td.setAttribute("colspan", this.num_columns);
 
                     $tr.classList.add('line-element-hidden');
-
                     $tr.classList.add("line-element-container");
 
                     var $table = this.render_lines_table(data[i].lines);
@@ -694,6 +693,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
     select_line: function (event,$line,id) {
         var sale_order = this.pos.db.get_sale_order_by_id(id);
         this.$('.list .lowlight').removeClass('lowlight');
+        this.$(".line-element-container").addClass('line-element-hidden');
         if ( $line.hasClass('highlight') ){
             this.selected_SO = false;
             $line.removeClass('highlight');
@@ -751,7 +751,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
                 self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
                 self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
-        }).fail(function (err, type) {
+        }).fail(function (err, event) {
             self.gui.show_popup('error', {
                 'title': _t(err.message),
                 'body': _t(err.data.arguments[0])
@@ -809,6 +809,7 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
     select_line: function (event,$line,id) {
         var invoice = this.pos.db.get_invoice_by_id(id);
         this.$('.list .lowlight').removeClass('lowlight');
+        this.$(".line-element-container").addClass('line-element-hidden');
         if ($line.hasClass('highlight')){
             this.selected_invoice = false;
             $line.removeClass('highlight');
@@ -1082,20 +1083,52 @@ gui.define_screen({name:'invoice_payment', widget: InvoicePayment});
 
 var InvoiceReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
     template: 'InvoiceReceiptScreenWidget',
-    render_receipt: function () {
+    render_invoice_ticket: function(){
         var order = this.pos.get_order();
-        this.$('.pos-receipt-container').html(QWeb.render('PosInvoiceTicket',{
+        return QWeb.render('PosInvoiceTicket',{
                 widget:this,
                 order: order,
                 receipt: order.export_for_printing(),
                 orderlines: order.get_orderlines(),
                 paymentlines: order.get_paymentlines(),
-            }));
+            });
+    },
+    render_invoice_receipt: function(){
+        var order = this.pos.get_order();
+        return QWeb.render('PosInvoiceReceipt',{
+                widget:this,
+                order: order,
+                receipt: order.export_for_printing(),
+                orderlines: order.get_orderlines(),
+                paymentlines: order.get_paymentlines(),
+            });
+    },
+    render_receipt: function () {
+        var order = this.pos.get_order();
+        if (order.invoice_to_pay) {
+            var receipt = this.render_invoice_ticket();
+            this.$('.pos-receipt-container').html(receipt);
+        } else {
+            this._super();
+        }
+    },
+    print_xml: function() {
+        var order = this.pos.get_order();
+        if (order.invoice_to_pay) {
+            var receipt = this.render_invoice_receipt();
+            this.pos.proxy.print_receipt(receipt);
+            order._printed = true;
+        } else {
+            this._super();
+        }
     },
     render_change: function () {
         var order = this.pos.get_order();
         this.$('.change-value').html(this.format_currency(order.invoice_to_pay.get_change()));
-    }
+    },
+    click_next: function() {
+        this.gui.show_screen('products');
+    },
 });
 
 gui.define_screen({name:'invoice_receipt', widget: InvoiceReceiptScreenWidget});
