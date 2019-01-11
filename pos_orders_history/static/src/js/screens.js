@@ -8,7 +8,7 @@ odoo.define('pos_orders_history.screens', function (require) {
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var QWeb = core.qweb;
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var _t = core._t;
 
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
@@ -331,7 +331,11 @@ odoo.define('pos_orders_history.screens', function (require) {
                     this.search_order_on_history(order);
                 } else {
                     // send request to server
-                    new Model('pos.order').call('search_read', [[['pos_history_reference_uid', '=', code.code]]]).then(function(o) {
+                    rpc.query({
+                        model: 'pos.order',
+                        method: 'search_read',
+                        args: [[['pos_history_reference_uid', '=', code.code]]]
+                    }).then(function(o) {
                         if (o && o.length) {
                             self.pos.update_orders_history(o);
                             if (o instanceof Array) {
