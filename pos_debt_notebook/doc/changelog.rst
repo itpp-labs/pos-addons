@@ -5,7 +5,7 @@
 - **ADD:** Mandatory Payment Method selection for return orders
 - **FIX:** Compatibility with pos_category_multi
 - **FIX:** Unavailability to cash out credits from journals with defined category
-- **FIX:** POS opening with not downloaded debts
+- **FIX:** Errors on loading debts on POS opening were ignored
 
 `5.1.1`
 -------
