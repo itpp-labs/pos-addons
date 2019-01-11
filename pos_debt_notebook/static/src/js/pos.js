@@ -559,7 +559,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order();
             var sum_pl = round_pr(order.get_summary_for_cashregister(cr), this.pos.currency.rounding);
             var limits = order.get_payment_limits(cr, 'products_restriction');
-            var allowed_products = _.filter(order.get_orderlines(), function(ol){
+            var allowed_lines = _.filter(order.get_orderlines(), function(ol){
                 var categories = ol.product.pos_categ_id
                 ? [ol.product.pos_categ_id[0]]
                 : ol.product.pos_category_ids;
@@ -568,7 +568,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                 }
                 return false;
             });
-            if (allowed_products.length === order.get_orderlines().length || this.cash_out_check()) {
+            if (allowed_lines.length === order.get_orderlines().length || this.cash_out_check()) {
                 // if all products are allowed or it is a cash out case
                 // we don't need to check max debt exceeding, because it was checked earlier
                 return false;
