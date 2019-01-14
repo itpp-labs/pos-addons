@@ -743,7 +743,7 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
         rpc.query({
             model: 'pos.order',
             method: 'process_invoices_creation',
-            args: [sale_order.id, self.pos.pos_session.id],
+            args: [sale_order.id],
         }).then(function (created_invoice_id) {
             // Explicitly update the db to avoid race condition.
             self.pos.update_or_fetch_invoice(created_invoice_id).then(function (res) {
