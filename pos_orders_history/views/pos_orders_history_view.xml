@@ -22,13 +22,21 @@
                         </div>
                         <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
                             <div class="o_setting_left_pane">
+                                <field name="load_barcode_order_only"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="load_barcode_order_only"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', ('orders_history', '=', False), ('load_barcode_order_only', '=', True)]}">
+                            <div class="o_setting_left_pane">
                                 <field name="load_orders_of_last_n_days"/>
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="load_orders_of_last_n_days"/>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', ('orders_history', '=', False), ('load_orders_of_last_n_days', '=', False)]}">
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', '|', ('orders_history', '=', False), ('load_orders_of_last_n_days', '=', False), ('load_barcode_order_only', '=', True)]}">
                             <div class="o_setting_left_pane">
                                 <field name="number_of_days"/>
                             </div>

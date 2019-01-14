@@ -60,16 +60,27 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
         }
     });
 
-    models.load_models({
+    models.load_models([{
         model: 'pos.xml_receipt',
-        fields: [],
+        fields: ['id', 'receipt', 'pos_reference', 'receipt_type', 'status'],
         domain: function(self) {
-            // load all active receipts
-            return [['status','in',true]];
+            var orders = self.db.sorted_orders;
+            var pos_reference = _.map(orders, function(order) {
+                return order.pos_reference;
+            });
+            // load all receipts for the orders history
+            return [['pos_reference','in',pos_reference]];
+        },
+        condition: function(self) {
+            return self.config.orders_history && !self.config.load_barcode_order_only;
         },
         loaded: function (self, receipts) {
-            self.update_orders_history_receipt(receipts);
+            if (receipts && receipts.length) {
+                self.update_orders_history_receipt(receipts);
+            }
         },
+    }], {
+        'after': 'pos.order'
     });
 
     return models;

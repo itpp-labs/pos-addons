@@ -16,14 +16,18 @@ odoo.define('pos_orders_history_return.screens', function (require) {
             var self = this;
             this._super();
             if (this.pos.config.return_orders) {
-                this.$('.actions.oe_hidden').removeClass('oe_hidden');
-                this.$('.button.return').unbind('click');
-                this.$('.button.return').click(function (e) {
-                    var parent = $(this).parents('.order-line');
-                    var id = parseInt(parent.data('id'));
-                    self.click_return_order_by_id(id);
-                });
+                this.set_return_action();
             }
+        },
+        set_return_action: function() {
+            var self = this;
+            this.$('.actions.oe_hidden').removeClass('oe_hidden');
+            this.$('.button.return').unbind('click');
+            this.$('.button.return').click(function (e) {
+                var parent = $(this).parents('.order-line');
+                var id = parseInt(parent.data('id'));
+                self.click_return_order_by_id(id);
+            });
         },
         renderElement: function() {
             this._super();
@@ -46,6 +50,9 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 });
             }
             this._super(orders);
+            if (this.pos.config.return_orders) {
+                this.set_return_action();
+            }
         },
         click_return_order_by_id: function(id) {
             var self = this;
