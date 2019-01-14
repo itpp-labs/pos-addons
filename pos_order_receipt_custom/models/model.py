@@ -1,7 +1,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class PosCustomReceipt(models.Model):
@@ -26,3 +26,13 @@ class PosConfig(models.Model):
 
     print_transfer_info_in_kitchen = fields.Boolean(string='Print Order Transfer Ticket',
                                                     help='Print the kitchen ticket once the order is transfered to another table', default=True)
+    custom_kitchen_receipt = fields.Boolean(compute='_compute_custom_kitchen_receipt', readonly=True, string='Using of Custom Kitchen Receipt')
+
+    @api.depends('printer_ids')
+    def _compute_custom_kitchen_receipt(self):
+        custom_kitchen_receipt = False
+        for p in self.printer_ids:
+            if p.custom_order_receipt is True:
+                custom_kitchen_receipt = True
+                break
+        self.custom_kitchen_receipt = custom_kitchen_receipt

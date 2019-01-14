@@ -43,7 +43,16 @@ odoo.define('pos_order_receipt_custom.screens', function(require){
             }
             if (this.pos.config.custom_xml_receipt) {
                 order.set_receipt_type(_t('Pre-receipt'));
+                // for compatibility with pos_orders_history module (we don't need to print the bill with a barcode)
+                var barcode_in_receipt_old_value = this.pos.config.show_barcode_in_receipt;
+                if (barcode_in_receipt_old_value) {
+                    this.pos.config.show_barcode_in_receipt = false;
+                }
+                // remove the last order barcode
+                this.pos.chrome.screens.receipt.$el.find('#barcode').parent().remove();
                 this.pos.chrome.screens.receipt.print_xml();
+                // return config settings after print bill
+                this.pos.config.show_barcode_in_receipt = barcode_in_receipt_old_value;
                 order._printed = false;
             } else {
                 var receipt = order.export_for_printing();
