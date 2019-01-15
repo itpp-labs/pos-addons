@@ -8,7 +8,7 @@ class TestUi(odoo.tests.HttpCase):
     def test_01_pos_is_loaded(self):
         env = self.env
 
-        # From https://github.com/odoo/odoo/blob/11.0/addons/point_of_sale/tests/test_frontend.py#L292-L297
+        # From https://github.com/odoo/odoo/blob/12.0/addons/point_of_sale/tests/test_frontend.py#L292-L297
         #
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
