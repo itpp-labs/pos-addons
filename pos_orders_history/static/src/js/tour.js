@@ -18,7 +18,7 @@ odoo.define('pos_orders_history.tour', function(require) {
 
     function cashier_select() {
         return [{
-            trigger: '.modal-dialog.cashier .selection-item',
+            trigger: '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
             content: 'select first cashier',
         }];
     }
@@ -32,7 +32,7 @@ odoo.define('pos_orders_history.tour', function(require) {
             steps = steps.concat(cashier_select());
         }
         steps = steps.concat([{
-            trigger: '.paymentmethod:contains("Cash")',
+            trigger: '.paymentmethod:contains("Cash (USD)")',
             content: "pay with cash",
         }]);
         return steps;
@@ -92,17 +92,23 @@ odoo.define('pos_orders_history.tour', function(require) {
             trigger: ".order-line td:first",
             content: "open fist order",
         }, {
-            trigger: ".line-element-container:first .line-line:contains('Peaches')",
+            trigger: ".line-element-container:first .line-line:contains('LED Lamp')",
             run: function () {
                 // it's a check
             },
         }];
     }
 
-    var steps = [{
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+    var steps = [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
+        position: 'right',
+        edition: 'community'
+    }, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
         content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
         position: 'bottom',
+        edition: 'enterprise'
     }, {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
         content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
@@ -110,6 +116,7 @@ odoo.define('pos_orders_history.tour', function(require) {
     },{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
+        timeout: 20000,
         run: function () {
             // it's a check
         },
@@ -121,11 +128,11 @@ odoo.define('pos_orders_history.tour', function(require) {
         position: "bottom"
     });
 
-    steps = steps.concat(add_product_to_order('Peaches'));
+    steps = steps.concat(add_product_to_order('LED Lamp'));
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("5.10"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("0.90"));
 
     steps = steps.concat(finish_order());
 
@@ -139,7 +146,7 @@ odoo.define('pos_orders_history.tour', function(require) {
         content: "confirm closing the frontend",
     }, {
         content: "wait until backend is opened",
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        trigger: '.o_pos_kanban button.oe_kanban_action_button',
         run: function () {
 //             no need to click on trigger
         },

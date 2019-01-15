@@ -6,6 +6,7 @@ CHANNEL_WECHAT = 'wechat'
 
 class WeChatPos(models.AbstractModel):
     _name = 'wechat.pos'
+    _description = 'WeChat POS'
 
     pos_id = fields.Many2one('pos.config')
 

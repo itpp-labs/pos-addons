@@ -3,6 +3,7 @@ from odoo import fields, models
 
 class PosCategoryDiscount(models.Model):
     _name = "pos.category_discount"
+    _description = "Category Discount"
     category_discount_pc = fields.Float(string="Discount Percentage", default=10, help="The default discount percentage")
     discount_category_id = fields.Many2one("pos.category", string="Product Category", help="The category used to model the discount")
     discount_program_id = fields.Many2one("pos.discount_program", string="Discount Program")

@@ -43,6 +43,7 @@ class PosConfig(models.Model):
 
 class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
+    _description = 'POS Multi Session'
 
     name = fields.Char('Name')
     multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for POSes", default=True)
