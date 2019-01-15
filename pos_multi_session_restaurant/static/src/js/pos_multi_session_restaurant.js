@@ -88,8 +88,8 @@ odoo.define('pos_multi_session_restaurant', function(require){
         add_new_order: function(){
             var self = this;
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
-            if (this.multi_session){
-                var current_order = this.get_order();
+            var current_order = this.get_order();
+            if (this.multi_session && current_order){
                 current_order.new_updates_to_send();
                 current_order.save_to_db();
             }
@@ -188,10 +188,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                     return ord.uid === data.uid;
                 });
             }
-            if (order && order.table && order.table.id !== data.table_id) {
-                order.transfer = true;
-                order.destroy({'reason': 'abandon'});
-            }
             PosModelSuper.prototype.updates_from_server.apply(this, arguments);
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
                 this.set('selectedOrder',old_order);
@@ -210,18 +206,25 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.init_locked = false;
             }
         },
+        ms_update_existing_order: function(order, data) {
+            if (order.table && order.table.id !== data.table_id) {
+                // the order has been transferred to another table
+                this.order_to_transfer_to_different_table = order;
+                this.set_table(this.tables_by_id[data.table_id]);
+                this.order_to_transfer_to_different_table = null;
+            }
+            PosModelSuper.prototype.ms_update_existing_order.apply(this, arguments);
+        },
         // changes the current table.
         set_table: function(table) {
-            var self = this;
-            if (table && this.order_to_transfer_to_different_table) {
-                this.order_to_transfer_to_different_table.table = table;
-                this.order_to_transfer_to_different_table.new_updates_to_send();
-                this.order_to_transfer_to_different_table = null;
-                // set this table
-                this.set_table(table);
-            } else {
-                PosModelSuper.prototype.set_table.apply(this, arguments);
+            var order = this.order_to_transfer_to_different_table;
+            if (table && order) {
+                var old_table = order.table;
+                order.table = table;
+                order.new_updates_to_send();
+                order.table = old_table;
             }
+            PosModelSuper.prototype.set_table.apply(this, arguments);
         }
     });
 

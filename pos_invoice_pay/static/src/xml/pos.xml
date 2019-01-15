@@ -351,8 +351,12 @@
             
             <div class="pos-center-align"><t t-esc="moment().format('L LT')"/> <t t-esc="order.name"/></div>
             <br />
-            Payment of Invoice <t t-esc="order.invoice_to_pay.number"/>
-            (<t t-esc="order.invoice_to_pay.origin"/>)<br />
+            <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.number"/>
+                <t t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'>
+                    (<t t-esc="order.invoice_to_pay.origin"/>)
+                </t>
+            </div>
+            <br />
 
             <t t-esc="widget.pos.company.name"/><br />
             Phone: <t t-esc="widget.pos.company.phone || ''"/><br />
@@ -419,5 +423,132 @@
             </t>
         </div>
     </t>
+
+
+    <t t-name="PosInvoiceReceipt">
+        <receipt align='center' width='40' value-thousands-separator='' >
+            <div>
+                <t t-if='receipt.company.logo'>
+                    <img t-att-src='receipt.company.logo' />
+                </t>
+                <t t-if='!receipt.company.logo'>
+                    <h1><t t-esc='receipt.company.name' /></h1>
+                    <br/>
+                </t>
+
+                <div>
+                    <t t-if='receipt.company.contact_address'>
+                        <div font='b'><t t-esc='receipt.company.contact_address' /></div>
+                    </t>
+                    <t t-if='receipt.company.phone'>
+                        <div font='b'>Tel:<t t-esc='receipt.company.phone' /></div>
+                    </t>
+                    <t t-if='receipt.company.vat'>
+                        <div>VAT:<t t-esc='receipt.company.vat' /></div>
+                    </t>
+                    <t t-if='receipt.company.email'>
+                        <div font='b'><t t-esc='receipt.company.email' /></div>
+                    </t>
+                    <t t-if='receipt.company.website'>
+                        <div font='b'><t t-esc='receipt.company.website' /></div>
+                    </t>
+                    <t t-if='receipt.header_xml'>
+                        <div font='b'><t t-raw='receipt.header_xml' /></div>
+                    </t>
+                    <t t-if='!receipt.header_xml and receipt.header'>
+                        <div font='b'><t t-raw='receipt.header' /></div>
+                    </t>
+                    <div>&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>
+                    <t t-if='receipt.cashier'>
+                        <div font='b' class='cashier'>
+                            <div>User: <t t-esc='receipt.cashier' /></div>
+                        </div>
+                    </t>
+                    <br />
+                    <t t-if='order.invoice_to_pay and order.invoice_to_pay.number and order.invoice_to_pay.origin'>
+                        <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.number"/>
+                            <t t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'>
+                                (<t t-esc="order.invoice_to_pay.origin"/>)
+                            </t>
+                        </div>
+                    </t>
+                </div>
+                <br />
+                <div>
+                    <line>
+                        <left>Subtotal:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.get_subtotal())"/>
+                        </right>
+                    </line>
+                    <line>
+                        <left>Tax:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.amount_tax)"/>
+                        </right>
+                    </line>
+
+                    <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                        <line>
+                            <left><t t-esc="taxdetail.name" /></left>
+                            <right class="pos-right-align">
+                                <t t-esc="widget.format_currency(taxdetail.amount)" />
+                            </right>
+                        </line>
+                    </t>
+
+                    <line size='double-height'>
+                        <left>Total:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.residual)"/>
+                        </right>
+                    </line>
+                </div>
+                <br />
+                <div class='receipt-paymentlines'>
+                    <t t-foreach="paymentlines" t-as="line">
+                        <line>
+                            <left>
+                                <t t-esc="line.name"/>
+                            </left>
+                            <right class="pos-right-align">
+                                <t t-esc="widget.format_currency(line.get_amount())"/>
+                            </right>
+                        </line>
+                    </t>
+                </div>
+                <br />
+
+                <div class='receipt-change'>
+                    <line><left>Change:</left><right class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.invoice_to_pay.get_change())"/>
+                    </right></line>
+                </div>
+
+                <div class='before-footer' />
+
+                <t t-if='receipt.footer_xml'>
+                    <t t-raw='receipt.footer_xml' />
+                </t>
+
+                <t t-if='!receipt.footer_xml and receipt.footer'>
+                    <br/>
+                    <t t-raw='receipt.footer' />
+                    <br/>
+                    <br/>
+                </t>
+
+                <div class='after-footer' />
+
+                <br/>
+                <div font='b'>
+                    <div><t t-esc='receipt.name' /></div>
+                    <div><t t-esc='receipt.date.localestring' /></div>
+                </div>
+            </div>
+        </receipt>
+    </t>
+
+
 
 </templates>
