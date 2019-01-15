@@ -11,18 +11,10 @@ odoo.define('pos_order_printer_product', function(require){
     var _t = core._t;
 
 
+    models.load_fields('restaurant.printer',['product_ids']);
+
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
-            // New code
-            var printer_model = _.find(this.models, function(model){
-                return model.model === 'restaurant.printer';
-            });
-            printer_model.fields.push('product_ids');
-
-            // Inheritance
-            return _super_posmodel.initialize.call(this, session, attributes);
-        },
         is_product_in_product_list: function(id, list) {
             var product_tmpl_id = this.db.get_product_by_id(id).product_tmpl_id;
             return $.inArray(product_tmpl_id, list) !== -1;
