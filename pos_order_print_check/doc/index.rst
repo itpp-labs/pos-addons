@@ -13,7 +13,7 @@ Configuration
 * Open menu ``[[ Point Of Sale ]] >> Configuration >> Point of Sale``
 * Open POS Config form
 * Click ``[Edit]``
-* Specify ``PosBox`` settings
+* Specify ``PosBox`` settings at **Hardware Proxy / PosBox** section
 * Click ``[Save]``
 
 Usage
@@ -22,4 +22,4 @@ Usage
 * Open session of ``Point of Sale``
 * Add some Products to cart
 * Click ``[Order]``
-* RESULT: if no connection to PosBox, you will see the warning message
+* RESULT: if no connection to PosBox, you will see the warning message **No connection to the printer: printer_name**
