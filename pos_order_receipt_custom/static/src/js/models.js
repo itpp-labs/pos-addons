@@ -79,6 +79,11 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
                         changes.products = products;
                         order.print_order_receipt(printer, changes);
                         order.printed_transfer = true;
+                        order.trigger('change', order);
+                        // For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_multi_session/ module
+                        setTimeout(function() {
+                            order.trigger('new_updates_to_send');
+                        }, 0);
                     }
                 });
             }
