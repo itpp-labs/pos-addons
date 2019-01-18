@@ -6,7 +6,9 @@
  Check PosBox Connection
 =========================
 
-Check the connection to PosBox before printing kitchen orders
+Check the connection to PosBox before printing POS orders
+
+By default, the orders sent to printers may lost if the connection to PosBox is unexpectively interrupted. The module eliminates this disadvantage because it looks at the connection to PosBox before order printing.
 
 Credits
 =======

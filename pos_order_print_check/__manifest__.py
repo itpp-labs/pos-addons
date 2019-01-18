@@ -3,10 +3,10 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Check PosBox Connection""",
-    "summary": """Check the connection to PosBox before printing kitchen orders""",
+    "summary": """Check the connection to PosBox before printing to avoid loosing the orders""",
     "category": "Point of Sale",
-    # "live_test_url": "",
-    "images": [],
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-print-check?version=10.0",
+    "images": ["images/pos_order_print_check_main.png"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -14,8 +14,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 89.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_restaurant_base",
@@ -36,4 +36,15 @@
 
     "auto_install": False,
     "installable": True,
+
+    "demo_title": "Check PosBox Connection",
+    "demo_addons": [
+    ],
+    "demo_addons_hidden": [
+    ],
+    "demo_url": "pos-order-print-check",
+    "demo_summary": "Check the connection to PosBox before printing POS orders",
+    "demo_images": [
+    "images/pos_order_print_check_main.png",
+    ]
 }
