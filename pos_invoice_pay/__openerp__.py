@@ -5,9 +5,9 @@
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=9.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.3",
+    "version": "9.0.1.0.3",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
@@ -18,7 +18,6 @@
     "currency": "EUR",
 
     "depends": [
-        "sale",
         "pos_longpolling",
         "base_action_rule"
     ],

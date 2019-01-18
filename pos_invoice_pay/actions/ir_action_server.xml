@@ -21,7 +21,5 @@
             <field name="state">code</field>
             <field name="code">object.action_updated_sale_order()</field>
         </record>
-
-
     </data>
 </openerp>

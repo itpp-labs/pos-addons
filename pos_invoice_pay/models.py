@@ -3,7 +3,7 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import api, models, fields
+from openerp import api, models, fields
 
 SO_CHANNEL = 'pos_sale_orders'
 INV_CHANNEL = 'pos_invoices'
@@ -57,7 +57,7 @@ class PosOrder(models.Model):
     def process_invoices_creation(self, sale_order_id):
         order = self.env['sale.order'].browse(sale_order_id)
         inv_id = order.action_invoice_create()
-        self.env['account.invoice'].browse(inv_id).action_invoice_open()
+        self.env['account.invoice'].browse(inv_id).signal_workflow('invoice_open')
         return inv_id
 
 

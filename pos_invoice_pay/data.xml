@@ -11,10 +11,10 @@
                 <script type="text/javascript" src="/pos_invoice_pay/static/src/js/main.js"></script>
             </xpath>
         </template>
-        <template id="assets_backend_web" name="pos_invoice_backend_assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_invoice_pay/static/src/js/test_pos_invoice.js"></script>
-            </xpath>
-        </template>
+        <!--<template id="assets_backend_web" name="pos_invoice_backend_assets" inherit_id="web.assets_backend">-->
+            <!--<xpath expr="." position="inside">-->
+                <!--<script type="text/javascript" src="/pos_invoice_pay/static/src/js/test_pos_invoice.js"></script>-->
+            <!--</xpath>-->
+        <!--</template>-->
     </data>
 </odoo>

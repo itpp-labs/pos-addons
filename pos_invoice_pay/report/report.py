@@ -3,17 +3,16 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import datetime
-from odoo import api, fields, models
+from openerp.addons.point_of_sale.report.pos_details import pos_details
+from openerp.osv import osv
+from openerp import fields
 
 
-class ReportSaleDetails(models.AbstractModel):
+class ReportSaleDetails(pos_details):
 
-    _inherit = 'report.point_of_sale.report_saledetails'
-
-    @api.model
-    def get_sale_details(self, date_start=False, date_stop=False, configs=False):
-        res = super(ReportSaleDetails, self).get_sale_details(date_start, date_stop, configs)
-
+    def get_invoices_details(self, form):
+        res = {}
+        date_start, date_stop = self._get_utc_time_range(form)
         if date_start:
             date_start = fields.Datetime.from_string(date_start)
         else:
@@ -28,11 +27,14 @@ class ReportSaleDetails(models.AbstractModel):
         date_start = fields.Datetime.to_string(date_start)
         date_stop = fields.Datetime.to_string(date_stop)
 
-        payments = self.env['account.payment'].search([
+        payments_obj = self.pool.get('account.payment')
+        cr, uid, context = self.cr, self.uid, self.localcontext
+        payments_ids = payments_obj.search(cr, uid, [
             ('payment_date', '>=', date_start),
             ('payment_date', '<=', date_stop),
             ('paid_by_pos', '=', True)
         ])
+        payments = payments_obj.browse(cr, uid, payments_ids, context)
 
         res['invoices'] = []
         unique = []
@@ -56,5 +58,17 @@ class ReportSaleDetails(models.AbstractModel):
                     if pay.journal_id.type == 'cash':
                         res['total_invoices_cash'] += pay.amount
                 unique.append(p.invoice_ids.id)
-
         return res
+
+    def __init__(self, cr, uid, name, context):
+        super(ReportSaleDetails, self).__init__(cr, uid, name, context)
+        self.localcontext.update({
+            'get_invoices_details': self.get_invoices_details,
+        })
+
+
+class report_pos_details(osv.AbstractModel):
+    _name = 'report.point_of_sale.report_detailsofsales'
+    _inherit = 'report.point_of_sale.report_detailsofsales'
+    _template = 'point_of_sale.report_detailsofsales'
+    _wrapped_report_class = ReportSaleDetails
