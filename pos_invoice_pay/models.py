@@ -56,7 +56,7 @@ class PosOrder(models.Model):
             payment.post()
 
     @api.model
-    def process_invoices_creation(self, sale_order_id, session_id):
+    def process_invoices_creation(self, sale_order_id):
         order = self.env['sale.order'].browse(sale_order_id)
         inv_id = order.action_invoice_create()
         self.env['account.invoice'].browse(inv_id).action_invoice_open()

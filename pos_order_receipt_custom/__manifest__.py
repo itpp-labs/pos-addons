@@ -6,7 +6,7 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": [],
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

@@ -14,39 +14,74 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
+        initialize: function(){
+            var receipt_model = _.find(this.models, function(model) {
+                return model.model === 'pos.custom_receipt';
+            });
+            // update domain
+            receipt_model.domain = function(self) {
+                var domain = [];
+                var type = [];
+                if (self.config.custom_ticket) {
+                    type.push('ticket');
+                }
+                if (self.config.custom_xml_receipt) {
+                    type.push('receipt');
+                }
+                if (self.config.custom_kitchen_receipt) {
+                    type.push('order_receipt');
+                }
+                domain.push(['type','in',type]);
+                return domain;
+            };
+            // update condition
+            receipt_model.condition = function(self) {
+                return self.config.custom_ticket || self.config.custom_xml_receipt || self.config.custom_kitchen_receipt;
+            };
+            _super_posmodel.initialize.apply(this, arguments);
+        },
+        transfer_order_to_different_table: function () {
+            this.order_to_transfer_to_different_table = this.get_order();
+            if (this.order_to_transfer_to_different_table) {
+                this.order_to_transfer_to_different_table.printed_transfer = false;
+            }
+            _super_posmodel.transfer_order_to_different_table.apply(this, arguments);
+        },
         // changes the current table.
         set_table: function(table) {
-            var self = this;
-            if (table && this.order_to_transfer_to_different_table && !this.order_to_transfer_to_different_table.first_order_printing && this.config.print_transfer_info_in_kitchen) {
-                var old_table = this.order_to_transfer_to_different_table.table;
-                var new_table = table;
-                if (old_table.id !== new_table.id) {
-                    var changes = {
-                        'changes_table': true,
-                        'old_table': old_table,
-                        'new_table': new_table,
-                        'name': this.order_to_transfer_to_different_table.name,
-                        'new': [],
-                        'cancelled': [],
-                        'new_all': [],
-                        'cancelled_all': [],
-                    };
-
-                    // For compatibility with the https://www.odoo.com/apps/modules/12.0/pos_order_note/ module
-                    changes.order_note = this.order_to_transfer_to_different_table.note;
-                    changes.order_custom_notes = this.order_to_transfer_to_different_table.custom_notes;
-
-
-                    this.printers.forEach(function(printer) {
-                        var products = self.get_order_product_list_of_printer(printer, self.order_to_transfer_to_different_table);
-                        if (products && products.length) {
-                            changes.products = products;
-                            self.order_to_transfer_to_different_table.print_order_receipt(printer, changes);
-                        }
-                    });
-                }
+            var order = this.order_to_transfer_to_different_table;
+            if (table && order && !order.first_order_printing && this.config.print_transfer_info_in_kitchen && !order.printed_transfer) {
+                this.print_transfer_order(this.order_to_transfer_to_different_table, order.table, table);
             }
             _super_posmodel.set_table.apply(this, arguments);
+        },
+        print_transfer_order: function(order, old_table, new_table) {
+            var self = this;
+            if (old_table.id !== new_table.id) {
+                var changes = {
+                    'changes_table': true,
+                    'old_table': old_table,
+                    'new_table': new_table,
+                    'name': order.name,
+                    'new': [],
+                    'cancelled': [],
+                    'new_all': [],
+                    'cancelled_all': [],
+                };
+
+                // For compatibility with the https://www.odoo.com/apps/modules/10.0/pos_order_note/ module
+                changes.order_note = order.note;
+                changes.order_custom_notes = order.custom_notes;
+
+                this.printers.forEach(function(printer) {
+                    var products = self.get_order_product_list_of_printer(printer, order);
+                    if (products && products.length) {
+                        changes.products = products;
+                        order.print_order_receipt(printer, changes);
+                        order.printed_transfer = true;
+                    }
+                });
+            }
         },
         get_order_product_list_of_printer: function(printer, order) {
             var orderlines = order.get_orderlines();
@@ -176,6 +211,7 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             var json = _super_order.export_as_JSON.call(this);
             json.first_order_printing = this.first_order_printing;
             json.table_open_time = false;
+            json.printed_transfer = this.printed_transfer;
             if (this.table) {
                 json.table_open_time = this.table.open_time;
             }
@@ -187,8 +223,19 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
                 // the condition is made for compatibility with pos_orders_history_reprint
                 this.table = {floor: {}};
             }
+            this.printed_transfer = json.printed_transfer;
             this.table.open_time = json.table_open_time || json.create_date;
             this.first_order_printing = json.first_order_printing;
+        },
+        // This function is used to sync data accross all POSes
+        // (only when pos_multi_session is installed)
+        apply_ms_data: function(data) {
+            if (_super_order.apply_ms_data) {
+                _super_order.apply_ms_data.apply(this, arguments);
+            }
+            this.table.open_time = data.table_open_time;
+            this.first_order_printing = data.first_order_printing;
+            this.printed_transfer = data.printed_transfer;
         },
     });
 

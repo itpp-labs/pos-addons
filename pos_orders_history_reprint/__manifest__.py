@@ -6,9 +6,9 @@
     "name": """Reprint POS Orders Receipt""",
     "summary": """Reprint receipts of paid POS orders""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=11.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=12.0",
     "images": ["images/pos_orders_reprint_main.png"],
-    "version": "12.0.1.0.2",
+    "version": "12.0.1.0.4",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",

@@ -229,7 +229,7 @@ odoo.define('pos_multi_session', function(require){
                     this.get('selectedOrder').ms_replace_empty_order = true;
                     return;
                 } else if (this.ms_syncing_in_progress){
-                    if (this.get('orders').size() === 0) {
+                    if (this.get('orders').size() === 0 && this.gui.get_current_screen() !== "floors") {
                         this.add_new_order();
                     } else {
                         return this.set({'selectedOrder': this.get('orders').at(index) || this.get('orders').first()});

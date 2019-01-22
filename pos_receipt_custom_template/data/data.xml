@@ -191,6 +191,10 @@
                 </table>
             </t>
 
+            <span>
+                <img id="barcode"/>
+            </span>
+
             <!-- FOOTER -->
 
             <table class='receipt-change'>
@@ -422,6 +426,8 @@
             </t>
             <br/>
             <div class='before-footer' />
+
+            <img id="barcode"/>
 
             <!-- FOOTER -->
 
