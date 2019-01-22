@@ -104,7 +104,7 @@ Handling employees
 
 Group of partner from the same Company can be handling together.
 
-* Open wizard via ``Invoicing >> Sales >> Generate POS Credits Invoices``
+* Open wizard via ``Invoicing >> Sales >> Pay for company's employees``
 
   * Specify **Company**
   * Select **Credit Product** (create one if needed)
@@ -117,6 +117,29 @@ Group of partner from the same Company can be handling together.
 * Click ``[Action] -> Confirm Draft Invoices``
 * Click ``[Action] -> Register Payment``
 * Now Credits for employees are updated
+
+Writing off partner credits
+---------------------------
+
+Two update types:
+
+    * Balance Update - Write-off certain amount from each partner
+    * New Balance - Set the same new balance for all partners and write-off excessive credit amount from each partner
+
+* Open wizard via ``Invoicing >> Sales >> Write-off Credits``
+
+  * Specify **Update Type**. There are two update types:
+
+    * Balance Update - Write-off certain amount from each partner
+    * New Balance - Set the same new balance for all partners and write-off excessive credit amount from each partner
+
+  * Specify **Write-off Amount** or **New Balance**
+  * Select **Journal**
+  * Select **Product** this product will be used in created invoices
+  * Choose Partners for writing off
+  * Click ``[Generate]``
+
+* Now Partner Credits are updated
 
 Uninstallation
 ==============
