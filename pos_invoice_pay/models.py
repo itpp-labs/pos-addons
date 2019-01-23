@@ -33,7 +33,7 @@ class PosOrder(models.Model):
             payment_difference_handling = 'open'
             if amount > inv_obj.residual:
                 session_id = self.env['pos.session'].browse(invoice['data']['pos_session_id'])
-                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id.id
+                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id
                 payment_difference_handling = 'reconcile'
 
             vals = {
@@ -48,7 +48,7 @@ class PosOrder(models.Model):
                 'partner_id': invoice['data']['invoice_to_pay']['partner_id'][0],
                 'partner_type': 'customer',
                 'payment_difference_handling': payment_difference_handling,
-                'writeoff_account_id': writeoff_acc_id,
+                'writeoff_account_id': writeoff_acc_id.id if writeoff_acc_id else False,
                 'paid_by_pos': True,
                 'cashier': cashier,
             }
@@ -144,15 +144,11 @@ class SaleOrder(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    def _get_default_writeoff_account(self):
-        acc = self.env['account.account'].search([('code', '=', 220000)]).id
-        return acc if acc else False
-
     show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
     show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
     pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account",
-                                                          help="The account is used for the difference between due and paid amount",
-                                                          default=_get_default_writeoff_account)
+                                                          help="The account is used for the difference between "
+                                                               "due and paid amount")
     invoice_cashier_selection = fields.Boolean(string='Select Invoice Cashier',
                                                help='Ask for a cashier when fetch invoices', defaul=True)
     sale_order_cashier_selection = fields.Boolean(string='Select Sale Order Cashier',
