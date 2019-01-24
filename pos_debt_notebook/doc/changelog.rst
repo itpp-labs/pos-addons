@@ -1,3 +1,7 @@
+`5.1.3`
+-------
+- **FIX:** Error related to pos loading with the lack of customers
+
 `5.1.2`
 -------
 - **FIX:** Availability to buy credit top-up products with discount credits
