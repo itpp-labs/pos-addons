@@ -1067,7 +1067,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     },
     show: function(){
         this._super();
-        if (this.pos.config.iface_invoicing) {
+        if (this.pos.config.module_account) {
             var order = this.pos.get_order();
             if (!order.is_to_invoice() && this.get_type() === "orders") {
                 this.click_invoice();
