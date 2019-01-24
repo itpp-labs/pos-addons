@@ -156,6 +156,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                         return request_finished;
                     });
                 }
+                return download_debts_ready.resolve();
             });
             return download_debts_ready;
         },
