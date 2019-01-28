@@ -52,7 +52,11 @@
             <td><t t-esc='line.qty_delivered'/></td>
             <td><t t-esc='line.qty_invoiced'/></td>
             <td><t t-esc='widget.format_currency(line.total)'/></td>
-            <td><t t-esc='line.tax'/></td>
+            <td>
+                <t t-foreach="line.tax" t-as="tax">
+                    <t t-esc='tax'/>
+                </t>
+            </td>
             <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.subtotal)'/></td>
         </tr>
@@ -80,7 +84,11 @@
             <td><t t-esc='line.account'/></td>
             <td><t t-esc='line.qty'/></td>
             <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
-            <td><t t-esc='line.tax'/></td>
+            <td>
+                <t t-foreach="line.tax" t-as="tax">
+                    <t t-esc='tax'/>
+                </t>
+            </td>
             <td><t t-esc="line.discount"/></td>
             <td><t t-esc='widget.format_currency(line.amount)'/></td>
         </tr>
@@ -225,7 +233,7 @@
                     </section>
 
                     <div class='payment-buttons'>
-                        <t t-if='widget.pos.config.iface_invoicing'>
+                        <t t-if='widget.pos.config.module_account'>
                             <t t-if='widget.pos.get_order()'>
                                 <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
                                     <i class='fa fa-file-text-o' /> Invoice

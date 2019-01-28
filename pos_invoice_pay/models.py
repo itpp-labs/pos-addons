@@ -91,13 +91,14 @@ class AccountInvoice(models.Model):
                 'product': l.product_id.name,
                 'price_unit': l.price_unit,
                 'qty': l.quantity,
-                'tax': l.invoice_line_tax_ids.name or ' ',
+                'tax': [tax.name or ' ' for tax in l.invoice_line_tax_ids],
                 'discount': l.discount,
                 'amount': l.price_subtotal
             }
             res.append(line)
         return res
 
+    @api.one
     @api.depends('payment_move_line_ids.amount_residual')
     def _get_payment_info_JSON(self):
         if self.payment_move_line_ids:
@@ -131,7 +132,7 @@ class SaleOrder(models.Model):
                 'uom_qty': l.product_uom_qty,
                 'qty_delivered': l.qty_delivered,
                 'qty_invoiced': l.qty_invoiced,
-                'tax': l.tax_id.name or ' ',
+                'tax': [tax.name or ' ' for tax in l.tax_id],
                 'discount': l.discount,
                 'subtotal': l.price_subtotal,
                 'total': l.price_total,

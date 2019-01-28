@@ -12,7 +12,7 @@
 
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info/team/ArtyomLosev",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/",
     "license": "LGPL-3",
     "price": 89.00,
     "currency": "EUR",
@@ -40,7 +40,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "Pay Sale Orders & Invoices over POS",
     "demo_addons": [
