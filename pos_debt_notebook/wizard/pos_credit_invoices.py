@@ -109,7 +109,7 @@ class PosCreditInvoices(models.TransientModel):
                     'update_type': self.update_type,
                 }
                 if self.update_type == 'new_balance':
-                    vals['new_balance'] = line.amount
+                    vals['new_balance'] = self.new_balance
                 else:
                     vals['balance'] = - line.amount
                 credit_update = self.env['pos.credit.update'].create(vals)
