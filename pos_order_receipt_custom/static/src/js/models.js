@@ -239,12 +239,10 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
         },
         init_from_JSON: function(json) {
             _super_order.init_from_JSON.apply(this,arguments);
-            if (!this.table){
-                // the condition is made for compatibility with pos_orders_history_reprint
-                this.table = {floor: {}};
-            }
             this.printed_transfer = json.printed_transfer;
-            this.table.open_time = json.table_open_time || json.create_date;
+            if (this.table) {
+                this.table.open_time = json.table_open_time || json.create_date;
+            }
             this.first_order_printing = json.first_order_printing;
         },
         // This function is used to sync data accross all POSes
@@ -253,7 +251,9 @@ odoo.define('pos_order_receipt_custom.models', function (require) {
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
-            this.table.open_time = data.table_open_time;
+            if (this.table) {
+                this.table.open_time = data.table_open_time;
+            }
             this.first_order_printing = data.first_order_printing;
             this.printed_transfer = data.printed_transfer;
         },
