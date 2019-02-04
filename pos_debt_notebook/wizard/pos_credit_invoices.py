@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -31,15 +31,14 @@ class PosCreditInvoices(models.TransientModel):
     full_charge = fields.Float(string='Total Write-off Amount', compute='_compute_totals')
     total_credit = fields.Float('Total', compute='_compute_totals', help='Only credits are counted')
 
-    line_ids = fields.One2many('pos.credit.invoices.line', 'wizard_id')
+    line_ids = fields.Many2many('pos.credit.invoices.line', copy=True)
 
     @api.multi
     @api.onchange('journal_id')
-    @api.depends('partner_ids', 'journal_id')
+    @api.depends('partner_ids', 'journal_id', 'amount', 'update_type', 'new_balance')
     def _compute_totals(self):
         partners = self.partner_ids
         debts = partners._compute_partner_journal_debt(self.journal_id.id)
-
         self['partner_credits'] = sum([debts[p.id]['balance'] for p in partners] + [0])
 
         if self.update_type == 'balance_update':
@@ -50,10 +49,9 @@ class PosCreditInvoices(models.TransientModel):
                 debts[p.id]['balance'] - self.new_balance or 0 for p in partners] + [0])
         self['total_credit'] = self['partner_credits'] - self['full_charge']
 
-    @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id')
+    @api.onchange('amount', 'update_type', 'partner_ids', 'journal_id', 'new_balance')
     def update_lines(self):
         p2amount = None
-
         debts = self.partner_ids._compute_partner_journal_debt(self.journal_id.id)
 
         def p2balance(p):
@@ -79,8 +77,10 @@ class PosCreditInvoices(models.TransientModel):
             for p in self.partner_ids
         ]
 
-    @api.multi
-    def apply(self):
+    def generate_invoices(self):
+        if self.line_ids and self.line_ids[0] and not self.line_ids[0].partner_id:
+            # some strange case when data does not pass from form and lines are created empty
+            self.update_lines()
         product = self.product_id
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
         for line in self.line_ids:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from openerp import models
 from openerp.addons.point_of_sale.report.pos_details import pos_details
 

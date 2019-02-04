@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
@@ -7,6 +6,7 @@ from odoo import fields, models
 
 class PosCustomReceipt(models.Model):
     _name = "pos.custom_receipt"
+    _description = "POS Custom Receipt/Ticket"
 
     name = fields.Char('Name')
     type = fields.Selection(string="Type", selection=[('receipt', 'Receipt'), ('ticket', 'Ticket')])
@@ -27,8 +27,8 @@ class PosConfig(models.Model):
                                               help="Check box if you want to display the discount "
                                                    "of the orderline on the ticket")
 
-    custom_ticket = fields.Boolean(string="Custom", defaut=False)
-    custom_ticket_id = fields.Many2one("pos.custom_receipt", string="Custom Template",
+    custom_ticket = fields.Boolean(string="Custom Ticket", defaut=False)
+    custom_ticket_id = fields.Many2one("pos.custom_receipt", string="Custom Ticket Template",
                                        domain=lambda self: self._get_custom_ticket_id_domain())
 
     custom_xml_receipt = fields.Boolean(string="Custom PosBox Receipt", defaut=False)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
@@ -16,7 +15,7 @@ class TestUI(odoo.tests.HttpCase):
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         cr = self.registry.cursor()
-        env = Environment(cr, self.uid, {})
+        env = Environment(self.registry.test_cr, self.uid, {})
         env['ir.module.module'].search([('name', '=', 'pos_product_available')], limit=1).state = 'installed'
         cr.release()
 
@@ -24,9 +23,8 @@ class TestUI(odoo.tests.HttpCase):
             'type': 'product',
         })
 
-        # without a delay there might be problems on the steps whilst opening a POS
-        # caused by a not yet loaded button's action
+        # without a delay there might be problems caused by a not yet loaded button's action
         self.phantom_js("/web",
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_product_available_negative', 1000)",
+                        "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_product_available_negative', 500)",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_product_available_negative.ready",
                         login="admin", timeout=150)

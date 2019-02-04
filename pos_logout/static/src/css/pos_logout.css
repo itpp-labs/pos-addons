@@ -1,0 +1,25 @@
+.pos .popup-selection .exit {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 30px;
+}
+.pos .modal-dialog.block {
+    background-color: rgba(85,0,0,0.5);
+    cursor: pointer;    
+}
+.pos .modal-dialog.block .popup-selection{
+    background-color: initial;
+    box-shadow: none;
+    height: 250px;
+    color: black;
+    font-size: 65px;
+}
+.pos .modal-dialog.block .popup-selection p {
+    margin: 0;
+}
+.pos .modal-dialog.block .popup-selection i {
+    font-size: 150px;
+}

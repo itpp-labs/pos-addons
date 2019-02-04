@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
             <xpath expr="//link[last()]" position="after">
                 <script type="text/javascript" src="/pos_order_cancel/static/src/js/models.js"></script>
@@ -8,5 +7,4 @@
                 <link rel="stylesheet" href="/pos_order_cancel/static/src/css/pos.css"/>
             </xpath>
         </template>
-    </data>
 </openerp>

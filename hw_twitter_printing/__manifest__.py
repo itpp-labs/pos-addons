@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Print tweets with PosBox""",
     "summary": """Print tweets with specific hashtags""",
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -30,5 +29,5 @@
     "post_init_hook": 'post_init',
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

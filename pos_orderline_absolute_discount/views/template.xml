@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
         <template id="assets_backend" name="pos_orderline_absolute_discount assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_orderline_absolute_discount/static/src/js/models.js"></script>
@@ -13,5 +12,4 @@
                 <script type="text/javascript" src="/pos_orderline_absolute_discount/static/src/js/tour.js"></script>
             </xpath>
         </template>
-
 </odoo>
