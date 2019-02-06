@@ -312,7 +312,7 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     product_categories = ol.product.pos_category_ids;
                 }
 
-                if (_.intersection(category_list, product_categories)) {
+                if (_.intersection(category_list, product_categories).length) {
                     return memo + ol.get_price_with_tax();
                 }
                 return memo;
