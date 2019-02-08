@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<!--Copyright 2014 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
+    License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
         <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets_backend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_scan_ref/static/src/js/pos.js"></script>
             </xpath>
         </template>
-    </data>
-</openerp>
+
+        <template id="demo_assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_scan_ref/static/src/js/test_pos_scan_ref.js"></script>
+            </xpath>
+        </template>
+</odoo>
