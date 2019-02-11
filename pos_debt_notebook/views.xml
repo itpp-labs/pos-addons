@@ -77,7 +77,7 @@
     <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
     <field name="arch" type="xml">
         <xpath expr="//notebook[last()]/page[last()]" position="inside">
-            <group string="Credits">
+            <group string="Credits" name="pos_debt_notebook">
                 <field name="debt" attrs="{'invisible': [('journal_user', '=', False)]}"/>
                 <field name="pos_cash_out" attrs="{'invisible': ['|',('debt', '!=', True),('credits_via_discount', '=', True)]}"/>
                 <field name="category_ids" attrs="{'invisible': [('debt', '!=', True)]}" widget="many2many_tags"/>

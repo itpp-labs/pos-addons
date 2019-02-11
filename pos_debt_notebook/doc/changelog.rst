@@ -1,3 +1,7 @@
+`5.1.4`
+-------
+- **Improvement:** Simplify extending module in other custom modules
+
 `5.1.3`
 -------
 - **FIX:** Error related to pos loading with the lack of customers
