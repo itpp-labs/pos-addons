@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <!-- call pos_order.update_has_must_have_product() -->
+    <record id="action_update_has_must_have_product" model="ir.actions.server">
+        <field name="name">Update Has Must-have Product</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">model.update_has_must_have_product()</field>
+    </record>
+
+    <!-- Credit products: pos.order -->
+    <record id="rule_credit_products" model="base.action.rule">
+        <field name="name">Update "Has Must-have Product"</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="kind">on_create_or_write</field>
+        <field name="filter_id" ref="pos_debt_notebook_sync.filter_done_orders"/>
+        <field name="server_action_ids" eval="[(6,0,[ref('action_update_has_must_have_product')])]"/>
+    </record>
+</odoo>

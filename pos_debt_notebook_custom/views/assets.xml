@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_debt_notebook/static/src/js/must_have_product.js"></script>
+        </xpath>
+    </template>
+</odoo>
