@@ -12,10 +12,10 @@ Features
 Must-have product
 -----------------
 
-* New Partner field: **has_must_have_product**
-* POS: show button "ProductA" if **has_must_have_product** is false and user has enough credits to purchase
-* Field **has_must_have_product** is updated on purchasing the product in POS
-* **has_must_have_product** is synced across POSes via module ``pos_barcode_sync``
+* New Partner field: **has_must_have_product_order_id** -- reference to ``pos.order`` with purcahsed *Must-have product*
+* POS: show button "ProductA" if **has_must_have_product_order_id** is false and user has enough credits to purchase
+* Field **has_must_have_product_order_id** is updated on purchasing the product in POS
+* **has_must_have_product_order_id** is synced across POSes via module ``pos_barcode_sync``
 
 
 Credits

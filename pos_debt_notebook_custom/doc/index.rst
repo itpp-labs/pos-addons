@@ -11,7 +11,7 @@ Must-have product
 * Open menu ``[[ Point of Sale ]] >> Configuration >> Payment Methods``
 * Select or create Journal where feature will be applied
 * Navigate to *Advanced Settings* tab
-* Set field **Must-have Product**
+* Set field **Must-have Product**. The product must have **Available in the Point of Sale** setting
 
 Note. It's supposed that you have only one *Must-have Product*. If you set *Must-have Product* for several journals, then after first purchase the button in POS is dissappeared.
 

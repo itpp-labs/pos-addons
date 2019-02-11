@@ -24,6 +24,8 @@
     "data": [
         "views/assets.xml",
         "views/account_journal_views.xml",
+        "views/res_partner_views.xml",
+        "data/base_action_rule_data.xml",
     ],
     "demo": [
     ],

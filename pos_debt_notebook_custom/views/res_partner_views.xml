@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='point_of_sale']" position="inside">
-                <field name="has_must_have_product"/>
+                <field name="has_must_have_product_order_id"/>
             </xpath>
         </field>
     </record>

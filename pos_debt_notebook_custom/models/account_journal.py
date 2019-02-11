@@ -6,4 +6,4 @@ from odoo import models, fields
 class Journal(models.Model):
     _inherit = 'account.journal'
 
-    must_have_product = fields.Many2one(string='Must-have Product')
+    must_have_product_id = fields.Many2one('product.product', string='Must-have Product')
