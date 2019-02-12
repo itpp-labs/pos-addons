@@ -577,10 +577,13 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var order = this.pos.get_order();
             var sum_pl = round_pr(order.get_summary_for_cashregister(cr), this.pos.currency.rounding);
             var limits = order.get_payment_limits(cr, 'products_restriction');
-            var allowed_lines = _.filter(order.get_orderlines(), function(ol){
-                var categories = ol.product.pos_categ_id
-                ? [ol.product.pos_categ_id[0]]
-                : ol.product.pos_category_ids;
+            var allowed_lines = _.filter(order.get_orderlines(), function(ol) {
+                var categories = [];
+                if (ol.product.pos_categ_id) {
+                    categories = [ol.product.pos_categ_id[0]];
+                } else {
+                    categories = ol.product.pos_category_ids;
+                }
                 if (_.intersection(cr.journal.category_ids, categories).length) {
                     return true;
                 }
