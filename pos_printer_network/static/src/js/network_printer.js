@@ -24,7 +24,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                 var printer_obj = _.find(printers, function(printer){
                     return printer.id === item.config.id;
                 });
-                if (printer_obj.network_printer) {
+                if (printer_obj.network_printer && self.config.proxy_ip) {
                     item.config.network_printer = printer_obj.network_printer;
                     self.ready.then(function () {
                         var url = self.proxy.host;
