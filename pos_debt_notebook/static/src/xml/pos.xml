@@ -243,7 +243,7 @@
             </table>
         </t>
         <t t-jquery="table.receipt-change" t-operation="replace">
-            <t t-set="credits_via_discounts_presence" t-value="order.paymentlines_with_credits_via_discounts()"/>
+            <t t-set="credits_via_discounts_presence" t-value="order.has_paymentlines_with_credits_via_discounts()"/>
             <t t-set="credits_via_discounts_amount" t-value="Math.max(order.get_summary_for_discount_credits(), 0)"/>
             <table class='receipt-change'>
                 <tr><td>Change:</td><td class="pos-right-align">

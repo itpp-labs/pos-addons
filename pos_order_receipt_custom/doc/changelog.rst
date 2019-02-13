@@ -1,3 +1,13 @@
+`1.0.4`
+-------
+
+**Fix:** Fix repeat printing the transfer ticket after POS update, with the pos_multi_session module installed
+
+`1.0.3`
+-------
+
+**Improvement:** Compatibility with pos_category_multi module
+
 `1.0.2`
 -------
 
