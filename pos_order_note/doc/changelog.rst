@@ -1,3 +1,7 @@
+`1.2.2`
+-------
+- **FIX:** Error related to displaying the scrollbar for POS notes in Firefox
+
 `1.2.1`
 -------
 - **FIX:** Scrolling Order after getting updates from Multi-Session
