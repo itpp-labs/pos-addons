@@ -1,6 +1,6 @@
 `1.2.2`
 -------
-- **FIX:** Error displaying the scrollbar of notes in Firefox
+- **FIX:** Error related to displaying the scrollbar for POS notes in Firefox
 
 `1.2.1`
 -------
