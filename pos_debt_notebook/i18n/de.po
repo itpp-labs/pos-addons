@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_debt_notebook
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2018
 msgid ""
