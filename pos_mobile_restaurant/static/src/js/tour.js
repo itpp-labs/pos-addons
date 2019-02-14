@@ -12,8 +12,7 @@ odoo.define('pos_mobile_restaurant.tour', function(require) {
                 position + 1,
                 0,
                 {
-                    trigger: ".popup-number .confirm",
-                    content: "Click guest confirm",
+                    trigger: ".popup-number .confirm, .order-button.selected",
                     position: "bottom"
                 }
             );

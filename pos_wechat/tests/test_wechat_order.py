@@ -20,7 +20,6 @@ class TestWeChatOrder(TestPointOfSaleCommon):
 
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
-
         # create wechat journals
         self.pos_config.init_pos_wechat_journals()
 
@@ -45,26 +44,49 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         self.addCleanup(patcher.stop)
 
     def _create_pos_order(self):
-        # I create a new PoS order with 2 lines
+
+        def compute_tax(product, price, qty=1, taxes=None):
+            if taxes is None:
+                taxes = product.taxes_id.filtered(lambda t: t.company_id.id == self.env.user.id)
+            currency = self.pos_config.pricelist_id.currency_id
+            res = taxes.compute_all(price, currency, qty, product=product)
+            untax = res['total_excluded']
+            return untax, sum(tax.get('amount', 0.0) for tax in res['taxes'])
+
+        # I click on create a new session button
+        self.pos_config.open_session_cb()
+
+        # I create a PoS order with 2 units of PCSC234 at 450 EUR
+        # and 3 units of PCSC349 at 300 EUR.
+        untax1, atax1 = compute_tax(self.product3, 450, 2)
+        untax2, atax2 = compute_tax(self.product4, 300, 3)
         order = self.PosOrder.create({
             'company_id': self.company_id,
-            'partner_id': self.partner1.id,
             'pricelist_id': self.partner1.property_product_pricelist.id,
+            'partner_id': self.partner1.id,
             'lines': [(0, 0, {
                 'name': "OL/0001",
                 'product_id': self.product3.id,
                 'price_unit': 450,
-                'discount': 5.0,
+                'discount': 0.0,
                 'qty': 2.0,
                 'tax_ids': [(6, 0, self.product3.taxes_id.ids)],
+                'price_subtotal': untax1,
+                'price_subtotal_incl': untax1 + atax1,
             }), (0, 0, {
                 'name': "OL/0002",
                 'product_id': self.product4.id,
                 'price_unit': 300,
-                'discount': 5.0,
+                'discount': 0.0,
                 'qty': 3.0,
                 'tax_ids': [(6, 0, self.product4.taxes_id.ids)],
-            })]
+                'price_subtotal': untax2,
+                'price_subtotal_incl': untax2 + atax2,
+            })],
+            'amount_tax': atax1 + atax2,
+            'amount_total': untax1 + untax2 + atax1 + atax2,
+            'amount_paid': 0,
+            'amount_return': 0,
         })
         return order
 
@@ -104,6 +126,7 @@ class TestWeChatOrder(TestPointOfSaleCommon):
         # Just imagine that they are correspond each other
         order = self._create_pos_order()
         wechat_order = self._create_wechat_order()
+
         order.wechat_order_id = wechat_order.id
 
         # patch refund api request

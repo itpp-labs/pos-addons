@@ -2,8 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-Sync POS orders across multiple sessions (restaurant extension)
-===============================================================
+========================
+ Sync restaurant orders
+========================
 
 Syncs additional restaurant data:
 
@@ -21,15 +22,42 @@ Local run
 
 If you use dbfilter, don't forget to specify correct proxy on printers
 
+Credits
+=======
+
+Contributors
+------------
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+
+Sponsors
+--------
+* `IT-Projects LLC <https://it-projects.info>`__
+
+Maintainers
+-----------
+* `IT-Projects LLC <https://it-projects.info>`__
+
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_multi_session_restaurant/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
+
 Further information
--------------------
+===================
 
-Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-Need our service?
------------------
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_multi_session_restaurant/
 
-Contact us by `email <mailto:it@it-projects.info>`__ or fill out `request form <https://www.it-projects.info/page/website.contactus>`__:
+Usage instructions: `<doc/index.rst>`_
 
-* it@it-projects.info
-* https://www.it-projects.info/page/website.contactus
+Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_
+
+Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545

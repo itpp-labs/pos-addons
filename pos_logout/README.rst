@@ -28,9 +28,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_logout/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_logout/
 
 Usage instructions: `<doc/index.rst>`_
 

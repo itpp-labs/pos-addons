@@ -15,7 +15,7 @@
             <field name="available_in_pos" eval="True"/>
             <field name="list_price">1</field>
             <field name="type">service</field>
-            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="description">This is a product for purchasing "Credits".</field>
         </record>
 

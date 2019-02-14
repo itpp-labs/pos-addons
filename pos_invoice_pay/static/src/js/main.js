@@ -10,10 +10,9 @@ var gui = require('point_of_sale.gui');
 var models = require('point_of_sale.models');
 var PosDb = require('point_of_sale.DB');
 var utils = require('web.utils');
-var bus = require('bus.bus').bus;
 var screens = require('point_of_sale.screens');
 var rpc = require('web.rpc');
-var longpolling = require('pos_longpolling');
+var longpolling = require('pos_longpolling.connection');
 var chrome = require('point_of_sale.chrome');
 
 var QWeb = core.qweb;
@@ -751,12 +750,12 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
                 self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
                 self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
-        }).fail(function (err, event) {
+        }).fail(function (err, errorEvent) {
             self.gui.show_popup('error', {
                 'title': _t(err.message),
                 'body': _t(err.data.arguments[0])
             });
-            event.preventDefault();
+            errorEvent.preventDefault();
         });
     },
     _search: function (query) {
@@ -905,7 +904,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     template: 'InvoicePaymentScreenWidget',
     get_invoice_residual: function () {
         if (this.pos.selected_invoice) {
-            return this.pos.selected_invoice.residual;
+            return round_pr(this.pos.selected_invoice.residual, this.pos.currency.rounding);
         }
         return 0;
     },
@@ -1068,7 +1067,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     },
     show: function(){
         this._super();
-        if (this.pos.config.iface_invoicing) {
+        if (this.pos.config.module_account) {
             var order = this.pos.get_order();
             if (!order.is_to_invoice() && this.get_type() === "orders") {
                 this.click_invoice();

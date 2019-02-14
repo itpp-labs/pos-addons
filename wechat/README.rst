@@ -84,12 +84,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/misc-addons/11.0
+Demo: http://runbot.it-projects.info/demo/misc-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/wechat/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/wechat/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
+Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545

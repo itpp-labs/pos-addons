@@ -6,6 +6,7 @@ odoo.define('pos_category_multi.tour', function(require) {
     var steps = [{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
+        timeout: 20000,
         run: function () {
             // it's a check
         },
@@ -48,7 +49,7 @@ odoo.define('pos_category_multi.tour', function(require) {
         content: "confirm closing the frontend",
     }, {
         content: "wait until backend is opened",
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        trigger: '.o_pos_kanban button.oe_kanban_action_button',
         run: function () {
             // no need to click on trigger
         },

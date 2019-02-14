@@ -6,13 +6,11 @@ odoo.define('pos_restaurant.network_printer', function (require) {
     var core = require('web.core');
     var Session = require('web.Session');
     var gui = require('point_of_sale.gui');
-    var Printer = require('pos_restaurant.base');
+    var Printer = require('pos_restaurant.multiprint').Printer;
     var devices = require('point_of_sale.devices');
     var chrome = require('point_of_sale.chrome');
     var PopupWidget = require('point_of_sale.popups');
     var QWeb = core.qweb;
-    var mixins = require("web.mixins");
-
     var _t = core._t;
 
     models.load_models({

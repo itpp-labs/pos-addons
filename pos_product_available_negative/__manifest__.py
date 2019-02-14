@@ -4,16 +4,16 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Restrict out-of-stock POS Orders""",
-    'summary': 'Only supervisor can approve POS Order with out-of-stock product',
+    "summary": """Restrict payments for out-of-stock products in POS""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": [],
-    "version": "11.0.1.0.1",
+    "version": "12.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info/team/yelizariev",
+    "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available_negative/",
     "license": "LGPL-3",
     "price": 50.00,
     "currency": "EUR",
@@ -32,12 +32,5 @@
     "qweb": [
     ],
 
-    "post_load": None,
-    "pre_init_hook": None,
-    "post_init_hook": None,
-    "uninstall_hook": None,
-
-    "auto_install": False,
-    "installable": True,
-
+    'installable': True,
 }
