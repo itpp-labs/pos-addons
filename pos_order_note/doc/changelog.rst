@@ -1,3 +1,7 @@
+`1.2.2`
+-------
+- **FIX:** Error displaying the scrollbar of notes in Firefox
+
 `1.2.1`
 -------
 - **FIX:** Scrolling Order after getting updates from Multi-Session
