@@ -4,8 +4,7 @@
 
 import datetime
 from openerp.addons.point_of_sale.report.pos_details import pos_details
-from openerp.osv import osv
-from openerp import fields
+from openerp import fields, models
 
 
 class ReportSaleDetails(pos_details):
@@ -60,14 +59,14 @@ class ReportSaleDetails(pos_details):
                 unique.append(p.invoice_ids.id)
         return res
 
-    def __init__(self, cr, uid, name, context):
-        super(ReportSaleDetails, self).__init__(cr, uid, name, context)
+    def __init__(self, name):
+        super(ReportSaleDetails, self).__init__(name)
         self.localcontext.update({
             'get_invoices_details': self.get_invoices_details,
         })
 
 
-class report_pos_details(osv.AbstractModel):
+class report_pos_details(models.AbstractModel):
     _name = 'report.point_of_sale.report_detailsofsales'
     _inherit = 'report.point_of_sale.report_detailsofsales'
     _template = 'point_of_sale.report_detailsofsales'
