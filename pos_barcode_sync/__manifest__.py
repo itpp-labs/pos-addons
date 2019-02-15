@@ -25,7 +25,8 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "data.xml",
+        "views/assets.xml",
+        "views/pos_config.xml",
     ],
 
     "post_load": None,

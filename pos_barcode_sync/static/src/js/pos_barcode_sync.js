@@ -21,7 +21,7 @@ odoo.define('pos_barcode_sync.pos', function (require) {
         },
         on_barcode_updates: function(data){
             var self = this;
-            if (data.message === 'update_partner_barcode') {
+            if (data.message === 'update_partner_fields') {
                 PosModelSuper.prototype.load_new_partners.apply(this).done(function(){
                     var opened_client_list_screen = self.gui.get_current_screen() === 'clientlist' && self.gui.screen_instances.clientlist;
                     if (opened_client_list_screen){
