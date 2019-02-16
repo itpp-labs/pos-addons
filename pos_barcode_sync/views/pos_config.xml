@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).-->
+<odoo>
+    <record id="view_debt_sale_config_settings_form_pos_sync" model="ir.ui.view">
+        <field name="name">pos.config.settings.form</field>
+        <field name="model">pos.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.view_sale_config_settings_form_pos"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='module_pos_reprint']" position="after">
+                <field name="sync_field_ids"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

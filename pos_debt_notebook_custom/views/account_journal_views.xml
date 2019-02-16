@@ -7,7 +7,7 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="pos_debt_notebook.view_account_journal_pos_user_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='pos_debt_notebook']" position="inside">
+            <xpath expr="//field[@name='credits_via_discount']" position="after">
                 <field name="must_have_product_id"/>
             </xpath>
         </field>
