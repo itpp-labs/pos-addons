@@ -26,4 +26,4 @@ Usage
   * RESULT: Disabled ``Qty`` button
   * Then set product quantity to ``0`` using ``Backspace`` button
   * RESULT: Once the qty equals to 0, ``Backspace`` button is disabled
-  
+
