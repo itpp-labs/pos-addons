@@ -1,3 +1,7 @@
+`5.1.5`
+-------
+- **FIX:** Payment mistakes on in case SERIALIZATION_FAILURE in order processing
+
 `5.1.3`
 -------
 - **FIX:** Error related to pos loading with the lack of customers
