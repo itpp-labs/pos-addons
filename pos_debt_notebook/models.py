@@ -7,6 +7,7 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+import copy
 from odoo import models, fields, api
 from pytz import timezone
 import pytz
@@ -487,6 +488,9 @@ class PosOrder(models.Model):
 
     @api.model
     def _process_order(self, pos_order):
+        # Don't change original dict, because in case of SERIALIZATION_FAILURE
+        # the method will be called again
+        pos_order = copy.deepcopy(pos_order)
         credit_updates = []
         amount_via_discount = 0
         for payment in pos_order['statement_ids']:
@@ -513,6 +517,7 @@ class PosOrder(models.Model):
             update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
+        order.action_pos_order_paid()
         return order
 
     @api.model
@@ -523,6 +528,7 @@ class PosOrder(models.Model):
 
     def action_pos_order_paid(self):
         self.set_discounts(self.amount_via_discount)
+        self._onchange_amount_all()
         return super(PosOrder, self).action_pos_order_paid()
 
     def set_discounts(self, amount):
@@ -534,12 +540,18 @@ class PosOrder(models.Model):
                 continue
             disc = line.discount
             line.write({
-                'discount': max(min(line.discount + (amount /
-                                                     (disc and (price / (100 - disc)) * 100 or price)
-                                                     ) * 100, 100), 0),
+                'discount': disc == 100 and disc or max(min(line.discount + (
+                        amount / (disc and (price / (100 - disc)) * 100 or price)
+                ) * 100, 100), 0),
             })
             amount -= price - line.price_subtotal_incl
         return amount
+
+    def test_paid(self):
+        for order in self:
+            if not order.statement_ids and order.amount_via_discount:
+                return True
+            return super(PosOrder, self).test_paid()
 
 
 class AccountBankStatement(models.Model):

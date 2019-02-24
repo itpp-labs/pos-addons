@@ -22,10 +22,25 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                 var printer_obj = _.find(printers, function(printer){
                     return printer.id === item.config.id;
                 });
-                if (printer_obj.network_printer) {
+                if (printer_obj.network_printer && self.config.proxy_ip) {
                     item.config.network_printer = printer_obj.network_printer;
                     self.ready.then(function () {
-                        item.connection = new Session(void 0, self.proxy.host, { use_cors: true});
+                        var url = self.proxy.host;
+                        if (!url) {
+                            url = self.config.proxy_ip;
+                            var protocol = window.location.protocol;
+                            var port = ':8069';
+                            if (protocol === "https:") {
+                                port = ':443';
+                            }
+                            if(url.indexOf('//') < 0){
+                                url = protocol + '//' + url;
+                            }
+                            if(url.indexOf(':',5) < 0){
+                                url += port;
+                            }
+                        }
+                        item.connection = new Session(void 0, url, { use_cors: true});
                     });
                 }
             });

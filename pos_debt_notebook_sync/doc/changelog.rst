@@ -1,3 +1,8 @@
+`1.1.2`
+-------
+
+- **FIX:** Error related to not selected partner on the client screen
+
 `1.1.1`
 -------
 

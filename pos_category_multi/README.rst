@@ -39,7 +39,7 @@ Maintainers
 Further information
 ===================
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_category_multi/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_category_multi/
 
 Usage instructions: `<doc/index.rst>`_
 

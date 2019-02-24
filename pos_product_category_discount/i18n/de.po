@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
+# Dawid Runowski <dawrun@outlook.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-01 07:35+0000\n"
-"PO-Revision-Date: 2017-12-01 07:35+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
+"POT-Creation-Date: 2018-05-10 16:49+0000\n"
+"PO-Revision-Date: 2017-06-23 14:12+0000\n"
+"Last-Translator: Dawid Runowski <dawrun@outlook.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +47,7 @@ msgstr "Aktiv"
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:230
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:252
 #: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
 #, python-format
 msgid "Apply"
@@ -53,7 +55,7 @@ msgstr "Anwenden"
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:290
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:312
 #, python-format
 msgid "Apply Change"
 msgstr "Änderung anwenden"
@@ -214,7 +216,7 @@ msgstr ""
 #. module: pos_product_category_discount
 #: model:ir.model,name:pos_product_category_discount.model_res_partner
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_category_form_view

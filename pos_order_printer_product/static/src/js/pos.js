@@ -4,6 +4,8 @@ odoo.define('pos_order_printer_product', function(require){
 
     models.load_fields('restaurant.printer', ['product_ids']);
 
+    models.load_fields('restaurant.printer',['product_ids']);
+
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         is_product_in_product_list: function(id, list) {

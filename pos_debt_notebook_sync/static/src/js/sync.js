@@ -74,7 +74,9 @@ odoo.define('pos_debt_sync', function(require){
             var partner = false;
             if (client_list_screen && client_list_screen.clientlist_screen_is_opened()){
                 partner = client_list_screen.new_client || client_list_screen.pos.get_client();
-                partners_to_reload.push(partner.id);
+                if (partner) {
+                    partners_to_reload.push(partner.id);
+                }
             }
 
             this.push_order(null,{'show_error':true}).then(function(){
