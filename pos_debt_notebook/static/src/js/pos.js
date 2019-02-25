@@ -329,7 +329,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             }, 0);
         },
         add_paymentline: function(cashregister) {
-            // FIXME: it doesn't call super and make it incompatible with any other module that redefines  add_paymentline
             this.assert_editable();
             var self = this;
             var journal = cashregister.journal;
@@ -338,21 +337,23 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     self.pos.gui.show_screen('clientlist');
                 }, 30);
             }
-
+            var due = this.get_due_debt();
             var newPaymentline = new models.Paymentline({}, {
                 order: this,
                 cashregister: cashregister,
                 pos: this.pos
             });
             if (cashregister.journal.debt && this.get_client()){
-                if (this.get_due_debt() < 0) {
-                    newPaymentline.set_amount(this.get_due_debt());
+                if (due < 0) {
+                    newPaymentline.set_amount(due);
                 } else {
                     var limits = this.get_payment_limits(cashregister, 'all');
                     newPaymentline.set_amount(Math.max(Math.min.apply(null, _.values(limits)) - this.get_summary_for_cashregister(cashregister), 0));
                 }
-            } else if (cashregister.journal.type !== 'cash' || this.pos.config.iface_precompute_cash){
-                newPaymentline.set_amount(this.get_due());
+            } else if (due < 0){
+                newPaymentline.set_amount(due);
+            } else {
+                return _super_order.add_paymentline.apply(this, arguments);
             }
             this.paymentlines.add(newPaymentline);
             this.select_paymentline(newPaymentline);
