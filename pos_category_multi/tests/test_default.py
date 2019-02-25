@@ -7,7 +7,7 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
         env = self.env
-        product = env.ref('point_of_sale.boni_orange')
+        product = env.ref('point_of_sale.led_lamp')
         product.write({
             'pos_category_ids': [(4, category.id) for category in env['pos.category'].search([])]
         })
