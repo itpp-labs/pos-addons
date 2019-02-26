@@ -1,3 +1,7 @@
+`5.1.4`
+-------
+- **FIX:** Unavailability to withdraw credits
+
 `5.1.3`
 -------
 - **FIX:** Error related to pos loading with the lack of customers
