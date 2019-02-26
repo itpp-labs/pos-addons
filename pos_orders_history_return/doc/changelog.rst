@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.0.5`
+-------
+
+**Fix:** Error related to return specific order after barcode scanning
+
 `1.0.4`
 -------
 
