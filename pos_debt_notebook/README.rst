@@ -33,8 +33,12 @@ Roadmap
   * It creates extra record in accounting system (pos.order.line). It can be used as a backup for *Manual Updates*
   * It works with following problem case:
   
-        In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
+    In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
 
+* TODO. Improvements on heavy usage (Many POSes, Many Partners)
+
+  * Num of users with cached Debt History must be limited
+  * Limit issue in ``reload_debts`` (check FIXME note there)
 
 Credits
 =======
