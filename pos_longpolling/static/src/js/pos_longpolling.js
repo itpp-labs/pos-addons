@@ -52,10 +52,6 @@ odoo.define('pos_longpolling', function(require){
                 var poll_connection = self.longpolling_connection;
                 if (poll_connection.waiting_poll_response) {
                     poll_connection.waiting_poll_response = false;
-                    if (poll_connection.is_online){
-                        // condition prevents double triggering in case if is_online === false;
-                        poll_connection.trigger("change:poll_connection", true);
-                    }
                 }
                 poll_connection.network_is_on();
             }, function(unused, e) {
@@ -176,7 +172,7 @@ odoo.define('pos_longpolling', function(require){
                 return;
             }
             this.activated = is_online;
-            this.longpolling_connection.trigger("change:poll_connection", is_online);
+            this.longpolling_connection.set_is_online(is_online);
         },
     });
 
@@ -278,7 +274,7 @@ odoo.define('pos_longpolling', function(require){
             return openerp.session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                self.trigger("change:poll_connection", true);
+                self.set_is_online(true);
                 if (!self.response_status) {
                     self.response_timer();
                 }
