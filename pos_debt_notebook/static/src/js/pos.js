@@ -46,7 +46,7 @@ openerp.pos_debt_notebook = function(instance){
                 cashregister:cashregister, pos:this.pos
             });
 
-            if(!journal.debt && (journal.type !== 'cash' || journal.debt)){
+            if(journal.type !== 'cash' || journal.debt){
                 newPaymentline.set_amount(this.getDueLeft());
             }
             paymentLines.add(newPaymentline);
