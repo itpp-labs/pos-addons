@@ -157,6 +157,9 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
                     scrollCLass: "floor-scroll",
                 });
             }
+
+            // TODO: move the action buttons of some modules in the button menu
+            this.menuButton.hide();
         },
     });
 
