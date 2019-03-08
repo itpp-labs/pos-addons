@@ -24,8 +24,10 @@ class PosCreditInvoices(models.TransientModel):
         'Credit Product',
         help="This product will be used on creating invoices."
     )
-    use_invoices = fields.Boolean('Via Invoices', default=True,
-                                  help='Otherwise it will be executed via "Manual Credit Updates"')
+    writeoff_method = fields.Selection(string='Write-off Method', required=True, selection=[
+        ('invoice', 'Invoice'),
+        ('mcu', 'Manual Credit Update')
+    ], default='invoice', help='Otherwise it will be executed via "Manual Credit Updates"')
 
     partner_ids = fields.Many2many('res.partner', string='Partners')
     partner_credits = fields.Float('Total Partner Credit', compute='_compute_totals', help='Only credits are counted')
@@ -87,7 +89,7 @@ class PosCreditInvoices(models.TransientModel):
         for line in self.line_ids:
             if not line.amount:
                 continue
-            if self.use_invoices:
+            if self.writeoff_method == 'invoice':
                 invoice = self.env['account.invoice'].create({
                     'type': 'out_invoice',
                     'partner_id': line.partner_id.id,
