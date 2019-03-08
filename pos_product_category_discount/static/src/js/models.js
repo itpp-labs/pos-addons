@@ -35,6 +35,37 @@ odoo.define('pos_product_category_discount.models', function (require) {
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            // <new-code>
+            var self = this;
+            var product_model = _.find(this.models, function(model){
+                return model.model === 'product.product';
+            });
+            var loaded_super = product_model.loaded;
+            product_model.loaded = function(that, products) {
+                loaded_super(that, products);
+                if (self.config.iface_discount) {
+                    self.load_discount_product(product_model.fields);
+                }
+            };
+            // </new-code>
+            return PosModelSuper.prototype.initialize.call(this, session, attributes);
+        },
+        load_discount_product: function(fields) {
+            var self = this;
+            var discount_product_id = this.config.discount_product_id[0];
+            var product = this.db.get_product_by_id(discount_product_id);
+            if (!product) {
+                new Model('product.product').call('search_read', [[['id', '=', discount_product_id]]], {fields: fields}).then(function(p) {
+                    if (p instanceof Array) {
+                        p[0].available_in_pos = false;
+                    } else {
+                        p.available_in_pos = false;
+                    }
+                    self.db.add_products(p);
+                });
+            }
+        },
         get_discount_categories: function(id) {
             return _.filter(this.discount_categories, function(item){
                 return item.discount_program_id[0] === id;

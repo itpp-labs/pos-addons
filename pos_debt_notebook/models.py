@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2014-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2014-2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
 # Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
 # Copyright 2016 Florent Thomas <https://it-projects.info/team/flotho>
@@ -8,6 +8,7 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+import copy
 from odoo import models, fields, api, SUPERUSER_ID
 from datetime import datetime
 from pytz import timezone
@@ -481,6 +482,9 @@ class PosOrder(models.Model):
 
     @api.model
     def _process_order(self, pos_order):
+        # Don't change original dict, because in case of SERIALIZATION_FAILURE
+        # the method will be called again
+        pos_order = copy.deepcopy(pos_order)
         credit_updates = []
         amount_via_discount = 0
         for payment in pos_order['statement_ids']:

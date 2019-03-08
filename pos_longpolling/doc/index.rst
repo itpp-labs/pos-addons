@@ -23,6 +23,10 @@ and configure nginx: ::
         proxy_pass http://127.0.0.1:8069;
     }
 
+PgBouncer
+---------
+If you use *PgBouncer* or something similar, be sure that ``LISTEN/NOTIFY`` features are supported. For *PgBouncer* it means that you have to use *Session pooling*
+
 Database connections limit
 ==========================
 

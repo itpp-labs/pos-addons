@@ -3,6 +3,10 @@
 - **ADD:** Button on the ``Write-off Credits`` form. Adds all partners with debt according to the selected journal
 - **ADD:** Availability to write-off credits via ``Manual Credit Updates``
 
+`5.1.4`
+-------
+- **FIX:** Payment mistakes on in case SERIALIZATION_FAILURE in order processing
+
 `5.1.3`
 -------
 - **FIX:** Error related to pos loading with the lack of customers
