@@ -1,5 +1,5 @@
 ======================
- Sync Barcodes in POS
+ Sync Partners in POS
 ======================
 
 Installation
@@ -8,9 +8,16 @@ Installation
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
 * Configure POS Longpolling (pos_longpolling) module as it's explained `here <https://apps.odoo.com/apps/modules/10.0/pos_longpolling/>`__
 
+Configuration
+=============
+
+* Go to ``[Point of Sale] >> Settings``
+* Set **Synchronized Fields**
+
 Usage
 =====
 
+* For example set **Barcode** field to be synchronized
 * Open POS session
 * Open backend in another browser window
 
