@@ -1,7 +1,7 @@
 /* Copyright (c) 2004-2015 Odoo S.A.
  * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_barcode_sync.pos', function (require) {
+odoo.define('pos_partner_sync.pos', function (require) {
 
     var session = require('web.session');
     var Backbone = window.Backbone;
@@ -18,7 +18,7 @@ odoo.define('pos_barcode_sync.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.bus.add_channel_callback("pos_barcode_sync", this.on_barcode_updates, this);
+            this.bus.add_channel_callback("pos_partner_sync", this.on_barcode_updates, this);
         },
         on_barcode_updates: function(data){
             var self = this;

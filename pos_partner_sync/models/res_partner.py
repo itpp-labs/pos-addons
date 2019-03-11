@@ -8,7 +8,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     def check_fields_to_send(self, vals):
-        fields = self.env["ir.config_parameter"].sudo().get_param("pos_barcode_sync.sync_field_ids", default=False)
+        fields = self.env["ir.config_parameter"].sudo().get_param("pos_partner_sync.sync_field_ids", default=False)
         if not fields:
             return False
         field_names = self.env['ir.model.fields'].browse([int(x) for x in fields.split(',')]).mapped('name')
@@ -39,6 +39,6 @@ class ResPartner(models.Model):
 
     @api.model
     def send_field_updates(self, partner_ids, action=''):
-        channel_name = "pos_barcode_sync"
+        channel_name = "pos_partner_sync"
         data = {'message': 'update_partner_fields', 'action': action, 'partner_ids': partner_ids}
         self.env['pos.config'].send_to_all_poses(channel_name, data)

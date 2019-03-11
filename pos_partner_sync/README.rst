@@ -26,7 +26,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_barcode_sync/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_partner_sync/>`__.
 
       Thank you for understanding!
 
@@ -37,7 +37,7 @@ Further information
 
 Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_barcode_sync/
+HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_partner_sync/
 
 Usage instructions: `<doc/index.rst>`_
 
