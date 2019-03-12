@@ -25,6 +25,7 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                     return printer.id === item.config.id;
                 });
                 if (printer_obj.network_printer) {
+                    self.config.use_proxy = true;
                     item.config.network_printer = printer_obj.network_printer;
                     self.ready.then(function () {
                         var url = self.proxy.host;
@@ -244,14 +245,27 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             }
         },
         open_printers_in_popup: function() {
+            var self = this;
             // if exist network printer then open popup
             var network_printer = this.pos.printers.find(function(printer) {
                 return printer.config.network_printer === true;
             });
+            // show current POS printers only
+            var printers = [];
+            if (this.devices_status && this.devices_status.length) {
+                this.pos.printers.forEach(function (printer) {
+                    var exist_printer = self.devices_status.find(function (device) {
+                        return printer.config.proxy_ip === device.ip;
+                    });
+                    if (exist_printer) {
+                        printers.push(exist_printer);
+                    }
+                });
+            }
             if (this.pos.config.receipt_printer_type === "network_printer" || network_printer) {
                 this.gui.show_popup('proxy_printers', {
                     title: "Printers",
-                    value: this.devices_status,
+                    value: printers,
                     usb_status: this.usb_printer_status,
                 });
             }
