@@ -2,6 +2,7 @@ odoo.define('pos_product_category_discount.models', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
+    var rpc = require('web.rpc');
 
     models.load_models({
         model: 'pos.discount_program',
@@ -43,25 +44,24 @@ odoo.define('pos_product_category_discount.models', function (require) {
             var loaded_super = product_model.loaded;
             product_model.loaded = function(that, products) {
                 loaded_super(that, products);
-                if (self.config.iface_discount) {
-                    self.load_discount_product(product_model.fields);
+                if (self.config.module_pos_discount) {
+                    self.load_discount_product(product_model.fields, loaded_super);
                 }
             };
             // </new-code>
             return PosModelSuper.prototype.initialize.call(this, session, attributes);
         },
-        load_discount_product: function(fields) {
+        load_discount_product: function(fields, loaded_super) {
             var self = this;
             var discount_product_id = this.config.discount_product_id[0];
             var product = this.db.get_product_by_id(discount_product_id);
             if (!product) {
-                new Model('product.product').call('search_read', [[['id', '=', discount_product_id]]], {fields: fields}).then(function(p) {
-                    if (p instanceof Array) {
-                        p[0].available_in_pos = false;
-                    } else {
-                        p.available_in_pos = false;
-                    }
-                    self.db.add_products(p);
+                rpc.query({
+                    model: 'product.product',
+                    method: 'read',
+                    args: [[discount_product_id], fields],
+                }).then(function(p){
+                    loaded_super(self, p);
                 });
             }
         },
