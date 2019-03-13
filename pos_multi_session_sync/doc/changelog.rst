@@ -1,3 +1,7 @@
+`1.0.4`
+-------
+- **Fix:** Random sync problems
+
 `1.0.3`
 -------
 - **Fix:** Complete synchronization raised conflict error in case of slow connection and receiving new updates on waiting finishing synchronization. Fix it by using the same updates queue (longpolling) for complete synchronization as for small updates.
