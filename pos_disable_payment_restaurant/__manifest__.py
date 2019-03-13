@@ -21,6 +21,7 @@
     "depends": [
         "pos_disable_payment",
         "pos_restaurant",
+        "web_tour",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

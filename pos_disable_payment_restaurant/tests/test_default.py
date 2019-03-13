@@ -17,5 +17,5 @@ class TestUi(odoo.tests.HttpCase):
             ".tours.pos_disable_payment_restaurant_tour.ready",
 
             login="admin",
-            timeout=240,
+            timeout=5000,
         )

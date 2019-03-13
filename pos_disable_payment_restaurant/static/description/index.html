@@ -1,4 +1,4 @@
-section class="oe_container">
+<section class="oe_container">
   <div class="oe_row oe_spaced">
     <div class="oe_span12">
       <h2 class="oe_slogan" style="color:#875A7B;">Disable options in POS (restaurant extension)</h2>
@@ -13,7 +13,7 @@ section class="oe_container">
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
-	  Go to <em>Settings &rarr; Users</em> menu and open user form. You can see new options <b>Allow change Qty for kitchen orders</b> and/or <b>Allow remove kitchen order line</b> in the <em>Point of Sale</em> tab. Let's uncheck them for example.
+	  Go to <em>Settings &rarr; Users</em> menu and open user form. You can see new options <b>Allow change Qty for kitchen orders</b> and/or <b>Allow remove kitchen order line</b> in the <em>Point of Sale</em> tab. Below they are supposed to be unchecked.
 	</font>
       </p>		
     </div>
@@ -30,13 +30,22 @@ section class="oe_container">
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
-	  <b>Disallow change Qty for kitchen orders</b> <br/>
-	  Open POS session. Add products allowed to be sent to kitchen and click <b>Order</b> button. As a result, <b>Qty</b> button is disabled.
+	  <p>
+	    <b>Allow/disallow change Qty for kitchen orders</b>
+	  </p>
+	  Open POS session. Add products allowed to be sent to kitchen and click <b>Order</b> button.
 	</font>
       </p>		
     </div>
     <div class="oe_screenshot" align="center">
-      <img style="max-width: 80%" src="disable_qty_button.png"/>
+      <img style="max-width: 80%" src="disable_qty.png"/>
+    </div>
+    <div class="oe_span12 text-center">
+      <p class="oe_mt32">
+ 	<font style="font-size: 120%;">
+	  As a result, all the number input buttons are disabled.
+	</font>
+      </p>		
     </div>
    </div>
 </section>
@@ -48,8 +57,10 @@ section class="oe_container">
     <div class="oe_span12 text-center">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
-	  <b>Disallow remove kitchen order line</b> </br>
-	  Then if you set orderline quantity to 0, <b>Backspace</b> button is disabled too
+	  <p>
+	    <b>Allow/disallow remove kitchen order line</b>
+	  </p>
+	  With the unchecked option, <b>Backspace</b> button is disabled once we send an order to kitchen and set orderline quantity to 0.
 	</font>
       </p>		
     </div>
