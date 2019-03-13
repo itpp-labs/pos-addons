@@ -13,7 +13,7 @@ class TestUi(odoo.tests.HttpCase):
 
         env = self.env
         env['ir.module.module'].search([('name', '=', 'pos_order_print_check')], limit=1).state = 'installed'
-        
+
         self.phantom_js(
             '/web',
 
