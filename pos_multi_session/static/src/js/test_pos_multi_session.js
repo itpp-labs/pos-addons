@@ -29,6 +29,7 @@ odoo.define('pos_multi_session.tour', function (require) {
         }, {
             content: 'waiting for loading to finish',
             trigger: '.neworder-button > .fa-plus',
+            timeout: 20000,
         }
     ];
 

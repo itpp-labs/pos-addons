@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'FIX searching product by ref in POS',
     'version': '1.0.0',

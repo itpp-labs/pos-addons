@@ -8,7 +8,7 @@ odoo.define('pos_orders_history.screens', function (require) {
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var QWeb = core.qweb;
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var _t = core._t;
 
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
@@ -67,6 +67,13 @@ odoo.define('pos_orders_history.screens', function (require) {
             this.$('.filters .table-filter').click(function (e) {
                 e.stopImmediatePropagation();
                 self.change_filter('table', $(this));
+            });
+
+            this.$('.button.update_history').off().click(function (e) {
+                self.pos.manual_update_order_history().then(function() {
+                    orders = self.pos.db.get_sorted_orders_history(1000);
+                    self.render_list(orders);
+                });
             });
 
             this.$('.order-list-contents').delegate('.order-line td', 'click', function (event) {
@@ -128,11 +135,9 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_orders_by_filter: function(filter, orders) {
             var self = this;
             if (filter === "user") {
-                var user_id = this.pos.cashier
-                ? this.pos.cashier.id
-                : this.pos.user.id;
-                if (this.pos.cashier && this.pos.cashier.id) {
-                    user_id = this.pos.cashier.id;
+                var user_id = this.pos.user.id;
+                if (this.pos.get_cashier()) {
+                    user_id = this.pos.get_cashier().id;
                 }
                 return orders.filter(function(order) {
                     return order.user_id[0] === user_id;
@@ -326,7 +331,11 @@ odoo.define('pos_orders_history.screens', function (require) {
                     this.search_order_on_history(order);
                 } else {
                     // send request to server
-                    new Model('pos.order').call('search_read', [[['pos_history_reference_uid', '=', code.code]]]).then(function(o) {
+                    rpc.query({
+                        model: 'pos.order',
+                        method: 'search_read',
+                        args: [[['pos_history_reference_uid', '=', code.code]]]
+                    }).then(function(o) {
                         if (o && o.length) {
                             self.pos.update_orders_history(o);
                             if (o instanceof Array) {

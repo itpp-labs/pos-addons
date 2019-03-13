@@ -3,15 +3,15 @@
 # * pos_multi_session_sync
 # 
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2017
-# Gustavo Valverde <g.valverde02@gmail.com>, 2017
+# Translation Bot <i18n-bot@it-projects.info>, 2018
+# Luis Guzman <ark@switnet.org>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-14 10:52+0000\n"
-"PO-Revision-Date: 2017-10-14 10:52+0000\n"
-"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
+"Last-Translator: Luis Guzman <ark@switnet.org>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -97,7 +97,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_multi_session_ID
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_ID
 msgid "Multi-session"
-msgstr ""
+msgstr "Multi-sesión"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order_run_ID
@@ -124,7 +124,7 @@ msgstr ""
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_order_uid
-msgid "Order uid"
+msgid "Order Uid"
 msgstr ""
 
 #. module: pos_multi_session_sync
@@ -150,7 +150,7 @@ msgstr ""
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_run_ID
 msgid "Running count"
-msgstr ""
+msgstr "Ejecutando cuenta"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_multi_session_ID
@@ -160,6 +160,9 @@ msgid ""
 "this POS should not use syncing. Before updating it you need to close active"
 " session"
 msgstr ""
+"Fije el mismo valor para TPVs donde las ordenes deberían estar "
+"sincronizadas. Mantenga vacío si este TPV no debería ser sincronizado. Antes"
+" de actualizar lo necesita cerrar la sesión activa"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_state
@@ -173,7 +176,7 @@ msgstr "Sin pagar y removida"
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_user_ID
-msgid "User id"
+msgid "User Id"
 msgstr ""
 
 #. module: pos_multi_session_sync

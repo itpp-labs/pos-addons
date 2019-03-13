@@ -3,7 +3,6 @@
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 
 <openerp>
-    <data>
         <record id="action_update_pos_invoices" model="ir.actions.server">
             <field name="name">Update pos invoices</field>
             <field name="model_id" ref="account.model_account_invoice"/>
@@ -23,5 +22,4 @@
         </record>
 
 
-    </data>
 </openerp>

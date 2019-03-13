@@ -6,10 +6,10 @@
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:49+0000\n"
-"PO-Revision-Date: 2018-04-27 23:49+0000\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
 "Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
@@ -35,8 +35,8 @@ msgstr "Permitir crear líneas de orden"
 
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_decrease_amount
-msgid "Allow decrease quantity on order line"
-msgstr ""
+msgid "Allow decrease order line"
+msgstr "Permitir eliminar líneas de orden"
 
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_discount
@@ -75,7 +75,7 @@ msgstr "Permitir eliminar líneas de la orden"
 
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_is_restaurant_installed
-msgid "Is restaurant installed"
+msgid "Is Restaurant Installed"
 msgstr ""
 
 #. module: pos_disable_payment

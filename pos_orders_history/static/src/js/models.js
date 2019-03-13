@@ -1,10 +1,11 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history.models', function (require) {
     "use strict";
     var models = require('point_of_sale.models');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var longpolling = require('pos_longpolling');
 
 
@@ -43,10 +44,65 @@ odoo.define('pos_orders_history.models', function (require) {
             });
         },
         get_order_history: function (id) {
-            return new Model('pos.order').call('search_read', [[['id', '=', id]]]);
+            return rpc.query({
+                model: 'pos.order',
+                method: 'search_read',
+                args: [[['id', '=', id]]]
+            });
         },
         get_order_history_lines_by_order_id: function (id) {
-            return new Model('pos.order.line').call('search_read', [[['order_id', '=', id]]]);
+            return rpc.query({
+                model: 'pos.order.line',
+                method: 'search_read',
+                args: [[['order_id', '=', id]]]
+            });
+        },
+        manual_update_order_history: function() {
+            var self = this;
+            var def = new $.Deferred();
+            this.get_order_histories().then(function(data) {
+                if (!data) {
+                    def.resolve();
+                    return;
+                }
+
+                self.update_orders_history(data);
+                self.get_order_lines(_.pluck(data, 'id')).then(function(lines){
+                    self.update_orders_history_lines(lines);
+                    def.resolve();
+                });
+
+            });
+            return def;
+        },
+        get_order_histories: function() {
+            var domain = function(self) {
+                var state = ['paid'];
+                if (self.config.show_cancelled_orders) {
+                    state.push('cancel');
+                }
+                if (self.config.show_posted_orders) {
+                    state.push('done');
+                }
+                var res = [['state','in',state]];
+                if (self.config.current_day_orders_only) {
+                    res.push(['date_order', '>=', self.get_date()]);
+                }
+                return res;
+            };
+
+            return rpc.query({
+                model: 'pos.order',
+                method: 'search_read',
+                args: [domain(this)]
+            });
+        },
+        get_order_lines: function(order_ids) {
+            return rpc.query({
+                model: 'pos.order.line',
+                method: 'search_read',
+                args: [[['order_id','in',order_ids]]]
+            });
         },
         update_orders_history: function (orders) {
             var self = this,
