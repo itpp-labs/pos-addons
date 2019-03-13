@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Check PosBox Connection""",
     "summary": """Check the connection to PosBox before printing to avoid loosing the orders""",
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-print-check?version=10.0",
-    "images": ["images/pos_order_print_check_main.png"],
+    "images": ["images/pos_order_print_check_main.jpg"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -19,10 +20,12 @@
 
     "depends": [
         "pos_restaurant_base",
+        "web_tour",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_order_print_check_template.xml",
+        "views/assets_demo.xml",
     ],
     "demo": [
     ],
@@ -45,6 +48,6 @@
     "demo_url": "pos-order-print-check",
     "demo_summary": "Check the connection to PosBox before printing POS orders",
     "demo_images": [
-    "images/pos_order_print_check_main.png",
+        "images/pos_order_print_check_main.jpg",
     ]
 }

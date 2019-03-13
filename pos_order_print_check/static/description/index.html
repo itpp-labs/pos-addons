@@ -12,7 +12,7 @@
     <div class="oe_span12">
       <p class="oe_mt32">
 	<div class="alert alert-info" style="padding:0.3em 0.6em; font-size: 150%;">
-	  By default, the orders sent to printers may lost if the connection to PosBox is unexpectively interrupted. The module eliminates this disadvantage because it checks the connection to PosBox before order printing.
+	  By default, the orders sent to printers may lost if the connection to PosBox is suddenly terminated. The module eliminates this disadvantage because it checks the connection to PosBox before order printing.
 	</div>
       </p>		
     </div>
@@ -22,17 +22,31 @@
 <section class="oe_container oe_dark">
   <div class="oe_row oe_spaced">
     <h3 class="oe_slogan">How It Works</h3>
-    <div class="oe_span12 text-center">
+    <div class="oe_span12">
       <p class="oe_mt32">
  	<font style="font-size: 120%;">
-	  Open POS session and add products to the cart. Then click <b>Order</b> button to send the order to printer. If there is no connection to PosBox you would see the warning <i>No connection to the printer: printer_name</i>.
+	  <ul>
+	    <li>
+	      Open POS session and add products to the cart
+	    </li>
+	    <li>
+	      Click <b>Order</b> button to send the order to printer
+	    </li>
+	  </ul>
+	  <p style="text-align: center;">
+	    If there is no connection to PosBox you would see the warning <i>No connection to the printer: printer_name</i>.
+	  </p>
 	</font>
       </p>		
     </div>
     <div class="oe_screenshot" align="center">
       <img style="max-width: 80%" src="pos_order_print_check.png"/>
     </div>
-    Note that the module doesn't look at the color of PosBox icon, because it can stay green for few seconds even if the connection is lost. 
+    <p class="oe_mt32">
+      <font style="font-size: 120%;">
+	Note that the module doesn't look at the color of PosBox icon, because it can stay green for few seconds even if the connection is lost. 
+      </font>
+    </p>
   </div>
 </section>
 
