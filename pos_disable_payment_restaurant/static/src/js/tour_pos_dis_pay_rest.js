@@ -71,7 +71,7 @@ odoo.define('pos_disable_payment_restaurant.tour', function(require) {
             if ($('.numpad').find('.number-char').hasClass("disable")) {
                 console.log("The option to change Qty for kitchen orders is blocked");
              } else {
-                console.log("error", "The button is not disabled");
+                console.log("The button is not disabled");
              }
         }
     }
