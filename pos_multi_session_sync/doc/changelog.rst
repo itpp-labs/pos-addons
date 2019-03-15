@@ -1,3 +1,7 @@
+`1.0.5`
+-------
+- **Fix:** Unsynced order in some cases
+
 `1.0.4`
 -------
 - **Fix:** Random sync problems
