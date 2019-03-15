@@ -1,3 +1,8 @@
+`4.2.5`
+-------
+
+- **Fix:** Unsynced order in some cases
+
 `4.2.4`
 -------
 
