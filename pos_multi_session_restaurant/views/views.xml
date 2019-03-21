@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-     Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      Copyright 2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 
@@ -52,6 +52,7 @@
             <data>
                 <xpath expr="//field[@name='pos_ids']" position="after">
                     <field name="floor_ids" widget="many2many_tags"/>
+                    <field name="table_blocking"/>
                 </xpath>
             </data>
         </field>
