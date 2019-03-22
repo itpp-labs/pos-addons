@@ -12,6 +12,7 @@
                         <field name="allow_cancel_deletion" attrs="{'invisible': [('allow_custom_reason', '=', True)]}"/>
                         <field name="show_popup_change_quantity"/>
                         <field name="show_cancel_info"/>
+                        <field name="ask_managers_pin"/>
                     </group>
                 </group>
             </xpath>
