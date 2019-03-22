@@ -36,7 +36,7 @@ class Controller(BusController):
         if not ms:
             ms = ms_model.create({'multi_session_ID': int(multi_session_id), 'dbname': dbname})
         ms = ms.with_context(user_ID=user_ID, phantomtest=phantomtest)
-        _logger.debug('On update message by user %s: %s', user_ID, message)
+        _logger.debug('On update message by user %s (dbname=%s, multi_session_id=%s): %s', user_ID, dbname, multi_session_id, message)
         res = ms.on_update_message(message)
         _logger.debug('Return result after update by user %s: %s', user_ID, res)
         return res
