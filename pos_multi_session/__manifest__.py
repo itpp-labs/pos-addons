@@ -9,7 +9,7 @@
     "name": """Sync POS orders across multiple sessions""",
     "summary": """Use multiple POS for handling orders""",
     "category": "Point Of Sale",
-    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=10.0',
+    # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=10.0',
     "images": ["images/pos-multi-session.png"],
     "version": "10.0.4.2.5",
     "application": False,
