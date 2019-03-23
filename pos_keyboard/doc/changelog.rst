@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.1.0`
+-------
+
+**New:** Added popup handling
+
 `1.0.2`
 -------
 

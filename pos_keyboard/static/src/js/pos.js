@@ -2,26 +2,80 @@ odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
 
     var core = require('web.core');
+    var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
+    var PopupWidget = require('point_of_sale.popups');
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
+            var self = this;
             this.keypad = new Keypad({'pos': this});
-            return _super_posmodel.initialize.call(this, session, attributes);
+            _super_posmodel.initialize.call(this, session, attributes);
+            this.ready.then(function(){
+                self.keypad.set_action_callback(function(data){
+                    var current_screen = self.gui.current_screen;
+                    var current_popup = self.gui.current_popup;
+
+                    if (current_popup) {
+                        current_popup.keypad_action(data);
+                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
+                        current_screen.numpad.keypad_action(data);
+                    }
+                });
+            });
         }
     });
 
-    screens.NumpadWidget.include({
-        start: function() {
-            this._super();
-            var self = this;
-            this.pos.keypad.set_action_callback(function(data){
-                 self.keypad_action(data, self.pos.keypad.type);
-            });
+    gui.Gui.prototype.popup_classes.filter(function(c){
+        return c.name === 'password';
+    })[0].widget.include({
+        init: function(parent, args) {
+            this._super(parent, args);
+            this.popup_type = 'password';
         },
-        keypad_action: function(data, type){
+    });
+
+    PopupWidget.include({
+        keypad_action: function(data){
+            var type = this.pos.keypad.type;
+            if (data.type === type.numchar){
+                this.click_keyboard(data.val);
+            } else if (data.type === type.backspace){
+                this.click_keyboard('BACKSPACE');
+            } else if (data.type === type.enter){
+                this.click_confirm();
+            } else if (data.type === type.escape){
+                this.click_cancel();
+            }
+        },
+        click_keyboard: function(value){
+            var newbuf = this.gui.numpad_input(
+                this.inputbuffer,
+                value,
+                {'firstinput': this.firstinput});
+
+            this.firstinput = (newbuf.length === 0);
+
+            var $value = this.$('.value');
+            if (newbuf !== this.inputbuffer) {
+                this.inputbuffer = newbuf;
+                $value.text(this.inputbuffer);
+            }
+            if (this.popup_type === 'password') {
+                $value.text($value.text().replace(/./g, '•'));
+            }
+        },
+        show: function(options){
+            this._super(options);
+            this.$('input,textarea').focus();
+        },
+    });
+
+    screens.NumpadWidget.include({
+        keypad_action: function(data){
+             var type = this.pos.keypad.type;
              if (data.type === type.numchar){
                  this.state.appendNewChar(data.val);
              }
@@ -58,7 +112,9 @@ odoo.define('pos_keyboard.pos', function (require) {
                 numchar: 'number, dot',
                 bmode: 'quantity, discount, price',
                 sign: '+, -',
-                backspace: 'backspace'
+                backspace: 'backspace',
+                enter: 'enter',
+                escape: 'escape',
             };
             this.data = {
                 type: undefined,
@@ -91,17 +147,30 @@ odoo.define('pos_keyboard.pos', function (require) {
         connect: function(){
             var self = this;
             // --- additional keyboard ---//
-            var KC_PLU = 107;      // KeyCode: + or - (Keypad '+')
-            var KC_QTY = 111;      // KeyCode: Quantity (Keypad '/')
-            var KC_AMT = 106;      // KeyCode: Price (Keypad '*')
-            var KC_DISC = 109;     // KeyCode: Discount Percentage [0..100] (Keypad '-')
+            // KeyCode: + or - (Keypad '+')
+            var KC_PLU = 107;
+            // KeyCode: Quantity (Keypad '/')
+            var KC_QTY = 111;
+            // KeyCode: Price (Keypad '*')
+            var KC_AMT = 106;
+            // KeyCode: Discount Percentage [0..100] (Keypad '-')
+            var KC_DISC = 109;
             // --- basic keyboard --- //
-            var KC_PLU_1 = 83;    // KeyCode: sign + or - (Keypad 's')
-            var KC_QTY_1 = 81;     // KeyCode: Quantity (Keypad 'q')
-            var KC_AMT_1 = 80;     // KeyCode: Price (Keypad 'p')
-            var KC_DISC_1 = 68;    // KeyCode: Discount Percentage [0..100] (Keypad 'd')
+            // KeyCode: sign + or - (Keypad 's')
+            var KC_PLU_1 = 83;
+            // KeyCode: Quantity (Keypad 'q')
+            var KC_QTY_1 = 81;
+            // KeyCode: Price (Keypad 'p')
+            var KC_AMT_1 = 80;
+            // KeyCode: Discount Percentage [0..100] (Keypad 'd')
+            var KC_DISC_1 = 68;
 
-            var KC_BACKSPACE = 8;  // KeyCode: Backspace (Keypad 'backspace')       
+            // KeyCode: Backspace (Keypad 'backspace')
+            var KC_BACKSPACE = 8;
+            // KeyCode: Enter (Keypad 'enter')
+            var KC_ENTER = 13;
+            // KeyCode: Escape (Keypad 'esc')
+            var KC_ESCAPE = 27;
             var kc_lookup = {
                 48: '0', 49: '1', 50: '2',  51: '3', 52: '4',
                 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
@@ -127,37 +196,37 @@ odoo.define('pos_keyboard.pos', function (require) {
                         price: 'price'
                     };
                     var token = e.keyCode;
-                    if ((token >= 96 && token <= 105 || token == 110) ||
-                        (token >= 48 && token <= 57 || token == 190)) {
+                    if (((token >= 96 && token <= 105) || token === 110) ||
+                        ((token >= 48 && token <= 57) || token === 190)) {
                         self.data.type = type.numchar;
                         self.data.val = kc_lookup[token];
                         is_number = true;
                         ok = true;
-                    }
-                    else if (token == KC_PLU || token == KC_PLU_1) {
+                    } else if (token === KC_PLU || token === KC_PLU_1) {
                         self.data.type = type.sign;
                         ok = true;
-                    }
-                    else if (token == KC_QTY || token == KC_QTY_1) {
+                    } else if (token === KC_QTY || token === KC_QTY_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.qty;
                         ok = true;
-                    }
-                    else if (token == KC_AMT || token == KC_AMT_1) {
+                    } else if (token === KC_AMT || token === KC_AMT_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.price;
                         ok = true;
-                    }
-                    else if (token == KC_DISC || token == KC_DISC_1) {
+                    } else if (token === KC_DISC || token === KC_DISC_1) {
                         self.data.type = type.bmode;
                         self.data.val = buttonMode.disc;
                         ok = true;
-                    }
-                    else if (token == KC_BACKSPACE) {
+                    } else if (token === KC_BACKSPACE) {
                         self.data.type = type.backspace;
                         ok = true;
-                    } 
-                    else {
+                    } else if (token === KC_ENTER) {
+                        self.data.type = type.enter;
+                        ok = true;
+                    } else if (token === KC_ESCAPE) {
+                        self.data.type = type.escape;
+                        ok = true;
+                    } else {
                         self.data.type = undefined;
                         self.data.val = undefined;
                         ok = false;
