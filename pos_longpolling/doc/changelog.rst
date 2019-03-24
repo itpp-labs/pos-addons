@@ -1,3 +1,8 @@
+`2.1.2`
+-------
+
+ - **FIX:** Incorrect behaviour of longpolling icons
+
 `2.1.1`
 -------
 
