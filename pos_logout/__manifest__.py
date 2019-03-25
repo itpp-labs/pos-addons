@@ -6,7 +6,7 @@
     "name": """Lock POS Screen""",
     "summary": """Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-logout?version=12.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-logout?version=12.0",
     "images": ["images/pos_logout_main.png"],
     "version": "12.0.1.0.0",
     "application": False,
