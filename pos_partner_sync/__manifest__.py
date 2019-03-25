@@ -7,7 +7,7 @@
     "name": """Sync Partners in POS""",
     "summary": """Instant updates of the partner data in POS""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=10.0",
     "images": ["images/pos_partner_sync_main.jpeg"],
     "version": "10.0.2.0.0",
     "application": False,
@@ -37,12 +37,12 @@
     "auto_install": False,
     "installable": True,
 
-    "demo_title": "Sync Barcodes in POS",
+    "demo_title": "Sync Partner data in POS",
     "demo_addons": [
     ],
     "demo_addons_hidden": [
     ],
-    "demo_url": "pos-barcode-sync",
+    "demo_url": "pos-partner-sync",
     "demo_summary": "Update the partner data in POS instantly",
     "demo_images": [
         "images/pos_partner_sync_main.png",

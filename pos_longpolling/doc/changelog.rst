@@ -1,3 +1,8 @@
+`2.1.1`
+-------
+
+ - **FIX:** Error related to endless longpolling ping requests and multiple event triggering on changing network status
+
 `2.1.0`
 -------
 

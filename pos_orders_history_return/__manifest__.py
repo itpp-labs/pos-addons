@@ -6,7 +6,7 @@
     "name": """POS Orders Return""",
     "summary": """The module allows to make order returns from POS interface by quick & easy way""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=10.0",
     "images": ["images/pos_orders_return_main.jpg"],
     "version": "10.0.1.0.4",
     "application": False,

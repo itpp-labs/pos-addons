@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": [],
-    "version": "10.0.1.0.3",
+    "version": "10.0.1.0.4",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

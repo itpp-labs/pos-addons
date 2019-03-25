@@ -3,7 +3,7 @@
     "name": """Absolute Discounts in POS""",
     "summary": """Set absolute discount if the percentages are not convenient or just boring""",
     "category": "Point of Sale",
-    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=10.0',
+    # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=10.0',
     "images": ["images/pos_orderline_abs_disc_main.png"],
     "version": "10.0.1.0.0",
     "application": False,
