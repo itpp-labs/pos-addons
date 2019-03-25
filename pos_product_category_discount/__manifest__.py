@@ -2,7 +2,7 @@
     "name": """POS Discount Programs""",
     "summary": """Use predefined discount programs for products in POS""",
     "category": "Point of Sale",
-    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-product-category-discount?version=11.0',
+    # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-product-category-discount?version=11.0',
     "images": ['images/dp3.png'],
     "version": "11.0.1.2.6",
     "application": False,
