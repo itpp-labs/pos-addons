@@ -1,3 +1,8 @@
+`4.2.6`
+-------
+
+- **Fix:** The Multi-sessions menu is not available for POS Managers
+
 `4.2.5`
 -------
 
