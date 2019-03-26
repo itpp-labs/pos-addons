@@ -11,6 +11,7 @@
                     <field name="auto_send_to_kitchen"/>
                     <field name="save_canceled_kitchen_orders_only"/>
                     <field name="send_removed_lines_to_kitchen"/>
+                    <field name="ask_managers_pin_kitchen_orders_only" attrs="{'invisible':[('ask_managers_pin', '=', False)]}"/>
                 </group>
             </xpath>
         </field>

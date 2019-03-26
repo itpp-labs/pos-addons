@@ -47,10 +47,14 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             var self = this;
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
-            if (this.pos.config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
+            var config = this.pos.config;
+            if (config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
                 return false;
             }
-            this._super(type);
+            if (config.ask_managers_pin && config.ask_managers_pin_kitchen_orders_only && orderline && (type !== 'product' || !orderline.was_printed)) {
+                return this.show_confirm_cancellation_popup(type, orderline);
+            }
+            return this._super(type);
         },
     });
 
