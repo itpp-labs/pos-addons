@@ -60,12 +60,6 @@ odoo.define('pos_product_category_discount.tour', function(require) {
             trigger: '.button.next:visible',
             content: "validate the order",
         }, {
-            trigger: ".js_connecting:visible",
-            content: "verify that the order is being sent to the backend",
-            run: function () {
-                // it's a check
-            },
-        }, {
             trigger: ".js_connected:visible",
             content: "verify that the order has been succesfully sent to the backend",
             run: function () {
@@ -149,5 +143,5 @@ odoo.define('pos_product_category_discount.tour', function(require) {
         },
     }]);
 
-    tour.register('pos_product_category_discount_tour', {test: true, url: '/pos/web' }, steps);
+    tour.register('pos_product_category_discount_tour', {test: true, url: '/web' }, steps);
 });

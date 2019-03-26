@@ -29,7 +29,10 @@ odoo.define('pos_product_available.tour', function (require) {
             trigger: '.product-list .product-name:contains("' + product_name + '")',
         }, {
             content: 'the ' + product_name + ' have been added to the order',
-            trigger: '.orderline:contains("' + product_name + '") .qty-info:contains("0")',
+            trigger: '.orderline:contains("' + product_name + '")',
+            run: function () {
+                // it's a check
+            },
         }];
     }
 
@@ -41,14 +44,12 @@ odoo.define('pos_product_available.tour', function (require) {
             content: "Choose Administrator like a cashier or make a dummy action",
             trigger: '.modal-dialog.cashier:not(.oe_hidden) .cashier .selection-item:contains("Mitchell Admin"), .payment-screen:not(.oe_hidden) h1:contains("Payment")',
         }, {
-            extra_trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             content: _t("Click the payment method"),
         }, {
             trigger: '.payment-screen .input-button.number-char:contains("2")',
             content: 'Set payment amount',
         }, {
-            extra_trigger: '.button.next.highlight:contains("Validate")',
             trigger: '.button.next.highlight:contains("Validate")',
             content: 'Validate payment',
         }, {
@@ -76,7 +77,7 @@ odoo.define('pos_product_available.tour', function (require) {
     function check_quantity() {
         return [{
             content: 'check quantity',
-            extra_trigger: '.product-list .product:contains("LED Lamp") .qty-tag.not-available:contains("-1")',
+            extra_trigger: '.product-list .product:contains("LED Lamp") .qty-tag.not-available:not(:contains("0"))',
             trigger: '.order-button.selected',
         }];
     }
