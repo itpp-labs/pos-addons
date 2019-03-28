@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     "name": """POS Mobile UI for Waiters""",
     "summary": """Your Restaurant in the Mobile Version""",

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import odoo.tests
 from odoo.api import Environment
 
