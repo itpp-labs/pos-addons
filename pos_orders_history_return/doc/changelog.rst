@@ -7,6 +7,7 @@ Updates
 -------
 
 **Fix:** Error related to return specific order after barcode scanning
+**Fix:** Order duplication in case poor connection in POS
 
 `1.0.4`
 -------

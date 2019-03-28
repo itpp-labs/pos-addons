@@ -24,32 +24,37 @@ class PosOrder(models.Model):
         existing_references = set([o['pos_reference'] for o in existing_orders])
         orders_to_save = [o for o in orders if o['data']['name'] in existing_references]
 
-        self.return_from_ui(orders_to_save)
-
+        pos_retuned_orders = [o for o in orders_to_save if o['data'].get('mode') and o['data'].get('mode') == 'return']
+        self.return_from_ui(pos_retuned_orders)
         return super(PosOrder, self).create_from_ui(orders)
 
     @api.multi
     def return_from_ui(self, orders):
         for tmp_order in orders:
-            to_invoice = tmp_order['to_invoice']
-            order = tmp_order['data']
-            if to_invoice:
-                self._match_payment_to_invoice(order)
+            # eliminates the return of the order several times at the same time
+            returned_order = self.search([('pos_reference', '=', tmp_order['data']['name']),
+                                          ('date_order', '=', tmp_order['data']['creation_date']),
+                                          ('returned_order', '=', True)])
+            if not returned_order:
+                to_invoice = tmp_order['to_invoice']
+                order = tmp_order['data']
+                if to_invoice:
+                    self._match_payment_to_invoice(order)
 
-            order['returned_order'] = True
-            pos_order = self._process_order(order)
+                order['returned_order'] = True
+                pos_order = self._process_order(order)
 
-            try:
-                pos_order.action_pos_order_paid()
-            except psycopg2.OperationalError:
-                raise
-            except Exception as e:
-                _logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
+                try:
+                    pos_order.action_pos_order_paid()
+                except psycopg2.OperationalError:
+                    raise
+                except Exception as e:
+                    _logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
 
-            if to_invoice:
-                pos_order.action_pos_order_invoice()
-                pos_order.invoice_id.sudo().action_invoice_open()
-                pos_order.account_move = pos_order.invoice_id.move_id
+                if to_invoice:
+                    pos_order.action_pos_order_invoice()
+                    pos_order.invoice_id.sudo().action_invoice_open()
+                    pos_order.account_move = pos_order.invoice_id.move_id
 
     @api.model
     def _process_order(self, pos_order):
