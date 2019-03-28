@@ -4,7 +4,7 @@
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "10.0.1.2.2",
+    "version": "10.0.1.3.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -16,6 +16,7 @@
 
     "depends": [
         "point_of_sale",
+        "pos_pin",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
