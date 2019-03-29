@@ -1,3 +1,7 @@
+`3.3.0`
+-------
+**New:** Allows to block a table for waiters if it's already served by another one
+
 `3.2.6`
 -------
 **Improvement:** Compatibility with pos_order_receipt_custom module
