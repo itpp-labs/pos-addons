@@ -14,7 +14,9 @@ odoo.define('pos_orders_history.screens', function (require) {
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
         template: 'OrdersHistoryButton',
         button_click: function () {
-            this.gui.show_screen('orders_history_screen');
+            if (this.pos.db.pos_orders_history.length) {
+                this.gui.show_screen('orders_history_screen');
+            }
         },
     });
     screens.define_action_button({
@@ -67,13 +69,6 @@ odoo.define('pos_orders_history.screens', function (require) {
             this.$('.filters .table-filter').click(function (e) {
                 e.stopImmediatePropagation();
                 self.change_filter('table', $(this));
-            });
-
-            this.$('.button.update_history').off().click(function (e) {
-                self.pos.manual_update_order_history().then(function() {
-                    orders = self.pos.db.get_sorted_orders_history(1000);
-                    self.render_list(orders);
-                });
             });
 
             this.$('.order-list-contents').delegate('.order-line td', 'click', function (event) {
