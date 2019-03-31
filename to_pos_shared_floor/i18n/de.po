@@ -1,0 +1,35 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * to_pos_shared_floor
+# 
+# Translators:
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-05 13:54+0000\n"
+"PO-Revision-Date: 2017-06-23 14:12+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: to_pos_shared_floor
+#: model:ir.model.fields,field_description:to_pos_shared_floor.field_restaurant_floor_pos_config_ids
+msgid "POS configs"
+msgstr "POS Konfiguration"
+
+#. module: to_pos_shared_floor
+#: model:ir.model,name:to_pos_shared_floor.model_pos_config
+msgid "pos.config"
+msgstr "pos.config"
+
+#. module: to_pos_shared_floor
+#: model:ir.model,name:to_pos_shared_floor.model_restaurant_floor
+msgid "restaurant.floor"
+msgstr "restaurant.floor"
