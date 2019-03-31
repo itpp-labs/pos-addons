@@ -8,7 +8,6 @@ odoo.define('pos_order_cancel.widgets', function (require) {
     var core = require('web.core');
     var PopupWidget = require('point_of_sale.popups');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
-    var Model = require('web.DataModel');
     var QWeb = core.qweb;
     var _t = core._t;
 

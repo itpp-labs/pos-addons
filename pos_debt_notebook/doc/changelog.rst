@@ -7,6 +7,10 @@
 -------
 - **FIX:** Payment mistakes on in case SERIALIZATION_FAILURE in order processing
 
+`5.1.4`
+-------
+- **FIX:** Unavailability to withdraw credits
+
 `5.1.3`
 -------
 - **FIX:** Error related to pos loading with the lack of customers
@@ -30,9 +34,23 @@
 - **FIX:** Error related to paying with not discount credit journals in POS
 - **FIX:** Invoices paid with credit journals now counts in partner debts
 
+`5.0.5`
+-------
+
+- **FIX:** Error on module deleting
+- **FIX:** Error related to invoices created in the "Generate POS Credit Invoices" wizard. Invoices were created with wrong type.
+
+`5.0.4`
+-------
+
+- **FIX:** compatibility with pos_category_multi
+
 `5.0.3`
 -------
-- **FIX:** Error related to invoices created in the "Generate POS Credit Invoices" wizard. Invoices were created with wrong type.
+
+- **FIX:** Compatibility with other pos modules
+- **FIX:** Error message displaying on discount credit paymentlines with zero price 
+- **FIX:** Lost overrides of the `order` and `session` forms
 
 `5.0.2`
 -------

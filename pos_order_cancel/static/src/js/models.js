@@ -2,7 +2,6 @@ odoo.define('pos_order_cancel.models', function (require) {
     "use strict";
 
     var models = require('point_of_sale.models');
-    var Model = require('web.DataModel');
     var core = require('web.core');
     var QWeb = core.qweb;
     var _t = core._t;

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
@@ -57,7 +56,7 @@ class PosOrder(models.Model):
         order = super(PosOrder, self)._process_order(pos_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
             if pos_order['reason']:
-                order.cancellation_reason = pos_order['reason'].encode('utf-8').strip(" \t\n")
+                order.cancellation_reason = pos_order['reason'].encode('utf-8')
             order.is_cancelled = True
         return order
 

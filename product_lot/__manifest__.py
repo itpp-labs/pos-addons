@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Product lot',
     'version': '10.0.1.0.2',
@@ -12,6 +11,6 @@
     'data': [
         'views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

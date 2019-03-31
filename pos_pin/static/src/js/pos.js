@@ -38,7 +38,7 @@ odoo.define('pos_pin.pos', function (require) {
                     });
                 }
             }
-    
+
             this.show_popup('selection',{
                 'title': options.title || _t('Select User'),
                 'list': list,
@@ -54,6 +54,7 @@ odoo.define('pos_pin.pos', function (require) {
                 if (options.security && cashier !== options.current_user && cashier.pos_security_pin) {
                     return self.ask_password(cashier.pos_security_pin, options.arguments);
                 }
+                return cashier;
             }).done(function(res){
                 return self.check_then_set_and_render_cashier(options, res);
             });
@@ -80,12 +81,15 @@ odoo.define('pos_pin.pos', function (require) {
                     } else {
                         self.show_popup('error', {
                             'title': _t('Incorrect Password'),
-                            confirm: _.bind(self.show_password_popup, self, password, lock),
-                            cancel: _.bind(self.show_password_popup, self, password, lock),
+                            confirm: _.bind(self.show_password_popup, self, password, lock, cancel_function),
+                            cancel: _.bind(self.show_password_popup, self, password, lock, cancel_function),
                         });
                     }
                 },
-                cancel: cancel_function || lock.reject,
+                cancel: function() {
+                    cancel_function.call(self);
+                    lock.reject();
+                },
             });
             return lock;
         },

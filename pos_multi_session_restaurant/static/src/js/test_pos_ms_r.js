@@ -14,9 +14,13 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     });
 
     steps.splice(steps.indexOf(element) + 1,
-    0, {
+    1, {
         content: "click on a table",
         trigger: ".table",
+        timeout: 20000,
+    }, {
+        content: 'waiting for loading to finish',
+        trigger: '.neworder-button > .fa-plus',
     });
 
     tour.register('open_pos_ms_r_tour', { test: true, url: '/web' }, steps);

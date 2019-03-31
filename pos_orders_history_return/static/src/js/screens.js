@@ -122,10 +122,10 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 json.statement_ids = [];
                 json.mode = "return";
                 json.return_lines = lines;
+                json.pricelist_id = this.pos.default_pricelist.id;
                 if (order.table_id) {
                     json.table_id = order.table_id[0];
                 }
-
                 var options = _.extend({pos: this.pos}, {json: json});
                 order = new models.Order({}, options);
                 order.temporary = true;

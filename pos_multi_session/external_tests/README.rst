@@ -17,8 +17,19 @@ If you don't use dockers:
 
 * Update python library::
 
-    pip2 install -U requests
-    pip2 install 'requests[security]'
+    pip3 install -U requests
+    pip3 install 'requests[security]'
+
+* For python 3 and higher versions::
+
+    pip3 install unittest2
+
+If **"No module named unittest2" Error** is given even if unittest2 is already installed, inside the odoo docker open python in terminal and execute next::
+
+    import sys
+    sys.path.append('/usr/local/lib/python3.5/dist-packages')
+
+or append the path where unittest2 was installed.
 
 Docker
 ======

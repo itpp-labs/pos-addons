@@ -3,15 +3,14 @@
 # * pos_print_method
 # 
 # Translators:
-# Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
-# charles paul requena palomino <rcharles84@gmail.com>, 2018
+# Luis Guzman <ark@switnet.org>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:49+0000\n"
-"PO-Revision-Date: 2018-04-27 23:49+0000\n"
-"Last-Translator: charles paul requena palomino <rcharles84@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
+"Last-Translator: Luis Guzman <ark@switnet.org>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,14 +44,14 @@ msgstr ""
 #: code:addons/pos_print_method/static/src/js/tour.js:30
 #, python-format
 msgid "<p>Click product 1</p>"
-msgstr "Haga clic en el producto 1"
+msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
 #: code:addons/pos_print_method/static/src/js/tour.js:34
 #, python-format
 msgid "<p>Click product 2</p>"
-msgstr "<p>Haga clic en el producto 2</p>"
+msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
@@ -63,6 +62,10 @@ msgid ""
 "laptops, or industrial hardware.</p><p>Once the session launched, the system"
 " continues to run without an internet connection.</p>"
 msgstr ""
+"<p>Haga click para iniciar la interfaz de venta del punto de venta. Este "
+"<b>opera en tabletas</b>, laptops, o hardware industrial.</p><p>Una vez que "
+"la sesión ha iniciado, el sistema puede continuar a ejecutarse sin necesidad"
+" de una conexión a internet.</p>"
 
 #. module: pos_print_method
 #: selection:restaurant.printer,printer_method_name:0
@@ -92,7 +95,7 @@ msgstr ""
 #: code:addons/pos_print_method/static/src/js/tour.js:14
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "¿Listo para lanzar su <b>punto de venta</b>? <i>Haga clic aquí</i>."
+msgstr "¿Listo para iniciar su <b>punto de venta</b>? <i>Click aquí</i>."
 
 #. module: pos_print_method
 #: model:ir.model,name:pos_print_method.model_restaurant_printer

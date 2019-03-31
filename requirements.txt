@@ -1,0 +1,3 @@
+wechatpy[cryptography]
+requests-mock
+python-alipay-sdk

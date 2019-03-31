@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2015 Bassirou Ndaw <https://github.com/bassn>
 # Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
@@ -14,9 +13,9 @@
     'name': 'POS Debt & Credit notebook',
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'category': 'Point Of Sale',
-    'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=10.0',
+    'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=11.0',
     "images": ['images/debt_notebook.png'],
-    'version': '10.0.5.2.0',
+    'version': '11.0.5.2.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
