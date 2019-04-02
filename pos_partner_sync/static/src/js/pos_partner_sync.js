@@ -10,7 +10,7 @@ odoo.define('pos_partner_sync.pos', function (require) {
     var models = require('point_of_sale.models');
     var longpolling = require('pos_longpolling');
     var gui = require('point_of_sale.gui');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
 
     var _t = core._t;
 
@@ -53,7 +53,13 @@ odoo.define('pos_partner_sync.pos', function (require) {
             ids = Array.isArray(ids)
             ? ids
             : [ids];
-            new Model(model_name).call("read", [ids, fields], {}, {'shadow': true}).then(function(partners) {
+            rpc.query({
+                model: model_name,
+                method: 'read',
+                args: [ids, fields],
+            }, {
+                shadow: true,
+            }).then(function(partners) {
                 // check if the partners we got were real updates
                 if (self.db.add_partners(partners)) {
                     def.resolve();
