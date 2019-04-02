@@ -232,7 +232,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (!this.config.table_blocking) {
                 return false;
             }
-            var cashier = this.cashier;
+            var cashier = this.get_cashier();
             var user_is_manager = _.contains(cashier.groups_id, this.config.group_pos_manager_id[0]);
             if (user_is_manager) {
                 return false;
