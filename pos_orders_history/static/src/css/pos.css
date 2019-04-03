@@ -234,3 +234,8 @@ tr.order-line {
 body > div.o_main_content > div.o_content > div > div.popups > div:nth-child(13) > div > div:nth-child(2) > span{
     position: relative;
 }
+.popup-textinput input {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+}

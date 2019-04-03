@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.1`
+-------
+
+**Fix:** Error related to load specific order after barcode scanning
+
 `1.2.0`
 -------
 
