@@ -1,3 +1,8 @@
+`1.2.2`
+-------
+
+**Fix:** Payment lines is reset after SO/Invoice pay
+
 `1.2.1`
 -------
 
