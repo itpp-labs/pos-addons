@@ -21,22 +21,35 @@ odoo.define('pos_partner_sync.pos', function (require) {
         },
         on_barcode_updates: function(data){
             var self = this;
-            if (data.message === 'update_partner_fields') {
-                var def = new $.Deferred();
+            if (data.message === 'update_partner_fields' && data.partner_ids && data.partner_ids.length) {
                 if (data.action && data.action === 'unlink') {
                     this.remove_unlinked_partners(data.partner_ids);
-                    def.resolve();
+                    this.update_templates_with_partner(data.partner_ids);
                 } else {
-                    def = self.load_new_partners(data.partner_ids);
+                    this.load_new_partners(data.partner_ids).then(function(){
+                        self.update_templates_with_partner(data.partner_ids);
+                    });
                 }
+            }
+        },
 
-                return def.done(function(){
-                    var client_list_screen = self.gui.screen_instances.clientlist;
-                    client_list_screen.update_partner_cache(data.partner_ids);
-                    if (self.gui.get_current_screen() === 'clientlist'){
-                        client_list_screen.update_client_list_screen(data.partner_ids);
-                    }
-                });
+        update_templates_with_partner: function(partner_ids) {
+            if (!partner_ids) {
+                return;
+            }
+            var client_list_screen = this.gui.screen_instances.clientlist;
+            // updates client list cache
+            client_list_screen.update_partner_cache(partner_ids);
+            // updates, renders client details, renders client list
+            if (this.gui.get_current_screen() === 'clientlist'){
+                client_list_screen.update_client_list_screen(partner_ids);
+            }
+            // updates, renders order client
+            var order = this.get_order();
+            var client = this.get_client();
+            if (order && client && _.contains(partner_ids, client.id)) {
+                client = this.db.get_partner_by_id(client.id);
+                order.set_client(client);
             }
         },
 
@@ -55,6 +68,11 @@ odoo.define('pos_partner_sync.pos', function (require) {
             : [ids];
             new Model(model_name).call("read", [ids, fields], {}, {'shadow': true}).then(function(partners) {
                 // check if the partners we got were real updates
+                // we add this trick with get_partner_write_date to be able to process several updates within the second
+                // it is restricted by built-in behavior in add_partners function
+                self.db.partner_write_date = 0;
+                // returns default value "1970-01-01 00:00:00"
+                self.db.get_partner_write_date();
                 if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {
@@ -91,6 +109,9 @@ odoo.define('pos_partner_sync.pos', function (require) {
             var partner = {};
             _.each(partner_ids, function(pid){
                 partner = self.pos.db.get_partner_by_id(pid);
+                if (!partner) {
+                    return;
+                }
                 var clientline_html = '';
                 var clientline = self.partner_cache.get_node(partner.id);
                 if(clientline){

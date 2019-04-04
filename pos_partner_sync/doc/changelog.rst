@@ -2,6 +2,7 @@
 -------
 
 **Fix:** Client line data updating
+**Fix:** Several updates within the one second were denied by built-in behavior
 
 `2.0.0`
 -------
