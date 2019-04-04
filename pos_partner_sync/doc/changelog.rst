@@ -1,3 +1,8 @@
+`2.0.1`
+-------
+
+**Fix:** Client line data updating
+
 `2.0.0`
 -------
 

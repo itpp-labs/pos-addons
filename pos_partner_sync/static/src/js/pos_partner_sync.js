@@ -3,8 +3,6 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_partner_sync.pos', function (require) {
 
-    var session = require('web.session');
-    var Backbone = window.Backbone;
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
@@ -12,6 +10,7 @@ odoo.define('pos_partner_sync.pos', function (require) {
     var gui = require('point_of_sale.gui');
     var Model = require('web.Model');
 
+    var QWeb = core.qweb;
     var _t = core._t;
 
     var PosModelSuper = models.PosModel;
@@ -32,9 +31,10 @@ odoo.define('pos_partner_sync.pos', function (require) {
                 }
 
                 return def.done(function(){
-                    var opened_client_list_screen = self.gui.get_current_screen() === 'clientlist' && self.gui.screen_instances.clientlist;
-                    if (opened_client_list_screen){
-                        opened_client_list_screen.update_client_list_screen(data.partner_ids);
+                    var client_list_screen = self.gui.screen_instances.clientlist;
+                    client_list_screen.update_partner_cache(data.partner_ids);
+                    if (self.gui.get_current_screen() === 'clientlist'){
+                        client_list_screen.update_client_list_screen(data.partner_ids);
                     }
                 });
             }
@@ -85,9 +85,23 @@ odoo.define('pos_partner_sync.pos', function (require) {
         },
     });
 
-    gui.Gui.prototype.screen_classes.filter(function(el) {
-        return el.name === 'clientlist';
-    })[0].widget.include({
+    screens.ClientListScreenWidget.include({
+        update_partner_cache: function(partner_ids) {
+            var self = this;
+            var partner = {};
+            _.each(partner_ids, function(pid){
+                partner = self.pos.db.get_partner_by_id(pid);
+                var clientline_html = '';
+                var clientline = self.partner_cache.get_node(partner.id);
+                if(clientline){
+                    clientline_html = QWeb.render('ClientLine',{widget: self, partner:partner});
+                    clientline = document.createElement('tbody');
+                    clientline.innerHTML = clientline_html;
+                    clientline = clientline.childNodes[1];
+                    self.partner_cache.cache_node(partner.id,clientline);
+                }
+            });
+        },
         update_client_list_screen: function(partner_ids){
             var partner = this.new_client || this.old_client;
             if (partner){
