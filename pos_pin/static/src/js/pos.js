@@ -87,7 +87,9 @@ odoo.define('pos_pin.pos', function (require) {
                     }
                 },
                 cancel: function() {
-                    cancel_function.call(self);
+                    if (cancel_function) {
+                        cancel_function.call(self);
+                    }
                     lock.reject();
                 },
             });
