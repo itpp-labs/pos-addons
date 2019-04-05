@@ -26,7 +26,7 @@ odoo.define('pos_partner_sync.pos', function (require) {
                     this.remove_unlinked_partners(data.partner_ids);
                     this.update_templates_with_partner(data.partner_ids);
                 } else {
-                    this.load_new_partners(data.partner_ids).then(function(){
+                    this.load_new_partners_force_update(data.partner_ids).then(function(){
                         self.update_templates_with_partner(data.partner_ids);
                     });
                 }
@@ -53,12 +53,13 @@ odoo.define('pos_partner_sync.pos', function (require) {
             }
         },
 
-        load_new_partners: function(ids){
+        load_new_partners_force_update: function(ids) {
+            // quite similar to load_new_partners but loads only required partners and do it forcibly (see the comment below)
+            var def = new $.Deferred();
             if (!ids) {
-                return PosModelSuper.prototype.load_new_partners.apply(this, arguments);
+                return def.reject();
             }
             var self = this;
-            var def = new $.Deferred();
             var model_name = 'res.partner';
             var fields = _.find(this.models,function(model){
                 return model.model === model_name;
@@ -67,12 +68,9 @@ odoo.define('pos_partner_sync.pos', function (require) {
             ? ids
             : [ids];
             new Model(model_name).call("read", [ids, fields], {}, {'shadow': true}).then(function(partners) {
-                // check if the partners we got were real updates
                 // we add this trick with get_partner_write_date to be able to process several updates within the second
                 // it is restricted by built-in behavior in add_partners function
                 self.db.partner_write_date = 0;
-                // returns default value "1970-01-01 00:00:00"
-                self.db.get_partner_write_date();
                 if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {
