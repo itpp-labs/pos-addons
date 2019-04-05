@@ -3,7 +3,7 @@
 Updates
 =======
 
-`3.6.2`
+`3.7.0`
 -------
 
 **Improvement:** New option "Disable customer selection"
