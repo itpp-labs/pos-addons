@@ -7,13 +7,13 @@
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
     'license': 'LGPL-3',
-    'version': '10.0.1.1.0',
+    'version': '11.0.1.1.0',
     'depends': ['point_of_sale'],
     "price": 15.00,
     "currency": "EUR",
     'data': [
         'data.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }

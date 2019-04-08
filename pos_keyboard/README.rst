@@ -22,4 +22,4 @@ mode price  ``*``                 ``p``
 =========== ===================== =================
 
 
-Tested on Odoo 9.0 2ec9a9c99294761e56382bdcd766e90b8bc1bb38
+Tested on Odoo 11.0 77e7d952b4c72d58c1b8f34b57e355f5b98c88b0
