@@ -27,7 +27,7 @@ class PosConfig(models.Model):
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
-    company_id = fields.Many2one(related='multi_session_id.company_id')
+    company_id = fields.Many2one(related='multi_session_id.company_id', string="Company", store=True)
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
