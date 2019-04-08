@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<openerp>
+    <data>
+        <template id="assets_backend" name="pos_order_print_check_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="//link[last()]" position="after">
+                <script type="text/javascript" src="/pos_order_print_check/static/src/js/widget.js"></script>
+                <script type="text/javascript" src="/pos_order_print_check/static/src/js/models.js"></script>
+                <script type="text/javascript" src="/pos_order_print_check/static/src/js/multiprint.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
