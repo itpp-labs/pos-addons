@@ -1,3 +1,5 @@
+/*  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).*/
 odoo.define('pos_pin.tour', function (require) {
     "use strict";
 

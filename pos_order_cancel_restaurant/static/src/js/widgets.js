@@ -22,8 +22,9 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
                 return;
             }
             if (this.pos.config.kitchen_canceled_only) {
-                if (order.is_empty() && order.canceled_lines && order.canceled_lines.length) {
-                    order.destroy_and_upload_as_canceled();
+                var kitchen_lines = order.check_has_canceled_kitchen_lines();
+                if (order.is_empty() && kitchen_lines.length) {
+                    this._super(event, $el);
                 } else if (!order.is_empty() && !order.get_order_lines_by_dirty_status(false).length){
                      this.gui.show_popup('confirm',{
                         'title': _t('Destroy Current Order ?'),
@@ -33,7 +34,7 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
                         },
                     });
                 } else {
-                    this._super(event, $el);
+                    order.destroy_and_upload_as_canceled();
                 }
             } else {
                 this._super(event, $el);
@@ -46,10 +47,19 @@ odoo.define('pos_order_cancel_restaurant.widgets', function (require) {
             var self = this;
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
-            if (this.pos.config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
+            var config = this.pos.config;
+            var kitchen_lines = order.check_has_canceled_kitchen_lines();
+            if (config.kitchen_canceled_only && orderline && !orderline.was_printed && type === 'product') {
                 return false;
+            } else if (config.kitchen_canceled_only && type === 'order' && kitchen_lines.length) {
+                return this._super(type);
             }
-            this._super(type);
+            if (config.ask_managers_pin_kitchen_orders_only && type !== 'product') {
+                return this.show_confirm_cancellation_popup(type);
+            } else if (config.ask_managers_pin_kitchen_orders_only && type === 'product' && orderline && !orderline.was_printed) {
+                return this.show_confirm_cancellation_popup(type, orderline);
+            }
+            return this._super(type);
         },
     });
 

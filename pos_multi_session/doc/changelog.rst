@@ -1,6 +1,7 @@
 `4.2.7`
 -------
 
+- **Fix:** The Multi-sessions menu is not available for POS Managers
 - **Fix:** Error on using different companies within the same multi-session
 
 `4.2.6`

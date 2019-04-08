@@ -1,7 +1,7 @@
 /* Copyright 2015-2016,2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
- * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 Attila Szöllősi
  * Copyright 2017 Thomas Paul
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
@@ -225,7 +225,32 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.table = old_table;
             }
             PosModelSuper.prototype.set_table.apply(this, arguments);
-        }
+        },
+
+        check_table_inaccessibility: function(table) {
+            // Allows to open if you are the one who created there an order or if you POS responsible person
+            if (!this.config.table_blocking) {
+                return false;
+            }
+            var cashier = this.get_cashier();
+            var user_is_manager = _.contains(cashier.groups_id, this.config.group_pos_manager_id[0]);
+            if (user_is_manager) {
+                return false;
+            }
+            var table_orders = this.get_table_orders(table);
+            var creators = _.chain(table_orders)
+                .map(function(o){
+                    return o.ms_info.created.user;
+                })
+                .unique().value();
+            var creator_ids = _.pluck(creators, 'id');
+            if (!creator_ids.length ||
+                (creator_ids.length && _.contains(creator_ids, cashier.id))) {
+
+                return false;
+            }
+            return creators;
+        },
     });
 
     var OrderSuper = models.Order;
@@ -377,4 +402,28 @@ odoo.define('pos_multi_session_restaurant', function(require){
             return notifications;
         },
     });
+
+    floors.TableWidget.include({
+        click_handler: function(){
+            var self = this;
+            var floorplan = this.getParent();
+            if (floorplan.editing) {
+                this._super();
+            } else {
+                var table = this.table;
+                if (!table) {
+                    return this._super();
+                }
+                var table_waiters = this.pos.check_table_inaccessibility(table);
+                if (!table_waiters || !table_waiters.length) {
+                    return this._super();
+                }
+                return this.pos.gui.show_popup('alert',{
+                    'title': _t('Can not open the Table'),
+                    'body': _t('The Table is served by another waiter ' + _.pluck(table_waiters, 'name')),
+                });
+            }
+        },
+    });
+
 });

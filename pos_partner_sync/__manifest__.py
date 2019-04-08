@@ -1,14 +1,13 @@
-# Copyright (c) 2004-2015 Odoo S.A.
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Sync Barcodes in POS""",
-    "summary": """Update the partner data in POS instantly""",
+    "name": """Sync Partners in POS""",
+    "summary": """Instant updates of the partner data in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
-    "images": ["images/pos_barcode_sync_main.jpeg"],
-    "version": "10.0.1.0.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=11.0",
+    "images": ["images/pos_partner_sync_main.jpeg"],
+    "version": "11.0.2.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
@@ -24,7 +23,8 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
-        "data.xml",
+        "views/assets.xml",
+        "views/pos_config.xml",
     ],
 
     "post_load": None,
@@ -33,16 +33,16 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
-    "demo_title": "Sync Barcodes in POS",
+    "demo_title": "Sync Partner data in POS",
     "demo_addons": [
     ],
     "demo_addons_hidden": [
     ],
-    "demo_url": "pos-barcode-sync",
+    "demo_url": "pos-partner-sync",
     "demo_summary": "Update the partner data in POS instantly",
     "demo_images": [
-        "images/pos_barcode_sync_main.png",
+        "images/pos_partner_sync_main.png",
     ]
 }
