@@ -2,7 +2,6 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -14,10 +13,8 @@ class TestUI(odoo.tests.HttpCase):
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
-        cr = self.registry.cursor()
-        env = Environment(self.registry.test_cr, self.uid, {})
+        env = self.env
         env['ir.module.module'].search([('name', '=', 'pos_product_available')], limit=1).state = 'installed'
-        cr.release()
 
         env['product.template'].search([('name', '=', 'Yellow Peppers')]).write({
             'type': 'product',

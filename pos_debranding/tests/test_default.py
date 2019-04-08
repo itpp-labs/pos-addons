@@ -1,6 +1,5 @@
 
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -8,13 +7,12 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_01_check_logo(self):
-        env = Environment(self.registry.test_cr, self.uid, {})
+        env = self.env
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
         env['ir.module.module'].search([('name', '=', 'pos_debranding')], limit=1).state = 'installed'
-        self.registry.cursor().release()
         self.phantom_js(
             '/web',
 

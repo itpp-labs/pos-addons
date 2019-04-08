@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<openerp>
-        <template id="assets_backend" name="POS restaurant base" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_discount_base/static/lib/js/discount.js"></script>
-            </xpath>
-        </template>
-</openerp>

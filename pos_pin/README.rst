@@ -28,7 +28,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_pin/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_pin/>`__.
 
       Thank you for understanding!
 
@@ -37,14 +37,14 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_pin/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_pin/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_pin.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_pin.atom>`_
 
 Tested on Odoo 11.0 97dbb8c6af4c6af0622497b276bdfb40ee0a3215

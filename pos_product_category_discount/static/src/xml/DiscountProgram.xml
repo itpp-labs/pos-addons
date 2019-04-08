@@ -2,19 +2,19 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="NumberPopupWidget">
         <t t-jquery="div[class='button cancel']" t-operation="after">
-            <t t-if="widget.options.disc_program">
+            <t t-if="widget.show_discount_program_popup">
                 <div class="button reset">
                     Reset
                 </div>
             </t>
         </t>
-        <t t-jquery="div[class='footer centered']" t-operation="after">
-            <t t-if="widget.options.disc_program">
+        <t t-jquery="footer[class='footer centered']" t-operation="after">
+            <t t-if="widget.show_discount_program_popup">
                 <div class="discount-program-content">
                     <p class="title">Load Discount Program</p>
                     <div class="discount-program-list">
                         <ul>
-                            <t t-foreach="widget.options.disc_program" t-as="program">
+                            <t t-foreach="widget.disc_program" t-as="program">
                                 <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
                             </t>
                         </ul>
@@ -25,7 +25,6 @@
                 </div>
             </t>
         </t>
-
     </t>
 
     <t t-extend="Orderline">

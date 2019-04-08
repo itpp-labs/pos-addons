@@ -13,6 +13,7 @@ class Micropay(models.Model):
 
     _inherit = ['wechat.pos', 'wechat.micropay']
     _name = 'wechat.micropay'
+    _description = 'WeChat Micropay'
 
     @api.model
     def _prepare_pos_create_from_qr(self, **kwargs):

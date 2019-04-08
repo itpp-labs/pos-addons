@@ -1,6 +1,12 @@
+`1.2.3`
+-------
+
+- **FIX:** Error related to displaying the scrollbar for POS notes in Firefox
+
 `1.2.2`
 -------
-- **FIX:** Error related to displaying the scrollbar for POS notes in Firefox
+
+- **FIX:** get_custom_notes is not a function
 
 `1.2.1`
 -------

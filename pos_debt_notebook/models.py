@@ -9,11 +9,9 @@
 
 import copy
 from odoo import models, fields, api
-from datetime import datetime
 from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools import float_is_zero
 import logging
 
@@ -154,16 +152,14 @@ class ResPartner(models.Model):
     report_pos_debt_ids = fields.One2many('pos.credit.update', 'partner_id',
                                           help='Technical field for proper recomputations of computed fields')
 
-    def _get_date_formats(self, report):
+    def _get_date_formats(self, date):
 
         lang_code = self.env.user.lang or 'en_US'
         lang = self.env['res.lang']._lang_get(lang_code)
         date_format = lang.date_format
         time_format = lang.time_format
         fmt = date_format + " " + time_format
-
-        server_date = datetime.strptime(report, DEFAULT_SERVER_DATETIME_FORMAT)
-        utc_tz = pytz.utc.localize(server_date, is_dst=False)
+        utc_tz = pytz.utc.localize(date, is_dst=False)
         user_tz = self.env.user.tz
         user_tz = user_tz and timezone(self.env.user.tz) or timezone('GMT')
         final = utc_tz.astimezone(user_tz)
@@ -421,12 +417,12 @@ class PosConfig(models.Model):
                              'pos_cash_out': False,
                              'credits_autopay': True,
                              })
-        allowed_category = self.env.ref('point_of_sale.fruits_vegetables').id
+        allowed_category = self.env.ref('point_of_sale.pos_category_desks').id
         self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
                              'prefix': 'CRD ',
                              'user': user,
                              'noupdate': True,
-                             'journal_name': 'Credits (Fruits & Vegetables only)',
+                             'journal_name': 'Credits (Desks only)',
                              'code': 'FCRD',
                              'type': 'cash',
                              'debt': True,
@@ -521,6 +517,7 @@ class PosOrder(models.Model):
             update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
+        order.action_pos_order_paid()
         return order
 
     @api.model
@@ -531,6 +528,7 @@ class PosOrder(models.Model):
 
     def action_pos_order_paid(self):
         self.set_discounts(self.amount_via_discount)
+        self._onchange_amount_all()
         return super(PosOrder, self).action_pos_order_paid()
 
     def set_discounts(self, amount):
@@ -542,19 +540,23 @@ class PosOrder(models.Model):
                 continue
             disc = line.discount
             line.write({
-                'discount': max(min(line.discount + (amount /
-                                                     (disc and (price / (100 - disc)) * 100 or price)
-                                                     ) * 100, 100), 0),
+                'discount': disc == 100 and disc or max(min(line.discount + (amount / (disc and (price / (100 - disc)) * 100 or price)) * 100, 100), 0),
             })
             amount -= price - line.price_subtotal_incl
         return amount
+
+    def test_paid(self):
+        for order in self:
+            if not order.statement_ids and order.amount_via_discount:
+                return True
+            return super(PosOrder, self).test_paid()
 
 
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
 
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'account_bank_statement_id', string='Non-Accounting Transactions')
-    pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions', store=True)
+    pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions (Balance)', store=True)
 
     @api.multi
     @api.depends('pos_credit_update_ids', 'pos_credit_update_ids.balance')
@@ -662,3 +664,4 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     has_invoices = fields.Boolean(store=True)
+    company_id = fields.Many2one(store=True)
