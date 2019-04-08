@@ -8,7 +8,7 @@
     "summary": """Instant updates of the partner data in POS""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=10.0",
-    "images": ["images/pos_partner_sync_main.jpeg"],
+    "images": ["images/pos_partner_sync.jpg"],
     "version": "10.0.2.0.0",
     "application": False,
 
@@ -16,7 +16,7 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
-    "price": 29.00,
+    "price": 49.00,
     "currency": "EUR",
 
     "depends": [
