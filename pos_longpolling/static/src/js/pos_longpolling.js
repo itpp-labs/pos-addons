@@ -29,7 +29,6 @@ odoo.define('pos_longpolling', function(require){
             this.set_activated(false);
             var callback = this.longpolling_connection.network_is_on;
             this.add_channel_callback("pos.longpolling", callback, this.longpolling_connection);
-
         },
         poll: function(address) {
             var self = this;
@@ -50,13 +49,7 @@ odoo.define('pos_longpolling', function(require){
                 }
                 //difference with original
                 var poll_connection = self.longpolling_connection;
-                if (poll_connection.waiting_poll_response) {
-                    poll_connection.waiting_poll_response = false;
-                    if (poll_connection.is_online){
-                        // condition prevents double triggering in case if is_online === false;
-                        poll_connection.trigger("change:poll_connection", true);
-                    }
-                }
+                poll_connection.set_waiting_poll_response(false);
                 poll_connection.network_is_on();
             }, function(unused, e) {
                 //difference with original
@@ -126,7 +119,13 @@ odoo.define('pos_longpolling', function(require){
             });
             this.lonpolling_activated = true;
             this.longpolling_connection.send_ping({serv: this.serv_adr});
+            // one tab per browser is_master but we need to be able to poll with several tabs with odoo opened
+            // https://github.com/odoo/odoo/blob/10.0/addons/bus/static/src/js/bus.js#L134
+            var is_master = this.is_master;
+            this.is_master = true;
             this.start_polling();
+            this.is_master = is_master;
+
             this.set_activated(true);
             this.check_sleep_mode();
         },
@@ -176,7 +175,7 @@ odoo.define('pos_longpolling', function(require){
                 return;
             }
             this.activated = is_online;
-            this.longpolling_connection.trigger("change:poll_connection", is_online);
+            this.longpolling_connection.set_is_online(is_online);
         },
     });
 
@@ -217,7 +216,7 @@ odoo.define('pos_longpolling', function(require){
             this.bus = bus;
             // Is the message "PONG" received from the server
             this.response_status = false;
-            this.waiting_poll_response = true;
+            this.set_waiting_poll_response(true);
         },
         network_is_on: function(message) {
             if (message) {
@@ -229,7 +228,7 @@ odoo.define('pos_longpolling', function(require){
         },
         network_is_off: function() {
             this.update_timer();
-            this.waiting_poll_response = true;
+            this.set_waiting_poll_response(true);
             this.set_is_online(false);
         },
         set_is_online: function(is_online) {
@@ -238,6 +237,13 @@ odoo.define('pos_longpolling', function(require){
             }
             this.is_online = is_online;
             this.trigger("change:poll_connection", is_online);
+        },
+        set_waiting_poll_response: function(status) {
+            if (this.waiting_poll_response === status) {
+                return;
+            }
+            this.waiting_poll_response = status;
+            this.trigger("change:poll_response", status);
         },
         update_timer: function(){
             this.stop_timer();
@@ -278,7 +284,7 @@ odoo.define('pos_longpolling', function(require){
             return session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
                 /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                self.trigger("change:poll_connection", true);
+                self.set_is_online(true);
                 if (!self.response_status) {
                     self.response_timer();
                 }
@@ -335,7 +341,7 @@ odoo.define('pos_longpolling', function(require){
             var self = this;
             element.attr('bid', bus.bus_id);
             this.rerender_poll_status(bus);
-            bus.longpolling_connection.on("change:poll_connection", function(is_online){
+            bus.longpolling_connection.on("change:poll_connection change:poll_response", function(is_online){
                 self.rerender_poll_status(bus);
             });
             element.on('click', function(event){

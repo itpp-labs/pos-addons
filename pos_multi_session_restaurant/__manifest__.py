@@ -6,9 +6,9 @@
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",
     "category": "Point of Sale",
-    "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
+    # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": ['images/s2.png'],
-    "version": "11.0.3.2.6",
+    "version": "11.0.3.3.0",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",

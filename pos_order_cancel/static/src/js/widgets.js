@@ -42,6 +42,33 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         },
         show_popup: function(type, line){
             var self = this;
+            if (this.pos.config.ask_managers_pin) {
+                // check for admin rights
+                var manager_group_id = this.pos.config.group_pos_manager_id[0];
+                var is_manager = _.include(this.pos.get_cashier().groups_id, manager_group_id);
+                if (!is_manager) {
+                    return this.pos.gui.sudo_custom({
+                        special_group: manager_group_id,
+                        do_not_change_cashier: true,
+                        arguments: {
+                            ask_untill_correct: true,
+                        }
+                    }).done(function(user){
+                        self.show_confirm_cancellation_popup(type, line);
+                    }).fail(function(res){
+                        if (type === 'product') {
+                            var order = self.pos.get_order();
+                            var orderline = line || order.get_selected_orderline();
+                            orderline.cancel_quantity_changes();
+                        }
+                    });
+                }
+            }
+            return this.show_confirm_cancellation_popup(type, line);
+        },
+
+        show_confirm_cancellation_popup: function(type, line){
+            var self = this;
             var order = this.pos.get_order();
             var orderline = line || order.get_selected_orderline();
             var title = 'Order ';
@@ -52,7 +79,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 title = 'Product ';
             }
             // type of object which is removed (product or order)
-            this.gui.show_popup('confirm-cancellation',{
+            return this.gui.show_popup('confirm-cancellation',{
                 'title': _t(title + 'Cancellation Reason'),
                 'reasons': self.pos.cancelled_reason,
                 'value': self.pos.selected_cancelled_reason.name,
@@ -72,6 +99,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
                 }
             });
         },
+
         set_value: function(val) {
             // ask_cancel_reason -- show reason popup after change qty with numpad
             // This is essential when pos_multi_session is installed,

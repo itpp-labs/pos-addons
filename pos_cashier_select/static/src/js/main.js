@@ -115,6 +115,24 @@ odoo.define('pos_choosing_cashier', function(require){
         }
     });
 
+    PopupWidget.include({
+        show: function(options) {
+            if (this.pos.barcode_reader.on_cashier_screen) {
+                if(this.$el) {
+                    this.$el.removeClass('oe_hidden');
+                }
+                if (typeof options === 'string') {
+                    this.options = {title: options};
+                } else {
+                    this.options = options || {};
+                }
+                this.renderElement();
+            } else {
+                this._super(options);
+            }
+        },
+    });
+
     ScreenWidget.include({
         barcode_cashier_action: function(code){
             var users = this.pos.users;

@@ -1,16 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_debt_notebook
-#
+# 
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-21 00:08+0000\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2018-04-21 00:08+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -660,7 +662,7 @@ msgstr ""
 #: code:addons/pos_debt_notebook/static/src/xml/pos.xml:83
 #, python-format
 msgid "Products"
-msgstr ""
+msgstr "Produkte"
 
 #. module: pos_debt_notebook
 #. openerp-web
@@ -741,7 +743,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_search
 #: model:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 msgid "This Year"
-msgstr ""
+msgstr "Dieses Jahr"
 
 #. module: pos_debt_notebook
 #: model:product.product,description:pos_debt_notebook.product_pay_debt

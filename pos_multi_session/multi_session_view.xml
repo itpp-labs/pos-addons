@@ -20,6 +20,7 @@
                         <field name="multi_session_active"/>
                         <field name="sync_server" placeholder="http://yourhost"/>
                         <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
                         <field name="order_ID" readonly="1"/>
                     </group>
                     <group>
@@ -37,6 +38,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_pos_ms_settings" name="Multi-sessions" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="base.group_system"/>
+    <menuitem id="menu_pos_ms_settings" name="Multi-sessions" parent="point_of_sale.menu_point_config_product" sequence="25" action="action_multi_session_form" groups="point_of_sale.group_pos_manager"/>
 
 </odoo>

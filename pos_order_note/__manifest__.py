@@ -2,9 +2,9 @@
     "name": """POS Advanced Order Notes""",
     "summary": """Set predefined notes for separate product or entire order""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-note?version=11.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-note?version=11.0",
     "images": ["images/pos_order_note_main.png"],
-    "version": "11.0.1.2.1",
+    "version": "11.0.1.2.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
