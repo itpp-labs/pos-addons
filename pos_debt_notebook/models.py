@@ -615,12 +615,13 @@ class PosCreditUpdate(models.Model):
         return -balance + new_balance
 
     def update_balance(self, vals):
-        partner_id = vals.get('partner_id', self.partner_id.id)
+        partner = vals.get('partner_id') and self.env['res.partner'].browse(vals.get('partner_id')) or self.partner_id
         new_balance = vals.get('new_balance', self.new_balance)
         state = vals.get('state', self.state) or 'draft'
         update_type = vals.get('update_type', self.update_type)
         if (state == 'draft' and update_type == 'new_balance'):
-            credit_balance = self.partner_id.browse(partner_id).credit_balance
+            data = partner._compute_partner_journal_debt(self.journal_id.id)
+            credit_balance = data[partner.id].get('balance', 0)
             vals['balance'] = self.get_balance(credit_balance, new_balance)
 
     @api.model
