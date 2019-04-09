@@ -314,7 +314,7 @@ odoo.define('pos_orders_history.screens', function (require) {
         barcode_product_action: function(code) {
             var self = this;
             // TODO: Check it
-            var order = this.pos.db.get_sorted_orders_history(1000).find(function(o) {
+            var order = _.find(this.pos.db.get_sorted_orders_history(1000), function(o) {
                 var pos_reference = o.pos_reference &&
                     o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
                     o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0].replace(/\-/g, '');
