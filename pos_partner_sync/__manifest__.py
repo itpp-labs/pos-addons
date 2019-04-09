@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=10.0",
     "images": ["images/pos_partner_sync_main.jpeg"],
-    "version": "10.0.2.0.0",
+    "version": "10.0.2.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
