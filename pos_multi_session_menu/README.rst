@@ -1,8 +1,10 @@
-========================
- POS Multi Session Menu
-========================
+===============================================
+ Product Sets for POS (multisession extension)
+===============================================
 
-Own set of products for each Multi Session
+Add own set of products for each Multi Session.
+
+The module allows to synchronize product sets across several POSes.
 
 Credits
 =======

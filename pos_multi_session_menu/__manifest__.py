@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Multi Session Menu""",
-    "summary": """Own set of products for each Multi Session""",
-    "category": "point_of_sale",
-    # "live_test_url": "",
-    "images": [],
+    "name": """Product Sets for POS (multisession extension)""",
+    "summary": """Synchronize product sets across several POSes""",
+    "category": "Point of Sale",
+    "images": ["images/pos_multi_session_menu_main.jpg"],
     "version": "10.0.1.0.0",
     "application": False,
 
@@ -12,8 +11,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 29.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_multi_session",
