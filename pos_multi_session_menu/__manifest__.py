@@ -21,6 +21,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_menu_view.xml",
+        "views/pos_multi_session_menu_template.xml",
     ],
     "qweb": [
     ],
