@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="demo_assets_backend" name="pos_disable_payment_restaurant demo assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_disable_payment_restaurant/static/src/js/tour_pos_dis_pay_rest.js"></script>
+        </xpath>
+    </template>
+
+</odoo>
