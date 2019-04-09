@@ -1,8 +1,8 @@
-==========
- POS Menu
-==========
+======================
+ Product Sets for POS
+======================
 
-Own set of products for each POS
+Add own set of products per each POS
 
 Credits
 =======

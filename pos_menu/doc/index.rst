@@ -1,6 +1,6 @@
-==========
- POS Menu
-==========
+======================
+ Product Sets for POS
+======================
 
 Installation
 ============
@@ -12,7 +12,7 @@ Usage
 
 * Open menu ``Point of Sale >> Configuration >> Product Sets``
 * Click ``[Create]``
-* Specify the fields
+* Populate the fields
   
   * Name
   * Products
@@ -20,7 +20,7 @@ Usage
 * Click ``[Save]``
 * Open menu ``Point of Sale >> Configuration >> Point of Sale``
 * Open POS config form
-* Select the set in <b>Available Product Sets</b>
+* Select a set in **Available Product Sets**
 * Open POS session
 
-RESULT: you will see the products specified for selected set(s) only
+RESULT: you will see the products associated with selected set(s) only

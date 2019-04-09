@@ -5,7 +5,7 @@ from odoo import fields, models
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    tag_ids = fields.Many2many('pos.tag', 'tag_ids_product_ids_rel', 'product_id', 'tag_id', string="Tags")
+    tag_ids = fields.Many2many('pos.tag', 'tag_ids_product_ids_rel', 'product_id', 'tag_id', string="Product Sets")
 
 
 class PosConfig(models.Model):
