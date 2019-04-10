@@ -26,7 +26,7 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     # "demo_title": "{MODULE_NAME}",
     # "demo_addons": [
     # ],
