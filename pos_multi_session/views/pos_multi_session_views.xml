@@ -45,7 +45,7 @@
                             <label for="multi_session_id"/>
                             <div class="content-group">
                                 <div class="mt16 row">
-                                    <field name="multi_session_id" class="col-xs-3 col-md-3" attrs="{'readonly':[('current_session_state', '=', 'opened')]}"></field>
+                                    <field name="multi_session_id" class="col-xs-3 col-md-3" attrs="{'readonly':[('current_session_state', '=', 'opened')]}" required="True"></field>
                                 </div>
                             </div>
                         </div>
