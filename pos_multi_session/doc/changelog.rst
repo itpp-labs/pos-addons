@@ -2,6 +2,7 @@
 --------
 
 - **Fix:** Access error for poses created for different companies
+- **Fix:** Error during installation in multi-company mode
 
 `4.2.10`
 --------
