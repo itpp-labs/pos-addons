@@ -7,7 +7,7 @@
 ===========================
 
 Technical module, that allows to managers confirm an action by entering his pin code.
-It adds ``sudo_custom`` method to be used in other modules. Unlike the build-in ``sudo`` function, the module allows 
+It adds ``sudo_custom`` method to be used in other modules. Unlike the build-in ``sudo`` function, the module allows
 specify access group that user must have to confirm an action.
 
 Credits
@@ -16,6 +16,7 @@ Credits
 Contributors
 ------------
 * `Stanislav Krotov <https://it-projects.info/team/ufaks>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------

@@ -22,11 +22,14 @@ class PosCreditInvoices(models.TransientModel):
     product_id = fields.Many2one(
         'product.product',
         'Credit Product',
-        required="True",
         help="This product will be used on creating invoices."
     )
+    writeoff_method = fields.Selection(string='Write-off Method', required=True, selection=[
+        ('invoice', 'Invoice'),
+        ('mcu', 'Manual Credit Update')
+    ], default='invoice', help='Otherwise it will be executed via "Manual Credit Updates"')
 
-    partner_ids = fields.Many2many('res.partner', string='Partners', required=True)
+    partner_ids = fields.Many2many('res.partner', string='Partners')
     partner_credits = fields.Float('Total Partner Credit', compute='_compute_totals', help='Only credits are counted')
     full_charge = fields.Float(string='Total Write-off Amount', compute='_compute_totals')
     total_credit = fields.Float('Total', compute='_compute_totals', help='Only credits are counted')
@@ -86,20 +89,55 @@ class PosCreditInvoices(models.TransientModel):
         for line in self.line_ids:
             if not line.amount:
                 continue
-            invoice = self.env['account.invoice'].create({
-                'type': 'out_invoice',
-                'partner_id': line.partner_id.id,
-                'invoice_line_ids': [
-                    (0, None, {
-                        "product_id": product.id,
-                        "name": product.name,
-                        "price_unit": line.amount,
-                        "account_id": account.id,
-                    })
-                ]
-            })
-            invoice.action_invoice_open()
-            invoice.pay_and_reconcile(self.journal_id)
+            if self.writeoff_method == 'invoice':
+                invoice = self.env['account.invoice'].create({
+                    'type': 'out_invoice',
+                    'partner_id': line.partner_id.id,
+                    'invoice_line_ids': [
+                        (0, None, {
+                            "product_id": product.id,
+                            "name": product.name,
+                            "price_unit": line.amount,
+                            "account_id": account.id,
+                        })
+                    ]
+                })
+                invoice.action_invoice_open()
+                invoice.pay_and_reconcile(self.journal_id)
+            else:
+                vals = {
+                    'partner_id': line.partner_id.id,
+                    'journal_id': self.journal_id.id,
+                    'update_type': self.update_type,
+                }
+                if self.update_type == 'new_balance':
+                    vals['new_balance'] = self.new_balance
+                else:
+                    vals['balance'] = - line.amount
+                credit_update = self.env['pos.credit.update'].create(vals)
+                credit_update.switch_to_confirm()
+
+    @api.multi
+    def add_partners_with_debt(self):
+        if self.journal_id:
+            partners = self.env['res.partner'].search([])
+            partner_debts = partners._compute_partner_journal_debt(self.journal_id.id)
+            partners_to_add = []
+            for p in partners:
+                if partner_debts[p.id]['balance'] > self.new_balance:
+                    partners_to_add.append(p.id)
+            if len(partners_to_add):
+                self.write({
+                    'partner_ids': [(6, 0, partners_to_add)]
+                })
+
+            # it won't be done automatically
+            self.update_lines()
+
+            # prevents closing of the wizard
+            return {
+                "type": "ir.actions.do_nothing",
+            }
 
 
 class PosCreditInvoicesLine(models.TransientModel):

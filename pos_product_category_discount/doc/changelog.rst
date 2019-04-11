@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.7`
+-------
+
+- **FIX:** Error if the discount product is not allowed in POS
+
 `1.2.6`
 -------
 

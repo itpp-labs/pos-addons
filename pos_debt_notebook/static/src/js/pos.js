@@ -337,7 +337,6 @@ odoo.define('pos_debt_notebook.pos', function (require) {
                     self.pos.gui.show_screen('clientlist');
                 }, 30);
             }
-
             var due = this.get_due_debt();
             var newPaymentline = new models.Paymentline({}, {
                 order: this,

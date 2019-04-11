@@ -30,13 +30,7 @@ odoo.define('pos_longpolling.bus_longpolling', function(require){
                 // DIFFERENCES FROM ORIGINAL:
                 // * change connection status to online
                 var poll_connection = self.pos_longpolling;
-                if (poll_connection.waiting_poll_response) {
-                    poll_connection.waiting_poll_response = false;
-                    if (poll_connection.is_online){
-                        // condition prevents double triggering in case if is_online === false;
-                        poll_connection.trigger("change:poll_connection", true);
-                    }
-                }
+                poll_connection.set_waiting_poll_response(false);
                 poll_connection.network_is_on();
             }, function (error, ev) {
                 self._pollRpc = false;

@@ -12,7 +12,7 @@ odoo.define('pos_longpolling.model', function(require){
             this.bus = bus;
             // Is the message "PONG" received from the server
             this.response_status = false;
-            this.waiting_poll_response = true;
+            this.set_waiting_poll_response(true);
         },
         network_is_on: function(message) {
             if (message) {
@@ -24,7 +24,7 @@ odoo.define('pos_longpolling.model', function(require){
         },
         network_is_off: function() {
             this.update_timer();
-            this.waiting_poll_response = true;
+            this.set_waiting_poll_response(true);
             this.set_is_online(false);
         },
         set_is_online: function(is_online) {
@@ -33,6 +33,13 @@ odoo.define('pos_longpolling.model', function(require){
             }
             this.is_online = is_online;
             this.trigger("change:poll_connection", is_online);
+        },
+        set_waiting_poll_response: function(status) {
+            if (this.waiting_poll_response === status) {
+                return;
+            }
+            this.waiting_poll_response = status;
+            this.trigger("change:poll_response", status);
         },
         update_timer: function(){
             this.stop_timer();

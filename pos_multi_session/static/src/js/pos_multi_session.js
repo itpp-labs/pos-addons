@@ -948,7 +948,7 @@ odoo.define('pos_multi_session', function(require){
                 if (res.action === "revision_error") {
                     if (res.state == 'deleted') {
                         var removed_order = self.pos.get('orders').find(function(order){
-                             order.uid === res.order_uid;
+                             return order.uid === res.order_uid;
                         });
                         if (removed_order) {
                             removed_order.destroy({'reason': 'abandon'});

@@ -129,8 +129,7 @@ class PosMultiSessionSync(models.Model):
         sequence_number = message['data']['sequence_number']
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
-        run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
-                     .run_ID or message['data']['run_ID'] or False
+        run_ID = order.run_ID or message['data']['run_ID'] or False
 
         if revision == "nonce":
             return {'action': ''}

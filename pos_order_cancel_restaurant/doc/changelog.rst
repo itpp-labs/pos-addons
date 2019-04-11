@@ -1,3 +1,8 @@
+`1.5.0`
+------
+
+**New:** Ask manager for kitchen orders only
+
 `1.4.3`
 -------
 

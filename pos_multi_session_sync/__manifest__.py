@@ -7,7 +7,7 @@
     "category": "Point of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=12.0',
     "images": [],
-    "version": "12.0.1.0.3",
+    "version": "12.0.1.0.4",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

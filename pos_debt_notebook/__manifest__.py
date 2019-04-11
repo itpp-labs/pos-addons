@@ -1,4 +1,4 @@
-# Copyright 2014-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2014-2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2015 Bassirou Ndaw <https://github.com/bassn>
 # Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
 # Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
@@ -15,7 +15,7 @@
     'category': 'Point Of Sale',
     'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=12.0',
     "images": ['images/debt_notebook.png'],
-    'version': '12.0.5.1.3',
+    'version': '12.0.5.2.0',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "pos@it-projects.info",
     'website': 'https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook/',

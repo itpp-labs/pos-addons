@@ -294,4 +294,16 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             this._super(partner_id);
         },
     });
+
+    screens.ProductListWidget.include({
+        render_product: function(product){
+            var res = this._super(product);
+            if (product.available_in_pos){
+                $(res).addClass('oe_hidden');
+            } else {
+                $(res).removeClass('oe_hidden');
+            }
+            return res;
+        },
+    });
 });

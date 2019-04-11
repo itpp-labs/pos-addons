@@ -45,7 +45,7 @@ odoo.define('pos_longpolling.widgets', function(require){
             var self = this;
             element.attr('bid', bus.bus._id);
             this.rerender_poll_status(bus);
-            bus.longpolling_connection.on("change:poll_connection", function() {
+            bus.longpolling_connection.on("change:poll_connection change:poll_response", function() {
                 self.rerender_poll_status(bus);
             });
             element.on('click', function(event){

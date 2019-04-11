@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.1`
+-------
+
+**Improvement:** Remove the "Update order list" button because the orders are updated instantly now
+
 `1.2.0`
 -------
 

@@ -1,3 +1,8 @@
+`1.3.0`
+-------
+
+- **New:** Ask Manager to cancel lines/orders
+
 `1.2.3`
 -------
 

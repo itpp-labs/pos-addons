@@ -58,9 +58,10 @@ odoo.define('pos_longpolling.connection', function(require){
             _.each(self.channel_callbacks, function(value, key){
                 self.activate_channel(key);
             });
+            var is_master = this.bus._isMasterTab;
             this.bus._isMasterTab = true;
             this.pos.chrome.call(this.service, 'startPolling');
-            this.bus._isMasterTab = false;
+            this.bus._isMasterTab = is_master;
             // send PING request to check connection
             this.lonpolling_activated = true;
             this.longpolling_connection.send_ping({serv: this.route});
