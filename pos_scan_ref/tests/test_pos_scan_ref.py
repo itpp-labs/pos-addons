@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+# Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
+# License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
 import odoo.tests
+from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -7,6 +10,13 @@ import odoo.tests
 class TestUi(odoo.tests.HttpCase):
 
     def test_pos_scan_ref(self):
+        cr = self.registry.cursor()
+        env = Environment(cr, self.uid, {})
+        env['ir.module.module'].search([('name', '=', 'pos_scan_ref')], limit=1).state = 'installed'
+        cr.release()
+        env['product.template'].search([('name', '=', "Boni Oranges")], limit=1).write({
+            'default_code': '1234567890333',
+        })
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
         self.phantom_js("/web",
