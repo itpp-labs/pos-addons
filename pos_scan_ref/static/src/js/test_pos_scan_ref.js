@@ -11,47 +11,29 @@ odoo.define('pos_scan_ref.tour', function (require) {
 
         var steps = [{
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
-            position: 'bottom',
-        }, {
-            trigger: '.oe_menu_text:contains("Products")',
-            content: 'Go to Products',
-            position: 'bottom',
-        }, {
-            trigger: '.oe_kanban_global_click.o_kanban_record:first',
-            content: 'Choose the product',
-            position: 'bottom',
-        }, {
-            trigger: '.btn.btn-primary.btn-sm.o_form_button_edit',
-            content: 'Click Edit button',
-            position: 'bottom',
-        }, {
-            trigger: 'input.o_field_char.o_field_widget.o_input:eq(1)',
-            content: 'Enter reference code',
-            position: 'bottom',
-            run: function() {
-                $('input.o_field_char.o_field_widget.o_input:eq(1)').val(refcode).trigger('input');
-            },
-        }, {
-            trigger: '.btn.btn-primary.btn-sm.o_form_button_save',
-            content: 'Save result',
-            position: 'bottom',
-            timeout: 10000,
-        }, {
-            trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            content: _t("Back to <b>point of sale</b>."),
+            content: _t("Ready to launch your point of sale? Click here."),
             position: 'bottom',
         }, {
             trigger: ".o_pos_kanban button.oe_kanban_action_button",
-            content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
-            position: "bottom"
+            content: _t("Click to start the point of sale interface. It runs on tablets, laptops, or industrial hardware. Once the session launched, the system continues to run without an internet connection.</p>"),
+            position: "bottom",
         }, {
             content: "Switch to table or make dummy action",
             trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
-            position: "bottom"
+            position: "bottom",
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
+        }, {
+            content: 'Scan product by reference code',
+            trigger: '.pos-branding',
+            run: function () {
+                posmodel.barcode_reader.scan(refcode);
+            },
+        }, {
+            content: 'Check that the product was scanned successfully',
+            trigger: '.orderline.selected:contains("Boni Oranges")',
+            position: "bottom",
         }];
 
     tour.register('tour_pos_scan_ref', { test: true, url: '/web?debug=assets#' }, steps);
