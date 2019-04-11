@@ -1,3 +1,8 @@
+/*  Copyright 2015 igallyamov <https://github.com/igallyamov>
+    Copyright 2016 ufaks <https://github.com/ufaks>
+    Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
 
