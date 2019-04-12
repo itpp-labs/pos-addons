@@ -50,12 +50,18 @@ odoo.define('pos_keyboard.pos', function (require) {
             } else if (data.type === type.backspace){
                 this.click_keyboard('BACKSPACE');
             } else if (data.type === type.enter){
-                this.click_confirm();
+                if (this.click_confirm.length) {
+                    return this.click_confirm();
+                }
+                return;
             } else if (data.type === type.escape){
                 this.click_cancel();
             }
         },
         click_keyboard: function(value){
+            if (typeof this.inputbuffer === 'undefined') {
+                return;
+            }
             var newbuf = this.gui.numpad_input(
                 this.inputbuffer,
                 value,

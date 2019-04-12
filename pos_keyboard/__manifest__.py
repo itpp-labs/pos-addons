@@ -26,6 +26,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "data.xml"
     ],
     "demo": [
     ],

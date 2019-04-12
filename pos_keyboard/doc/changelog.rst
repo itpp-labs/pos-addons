@@ -1,7 +1,8 @@
-.. _changelog:
+`1.1.2`
+-------
 
-Updates
-=======
+**Fix:** Error on clicking numbers and enter in selection popups
+
 
 `1.1.1`
 -------
