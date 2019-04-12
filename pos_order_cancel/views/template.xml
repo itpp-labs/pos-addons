@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <openerp>
     <data>
         <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
