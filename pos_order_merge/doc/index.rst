@@ -1,6 +1,6 @@
-=================
- POS Order Merge
-=================
+==================
+ Merge POS Orders
+==================
 
 Installation
 ============
@@ -14,7 +14,7 @@ Configuration
 
   * Open POS configuration form
   * Click on ``[Edit]``
-  * Check **[x] Order Merge** box for ``Bar & Restaurant``
+  * Check **[x] Order Merge** box under ``Bar & Restaurant`` section
 
 Usage
 =====
@@ -24,5 +24,6 @@ Usage
 * Create another order and add a product
 * Click ``[Join]``
 * Click on the table that contains the orders
-* Select the order
+* Select the order(s)
 * Click ``[Join]``
+RESULT: The order has been merged to the initial one

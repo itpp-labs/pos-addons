@@ -1,8 +1,8 @@
-=================
- POS Order Merge
-=================
+==================
+ Merge POS Orders
+==================
 
-POS Order Merge
+Merge POS orders into a single order in a few clicks
 
 Credits
 =======
@@ -10,6 +10,7 @@ Credits
 Contributors
 ------------
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------
