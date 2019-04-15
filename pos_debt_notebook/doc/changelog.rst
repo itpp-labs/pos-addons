@@ -1,3 +1,7 @@
+`5.2.1`
+-------
+- **Improvement:** `Configuration -> Settings` were moved to `Point of Sale` menu
+
 `5.2.0`
 -------
 - **ADD:** Button on the ``Write-off Credits`` form. Adds all partners with debt according to the selected journal
