@@ -1,3 +1,8 @@
+`2.0.1`
+-------
+
+**Improvement:** Settings were moved to `Point of Sale` menu
+
 `2.0.0`
 -------
 
