@@ -2,6 +2,7 @@
 -------
 
 **Improvement:** Settings were moved to `Point of Sale` menu
+**Fix:** Property of undefined Error on opening a POS
 
 `2.0.0`
 -------

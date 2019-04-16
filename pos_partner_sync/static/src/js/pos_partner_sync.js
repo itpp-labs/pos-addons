@@ -3,22 +3,19 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_partner_sync.pos', function (require) {
 
-    var session = require('web.session');
-    var Backbone = window.Backbone;
-    var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
-    var longpolling = require('pos_longpolling');
     var gui = require('point_of_sale.gui');
     var rpc = require('web.rpc');
-
-    var _t = core._t;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.bus.add_channel_callback("pos_partner_sync", this.on_barcode_updates, this);
+            var self = this;
+            this.ready.then(function () {
+                self.bus.add_channel_callback("pos_partner_sync", self.on_barcode_updates, self);
+            });
         },
         on_barcode_updates: function(data){
             var self = this;
