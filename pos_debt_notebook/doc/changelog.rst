@@ -1,6 +1,8 @@
 `5.2.1`
 -------
+
 - **Improvement:** `Configuration -> Settings` were moved to `Point of Sale` menu
+- **Fix:** Error in order with combined payment methods
 
 `5.2.0`
 -------
