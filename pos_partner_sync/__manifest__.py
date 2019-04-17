@@ -7,7 +7,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
     "images": ["images/pos_barcode_sync_main.jpeg"],
-    "version": "12.0.2.0.0",
+    "version": "12.0.2.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

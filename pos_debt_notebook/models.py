@@ -475,7 +475,7 @@ class PosOrder(models.Model):
 
     product_list = fields.Text('Product list', compute='_compute_product_list', store=True)
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'order_id', string='Non-Accounting Payments')
-    amount_via_discount = fields.Float('Amount via Discounts', help="service field to properly proceed ")
+    amount_via_discount = fields.Float('Amount via Discounts', help="Service field for proper order proceeding")
 
     @api.multi
     @api.depends('lines', 'lines.product_id', 'lines.product_id.name', 'lines.qty', 'lines.price_unit')
@@ -528,6 +528,7 @@ class PosOrder(models.Model):
 
     def action_pos_order_paid(self):
         self.set_discounts(self.amount_via_discount)
+        # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
         self._onchange_amount_all()
         return super(PosOrder, self).action_pos_order_paid()
 
@@ -540,8 +541,13 @@ class PosOrder(models.Model):
                 continue
             disc = line.discount
             line.write({
-                'discount': disc == 100 and disc or max(min(line.discount + (amount / (disc and (price / (100 - disc)) * 100 or price)) * 100, 100), 0),
+                'discount': disc == 100 and disc
+                            or max(min(line.discount + (amount /
+                                                        (disc and (price / (100 - disc)) * 100 or price)
+                                                        ) * 100, 100), 0),
             })
+            # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
+            line._onchange_amount_line_all()
             amount -= price - line.price_subtotal_incl
         return amount
 
