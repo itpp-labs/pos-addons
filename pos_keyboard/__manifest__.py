@@ -2,7 +2,7 @@
 {
     'name': "Keyboard support in Point Of Sale",
     'author': "IT-Projects LLC, Ivan Yelizariev",
-    'summary': 'Module allows to use usual keyboard (not virtual one) in Point of Sale',
+    'summary': 'The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale',
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
     'images': ['images/keyboard.png'],
