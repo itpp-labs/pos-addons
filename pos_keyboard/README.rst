@@ -8,7 +8,7 @@ Usage
 ------
 
 Using hotkeys below switch to mode you need. Qty mode is used by default.
-Then use keys with numbers (0123456789) to enter quantity, price or discount.
+Then use keys with numbers to enter quantity, price or discount.
 
 
 =========== ===================== =================
