@@ -11,7 +11,7 @@ Installation
 Configuration
 =============
 
-* Go to ``[Point of Sale] >> Settings``
+* Go to ``[Point of Sale] >> Configuration >> Settings``
 * Set **Synchronized Fields**
 
 Usage
