@@ -1,12 +1,14 @@
 ===================================
  Keyboard support in Point Of Sale
 ===================================
-Module allows to use usual keyboard (not virtual one) in Point of Sale.
 
-Usage:
+The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale.
+
+Usage
 ------
-Using keys below switch to mode you need. Qty mode is used by default.
-Then use number keys to enter quantity, price or discount.
+
+Using hotkeys below switch to mode you need. Qty mode is used by default.
+Then use keys with numbers (0123456789) to enter quantity, price or discount.
 
 
 =========== ===================== =================
