@@ -3,6 +3,11 @@
 Updates
 =========
 
+`3.0.1`
+-------
+
+- [FIX] display amount after clicking payment method
+
 `3.0.0`
 -------
 
