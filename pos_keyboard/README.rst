@@ -9,6 +9,7 @@ Usage
 
 Using hotkeys below switch to mode you need. Qty mode is used by default.
 Then use keys with numbers to enter quantity, price or discount.
+If you want to reset the amount of product to zero or delete them you can use ``Backspace`` .
 
 
 =========== ===================== =================
@@ -22,6 +23,20 @@ mode price  ``*``                 ``p``
 ----------- --------------------- -----------------
 +/-         ``+``                 ``s``
 =========== ===================== =================
+
+Also inside the Pop-up keyboard you can use ``Enter``, ``Backspace`` and ``Esc`` keys in order to speed up the process of entering PIN-code.
+
+
+=========== ===================== ===================== 
+Key         Pop-up keyboard       Action
+=========== ===================== =====================
+Backspace    ``<-``               delete symbol
+----------- --------------------- ---------------------
+Enter        ``Ok``               confirm PIN
+----------- --------------------- ---------------------
+Esc          ``Cancel``           close Pop-up keyboard 
+=========== ===================== =====================
+
 
 Credits
 =======
