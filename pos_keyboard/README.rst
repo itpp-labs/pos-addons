@@ -4,45 +4,13 @@
 
 The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale.
 
-Usage
-------
-
-Using hotkeys below switch to mode you need. Qty mode is used by default.
-Then use keys with numbers to enter quantity, price or discount.
-If you want to reset the amount of product to zero or delete them you can use ``Backspace`` .
-
-
-=========== ===================== =================
-Type        Numpad                Extra keys  
-=========== ===================== =================
-mode qty    ``/``                 ``q``
------------ --------------------- -----------------
-mode disc   ``-``                 ``d``
------------ --------------------- -----------------
-mode price  ``*``                 ``p``
------------ --------------------- -----------------
-+/-         ``+``                 ``s``
-=========== ===================== =================
-
-Also inside the Pop-up keyboard you can use ``Enter``, ``Backspace`` and ``Esc`` keys in order to speed up the process of entering PIN-code.
-
-
-=========== ===================== ===================== 
-Key         Pop-up keyboard       Action
-=========== ===================== =====================
-Backspace    ``<-``               delete symbol
------------ --------------------- ---------------------
-Enter        ``Ok``               confirm PIN
------------ --------------------- ---------------------
-Esc          ``Cancel``           close Pop-up keyboard 
-=========== ===================== =====================
-
 
 Credits
 =======
 
 Contributors
 ------------
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
