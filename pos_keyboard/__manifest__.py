@@ -8,7 +8,7 @@
     'images': ['images/keyboard.png'],
     'category': 'Point Of Sale',
     'license': 'LGPL-3',
-    'version': '10.0.1.1.0',
+    'version': '10.0.1.1.1',
     'depends': ['point_of_sale'],
     "price": 15.00,
     "currency": "EUR",
