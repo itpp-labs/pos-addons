@@ -3,14 +3,15 @@
 # * pos_multi_session
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2018-04-27 23:55+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-04-21 00:09+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/it-projects-llc/teams/76080/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +128,7 @@ msgstr "Creata il"
 #: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session_order_ID
 msgid "Current Order Number shared across all POS in Multi Session"
 msgstr ""
-"Numero corrente dell'ordine condiviso fra tutti i POS della multi sessione"
+"Numero corrente dell'ordine condiviso fra tutti i POS della multisessione"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_deactivate_empty_order
@@ -197,13 +198,13 @@ msgstr "Drink Malibu"
 #: model:ir.ui.view,arch_db:pos_multi_session.view_pos_config_form
 #: model:ir.ui.view,arch_db:pos_multi_session.view_pos_config_search
 msgid "Multi-session"
-msgstr "Multi sessione"
+msgstr "Multisessione"
 
 #. module: pos_multi_session
 #: model:ir.actions.act_window,name:pos_multi_session.action_multi_session_form
 #: model:ir.ui.menu,name:pos_multi_session.menu_pos_ms_settings
 msgid "Multi-sessions"
-msgstr "Multi sessioni"
+msgstr "Multisessioni"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_name
@@ -236,9 +237,9 @@ msgid ""
 "in Multi-session is closed. It's used to prevent synchronization of old "
 "orders"
 msgstr ""
-"Numero di avvii del multi sessione. Viene incrementato dopo la chiusura "
-"dell'ultima sessione per evitare la sincronizzazione di ordini vecchi in un "
-"multi sessione"
+"Numero di avvii del multisessione. Viene incrementato dopo la chiusura "
+"dell'ultima sessione per evitare la sincronizzazione di ordini vecchi in una"
+" multisessione"
 
 #. module: pos_multi_session
 #: model:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
@@ -260,7 +261,7 @@ msgstr "Se l'ordine corrente è vuoto il POS passa al nuovo ordine esterno"
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_pos_ids
 msgid "POSes in Multi-session"
-msgstr "POS del multi sessione"
+msgstr "POS della multisessione"
 
 #. module: pos_multi_session
 #: model:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
@@ -327,8 +328,8 @@ msgstr ""
 #: model:ir.ui.view,arch_db:pos_multi_session.multi_session_form
 msgid "To remove or add a POS to multi-session close its session first"
 msgstr ""
-"Chiudere la sessione del POS prima di rimuoverlo o aggiungerlo a una multi "
-"sessione"
+"Chiudere la sessione del POS prima di rimuoverlo o aggiungerlo a una "
+"multisessione"
 
 #. module: pos_multi_session
 #. openerp-web
@@ -349,7 +350,7 @@ msgstr "Acqua"
 msgid ""
 "You need to close current session to be able modify Multi-session value"
 msgstr ""
-"Per modificare la multi sessione è necessario chiudere la sessione corrente."
+"Per modificare la multisessione è necessario chiudere la sessione corrente."
 
 #. module: pos_multi_session
 #. openerp-web
