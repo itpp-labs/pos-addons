@@ -63,7 +63,7 @@ odoo.define('pos_keyboard.pos', function (require) {
                 this.inputbuffer = newbuf;
                 $value.text(this.inputbuffer);
             }
-            if (this.popup_type === 'password') {
+            if (this.popup_type === 'password' && newbuf) {
                 $value.text($value.text().replace(/./g, '•'));
             }
         },

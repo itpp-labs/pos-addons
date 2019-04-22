@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.1.1`
+-------
+
+**Fix:** Incorrect input data on password pop-up if the first clicked button was `backspace`
+
 `1.1.0`
 -------
 
