@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Coupon Program -->
+    <record id="sale_coupon_program_view_form_common" model="ir.ui.view">
+        <field name="name">sale.coupon.program.common.form</field>
+        <field name="model">sale.coupon.program</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form"/>
+        <field name="arch" type="xml">
+            <group name='reward' position="inside">
+                <field name="pos_product_id"/>
+                <field name="force_sale_before_consumption"/>
+            </group>
+            <xpath expr="//field[@name='order_count']/.." position="after">
+                <button class="oe_stat_button" type="object" icon="fa-usd" name="action_view_pos_orders">
+                    <field name="pos_order_count" string="POS Orders" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Coupon Form View-->
+    <record id="sale_coupon_view_form" model="ir.ui.view">
+        <field name="name">sale.coupon.form</field>
+        <field name="model">sale.coupon</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
+        <field name="arch" type="xml">
+            <field name='sales_order_id' position="after">
+                <field name="pos_order_id" attrs="{'invisible': [('pos_order_id', '=', False)]}"/>
+                <field name="sold_via_order_id" attrs="{'invisible': [('sold_via_order_id', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
