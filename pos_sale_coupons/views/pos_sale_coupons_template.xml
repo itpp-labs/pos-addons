@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="point_of_sale_assets" name="pos_sale_coupons assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_sale_coupons/static/src/js/db.js"></script>
+            <script type="text/javascript" src="/pos_sale_coupons/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_sale_coupons/static/src/js/screens.js"></script>
+            <link rel="stylesheet" href="/pos_sale_coupons/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
+    <!--<template id="assets_backend" name="pos_sale_coupons backend_assets" inherit_id="web.assets_backend">-->
+        <!--<xpath expr="." position="inside">-->
+            <!--<script type="text/javascript" src="/pos_sale_coupons/static/src/js/test_longpoll_pos.js"></script>-->
+        <!--</xpath>-->
+    <!--</template>-->
+</odoo>

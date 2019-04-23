@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="SellCouponButton">
+        <div class='control-button'>
+            <i class='fa fa-tags'/> Sell Coupon
+        </div>
+    </t>
+
+    <t t-name="ConsumeCouponButton">
+        <div class='control-button'>
+            <i class='fa fa-tags'/> Consume Coupon
+        </div>
+    </t>
+
+</templates>
