@@ -2,12 +2,11 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-==================
- Deselect Partner
-==================
+=====================
+ Partner Deselection
+=====================
 
-POS Partner deselection after a defined time interval
-
+The module deselects a partner in opened POS on expiry the predefined time interval after the customer was set.
 
 Credits
 =======
