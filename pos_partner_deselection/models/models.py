@@ -8,4 +8,4 @@ from odoo import models, fields
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    customer_deselection_interval = fields.Integer(string='Customer Deselection Interval', default=0)
+    customer_deselection_interval = fields.Integer(string='Customer Deselection Interval (sec)', default=0)
