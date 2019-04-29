@@ -15,7 +15,7 @@
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
     "price": 29.00,
-    # "currency": "EUR",
+    "currency": "EUR",
 
     "depends": [
         "point_of_sale",
