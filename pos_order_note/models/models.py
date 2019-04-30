@@ -13,5 +13,5 @@ class PosProductNotes(models.Model):
     sequence = fields.Integer(string="Sequence")
     name = fields.Char(string="Note")
     pos_category_ids = fields.Many2many('pos.category', string='Point of Sale Categories',
-                                        help='The note will be available for this group of POS categories.'
+                                        help='The note will be available for this group of POS categories. '
                                              'Leave the field empty so that the note is available for all POS categories.')
