@@ -16,7 +16,7 @@ If you want to reset the amount of product to zero or delete them you can use ``
 
 
 =========== ===================== =================
-Type        Numpad                Extra keys  
+Type        Numpad                Extra keys
 =========== ===================== =================
 mode qty    ``/``                 ``q``
 ----------- --------------------- -----------------

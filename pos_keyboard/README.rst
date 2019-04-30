@@ -1,9 +1,12 @@
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl
+   :alt: License: LGPL-3
+
 ===================================
  Keyboard support in Point Of Sale
 ===================================
 
 The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale.
-
 
 Credits
 =======

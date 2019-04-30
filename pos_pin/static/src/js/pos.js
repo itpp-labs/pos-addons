@@ -54,6 +54,7 @@ odoo.define('pos_pin.pos', function (require) {
                 if (options.security && cashier !== options.current_user && cashier.pos_security_pin) {
                     return self.ask_password(cashier.pos_security_pin, options.arguments);
                 }
+                return cashier;
             }).done(function(res){
                 return self.check_then_set_and_render_cashier(options, res);
             });
