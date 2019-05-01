@@ -1,3 +1,8 @@
+`1.3.0`
+-------
+
+- **NEW:** Product notes are displayed according to product categories
+
 `1.2.3`
 -------
 
