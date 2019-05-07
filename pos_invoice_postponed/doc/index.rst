@@ -1,13 +1,13 @@
-==================================
- Create Postponed invoices in POS
-==================================
+=======================================
+ Creation of Postponed invoices in POS
+=======================================
 
 
 Configuration
 =============
 
 * Open ``[[Point of Sale]] >> Payment Methods`` menu
-* Choose a journal or create one, be sure the journal is active in POS
+* Choose a journal or create one, make sure the journal is active in POS
 * Activate **Create Postponed Invoice** field
 
 

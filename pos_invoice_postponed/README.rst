@@ -2,11 +2,11 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-==================================
- Create Postponed invoices in POS
-==================================
+=======================================
+ Creation of Postponed invoices in POS
+=======================================
 
-Allows to use a regular POS order payment process to create an invoice to be paid later
+This module allows the usage of a regular POS order payment process to create an invoice to be paid later.
 
 Credits
 =======
