@@ -1,3 +1,8 @@
+`1.3.1`
+-------
+
+- **NEW:** Compatibility with **POS Mobile**
+
 `1.3.0`
 -------
 
