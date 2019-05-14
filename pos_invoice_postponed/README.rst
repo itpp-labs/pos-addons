@@ -8,6 +8,8 @@
 
 This module allows the usage of a regular POS order payment process to create an invoice to be paid later.
 
+*However, in order to avoid any possible misunderstanding, you can use only one payment method and you can not create a partial invoice.*
+
 Credits
 =======
 
