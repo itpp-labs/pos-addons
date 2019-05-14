@@ -541,10 +541,7 @@ class PosOrder(models.Model):
                 continue
             disc = line.discount
             line.write({
-                'discount': disc == 100 and disc
-                            or max(min(line.discount + (amount /
-                                                        (disc and (price / (100 - disc)) * 100 or price)
-                                                        ) * 100, 100), 0),
+                'discount': disc == 100 and disc or max(min(line.discount + (amount / (disc and (price / (100 - disc)) * 100 or price)) * 100, 100), 0),
             })
             # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
             line._onchange_amount_line_all()
