@@ -6,7 +6,7 @@
     "summary": """This module allows the usage of a regular POS order payment process to create an invoice to be paid later""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
-    "images": ['images/postponed2.png'],
+    "images": ['images/postponed2.jpg'],
     "version": "10.0.1.0.0",
     "application": False,
 
