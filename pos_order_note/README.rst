@@ -2,9 +2,7 @@
  POS Advanced Order Notes
 ==========================
 
-* allows to add a note to entire order
-* allows to use predefined notes
-* allows to specify note at product form to apply it automatically on adding to order at POS
+This module allows adding notes to the entire order, to use already predefined notes and to speed up the process of creating orders by specifying products also via notes, which can be automatically applied further.
 
 Credits
 =======
@@ -24,12 +22,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_order_note/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_note/
 
 Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 10.0 808c0e5dde61027241ff59b1674b159067da0d7e
+Tested on Odoo 12.0 9ed9710b2b9ad685f4f09e42930e212d3cec71e5

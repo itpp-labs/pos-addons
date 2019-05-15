@@ -24,7 +24,7 @@ Usage
 * Go to the ``Point of Sale`` menu
 * Open a POS session
 * Click on ``Note``
-* Click on ``Product Note`` or ``Order Note`` to apply notes for separate product or entire order accordingly
-* Select predefined notes and/or set a new one
+* Click on ``Product Note`` or ``Order Note`` to apply notes for separate product or entire order respectively
+* Select predefined note and/or set a new one
 * Click on ``Ok``
 
