@@ -15,7 +15,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var gui = require('point_of_sale.gui');
     var chrome = require('point_of_sale.chrome');
     var multi_session = require('pos_multi_session');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
 
     var _t = core._t;
 
@@ -141,7 +141,12 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.removed_table_id = false;
             } else {
                 // load new table
-                new Model('restaurant.table').call('search_read', [[['id', '=', data.table_id]]]).then(function (t) {
+                var domain = [['id', '=', data.table_id]];
+                rpc.query({
+                    model: 'restaurant.table',
+                    method: 'search_read',
+                    domain: domain,
+                }).then(function (t) {
                     if (t.length) {
                         self.gui.show_popup('confirm',{
                              'title': _t('Got a new table'),
@@ -227,7 +232,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
             if (!this.config.table_blocking) {
                 return false;
             }
-            var cashier = this.cashier;
+            var cashier = this.get_cashier();
             var user_is_manager = _.contains(cashier.groups_id, this.config.group_pos_manager_id[0]);
             if (user_is_manager) {
                 return false;

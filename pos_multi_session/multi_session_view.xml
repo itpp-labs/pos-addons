@@ -20,6 +20,7 @@
                         <field name="multi_session_active"/>
                         <field name="sync_server" placeholder="http://yourhost"/>
                         <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
                         <field name="order_ID" readonly="1"/>
                     </group>
                     <group>

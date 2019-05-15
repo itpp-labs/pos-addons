@@ -38,7 +38,7 @@ odoo.define('pos_pin.pos', function (require) {
                     });
                 }
             }
-    
+
             this.show_popup('selection',{
                 'title': options.title || _t('Select User'),
                 'list': list,
@@ -81,12 +81,17 @@ odoo.define('pos_pin.pos', function (require) {
                     } else {
                         self.show_popup('error', {
                             'title': _t('Incorrect Password'),
-                            confirm: _.bind(self.show_password_popup, self, password, lock),
-                            cancel: _.bind(self.show_password_popup, self, password, lock),
+                            confirm: _.bind(self.show_password_popup, self, password, lock, cancel_function),
+                            cancel: _.bind(self.show_password_popup, self, password, lock, cancel_function),
                         });
                     }
                 },
-                cancel: cancel_function || lock.reject,
+                cancel: function() {
+                    if (cancel_function) {
+                        cancel_function.call(self);
+                    }
+                    lock.reject();
+                },
             });
             return lock;
         },

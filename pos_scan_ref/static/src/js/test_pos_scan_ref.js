@@ -1,3 +1,5 @@
+/*  Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_scan_ref.tour', function (require) {
     "use strict";
 
@@ -24,11 +26,11 @@ odoo.define('pos_scan_ref.tour', function (require) {
             content: 'Click Edit button',
             position: 'bottom',
         }, {
-            trigger: 'input.o_form_input.o_form_field:eq(1)',
+            trigger: 'input.o_field_char.o_field_widget.o_input:eq(1)',
             content: 'Enter reference code',
             position: 'bottom',
             run: function() {
-                $('input.o_form_input.o_form_field:eq(1)').val(refcode).trigger('input');
+                $('input.o_field_char.o_field_widget.o_input:eq(1)').val(refcode).trigger('input');
             },
         }, {
             trigger: '.btn.btn-primary.btn-sm.o_form_button_save',

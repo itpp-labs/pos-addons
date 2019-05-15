@@ -1,12 +1,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
 from . import models
 from . import report
 from . import wizard
 
-from openerp import SUPERUSER_ID
-from openerp import api
-from openerp.tools.translate import _
+from odoo import SUPERUSER_ID
+from odoo import api
+from odoo.tools.translate import _
 from odoo.exceptions import UserError
 
 

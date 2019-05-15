@@ -40,7 +40,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Disable options in POS (restaurant extension)",
     "demo_addons": [

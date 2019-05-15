@@ -1,28 +1,27 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2015 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
 # License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
 {
-    'name': 'Scan & search a product by ref in POS',
+    "name": "Scan & search a product by ref in POS",
     "summary": """Adds the ability to searching product by ref in POS""",
-    'category': 'Point Of Sale',
-    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
+    "category": "Point Of Sale",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
     "images": [],
-    'version': '10.0.1.0.0',
+    "version": "11.0.1.0.0",
     "application": False,
 
-    'author': 'IT-Projects LLC, Ivan Yelizariev',
+    "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
-    'website': 'https://it-projects.info/',
-    'license': 'LGPL-3',
-    'price': 9.00,
-    'currency': 'EUR',
+    "website": "https://it-projects.info/",
+    "license": "LGPL-3",
+    "price": 9.00,
+    "currency": "EUR",
 
-    'depends': ['point_of_sale'],
+    "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
-    'data': [
-        'data.xml',
+    "data": [
+        "data.xml",
     ],
     "demo": [
     ],

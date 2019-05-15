@@ -8,7 +8,6 @@ odoo.define('pos_order_cancel.widgets', function (require) {
     var core = require('web.core');
     var PopupWidget = require('point_of_sale.popups');
     var PosBaseWidget = require('point_of_sale.BaseWidget');
-    var Model = require('web.DataModel');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -46,7 +45,7 @@ odoo.define('pos_order_cancel.widgets', function (require) {
             if (this.pos.config.ask_managers_pin) {
                 // check for admin rights
                 var manager_group_id = this.pos.config.group_pos_manager_id[0];
-                var is_manager = _.include(this.pos.cashier.groups_id, manager_group_id);
+                var is_manager = _.include(this.pos.get_cashier().groups_id, manager_group_id);
                 if (!is_manager) {
                     return this.pos.gui.sudo_custom({
                         special_group: manager_group_id,

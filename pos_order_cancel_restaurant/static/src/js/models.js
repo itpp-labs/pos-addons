@@ -3,7 +3,6 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
 
     var models = require('pos_order_cancel.models');
     var multiprint = require('pos_restaurant_base.models');
-    var Model = require('web.DataModel');
     var core = require('web.core');
     var QWeb = core.qweb;
     var _t = core._t;
@@ -136,7 +135,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 return this.table.floor.name;
             }
             return false;
-        }
+        },
+        check_has_canceled_kitchen_lines: function() {
+            return _.filter(this.canceled_lines, function(ol) {
+                return ol[2].was_printed;
+            });
+        },
     });
 
     var _super_orderline = models.Orderline.prototype;

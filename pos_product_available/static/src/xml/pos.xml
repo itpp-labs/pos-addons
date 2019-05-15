@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2014-2015 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <templates id="template" xml:space="preserve">
     <t t-extend="Product">
         <t t-jquery=".product-img" t-operation="append">

@@ -1,3 +1,7 @@
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl
+   :alt: License: LGPL-3
+
 ========================
  Internal Credit System
 ========================
@@ -37,4 +41,4 @@ Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 10.0 6a7c05112bf0c07ffa7dadfe76be08f3121fd4c8
+Tested on Odoo 11.0 e9454e79e27d0b85546132cbe00b391e974c66bf

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import odoo.tests
 from odoo.api import Environment
 
@@ -14,7 +13,7 @@ class TestUi(odoo.tests.HttpCase):
         main_pos_config = env.ref('point_of_sale.pos_config_main')
 
         main_pos_config.write({
-            'iface_discount': True,
+            'module_pos_discount': True,
         })
         main_pos_config.discount_product_id = env.ref('point_of_sale.boni_orange')
 
@@ -23,7 +22,7 @@ class TestUi(odoo.tests.HttpCase):
         env['ir.module.module'].search([('name', '=', 'pos_product_category_discount')], limit=1).state = 'installed'
 
         self.phantom_js(
-            '/pos/web',
+            '/web',
 
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".run('pos_product_category_discount_tour')",
