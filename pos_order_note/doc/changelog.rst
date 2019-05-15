@@ -1,7 +1,8 @@
 `1.3.0`
 -------
 
-- **NEW:** Product notes are displayed according to product categories
+- **NEW:** Only selected notes are available for display in certain categories of product
+
 
 `1.2.3`
 -------
@@ -15,17 +16,17 @@
 
 `1.2.1`
 -------
-- **FIX:** Scrolling Order after getting updates from Multi-Session
+- **FIX:** Scrolling order after getting updates from Multi-Session
 
 `1.2.0`
 -------
 
-- **NEW:** Do not merger orderlines (with the same product) if the orderline has note
+- **NEW:** Do not combine order lines (with the same product) if the order line has note
 
 `1.1.3`
 -------
 
-- **IMP:** Multi-Session methods renamings
+- **IMP:** Multi-Session methods renaming
 
 `1.1.2`
 -------
