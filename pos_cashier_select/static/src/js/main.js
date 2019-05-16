@@ -1,3 +1,7 @@
+/*  Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_choosing_cashier', function(require){
 "use strict";
 
@@ -53,13 +57,8 @@ odoo.define('pos_choosing_cashier', function(require){
             if (this.on_cashier_screen && (parsed_result.type !== 'cashier')) {
                 console.warn("Ignored Barcode Scan:", parsed_result);
                 return;
-            }
-            if (this.action_callback[parsed_result.type]) {
-                this.action_callback[parsed_result.type](parsed_result);
-            } else if (this.action_callback.error) {
-                this.action_callback.error(parsed_result);
             } else {
-                console.warn("Ignored Barcode Scan:", parsed_result);
+                this._super(code);
             }
         },
     });
