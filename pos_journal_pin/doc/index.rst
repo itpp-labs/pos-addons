@@ -1,6 +1,6 @@
-============================
- Ask Manager to use journal
-============================
+===============================
+ POS Payments by Manager's PIN
+===============================
 
 Installation
 ============
@@ -13,8 +13,8 @@ Configuration
 Manager's PIN
 -------------
 
-Set a PIN for a POS manager as it's explained in `Confirm POS action by PIN` module
-As Administrator do next:
+Set a PIN for a POS manager as it's explained in `Confirm POS action by PIN <https://apps.odoo.com/apps/modules/10.0/pos_pin/>`_  module.
+As Administrator please follow next scenario:
 
 Journal
 -------
@@ -27,12 +27,12 @@ Usage
 =====
 
 * Go to ``[[Point of Sale]]`` menu
-* Open POS session
+* Open a POS session
 
   * Click ``[Payment]``
   * Select and click a payment method with enabled **Manager's Permission** option
-  * Select a manager from appeared list
-  * Enter it's password
+  * Select a POS manager from the appeared list
+  * Enter his/her password
   * Click ``[Ok]``
 
-* RESULT: Paymentline with selected payment method is added
+* RESULT: Payment line with selected payment method is added.
