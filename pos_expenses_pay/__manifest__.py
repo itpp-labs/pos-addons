@@ -1,14 +1,15 @@
 # Copyright 2018 Artyom Losev
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 {
-    "name": """POS Expenses Pay""",
-    "summary": """Paying HR expenses in POS""",
+    "name": """Pay Expenses over POS""",
+    "summary": """Pay HR expenses over Point of Sale""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": [],
+    "images": ["images/pos_expenses_pay.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
@@ -16,8 +17,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
-    # "price": 50.00,
-    # "currency": "EUR",
+    "price": 89.00,
+    "currency": "EUR",
 
     "depends": [
         "hr_expense",

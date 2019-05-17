@@ -2,11 +2,12 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-==================
- POS Expenses Pay
-==================
+=======================
+ Pay Expenses over POS
+=======================
 
-Paying HR expenses in POS.
+Pay HR Expenses over Point of Sale.
+
 
 Credits
 =======

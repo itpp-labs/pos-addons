@@ -1,6 +1,6 @@
-====================
- POS Expenses Pay
-====================
+=======================
+ Pay Expenses over POS
+=======================
 
 Installation
 ============
@@ -10,18 +10,23 @@ Installation
 Configuration
 =============
 
-To deactivate Orders Expenses Pay on some POSes do as following:
+To be able to pay Expenses over POS you should activate it first:
 
 * Go to ``Point of Sale >> Configuraion >> Point of Sale`` menu
-* Open POS form
-* Click on ``[Edit]``
-* Swith ``[ ] Pay Expenses`` off
-* Click on ``[Save]``
+* Open POS config form
+* Click ``[Edit]``
+* Check the box ``[x] Pay Expenses``
+* Click ``[Save]``
 
 Usage
 =====
 
 * Go to ``Point of Sale`` menu
-* Open POS interface
-* Click on ``Expenses``
-* You will see all orders list
+* Open POS session
+
+  * Click ``Expenses`` button
+  * Choose the expense record
+  * Click ``Select``
+  * In the popup click ``Ok``
+
+RESULT: the expense is paid
