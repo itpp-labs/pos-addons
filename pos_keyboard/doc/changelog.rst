@@ -1,3 +1,8 @@
+`1.1.3`
+-------
+
+**Fix:** Enter did not work for some pop-ups
+
 `1.1.2`
 -------
 
