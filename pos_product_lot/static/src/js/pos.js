@@ -73,9 +73,10 @@ function geByClass(searchClass, node, tag) {
         },
         scan_product: function(parsed_code){
             var self = this;
+            var product = {};
             var selectedOrder = this.get('selectedOrder');
             if (parsed_code.encoding === 'ean13') {
-                var product = this.db.get_product_by_ean13(parsed_code.base_code);
+                product = this.db.get_product_by_ean13(parsed_code.base_code);
             } else if (parsed_code.encoding === 'reference') {
                 product = this.db.get_product_by_reference(parsed_code.code);
             }
@@ -93,16 +94,18 @@ function geByClass(searchClass, node, tag) {
                     product = lot_product;
                   }
 
+            } else {
+                return PosModelSuper.prototype.scan_product.apply(this, arguments);
             }
 
             if (parsed_code.type === 'price') {
-                selectedOrder.addProduct(product, {price:parsed_code.value});
+                selectedOrder.add_product(product, {price:parsed_code.value});
             } else if (parsed_code.type === 'weight'){
-                selectedOrder.addProduct(product, {quantity:parsed_code.value, merge:false});
+                selectedOrder.add_product(product, {quantity:parsed_code.value, merge:false});
             } else if (parsed_code.type === 'discount'){
-                selectedOrder.addProduct(product, {discount:parsed_code.value, merge:false});
+                selectedOrder.add_product(product, {discount:parsed_code.value, merge:false});
             } else {
-                selectedOrder.addProduct(product);
+                selectedOrder.add_product(product);
             }
             return true;
         },
