@@ -1,3 +1,8 @@
+`4.2.8`
+-------
+
+- **Fix:** Paid order could appear again in POS in case of problems with connection within payment process
+
 `4.2.7`
 -------
 

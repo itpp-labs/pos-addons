@@ -852,6 +852,15 @@ odoo.define('pos_multi_session', function(require){
             if (this.on_syncing) {
                 return false;
             }
+            if (this.pos.db.get_orders().length) {
+                var self = this;
+                return this.send_paid_offline_orders().then(function () {
+                    return self.sync_all(options);
+                });
+            }
+            return this.sync_all(options);
+        },
+        sync_all: function(options) {
             options = options || {};
             var self = this;
             this.on_syncing = true;
@@ -1015,6 +1024,23 @@ odoo.define('pos_multi_session', function(require){
                     item.new_updates_to_send();
                 }
             });
+        },
+        send_paid_offline_orders: function() {
+            var self = this;
+            var orders = this.pos.db.get_orders();
+            // sends multi_session updates for paid orders
+            _.each(orders, function(item) {
+                var f = function(){
+                    return self.remove_order({
+                        'uid': item.data.uid,
+                        'revision_ID': item.data.revision_ID,
+                        'finalized': true,
+                    }).done();
+                };
+                self.enque(f);
+            });
+            // sends paid offline orders to the server
+            return this.pos.push_order();
         },
         start_offline_sync_timer: function(){
             var self = this;
