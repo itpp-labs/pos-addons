@@ -995,7 +995,7 @@ odoo.define('pos_multi_session', function(require){
                     order.destroy({'reason': 'abandon'});
                 }
             });
-            self.send_offline_orders();
+            self.send_draft_offline_orders();
         },
         warning: function(warning_message){
             console.info('warning', warning_message);
@@ -1007,7 +1007,7 @@ odoo.define('pos_multi_session', function(require){
                 });
             }
         },
-        send_offline_orders: function() {
+        send_draft_offline_orders: function() {
             var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
