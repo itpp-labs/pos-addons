@@ -675,7 +675,11 @@ odoo.define('pos_multi_session', function(require){
             }
             var f = function(){
                 self.enquied=false;
-                return self.pos.multi_session.remove_order({'uid': self.uid, 'revision_ID': self.revision_ID}).done();
+                return self.pos.multi_session.remove_order({
+                    'uid': self.uid,
+                    'revision_ID': self.revision_ID,
+                    'finalized': self.finalized,
+                }).done();
             };
             if (!this.pos.multi_session_active){
                 return;
