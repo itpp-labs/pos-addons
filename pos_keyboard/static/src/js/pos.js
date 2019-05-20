@@ -50,8 +50,11 @@ odoo.define('pos_keyboard.pos', function (require) {
             } else if (data.type === type.backspace){
                 this.click_keyboard('BACKSPACE');
             } else if (data.type === type.enter){
-                if (this.click_confirm.length) {
+                // some pop-ups might throw an error due to lack of some income data
+                try {
                     return this.click_confirm();
+                } catch (error){
+                    return;
                 }
                 return;
             } else if (data.type === type.escape){
