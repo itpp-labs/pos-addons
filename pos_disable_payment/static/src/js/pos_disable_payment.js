@@ -11,6 +11,7 @@ odoo.define('pos_disable_payment', function(require){
     var _t = core._t;
 
     models.load_fields("res.users", ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount','allow_decrease_kitchen_only','allow_delete_order_line','allow_create_order_line','allow_refund','allow_manual_customer_selecting']);
+    models.load_fields("product.product", ['pos_allow_price_customization']);
 
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
     // Example extending of class (method set_cashier), than was created using extend.
@@ -94,12 +95,20 @@ odoo.define('pos_disable_payment', function(require){
             var order = this.pos.get_order();
             if (order) {
                 line = line || order.get_selected_orderline();
-                var user = this.pos.cashier || this.pos.user;
+                var user = this.pos.get_cashier() || this.pos.user;
                 var state = this.getParent().numpad.state;
                 if (!line) {
                     $('.numpad').find('.numpad-backspace').removeClass('disable');
                     $('.numpad').find("[data-mode='quantity']").removeClass('disable');
                     return false;
+                }
+
+                if (!user.allow_edit_price) {
+                    if (line.product.pos_allow_price_customization) {
+                        $('.numpad').find("[data-mode='price'].disable").removeClass('disable');
+                    } else {
+                        $('.numpad').find("[data-mode='price']").addClass('disable');
+                    }
                 }
 
                 if (user.allow_decrease_amount) {

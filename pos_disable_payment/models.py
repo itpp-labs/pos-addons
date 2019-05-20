@@ -23,3 +23,9 @@ class ResUsers(models.Model):
     @api.model
     def is_module_installed(self, module_name=None):
         return module_name in self.env['ir.module.module']._installed()
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    pos_allow_price_customization = fields.Boolean(string='Allow Price Modification')
