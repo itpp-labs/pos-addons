@@ -30,6 +30,7 @@
         "views/pos_expenses_view.xml",
         "views/pos_expenses_template.xml",
         "views/report.xml",
+        "views/assets_demo.xml",
         "data/base_action_rule.xml",
     ],
     "qweb": [
