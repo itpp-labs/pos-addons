@@ -23,4 +23,4 @@ class TestUi(odoo.tests.HttpCase):
 
             login="admin",
             timeout=1000,
-)
+        )
