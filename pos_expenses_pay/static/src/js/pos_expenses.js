@@ -127,8 +127,7 @@ odoo.define('pos_orders_history', function (require) {
             });
 
             expense_sheet_ids = _.pluck(self.db.expenses, 'id');
-            self.fetch_expense_lines(expense_sheet_ids).
-            then(function (expense_lines) {
+            self.fetch_expense_lines(expense_sheet_ids).then(function (expense_lines) {
                 self.set_expense_lines(expense_lines);
             });
         },
@@ -345,7 +344,7 @@ odoo.define('pos_orders_history', function (require) {
                 args: [id, cashier.name, session_id],
             }).then(function (res) {
                 self.gui.close_popup();
-                self.gui.show_screen('products');                
+                self.gui.show_screen('products');
             }).fail(function (type, error) {
                 self.gui.show_popup('error', {
                     'title': _t(error.message),
