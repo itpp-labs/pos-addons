@@ -57,9 +57,13 @@ odoo.define('pos_employee_select.screens', function(require){
             var grouped_list = [];
             // height of selection item
             var height = 50;
-            this.group_size = Math.trunc(this.$('.selection.scrollable-y.touch-scrollable.cashier').height() / height);
-            var size = this.group_size;
+            this.group_size = Math.trunc((this.$('.popup').height() - this.$('.title').height() - this.$('.footer').height() - height) / height);
             if (this.list) {
+                var max_size = Math.ceil(this.list.length / 3);
+                var size = this.group_size;
+                if (this.list.length / size > 3) {
+                    size = max_size;
+                }
                 for (var i = 0; i < Math.ceil(this.list.length / size); i++) {
                     grouped_list[i] = this.list.slice((i * size), (i * size) + size);
                 }

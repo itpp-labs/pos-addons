@@ -1,7 +1,5 @@
 .popup.popup-selection.cashier  .selection.scrollable-y.touch-scrollable.cashier {
-	display: table;
-    width: 100%;
-	height: calc(90% - 61px);
+	width: 100%;
 	padding-bottom: 0;
 }
 
@@ -11,6 +9,10 @@
 .pos .popup.popup-selection .employee .selection-item.selected,
 .pos .popup.popup-selection.employee .title,
 .pos .popup.popup-selection.employee .footer {
-    background: #596fb2;
+	background: #596fb2;
 	color: white;
+}
+.pos .popup.popup-selection .employee-table {
+	display: table;
+	width: 100%;
 }
