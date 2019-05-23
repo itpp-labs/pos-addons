@@ -10,7 +10,6 @@
                     <group>
                         <field name="longpolling_max_silence_timeout" widget="integer"/>
                         <field name="longpolling_pong_timeout" widget="integer"/>
-                        <field name="autostart_longpolling"/>
                     </group>
                 </group>
             </xpath>
