@@ -15,9 +15,7 @@ odoo.define('pos_orders_history.screens', function (require) {
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
         template: 'OrdersHistoryButton',
         button_click: function () {
-            if (this.pos.db.pos_orders_history.length) {
-                this.gui.show_screen('orders_history_screen');
-            }
+            this.gui.show_screen('orders_history_screen');
         },
     });
     screens.define_action_button({
