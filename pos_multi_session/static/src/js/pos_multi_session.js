@@ -675,7 +675,11 @@ odoo.define('pos_multi_session', function(require){
             }
             var f = function(){
                 self.enquied=false;
-                return self.pos.multi_session.remove_order({'uid': self.uid, 'revision_ID': self.revision_ID}).done();
+                return self.pos.multi_session.remove_order({
+                    'uid': self.uid,
+                    'revision_ID': self.revision_ID,
+                    'finalized': self.finalized,
+                }).done();
             };
             if (!this.pos.multi_session_active){
                 return;
@@ -845,6 +849,15 @@ odoo.define('pos_multi_session', function(require){
             if (this.on_syncing) {
                 return false;
             }
+            if (this.pos.db.get_orders().length) {
+                var self = this;
+                return this.send_paid_offline_orders().then(function () {
+                    return self.sync_all(options);
+                });
+            }
+            return this.sync_all(options);
+        },
+        sync_all: function(options) {
             options = options || {};
             var self = this;
             this.on_syncing = true;
@@ -988,7 +1001,7 @@ odoo.define('pos_multi_session', function(require){
                     order.destroy({'reason': 'abandon'});
                 }
             });
-            self.send_offline_orders();
+            self.send_draft_offline_orders();
         },
         warning: function(warning_message){
             console.info('warning', warning_message);
@@ -1000,7 +1013,7 @@ odoo.define('pos_multi_session', function(require){
                 });
             }
         },
-        send_offline_orders: function() {
+        send_draft_offline_orders: function() {
             var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
@@ -1008,6 +1021,23 @@ odoo.define('pos_multi_session', function(require){
                     item.new_updates_to_send();
                 }
             });
+        },
+        send_paid_offline_orders: function() {
+            var self = this;
+            var orders = this.pos.db.get_orders();
+            // sends multi_session updates for paid orders
+            _.each(orders, function(item) {
+                var f = function(){
+                    return self.remove_order({
+                        'uid': item.data.uid,
+                        'revision_ID': item.data.revision_ID,
+                        'finalized': true,
+                    }).done();
+                };
+                self.enque(f);
+            });
+            // sends paid offline orders to the server
+            return this.pos.push_order();
         },
         start_offline_sync_timer: function(){
             var self = this;
