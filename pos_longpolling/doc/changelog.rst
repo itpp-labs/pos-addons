@@ -1,3 +1,8 @@
+`2.2.0`
+-------
+
+- **IMP:** *Autostart longpolling* field is hidden on the `POS config` form to prevent possible misconfigurations.
+
 `2.1.2`
 -------
 
