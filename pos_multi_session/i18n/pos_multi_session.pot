@@ -1,120 +1,106 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_multi_session
+#	* pos_multi_session
 #
-# Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2018
-# Luis Guzman <ark@switnet.org>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2018-04-27 23:55+0000\n"
-"Last-Translator: Luis Guzman <ark@switnet.org>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
-"teams/76080/es/)\n"
-"Language: es\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "$ 3.12"
-msgstr "$ 3.12"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "$ 4.40"
-msgstr "$ 4.40"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "$ 4.50"
-msgstr "$ 4.50"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "$ 8.50"
-msgstr "$ 8.50"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
 #: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:12
 #, python-format
 msgid ", edited by"
-msgstr ", editado por"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
 #: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:33
 #, python-format
-msgid ""
-"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system "
-"continues to run without an internet connection.</p>"
+msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
-"<p>Haga click para iniciar la interfaz de venta del punto de venta. Este "
-"<b>opera en tabletas</b>, laptops, o hardware industrial.</p><p>Una vez que "
-"la sesión ha iniciado, el sistema puede continuar a ejecutarse sin necesidad "
-"de una conexión a internet.</p>"
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span class=\"pos-change_amount\">$ 0.86</span>"
-msgstr "<span class=\"pos-change_amount\">$ 0.86</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span class=\"pos-change_title\">Change</span>"
-msgstr "<span class=\"pos-change_title\">Cambio</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span class=\"total-amount-formatting\">TOTAL</span>"
-msgstr "<span class=\"total-amount-formatting\">TOTAL</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span id=\"total-amount\" class=\"pos_total-amount\">$ 469.14</span>"
-msgstr "<span id=\"total-amount\" class=\"pos_total-amount\">$ 469.14</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span>$ 470.00</span>"
-msgstr "<span>$ 470.00</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "<span>Cash (USD):</span>"
-msgstr "<span>Efectivo (USD):</span>"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__multi_session_accept_incoming_orders
 msgid "Accept incoming orders"
-msgstr "Aceptar órdenes entrantes"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__multi_session_active
@@ -135,18 +121,17 @@ msgstr ""
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session__order_ID
 msgid "Current Order Number shared across all POS in Multi Session"
 msgstr ""
-"Número de Orden Actual compartido a través de todos los TPV en Multi Sesión"
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__current_session_state
@@ -156,7 +141,7 @@ msgstr ""
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__multi_session_deactivate_empty_order
 msgid "Deactivate empty order"
-msgstr "Desactivar orden vacía"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
@@ -168,38 +153,38 @@ msgstr ""
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__display_name
 msgid "Display Name"
-msgstr "Mostrar Nombre"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config__multi_session_replace_empty_order
 msgid "Empty order is deleted whenever new order is come from another POS"
-msgstr "Una orden vacía es borrada siempre que una nueva venga desde otro POS"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__fiscal_position_ids
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__fiscal_position_ids
 msgid "Fiscal Positions"
-msgstr "Posiciones Fiscales"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session____last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__write_uid
 msgid "Last Updated by"
-msgstr "Última Actualización por"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__write_date
 msgid "Last Updated on"
-msgstr "Última Actualización en"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
@@ -221,18 +206,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.view_pos_config_form
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.view_pos_config_search
 msgid "Multi-session"
-msgstr "Multi-sesión"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.actions.act_window,name:pos_multi_session.action_multi_session_form
 #: model:ir.ui.menu,name:pos_multi_session.menu_pos_ms_settings
 msgid "Multi-sessions"
-msgstr "Multi-sesiones"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__name
 msgid "Name"
-msgstr "Nombre"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
@@ -240,7 +225,7 @@ msgstr "Nombre"
 #: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:30
 #, python-format
 msgid "New"
-msgstr "Actual"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
@@ -251,10 +236,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session__run_ID
-msgid ""
-"Number of Multi-session starts. It's incremented each time the last session "
-"in Multi-session is closed. It's used to prevent synchronization of old "
-"orders"
+msgid "Number of Multi-session starts. It's incremented each time the last session in Multi-session is closed. It's used to prevent synchronization of old orders"
 msgstr ""
 
 #. module: pos_multi_session
@@ -262,28 +244,27 @@ msgstr ""
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "Odoo Logo"
-msgstr "Logo Odoo"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__order_ID
 msgid "Order number"
-msgstr "Número de orden"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model,name:pos_multi_session.model_pos_multi_session
-#, fuzzy
 msgid "POS Multi Session"
-msgstr "TPVs en Multi-sesión"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config__multi_session_deactivate_empty_order
 msgid "POS is switched to new foreign Order, if current order is empty"
-msgstr "El TPV cambiará a una Orden extranjera, si la orden actual está vacía"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__pos_ids
 msgid "POSes in Multi-session"
-msgstr "TPVs en Multi-sesión"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model,name:pos_multi_session.model_pos_config
@@ -300,14 +281,14 @@ msgstr ""
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "Price"
-msgstr "Precio"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_one
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_three
 #: model_terms:pos.config,customer_facing_display_html:pos_multi_session.demo_multi_pos_config_two
 msgid "Quantity"
-msgstr "Cantidad"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
@@ -315,17 +296,17 @@ msgstr "Cantidad"
 #: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:28
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr "¿Listo para iniciar su <b>punto de venta</b>? <i>Click aquí</i>."
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__multi_session_replace_empty_order
 msgid "Replace empty order"
-msgstr "Remplace orden vacía"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__run_ID
 msgid "Running count"
-msgstr "Ejecutando cuenta"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session__multi_session_active
@@ -334,33 +315,26 @@ msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config__multi_session_id
-#, fuzzy
-msgid ""
-"Set the same value for POSes where orders should be synced.Uncheck the box "
-"\"Active\" if the POS should not use syncing.Before updating you need to "
-"close active session"
+msgid "Set the same value for POSes where orders should be synced.Uncheck the box \"Active\" if the POS should not use syncing.Before updating you need to close active session"
 msgstr ""
-"Fije el mismo valor para TPVs donde las ordenes deberían estar "
-"sincronizadas. Mantenga vacío si este TPV no debería ser sincronizado. Antes "
-"de actualizar lo necesita cerrar la sesión activa"
 
 #. module: pos_multi_session
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.multi_session_form
 msgid "Settings"
-msgstr "Configuración"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
 #: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:171
-#, fuzzy, python-format
+#, python-format
 msgid "Sync Orders"
-msgstr "Sincronizar servidor"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config__sync_server
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session__sync_server
 msgid "Sync Server"
-msgstr "Sincronizar servidor"
+msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
@@ -368,28 +342,23 @@ msgstr "Sincronizar servidor"
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
-"Hubo un problema durante la sincronización, realice su última acción otra "
-"vez."
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config__fiscal_position_ids
-msgid ""
-"This is useful for restaurants with onsite and take-away services that imply "
-"specific tax rates."
+msgid "This is useful for restaurants with onsite and take-away services that imply specific tax rates."
 msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.multi_session_form
 msgid "To remove or add a POS to multi-session close its session first"
 msgstr ""
-"Para agregar o eliminar un TPV a multi-sesión, cierra su sesión primero"
 
 #. module: pos_multi_session
 #. openerp-web
 #: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:999
 #, python-format
 msgid "Warning"
-msgstr "Atención"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config__autostart_longpolling
@@ -407,46 +376,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.view_pos_config_form
 msgid "You need to close current session to be able modify Multi-session value"
 msgstr ""
-"Puede necesitar cerrar la sesión actual para ser capaz de modificar el valor "
-"Multi-sesión"
 
 #. module: pos_multi_session
 #. openerp-web
 #: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:10
 #, python-format
 msgid "added by"
-msgstr "agregado por"
+msgstr ""
 
 #. module: pos_multi_session
 #: model_terms:ir.ui.view,arch_db:pos_multi_session.multi_session_form
 msgid "http://yourhost"
 msgstr ""
 
-#~ msgid "Fanta"
-#~ msgstr "Fanta"
-
-#~ msgid "Gordon"
-#~ msgstr "Gordon"
-
-#~ msgid "Malibu Drink"
-#~ msgstr "Malibu Drink"
-
-#~ msgid ""
-#~ "No connection to the server. You can create new orders only. It is "
-#~ "forbidden to modify existing orders."
-#~ msgstr ""
-#~ "Se perdió la conexión al servidor. Solo puedes crear ordenes nuevas. Está "
-#~ "prohibido modificar ordenes existentes hasta que se reestablezca la "
-#~ "conexión."
-
-#~ msgid "Water"
-#~ msgstr "Agua"
-
-#~ msgid "pos.config"
-#~ msgstr "pos.config"
-
-#~ msgid "pos.multi_session"
-#~ msgstr "pos.multi_session"
-
-#~ msgid "pos.session"
-#~ msgstr "pos.session"
