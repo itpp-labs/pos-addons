@@ -1,0 +1,152 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_receipt_custom_template
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,help:pos_receipt_custom_template.field_pos_config__show_discount_in_receipt
+msgid "Check box if you want to display the discount of the orderline on the ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__custom_xml_receipt
+msgid "Custom PosBox Receipt"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__custom_xml_receipt_id
+msgid "Custom PosBox Receipt Template"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model_terms:ir.ui.view,arch_db:pos_receipt_custom_template.pos_custom_receipt_form_view
+#: model_terms:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Receipt"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model_terms:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Receipt Template"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__custom_ticket
+#: model_terms:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__custom_ticket_id
+#: model_terms:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Ticket Template"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__show_second_product_name_in_receipt
+msgid "Display Second Product Name"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config__show_discount_in_receipt
+msgid "Display discount on the ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__id
+msgid "ID"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__name
+msgid "Name"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: selection:pos.custom_receipt,type:0
+msgid "Order Receipt"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model,name:pos_receipt_custom_template.model_pos_custom_receipt
+msgid "POS Custom Receipt/Ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model,name:pos_receipt_custom_template.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model,name:pos_receipt_custom_template.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__qweb_template
+msgid "Qweb"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#. openerp-web
+#: code:addons/pos_receipt_custom_template/static/src/js/models.js:105
+#: selection:pos.custom_receipt,type:0
+#, python-format
+msgid "Receipt"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_product_product__second_product_name
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_product_template__second_product_name
+msgid "Second Product Name"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: selection:pos.custom_receipt,type:0
+msgid "Ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_custom_receipt__type
+msgid "Type"
+msgstr ""
+
