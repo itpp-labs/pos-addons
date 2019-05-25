@@ -2,7 +2,7 @@
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016 Gael Torrecillas
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
- * Copyright 2017-2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 David Arnold
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
@@ -852,6 +852,7 @@ odoo.define('pos_multi_session', function(require){
             if (this.on_syncing) {
                 return false;
             }
+            this.on_syncing = true;
             if (this.pos.db.get_orders().length) {
                 var self = this;
                 return this.send_paid_offline_orders().then(function () {
@@ -863,7 +864,6 @@ odoo.define('pos_multi_session', function(require){
         sync_all: function(options) {
             options = options || {};
             var self = this;
-            this.on_syncing = true;
             var data = {run_ID: this.pos.multi_session_run_ID};
             var message = {'action': 'sync_all', data: data};
             if (options.uid) {
@@ -1035,7 +1035,8 @@ odoo.define('pos_multi_session', function(require){
                         'uid': item.data.uid,
                         'revision_ID': item.data.revision_ID,
                         'finalized': true,
-                    }).done();
+                        'order_data': JSON.stringify(item),
+                    });
                 };
                 self.enque(f);
             });
