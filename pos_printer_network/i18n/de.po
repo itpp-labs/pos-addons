@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_printer_network
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
@@ -11,11 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2017-12-01 15:56+0000\n"
 "PO-Revision-Date: 2017-12-01 15:56+0000\n"
 "Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_printer_network
@@ -63,7 +64,7 @@ msgstr "Netzwerkdrucker"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:243
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:209
 #, python-format
 msgid "Offline"
 msgstr "Offline"
@@ -83,14 +84,14 @@ msgstr "Druckertyp"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:231
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:205
 #, python-format
 msgid "Scale"
 msgstr "Waage"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:202
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:193
 #, python-format
 msgid "Scanner"
 msgstr "Scanner"
