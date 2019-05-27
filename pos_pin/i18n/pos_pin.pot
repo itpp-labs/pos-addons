@@ -1,32 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_pin
+#	* pos_pin
 #
-# Translators:
-# Gustavo Valverde <g.valverde02@gmail.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-30 15:22+0000\n"
-"PO-Revision-Date: 2017-09-30 15:22+0000\n"
-"Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
-"teams/76080/es/)\n"
-"Language: es\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: pos_pin
 #. openerp-web
 #: code:addons/pos_pin/static/src/js/test_pos_pin.js:16
 #, python-format
-msgid ""
-"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system "
-"continues to run without an internet connection.</p>"
+msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_pin
@@ -55,4 +46,5 @@ msgstr ""
 #: code:addons/pos_pin/static/src/js/pos.js:43
 #, python-format
 msgid "Select User"
-msgstr "Seleccionar Usuario"
+msgstr ""
+
