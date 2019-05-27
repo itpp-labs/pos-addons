@@ -12,6 +12,11 @@ addons:
       - expect-dev  # provides unbuffer utility
       - python-lxml  # because pip installation is slow
 
+
+services:
+  - postgresql
+
+
 env:
   global:
   - VERSION="10.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" UNIT_TEST="0"
