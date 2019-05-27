@@ -1,28 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_order_cancel
+#	* pos_order_cancel
 #
-# Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2018-04-27 23:55+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
-"teams/76080/es/)\n"
-"Language: es\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_pos_form
 msgid "(update)"
-msgstr "(actualización)"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_allow_custom_reason
@@ -37,12 +31,12 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_line_canceled_tree
 msgid "Amount total"
-msgstr "Monto Total"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_line_canceled_tree
 msgid "Amount total w/o Tax"
-msgstr "Total sin Impuestos"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
@@ -50,7 +44,7 @@ msgstr "Total sin Impuestos"
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:63
 #, python-format
 msgid "Apply"
-msgstr "Aplicar"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_ask_managers_pin
@@ -63,7 +57,7 @@ msgstr ""
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:59
 #, python-format
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
@@ -80,18 +74,18 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_canceled_date
 msgid "Cancelation Time"
-msgstr "Tiempo de Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_filter
 msgid "Canceled"
-msgstr "Cancelada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_canceled_line_ids
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_line_canceled_form
 msgid "Canceled Line"
-msgstr "Línea Cancelada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_canceled_lines
@@ -99,19 +93,19 @@ msgstr "Línea Cancelada"
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_order_line_canceled_pivot
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Canceled Lines"
-msgstr "Líneas Canceladas"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/js/widgets.js:83
 #, python-format
 msgid "Cancellation Reason"
-msgstr "Razón de Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: selection:pos.order,computed_state:0
 msgid "Cancelled"
-msgstr "Cancelada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_qty
@@ -121,24 +115,24 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.actions.act_window,help:pos_order_cancel.pos_cancelled_reason_action
 msgid "Click to define a new Refund / Cancellation Reason."
-msgstr "Clic para definir una una Razón de Devolución / Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_create_uid
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_create_date
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:pos.cancelled_reason,name:pos_order_cancel.demo_reason_3
 msgid "Customer doesn't have enough money to pay"
-msgstr "Cliente no tiene suficiente dinero para pagar"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
@@ -148,24 +142,23 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Days"
-msgstr "Días"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_discount
 msgid "Discount (%)"
-msgstr "Descueto (%)"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_absolute_discount
-#, fuzzy
 msgid "Discount (abs)"
-msgstr "Descueto (%)"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_display_name
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_display_name
 msgid "Display Name"
-msgstr "Mostrar Nombre"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_show_cancel_info
@@ -174,21 +167,19 @@ msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,help:pos_order_cancel.field_pos_config_show_cancel_info
-msgid ""
-"Display the information of canceled products in order in POS (format: Qty - "
-"User - Table)"
+msgid "Display the information of canceled products in order in POS (format: Qty - User - Table)"
 msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Group By"
-msgstr "Agrupar por"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_id
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
@@ -200,25 +191,25 @@ msgstr ""
 #. module: pos_order_cancel
 #: selection:pos.order,computed_state:0
 msgid "Invoiced"
-msgstr "Facturado"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason___last_update
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_write_uid
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_write_uid
 msgid "Last Updated by"
-msgstr "Última Actualización por"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_write_date
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_write_date
 msgid "Last Updated on"
-msgstr "Última Actualización en"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_pack_lot_ids
@@ -233,19 +224,19 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Months"
-msgstr "Meses"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:76
 #, python-format
 msgid "Name"
-msgstr "Nombre"
+msgstr ""
 
 #. module: pos_order_cancel
 #: selection:pos.order,computed_state:0
 msgid "New"
-msgstr "Nueva"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
@@ -267,51 +258,51 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_pos_form
 msgid "Order Cancellation Reason"
-msgstr "Razón de Cancelación de la Orden"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/js/models.js:37
 #, python-format
 msgid "Order Deleting"
-msgstr "Eliminación de Orden"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_order_id
 msgid "Order Ref"
-msgstr "Ref Orden"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:24
 #, python-format
 msgid "Other"
-msgstr "Otras"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "POS Order"
-msgstr "Orden del POS"
+msgstr ""
 
 #. module: pos_order_cancel
 #: selection:pos.order,computed_state:0
 msgid "Paid"
-msgstr "Pagada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,help:pos_order_cancel.field_pos_order_line_canceled_user_id
 msgid "Person who removed order line"
-msgstr "Persona que eliminó la línea"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model,name:pos_order_cancel.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Órdenes del Punto de Venta"
+msgstr ""
 
 #. module: pos_order_cancel
 #: selection:pos.order,computed_state:0
 msgid "Posted"
-msgstr "Contabilizada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_cancelled_reason_ids
@@ -326,12 +317,12 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_product_id
 msgid "Product"
-msgstr "Producto"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Products"
-msgstr "Productos"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
@@ -347,7 +338,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_name
 #, python-format
 msgid "Reason"
-msgstr "Razón"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_cancellation_reason
@@ -358,25 +349,25 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.actions.act_window,name:pos_order_cancel.action_report_cancelations_details
 msgid "Refund / Cancelation Details"
-msgstr "Detalles de Devolución / Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.pos_cancelled_reason_form_view
 msgid "Refund / Cancellation Reason"
-msgstr "Razón de Devolución / Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.actions.act_window,name:pos_order_cancel.pos_cancelled_reason_action
 #: model:ir.ui.menu,name:pos_order_cancel.menu_pos_cancelled_reason
 msgid "Refund / Cancellation Reasons"
-msgstr "Razones de Devolución / Cancelación"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.menu,name:pos_order_cancel.menu_report_cancelations_details
 #: model:ir.ui.view,arch_db:pos_order_cancel.pos_config_view_form
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_pos_form
 msgid "Refunds / Cancellations"
-msgstr "Devoluciones / Cancelaciones"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_current_qty
@@ -386,17 +377,17 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_pos_pos_form
 msgid "Return Products"
-msgstr "Devolver Productos"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_user_id
 msgid "Salesman"
-msgstr "Vendedor"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_sequence
 msgid "Sequence"
-msgstr "Secuencia"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_config_show_popup_change_quantity
@@ -406,12 +397,12 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_is_cancelled
 msgid "Stage Cancelled"
-msgstr "Estado Cancelada"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_computed_state
 msgid "Status"
-msgstr "Estatus"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_price_subtotal_incl
@@ -421,13 +412,13 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_price_subtotal
 msgid "Subtotal w/o Tax"
-msgstr "Subtotal sin Impuestos"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_cancelled_amount_tax
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_tax_ids
 msgid "Taxes"
-msgstr "Impuestos"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,help:pos_order_cancel.field_pos_order_line_canceled_reason
@@ -437,17 +428,17 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "This Month"
-msgstr "Este Mes"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "This Year"
-msgstr "Este Año"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Today"
-msgstr "Hoy"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_cancelled_amount_total
@@ -457,19 +448,19 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_order_line_canceled_price_unit
 msgid "Unit Price"
-msgstr "Precio Unitario"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Users"
-msgstr "Usuarios"
+msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
 #: code:addons/pos_order_cancel/static/src/js/widgets.js:221
 #, python-format
 msgid "Warning"
-msgstr "Atención"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
@@ -479,13 +470,11 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:ir.ui.view,arch_db:pos_order_cancel.view_report_cancelations_search
 msgid "Weeks"
-msgstr "Semanas"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model.fields,help:pos_order_cancel.field_pos_config_allow_cancel_deletion
-msgid ""
-"When not active, a user will have to select predefined reasons without the "
-"possibility to cancel this action"
+msgid "When not active, a user will have to select predefined reasons without the possibility to cancel this action"
 msgstr ""
 
 #. module: pos_order_cancel
@@ -496,22 +485,20 @@ msgstr ""
 #. module: pos_order_cancel
 #: model:pos.cancelled_reason,name:pos_order_cancel.demo_reason_1
 msgid "Wrong Quantity"
-msgstr "Cantidad Errónea"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model,name:pos_order_cancel.model_pos_cancelled_reason
 msgid "pos.cancelled_reason"
-msgstr "pos.cancelled_reason"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model,name:pos_order_cancel.model_pos_config
 msgid "pos.config"
-msgstr "pos.config"
+msgstr ""
 
 #. module: pos_order_cancel
 #: model:ir.model,name:pos_order_cancel.model_pos_order_line_canceled
 msgid "pos.order.line.canceled"
-msgstr "pos.order.line.canceled"
+msgstr ""
 
-#~ msgid "Canceled Order lines"
-#~ msgstr "Líneas de Órdenes Canceladas"
