@@ -1,0 +1,428 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* wechat
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_order_trade_type
+msgid "\n"
+"* Official Account Payment -- Mini Program Payment or In-App Web-based Payment\n"
+"* Native Payment -- Customer scans QR for specific order and confirm payment\n"
+"* In-App Payment -- payments in native mobile applications\n"
+"    "
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_micropay_total_fee
+#: model:ir.model.fields,help:wechat.field_wechat_order_total_fee
+#: model:ir.model.fields,help:wechat.field_wechat_refund_refund_fee
+msgid "Amount in cents"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_description
+msgid "Body"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_category
+msgid "Category"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.refund,state:0
+msgid "Completed"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_create_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_create_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_create_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_create_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_create_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_create_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_currency_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_display_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_display_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_display_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.refund,state:0
+msgid "Draft"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.micropay,state:0
+#: selection:wechat.order,state:0
+#: selection:wechat.refund,state:0
+msgid "Error"
+msgstr ""
+
+#. module: wechat
+#: code:addons/wechat/models/wechat_order.py:144
+#, python-format
+msgid "Error on sending request to WeChat: %s"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_id
+msgid "ID"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.order,trade_type:0
+msgid "In-App Payment"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_account_journal
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_journal_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_journal_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_journal_id
+msgid "Journal"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay___last_update
+#: model:ir.model.fields,field_description:wechat.field_wechat_order___last_update
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line___last_update
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_write_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_write_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_write_uid
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_write_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_write_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_write_date
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_ids
+msgid "Line"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_micropay_id
+msgid "Micropay"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_name
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_name
+msgid "Name"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.order,trade_type:0
+msgid "Native Payment"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.micropay,state:0
+msgid "New"
+msgstr ""
+
+#. module: wechat
+#: model:ir.ui.view,arch_db:wechat.micropay_search
+#: model:ir.ui.view,arch_db:wechat.order_search
+#: model:ir.ui.view,arch_db:wechat.refund_search
+msgid "Non-Sandbox"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_notification_received
+msgid "Notification Received"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.order,trade_type:0
+msgid "Official Account Payment (Mini Program)"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_currency_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_order_id
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_order_id
+msgid "Order"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_order_ref
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_order_ref
+msgid "Order Reference"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.micropay,state:0
+#: selection:wechat.order,state:0
+msgid "Paid"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_micropay_debug
+#: model:ir.model.fields,help:wechat.field_wechat_order_debug
+msgid "Payment was not made. It's only for testing purposes"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_price
+msgid "Price"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_order_line_price
+msgid "Price in currency units (not cents)"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_product_id
+msgid "Product"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_quantity
+msgid "Quantity"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_quantity_full
+msgid "Quantity Value"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_order_line_quantity
+msgid "Quantity as Integer (WeChat limitation)"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_notification_result_raw
+msgid "Raw Notification result"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_order_details_raw
+msgid "Raw Order"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_refund_details_raw
+msgid "Raw Refund"
+msgstr ""
+
+#. module: wechat
+#: model:ir.ui.view,arch_db:wechat.micropay_form
+#: model:ir.ui.view,arch_db:wechat.order_form
+#: model:ir.ui.view,arch_db:wechat.refund_form
+msgid "Raw Response"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_result_raw
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_result_raw
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_result_raw
+msgid "Raw result"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_refund_ids
+msgid "Refund"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_refund_fee
+msgid "Refund Amount"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_refund_fee
+msgid "Refund Fee"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_refund_ref
+msgid "Refund Reference"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_refund_debug
+msgid "Refund was not made. It's only for testing purposes"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.micropay,state:0
+#: selection:wechat.order,state:0
+msgid "Refunded (part of full amount)"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_account_journal_wechat
+msgid "Register for WeChat payment"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_debug
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_debug
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_debug
+#: model:ir.ui.view,arch_db:wechat.micropay_search
+#: model:ir.ui.view,arch_db:wechat.order_search
+#: model:ir.ui.view,arch_db:wechat.refund_search
+msgid "Sandbox"
+msgstr ""
+
+#. module: wechat
+#: selection:account.journal,wechat:0
+msgid "Scanning customer's QR"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_order_notification_received
+msgid "Set to true on receiving notifcation to avoid repeated processing"
+msgstr ""
+
+#. module: wechat
+#: selection:account.journal,wechat:0
+msgid "Showing QR to customer"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_state
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_state
+#: model:ir.model.fields,field_description:wechat.field_wechat_refund_state
+msgid "State"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_terminal_ref
+msgid "Terminal Reference"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_micropay_total_fee
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_total_fee
+msgid "Total Fee"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_trade_type
+msgid "Trade Type"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_wechat_order
+msgid "Unified Order"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_wechat_refund
+msgid "Unified Refund"
+msgstr ""
+
+#. module: wechat
+#: selection:wechat.order,state:0
+msgid "Unpaid"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_account_journal_wechat
+msgid "WeChat Payment"
+msgstr ""
+
+#. module: wechat
+#: model:ir.ui.menu,name:wechat.root_wechat_menu
+msgid "Wechat"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,field_description:wechat.field_wechat_order_line_wxpay_goods_ID
+msgid "Wechat Good ID"
+msgstr ""
+
+#. module: wechat
+#: model:ir.actions.act_window,name:wechat.action_wechat_micropay
+#: model:ir.ui.menu,name:wechat.wechat_micropay_menu
+#: model:ir.ui.view,arch_db:wechat.micropay_form
+msgid "Wechat Micropay"
+msgstr ""
+
+#. module: wechat
+#: model:ir.actions.act_window,name:wechat.action_wechat_order
+#: model:ir.ui.menu,name:wechat.wechat_order_menu
+#: model:ir.ui.view,arch_db:wechat.order_form
+msgid "Wechat Order"
+msgstr ""
+
+#. module: wechat
+#: model:ir.actions.act_window,name:wechat.action_wechat_refund
+#: model:ir.ui.menu,name:wechat.wechat_refund_menu
+#: model:ir.ui.view,arch_db:wechat.refund_form
+msgid "Wechat Refund"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_order_line_name
+msgid "When empty, product's name is used"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model.fields,help:wechat.field_wechat_micropay_terminal_ref
+msgid "e.g. POS Name"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_ir_config_parameter
+msgid "ir.config_parameter"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_wechat_micropay
+msgid "wechat.micropay"
+msgstr ""
+
+#. module: wechat
+#: model:ir.model,name:wechat.model_wechat_order_line
+msgid "wechat.order.line"
+msgstr ""
+

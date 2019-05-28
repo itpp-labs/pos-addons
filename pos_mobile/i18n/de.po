@@ -1,10 +1,10 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_mobile
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2018
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
@@ -12,12 +12,18 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2017-12-01 15:56+0000\n"
 "Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_mobile
+#: model:ir.model.fields,field_description:pos_mobile.field_pos_config_auto_mobile
+msgid "Auto Mobile View"
+msgstr ""
 
 #. module: pos_mobile
 #. openerp-web
@@ -31,4 +37,15 @@ msgstr "Kunde"
 #: code:addons/pos_mobile/static/src/xml/pos.xml:62
 #, python-format
 msgid "Please select a payment method."
+msgstr ""
+
+#. module: pos_mobile
+#: model:ir.model.fields,help:pos_mobile.field_pos_config_auto_mobile
+#: model:ir.ui.view,arch_db:pos_mobile.view_pos_config_form
+msgid "Switch to Mobile view automatically depending on device"
+msgstr ""
+
+#. module: pos_mobile
+#: model:ir.model,name:pos_mobile.model_pos_config
+msgid "pos.config"
 msgstr ""

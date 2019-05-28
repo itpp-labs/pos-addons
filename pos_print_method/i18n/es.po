@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_print_method
-# 
+#
 # Translators:
 # Luis Guzman <ark@switnet.org>, 2018
 msgid ""
@@ -11,23 +11,24 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2018-04-27 23:55+0000\n"
 "Last-Translator: Luis Guzman <ark@switnet.org>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:26
+#: code:addons/pos_print_method/static/src/js/tour.js:27
 #, python-format
 msgid "<p>Click <b>Fruits and Vegetables</b> category.</p>"
 msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:38
+#: code:addons/pos_print_method/static/src/js/tour.js:39
 #, python-format
 msgid "<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"
 msgstr ""
@@ -41,14 +42,14 @@ msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:30
+#: code:addons/pos_print_method/static/src/js/tour.js:31
 #, python-format
 msgid "<p>Click product 1</p>"
 msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:34
+#: code:addons/pos_print_method/static/src/js/tour.js:35
 #, python-format
 msgid "<p>Click product 2</p>"
 msgstr ""
@@ -59,13 +60,13 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 "<p>Haga click para iniciar la interfaz de venta del punto de venta. Este "
 "<b>opera en tabletas</b>, laptops, o hardware industrial.</p><p>Una vez que "
-"la sesión ha iniciado, el sistema puede continuar a ejecutarse sin necesidad"
-" de una conexión a internet.</p>"
+"la sesión ha iniciado, el sistema puede continuar a ejecutarse sin necesidad "
+"de una conexión a internet.</p>"
 
 #. module: pos_print_method
 #: selection:restaurant.printer,printer_method_name:0
