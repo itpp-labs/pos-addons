@@ -156,6 +156,9 @@ odoo.define('pos_multi_session_restaurant', function(require){
                              }
                         });
                     } else {
+                        if (!self.floors.length) {
+                            return;
+                        }
                         // if the table is not exist move the order to a first empty table
                         var empty_tables = self.floors[0].tables.filter(function(exist_table) {
                            return self.get_table_orders(exist_table).length === 0;
