@@ -7,15 +7,11 @@ sudo: false
 cache: pip
 
 addons:
+  postgresql: "9.5"
   apt:
     packages:
       - expect-dev  # provides unbuffer utility
       - python-lxml  # because pip installation is slow
-
-
-services:
-  - postgresql: "9.5"
-
 
 env:
   global:
