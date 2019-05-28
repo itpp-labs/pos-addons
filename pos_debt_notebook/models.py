@@ -54,10 +54,10 @@ class ResPartner(models.Model):
 
         res_index = dict((id, 0) for id in partners.ids)
         for data in res:
-            id = data['partner_id'][0]
+            pid = data['partner_id'][0]
             balance = data['balance']
             for r in partners:
-                if id == r.id or id in r.child_ids.ids:
+                if pid == r.id or pid in r.child_ids.ids:
                     res_index[r.id] += balance
 
         for r in partners:
