@@ -3,6 +3,11 @@
 Updates
 =======
 
+`1.2.1`
+-------
+
+- **Fix:** Cannot set property of undefined on some actions with password popup
+
 `1.2.0`
 -------
 

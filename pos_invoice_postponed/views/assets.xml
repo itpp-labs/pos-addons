@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_invoice_postponed/static/src/js/main.js"></script>
+        </xpath>
+    </template>
+    <template id="assets_backend_pos_invoice_postponed" name="pos_invoice_postponed_backend_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_invoice_postponed/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
+</odoo>

@@ -233,6 +233,8 @@ class PosMultiSessionSync(models.Model):
                 return {'action': 'revision_error', 'order_uid': order_uid}
         if order:
             order.state = 'deleted'
+        _logger.debug('Remove Order: %s Finalized: %s Revision: %s',
+                      order_uid, message['data']['finalized'], message['data']['revision_ID'])
         self.broadcast_message(message)
         return {'order_ID': self.order_ID}
 
