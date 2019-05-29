@@ -1,10 +1,10 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_longpolling
-#
+# 
 # Translators:
 # Sergio Zanchetta <primes2h@gmail.com>, 2019
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
@@ -12,12 +12,11 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2018-04-21 00:09+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2019\n"
-"Language-Team: Italian (https://www.transifex.com/it-projects-llc/"
-"teams/76080/it/)\n"
-"Language: it\n"
+"Language-Team: Italian (https://www.transifex.com/it-projects-llc/teams/76080/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_longpolling
@@ -26,8 +25,8 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system "
-"continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system"
+" continues to run without an internet connection.</p>"
 msgstr ""
 "<p>Fare clic per avviare l'interfaccia del punto vendita. <b>Funziona su "
 "tablet</b>, portatili o hardware industriale.</p><p>Dopo l'avvio della "
@@ -39,28 +38,25 @@ msgid "Autostart longpolling"
 msgstr "Avvio automatico longpolling"
 
 #. module: pos_longpolling
+#. openerp-web
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:128
+#, python-format
+msgid "Error"
+msgstr "Errore"
+
+#. module: pos_longpolling
 #: model:ir.ui.view,arch_db:pos_longpolling.view_pos_config_form
 msgid "Longpolling"
 msgstr "Longpolling"
 
 #. module: pos_longpolling
-#. openerp-web
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:163
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:164
-#, python-format
-msgid "Longpolling Handling Error"
-msgstr ""
-
-#. module: pos_longpolling
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_longpolling_max_silence_timeout
-#, fuzzy
-msgid "Max Silence timeout (sec)"
+msgid "Max Silence timeout"
 msgstr "Tempo di attesa massimo"
 
 #. module: pos_longpolling
 #: model:ir.model.fields,field_description:pos_longpolling.field_pos_config_longpolling_pong_timeout
-#, fuzzy
-msgid "Pong timeout (sec)"
+msgid "Pong timeout"
 msgstr "Tempo di attesa per la risposta"
 
 #. module: pos_longpolling
@@ -93,7 +89,8 @@ msgstr ""
 
 #. module: pos_longpolling
 #: model:ir.model.fields,help:pos_longpolling.field_pos_config_autostart_longpolling
-msgid "When switched off longpoling will start only when other module start it"
+msgid ""
+"When switched off longpoling will start only when other module start it"
 msgstr ""
 "Se disabilitata, il longpolling verrà avviato solo quando lo faranno altri "
 "moduli "
@@ -102,6 +99,3 @@ msgstr ""
 #: model:ir.model,name:pos_longpolling.model_pos_config
 msgid "pos.config"
 msgstr "pos.config"
-
-#~ msgid "Error"
-#~ msgstr "Errore"
