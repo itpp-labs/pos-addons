@@ -1,7 +1,7 @@
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2016-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
@@ -18,8 +18,7 @@ class PosConfig(models.Model):
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session',
                                        help='Set the same value for POSes where orders should be synced.'
                                             'Uncheck the box "Active" if the POS should not use syncing.'
-                                            'Before updating you need to close active session',
-                                       default=lambda self: self.env.ref('pos_multi_session.default_multi_session', raise_if_not_found=False))
+                                            'Before updating you need to close active session')
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
@@ -27,7 +26,8 @@ class PosConfig(models.Model):
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
-    company_id = fields.Many2one(related='multi_session_id.company_id')
+    company_id = fields.Many2one(related='multi_session_id.company_id', store=True, default=lambda self: self.env.user.company_id)
+    stock_location_id = fields.Many2one(related='multi_session_id.stock_location_id', store=True)
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -45,6 +45,9 @@ class PosConfig(models.Model):
 class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
 
+    def _get_default_location(self):
+        return self.env['stock.warehouse'].search([('company_id', '=', self.env.user.company_id.id)], limit=1).lot_stock_id
+
     name = fields.Char('Name')
     multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for POSes", default=True)
     pos_ids = fields.One2many('pos.config', 'multi_session_id', string='POSes in Multi-session')
@@ -56,18 +59,34 @@ class PosMultiSession(models.Model):
                                  "It's used to prevent synchronization of old orders")
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
+    stock_location_id = fields.Many2one(
+        'stock.location', string='Stock Location',
+        domain=[('usage', '=', 'internal')], required=True, default=_get_default_location)
 
-    @api.multi
+    @api.model
     def action_set_default_multi_session(self):
         """
-            during installation of the module set default multi-session
+            during installation of the module set default multi-sessions (separate default multi-session for every company)
             for all POSes for which multi_session_id is not specified
         """
-        self.ensure_one()
-        configs = self.env['pos.config'].search([('multi_session_id', '=', False)])
-        configs.write({
-            'multi_session_id': self.id
-        })
+        companies = self.env['res.company'].search([])
+        for company in companies:
+            configs = self.env['pos.config'].search([('multi_session_id', '=', False), ('company_id', '=', company.id)])
+
+            # If exist POSes with the company then we need to create default multi-session
+            if configs:
+                # Create default multi-session for current company
+                stock_location = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1).lot_stock_id
+                multi_session = self.create({
+                    'name': 'Default Multi Session (%s)' % company.name,
+                    'multi_session_active': False,
+                    'company_id': company.id,
+                    'stock_location_id': stock_location.id
+                })
+                for c in configs:
+                    c.write({
+                        'multi_session_id': multi_session.id
+                    })
 
     @api.multi
     def name_get(self):

@@ -1,3 +1,8 @@
+`4.2.8`
+-------
+
+- **Fix:** Error during installation in multi-company mode
+
 `4.2.7`
 -------
 
