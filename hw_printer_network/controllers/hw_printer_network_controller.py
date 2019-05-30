@@ -59,6 +59,7 @@ class EscposNetworkDriver(EscposDriver):
         self.network_printers = []
         self.ping_processes = {}
         self.printer_objects = {}
+        self.on_task_pushing = False
         super(EscposNetworkDriver, self).__init__()
 
     def get_network_printer(self, ip, name=None):
@@ -80,6 +81,15 @@ class EscposNetworkDriver(EscposDriver):
         if not found_printer:
             self.add_network_printer(ip, name)
         return None
+
+    def push_task(self, task, data=None):
+        if self.on_task_pushing:
+            time.sleep(1)
+            self.push_task(task, data)
+            return
+        self.on_task_pushing = True
+        super(EscposNetworkDriver, self).push_task(task, data)
+        self.on_task_pushing = False
 
     def add_network_printer(self, ip, name=None):
         printer = dict(
