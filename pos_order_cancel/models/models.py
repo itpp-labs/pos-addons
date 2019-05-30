@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+# Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
+# Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
