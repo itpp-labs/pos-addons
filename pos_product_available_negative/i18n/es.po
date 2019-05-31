@@ -37,17 +37,17 @@ msgid "Click the payment method"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config_negative_order_group_id
+#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config__negative_order_group_id
 msgid "Group allows to sell products which are out of a stock."
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config_negative_order_group_id
+#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config__negative_order_group_id
 msgid "Negative Order Group"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_order_negative_stock_user_id
+#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_order__negative_stock_user_id
 msgid "Negative stock approval"
 msgstr ""
 
@@ -66,9 +66,15 @@ msgid "Order has out-of-stock product and must be approved by supervisor"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_order_negative_stock_user_id
+#: model:ir.model.fields,help:pos_product_available_negative.field_pos_order__negative_stock_user_id
 msgid "Person who authorized a sale with a product which is out of a stock"
 msgstr ""
+
+#. module: pos_product_available_negative
+#: model:ir.model,name:pos_product_available_negative.model_pos_config
+#, fuzzy
+msgid "Point of Sale Configuration"
+msgstr "Órdenes del Punto de Venta"
 
 #. module: pos_product_available_negative
 #: model:ir.model,name:pos_product_available_negative.model_pos_order
@@ -78,6 +84,7 @@ msgstr "Órdenes del Punto de Venta"
 #. module: pos_product_available_negative
 #. openerp-web
 #: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:78
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:83
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
@@ -89,7 +96,5 @@ msgstr ""
 msgid "check restriction popup"
 msgstr ""
 
-#. module: pos_product_available_negative
-#: model:ir.model,name:pos_product_available_negative.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

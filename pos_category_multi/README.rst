@@ -30,7 +30,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_category_multi/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_category_multi/>`__.
 
       Thank you for understanding!
 
@@ -39,13 +39,12 @@ Maintainers
 Further information
 ===================
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_category_multi/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_category_multi/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_category_multi.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_category_multi.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_category_multi.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_category_multi.atom>`_
 
-Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
-
+Tested on Odoo 12.0 530f364547af1cc4ccfa9baa66cd70e564bc62cb

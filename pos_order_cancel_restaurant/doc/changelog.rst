@@ -3,10 +3,15 @@
 
 **New:** Ask manager for kitchen orders only
 
-`1.4.2`
-------
+`1.4.3`
+-------
 
 **Improvement:** Compatibility with pos_category_multi module
+
+`1.4.2`
+-------
+
+- **FIX:** Error setting a cancellation reason after sending an order to the kitchen
 
 `1.4.1`
 -------

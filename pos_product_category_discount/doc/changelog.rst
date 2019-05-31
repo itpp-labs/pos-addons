@@ -3,10 +3,15 @@
 Updates
 =======
 
-`1.2.6`
+`1.2.7`
 -------
 
 - **FIX:** Error if the discount product is not allowed in POS
+
+`1.2.6`
+-------
+
+- **FIX:** Error associated with the display of buttons and labels (from popup Discount) when opening a popup (Guests, Password and etc ...)
 
 `1.2.5`
 -------

@@ -72,6 +72,18 @@
         </field>
     </record>
 
+    <record id="pos_discount_program_search_view" model="ir.ui.view">
+        <field name="name">pos.discount_program.search</field>
+        <field name="model">pos.discount_program</field>
+        <field name="arch" type="xml">
+            <search string="Search Discount Program">
+                <field name="discount_program_active"/>
+                <filter string="Active program" name="active" domain="[('discount_program_active','=',True)]"/>
+                <filter string="Inactive program" name="inactive" domain="[('discount_program_active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="pos_discount_program_action" model="ir.actions.act_window">
         <field name="name">POS Discount Programs</field>
         <field name="type">ir.actions.act_window</field>
@@ -83,18 +95,6 @@
             <p class="oe_view_nocontent_create">
                 Click to define a new discount program.
             </p>
-        </field>
-    </record>
-
-    <record id="pos_discount_program_filter" model="ir.ui.view">
-        <field name="name">pos.discount_program.list.select</field>
-        <field name="model">pos.discount_program</field>
-        <field name="arch" type="xml">
-            <search string="Search Discount Program">
-                <field name="discount_program_active"/>
-                <filter string="Active" domain="[('discount_program_active','=',True)]"/>
-                <filter string="Inactive" domain="[('discount_program_active','=',False)]"/>
-            </search>
         </field>
     </record>
 

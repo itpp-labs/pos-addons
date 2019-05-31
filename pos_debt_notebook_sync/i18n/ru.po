@@ -48,5 +48,8 @@ msgstr ""
 
 #. module: pos_debt_notebook_sync
 #: model:ir.model,name:pos_debt_notebook_sync.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

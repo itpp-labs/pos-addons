@@ -22,23 +22,23 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_ask_managers_pin_kitchen_orders_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__ask_managers_pin_kitchen_orders_only
 msgid "Ask Manager For Kitchen orders only"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__kitchen_canceled_only
 msgid ""
 "Ask cancelation / refund reason for orders sent (printed) to kitchen only"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__kitchen_canceled_only
 msgid "Ask reason for kitchen orders only"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_auto_send_to_kitchen
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__auto_send_to_kitchen
 msgid "Automatic Order Sending"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgid "Foreign object"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_send_removed_lines_to_kitchen
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__send_removed_lines_to_kitchen
 msgid ""
 "If unchecked, the orderline will not be printed repeatly after its removing"
 msgstr ""
@@ -71,8 +71,13 @@ msgid "Inappropriate roasting degree"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_ask_managers_pin_kitchen_orders_only
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__ask_managers_pin_kitchen_orders_only
 msgid "Only Managers are allowed to cancel kitchen order lines"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order_line_canceled
+msgid "Order Line Canceled"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
@@ -81,17 +86,22 @@ msgid "Over-salted"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
 #: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order
 msgid "Point of Sale Orders"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_line_canceled__was_printed
 msgid "Printed"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_line_canceled__was_printed
 msgid ""
 "Product was printed at kitchen printer. Usually it means, that product was "
 "canceled after being cooked."
@@ -106,26 +116,26 @@ msgid "REASON"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_save_canceled_kitchen_orders_only
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_save_canceled_kitchen_orders_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__save_canceled_kitchen_orders_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order__save_canceled_kitchen_orders_only
 msgid "Save Canceled / Refunded kitchen orders only"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_save_canceled_kitchen_orders_only
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_save_canceled_kitchen_orders_only
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__save_canceled_kitchen_orders_only
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order__save_canceled_kitchen_orders_only
 msgid "Save canceled / refunded orders in Backend"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_auto_send_to_kitchen
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__auto_send_to_kitchen
 msgid ""
 "Send order to the kitchen immediately after cancelation / refund the "
 "orderline (if the line was sent before)"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_send_removed_lines_to_kitchen
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__send_removed_lines_to_kitchen
 msgid "Send removed line to Kitchen"
 msgstr ""
 
@@ -146,12 +156,5 @@ msgstr ""
 msgid "You will lose any data associated with the current order"
 msgstr ""
 
-#. module: pos_order_cancel_restaurant
-#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
-
-#. module: pos_order_cancel_restaurant
-#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order_line_canceled
-msgid "pos.order.line.canceled"
-msgstr ""
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

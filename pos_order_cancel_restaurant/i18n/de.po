@@ -1,37 +1,44 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_order_cancel_restaurant
-# 
+#
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2018
-# 
+# Translation Bot <i18n-bot@it-projects.info>, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2017-11-23 06:38+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"POT-Creation-Date: 2018-04-21 00:08+0000\n"
+"PO-Revision-Date: 2018-04-21 00:08+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__ask_managers_pin_kitchen_orders_only
+#, fuzzy
+msgid "Ask Manager For Kitchen orders only"
+msgstr "Begründung nur für Küchenbestellungen verlangen"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__kitchen_canceled_only
 msgid ""
 "Ask cancelation / refund reason for orders sent (printed) to kitchen only"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__kitchen_canceled_only
 msgid "Ask reason for kitchen orders only"
 msgstr "Begründung nur für Küchenbestellungen verlangen"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_auto_send_to_kitchen
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__auto_send_to_kitchen
 msgid "Automatic Order Sending"
 msgstr ""
 
@@ -42,7 +49,7 @@ msgstr "Verbrannt"
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:29
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:30
 #, python-format
 msgid "Destroy Current Order ?"
 msgstr "Aktuelle Bestellung löschen"
@@ -53,9 +60,26 @@ msgid "Foreign object"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__send_removed_lines_to_kitchen
+msgid ""
+"If unchecked, the orderline will not be printed repeatly after its removing"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
 #: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_5
 msgid "Inappropriate roasting degree"
 msgstr "Falsche Garstufe"
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__ask_managers_pin_kitchen_orders_only
+msgid "Only Managers are allowed to cancel kitchen order lines"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order_line_canceled
+#, fuzzy
+msgid "Order Line Canceled"
+msgstr "pos.order.line.canceled"
 
 #. module: pos_order_cancel_restaurant
 #: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_1
@@ -63,17 +87,23 @@ msgid "Over-salted"
 msgstr "Versalzen"
 
 #. module: pos_order_cancel_restaurant
+#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_config
+#, fuzzy
+msgid "Point of Sale Configuration"
+msgstr "Point of Sale-Bestellungen"
+
+#. module: pos_order_cancel_restaurant
 #: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order
 msgid "Point of Sale Orders"
 msgstr "Point of Sale-Bestellungen"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_line_canceled__was_printed
 msgid "Printed"
 msgstr "Gedruckt"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_line_canceled_was_printed
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_line_canceled__was_printed
 msgid ""
 "Product was printed at kitchen printer. Usually it means, that product was "
 "canceled after being cooked."
@@ -90,22 +120,28 @@ msgid "REASON"
 msgstr "GRUND"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config_save_canceled_orders
-#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order_save_canceled_orders
-msgid "Save Canceled / Refunded Order"
-msgstr ""
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__save_canceled_kitchen_orders_only
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_order__save_canceled_kitchen_orders_only
+#, fuzzy
+msgid "Save Canceled / Refunded kitchen orders only"
+msgstr "Begründung nur für Küchenbestellungen verlangen"
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_save_canceled_orders
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order_save_canceled_orders
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__save_canceled_kitchen_orders_only
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_order__save_canceled_kitchen_orders_only
 msgid "Save canceled / refunded orders in Backend"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_auto_send_to_kitchen
+#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config__auto_send_to_kitchen
 msgid ""
 "Send order to the kitchen immediately after cancelation / refund the "
 "orderline (if the line was sent before)"
+msgstr ""
+
+#. module: pos_order_cancel_restaurant
+#: model:ir.model.fields,field_description:pos_order_cancel_restaurant.field_pos_config__send_removed_lines_to_kitchen
+msgid "Send removed line to Kitchen"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
@@ -120,17 +156,10 @@ msgstr "Falsche Temperatur"
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:30
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:31
 #, python-format
 msgid "You will lose any data associated with the current order"
 msgstr "Sie verlieren alle Daten der laufenden Bestellung"
 
-#. module: pos_order_cancel_restaurant
-#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
-
-#. module: pos_order_cancel_restaurant
-#: model:ir.model,name:pos_order_cancel_restaurant.model_pos_order_line_canceled
-msgid "pos.order.line.canceled"
-msgstr "pos.order.line.canceled"
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

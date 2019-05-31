@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
-            <xpath expr="//link[last()]" position="after">
-                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/widgets.js"></script>
-                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/models.js"></script>
-                <link rel="stylesheet" href="/pos_product_category_discount/static/src/css/pos.css"/>
-            </xpath>
-        </template>
-        <template id="demo_assets_backend" name="pos_disable_payment demo assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_product_category_discount/static/src/js/tour.js"></script>
-            </xpath>
-        </template>
+    <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_product_category_discount/static/src/js/widgets.js"></script>
+            <script type="text/javascript" src="/pos_product_category_discount/static/src/js/models.js"></script>
+            <link rel="stylesheet" href="/pos_product_category_discount/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
+    <template id="demo_assets_backend" name="pos_disable_payment demo assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_product_category_discount/static/src/js/tour.js"></script>
+        </xpath>
+    </template>
 </odoo>

@@ -248,10 +248,14 @@ odoo.define('pos_orders_history_return.screens', function (require) {
             if (order && order.get_mode() === "return") {
                 this.return_mode = true;
             }
-            if (this.return_mode) {
-                this.product_cache.clear_node(product.id);
+            if (this.return_mode || (!this.return_mode && product.old_price)) {
+                var current_pricelist = this._get_active_pricelist();
+                var cache_key = this.calculate_cache_key(product, current_pricelist);
+                this.product_cache.clear_node(cache_key);
             }
+
             var cached = this._super(product);
+
             var el = $(cached).find('.max-return-qty');
             if (el.length) {
                 el.remove();

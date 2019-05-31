@@ -3,7 +3,7 @@
 ========================
 
 
-Follow instructions of `WeChat API <https://apps.odoo.com/apps/modules/11.0/wechat/>`__ module.
+Follow instructions of `WeChat API <https://apps.odoo.com/apps/modules/12.0/wechat/>`__ module.
 
 Installation
 ============

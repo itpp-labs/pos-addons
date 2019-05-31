@@ -49,8 +49,8 @@ msgstr "POS über Schuldaktualisierungen benachrichtigen"
 
 #. module: pos_debt_notebook_sync
 #: model:ir.model,name:pos_debt_notebook_sync.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
+msgid "Point of Sale Configuration"
+msgstr ""
 
 #~ msgid "Debt payments"
 #~ msgstr "Schuldzahlung"
@@ -60,3 +60,6 @@ msgstr "pos.config"
 
 #~ msgid "Paid invoices"
 #~ msgstr "Bezahlte Rechnungen"
+
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

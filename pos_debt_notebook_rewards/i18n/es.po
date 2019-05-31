@@ -17,19 +17,24 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_amount
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__amount
 msgid "A coefficient to transfer shifts to credits"
 msgstr "Un coeficiente para transferir turnos a créditos"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_account_bank_statement_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__account_bank_statement_id
 msgid "Account Bank Statement"
 msgstr "Estado del banco de cuenta"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_needaction
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_needaction
 msgid "Action Needed"
 msgstr "Acción Necesaria"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model,name:pos_debt_notebook_rewards.model_res_partner_attendance
@@ -37,22 +42,27 @@ msgid "Attendance"
 msgstr "Asistencia"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_attendance_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__attendance_ids
 msgid "Attendances"
 msgstr "Asistencias"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_balance
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__balance
 msgid "Balance Update"
 msgstr "Actualización Balance"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward___barcode_scanned
+msgid "Barcode Scanned"
+msgstr ""
+
+#. module: pos_debt_notebook_rewards
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_balance
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__balance
 msgid ""
 "Change of balance. Negative value for purchases without money (debt). "
 "Positive for credit payments (prepament or payments for debts)."
@@ -61,7 +71,7 @@ msgstr ""
 "para compras con créditos (prepagadas o pago de deudas)."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_reversed_balance
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__reversed_balance
 msgid ""
 "Change of balance. Positive value for purchases without money (debt). "
 "Negative for credit payments (prepament or payments for debts)."
@@ -70,86 +80,81 @@ msgstr ""
 "para pagos de crédito (prepago o pagos de deudas)."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_company_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__company_id
 msgid "Company"
 msgstr "Compañía"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.actions.server,name:pos_debt_notebook_rewards.server_action_pos_credit_update_reward
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
 msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_create_uid
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_create_uid
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__create_uid
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_create_date
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_create_date
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__create_date
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__create_date
 msgid "Created on"
 msgstr "Creado el"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_credit_update_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__credit_update_id
 msgid "Credit Update model"
 msgstr "Modelo de actualización de crédito"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_currency_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Customer"
 msgstr "Cliente"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_date
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__date
 msgid "Date"
 msgstr "Fecha"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_last_post
-msgid "Date of the last message posted on the record."
-msgstr "Fecha del último mensaje publicado en el registro."
-
-#. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Day"
 msgstr "Día"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_display_name
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_display_name
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__display_name
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_form
 msgid "Draft"
 msgstr "Borrador"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_follower_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_follower_ids
 msgid "Followers"
 msgstr "Seguidores"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_channel_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_channel_ids
 msgid "Followers (Channels)"
 msgstr "Seguidores (Canales)"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_partner_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Seguidores (Empresas)"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Group By"
 msgstr "Agrupar por"
 
@@ -159,59 +164,65 @@ msgid "Helps you reward the partner for attendances."
 msgstr "Te ayuda a recompensar al compañero por las asistencias."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Hour"
 msgstr "Hora"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_id
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__id
 msgid "ID"
 msgstr "ID"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_unread
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Si está marcado, hay nuevos mensajes que requieren su atención"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_needaction
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_is_follower
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_has_error
+#, fuzzy
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_is_follower
 msgid "Is Follower"
 msgstr "Es un seguidor"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_journal_id
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_journal_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__journal_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__journal_id
 msgid "Journal"
 msgstr "Diario"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_last_post
-msgid "Last Message Date"
-msgstr "Fecha del último mensaje"
-
-#. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward___last_update
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type___last_update
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward____last_update
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_write_uid
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_write_uid
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__write_uid
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_write_date
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_write_date
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__write_date
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
 
 #. module: pos_debt_notebook_rewards
 #: model:res.groups,name:pos_debt_notebook_rewards.group_reward_manager
@@ -224,42 +235,65 @@ msgid "Manual Credit Updates"
 msgstr "Actualización Manual Créditos"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_ids
+#: model:ir.model,name:pos_debt_notebook_rewards.model_pos_credit_update_reward_type
+#, fuzzy
+msgid "Manual Credit Updates Type"
+msgstr "Actualización Manual Créditos"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_ids
 msgid "Messages"
 msgstr "Mensajes"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Month"
 msgstr "Mes"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_name
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__name
 msgid "Name"
 msgstr "Nombre"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_new_balance
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__new_balance
 msgid "New Balance"
 msgstr "Balance nuevo"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_note
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__note
 msgid "Note"
 msgstr "Nota"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_needaction_counter
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Número de acciones"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_needaction_counter
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_has_error_counter
+#, fuzzy
+msgid "Number of error"
+msgstr "Número de acciones"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_needaction_counter
 msgid "Number of messages which requires an action"
 msgstr "Número de mensajes que requieren una acción"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_unread_counter
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_has_error_counter
+#, fuzzy
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_unread_counter
 msgid "Number of unread messages"
 msgstr "Número de mensajes no leidos"
 
@@ -269,28 +303,28 @@ msgid "Officer"
 msgstr "Oficial"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_config_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__config_id
 msgid "POS"
 msgstr "TPV"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_order_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__order_id
 msgid "POS Order"
 msgstr "Orden del TPV"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "POS ordered created during current year"
 msgstr "Pedidos creados con TPV durante el año actual"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model,name:pos_debt_notebook_rewards.model_res_partner
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_partner_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__partner_id
 msgid "Partner"
 msgstr "Contacto"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_reversed_balance
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__reversed_balance
 msgid "Payments"
 msgstr "Pagos"
 
@@ -316,17 +350,17 @@ msgid "Reward Types"
 msgstr "Tipos de recompensa"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_amount
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__amount
 msgid "Reward amount"
 msgstr "Cantidad de recompensa"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_res_partner_attendance_reward_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_res_partner_attendance__reward_ids
 msgid "Reward id"
 msgstr "ID de recompensa"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_reward_type_id
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__reward_type_id
 msgid "Reward type"
 msgstr "Tipo de recompensa"
 
@@ -336,18 +370,18 @@ msgid "Rewards"
 msgstr "Recompensas"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_user_id
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__user_id
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Salesperson"
 msgstr "Comercial"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_state
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__state
 msgid "State"
 msgstr "Estado"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_config_id
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__config_id
 msgid "The physical point of sale you will use."
 msgstr "El TPV físico que utilizará."
 
@@ -358,58 +392,67 @@ msgstr ""
 "El usuario tendrá acceso para ver el menú de recompensas de asistencia."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "This Year"
 msgstr "Este Año"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Today"
 msgstr "Hoy"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_unread
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_unread
 msgid "Unread Messages"
 msgstr "Mensajes por leer"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_message_unread_counter
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Contador de mensajes sin leer"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_update_type
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__update_type
 #, fuzzy
 msgid "Update Type"
 msgstr "Tipo de actualización"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_new_balance
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward___barcode_scanned
+msgid "Value of the last barcode scanned."
+msgstr ""
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__new_balance
 msgid "Value to set balance to. Used only in Draft state."
 msgstr "Valor para establecer el balance a. Usado solo en el estado borrador."
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward__website_message_ids
 #, fuzzy
 msgid "Website Messages"
 msgstr "Mensajes"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward__website_message_ids
 msgid "Website communication history"
 msgstr ""
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
+#: model_terms:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
 msgid "Week"
 msgstr "Semana"
 
 #. module: pos_debt_notebook_rewards
-#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_type_journal_id
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_type__journal_id
 msgid "journal to convert hours to credits in it"
 msgstr "diario para convertir horas a créditos en él"
 
-#. module: pos_debt_notebook_rewards
-#: model:ir.model,name:pos_debt_notebook_rewards.model_pos_credit_update_reward_type
-msgid "pos.credit.update.reward.type"
-msgstr "pos.credit.update.reward.type"
+#~ msgid "Date of the last message posted on the record."
+#~ msgstr "Fecha del último mensaje publicado en el registro."
+
+#~ msgid "Last Message Date"
+#~ msgstr "Fecha del último mensaje"
+
+#~ msgid "pos.credit.update.reward.type"
+#~ msgstr "pos.credit.update.reward.type"

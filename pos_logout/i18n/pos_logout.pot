@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,25 +14,25 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_logout
-#: model:ir.model.fields,field_description:pos_logout.field_pos_config_logout_interval
+#: model:ir.model,name:pos_logout.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_logout
+#: model:ir.model.fields,field_description:pos_logout.field_pos_config__logout_interval
 msgid "Screen Autolock"
 msgstr ""
 
 #. module: pos_logout
 #. openerp-web
-#: code:addons/pos_logout/static/src/xml/pos.xml:25
+#: code:addons/pos_logout/static/src/xml/pos.xml:18
 #, python-format
 msgid "Tap to unlock..."
 msgstr ""
 
 #. module: pos_logout
-#: model:ir.model.fields,help:pos_logout.field_pos_config_logout_interval
-#: model:ir.ui.view,arch_db:pos_logout.view_pos_config_form
+#: model:ir.model.fields,help:pos_logout.field_pos_config__logout_interval
+#: model_terms:ir.ui.view,arch_db:pos_logout.view_pos_config_form
 msgid "The last activity interval to activate the automatic screen lock. Zero if autolocking is not needed"
-msgstr ""
-
-#. module: pos_logout
-#: model:ir.model,name:pos_logout.model_pos_config
-msgid "pos.config"
 msgstr ""
 

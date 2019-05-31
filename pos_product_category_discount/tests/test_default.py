@@ -1,5 +1,4 @@
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -7,18 +6,14 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
-        # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
-        env = Environment(self.registry.test_cr, self.uid, {})
-
+        env = self.env
         main_pos_config = env.ref('point_of_sale.pos_config_main')
-
+        product = env.ref('point_of_sale.product_product_consumable')
         main_pos_config.write({
             'module_pos_discount': True,
+            'discount_product_id': product.id,
+            'discount_pc': 10.0
         })
-        main_pos_config.discount_product_id = env.ref('point_of_sale.boni_orange')
-
-        main_pos_config.open_session_cb()
-
         env['ir.module.module'].search([('name', '=', 'pos_product_category_discount')], limit=1).state = 'installed'
 
         self.phantom_js(
@@ -31,5 +26,5 @@ class TestUi(odoo.tests.HttpCase):
             ".tours.pos_product_category_discount_tour.ready",
 
             login="admin",
-            timeout=240,
+            timeout=1000,
         )

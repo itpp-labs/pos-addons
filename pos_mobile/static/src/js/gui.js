@@ -10,9 +10,8 @@ odoo.define('pos_mobile.gui', function (require) {
 
     gui.Gui.include({
         show_screen: function(screen_name,params,refresh,skip_close_popup) {
+            this.change_screen_type(screen_name);
             this._super(screen_name,params,refresh,skip_close_popup);
-            var current_screen_name = this.get_current_screen();
-            this.change_screen_type(current_screen_name);
         },
         change_screen_type: function(current_screen) {
             var order_container = $('.mobile-order-container');

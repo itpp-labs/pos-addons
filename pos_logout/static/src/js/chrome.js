@@ -16,6 +16,7 @@ odoo.define('pos_logout.chrome', function (require) {
             this.gui.current_popup.$(".exit").click(function(){
                 self.gui.show_popup('block');
             });
+            this.gui.current_popup.cashiers = false;
         },
     });
 

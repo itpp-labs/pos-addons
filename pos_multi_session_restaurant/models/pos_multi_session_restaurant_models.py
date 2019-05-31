@@ -22,5 +22,5 @@ class PosMultiSession(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    ms_floor_ids = fields.Many2many(related='multi_session_id.floor_ids')
+    ms_floor_ids = fields.Many2many(related='multi_session_id.floor_ids', string='Multi-Session Restaurant Floors')
     table_blocking = fields.Boolean(related='multi_session_id.table_blocking')

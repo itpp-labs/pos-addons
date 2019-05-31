@@ -2,6 +2,12 @@
 -------
 - **Improvement:** New Balance is amount for selected journal,  not for total Credits.
 
+`5.2.1`
+-------
+
+- **Improvement:** `Configuration -> Settings` were moved to `Point of Sale` menu
+- **Fix:** Error in order with combined payment methods
+
 `5.2.0`
 -------
 - **ADD:** Button on the ``Write-off Credits`` form. Adds all partners with debt according to the selected journal
@@ -48,6 +54,7 @@
 -------
 
 - **FIX:** compatibility with pos_category_multi
+- **FIX:** Error after clicking "Show Debt History" for a customer
 
 `5.0.3`
 -------
