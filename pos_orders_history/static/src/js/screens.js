@@ -8,15 +8,14 @@ odoo.define('pos_orders_history.screens', function (require) {
     var gui = require('point_of_sale.gui');
     var core = require('web.core');
     var QWeb = core.qweb;
+    var PopupWidget = require('point_of_sale.popups');
     var rpc = require('web.rpc');
     var _t = core._t;
 
     screens.OrdersHistoryButton = screens.ActionButtonWidget.extend({
         template: 'OrdersHistoryButton',
         button_click: function () {
-            if (this.pos.db.pos_orders_history.length) {
-                this.gui.show_screen('orders_history_screen');
-            }
+            this.gui.show_screen('orders_history_screen');
         },
     });
     screens.define_action_button({
@@ -96,6 +95,62 @@ odoo.define('pos_orders_history.screens', function (require) {
 
             this.$('.searchbox .search-clear').click(function () {
                 self.clear_search();
+            });
+
+            this.$('.scan-barcode').click(function() {
+                self.gui.show_popup('textinput', {
+                    'title': _t('Enter or Scan barcode'),
+                    'barcode': true,
+                    confirm: function(barcode) {
+                        self.confirm_barcode(barcode);
+                    },
+                });
+                self.pos.barcode_reader.restore_callbacks();
+            });
+
+            if (this.pos.config.load_barcode_order_only) {
+                // open popup automatically
+                this.$('.scan-barcode').click();
+            }
+        },
+        confirm_barcode: function(barcode) {
+            if (barcode) {
+                this.load_order_by_barcode(barcode);
+            } else {
+                this.gui.show_popup('error', {
+                    'title': _t('No Barcode'),
+                });
+            }
+        },
+        load_order_by_barcode: function(barcode) {
+            var self = this;
+            rpc.query({
+                model: 'pos.order',
+                method: 'search_read',
+                args: [[['pos_history_reference_uid', '=', barcode]]]
+            }).then(function(o) {
+                if (o && o.length) {
+                    self.pos.update_orders_history(o);
+                    if (o instanceof Array) {
+                        o = o[0];
+                    }
+                    self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                        self.pos.update_orders_history_lines(lines);
+                        self.search_order_on_history(o);
+                    });
+                } else {
+                    self.gui.show_popup('error',{
+                        'title': _t('Error: Could not find the Order'),
+                        'body': _t('There is no order with this barcode.')
+                    });
+                }
+                }, function(err, event) {
+                event.preventDefault();
+                console.error(err);
+                self.gui.show_popup('error',{
+                    'title': _t('Error: Could not find the Order'),
+                    'body': err.data,
+                });
             });
         },
         clear_list_widget: function () {
@@ -304,6 +359,10 @@ odoo.define('pos_orders_history.screens', function (require) {
                 this.render_list(orders);
             }
         },
+        search_order_on_history: function(order) {
+            this.gui.current_screen.$('.searchbox input').val(order.pos_reference);
+            this.gui.current_screen.$('.searchbox input').keypress();
+        },
         get_product_image_url: function(product_id){
             return window.location.origin + '/web/image?model=product.product&field=image_small&id='+product_id;
         },
@@ -314,7 +373,7 @@ odoo.define('pos_orders_history.screens', function (require) {
         barcode_product_action: function(code) {
             var self = this;
             // TODO: Check it
-            var order = this.pos.db.get_sorted_orders_history(1000).find(function(o) {
+            var order = _.find(this.pos.db.get_sorted_orders_history(1000), function(o) {
                 var pos_reference = o.pos_reference &&
                     o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
                     o.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0].replace(/\-/g, '');
@@ -323,7 +382,13 @@ odoo.define('pos_orders_history.screens', function (require) {
             var screen_name = this.gui.get_current_screen();
             if (screen_name === "orders_history_screen") {
                 if (order) {
-                    this.search_order_on_history(order);
+                    this.gui.current_screen.search_order_on_history(order);
+                    return;
+                }
+                var popup = this.pos.gui.current_popup;
+                if (popup && popup.options.barcode) {
+                    popup.$('input,textarea').val(code.code);
+                    popup.click_confirm();
                 } else {
                     // send request to server
                     rpc.query({
@@ -359,22 +424,14 @@ odoo.define('pos_orders_history.screens', function (require) {
                 this._super(code);
             }
         },
-        // what happens when a barcode is scanned :
-        // it will add the order reference to the search in orders history screen
-        search_order_on_history: function(order) {
-            this.gui.current_screen.$('.searchbox input').val(order.pos_reference);
-            this.gui.current_screen.$('.searchbox input').keypress();
-        },
     });
 
     screens.ReceiptScreenWidget.include({
         render_receipt: function() {
             this._super();
             if (this.pos.config.show_barcode_in_receipt) {
-                // TODO: Check it
                 var order = this.pos.get_order();
                 var receipt_reference = order.uid;
-//                var receipt_reference = order.uid.replace(/\-/g, '');
                 this.$el.find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
                 this.$el.find('#barcode').css({
                     "width": "100%"
@@ -390,6 +447,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                     receipt: this.pos.get_order().export_for_printing(),
                     paymentlines: this.pos.get_order().get_paymentlines()
                 };
+                // TODO: print barcode via tag <barcode>
                 var receipt = QWeb.render('XmlReceipt',env);
                 var barcode = this.$el.find('#barcode').parent().html();
                 receipt = receipt.split('<img id="barcode"/>');
@@ -400,6 +458,19 @@ odoo.define('pos_orders_history.screens', function (require) {
             } else {
                 this._super();
             }
+        },
+    });
+
+    PopupWidget.include({
+        show: function(options) {
+            var self = this;
+            this._super(options);
+            this.events['keypress input'] = function(event) {
+                // click Enter
+                if(event.which === 13 && self.options.barcode) {
+                    self.click_confirm();
+                }
+            };
         },
     });
 

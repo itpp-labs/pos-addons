@@ -1,3 +1,9 @@
+`4.2.8`
+-------
+
+- **Fix:** Paid order could appear again in POS in case of problems with connection within payment process
+- **Fix:** After restoring the connection, numbers of created and paid offline POS orders were not counted, that could lead to order loss in some cases
+
 `4.2.7`
 -------
 

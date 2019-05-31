@@ -6,6 +6,7 @@ Updates
 `1.2.1`
 -------
 
+**Fix:** Error related to load specific order after barcode scanning
 **Improvement:** Remove the "Update order list" button because the orders are updated instantly now
 
 `1.2.0`

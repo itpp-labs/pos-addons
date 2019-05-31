@@ -5,8 +5,8 @@
     "name": """Sync Partners in POS""",
     "summary": """Instant updates of the partner data in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=10.0",
-    "images": ["images/pos_barcode_sync_main.jpeg"],
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-barcode-sync?version=12.0",
+    "images": ["images/pos_partner_sync.jpeg"],
     "version": "12.0.2.0.1",
     "application": False,
 
@@ -14,7 +14,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_barcode_sync/",
     "license": "LGPL-3",
-    "price": 29.00,
+    "price": 49.00,
     "currency": "EUR",
 
     "depends": [
