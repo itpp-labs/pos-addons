@@ -1,3 +1,8 @@
+/*  Copyright 2015 igallyamov <https://github.com/igallyamov>
+    Copyright 2016 ufaks <https://github.com/ufaks>
+    Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
 
@@ -45,12 +50,20 @@ odoo.define('pos_keyboard.pos', function (require) {
             } else if (data.type === type.backspace){
                 this.click_keyboard('BACKSPACE');
             } else if (data.type === type.enter){
-                this.click_confirm();
+                // some pop-ups might throw an error due to lack of some income data
+                try {
+                    return this.click_confirm();
+                } catch (error){
+                    return;
+                }
             } else if (data.type === type.escape){
                 this.click_cancel();
             }
         },
         click_keyboard: function(value){
+            if (typeof this.inputbuffer === 'undefined') {
+                return;
+            }
             var newbuf = this.gui.numpad_input(
                 this.inputbuffer,
                 value,
@@ -63,7 +76,7 @@ odoo.define('pos_keyboard.pos', function (require) {
                 this.inputbuffer = newbuf;
                 $value.text(this.inputbuffer);
             }
-            if (this.popup_type === 'password') {
+            if (this.popup_type === 'password' && newbuf) {
                 $value.text($value.text().replace(/./g, '•'));
             }
         },

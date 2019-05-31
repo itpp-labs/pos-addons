@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_mobile_restaurant
-# 
+#
 # Translators:
 # Ermin Trevisan <trevi@twanda.com>, 2017
 msgid ""
@@ -11,11 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2017-12-15 16:15+0000\n"
 "PO-Revision-Date: 2017-12-15 16:15+0000\n"
 "Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_mobile_restaurant
@@ -27,7 +28,7 @@ msgstr ""
 
 #. module: pos_mobile_restaurant
 #. openerp-web
-#: code:addons/pos_mobile_restaurant/static/src/js/floors.js:61
+#: code:addons/pos_mobile_restaurant/static/src/js/floors.js:106
 #, python-format
 msgid "Guests ?"
 msgstr ""
@@ -39,6 +40,7 @@ msgstr ""
 
 #. module: pos_mobile_restaurant
 #: model:ir.model.fields,help:pos_mobile_restaurant.field_pos_config_show_number_guests
+#: model:ir.ui.view,arch_db:pos_mobile_restaurant.view_pos_config_form
 msgid "Show the number of guests in popup for empty table"
 msgstr ""
 

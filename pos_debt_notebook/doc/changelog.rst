@@ -1,3 +1,7 @@
+`5.3.0`
+-------
+- **Improvement:** New Balance is amount for selected journal,  not for total Credits.
+
 `5.2.0`
 -------
 - **ADD:** Button on the ``Write-off Credits`` form. Adds all partners with debt according to the selected journal

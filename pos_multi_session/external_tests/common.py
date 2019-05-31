@@ -74,12 +74,12 @@ class ExternalTestCase(unittest2.TestCase):
 
         return res
 
-    def exec_workflow(self, model, signal, id, uid=None, password=None):
+    def exec_workflow(self, model, signal, rid, uid=None, password=None):
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         return self.xmlrpc_models.exec_workflow(
             DATABASE, uid, password,
-            model, signal, id)
+            model, signal, rid)
 
     def xmlid_to_id(self, xmlid, uid=None, password=None):
         res_id = self.execute_kw('ir.model.data', 'xmlid_to_res_id', [xmlid], uid=uid, password=password)

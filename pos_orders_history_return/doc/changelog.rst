@@ -3,6 +3,12 @@
 Updates
 =======
 
+`1.0.5`
+-------
+
+**Fix:** Error related to return a specific order after barcode scanning
+**Fix:** Order duplication in case of poor connection in POS
+
 `1.0.4`
 -------
 

@@ -7,6 +7,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
     var core = require('web.core');
     var screens = require('pos_orders_history.screens');
     var models = require('pos_orders_history.models');
+    var rpc = require('web.rpc');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -28,6 +29,42 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 var id = parseInt(parent.data('id'));
                 self.click_return_order_by_id(id);
             });
+        },
+        load_order_by_barcode: function(barcode) {
+            if (this.pos.config.return_orders) {
+                var self = this;
+                rpc.query({
+                    model: 'pos.order',
+                    method: 'search_read',
+                    args: [[['pos_history_reference_uid', '=', barcode]]]
+                }).then(function(o){
+                    if (o && o.length) {
+                        self.pos.update_orders_history(o);
+                        o.forEach(function (exist_order) {
+                            self.pos.get_order_history_lines_by_order_id(exist_order.id).done(function (lines) {
+                                self.pos.update_orders_history_lines(lines);
+                                if (!exist_order.returned_order) {
+                                    self.search_order_on_history(exist_order);
+                                }
+                            });
+                        });
+                    } else {
+                        self.gui.show_popup('error', {
+                            'title': _t('Error: Could not find the Order'),
+                            'body': _t('There is no order with this barcode.')
+                        });
+                    }
+                }, function (err, event) {
+                    event.preventDefault();
+                    console.error(err);
+                    self.gui.show_popup('error', {
+                        'title': _t('Error: Could not find the Order'),
+                        'body': err.data,
+                    });
+                });
+            } else {
+                this._super(barcode);
+            }
         },
         renderElement: function() {
             this._super();
@@ -139,8 +176,12 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 order.set_client(client);
                 this.pos.get('orders').add(order);
                 this.pos.gui.show_screen('products');
+                if (order.table) {
+                    this.pos.set_table(order.table);
+                }
                 this.pos.set_order(order);
                 product_list_widget.set_product_list(products);
+                this.pos.chrome.widget.order_selector.renderElement();
             } else {
                 this.pos.gui.show_popup('error', _t('Order Is Empty'));
             }

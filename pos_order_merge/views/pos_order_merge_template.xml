@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="pos_assets" name="pos_order_merge_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="//link[last()]" position="after">
+                <script type="text/javascript" src="/pos_order_merge/static/src/js/merge.js"></script>
+                <link rel="stylesheet" href="/pos_order_merge/static/src/css/merge.css"/>
+            </xpath>
+        </template>
+        <template id="assets_backend" name="pos_order_merge assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_order_merge/static/src/js/tour.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>

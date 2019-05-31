@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* pos_debt_notebook_rewards
+# 	* pos_debt_notebook_rewards
 #
 msgid ""
 msgstr ""
@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2018-03-22 12:15+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -52,13 +53,21 @@ msgstr "Cancelar"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_balance
-msgid "Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts)."
-msgstr "Cambio de Balance. Valor negativo para comprar sin dinero (deuda). Positivo para compras con créditos (prepagadas o pago de deudas)."
+msgid ""
+"Change of balance. Negative value for purchases without money (debt). "
+"Positive for credit payments (prepament or payments for debts)."
+msgstr ""
+"Cambio de Balance. Valor negativo para comprar sin dinero (deuda). Positivo "
+"para compras con créditos (prepagadas o pago de deudas)."
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_reversed_balance
-msgid "Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts)."
-msgstr "Cambio de saldo Valor positivo para compras sin dinero (deuda). Negativo para pagos de crédito (prepago o pagos de deudas)."
+msgid ""
+"Change of balance. Positive value for purchases without money (debt). "
+"Negative for credit payments (prepament or payments for debts)."
+msgstr ""
+"Cambio de saldo Valor positivo para compras sin dinero (deuda). Negativo "
+"para pagos de crédito (prepago o pagos de deudas)."
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_company_id
@@ -345,7 +354,8 @@ msgstr "El TPV físico que utilizará."
 #. module: pos_debt_notebook_rewards
 #: model:res.groups,comment:pos_debt_notebook_rewards.group_reward_user
 msgid "The user will gain access to see the attendance rewards menu."
-msgstr "El usuario tendrá acceso para ver el menú de recompensas de asistencia."
+msgstr ""
+"El usuario tendrá acceso para ver el menú de recompensas de asistencia."
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search
@@ -369,13 +379,25 @@ msgstr "Contador de mensajes sin leer"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_update_type
-msgid "Update type"
+#, fuzzy
+msgid "Update Type"
 msgstr "Tipo de actualización"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_new_balance
 msgid "Value to set balance to. Used only in Draft state."
 msgstr "Valor para establecer el balance a. Usado solo en el estado borrador."
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+#, fuzzy
+msgid "Website Messages"
+msgstr "Mensajes"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+msgid "Website communication history"
+msgstr ""
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search

@@ -54,10 +54,10 @@ class ResPartner(models.Model):
 
         res_index = dict((id, 0) for id in partners.ids)
         for data in res:
-            id = data['partner_id'][0]
+            pid = data['partner_id'][0]
             balance = data['balance']
             for r in partners:
-                if id == r.id or id in r.child_ids.ids:
+                if pid == r.id or pid in r.child_ids.ids:
                     res_index[r.id] += balance
 
         for r in partners:
@@ -625,12 +625,13 @@ class PosCreditUpdate(models.Model):
         return -balance + new_balance
 
     def update_balance(self, vals):
-        partner_id = vals.get('partner_id', self.partner_id.id)
+        partner = vals.get('partner_id') and self.env['res.partner'].browse(vals.get('partner_id')) or self.partner_id
         new_balance = vals.get('new_balance', self.new_balance)
         state = vals.get('state', self.state) or 'draft'
         update_type = vals.get('update_type', self.update_type)
         if (state == 'draft' and update_type == 'new_balance'):
-            credit_balance = self.partner_id.browse(partner_id).credit_balance
+            data = partner._compute_partner_journal_debt(self.journal_id.id)
+            credit_balance = data[partner.id].get('balance', 0)
             vals['balance'] = self.get_balance(credit_balance, new_balance)
 
     @api.model

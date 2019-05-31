@@ -3,28 +3,21 @@
 # * pos_order_cancel_restaurant
 # 
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2018
+# Translation Bot <i18n-bot@it-projects.info>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-21 00:08+0000\n"
-"PO-Revision-Date: 2018-04-21 00:08+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2017-11-23 06:38+0000\n"
+"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
 "Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: pos_order_cancel_restaurant
-#. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/tour.js:18
-#, python-format
-msgid "<p>Click <b>table</b></p>"
-msgstr ""
 
 #. module: pos_order_cancel_restaurant
 #: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_kitchen_canceled_only
@@ -57,12 +50,6 @@ msgstr "Aktuelle Bestellung löschen"
 #. module: pos_order_cancel_restaurant
 #: model:pos.cancelled_reason,name:pos_order_cancel_restaurant.demo_reason_4
 msgid "Foreign object"
-msgstr ""
-
-#. module: pos_order_cancel_restaurant
-#: model:ir.model.fields,help:pos_order_cancel_restaurant.field_pos_config_send_removed_lines_to_kitchen
-msgid ""
-"If unchecked, the orderline will not be printed repeatly after its removing"
 msgstr ""
 
 #. module: pos_order_cancel_restaurant
