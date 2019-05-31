@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_tag_form" model="ir.ui.view">
+        <field name="name">pos.tag.form.inherit</field>
+        <field name="model">pos.tag</field>
+        <field name="inherit_id" ref="pos_menu.view_pos_tag_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_ids']" position="after">
+                <field name="pos_multi_session_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="multi_session_form" model="ir.ui.view">
+        <field name="name">pos.multi_session.form</field>
+        <field name="model">pos.multi_session</field>
+        <field name="inherit_id" ref="pos_multi_session.multi_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_ids']" position="after">
+                <field name="tag_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_tag_tree_view" model="ir.ui.view">
+        <field name="name">pos.tag.tree</field>
+        <field name="model">pos.tag</field>
+        <field name="inherit_id" ref="pos_menu.pos_tag_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_ids']" position="after">
+                <field name="pos_multi_session_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

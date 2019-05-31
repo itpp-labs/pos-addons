@@ -6,8 +6,6 @@
  Scan & search a product by ref in POS
 =======================================
 
-Scan & search a product by ref in POS
-
 The module provides a feature to search a product in POS by its "Internal Reference"
 
 Credits

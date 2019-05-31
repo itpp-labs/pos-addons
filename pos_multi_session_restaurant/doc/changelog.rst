@@ -1,3 +1,7 @@
+`3.3.1`
+-------
+**Fix:** Property of undefined error might happen when restaurant multisession loses floors with opened orders in it
+
 `3.3.0`
 -------
 **New:** Allows to block a table for waiters if it's already served by another one

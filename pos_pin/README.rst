@@ -15,7 +15,7 @@ Credits
 
 Contributors
 ------------
-* `Stanislav Krotov <https://it-projects.info/team/ufaks>`__
+* `Krotov Stanislav <https://it-projects.info/team/ufaks>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
