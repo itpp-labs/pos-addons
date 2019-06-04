@@ -9,7 +9,7 @@
     "summary": """Pay HR expenses over Point of Sale""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": ["images/pos_expenses_pay.jpg"],
+    "images": ["images/pay_exp1.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
