@@ -8,7 +8,7 @@
     "summary": """Sync orders via main or separate (e.g. local) server""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": [],
+    "images": ["images/pos_multi_session_sync.jpg"],
     "version": "10.0.1.0.4",
     "application": False,
 
