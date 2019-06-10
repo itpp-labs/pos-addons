@@ -56,7 +56,6 @@ odoo.define('pos_keyboard.pos', function (require) {
                 } catch (error){
                     return;
                 }
-                return;
             } else if (data.type === type.escape){
                 this.click_cancel();
             }

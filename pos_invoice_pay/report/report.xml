@@ -3,9 +3,7 @@
     Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
-
-<openerp>
-    <data>
+<odoo>
         <template id="pos_invoice_pay_report" inherit_id="point_of_sale.report_saledetails">
             <xpath expr="//div[hasclass('page')]/strong" position="after">
                 <br/>
@@ -42,5 +40,4 @@
                 </table>
             </xpath>
         </template>
-    </data>
-</openerp>
+</odoo>

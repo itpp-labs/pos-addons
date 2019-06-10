@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Product lot in POS',
     'version': '10.0.1.0.2',
@@ -16,6 +15,6 @@
     'qweb': [
         'static/src/xml/pos.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

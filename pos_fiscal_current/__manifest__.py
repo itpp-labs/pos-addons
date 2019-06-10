@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'POS fiscal current',
     'version': '10.0.1.0.0',
@@ -10,5 +9,5 @@
     'depends': ['point_of_sale'],
     'data': ['templates.xml'],
     'qweb': ['static/src/xml/*.xml'],
-    'installable': True
+    'installable': False
 }
