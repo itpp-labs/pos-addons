@@ -1,3 +1,8 @@
+`1.1.4`
+-------
+
+**Fix:** Incompatibility with some modules led to the action duplicating
+
 `1.1.3`
 -------
 
