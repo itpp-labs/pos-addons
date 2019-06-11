@@ -31,8 +31,7 @@ odoo.define('pos_expenses_pay.tour', function(require) {
         trigger: '.control-buttons .control-button:contains("Expenses")',
         content: "Open HR Expenses list",
         position: "top"
-    },
-   ];
+    }];
 
    tour.register('pos_expenses_pay_tour', {
         url: "/web",
