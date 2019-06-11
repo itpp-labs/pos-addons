@@ -4,7 +4,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-note?version=12.0",
     "images": ["images/pos_order_note_main.png"],
-    "version": "12.0.1.3.1",
+    "version": "12.0.1.3.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

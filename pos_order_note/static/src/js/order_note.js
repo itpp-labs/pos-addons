@@ -531,7 +531,7 @@ odoo.define('pos_order_note', function (require) {
                 value.note = this.$('.popup-confirm-note textarea').val();
                 this.options.confirm.call(this, value);
             }
-        },
+        }
     });
     gui.define_popup({name:'product_notes', widget: ProductNotesPopupWidget});
 
