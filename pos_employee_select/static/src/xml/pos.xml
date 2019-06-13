@@ -3,7 +3,7 @@
     <t t-extend="CashierSelectionPopupWidget">
          <t t-jquery=".selection.cashier:eq(1)" t-operation="replace">
              <t t-if="widget.get_grouped_list">
-                 <div class="employee-table" t-attf-style="display:table;">
+                 <div class="employee-cashier-table">
                      <t t-set="get_grouped_list" t-value="widget.get_grouped_list()"/>
                      <t t-foreach="get_grouped_list" t-as="list">
                          <div t-attf-class="selection cashier {{widget.options.employee ? 'employee': ''}}" t-attf-style="display:table-cell;">

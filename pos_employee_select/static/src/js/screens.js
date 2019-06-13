@@ -58,6 +58,7 @@ odoo.define('pos_employee_select.screens', function(require){
             // height of selection item
             var height = 50;
             this.group_size = Math.trunc((this.$('.popup').height() - this.$('.title').height() - this.$('.footer').height() - height) / height);
+            this.list = this.list || this.options.list;
             if (this.list) {
                 var max_size = Math.ceil(this.list.length / 3);
                 var size = this.group_size;
