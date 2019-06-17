@@ -59,12 +59,8 @@ class PosMultiSessionSync(models.Model):
         run_ID = message['data']['run_ID']
         self.write({
             'run_ID': run_ID,
+            'order_ID': 0
         })
-        old_orders = self.env['pos_multi_session_sync.order'].search([('state', '=', 'draft'),
-                                                                      ('run_ID', '<', run_ID)])
-        if old_orders:
-            old_orders.write({'state': 'unpaid'})
-            self.write({'order_ID': 0})
 
     @api.multi
     def check_order_revision(self, message, order):
@@ -146,7 +142,7 @@ class PosMultiSessionSync(models.Model):
 
         if revision == "nonce":
             return (False, {'action': ''})
-        elif not revision or (order and order.state == 'deleted'):
+        elif not revision or (order and (order.state == 'deleted' or order.state == 'paid')):
             _logger.debug('Revision error %s %s', order_uid, order.state)
             return (False, {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state})
 
@@ -246,12 +242,14 @@ class PosMultiSessionSync(models.Model):
             order, order_data = self.set_order(order_data)
             order_uid = order.order_uid
 
-        if order.state is not 'deleted':
+        if order.state not in ['deleted', 'paid']:
             revision = self.check_order_revision(message, order)
             if not revision:
                 return {'action': 'revision_error', 'order_uid': order_uid}
+
+        state = 'paid' if message['data']['finalized'] else 'deleted'
         if order:
-            order.state = 'deleted'
+            order.state = state
         _logger.debug('Remove Order: %s Finalized: %s Revision: %s',
                       order_uid, message['data']['finalized'], message['data']['revision_ID'])
         self.broadcast_message(message)
@@ -303,7 +301,8 @@ class PosMultiSessionSyncOrder(models.Model):
     order = fields.Text('Order JSON format')
     nonce = fields.Char('Random nonce')
     order_uid = fields.Char(index=True)
-    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed')], default='draft', index=True)
+    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed'),
+                              ('paid', 'Paid')], default='draft', index=True)
     revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
     multi_session_ID = fields.Integer(default=0, string='Multi session')
     pos_session_ID = fields.Integer(index=True, default=0, string='POS session')
