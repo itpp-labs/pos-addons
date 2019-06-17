@@ -109,6 +109,39 @@ class PosMultiSession(models.Model):
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
+    load_unpaid_orders = fields.Boolean(string="Load Unpaid Orders", default=False,
+                                        help="Allows you to load unpaid orders to POS."
+                                             "Please close all POS sessions before loading unpaid orders.")
+    load_orders_of_last_n_days = fields.Boolean("Unpaid Orders of last 'n' days", default=False,
+                                                help="if the setting is disabled then all orders will be loaded to POS")
+    number_of_days = fields.Integer("Number of days", default=0, help='0 - load orders of current day')
+
+    @api.constrains('load_unpaid_orders')
+    def _check_load_unpaid_orders(self):
+        if self.load_unpaid_orders:
+            active_sessions = self.env['pos.session'].search(
+                [('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.id)])
+            if active_sessions:
+                raise UserError(_("Please close all POSes for this multi-session for load unpaid Orders."))
+
+    @api.constrains('number_of_days')
+    def _check_number_of_days(self):
+        if self.load_unpaid_orders and self.load_orders_of_last_n_days and self.number_of_days < 0:
+            raise UserError(_('The number of days should not be negative.'))
+
+    @api.multi
+    def get_unpaid_ms_orders(self):
+        self.ensure_one()
+        pos_multi_session_sync = self.env['pos_multi_session_sync.multi_session'].search([('multi_session_ID', '=', self.id)])
+        if self.load_orders_of_last_n_days:
+            limit_date = datetime.datetime.utcnow() - datetime.timedelta(days=self.number_of_days)
+            limit_date_str = datetime.datetime.strftime(limit_date, DEFAULT_SERVER_DATE_FORMAT + ' 00:00:00')
+            return self.env['pos_multi_session_sync.order'].search([('multi_session_ID', 'in', pos_multi_session_sync.ids),
+                                                                    ('state', '=', 'unpaid'),
+                                                                    ('write_date', '>=', limit_date_str)])
+
+        return self.env['pos_multi_session_sync.order'].search([('multi_session_ID', 'in', pos_multi_session_sync.ids),
+                                                                ('state', '=', 'unpaid')])
 
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
 
