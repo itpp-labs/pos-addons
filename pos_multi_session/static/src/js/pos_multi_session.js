@@ -1071,7 +1071,7 @@ odoo.define("pos_multi_session", function(require) {
                     self.client_online = true;
 
                     if (res.action === "revision_error") {
-                        if (res.state === "deleted") {
+                        if (res.state == 'deleted' || res.state == 'paid') {
                             var removed_order = self.pos
                                 .get("orders")
                                 .find(function(order) {
@@ -1098,7 +1098,6 @@ odoo.define("pos_multi_session", function(require) {
                     if (self.pos.sync_bus) {
                         self.pos.sync_bus.longpolling_connection.network_is_on();
                     }
-
                     if (res && res.action === "update_revision_ID" && res.uid) {
                         var order = _.find(self.pos.get_order_list(), function(o) {
                             return o.uid === res.uid;
