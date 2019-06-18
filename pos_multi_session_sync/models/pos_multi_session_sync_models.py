@@ -297,6 +297,8 @@ class PosMultiSessionSync(models.Model):
 
 class PosMultiSessionSyncOrder(models.Model):
     _name = 'pos_multi_session_sync.order'
+    _order = 'write_date desc'
+    _rec_name = 'order_uid'
 
     order = fields.Text('Order JSON format')
     nonce = fields.Char('Random nonce')
@@ -310,3 +312,13 @@ class PosMultiSessionSyncOrder(models.Model):
                             help="Number of Multi-session starts. "
                                  "It's incremented each time the last session in Multi-session is closed. "
                                  "It's used to prevent synchronization of old orders")
+
+    @api.multi
+    def action_pos_multi_session_restore_order(self):
+        for r in self:
+            sync_ms = self.env['pos_multi_session_sync.multi_session'].browse(r.multi_session_ID)
+            r.write({
+                'state': 'draft',
+                'run_ID': sync_ms.run_ID
+            })
+            # TODO: send the order to POSes via bus after restore
