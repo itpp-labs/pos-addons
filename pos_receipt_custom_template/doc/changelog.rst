@@ -1,3 +1,8 @@
+`1.0.3`
+-------
+
+**Fix:** Incorrect the table opening time after payment of the returned order
+
 `1.0.2`
 -------
 

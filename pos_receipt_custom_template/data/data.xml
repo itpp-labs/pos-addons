@@ -188,6 +188,20 @@
                             </td>
                         </tr>
                     </t>
+                    <tr>
+                        <td>
+                            <t t-esc="partner.name"/>
+                        </td>
+
+                        <td class="pos-right-align">
+                            <t t-if='partner.barcode'>
+                                <t t-esc='partner.barcode'/>
+                            </t>
+                            <t t-if='!partner.barcode'>
+                                N/A
+                            </t>
+                        </td>
+                    </tr>
                 </table>
             </t>
 
@@ -401,6 +415,17 @@
                         <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='debt_sign * receipt.debt_after'/></value></right>
                     </line>
                 </t>
+                <line>
+                    <left><t t-esc="partner.name"/></left>
+                    <right>
+                        <t t-if='partner.barcode'>
+                            <t t-esc='partner.barcode'/>
+                        </t>
+                        <t t-if='!partner.barcode'>
+                            N/A
+                        </t>
+                    </right>
+                </line>
             </t>
 
             <!-- CHANGE -->
