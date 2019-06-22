@@ -1,3 +1,7 @@
+`3.3.1`
+-------
+**Fix:** Error on starting a multisession without any floors
+
 `3.3.0`
 -------
 **New:** Allows to block a table for waiters if it's already served by another one
