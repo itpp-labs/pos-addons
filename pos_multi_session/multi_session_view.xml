@@ -21,6 +21,9 @@
                         <field name="sync_server" placeholder="http://yourhost"/>
                         <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
                         <field name="order_ID" readonly="1"/>
+                        <field name="load_unpaid_orders"/>
+                        <field name="load_orders_of_last_n_days" attrs="{'invisible':[('load_unpaid_orders', '=', False)]}"/>
+                        <field name="number_of_days" attrs="{'invisible':['|', ('load_unpaid_orders', '=', False), ('load_orders_of_last_n_days', '=', False)]}"/>
                     </group>
                     <group>
                         <p class="oe_edit_only"> To remove or add a POS to multi-session close its session first </p>
