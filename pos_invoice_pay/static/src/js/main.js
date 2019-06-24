@@ -39,7 +39,14 @@ models.load_models({
     model: 'sale.order',
     fields: ['name', 'partner_id', 'date_order', 'user_id',
     'amount_total', 'order_line', 'invoice_status'],
-    domain:[['invoice_status', '=', 'to invoice'], ['state', '=', 'sale']],
+    domain: function(self) {
+        let dom = [
+            ['invoice_status', '=', 'to invoice'], 
+            ['state', '=', 'sale'],
+            ['company_id', '=', self.company.id],
+        ];
+        return dom;
+    },
     loaded: function (self, sale_orders) {
         var so_ids = _.pluck(sale_orders, 'id');
         self.prepare_so_data(sale_orders);
@@ -53,8 +60,14 @@ models.load_models({
     model: 'account.invoice',
     fields: ['name', 'partner_id', 'date_invoice','number', 'date_due', 'origin',
     'amount_total', 'user_id', 'residual', 'state', 'amount_untaxed', 'amount_tax'],
-    domain: [['state', '=', 'open'],
-    ['type','=', 'out_invoice']],
+    domain: function(self){
+        let dom = [
+            ['state', '=', 'open'],
+            ['type','=', 'out_invoice'],
+            ['company_id', '=', self.company.id],
+        ];
+        return dom;
+    },
     loaded: function (self, invoices) {
         var invoices_ids = _.pluck(invoices, 'id');
         self.prepare_invoices_data(invoices);
