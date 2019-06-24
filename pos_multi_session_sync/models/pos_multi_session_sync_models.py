@@ -180,9 +180,15 @@ class PosMultiSessionSync(models.Model):
         self.ensure_one()
         pos_ID = message['data']['pos_id']
         user_ID = self.env.context.get("user_ID")
-        pos = self.env['pos_multi_session_sync.pos'] \
-                  .search([('multi_session_ID', '=', self.multi_session_ID), ("pos_ID", "=", pos_ID)])
+        pos = self.env['pos_multi_session_sync.pos'].search([("pos_ID", "=", pos_ID)])
         run_ID = message['data']['run_ID']
+        if len(pos) == 1:
+            # pos.config was assigned to a different multi session
+            pos.multi_session_ID = self.multi_session_ID
+        elif len(pos) > 1:
+            # in case there were already created plenty same_id_poses (before the fix)
+            pos.unlink()
+            pos = None
         if not pos:
             pos = self.env['pos_multi_session_sync.pos'] \
                 .create({'multi_session_ID': self.multi_session_ID, 'pos_ID': pos_ID, 'user_ID': user_ID})
@@ -205,8 +211,8 @@ class PosMultiSessionSync(models.Model):
             orders.append(msg)
         else:
             for order in self.env['pos_multi_session_sync.order'] \
-                             .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
-                                      ('run_ID', '=', run_ID)]):
+                    .search([('multi_session_ID', '=', self.id), ('state', '=', 'draft'),
+                             ('run_ID', '=', run_ID)]):
                 msg = json.loads(order.order)
                 msg['data']['message_ID'] = pos.multi_session_message_ID
                 msg['data']['revision_ID'] = order.revision_ID
