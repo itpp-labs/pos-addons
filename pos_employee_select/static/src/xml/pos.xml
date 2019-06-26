@@ -8,7 +8,7 @@
                      <t t-foreach="get_grouped_list" t-as="list">
                          <div t-attf-class="selection cashier {{widget.options.employee ? 'employee': ''}}" t-attf-style="display:table-cell;">
                              <t t-foreach="list || []" t-as="item">
-                                 <div t-attf-class="selection-item {{ item.selected ? 'selected' : '' }}" t-att-data-list-index="list_index" t-att-data-item-index='item_index'>
+                                 <div t-attf-class="selection-item {{ item.selected ? 'selected' : '' }}" t-att-data-item-id="item.item.id">
                                      <t t-esc='item.label'/>
                                  </div>
                             </t>

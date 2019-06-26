@@ -74,10 +74,10 @@ odoo.define('pos_employee_select.screens', function(require){
         },
         click_item : function(event) {
             this.gui.close_popup();
-            var list_index = parseInt($(event.target).data('list-index'));
-            var item_index = parseInt($(event.target).data('item-index'));
-            var index = this.group_size * list_index + item_index;
-            var item = this.list[index];
+            var id = parseInt($(event.target).data('item-id'));
+            var item = this.list.find(function(user) {
+                return user.item.id === id;
+            });
             if (this.options.confirm) {
                 item = item
                     ? item.item
