@@ -1,6 +1,7 @@
 `3.3.1`
 -------
-**Fix:** Property of undefined error might happen when restaurant multisession loses floors with opened orders in it
+
+**Fix:** Error on starting a multisession without any floors
 
 `3.3.0`
 -------
