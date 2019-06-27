@@ -2,8 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-Sync POS orders across multiple sessions (restaurant extension)
-===============================================================
+=================================================================
+ Sync POS orders across multiple sessions (restaurant extension)
+=================================================================
 
 Syncs additional restaurant data:
 
@@ -14,22 +15,42 @@ Syncs additional restaurant data:
 
 Each multi-session and each unsynchronized POS may have its own floor set. POSes in multi-session have same floors.
 
-FIXME: there is issue with floor real-time synchronization, to synchronize tables after modifying them it is mandatory to refresh all POSes pages, also deleting a table with open order on it leads to constant error messages. See https://github.com/it-projects-llc/pos-addons/issues/375.
+Credits
+=======
 
-Local run
----------
+Contributors
+------------
+* `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
-If you use dbfilter, don't forget to specify correct proxy on printers
+Sponsors
+--------
+* `IT-Projects LLC <https://it-projects.info>`__
+
+Maintainers
+-----------
+* `IT-Projects LLC <https://it-projects.info>`__
+
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_multi_session_restaurant/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
--------------------
+===================
 
-Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
+Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
-Need our service?
------------------
+HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session_restaurant/
 
-Contact us by `email <mailto:it@it-projects.info>`__ or fill out `request form <https://www.it-projects.info/page/website.contactus>`__:
+Usage instructions: `<doc/index.rst>`_
 
-* it@it-projects.info
-* https://www.it-projects.info/page/website.contactus
+Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_multi_session_restaurant.atom>`_
+
+Tested on Odoo 10.0 49ca43d75cb9a97642c820c2466d454f1ce604cb

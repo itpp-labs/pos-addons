@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": ['images/pos_multi_session_sync.jpg'],
-    "version": "10.0.1.0.4",
+    "version": "10.0.1.0.5",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
