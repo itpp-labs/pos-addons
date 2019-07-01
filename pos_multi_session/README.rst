@@ -3,7 +3,7 @@
    :alt: License: LGPL-3
 
 Sync POS orders across multiple sessions
-=======================================
+========================================
 
 The module provides instant orders synchronization between POSes related to a common *multi session*.
 
