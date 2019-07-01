@@ -28,7 +28,7 @@ Maintainers
 * `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
-===================
+==================
 
 Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
 
