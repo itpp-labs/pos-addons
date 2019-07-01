@@ -1,3 +1,6 @@
+/*  Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_product_available_negative.pos', function (require) {
     "use strict";
 
@@ -20,6 +23,7 @@ odoo.define('pos_product_available_negative.pos', function (require) {
                     self.gui.sudo_custom({
                         'title': _t('Order has out-of-stock product and must be approved by supervisor'),
                         'special_group': this.pos.config.negative_order_group_id[0],
+                        'do_not_change_cashier': true,
                         'arguments': {'ask_untill_correct': true},
                     }).done(function(user){
                         order.negative_stock_user_id = user;
@@ -38,7 +42,9 @@ odoo.define('pos_product_available_negative.pos', function (require) {
     models.Order = models.Order.extend({
         export_as_JSON: function () {
             var json = _super_order.export_as_JSON.apply(this, arguments);
-            json.negative_stock_user_id = this.negative_stock_user_id ? this.negative_stock_user_id.id : false;
+            json.negative_stock_user_id = this.negative_stock_user_id
+            ? this.negative_stock_user_id.id
+            : false;
             return json;
         }
     });
