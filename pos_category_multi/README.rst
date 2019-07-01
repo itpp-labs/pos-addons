@@ -39,9 +39,7 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
-
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_category_multi/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_category_multi/
 
 Usage instructions: `<doc/index.rst>`_
 
@@ -49,4 +47,5 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_category_multi.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_category_multi.atom>`_
 
-Tested on Odoo 10.0 4629a4fb0eacedb024562ef5542011d2e0b2c1f4
+Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
+

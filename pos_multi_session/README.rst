@@ -23,7 +23,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
 .. code-block:: js
 
     apply_ms_data: function(data) {
-        // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+        // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
         /*
         It is necessary to check the presence of the super method
         in order to be able to inherit the apply_ms_data
@@ -67,7 +67,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         apply_ms_data: function(data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
@@ -98,7 +98,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
         apply_ms_data: function(data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/10.0/pos_multi_session/
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
             if (_super_orderline.apply_ms_data) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
@@ -120,7 +120,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
         }
     });
 
-Also it's possible to trigger ``new_updates_to_send`` event on data changes to force pos_multi_session module start syncronization process. Example code from `pos_product_available <https://www.odoo.com/apps/modules/10.0/pos_product_available/>`__:
+Also it's possible to trigger ``new_updates_to_send`` event on data changes to force pos_multi_session module start syncronization process. Example code from `pos_product_available <https://www.odoo.com/apps/modules/11.0/pos_product_available/>`__:
 
 .. code-block:: js
 
@@ -156,9 +156,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
 
 Usage instructions: `<doc/index.rst>`_
 
@@ -166,4 +166,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Tests: `<external_tests/README.rst>`__
 
-Tested on Odoo 10.0 33a04354eb2b3897035c7206411fa0130b312313
+Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e

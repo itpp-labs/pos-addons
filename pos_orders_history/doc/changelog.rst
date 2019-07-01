@@ -7,6 +7,7 @@ Updates
 -------
 
 **Fix:** Error related to load specific order after barcode scanning
+**Improvement:** Remove the "Update order list" button because the orders are updated instantly now
 
 `1.2.0`
 -------
@@ -28,8 +29,15 @@ Updates
 
 `1.1.0`
 -------
-**Improvement:** load orders for the last specified days
-**Fix:** filtering an order after receiving the order from another POS
+
+- **NEW:** Update order list button
+
+`1.0.2`
+-------
+- **FIX:** displaying posted orders after open new POS session
+- **FIX:** error determining the current cashier
+- **IMP:** load orders for the last specified days
+- **FIX:** filtering an order after receiving the order from another POS
 
 `1.0.1`
 -------

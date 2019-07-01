@@ -7,7 +7,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
     var core = require('web.core');
     var screens = require('pos_orders_history.screens');
     var models = require('pos_orders_history.models');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -33,8 +33,11 @@ odoo.define('pos_orders_history_return.screens', function (require) {
         load_order_by_barcode: function(barcode) {
             if (this.pos.config.return_orders) {
                 var self = this;
-                new Model('pos.order').call('search_read', [[['pos_history_reference_uid', '=', barcode]]]).then(function (o) {
-                    console.log(o);
+                rpc.query({
+                    model: 'pos.order',
+                    method: 'search_read',
+                    args: [[['pos_history_reference_uid', '=', barcode]]]
+                }).then(function(o){
                     if (o && o.length) {
                         self.pos.update_orders_history(o);
                         o.forEach(function (exist_order) {
@@ -156,10 +159,10 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 json.statement_ids = [];
                 json.mode = "return";
                 json.return_lines = lines;
+                json.pricelist_id = this.pos.default_pricelist.id;
                 if (order.table_id) {
                     json.table_id = order.table_id[0];
                 }
-
                 var options = _.extend({pos: this.pos}, {json: json});
                 order = new models.Order({}, options);
                 order.temporary = true;

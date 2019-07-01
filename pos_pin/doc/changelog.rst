@@ -1,7 +1,7 @@
-.. _changelog:
+`1.2.2`
+-------
 
-Updates
-=======
+- **Fix:** Id of undefined error appeared when a pin was entered correctly
 
 `1.2.1`
 -------

@@ -34,7 +34,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_multi_session_restaurant/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_multi_session_restaurant/>`__.
 
       Thank you for understanding!
 
@@ -43,14 +43,14 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_multi_session_restaurant/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session_restaurant/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_multi_session_restaurant.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_multi_session_restaurant.atom>`_
 
-Tested on Odoo 10.0 49ca43d75cb9a97642c820c2466d454f1ce604cb
+Tested on Odoo 11.0 aefbd6da12748f078a197e5e3ae0c1cd68b2e6c5

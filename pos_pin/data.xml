@@ -2,8 +2,7 @@
 <!-- Copyright 2016 Krotov Stanislav <https://github.com/ufaks>
      Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).-->
-<openerp>
-    <data>
+<odoo>
 
         <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
@@ -16,5 +15,4 @@
             </xpath>
         </template>
 
-    </data>
-</openerp>
+</odoo>

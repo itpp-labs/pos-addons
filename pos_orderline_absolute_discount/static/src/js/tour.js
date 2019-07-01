@@ -106,6 +106,7 @@ odoo.define('pos_orderline_absolute_discount_tour.tour', function(require) {
     steps = steps.concat({
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
+        timeout: 20000,
         run: function () {
             // it's a check
         },

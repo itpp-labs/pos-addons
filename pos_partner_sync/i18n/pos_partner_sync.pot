@@ -1,0 +1,35 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_partner_sync
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_partner_sync
+#: model:ir.model,name:pos_partner_sync.model_res_partner
+msgid "Partner"
+msgstr ""
+
+#. module: pos_partner_sync
+#: model:ir.ui.view,arch_db:pos_partner_sync.res_config_settings_partner_sync_view_form
+msgid "Point of Sale Syncronization Fields"
+msgstr ""
+
+#. module: pos_partner_sync
+#: model:ir.model.fields,field_description:pos_partner_sync.field_res_config_settings_sync_field_ids
+msgid "Synchronized Fields"
+msgstr ""
+
+#. module: pos_partner_sync
+#: model:ir.model,name:pos_partner_sync.model_res_config_settings
+msgid "res.config.settings"
+msgstr ""
+
