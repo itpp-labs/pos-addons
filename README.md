@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.com/it-projects-llc/pos-addons.svg?branch=11.0)](https://travis-ci.com/it-projects-llc/pos-addons)
+[![Build Status](https://travis-ci.com/it-projects-llc/pos-addons.svg?branch=12.0)](https://travis-ci.com/it-projects-llc/pos-addons)
 
 Odoo POS addons
 ===============
