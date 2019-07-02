@@ -1,7 +1,7 @@
-.. _changelog:
+`1.0.2`
+-------
 
-Updates
-=======
+- **Fix:** Cashier was changed after giving the authorization of the sale
 
 `1.0.1`
 -------
