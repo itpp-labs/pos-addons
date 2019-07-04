@@ -44,6 +44,17 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="view_pos_config_longpolling_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="pos_longpolling.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='autostart_longpolling']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_pos_config_kanban" model="ir.ui.view">
         <field name="name">pos.config.kanban.view</field>
         <field name="model">pos.config</field>
