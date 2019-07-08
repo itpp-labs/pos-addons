@@ -1,54 +1,53 @@
 ==============
-empty_module
+POS chat
 ==============
 
 
-None
+This module will allow users to chat with each other.
 
 
 Features
 ========
 
-* <[Feature 1]>
-* <[Feature 2]>
-* <[Feature 3]>
-
-Roadmap
-=======
-
-* <[...]>
+Chatting
 
 Credits
 =======
 
 Contributors
 ------------
-* David Arnold <dar@xoe.solutions> // GitHub: `blaggacao <https://github.com/blaggacao>`__
+* Safin Vildan <vildan.safin.99@gmail.com> // GitHub: `Enigma228322 <https://it-projects.info/team/Enigma228322>`__
 
 Do not contact contributors directly about support or help with technical issues.
 
 Sponsors
 --------
-* `XOE Solutions <https://xoe.solutions>`__
+* `IT-Projects LLC <https://it-projects.info>`__
 
 Maintainers
 -----------
-* `XOE Solutions <https://xoe.solutions>`__ // GitHub: `xoe-labs <https://github.com/xoe-labs>`__
+* `IT-Projects LLC <https://it-projects.info>`__
 
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/>`__.
 
-    .. image:: https://xoe.solutions/logo.png
-       :alt: XOE Solutions
-       :target: https://xoe.solutions.org
+      Thank you for understanding!
 
-    For professional support, please contact us at info@xoe.solutions
-
-    If you want to support our work, please consider contributing!
-
-    **Code:**     `XOE Solution Github Organization <https://github.com/xoe-labs>`__
+      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
 ===================
 
+
+Demo: http://runbot.it-projects.info/demo/{REPO_NAME}/{BRANCH}
+
+HTML Description: https://apps.odoo.com/apps/modules/{VERSION}/{TECHNICAL_NAME}/
+
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/{REPO_NAME}/commits/{BRANCH}/{TECHNICAL_NAME}.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/{REPO_NAME}/commits/{BRANCH}/{TECHNICAL_NAME}.atom>`_
+
+Tested on Odoo {VERSION} {ODOO_COMMIT_SHA_TO_BE_UPDATED}
