@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'version': "0.1",
+    'version': "12.0",
     'name': "Pos chat",
-    'summary': "Task 4",
+    'summary': "Simple chat for simple users",
     'category': "Point of Sale",
     # 'live_test_url': "",
     'images': [],
     'application': False,
 
-    'author': "XOE",
-    'website': "https://xoe.solutions",
+    'author': "IT-Projects LLC, Safin Vildan",
+    'website': "https://it-projects.info/team/yelizariev",
     'license': "LGPL-3",
     # 'price: 250.00,
     # 'currency: "EUR",g

@@ -2,7 +2,7 @@
 # Copyright 2017, XOE Corp.
 # XOE Enterprise Edition License v1.0.
 
-from odoo import models, fields, api, _  # noqa
+# from odoo import models, fields, api, _  # noqa
 
 
 # class empty_module(models.Model):
