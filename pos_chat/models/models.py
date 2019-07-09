@@ -2,11 +2,11 @@
 # Copyright 2017, XOE Corp.
 # XOE Enterprise Edition License v1.0.
 
-# from odoo import models, fields, api, _  # noqa
+from odoo import models, fields, api, _  # noqa
 
 
-# class empty_module(models.Model):
-#     _name = 'empty_module.empty_module'
+# class pos_chat(models.Model):
+#     _name = 'pos_chat.pos_chat'
 
 #     name = fields.Char()
 #     value = fields.Integer()
