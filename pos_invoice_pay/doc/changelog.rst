@@ -1,3 +1,8 @@
+`1.2.3`
+-------
+
+**Fix:** Paymentlines were not displayed on the ticket when an invoice is partially paid
+
 `1.2.2`
 -------
 
