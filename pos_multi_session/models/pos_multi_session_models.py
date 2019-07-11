@@ -1,6 +1,6 @@
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
-# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2016-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -40,6 +40,14 @@ class PosConfig(models.Model):
             return [('id', 'in', ids)]
         else:
             return [('id', 'in', [])]
+
+    @api.multi
+    def _write(self, vals):
+        # made to prevent 'expected singleton' errors in *pos.config* constraints
+        result = False
+        for config in self:
+            result = super(PosConfig, config)._write(vals)
+        return result
 
 
 class PosMultiSession(models.Model):
