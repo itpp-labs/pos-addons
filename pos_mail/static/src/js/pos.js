@@ -1,4 +1,5 @@
 /* Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar2>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_mail.pos', function (require) {
 
@@ -9,10 +10,16 @@ odoo.define('pos_mail.pos', function (require) {
     var QWeb = core.qweb;
     var _t = core._t;
 
+    screens.PaymentScreenWidget.include({
+        show: function() {
+            this._super();
+            this.gui.screen_instances.receipt.able_mail_button();
+        },
+    });
+
     screens.ReceiptScreenWidget.include({
         show: function() {
             this._super();
-            this.able_mail_button();
         },
 
         renderElement: function() {
@@ -34,10 +41,13 @@ odoo.define('pos_mail.pos', function (require) {
             return this.able_mail_button().addClass('disable');
         },
 
-        mail_receipt_action: function() {
+        mail_receipt_action: function(new_client = false) {
             var self = this;
             var partner = this.pos.get_order().get_client();
-            if (partner) {
+            if (new_client) {
+                partner = new_client
+                }
+            if (partner && partner.email) {
                 return this.send_mail_receipt(partner.id).done(function(res){
                     console.log("Mail's sent");
                 }).fail(function(error){
@@ -48,6 +58,10 @@ odoo.define('pos_mail.pos', function (require) {
                     self.able_mail_button();
                 });
             } else {
+                 this.gui.show_popup('error',{
+                        'title': _t('Customer has no email address'),
+                        'body': _t('Please add customer email or select another one'),
+                    });
                 this.set_mail_customer = true;
                 this.$el.zIndex(-6);
                 this.pos.gui.screen_instances.clientlist.show();
@@ -56,11 +70,11 @@ odoo.define('pos_mail.pos', function (require) {
 
         send_mail_receipt: function(partner_id) {
             var receipt = QWeb.render('PosMailTicket', this.get_receipt_render_env());
-            var order_name = this.pos.get_order().name;
+            var order = this.pos.get_order().name;
             return rpc.query({
                 model: 'pos.config',
                 method: 'send_receipt_via_mail',
-                args: [partner_id, receipt, order_name],
+                args: [partner_id, receipt, order],
             }, {
                 shadow: true,
             });
@@ -90,17 +104,10 @@ odoo.define('pos_mail.pos', function (require) {
                this.pos.config.send_receipt_by_mail &&
                this.gui.current_screen.set_mail_customer) {
 
-                if (!this.new_client.email) {
-                    this.gui.show_popup('error',{
-                        'title': _t('Customer has no email address'),
-                        'body': _t('Please add customer email or select another one'),
-                    });
-                    return;
-                }
                 var receipt_screen = this.gui.screen_instances.receipt;
-                receipt_screen.send_mail_receipt(this.new_client.id);
                 receipt_screen.$el.zIndex(0);
                 this.$el.zIndex(-1);
+                receipt_screen.mail_receipt_action(this.new_client);
             } else {
                 this._super();
             }

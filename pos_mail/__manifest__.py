@@ -26,6 +26,7 @@
         "views/views.xml",
     ],
     "demo": [
+        "data/mail_body_template_demo.xml",
     ],
     "qweb": [
         "static/src/xml/templates.xml",

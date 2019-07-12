@@ -14,6 +14,7 @@ Credits
 Contributors
 ------------
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Anvar Kildebekov <https://it-projects.info/team/fedoranvar>`__
 
 Sponsors
 --------
