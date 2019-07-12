@@ -41,12 +41,11 @@ odoo.define('pos_mail.pos', function (require) {
             return this.able_mail_button().addClass('disable');
         },
 
-        mail_receipt_action: function(new_client = false) {
+        mail_receipt_action: function(partner) {
             var self = this;
-            var partner = this.pos.get_order().get_client();
-            if (new_client) {
-                partner = new_client
-                }
+            if (!partner) {
+                partner = this.pos.get_order().get_client();
+            }
             if (partner && partner.email) {
                 return this.send_mail_receipt(partner.id).done(function(res){
                     console.log("Mail's sent");
@@ -70,11 +69,11 @@ odoo.define('pos_mail.pos', function (require) {
 
         send_mail_receipt: function(partner_id) {
             var receipt = QWeb.render('PosMailTicket', this.get_receipt_render_env());
-            var order = this.pos.get_order().name;
+            var order_name = this.pos.get_order().name;
             return rpc.query({
                 model: 'pos.config',
                 method: 'send_receipt_via_mail',
-                args: [partner_id, receipt, order],
+                args: [partner_id, receipt, order_name],
             }, {
                 shadow: true,
             });

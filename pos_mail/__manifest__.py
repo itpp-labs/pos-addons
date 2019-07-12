@@ -22,11 +22,12 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        "data/mail_body_template.xml",
         "views/assets.xml",
         "views/views.xml",
     ],
     "demo": [
-        "data/mail_body_template_demo.xml",
+        "demo/demo.xml"
     ],
     "qweb": [
         "static/src/xml/templates.xml",

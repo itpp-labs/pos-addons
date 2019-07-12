@@ -29,20 +29,21 @@ class MLStripper(HTMLParser):
         return ''.join(self.fed)
 
     def handle_starttag(self, tag, attrs):
-        if tag in TAG_WHITELIST:
-            if tag == 'img':
-                self.fed.append("<%s " % tag)
-                attrs = dict(attrs)
-                if attrs.get('src'):
-                    value = attrs['src']
-                    pttrn = re.compile(r"b\'(.*?)'")
-                    if pttrn.search(value):
-                        repl = pttrn.search(value).group(1)
-                        value = value.replace(pttrn.search(value).group(0), repl)
-                        self.fed.append("src=\"%s" % value)
-                self.fed.append("\">")
-            else:
-                self.fed.append("<%s>" % tag)
+        if tag not in TAG_WHITELIST:
+            return
+        if tag == 'img':
+            self.fed.append("<%s " % tag)
+            attrs = dict(attrs)
+            if attrs.get('src'):
+                value = attrs['src']
+                pttrn = re.compile(r"b\'(.*?)'")
+                if pttrn.search(value):
+                    repl = pttrn.search(value).group(1)
+                    value = value.replace(pttrn.search(value).group(0), repl)
+                self.fed.append("src=\"%s\"" % value)
+            self.fed.append(">")
+        else:
+            self.fed.append("<%s>" % tag)
 
     def handle_endtag(self, tag):
         if tag in TAG_WHITELIST:
@@ -62,6 +63,11 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     send_receipt_by_mail = fields.Boolean('Mail a Receipt')
+
+    @api.model
+    def action_set_true_send_via_mail(self):
+        self.env['pos.config'].search([]).write({'send_receipt_by_mail': True})
+        return True
 
     @api.model
     def render_body_html(self, template, partner, order):
