@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_mail/static/src/js/pos.js"></script>
+            <link rel="stylesheet" href="/pos_mail/static/src/css/pos.css"/>
+        </xpath>
+    </template>
+
+<!--    <template id="demo_assets_backend" inherit_id="web.assets_backend">-->
+<!--        <xpath expr="." position="inside">-->
+<!--            <script type="text/javascript" src="/pos_mail/static/src/js/test_pos_mail.js"></script>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+</odoo>
