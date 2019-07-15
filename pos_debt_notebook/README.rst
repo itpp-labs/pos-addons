@@ -61,9 +61,9 @@ Sponsors
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/9.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook/
 
 Usage instructions: `<doc/index.rst>`__
 
