@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="CustomScreenWidget">
+      <div class="custom-screen screen">
+        <div class="screen-content">
+           <section class="top-content">
+             <span class="button back">
+               <i class="fa fa-angle-double-left" />
+                 Cancel
+             </span>
+             <span class="button next oe_hidden highlight">
+                 Apply
+               <i class="fa fa-angle-double-right" />
+             </span>
+           </section>
+           <section class="full-content">
+             <div class="window">
+               <section class="subwindow collapsed">
+                 <div class="subwindow-container collapsed">
+                   <div class="subwindow-container-fix custom-details-contents" />
+                 </div>
+               </section>
+             </div>
+           </section>
+        </div>
+      </div>
+    </t>
+
+    <t t-name="PopupButton">
+      <div class="control-button">
+        <i class="fa fa-list-alt" /> Popup Button
+      </div>
+    </t>
+</templates>

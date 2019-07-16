@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pos_chat_pos_chat,pos_chat.pos_chat,model_pos_chat_pos_chat,,1,0,0,0
