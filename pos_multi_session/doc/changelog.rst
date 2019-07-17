@@ -1,3 +1,8 @@
+`4.2.10`
+--------
+
+- **Fix:** Synchronization error after an order was created offline
+
 `4.2.9`
 -------
 
