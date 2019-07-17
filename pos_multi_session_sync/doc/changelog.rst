@@ -1,3 +1,7 @@
+`1.0.6`
+-------
+- **Fix:** Updated 'update_revision_ID' message
+
 `1.0.5`
 -------
 - **Fix:** Cross multi-sesion messaging in case the same pos was assigned to a different multi-session

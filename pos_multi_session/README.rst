@@ -60,7 +60,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
 
 The example above synchronizes ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
 
-The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__:
+The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/10.0/pos_order_note/>`__:
 
 .. code-block:: js
 
