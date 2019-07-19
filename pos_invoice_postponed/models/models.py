@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import copy
@@ -25,8 +26,12 @@ class PosOrder(models.Model):
         if not float_is_zero(order['amount_paid'], account_precision):
             acc_journal = self.env['account.journal']
             payments = order.get('statement_ids')
+            #import wdb
+            #wdb.set_trace()
             postponed_payments = filter(lambda x: acc_journal.browse(x[2]['journal_id']).postponed_invoice, payments)
-            if postponed_payments:
+            invoice_flag = acc_journal.browse(payments[0][2]['journal_id']).postponed_invoice
+
+            if invoice_flag: #postponed_payments:
                 user_id = self.env['res.users'].browse(order['user_id'])
                 partner_id = self.env['res.partner'].browse(order['partner_id'])
                 session_id = self.env['pos.session'].browse(order['pos_session_id'])
@@ -52,7 +57,7 @@ class PosOrder(models.Model):
 
         res = super(PosOrder, self)._process_order(order)
 
-        if postponed_payments:
+        if invoice_flag: #postponed_payments:
             res.sudo().write({
                 'state': 'invoiced',
                 'invoice_id': invoice.id,
