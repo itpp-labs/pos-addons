@@ -2,6 +2,7 @@
  Internal Credit System
 ========================
 
+
 The module allows to organize cash-free system for set of shops with a single payment point. E.g. at festivals, amusements parks, etc.
 
 Credits
