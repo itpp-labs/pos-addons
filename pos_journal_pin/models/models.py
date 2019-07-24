@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import models, fields, api
@@ -25,7 +26,7 @@ class PosConfig(models.Model):
 
     def init_pin_journal(self):
         """Init demo Journals for current company"""
-        demo_is_on = self.env['ir.module.module'].search([('name', '=', MODULE)]).demo
+        demo_is_on = self.env['ir.module.module'].sudo().search([('name', '=', MODULE)]).demo  # Using sudo() for superuser-rights for creating pos-session
         if not demo_is_on:
             return
         # Multi-company is not primary task for this module, but I copied this
