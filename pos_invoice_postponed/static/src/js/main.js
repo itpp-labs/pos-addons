@@ -6,14 +6,8 @@ odoo.define('pos_invoice_postponed.pos', function (require) {
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var core = require('web.core');
-    var gui = require('point_of_sale.gui');
-    var utils = require('web.utils');
-    var Model = require('web.DataModel');
-    var PopupWidget = require('point_of_sale.popups');
 
-    var QWeb = core.qweb;
     var _t = core._t;
-    var round_pr = utils.round_precision;
 
     models.load_fields('account.journal', ['postponed_invoice']);
 

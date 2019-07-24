@@ -10,12 +10,11 @@ from odoo.api import Environment
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
 
-    def test_01_pos_postponed_invoice(self):
-
+    def main(self, login):
         self.phantom_js('/pos/web?m=1',
                         "odoo.__DEBUG__.services['web_tour.tour'].run('pos_invoice_postponed_tour'), 1000",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.pos_invoice_postponed_tour.ready",
-                        login="admin", timeout=240)
+                        login=login, timeout=240)
 
         cr = self.registry.cursor()
         cr.execute('select "id" from "pos_order" order by "id" desc limit 1')
@@ -26,3 +25,9 @@ class TestUi(odoo.tests.HttpCase):
         self.assertEqual(len(order.statement_ids), 0, 'Number of statements are %s expected %s' % (len(order.statement_ids), 0))
         self.assertEqual(order.amount_paid, 0, 'Amount paid is %s expected %s' % (order.amount_paid, 0))
         cr.release()
+
+    def test_01_pos_postponed_invoice(self):
+        self.main("admin")
+
+    def test_02_pos_postponed_invoice(self):
+        self.main("demo")

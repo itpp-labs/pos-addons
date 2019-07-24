@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import copy
@@ -99,7 +100,7 @@ class PosConfig(models.Model):
 
     def init_postponed_journal(self):
         """Init demo Journals for current company"""
-        demo_is_on = self.env['ir.module.module'].search([('name', '=', MODULE)]).demo
+        demo_is_on = self.env['ir.module.module'].sudo().search([('name', '=', MODULE)]).demo  # Using sudo() for superuser-rights for creating pos-session
         if not demo_is_on:
             return
         # Multi-company is not primary task for this module, but I copied this
@@ -113,7 +114,7 @@ class PosConfig(models.Model):
         if pin_journal_active:
             return
 
-        pin_journal = self._create_postponed_journal(dict(
+        pin_journal = self.sudo()._create_postponed_journal(dict(
             sequence_name='Postponed',
             prefix='POSTPONED-- ',
             journal_name='Postponed',
@@ -129,7 +130,7 @@ class PosConfig(models.Model):
 
     def _create_postponed_journal(self, vals):
         user = self.env.user
-        new_sequence = self.env['ir.sequence'].create({
+        new_sequence = self.env['ir.sequence'].sudo().create({
             'name': vals['sequence_name'] + str(user.company_id.id),
             'padding': 3,
             'prefix': vals['prefix'] + str(user.company_id.id),
