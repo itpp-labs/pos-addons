@@ -16,6 +16,7 @@ Credits
 Contributors
 ------------
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
 
 Sponsors
 --------
@@ -46,4 +47,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/.atom>`_
 
-Tested on Odoo 10.0 49ca43d75cb9a97642c820c2466d454f1ce604cb
+Tested on Odoo 10.0 9998f3cd3a49429e153e4c673448f430405dc9e2
