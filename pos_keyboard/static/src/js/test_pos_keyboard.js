@@ -1,4 +1,5 @@
 /*  Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
+    Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_keyboard.tour', function (require) {
     "use strict";
@@ -9,6 +10,10 @@ odoo.define('pos_keyboard.tour', function (require) {
 
     function open_pos_neworder() {
         return [{
+            trigger: 'ul.o_menu_apps li.dropdown a.full',
+            content: _t("Show Apps Menu"),
+            position: 'bottom',
+        }, {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
             position: 'bottom',
@@ -63,7 +68,7 @@ odoo.define('pos_keyboard.tour', function (require) {
             trigger: '.username',
         }, {
             content: "Make dummy action and simulate escape button clicking",
-            trigger: '.modal-dialog:not(".oe_hidden") p.title',
+            trigger: '.modal-dialog:not(".oe_hidden")',
             run: function(){
                 simulate_keyup_event(27);
                 setTimeout(function () {
