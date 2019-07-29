@@ -9,8 +9,8 @@ Credits
 
 Contributors
 ------------
-* `Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>`_
-* `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
+* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Anvar Kildebekov <https://it-projects.info/team/kildebekov>`__
 
 Sponsors
 --------
@@ -37,4 +37,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 0351677a00df8bd76fa207a38dc2ecdefdc6940a
+Tested on Odoo 11.0 dff2e242a5e5288cb3c8408a9b635a4c85034e83
