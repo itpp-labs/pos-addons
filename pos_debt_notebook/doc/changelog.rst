@@ -1,3 +1,8 @@
+`5.3.1`
+-------
+- **Fix:** Credit Product Field was accessible only with **Show Full Accounting Features** option enabled so it has been moved to Sales tab
+
+
 `5.3.0`
 -------
 - **Improvement:** New Balance is amount for selected journal,  not for total Credits.
