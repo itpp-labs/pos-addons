@@ -8,31 +8,33 @@
       </div>
     </t>
 
-    <t t-name="CustomScreenWidget">
-      <div class="custom-screen screen">
-        <div class="screen-content">
-           <section class="top-content">
-             <span class="button back">
-               <i class="fa fa-angle-double-left" />
-                 Cancel
-             </span>
-             <span class="button next oe_hidden highlight">
-                 Apply
-               <i class="fa fa-angle-double-right" />
-             </span>
-           </section>
-           <section class="full-content">
-               <div class="chat_window">
-                   <section class="whit-space">
+    <t t-name="ChatPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-chat">
 
-                   </section>
-                   <section class="input-text">
+                <Label>Chat</Label>
+                <div id="message-field"></div>
+                <div class="chat-popup" id="myForm">
+                  <form class="form-container">
 
-                   </section>
-               </div>
-           </section>
+                    <span class='button back'>
+                      <i class='fa fa-angle-double-left'></i>
+                          Back
+                    </span>
+
+                    <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+
+                    <span class='button next'>
+                        Send
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+
+                  </form>
+                </div>
+            </div>
+            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
         </div>
-      </div>
     </t>
+
 
 </templates>
