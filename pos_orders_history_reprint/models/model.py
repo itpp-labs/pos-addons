@@ -10,6 +10,8 @@ CHANNEL = "pos_orders_history_receipt"
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
+    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)
+
     # ir.actions.server methods:
     @api.model
     def notify_receipt_updates(self):
@@ -25,8 +27,6 @@ class PosReceipt(models.Model):
     receipt = fields.Char("Receipt")
     pos_reference = fields.Char("Reference")
     receipt_type = fields.Selection([('xml', 'XML'), ('ticket', 'Ticket')], "Receipt Type")
-    # active or not active receipt
-    status = fields.Boolean('Status', default=True)
 
     def save_xml_receipt(self, name, receipt, receipt_type):
         self.create({
@@ -34,24 +34,3 @@ class PosReceipt(models.Model):
             "receipt": receipt,
             "receipt_type": receipt_type,
         })
-
-
-class PosSession(models.Model):
-    _inherit = 'pos.session'
-
-    @api.multi
-    def action_pos_session_close(self):
-        orders = self.env['pos.order'].search([('state', '=', 'paid')])
-        res = super(PosSession, self).action_pos_session_close()
-        references = [order.pos_reference for order in orders]
-        receipts = self.env['pos.xml_receipt'].search([('pos_reference', 'in', references), ('status', '=', True)])
-        receipts.write({
-            'status': False
-        })
-        return res
-
-
-class PosConfig(models.Model):
-    _inherit = 'pos.config'
-
-    reprint_orders = fields.Boolean("Reprint Orders", help="Reprint paid POS Orders with POS interface", default=True)

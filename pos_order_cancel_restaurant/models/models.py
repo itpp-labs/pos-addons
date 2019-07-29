@@ -1,4 +1,9 @@
-from odoo import fields, models
+# Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
+from odoo import fields, models, api
 
 
 class PosConfig(models.Model):
@@ -12,6 +17,12 @@ class PosConfig(models.Model):
     save_canceled_kitchen_orders_only = fields.Boolean(string="Save Canceled / Refunded kitchen orders only",
                                                        default=False, help="Save canceled / refunded orders in Backend")
     send_removed_lines_to_kitchen = fields.Boolean(string="Send removed line to Kitchen", default=True, help="If unchecked, the orderline will not be printed repeatly after its removing")
+    ask_managers_pin_kitchen_orders_only = fields.Boolean(string="Ask Manager For Kitchen orders only", default=False, help="Only Managers are allowed to cancel kitchen order lines")
+
+    @api.onchange('ask_managers_pin')
+    def onchange_ask_managers_pin_kitchen_orders_only(self):
+        if not self.ask_managers_pin:
+            self.ask_managers_pin_kitchen_orders_only = False
 
 
 class PosOrderLineCanceled(models.Model):

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_printer_network
-# 
+#
 # Translators:
 # Sergio Zanchetta <primes2h@gmail.com>, 2018
 msgid ""
@@ -11,11 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2018-04-27 23:55+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2018\n"
-"Language-Team: Italian (https://www.transifex.com/it-projects-llc/teams/76080/it/)\n"
+"Language-Team: Italian (https://www.transifex.com/it-projects-llc/"
+"teams/76080/it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_printer_network
@@ -63,7 +64,7 @@ msgstr "Stampanti di rete"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:193
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:209
 #, python-format
 msgid "Offline"
 msgstr "Fuori rete"
@@ -83,14 +84,14 @@ msgstr "Tipo di stampante"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:189
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:205
 #, python-format
 msgid "Scale"
 msgstr "Bilancia"
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:177
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:193
 #, python-format
 msgid "Scanner"
 msgstr "Lettore"
@@ -98,8 +99,7 @@ msgstr "Lettore"
 #. module: pos_printer_network
 #: model:ir.model.fields,help:pos_printer_network.field_pos_config_receipt_printer_type
 msgid "Select the printer type you want to use receipt printing"
-msgstr ""
-"Selezionare il tipo di stampante da usare per la stampa delle ricevute"
+msgstr "Selezionare il tipo di stampante da usare per la stampa delle ricevute"
 
 #. module: pos_printer_network
 #. openerp-web

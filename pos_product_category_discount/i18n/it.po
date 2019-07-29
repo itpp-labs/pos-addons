@@ -3,14 +3,15 @@
 # * pos_product_category_discount
 # 
 # Translators:
-# Sergio Zanchetta <primes2h@gmail.com>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2018-04-27 23:55+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-04-21 00:09+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/it-projects-llc/teams/76080/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -218,7 +219,7 @@ msgstr "Programmi sconti POS"
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_category_form_view
 msgid "Pos Category Discount"
-msgstr ""
+msgstr "Sconti categoria POS"
 
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_form_view
@@ -246,7 +247,7 @@ msgstr ""
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_filter
 msgid "Search Discount Program"
-msgstr ""
+msgstr "Ricerca programma sconti"
 
 #. module: pos_product_category_discount
 #: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_discount_program_discount_program_number

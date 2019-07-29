@@ -1,3 +1,8 @@
+# Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
+# Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 from odoo import fields, models, api
 from functools import partial
 from datetime import datetime
@@ -154,3 +159,4 @@ class PosConfig(models.Model):
     allow_cancel_deletion = fields.Boolean(string="Cancel the deletion", help="When not active, a user will have to select predefined reasons without the possibility to cancel this action", default=True)
     show_popup_change_quantity = fields.Boolean(string="Specify Quantity to Cancel", help="Allow to specify a quantity for products to cancel")
     show_cancel_info = fields.Boolean(string="Display the Cancellation Information", default=False, help="Display the information of canceled products in order in POS (format: Qty - User - Table)")
+    ask_managers_pin = fields.Boolean(string="Ask Manager", default=False, help="Only Managers are allowed to cancel lines")

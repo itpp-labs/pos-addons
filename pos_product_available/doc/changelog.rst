@@ -1,7 +1,12 @@
-.. _changelog:
+`1.1.0`
+-------
 
-Updates
-=======
+- **New:** Added option to show product quantities
+
+`1.0.6`
+-------
+
+- **FIX:** Added compatibility with pos_multi_session
 
 `1.0.5`
 -------

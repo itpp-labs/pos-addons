@@ -11,7 +11,6 @@ odoo.define('pos_mobile.gui', function (require) {
     gui.Gui.include({
         show_screen: function(screen_name,params,refresh,skip_close_popup) {
             this._super(screen_name,params,refresh,skip_close_popup);
-            var order = this.pos.get_order();
             var current_screen_name = this.get_current_screen();
             this.change_screen_type(current_screen_name);
         },
@@ -44,8 +43,13 @@ odoo.define('pos_mobile.gui', function (require) {
                 });
                 // add custom scrolling
                 if (!this.pos.iOS) {
-                    $('.clientlist-screen .nicescroll-rails').remove();
-                    $('.clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y').niceScroll();
+                    var el = $('.clientlist-screen .subwindow-container-fix.touch-scrollable.scrollable-y');
+                    var scroll = el.getNiceScroll();
+                    if (scroll.length) {
+                        scroll.resize();
+                    } else {
+                        el.niceScroll();
+                    }
                 }
             } else if (current_screen === 'payment') {
                 var height = $('.payment-screen .right-content').height();
@@ -54,9 +58,15 @@ odoo.define('pos_mobile.gui', function (require) {
                 // automatic define height. 20 the size of the indentation from the bottom block
                 $('.paymentlines-container').css({height: height - paymentmethods - numpad - 20});
                 // add custom scrolling
-                $('.payment-screen .touch-scrollable').niceScroll({
-                    horizrailenabled: false,
-                });
+                var payment_el = $('.payment-screen .touch-scrollable');
+                var payment_scroll = payment_el.getNiceScroll();
+                if (payment_scroll.length) {
+                    payment_scroll.resize();
+                } else {
+                    payment_el.niceScroll({
+                        horizrailenabled: false,
+                    });
+                }
             }
         }
     });

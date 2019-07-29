@@ -18,9 +18,6 @@
                         <i class='fa fa-angle-double-left'></i>
                         Back
                     </span>
-                    <span class='button update_history'>
-                        Update List
-                    </span>
                     <span class="filters">
                         <i class='fa fa-filter'></i>
                         Filters
@@ -34,6 +31,7 @@
                             Table
                         </span>
                     </span>
+                    <span t-if="widget.pos.config.load_barcode_order_only" class="button scan-barcode">Scan Barcode</span>
                     <span class='searchbox'>
                         <input placeholder='Search Orders' />
                         <span class='search-clear'></span>
@@ -88,7 +86,7 @@
                 <t t-if='!order.partner_id' t-esc='""'/>
             </td>
             <td><t t-esc='order.pos_name'/></td>
-            <td><t t-esc='order.date_order' /></td>
+            <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
             <td><t t-esc='order.user_id[1]' /></td>
             <t t-if="!order.computed_state">
                 <td>
@@ -162,6 +160,10 @@
     <t t-extend="XmlReceipt">
         <t t-jquery="t[t-if*='receipt.footer_xml']" t-operation="before">
             <img id="barcode"/>
+            <!-- TODO Print barcode via element tag -->
+<!--            <t t-if="widget.pos.config.show_barcode_in_receipt">
+                <barcode encoding="code39"><t t-esc="widget.pos.get_order().uid"/></barcode>
+            </t>-->
         </t>
     </t>
 

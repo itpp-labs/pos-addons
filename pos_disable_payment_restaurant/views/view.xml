@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+        <record id="res_users_form_view" model="ir.ui.view">
+            <field name="name">res.users.form.view</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="pos_disable_payment.res_users_form_view"/>
+            <field name="priority" eval="32"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='allow_delete_order_line']" position="after">
+                    <field name="allow_remove_kitchen_order_line" attrs="{'invisible':[('allow_delete_order_line', '=', False)]}"/>
+                    <field name="allow_decrease_kitchen"/>
+                </xpath>
+            </field>
+        </record>
+</odoo>

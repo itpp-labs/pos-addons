@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).-->
+<odoo>
+    <template id="pos_assets" name="pos_partner_sync_assets_pos" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_partner_sync/static/src/js/pos_partner_sync.js"></script>
+        </xpath>
+    </template>
+
+    <template id="assets_backend_web" name="pos_partner_sync_assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_partner_sync/static/src/js/test_pos_opens.js"></script>
+        </xpath>
+    </template>
+</odoo>

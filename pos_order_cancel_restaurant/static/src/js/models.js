@@ -1,3 +1,6 @@
+/* Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_order_cancel_restaurant.models', function (require) {
     "use strict";
 
@@ -62,8 +65,11 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             });
             var new_lines = [];
             unique_categories_ids.forEach(function(id){
-                lines.forEach(function(line){
-                    if (line.product.pos_categ_id[0] === id) {
+                lines.forEach(function(line) {
+                    // for compatibility with pos_category_multi
+                    if (line.product.pos_category_ids && line.product.pos_category_ids.indexOf(id) !== -1) {
+                        new_lines.push(line);
+                    } else if (line.product.pos_categ_id && line.product.pos_categ_id[0] === id) {
                         new_lines.push(line);
                     }
                 });
@@ -132,7 +138,12 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 return this.table.floor.name;
             }
             return false;
-        }
+        },
+        check_has_canceled_kitchen_lines: function() {
+            return _.filter(this.canceled_lines, function(ol) {
+                return ol[2].was_printed;
+            });
+        },
     });
 
     var _super_orderline = models.Orderline.prototype;

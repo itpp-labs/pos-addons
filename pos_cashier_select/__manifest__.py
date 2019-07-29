@@ -3,11 +3,11 @@
     "summary": """Forced choose a cashier before switching to payment screen""",
     "category": "Point of Sale",
     "images": ['images/pos_cashier_select.png'],
-    "version": "11.0.1.0.0",
+    "version": "11.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
     "license": "LGPL-3",
     "price": 39.00,

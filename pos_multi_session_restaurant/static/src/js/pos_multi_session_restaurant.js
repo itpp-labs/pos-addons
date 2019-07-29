@@ -1,7 +1,7 @@
 /* Copyright 2015-2016,2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
  * Copyright 2015-2016 Ilyas Rakhimkulov
  * Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
- * Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 Attila Szöllősi
  * Copyright 2017 Thomas Paul
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
@@ -15,6 +15,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
     var gui = require('point_of_sale.gui');
     var chrome = require('point_of_sale.chrome');
     var multi_session = require('pos_multi_session');
+    var rpc = require('web.rpc');
 
     var _t = core._t;
 
@@ -87,24 +88,100 @@ odoo.define('pos_multi_session_restaurant', function(require){
         add_new_order: function(){
             var self = this;
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
-            if (this.multi_session){
-                var current_order = this.get_order();
+            var current_order = this.get_order();
+            if (this.multi_session && current_order){
                 current_order.new_updates_to_send();
                 current_order.save_to_db();
             }
         },
-        ms_create_order: function(options){
+        ms_create_order: function(options) {
             var self = this;
-            var order = PosModelSuper.prototype.ms_create_order.apply(this, arguments);
             var data = options.json;
+            var table = false;
+            var floor_table = false;
+            var order = false;
+
             if (data.table_id) {
+                table = this.tables_by_id[data.table_id];
+            }
+
+            // Is there a table on the floor?
+            if (table) {
+                floor_table = table.floor.tables.find(function (t) {
+                    return t.id === data.table_id;
+                });
+            }
+
+            if (table && data.removed_table_id && this.tables_by_id[data.removed_table_id]) {
+                var removed_table = this.tables_by_id[data.removed_table_id];
+                this.gui.show_popup('error', {
+                    'title': _t('Got unknown table ' + removed_table.name),
+                    'body': _t('Order will be moved to ' + table.name + ' table')
+                });
+
+                // remove old table from floor screen
+                var floor = this.floors.find(function(f){
+                    return f.id === removed_table.floor_id[0];
+                });
+                var index = floor.tables.findIndex(function(t) {
+                    return t.id === removed_table.id;
+                });
+                floor.tables.splice(index, 1);
+                delete this.tables_by_id[data.removed_table_id];
+
+                if (this.gui.screen_instances.floors && this.gui.get_current_screen() === "floors") {
+                    this.gui.screen_instances.floors.renderElement();
+                }
+            }
+
+            if (table && floor_table) {
+                order = PosModelSuper.prototype.ms_create_order.call(this, options);
                 order.table = self.tables_by_id[data.table_id];
                 order.customer_count = data.customer_count;
+                order.removed_table_id = false;
+            } else {
+                // load new table
+                var domain = [['id', '=', data.table_id]];
+                rpc.query({
+                    model: 'restaurant.table',
+                    method: 'search_read',
+                    domain: domain,
+                }).then(function (t) {
+                    if (t.length) {
+                        self.gui.show_popup('confirm',{
+                             'title': _t('Got a new table'),
+                             'body': _t('Do you want to reload this page to receive the latest updates?'),
+                             confirm: function() {
+                                 location.reload();
+                             }
+                        });
+                    } else {
+                        if (!self.floors.length) {
+                            return;
+                        }
+                        // if the table is not exist move the order to a first empty table
+                        var empty_tables = self.floors[0].tables.filter(function(exist_table) {
+                           return self.get_table_orders(exist_table).length === 0;
+                        });
+                        var transfer_table = self.tables_by_id[self.floors[0].table_ids[0]];
+                        if (empty_tables.length) {
+                            transfer_table = empty_tables[0];
+                        }
+
+                        var removed_table_id = data.table_id;
+                        options.json.table_id = transfer_table.id;
+                        order = self.ms_create_order(options);
+                        order.removed_table_id = removed_table_id;
+                        order.trigger('new_updates_to_send');
+                        if (self.gui.screen_instances.floors && self.gui.get_current_screen() === "floors") {
+                            self.gui.screen_instances.floors.renderElement();
+                        }
+                    }
+                });
             }
             return order;
         },
         updates_from_server: function(message){
-            var self = this;
             var data = message.data || {};
             var order = false;
             var old_order = this.get_order();
@@ -113,10 +190,6 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order = this.get('orders').find(function(ord) {
                     return ord.uid === data.uid;
                 });
-            }
-            if (order && order.table && order.table.id !== data.table_id) {
-                order.transfer = true;
-                order.destroy({'reason': 'abandon'});
             }
             PosModelSuper.prototype.updates_from_server.apply(this, arguments);
             if ((order && old_order && old_order.uid !== order.uid) || (old_order === null)) {
@@ -136,19 +209,51 @@ odoo.define('pos_multi_session_restaurant', function(require){
                 order.init_locked = false;
             }
         },
+        ms_update_existing_order: function(order, data) {
+            if (order.table && order.table.id !== data.table_id) {
+                // the order has been transferred to another table
+                this.order_to_transfer_to_different_table = order;
+                this.set_table(this.tables_by_id[data.table_id]);
+                this.order_to_transfer_to_different_table = null;
+            }
+            PosModelSuper.prototype.ms_update_existing_order.apply(this, arguments);
+        },
         // changes the current table.
         set_table: function(table) {
-            var self = this;
-            if (table && this.order_to_transfer_to_different_table) {
-                this.order_to_transfer_to_different_table.table = table;
-                this.order_to_transfer_to_different_table.new_updates_to_send();
-                this.order_to_transfer_to_different_table = null;
-                // set this table
-                this.set_table(table);
-            } else {
-                PosModelSuper.prototype.set_table.apply(this, arguments);
+            var order = this.order_to_transfer_to_different_table;
+            if (table && order) {
+                var old_table = order.table;
+                order.table = table;
+                order.new_updates_to_send();
+                order.table = old_table;
             }
-        }
+            PosModelSuper.prototype.set_table.apply(this, arguments);
+        },
+
+        check_table_inaccessibility: function(table) {
+            // Allows to open if you are the one who created there an order or if you POS responsible person
+            if (!this.config.table_blocking) {
+                return false;
+            }
+            var cashier = this.get_cashier();
+            var user_is_manager = _.contains(cashier.groups_id, this.config.group_pos_manager_id[0]);
+            if (user_is_manager) {
+                return false;
+            }
+            var table_orders = this.get_table_orders(table);
+            var creators = _.chain(table_orders)
+                .map(function(o){
+                    return o.ms_info.created.user;
+                })
+                .unique().value();
+            var creator_ids = _.pluck(creators, 'id');
+            if (!creator_ids.length ||
+                (creator_ids.length && _.contains(creator_ids, cashier.id))) {
+
+                return false;
+            }
+            return creators;
+        },
     });
 
     var OrderSuper = models.Order;
@@ -168,6 +273,11 @@ odoo.define('pos_multi_session_restaurant', function(require){
         saveChanges: function(){
             OrderSuper.prototype.saveChanges.apply(this, arguments);
             this.trigger('new_updates_to_send');
+        },
+        export_as_JSON: function(){
+            var data = OrderSuper.prototype.export_as_JSON.apply(this, arguments);
+            data.removed_table_id = this.removed_table_id;
+            return data;
         },
     });
 
@@ -228,6 +338,32 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var collection = this.get_current_data();
             return this.saved_data === JSON.stringify(collection);
         },
+        tool_trash_table: function() {
+            var self = this;
+            if (this.selected_table) {
+                if (this.pos.get_table_orders(this.selected_table.table).length) {
+                    this.gui.show_popup('error', {
+                        'title': _t('You can not remove the table'),
+                        'body': _t('Please, complete your orders before deleting the table.')
+                    });
+                } else if (this.floor.tables.length === 1) {
+                    this.gui.show_popup('error', {
+                        'title': _t('You can not remove the table'),
+                        'body': _t('Forbidden to remove the last table on the floor.')
+                    });
+                } else {
+                    this.gui.show_popup('confirm', {
+                        'title': _t('Are you sure ?'),
+                        'comment': _t('Removing a table cannot be undone'),
+                        'body': _t('The table can be used in other POS'),
+                        'confirm': function () {
+                            self.selected_table.trash();
+                            delete self.pos.tables_by_id[self.selected_table.table.id];
+                        },
+                    });
+                }
+            }
+        },
         get_current_data: function(){
             var self = this;
             var tables = this.floor.tables;
@@ -269,4 +405,28 @@ odoo.define('pos_multi_session_restaurant', function(require){
             return notifications;
         },
     });
+
+    floors.TableWidget.include({
+        click_handler: function(){
+            var self = this;
+            var floorplan = this.getParent();
+            if (floorplan.editing) {
+                this._super();
+            } else {
+                var table = this.table;
+                if (!table) {
+                    return this._super();
+                }
+                var table_waiters = this.pos.check_table_inaccessibility(table);
+                if (!table_waiters || !table_waiters.length) {
+                    return this._super();
+                }
+                return this.pos.gui.show_popup('alert',{
+                    'title': _t('Can not open the Table'),
+                    'body': _t('The Table is served by another waiter ' + _.pluck(table_waiters, 'name')),
+                });
+            }
+        },
+    });
+
 });

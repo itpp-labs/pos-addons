@@ -1,5 +1,5 @@
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2017, 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import logging
 import json
@@ -42,7 +42,7 @@ class PosMultiSessionSync(models.Model):
             self.prepare_new_session(message)
 
         if message['action'] == 'update_order':
-            res = self.set_order(message)
+            res = self.set_and_broadcast_order(message)
         elif message['action'] == 'sync_all':
             res = self.get_sync_all(message)
         elif message['action'] == 'remove_order':
@@ -121,20 +121,32 @@ class PosMultiSessionSync(models.Model):
         return message
 
     @api.multi
+    def set_and_broadcast_order(self, message):
+        self.ensure_one()
+
+        order, updated_message = self.set_order(message)
+
+        if not order:
+            return updated_message
+
+        self.broadcast_message(updated_message)
+        return {'action': 'update_revision_ID', 'revision_ID': order.revision_ID,
+                'order_ID': updated_message['data']['sequence_number'], 'run_ID': order.run_ID}
+
+    @api.multi
     def set_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
         sequence_number = message['data']['sequence_number']
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
         revision = self.check_order_revision(message, order)
-        run_ID = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])\
-                     .run_ID or message['data']['run_ID'] or False
+        run_ID = order.run_ID or message['data']['run_ID'] or False
 
         if revision == "nonce":
-            return {'action': ''}
+            return (False, {'action': ''})
         elif not revision or (order and order.state == 'deleted'):
             _logger.debug('Revision error %s %s', order_uid, order.state)
-            return {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state}
+            return (False, {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state})
 
         if order:  # order already exists
             message = self.set_changes(message, order)
@@ -157,12 +169,9 @@ class PosMultiSessionSync(models.Model):
             })
             self.write({'order_ID': sequence_number})
 
-        revision_ID = order.revision_ID
+        message['data']['revision_ID'] = order.revision_ID
 
-        message['data']['revision_ID'] = revision_ID
-        self.broadcast_message(message)
-        return {'action': 'update_revision_ID', 'revision_ID': revision_ID,
-                'order_ID': sequence_number, 'run_ID': run_ID}
+        return (order, message)
 
     @api.multi
     def get_sync_all(self, message):
@@ -226,12 +235,23 @@ class PosMultiSessionSync(models.Model):
         order_uid = message['data']['uid']
 
         order = self.env['pos_multi_session_sync.order'].search([('order_uid', '=', order_uid)])
+
+        order_data = message['data'].get('order_data', False)
+        if not order and order_data:
+            # order paid in offline
+            order_data = json.loads(order_data)
+            order_data['data']['nonce'] = 'paid offline'
+            order, order_data = self.set_order(order_data)
+            order_uid = order.order_uid
+
         if order.state is not 'deleted':
             revision = self.check_order_revision(message, order)
             if not revision:
                 return {'action': 'revision_error', 'order_uid': order_uid}
         if order:
             order.state = 'deleted'
+        _logger.debug('Remove Order: %s Finalized: %s Revision: %s',
+                      order_uid, message['data']['finalized'], message['data']['revision_ID'])
         self.broadcast_message(message)
         return {'order_ID': self.order_ID}
 

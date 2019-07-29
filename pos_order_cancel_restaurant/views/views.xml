@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
     <record model="ir.ui.view" id="pos_config_view_form">
         <field name="name">pos.config.form.view.inherit</field>
@@ -36,6 +40,16 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="send_removed_lines_to_kitchen"/>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[@id='ask_managers_pin']" position="inside">
+                <div id="ask_managers_pin_kitchen_orders_only" class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible':[('ask_managers_pin', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="ask_managers_pin_kitchen_orders_only"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="ask_managers_pin_kitchen_orders_only"/>
                     </div>
                 </div>
             </xpath>

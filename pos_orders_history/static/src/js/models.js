@@ -8,6 +8,7 @@ odoo.define('pos_orders_history.models', function (require) {
     var rpc = require('web.rpc');
     var longpolling = require('pos_longpolling');
 
+
     var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function () {
@@ -20,16 +21,20 @@ odoo.define('pos_orders_history.models', function (require) {
         },
         on_orders_history_updates: function(message) {
             var self = this;
+            // state of orders
+            var state = ['paid'];
+            if (this.config.show_cancelled_orders) {
+                state.push('cancel');
+            }
+            if (this.config.show_posted_orders) {
+                state.push('done');
+            }
             message.updated_orders.forEach(function (id) {
                 self.get_order_history(id).done(function(order) {
-                    var states = ['paid'];
-                    if (self.config.show_cancelled_orders) {
-                        states.push('cancel');
+                    if (order instanceof Array) {
+                        order = order[0];
                     }
-                    if (self.config.show_posted_orders) {
-                        states.push('done');
-                    }
-                    if (order.length && states.indexOf(order[0].state) !==-1) {
+                    if (state.indexOf(order.state) !== -1) {
                         self.update_orders_history(order);
                     }
                 });
@@ -50,53 +55,6 @@ odoo.define('pos_orders_history.models', function (require) {
                 model: 'pos.order.line',
                 method: 'search_read',
                 args: [[['order_id', '=', id]]]
-            });
-        },
-        manual_update_order_history: function() {
-            var self = this;
-            var def = new $.Deferred();
-            this.get_order_histories().then(function(data) {
-                if (!data) {
-                    def.resolve();
-                    return;
-                }
-
-                self.update_orders_history(data);
-                self.get_order_lines(_.pluck(data, 'id')).then(function(lines){
-                    self.update_orders_history_lines(lines);
-                    def.resolve();
-                });
-
-            });
-            return def;
-        },
-        get_order_histories: function() {
-            var domain = function(self) {
-                var state = ['paid'];
-                if (self.config.show_cancelled_orders) {
-                    state.push('cancel');
-                }
-                if (self.config.show_posted_orders) {
-                    state.push('done');
-                }
-                var res = [['state','in',state]];
-                if (self.config.current_day_orders_only) {
-                    res.push(['date_order', '>=', self.get_date()]);
-                }
-                return res;
-            };
-
-            return rpc.query({
-                model: 'pos.order',
-                method: 'search_read',
-                args: [domain(this)]
-            });
-        },
-        get_order_lines: function(order_ids) {
-            return rpc.query({
-                model: 'pos.order.line',
-                method: 'search_read',
-                args: [[['order_id','in',order_ids]]]
             });
         },
         update_orders_history: function (orders) {
@@ -180,6 +138,9 @@ odoo.define('pos_orders_history.models', function (require) {
         model: 'pos.order',
         fields: [],
         domain: function(self) {
+            var domain = [];
+
+            // state of orders
             var state = ['paid'];
             if (self.config.show_cancelled_orders) {
                 state.push('cancel');
@@ -187,17 +148,25 @@ odoo.define('pos_orders_history.models', function (require) {
             if (self.config.show_posted_orders) {
                 state.push('done');
             }
-            return [['state','in',state]];
+
+            domain.push(['state','in',state]);
+
+            // number of orders
+            if (self.config.load_orders_of_last_n_days) {
+                var today = new Date();
+                today.setHours(0,0,0,0);
+                // load orders from the last date
+                var last_date = new Date(today.setDate(today.getDate()-self.config.number_of_days)).toISOString();
+                domain.push(['date_order','>=',last_date]);
+            }
+
+            return domain;
+        },
+        condition: function(self) {
+            return self.config.orders_history && !self.config.load_barcode_order_only;
         },
         loaded: function (self, orders) {
-            var order_ids = [];
-            if (self.config.current_day_orders_only) {
-                orders = orders.filter(function(order) {
-                    return self.get_date() === order.date_order.split(" ")[0];
-                });
-            }
             self.update_orders_history(orders);
-
             self.order_ids = _.pluck(orders, 'id');
         },
     });
@@ -207,6 +176,9 @@ odoo.define('pos_orders_history.models', function (require) {
         fields: [],
         domain: function(self) {
             return [['order_id', 'in', self.order_ids]];
+        },
+        condition: function(self) {
+            return self.config.orders_history && !self.config.load_barcode_order_only;
         },
         loaded: function (self, lines) {
             self.update_orders_history_lines(lines);

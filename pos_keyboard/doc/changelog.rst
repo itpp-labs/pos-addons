@@ -1,7 +1,23 @@
-.. _changelog:
+`1.1.3`
+-------
 
-Updates
-=======
+**Fix:** Enter did not work for some pop-ups
+
+`1.1.2`
+-------
+
+**Fix:** Error on clicking numbers and enter in selection popups
+
+
+`1.1.1`
+-------
+
+**Fix:** Incorrect input data on password pop-up if the first clicked button was `backspace`
+
+`1.1.0`
+-------
+
+**New:** Added popup handling
 
 `1.0.2`
 -------

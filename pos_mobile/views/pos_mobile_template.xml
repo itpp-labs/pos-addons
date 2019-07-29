@@ -38,18 +38,19 @@ var MobileCheck = function MobileCheck() {
 };
 
 (function(){
-    var is_mobile = getUrlParameter('m');
-    if (is_mobile === "1") {
+    var force_mobile = getUrlParameter('m');
+    if (force_mobile === "1") {
         odoo.is_mobile = true;
-    } else if (is_mobile === "0"){
+    } else if (force_mobile === "0") {
         odoo.is_mobile = false;
+    } else if (odoo.session_info.auto_mobile && MobileCheck()) {
+        odoo.is_mobile = true;
     } else {
-        // detect type automatically
-        odoo.is_mobile = MobileCheck();
+        odoo.is_mobile = false;
     }
 })()
 
-// exclude pos_mobile from module list if the url doesn't have parameter "m" in agrs (e.g. /pos/web?m=1 )
+// exclude pos_mobile from module list if the url doesn't have parameter "m" in agrs (e.g. /pos/web?m=1 ) or the Auto Mobile View option is disabled in the configuration
 if (!odoo.is_mobile){
     odoo._modules.splice(odoo._modules.indexOf('pos_mobile'), 1);
 }

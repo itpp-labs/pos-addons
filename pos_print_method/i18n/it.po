@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_print_method
-# 
+#
 # Translators:
 # Sergio Zanchetta <primes2h@gmail.com>, 2018
 msgid ""
@@ -11,23 +11,24 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:55+0000\n"
 "PO-Revision-Date: 2018-04-27 23:55+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2018\n"
-"Language-Team: Italian (https://www.transifex.com/it-projects-llc/teams/76080/it/)\n"
+"Language-Team: Italian (https://www.transifex.com/it-projects-llc/"
+"teams/76080/it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:26
+#: code:addons/pos_print_method/static/src/js/tour.js:27
 #, python-format
 msgid "<p>Click <b>Fruits and Vegetables</b> category.</p>"
 msgstr "<p>Fare clic sulla categoria <b>Frutta e verdura</b>.</p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:38
+#: code:addons/pos_print_method/static/src/js/tour.js:39
 #, python-format
 msgid "<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"
 msgstr ""
@@ -42,14 +43,14 @@ msgstr "<p>Fare clic sul <b>tavolo</b></p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:30
+#: code:addons/pos_print_method/static/src/js/tour.js:31
 #, python-format
 msgid "<p>Click product 1</p>"
 msgstr "<p>Fare clic sul prodotto 1</p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:34
+#: code:addons/pos_print_method/static/src/js/tour.js:35
 #, python-format
 msgid "<p>Click product 2</p>"
 msgstr "<p>Fare clic sul prodotto 2</p>"
@@ -60,8 +61,8 @@ msgstr "<p>Fare clic sul prodotto 2</p>"
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 "<p>Fare clic per avviare l'interfaccia del punto vendita. <b>Funziona su "
 "tablet</b>, portatili o hardware industriale.</p><p>Dopo l'avvio della "
@@ -84,7 +85,8 @@ msgid ""
 "\n"
 " Order Line: Print each order line on separate receipts"
 msgstr ""
-"Ordine: stampare l'intero ordine su una ricevuta (metodo predefinito Odoo). \n"
+"Ordine: stampare l'intero ordine su una ricevuta (metodo predefinito "
+"Odoo). \n"
 "\n"
 "Riga d'ordine: stampare le righe d'ordine su ricevute separate"
 

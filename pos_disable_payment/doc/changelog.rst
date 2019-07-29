@@ -3,6 +3,12 @@
 Updates
 =======
 
+`3.7.0`
+-------
+
+**Improvement:** New option "Disable customer selection"
+**Improvement:** Move the "Allow change Qty for kitchen orders" option to pos_disable_payment_restaurant module
+
 `3.6.1`
 -------
 - IMP: Compatibility with pos_restaurant_base module

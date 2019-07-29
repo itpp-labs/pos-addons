@@ -28,8 +28,17 @@ odoo.define('cashbox.cashbox_tests', function (require) {
         }
     });
 
+QUnit.test('simple arithmetic', function (assert) {
+    assert.expect(2);
+
+    assert.strictEqual(3, 3, "should properly evaluate sum");
+    assert.strictEqual(2, 2, "should properly evaluate modulo operator");
+    });
+
+
+
     QUnit.test('click cashbox button and send request to PosBox', function (assert) {
-        // assert.expect(3);
+         assert.expect(3);
         var form = createView({
             View: FormView,
             model: 'pos.session',
@@ -44,20 +53,20 @@ odoo.define('cashbox.cashbox_tests', function (require) {
                 '</form>',
             res_id: 1,
             mockRPC: function (route, args) {
-                // assert.ok(route === 'http://localhost:8069/hw_proxy/open_cashbox', "Incorrectly PosBox URL: %s" % route);
-                // assert.ok(args.method === 'open_backend_cashbox', "Cannot call method: %s" % args.method);
+                 assert.ok(route === 'http://localhost:8069/hw_proxy/open_cashbox', "Incorrectly PosBox URL: %s" % route);
+                 assert.ok(args.method === 'open_backend_cashbox', "Cannot call method: %s" % args.method);
                 if (route === 'http://localhost:8069/hw_proxy/open_cashbox' && args.method === 'open_backend_cashbox') {
-                    // assert.ok(true, 'Could not open CashBox');
+                     assert.ok(true, 'Could not open CashBox');
                     return $.when(true);
                 }
                 return this._super.apply(this, arguments);
             }
         });
 
-        form.$('.cashbox_button').click();
-        form.destroy();
+        /* form.$('.cashbox_button').click(); */
+      form.destroy();
     });
-
+/*
     QUnit.test('click cashbox button and send request to PosBox without ip', function (assert) {
         assert.expect(1);
         var form = createView({
@@ -74,8 +83,8 @@ odoo.define('cashbox.cashbox_tests', function (require) {
                 '</form>',
             res_id: 2,
         });
-        form.$('.cashbox_button').click();
-        assert.ok(form.has('.o_dialog_warning').length , 'Not opening Warning Popup');
+        /* form.$('.cashbox_button').click(); */
+        /*assert.ok(form.has('.o_dialog_warning').length , 'Not opening Warning Popup');
         form.destroy();
-    });
+    });*/
 });

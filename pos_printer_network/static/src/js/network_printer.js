@@ -25,9 +25,25 @@ odoo.define('pos_restaurant.network_printer', function (require) {
                     return printer.id === item.config.id;
                 });
                 if (printer_obj.network_printer) {
+                    self.config.use_proxy = true;
                     item.config.network_printer = printer_obj.network_printer;
                     self.ready.then(function () {
-                        item.connection = new Session(void 0, self.proxy.host, { use_cors: true});
+                        var url = self.proxy.host;
+                        if (!url) {
+                            url = self.config.proxy_ip;
+                            var protocol = window.location.protocol;
+                            var port = ':8069';
+                            if (protocol === "https:") {
+                                port = ':443';
+                            }
+                            if(url.indexOf('//') < 0){
+                                url = protocol + '//' + url;
+                            }
+                            if(url.indexOf(':',5) < 0){
+                                url += port;
+                            }
+                        }
+                        item.connection = new Session(void 0, url, { use_cors: true});
                     });
                 }
             });
@@ -234,14 +250,27 @@ odoo.define('pos_restaurant.network_printer', function (require) {
             }
         },
         open_printers_in_popup: function() {
+            var self = this;
             // if exist network printer then open popup
             var network_printer = this.pos.printers.find(function(printer) {
                 return printer.config.network_printer === true;
             });
+            // show current POS printers only
+            var printers = [];
+            if (this.devices_status && this.devices_status.length) {
+                this.pos.printers.forEach(function (printer) {
+                    var exist_printer = self.devices_status.find(function (device) {
+                        return printer.config.proxy_ip === device.ip;
+                    });
+                    if (exist_printer) {
+                        printers.push(exist_printer);
+                    }
+                });
+            }
             if (this.pos.config.receipt_printer_type === "network_printer" || network_printer) {
                 this.gui.show_popup('proxy_printers', {
                     title: "Printers",
-                    value: this.devices_status,
+                    value: printers,
                     usb_status: this.usb_printer_status,
                 });
             }

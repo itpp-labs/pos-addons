@@ -16,7 +16,7 @@ Credits
 Contributors
 ------------
 * `Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>`__
-* `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
+* `Anvar fedoranvar <https://it-projects.info/team/fedoranvar>`__
 
 Sponsors
 --------

@@ -1,3 +1,13 @@
+`1.5.0`
+------
+
+**New:** Ask manager for kitchen orders only
+
+`1.4.2`
+------
+
+**Improvement:** Compatibility with pos_category_multi module
+
 `1.4.1`
 -------
 

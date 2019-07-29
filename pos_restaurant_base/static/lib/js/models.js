@@ -199,7 +199,7 @@ odoo.define('pos_restaurant_base.models', function (require) {
             var q = $.when();
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
                 q = q.then(function(){
-                    var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this});
+                    var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:self});
                     printer.print(receipt);
                     return delay(100);
                 });

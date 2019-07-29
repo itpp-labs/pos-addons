@@ -2,13 +2,13 @@
     "name": """POS Mobile UI""",
     "summary": """Your Point of Sale in the Mobile Version""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=11.0",
     "images": ["images/pos_mobile.png"],
-    "version": "11.0.1.1.7",
+    "version": "11.0.1.2.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
     "price": 300.00,
@@ -21,6 +21,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_mobile_template.xml",
+        "views/pos_mobile_view.xml",
     ],
     "qweb": [
         "static/src/xml/pos.xml"

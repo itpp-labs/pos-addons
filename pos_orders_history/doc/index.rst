@@ -17,7 +17,8 @@ Configuration
 * See the options:
   
   * ``[x] Orders History`` - to activate/deactivate ``History`` button
-  * ``[x] Current Day Orders Only`` - to display orders for current day only
+  * ``[x] Orders of last 'n' days`` - to display orders for ``n`` days
+  * ``[x] Number of days`` - the number of ``n`` days
   * ``[x] Show Cancelled Orders`` - to display cancelled orders together with paid orders
   * ``[x] Show Posted Orders`` - to display posted orders together with paid orders
   * ``[x] Show Barcode on Receipt`` - to display the barcode on payment receipt

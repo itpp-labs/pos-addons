@@ -34,17 +34,6 @@ odoo.define('pos_mobile_restaurant.screens', function (require) {
                 order_note.detach();
                 $('.slide-order .order-scroller').append(order_note);
             }
-        },
-        scroll_to_selected_order: function() {
-            if (this.pos.table) {
-                var orders = this.pos.get_table_orders(this.pos.table);
-                var selected_order = this.pos.get_order();
-                var width = orders.indexOf(selected_order);
-                var floor_button_width = $('.pos-rightheader .floor-button').width() + 50;
-                $('.pos-rightheader .orders.touch-scrollable').scrollLeft(floor_button_width + (105 * width));
-            } else {
-                this._super();
-            }
         }
     });
 

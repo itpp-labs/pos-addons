@@ -1,3 +1,8 @@
+`2.0.4`
+-------
+
+**Fix:** The receipt does not contain order data
+
 `2.0.3`
 -------
 

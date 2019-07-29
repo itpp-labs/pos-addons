@@ -1,3 +1,26 @@
+`1.2.0`
+-------
+
+- **New:** The new setting in the POS Config allows you to switch to Mobile view automatically depending on a device
+
+`1.1.10`
+--------
+
+- **Improvement:** Scrolling of Product list after remove the current order
+- **Improvement:** Scroll to a selected order after removing the current order
+
+`1.1.9`
+-------
+
+- **Improvement:** Scrolling of Order list
+
+`1.1.8`
+-------
+
+- **FIX:** Font size of buttons
+- **FIX:** Order list scrolling
+- **FIX:** Scrollbar of Products after opening bottom menu
+
 `1.1.7`
 -------
 

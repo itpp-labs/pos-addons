@@ -1,13 +1,19 @@
+# Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2017-2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+# Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
+# Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Saving removed products of POS order""",
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "11.0.1.2.2",
+    "version": "11.0.1.3.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "apps@it-projects.info",
+    "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 200.00,
@@ -15,6 +21,7 @@
 
     "depends": [
         "point_of_sale",
+        "pos_pin",
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

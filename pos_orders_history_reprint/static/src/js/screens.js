@@ -59,24 +59,35 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
             var self = this;
             this._super();
             if (this.pos.config.reprint_orders) {
-                this.$('.actions.oe_hidden').removeClass('oe_hidden');
-                this.$('.button.reprint').unbind('click');
-                this.$('.button.reprint').click(function (e) {
-                    var parent = $(this).parents('.order-line');
-                    var id = parseInt(parent.data('id'));
-                    self.click_reprint_order(id);
-                });
+                this.set_reprint_action();
             }
+        },
+        set_reprint_action: function() {
+            var self = this;
+            this.$('.actions.oe_hidden').removeClass('oe_hidden');
+            this.$('.button.reprint').unbind('click');
+            this.$('.button.reprint').click(function (e) {
+                var parent = $(this).parents('.order-line');
+                var id = parseInt(parent.data('id'));
+                self.click_reprint_order(id);
+            });
         },
         click_reprint_order: function (id) {
             this.gui.show_screen('history_reprint_receipt', {order_id: id});
         },
+        render_list: function(orders) {
+            this._super(orders);
+            if (this.pos.config.reprint_orders) {
+                this.set_reprint_action();
+            }
+        }
     });
 
     screens.ReprintReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
         template: 'ReprintReceiptScreenWidget',
         show: function () {
             var self = this;
+            this.reprint_receipt = false;
             this._super();
             this.$('.back').click(function () {
                 self.gui.show_screen('orders_history_screen');
@@ -85,6 +96,40 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         get_order: function () {
             var order_id = this.gui.get_current_screen_param('order_id');
             return this.pos.db.orders_history_by_id[order_id];
+        },
+        handle_auto_print: function() {
+            var self = this;
+            var order = this.get_order();
+            this.$('.pos-sale-ticket').hide();
+            var receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
+            if (receipt) {
+                self.$('.pos-sale-ticket').show();
+                self.reprint_receipt = receipt;
+                self.check_handle_auto_print();
+            } else {
+                rpc.query({
+                    model: 'pos.xml_receipt',
+                    method: 'search_read',
+                    args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]
+                }).then(function(r) {
+                    self.$('.pos-sale-ticket').show();
+                    self.reprint_receipt = r;
+                    self.check_handle_auto_print();
+                }, function() {
+                    self.show_popup = true;
+                    self.click_next();
+                });
+            }
+        },
+        check_handle_auto_print: function() {
+            if (this.should_auto_print() && this.reprint_receipt && this.reprint_receipt.length) {
+                this.print();
+                if (this.should_close_immediately()){
+                    this.click_next();
+                }
+            } else {
+                this.lock_screen(false);
+            }
         },
         print_xml: function (receipt) {
             var self = this;
@@ -95,7 +140,9 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 if (this.pos.config.show_barcode_in_receipt) {
                     var barcode = this.$el.find('#barcode').parent().html();
                     if (!barcode) {
-                        var receipt_reference = order.pos_reference.split(" ")[1];
+                        var receipt_reference = order.pos_reference &&
+                            order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                            order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0];
                         var el = document.createElement('div');
                         $(el).append("<img id='barcode'></img>");
                         $(el).find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
@@ -104,24 +151,20 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         });
                         barcode = $(el).find('#barcode').parent().html();
                     }
-                    receipt = receipt.split('<img id="barcode"/>');
-                    receipt[0] = receipt[0] + barcode + '</img>';
-                    receipt = receipt.join('');
+                    if (receipt.indexOf('<img id="barcode"/>') !== -1) {
+                        receipt = receipt.split('<img id="barcode"/>');
+                        receipt[0] = receipt[0] + barcode + '</img>';
+                        receipt = receipt.join('');
+                    }
                 }
                 this.pos.proxy.print_receipt(receipt);
             } else if (self.pos.config.show_posted_orders && order.state === "done") {
-                rpc.query({
-                    model: 'pos.xml_receipt',
-                    method: 'search_read',
-                    args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'xml']]]
-                }).then(function(r) {
-                    if (r && r.length) {
-                        self.print_xml(r[0]);
-                    } else {
-                        self.show_popup = true;
-                        self.click_next();
-                    }
-                });
+                if (self.reprint_receipt && self.reprint_receipt.length) {
+                    self.print_xml(self.reprint_receipt[0]);
+                } else {
+                    self.show_popup = true;
+                    self.click_next();
+                }
             } else {
                 receipt = this.pos.get_receipt_by_order_reference_and_type(order.pos_reference, 'xml');
                 if (receipt) {
@@ -154,7 +197,9 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                 this.$('.pos-receipt-container').html(ticket.receipt);
                 if (this.pos.config.show_barcode_in_receipt) {
                     // reference without 'Order'
-                    var receipt_reference = order.pos_reference.split(" ")[1];
+                    var receipt_reference = order.pos_reference &&
+                        order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g) &&
+                        order.pos_reference.match(/\d{1,}-\d{1,}-\d{1,}/g)[0];
                     this.$el.find('#barcode').JsBarcode(receipt_reference, {format: "code128"});
                     this.$el.find('#barcode').css({
                         "width": "100%"
