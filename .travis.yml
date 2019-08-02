@@ -22,6 +22,7 @@ env:
 
   matrix:
   - LINT_CHECK="1"
+  - CHECK_TAGS="1"
   - TESTS="1" ODOO_REPO="odoo/odoo" MAKEPOT="1"
   - TESTS="1" ODOO_REPO="OCA/OCB""
 
