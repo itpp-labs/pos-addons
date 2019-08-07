@@ -12,8 +12,10 @@
         <div class="modal-dialog">
             <div class="popup popup-chat">
 
-                <Label>Chat</Label>
-                <div id="message-field"></div>
+                <div id="message-field">
+                    <ul class="messages" id="message-list">
+                    </ul>
+                </div>
                 <div class="chat-popup" id="myForm">
                   <form class="form-container">
 

@@ -4,6 +4,9 @@ odoo.define('pos_chat_button', function (require){
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
+    var rpc = require('web.rpc');
+
+    var models = require('point_of_sale.models');
     //declare a new variable and inherit ActionButtonWidget
 
     var ChatButton = screens.ActionButtonWidget.extend({
@@ -13,11 +16,34 @@ odoo.define('pos_chat_button', function (require){
               'title': 'Chat',
               'value': false,
             });
+            var messageList = document.getElementById('message-list');
+            messageList.innerHTML = '<li class="text-right small"><em>Welcome to chat!</em></li>';
+            loadComments();
         }
     });
 
-    // Massages are stored here
-    var massages = [];
+
+    // Messages are stored here
+    var messages = [];
+    var user = models.PosModel;
+
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+        initialize: function () {
+          PosModelSuper.prototype.initialize.apply(this, arguments);
+          var self = this;
+          self.bus.add_channel_callback("pos_chat_228", self.on_barcode_updates, self);
+        },
+        on_barcode_updates: function(data){
+            var self = this;
+            console.log("Hello!!!");
+            var tempMessage = {
+                text : data.message,
+                time : data.date
+            }
+            AddNewMessage(tempMessage);
+        },
+    })
 
     var ChatPopupWidget = PopupWidget.extend({
         template: 'ChatPopupWidget',
@@ -30,20 +56,28 @@ odoo.define('pos_chat_button', function (require){
             });
 
             this.$('.next').click(function () {
-                var newMassage = document.getElementById('text-line');
-                var tempMassage = {
-                    name : newMassage.value,
+                var newMessage = document.getElementById('text-line');
+                var tempMessage = {
+                    text : newMessage.value,
                     time : Math.floor(Date.now()/1000)
                 }
-
-                newMassage.value = '';
-                massages.push(newMassage);
-                saveMassages();
-                showMassages();
-                console.log(timeConverter(tempMassage.time));
+                AddNewMessage(tempMessage);
+                newMessage.value = '';
+                self._rpc({
+                    model: "pos.chat",
+                    method: "send_field_updates",
+                    args: [tempMessage.text, tempMessage.time]
+                })
             });
         },
     });
+
+    function AddNewMessage(message)
+    {
+        messages.push(message);
+        saveMessages();
+        showMessages();
+    }
 
     gui.define_popup({name:'chat', widget: ChatPopupWidget});
 
@@ -52,21 +86,26 @@ odoo.define('pos_chat_button', function (require){
         'widget': ChatButton,
     });
 
-    function saveMassages()
+    function saveMessages()
     {
-        localStorage.setItem('massages', JSON.stringify(massages));
+        localStorage.setItem('messages', JSON.stringify(messages));
     }
 
-    function showMassages()
+    function showMessages()
     {
-        var massageField = document.getElementById('massage-field');
+        var messageList = document.getElementById('message-list');
         var out = '';
-        massages.forEach(function (item)
+        messages.forEach(function (item)
         {
-            out += '<p class="text-right small"><em>' + timeConverter(item.time) + '</em></p>';
-            out += '<p class="text-right small"><em>' + item.name + '</em></p>';
+        out += '<li class="text-right small"><em>' + timeConverter(item.time) + ' (' + user.id888 +'):</em></li>';
+        out += '<li class="text-right small"><em>' + item.text + '</em></li>';
         });
-        massageField.innerHTML = out;
+        messageList.innerHTML = out;
+    }
+
+    function loadComments()
+    {
+        localStorage.setItem('messages', JSON.stringify(messages));
     }
 
 //     Time converter function

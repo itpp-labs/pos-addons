@@ -46,20 +46,45 @@
     font-family: Lato;
 }
 
+.pos .modal-dialog .message-field{
+    height:
+}
+
 .pos .modal-dialog .popup .Label{
     margin-top: 10px;
 }
 
 .pos .modal-dialog .popup .text-input-place{
-    margin-top: 60%;
+    margin-top: 350px;
     height: 22px;
     border-bottom: 2px solid green;
 }
 
 .pos .modal-dialog .button.next{
-    margin-top: 60%;
+    margin-top: 350px;
 }
 
 .pos .modal-dialog .button.back{
-    margin-top: 60%;
+    margin-top: 350px;
 }
+
+.pos .modal-dialog .messages{
+    overflow: scroll;
+    position: absolute;
+    top: 20px;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pos .modal-dialog .text-right.small{
+    text-align: left;
+    margin-left: 10px;
+}
+
