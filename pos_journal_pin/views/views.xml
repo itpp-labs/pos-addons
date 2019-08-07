@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">account.journal.form.view.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_authorized_diff']" position="after">
+                <field name="ask_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
