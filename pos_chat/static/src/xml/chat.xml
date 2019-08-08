@@ -34,9 +34,23 @@
                   </form>
                 </div>
             </div>
-            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
         </div>
     </t>
 
 
+    <t t-name="CustomScreenWidget">
+        <div class="main-action"></div>
+        <div class="chat-tools">
+            <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+
+            <span class="button next">
+                 Send
+               <i class="fa fa-angle-double-right" />
+            </span>
+            <span class="button back">
+               <i class="fa fa-angle-double-left" />
+                 Back
+            </span>
+        </div>
+    </t>
 </templates>

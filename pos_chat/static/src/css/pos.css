@@ -88,3 +88,62 @@
     margin-left: 10px;
 }
 
+
+/*  ********* The custom screen widget  ********* */
+.pos .main-action{
+    position: absolute;
+    top: 20px;
+    bottom: 100px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.pos .chat-tools{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    justify-content: center
+}
+
+.pos .chat-tools .button.back{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
