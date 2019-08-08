@@ -5,6 +5,7 @@ odoo.define('pos_chat_button', function (require){
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
     var rpc = require('web.rpc');
+    var session = require('web.session');
 
     var models = require('point_of_sale.models');
     //declare a new variable and inherit ActionButtonWidget
@@ -16,31 +17,43 @@ odoo.define('pos_chat_button', function (require){
               'title': 'Chat',
               'value': false,
             });
-            var messageList = document.getElementById('message-list');
-            messageList.innerHTML = '<li class="text-right small"><em>Welcome to chat!</em></li>';
-            loadComments();
+            if(messages.length == 0)
+            {
+                var messageList = document.getElementById('message-list');
+                messageList.innerHTML = '<li class="text-right small"><em>Welcome to chat!</em></li>';
+                loadComments();
+            }
+            else showMessages();
         }
     });
 
 
     // Messages are stored here
     var messages = [];
-    var user = models.PosModel;
+    var user = session.name;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
+
         initialize: function () {
+
           PosModelSuper.prototype.initialize.apply(this, arguments);
           var self = this;
+
           self.bus.add_channel_callback("pos_chat_228", self.on_barcode_updates, self);
         },
+
         on_barcode_updates: function(data){
+
             var self = this;
             console.log("Hello!!!");
+
             var tempMessage = {
                 text : data.message,
-                time : data.date
+                time : data.date,
+                name : data.name
             }
+
             AddNewMessage(tempMessage);
         },
     })
@@ -59,14 +72,16 @@ odoo.define('pos_chat_button', function (require){
                 var newMessage = document.getElementById('text-line');
                 var tempMessage = {
                     text : newMessage.value,
-                    time : Math.floor(Date.now()/1000)
+                    time : Math.floor(Date.now()/1000),
+                    name : session.name
                 }
-                AddNewMessage(tempMessage);
+
                 newMessage.value = '';
+
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: [tempMessage.text, tempMessage.time]
+                    args: [tempMessage.text, tempMessage.time, tempMessage.name]
                 })
             });
         },
@@ -97,7 +112,7 @@ odoo.define('pos_chat_button', function (require){
         var out = '';
         messages.forEach(function (item)
         {
-        out += '<li class="text-right small"><em>' + timeConverter(item.time) + ' (' + user.id888 +'):</em></li>';
+        out += '<li class="text-right small"><em>' + timeConverter(item.time) + ' (' + item.name +'):</em></li>';
         out += '<li class="text-right small"><em>' + item.text + '</em></li>';
         });
         messageList.innerHTML = out;
