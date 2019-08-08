@@ -1,0 +1,90 @@
+/*  ********* Chat screen's style ********* */
+
+.screen .screen-content{
+    margin: 0px auto;
+    max-width: 1024px;
+    text-align: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.screen .full-content .chat_window .white-space
+{
+    height: 400px;
+    width: 100%;
+}
+
+.screen .full-content .chat_window .input-text
+{
+    background-color: white;
+    height: 80px;
+    width: 100%;
+}
+
+.screen .full-content .chat_window .white-space-below
+{
+    height: 56px;
+    width: 100%;
+}
+
+/*  ********* The PopupWidgets  ********* */
+
+.pos .modal-dialog .popup{
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    width:500px;
+    height:400px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.4);
+    z-index:1200;
+    font-family: 'Lato';
+    font-family: Lato;
+}
+
+.pos .modal-dialog .message-field{
+    height:
+}
+
+.pos .modal-dialog .popup .Label{
+    margin-top: 10px;
+}
+
+.pos .modal-dialog .popup .text-input-place{
+    margin-top: 350px;
+    height: 22px;
+    border-bottom: 2px solid green;
+}
+
+.pos .modal-dialog .button.next{
+    margin-top: 350px;
+}
+
+.pos .modal-dialog .button.back{
+    margin-top: 350px;
+}
+
+.pos .modal-dialog .messages{
+    overflow: scroll;
+    position: absolute;
+    top: 20px;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pos .modal-dialog .text-right.small{
+    text-align: left;
+    margin-left: 10px;
+}
+
