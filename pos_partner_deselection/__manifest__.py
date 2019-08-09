@@ -1,4 +1,5 @@
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
 # License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Partner Deselection""",
@@ -24,7 +25,7 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     # "demo_title": "Deselect Partner",
     # "demo_addons": [
     # ],
