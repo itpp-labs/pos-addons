@@ -9,6 +9,7 @@
     'summary': 'Technical module for confirmation any action by user of specific group',
     'license': 'LGPL-3',
     'category': 'Hidden',
+    "images": ['images/pos_pin.jpg'],
     "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale'],
