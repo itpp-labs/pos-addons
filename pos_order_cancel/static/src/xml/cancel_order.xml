@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
+    Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <templates id="template" xml:space="preserve">
 
     <t t-name="ConfirmCancellationPopupWidget">
