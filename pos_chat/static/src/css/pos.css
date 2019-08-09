@@ -118,7 +118,7 @@
     line-height: 38px;
     min-width: 80px;
     text-align: center;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 0px 10px;
     font-size: 18px;
     margin-left: 6px;
@@ -126,6 +126,18 @@
     cursor: pointer;
     overflow: hidden;
     transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next:active{
+    background: black;
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .chat-tools .button.back:active{
+    background: black;
+    color: white;
+    transition-duration: 0.2s;]
 }
 
 .pos .chat-tools .button.next{
@@ -137,7 +149,7 @@
     line-height: 38px;
     min-width: 80px;
     text-align: center;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 0px 10px;
     font-size: 18px;
     margin-left: 6px;
@@ -147,3 +159,73 @@
     transition: all linear 150ms;
 }
 
+.pos .chat-tools .button.next:hover{
+  background: #2db34a;
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+  border-radius: 30px;
+  transform: translateY(-4px);
+}
+
+.pos .chat-tools .button.back:hover{
+  background: red;
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+  border-radius: 30px;
+  transform: translateY(-4px);
+}
+
+.pos .chat-tools .text-input-place:focus{
+    border-radius: 5px;
+  transform: translateY(-5px);
+}
+
+.pos .chat-tools .text-input-place:hover{
+    border-radius: 5px;
+    transition-duration: 0.5s;
+}
+
+.pos .chat-tools .text-input-place{
+    resize: none;
+    border-radius: 30px;
+    transition-duration: 0.5s;
+}
+
+.pos .main-action .avatar {
+    border-radius: 50%;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    border-radius: 50px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    border-radius: 50px;
+    animation: animX 4s infinite cubic-bezier(0, 1.7, 0.5, 1),
+    animY 4s infinite cubic-bezier(0, 0.2, 0.2, 1);
+}
+
+:root{
+    --pos-X: 50%;
+    --pos-Y: 50%;
+}
+
+@keyframes animX {
+   from {
+      left: 0px;
+   }
+   to {
+      left: var(--pos-X);
+   }
+}
+
+@keyframes animY {
+   from {
+      top: 0px;
+   }
+   to {
+      top: var(--pos-Y);
+   }
+}

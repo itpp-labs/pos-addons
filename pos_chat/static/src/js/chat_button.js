@@ -147,13 +147,19 @@ odoo.define('pos_chat_button', function (require){
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
+    var session = require('web.session');
 
     var ChatButton = screens.ActionButtonWidget.extend({
         template: 'ChatButton',
         button_click: function () {
             this.gui.show_screen('custom_screen');
+//            SetPos();
         }
     });
+
+    // Users number
+    var user_num = 1;
+    var radius = 400;
 
     var CustomScreenWidget = screens.ScreenWidget.extend({
         template: 'CustomScreenWidget',
@@ -164,6 +170,9 @@ odoo.define('pos_chat_button', function (require){
             this.$('.back').click(function () {
                 self.gui.show_screen('products');
             });
+
+            this.$('.next').click(function () {
+            });
         }
     });
 
@@ -173,6 +182,16 @@ odoo.define('pos_chat_button', function (require){
         'name': 'chat_button',
         'widget': ChatButton,
     });
+
+    function SetPos()
+    {
+        var avatar = document.getElementById('avatar');
+        var angle = 0;
+        var x = document.documentElement.clientWidth + radius*Math.cos(angle);
+        var y = document.documentElement.clientHeight + radius*Math.sin(angle);
+        avatar.style.setProperty('--pos-X', 1000);
+        avatar.style.setProperty('--pos-Y', 1000);
+    }
 
     return ChatButton;
 });
