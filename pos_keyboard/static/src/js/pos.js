@@ -270,7 +270,7 @@ odoo.define('pos_keyboard.pos', function (require) {
         // stops catching keyboard events 
         disconnect: function(){
             $('body').off('keyup', '');
-            self.active = false;
+            this.active = false;
         }
     });
     
