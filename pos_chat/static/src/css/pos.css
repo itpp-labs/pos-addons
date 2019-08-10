@@ -221,6 +221,8 @@
 
 .pos .main-action .chat-user {
     position: absolute;
+    left: var(--pos-X);
+    top: var(--pos-Y);
     width: 50px;
     height: 50px;
     background-color: green;
@@ -229,8 +231,8 @@
     height: 50px;
     background-color: green;
     border-radius: 50px;
-    animation: animX 4s infinite cubic-bezier(0, 1.7, 0.5, 1),
-    animY 4s infinite cubic-bezier(0, 0.2, 0.2, 1);
+    animation: animX 2s cubic-bezier(0, 1.7, 0.5, 1),
+    animY 2s cubic-bezier(0, 0.2, 0.2, 1);
 }
 
 .pos .main-action .chat-user .avatar{
@@ -242,11 +244,12 @@
     border-radius: 20%;
     background: white;
     top: 10px;
+    width: 70px;
 }
 
 :root{
-    --pos-X: 10px;
-    --pos-Y: 10px;
+    --pos-X: 0px;
+    --pos-Y: 0px;
 }
 
 @keyframes animX {

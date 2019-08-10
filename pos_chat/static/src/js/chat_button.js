@@ -157,13 +157,8 @@ odoo.define('pos_chat_button', function (require){
         }
     });
 
-    // Users number
-    var user_num = 1;
-    var radius = 100;
-
     var CustomScreenWidget = screens.ScreenWidget.extend({
         template: 'CustomScreenWidget',
-
         show: function () {
           var self = this;
           this._super();
@@ -176,10 +171,12 @@ odoo.define('pos_chat_button', function (require){
                 console.log("clicked send");
             });
         },
-
-        getAvatarSource: function () {
-            return '/web/image/res.partner/' + session.uid + '/image_small';
-        }
+        events: {
+            "click .invite": "your_function",
+        },
+        your_function: function () {
+            console.log('Button Clicked')
+        },
     });
 
     gui.define_screen({name:'custom_screen', widget: CustomScreenWidget});
@@ -189,21 +186,25 @@ odoo.define('pos_chat_button', function (require){
         'widget': ChatButton,
     });
 
+
+    // Users number
+    var user_num = 1;
+    var radius = 300;
+
     function SetPos()
     {
+        var action_window = document.getElementById('main-window');
         var avatar = document.getElementById('picture');
-        var angle = 2 * 3.1415 / user_num;
-        var x = document.documentElement.clientWidth / 2 + radius*Math.cos(angle);
-        var y = document.documentElement.clientHeight / 2 + radius*Math.sin(angle);
-        avatar.style.setProperty('--pos-X', x + "px");
-        avatar.style.setProperty('--pos-Y', y + "px");
-        console.log(x + " " + y);
-    }
-
-    function but(){
-          var self = this;
-          this._super();
-          self.gui.show_screen('products');
+        var angle = 2 * 3.1415 / (session.uid - 1);
+        var circle_x = action_window.offsetWidth / 2;
+        var circle_y = action_window.offsetHeight / 2;
+        var x = circle_x + radius*Math.cos(angle);
+        var y = circle_y + radius*Math.sin(angle);
+        avatar.style.setProperty('--pos-X', x - (avatar.offsetWidth / 2) + 'px');
+        avatar.style.setProperty('--pos-Y', y - (avatar.offsetHeight / 2) + 'px');
+        console.log("x: " + x + ",y: " + y);
+        console.log("angle: " + angle);
+        console.log("r*cos(angle): " + radius*Math.cos(angle) + ",r*sin(angle): " + radius*Math.sin(angle));
     }
 
     return ChatButton;
