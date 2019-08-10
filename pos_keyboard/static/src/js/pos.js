@@ -3,6 +3,7 @@
     Copyright 2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
     Copyright 2019 ssaid <https://github.com/ssaid>
+    Copyright 2019 raulovallet <https://github.com/raulovallet>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
@@ -269,7 +270,7 @@ odoo.define('pos_keyboard.pos', function (require) {
         // stops catching keyboard events 
         disconnect: function(){
             $('body').off('keyup', '');
-            self.active = false;
+            this.active = false;
         }
     });
     
