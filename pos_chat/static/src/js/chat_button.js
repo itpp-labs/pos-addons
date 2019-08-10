@@ -46,7 +46,6 @@
 //        on_barcode_updates: function(data){
 //
 //            var self = this;
-//            console.log("Hello!!!");
 //
 //            var tempMessage = {
 //                text : data.message,
@@ -56,7 +55,7 @@
 //
 //            AddNewMessage(tempMessage);
 //        },
-//    })
+//    });
 //
 //    var ChatPopupWidget = PopupWidget.extend({
 //        template: 'ChatPopupWidget',
@@ -145,24 +144,26 @@ odoo.define('pos_chat_button', function (require){
       'use_strict';
 
     var gui = require('point_of_sale.gui');
-    var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
     var session = require('web.session');
+    var PopupWidget = require('point_of_sale.popups');
+    var models = require('point_of_sale.models');
 
     var ChatButton = screens.ActionButtonWidget.extend({
         template: 'ChatButton',
         button_click: function () {
             this.gui.show_screen('custom_screen');
-//            SetPos();
+            SetPos();
         }
     });
 
     // Users number
     var user_num = 1;
-    var radius = 400;
+    var radius = 100;
 
     var CustomScreenWidget = screens.ScreenWidget.extend({
         template: 'CustomScreenWidget',
+
         show: function () {
           var self = this;
           this._super();
@@ -172,7 +173,12 @@ odoo.define('pos_chat_button', function (require){
             });
 
             this.$('.next').click(function () {
+                console.log("clicked send");
             });
+        },
+
+        getAvatarSource: function () {
+            return '/web/image/res.partner/' + session.uid + '/image_small';
         }
     });
 
@@ -185,12 +191,19 @@ odoo.define('pos_chat_button', function (require){
 
     function SetPos()
     {
-        var avatar = document.getElementById('avatar');
-        var angle = 0;
-        var x = document.documentElement.clientWidth + radius*Math.cos(angle);
-        var y = document.documentElement.clientHeight + radius*Math.sin(angle);
-        avatar.style.setProperty('--pos-X', 1000);
-        avatar.style.setProperty('--pos-Y', 1000);
+        var avatar = document.getElementById('picture');
+        var angle = 2 * 3.1415 / user_num;
+        var x = document.documentElement.clientWidth / 2 + radius*Math.cos(angle);
+        var y = document.documentElement.clientHeight / 2 + radius*Math.sin(angle);
+        avatar.style.setProperty('--pos-X', x + "px");
+        avatar.style.setProperty('--pos-Y', y + "px");
+        console.log(x + " " + y);
+    }
+
+    function but(){
+          var self = this;
+          this._super();
+          self.gui.show_screen('products');
     }
 
     return ChatButton;

@@ -39,8 +39,18 @@
 
 
     <t t-name="CustomScreenWidget">
+
+        <button class="button invite" onclick="s">
+             Connect
+             <i class="fa fa-angle-double-right" />
+        </button>
         <div class="main-action">
-            <img src="/web/image/res.partner/3/image_small" class="avatar" id="picture"></img>
+            <div class="chat-user" id="picture">
+                <img src="/web/image/res.partner/3/image_small" class="avatar"></img>
+                <div class="new-message">
+                    Hello everyone!
+                </div>
+            </div>
         </div>
         <div class="chat-tools">
 
