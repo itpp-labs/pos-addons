@@ -223,8 +223,6 @@
     position: absolute;
     left: var(--pos-X);
     top: var(--pos-Y);
-    width: 50px;
-    height: 50px;
     background-color: green;
     position: absolute;
     width: 50px;
@@ -239,12 +237,22 @@
     border-radius: 50%;
 }
 
-.pos .main-action .chat-user .new-message{
+.pos .main-action .chat-user .new-message-first{
     position: relative;
     border-radius: 20%;
     background: white;
     top: 10px;
-    width: 70px;
+    width: 80px;
+    display: none;
+}
+
+.pos .main-action .chat-user .new-message-second{
+    position: relative;
+    border-radius: 20%;
+    background: white;
+    top: 10px;
+    width: 80px;
+    display: none;
 }
 
 :root{

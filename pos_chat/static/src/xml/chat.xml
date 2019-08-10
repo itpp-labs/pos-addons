@@ -13,8 +13,7 @@
             <div class="popup popup-chat">
 
                 <div id="message-field">
-                    <ul class="messages" id="message-list">
-                    </ul>
+                    <ul class="messages" id="message-list"></ul>
                 </div>
                 <div class="chat-popup" id="myForm">
                   <form class="form-container">
@@ -47,9 +46,8 @@
         <div class="main-action" id="main-window">
             <div class="chat-user" id="picture">
                 <img src="/web/image/res.partner/3/image_small" class="avatar"></img>
-                <div class="new-message">
-                    Hello everyone!
-                </div>
+                <div class="new-message-first" id="message-id-first"></div>
+                <div class="new-message-second" id="message-id-second"></div>
             </div>
         </div>
         <div class="chat-tools">

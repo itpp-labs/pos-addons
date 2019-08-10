@@ -149,6 +149,10 @@ odoo.define('pos_chat_button', function (require){
     var PopupWidget = require('point_of_sale.popups');
     var models = require('point_of_sale.models');
 
+    var current_message = '';
+    var last_key_pressed = 0;
+    var messages = [];
+
     var ChatButton = screens.ActionButtonWidget.extend({
         template: 'ChatButton',
         button_click: function () {
@@ -168,7 +172,14 @@ odoo.define('pos_chat_button', function (require){
             });
 
             this.$('.next').click(function () {
-                console.log("clicked send");
+                SendMessage()
+            });
+
+            this.$("#text-line").keyup(function(event){
+
+                if(event.keyCode == 13){
+                    SendMessage();
+                }
             });
         },
         events: {
@@ -189,7 +200,32 @@ odoo.define('pos_chat_button', function (require){
 
     // Users number
     var user_num = 1;
-    var radius = 300;
+    var radius = 200;
+    var disappeared_first = true;
+    var disappeared_second = true;
+    var too_many_massages = false;
+
+    function SendMessage()
+    {
+        var newMessage = document.getElementById('text-line');
+        current_message = {
+            text : newMessage.value,
+            time : Math.floor(Date.now()/1000),
+            name : session.name
+        }
+
+        messages.push(current_message);
+
+        if(messages.length > 1)
+        {
+            show_first_message();
+            show_second_message();
+        }
+        else
+            show_first_message();
+
+        newMessage.value = '';
+    }
 
     function SetPos()
     {
@@ -202,9 +238,50 @@ odoo.define('pos_chat_button', function (require){
         var y = circle_y + radius*Math.sin(angle);
         avatar.style.setProperty('--pos-X', x - (avatar.offsetWidth / 2) + 'px');
         avatar.style.setProperty('--pos-Y', y - (avatar.offsetHeight / 2) + 'px');
-        console.log("x: " + x + ",y: " + y);
-        console.log("angle: " + angle);
-        console.log("r*cos(angle): " + radius*Math.cos(angle) + ",r*sin(angle): " + radius*Math.sin(angle));
+
+    }
+
+    function showMessage(message_id, message_class,num)
+    {
+        var message = document.getElementById('' + message_id + '');
+        // Message appears in 400ms
+        $("." + message_class + "").fadeIn();
+        var mes = messages[0];
+        message.innerHTML = '<li class="text-right small" id="one-message"><em>' + mes.text + '</em></li>';
+
+        if(messages.length >= 2)
+        {
+            message.setAttribute('transform:','translateY(-20px)');
+            var shifted = messages.shift();
+        }
+    }
+
+    function show_first_message()
+    {
+        showMessage('message-id-first','new-message-first',0);
+        if(disappeared_first == true)
+        {
+            disappeared_first = false;
+            var disappear_timer = window.setTimeout(Disappearing,5000,'new-message-first');
+            var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
+        }
+    }
+
+    function show_second_message()
+    {
+        showMessage('message-id-second','new-message-second',1);
+    }
+
+    function Disappearing(item)
+    {
+        // Message disappears in 400ms
+        $("."+ item + "").fadeOut();
+        if(disappeared_second == true)
+        {
+            disappeared_second = false;
+            var disappear_timer = window.setTimeout(Disappearing,5000,'new-message-second');
+            var disappear_bool_timer = window.setTimeout(function(){disappeared_second = true;},5000);
+        }
     }
 
     return ChatButton;
