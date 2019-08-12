@@ -46,8 +46,7 @@
         <div class="main-action" id="main-window">
             <div class="chat-user" id="picture">
                 <img src="/web/image/res.partner/3/image_small" class="avatar"></img>
-                <div class="new-message-first" id="message-id-first"></div>
-                <div class="new-message-second" id="message-id-second"></div>
+                <div class="new-message" id="message-id"></div>
             </div>
         </div>
         <div class="chat-tools">

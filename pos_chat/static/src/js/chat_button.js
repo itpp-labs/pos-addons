@@ -181,13 +181,7 @@ odoo.define('pos_chat_button', function (require){
                     SendMessage();
                 }
             });
-        },
-        events: {
-            "click .invite": "your_function",
-        },
-        your_function: function () {
-            console.log('Button Clicked')
-        },
+        }
     });
 
     gui.define_screen({name:'custom_screen', widget: CustomScreenWidget});
@@ -201,30 +195,65 @@ odoo.define('pos_chat_button', function (require){
     // Users number
     var user_num = 1;
     var radius = 200;
-    var disappeared_first = true;
-    var disappeared_second = true;
-    var too_many_massages = false;
+    var messages = [];
+    var timeOut = [];
 
     function SendMessage()
     {
+        if(messages.length == 2)
+        {
+            var text = messages[1].text;
+            messages[1] = messages[0];
+            clearTimeout(timeOut[0]);
+            Disappear();
+            messages[0].text = text;
+        }
+
         var newMessage = document.getElementById('text-line');
         current_message = {
             text : newMessage.value,
             time : Math.floor(Date.now()/1000),
-            name : session.name
+            name : session.name,
+            class : 'new-message-' + messages.length + '',
+            id : 'message-id-' + messages.length + '',
+            appeared : false
+        }
+
+
+        if(messages.length == 1 && messages[0].class == 'new-message-1')
+        {
+            messages[0].class = 'new-message-0';
+            messages[0].id = 'message-id-0';
         }
 
         messages.push(current_message);
 
-        if(messages.length > 1)
-        {
-            show_first_message();
-            show_second_message();
-        }
-        else
-            show_first_message();
-
+        showMessages(messages.length - 1);
         newMessage.value = '';
+    }
+
+    function showMessages(num)
+    {
+        message = document.getElementById('message-id');
+        var out ='';
+        if(num == 1)
+            out += '<div class="' + messages[num - 1].class + '" id="' + messages[num - 1].id + '"><em>' + messages[num - 1].text + '</em></div>';
+        out += '<div class="' + messages[num].class + '" id="' + messages[num].id + '"><em>' + messages[num].text + '</em></div>';
+        message.innerHTML = out;
+
+        if(messages[num].appeared == false)
+        {
+            $("."+ messages[num].class +"").fadeIn();
+            messages[num].appeared = true;
+            timeOut.push(window.setTimeout(Disappear,5000));
+        }
+    }
+
+    function Disappear()
+    {
+        $("."+ messages[0].class +"").fadeOut();
+        messages.shift();
+        timeOut.shift();
     }
 
     function SetPos()
@@ -241,48 +270,8 @@ odoo.define('pos_chat_button', function (require){
 
     }
 
-    function showMessage(message_id, message_class,num)
-    {
-        var message = document.getElementById('' + message_id + '');
-        // Message appears in 400ms
-        $("." + message_class + "").fadeIn();
-        var mes = messages[0];
-        message.innerHTML = '<li class="text-right small" id="one-message"><em>' + mes.text + '</em></li>';
-
-        if(messages.length >= 2)
-        {
-            message.setAttribute('transform:','translateY(-20px)');
-            var shifted = messages.shift();
-        }
-    }
-
-    function show_first_message()
-    {
-        showMessage('message-id-first','new-message-first',0);
-        if(disappeared_first == true)
-        {
-            disappeared_first = false;
-            var disappear_timer = window.setTimeout(Disappearing,5000,'new-message-first');
-            var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
-        }
-    }
-
-    function show_second_message()
-    {
-        showMessage('message-id-second','new-message-second',1);
-    }
-
-    function Disappearing(item)
-    {
-        // Message disappears in 400ms
-        $("."+ item + "").fadeOut();
-        if(disappeared_second == true)
-        {
-            disappeared_second = false;
-            var disappear_timer = window.setTimeout(Disappearing,5000,'new-message-second');
-            var disappear_bool_timer = window.setTimeout(function(){disappeared_second = true;},5000);
-        }
-    }
+//    $("." + message_class + "").fadeIn();
+//    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
 
     return ChatButton;
 });

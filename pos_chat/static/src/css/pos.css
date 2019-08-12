@@ -237,22 +237,20 @@
     border-radius: 50%;
 }
 
-.pos .main-action .chat-user .new-message-first{
+.pos .main-action .chat-user .new-message-0{
     position: relative;
     border-radius: 20%;
     background: white;
     top: 10px;
     width: 80px;
-    display: none;
 }
-
-.pos .main-action .chat-user .new-message-second{
+.pos .main-action .chat-user .new-message-1{
     position: relative;
     border-radius: 20%;
     background: white;
     top: 10px;
     width: 80px;
-    display: none;
+    margin-top: 5px;
 }
 
 :root{
