@@ -39,15 +39,11 @@
 
     <t t-name="CustomScreenWidget">
 
-        <button class="button invite">
-             Connect
-             <i class="fa fa-angle-double-right" />
-        </button>
         <div class="main-action" id="main-window">
-            <div class="chat-user" id="picture">
-                <img src="/web/image/res.partner/3/image_small" class="avatar"></img>
-                <div class="new-message" id="message-id"></div>
-            </div>
+<!--            <div class="chat-user" id="picture">-->
+<!--                <img src="/web/image/res.partner/3/image_small" class="avatar"></img>-->
+<!--                <div class="new-message" id="message-id"></div>-->
+<!--            </div>-->
         </div>
         <div class="chat-tools">
 

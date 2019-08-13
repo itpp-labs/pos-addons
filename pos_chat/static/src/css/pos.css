@@ -173,36 +173,6 @@
   transform: translateY(-4px);
 }
 
-.pos .button.invite{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    -webkit-flex-grow: 1;
-    flex-grow: 1;
-    background: #e2e2e2;
-    border: solid 1px #bfbfbf;
-    display: inline-block;
-    line-height: 38px;
-    min-width: 80px;
-    text-align: center;
-    border-radius: 10px;
-    padding: 0px 10px;
-    font-size: 18px;
-    margin-left: 6px;
-    margin-bottom: 6px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all linear 150ms;
-}
-
-.pos .button.invite:hover{
-  background: yellow;
-  transition-duration: 0.5s;
-  transition-timing-function: linear;
-  border-radius: 30px;
-  transform: translateY(4px);
-}
-
 .pos .chat-tools .text-input-place:focus{
     border-radius: 5px;
   transform: translateY(-5px);
@@ -223,12 +193,6 @@
     position: absolute;
     left: var(--pos-X);
     top: var(--pos-Y);
-    background-color: green;
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: green;
-    border-radius: 50px;
     animation: animX 2s cubic-bezier(0, 1.7, 0.5, 1),
     animY 2s cubic-bezier(0, 0.2, 0.2, 1);
 }
@@ -237,25 +201,12 @@
     border-radius: 50%;
 }
 
-.pos .main-action .chat-user .new-message-0{
+.pos .main-action .new-message{
     position: relative;
     border-radius: 20%;
     background: white;
     top: 10px;
     width: 80px;
-}
-.pos .main-action .chat-user .new-message-1{
-    position: relative;
-    border-radius: 20%;
-    background: white;
-    top: 10px;
-    width: 80px;
-    margin-top: 5px;
-}
-
-:root{
-    --pos-X: 0px;
-    --pos-Y: 0px;
 }
 
 @keyframes animX {
