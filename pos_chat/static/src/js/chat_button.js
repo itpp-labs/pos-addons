@@ -226,7 +226,7 @@ odoo.define('pos_chat_button', function (require){
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: ['', Disconnect, session.uid]
+                    args: ['', 'Disconnect', session.uid]
                 });
 
             });
@@ -257,7 +257,7 @@ odoo.define('pos_chat_button', function (require){
     {
         var i = NumInQueue(data.uid);
         all_messages[i].push({
-            text: data.text,
+            text: data.message,
             user_id : data.uid
         });
         showMessage(data.uid);
