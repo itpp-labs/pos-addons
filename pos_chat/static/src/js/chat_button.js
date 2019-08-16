@@ -190,6 +190,17 @@ odoo.define('pos_chat_button', function (require){
         var angle = (2 * 3.1415 / chat_users.length) * cnt;
         var w = action_window.offsetWidth;
         var h = action_window.offsetHeight;
+
+        if(chat_users.length == 1)
+        {
+            avatar.style.setProperty('position', 'absolute');
+            avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
+            avatar.style.setProperty('top', -avatar.offsetHeight + 'px');
+            avatar.style.setProperty('transform','translate3d(0px,'+h/2+'px,0px)');
+            avatar.style.setProperty('transition','transform 1s ease-in-out');
+            return;
+        }
+
         var x = Math.trunc(radius*Math.cos(angle));
         var y = Math.trunc(radius*Math.sin(angle));
 
@@ -197,7 +208,7 @@ odoo.define('pos_chat_button', function (require){
         avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
         avatar.style.setProperty('top', h/2 - (avatar.offsetHeight / 2) + 'px');
         avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
-        avatar.style.setProperty('transition','transform .2s ease-in-out');
+        avatar.style.setProperty('transition','transform .3s ease-in-out');
     }
 //---------Message sending part---------------------
     function TakeNewMessage()
