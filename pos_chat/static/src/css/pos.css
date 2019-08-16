@@ -201,14 +201,6 @@
     border-radius: 50%;
 }
 
-.pos .main-action .new-message{
-    position: relative;
-    border-radius: 20%;
-    background: white;
-    top: 10px;
-    width: 80px;
-}
-
 @keyframes animX {
    from {
       left: 0px;

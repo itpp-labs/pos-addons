@@ -1,145 +1,3 @@
-//odoo.define('pos_chat_button', function (require){
-//      'use_strict';
-//
-//    var gui = require('point_of_sale.gui');
-//    var PopupWidget = require('point_of_sale.popups');
-//    var screens = require('point_of_sale.screens');
-//    var rpc = require('web.rpc');
-//    var session = require('web.session');
-//
-//    var models = require('point_of_sale.models');
-//    //declare a new variable and inherit ActionButtonWidget
-//
-//    var ChatButton = screens.ActionButtonWidget.extend({
-//        template: 'ChatButton',
-//        button_click: function () {
-//            this.gui.show_popup('chat',{
-//              'title': 'Chat',
-//              'value': false,
-//            });
-//            if(messages.length == 0)
-//            {
-//                var messageList = document.getElementById('message-list');
-//                messageList.innerHTML = '<li class="text-right small"><em>Welcome to chat!</em></li>';
-//                loadComments();
-//            }
-//            else showMessages();
-//        }
-//    });
-//
-//
-//    // Messages are stored here
-//    var messages = [];
-//    var user = session.name;
-//
-//    var PosModelSuper = models.PosModel;
-//    models.PosModel = models.PosModel.extend({
-//
-//        initialize: function () {
-//
-//          PosModelSuper.prototype.initialize.apply(this, arguments);
-//          var self = this;
-//
-//          self.bus.add_channel_callback("pos_chat_228", self.on_barcode_updates, self);
-//        },
-//
-//        on_barcode_updates: function(data){
-//
-//            var self = this;
-//
-//            var tempMessage = {
-//                text : data.message,
-//                time : data.date,
-//                name : data.name
-//            }
-//
-//            AddNewMessage(tempMessage);
-//        },
-//    });
-//
-//    var ChatPopupWidget = PopupWidget.extend({
-//        template: 'ChatPopupWidget',
-//        show: function () {
-//          var self = this;
-//          this._super();
-//
-//            this.$('.back').click(function () {
-//                self.gui.show_screen('products');
-//            });
-//
-//            this.$('.next').click(function () {
-//                var newMessage = document.getElementById('text-line');
-//                var tempMessage = {
-//                    text : newMessage.value,
-//                    time : Math.floor(Date.now()/1000),
-//                    name : session.name
-//                }
-//
-//                newMessage.value = '';
-//
-//                self._rpc({
-//                    model: "pos.chat",
-//                    method: "send_field_updates",
-//                    args: [tempMessage.text, tempMessage.time, tempMessage.name]
-//                })
-//            });
-//        },
-//    });
-//
-//    function AddNewMessage(message)
-//    {
-//        messages.push(message);
-//        saveMessages();
-//        showMessages();
-//    }
-//
-//    gui.define_popup({name:'chat', widget: ChatPopupWidget});
-//
-//    screens.define_action_button({
-//        'name': 'chat_button',
-//        'widget': ChatButton,
-//    });
-//
-//    function saveMessages()
-//    {
-//        localStorage.setItem('messages', JSON.stringify(messages));
-//    }
-//
-//    function showMessages()
-//    {
-//        var messageList = document.getElementById('message-list');
-//        var out = '';
-//        messages.forEach(function (item)
-//        {
-//        out += '<li class="text-right small"><em>' + timeConverter(item.time) + ' (' + item.name +'):</em></li>';
-//        out += '<li class="text-right small"><em>' + item.text + '</em></li>';
-//        });
-//        messageList.innerHTML = out;
-//    }
-//
-//    function loadComments()
-//    {
-//        localStorage.setItem('messages', JSON.stringify(messages));
-//    }
-//
-////     Time converter function
-//    function timeConverter(UNIX_timestamp)
-//    {
-//        var a = new Date(UNIX_timestamp * 1000);
-//        var months = ['Jan', 'Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-//        var year = a.getFullYear();
-//        var month = months[a.getMonth()];
-//        var date = a.getDate();
-//        var hour = a.getHours();
-//        var min = a.getMinutes();
-//        var sec = a.getSeconds();
-//        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-//        return time;
-//    }
-//
-//    return ChatButton;
-//});
-
 odoo.define('pos_chat_button', function (require){
       'use_strict';
 
@@ -153,9 +11,9 @@ odoo.define('pos_chat_button', function (require){
     var models = require('point_of_sale.models');
 
     var all_messages = [];
+    var all_timeOuts = [];
     var chat_users = [];
 
-    var all_timeOuts = [];
     var class_array = [];
 
     var ChatButton = screens.ActionButtonWidget.extend({
@@ -256,10 +114,17 @@ odoo.define('pos_chat_button', function (require){
     function AddNewMessage(data)
     {
         var i = NumInQueue(data.uid);
-        all_messages[i].push({
-            text: data.message,
-            user_id : data.uid
-        });
+
+        if(all_messages[i].length == 2)
+        {
+            var text = all_messages[i][1].text;
+            all_messages[i][1] = all_messages[i][0];
+            Disappear(data.uid);
+            all_messages[i][0].text = text;
+        }
+
+        Push_new_message(i, data.uid, data.message);
+
         showMessage(data.uid);
     }
 
@@ -301,7 +166,7 @@ odoo.define('pos_chat_button', function (require){
         var out = '';
         chat_users.forEach(function (item)
         {
-            out += '<div class="chat-user-'+item.uid+'" id="picture-'+item.uid+'">';
+            out += '<div class="chat-user-'+item.uid+'" id="picture-'+NumInQueue(item.uid)+'">';
             out += '<img src="/web/image/res.partner/' +
             (item.uid + 1) + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
@@ -313,8 +178,8 @@ odoo.define('pos_chat_button', function (require){
 
         chat_users.forEach(function(item){
             var avatar = document.getElementById('ava-'+NumInQueue(item.uid)+'');
-        avatar.style.setProperty('border-radius', '50%');
-            SetPos(document.getElementById('picture-'+item.uid+''), item.uid);
+            avatar.style.setProperty('border-radius', '50%');
+            SetPos(document.getElementById('picture-'+NumInQueue(item.uid)+''), item.uid);
         });
     }
 
@@ -322,7 +187,7 @@ odoo.define('pos_chat_button', function (require){
     {
         var cnt = NumInQueue(uid) + 1;
         var action_window = document.getElementById('main-window');
-        var angle = 2 * 3.1415 / cnt;
+        var angle = (2 * 3.1415 / chat_users.length) * cnt;
         var circle_x = action_window.offsetWidth / 2;
         var circle_y = action_window.offsetHeight / 2;
         var x = circle_x + radius*Math.cos(angle);
@@ -330,31 +195,16 @@ odoo.define('pos_chat_button', function (require){
 
         avatar.style.setProperty('position', 'absolute');
         avatar.style.setProperty('left', x - (avatar.offsetWidth / 2) + 'px');
-        avatar.style.setProperty('right', y - (avatar.offsetHeight / 2) + 'px');
+        avatar.style.setProperty('top', y - (avatar.offsetHeight / 2) + 'px');
     }
-
 //---------Message sending part---------------------
     function TakeNewMessage()
     {
         var i = NumInQueue(session.uid);
 
-        if(all_messages[i].length == 2)
-        {
-            var text = all_messages[i][1].text;
-            all_messages[i][1] = all_messages[i][0];
-            Disappear(i, 'new-message-' + session.uid + '-0');
-            all_messages[i][0].text = text;
-        }
-
         var newMessage = document.getElementById('text-line');
 
-        var length = all_messages[i].push({
-            text : newMessage.value,
-            user_id : session.uid,
-            class : 'new-message-' + session.uid + '-' + all_messages[i].length
-        });
-
-        ClearBadData(i);
+        var length = Push_new_message(i, session.uid, newMessage.value);
 
         var temp_class = all_messages[i][length - 1].class;
 
@@ -372,30 +222,51 @@ odoo.define('pos_chat_button', function (require){
 
     function showMessage(uid)
     {
+        console.log("appear");
         var i = NumInQueue(uid);
         var num = all_messages[i].length - 1;
-        var class1 = 'new-message-' + uid + '-1';
+        var mes_class = 'new-message-'+uid+'-'+num;
+
         var message = document.getElementById('message-id-' + uid + '');
         var out = '';
 
         if(num == 1)
-        {
-            var class0 = 'new-message-' + uid + '-0';
-            out += '<div class="' + class0 + '">'+
+            out += '<div id="single-message-'+uid+'-0" class="' + mes_class + '">'+
             all_messages[i][num - 1].text+'</div>';
-        }
 
-        out += '<div class="' + class1 + '">'+
+        out += '<div id="single-message-'+uid+'-'+num+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</div>';
+
         message.innerHTML = out;
+        if(num == 1)
+            message_view('single-message-'+uid+'-0');
+        if(all_messages[i][num].appeared == false)
+        {
+            message_view('single-message-'+uid+'-'+num);
+            $("."+mes_class).fadeIn();
+            all_messages[i][num].appeared = true;
+            all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
+        }
     }
 
-    function Disappear(i, class_n)
+    function Disappear(uid)
     {
-        $("."+ class_n +"").fadeOut();
-        all_messages[i].shift();
+        $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
+        all_messages[NumInQueue(uid)].shift();
+        all_timeOuts[NumInQueue(uid)].shift();
+        console.log("disappear");
     }
 //---------Help functions part----------------------
+
+    function message_view(message_id)
+    {
+        single_message = document.getElementById(message_id);
+        single_message.style.setProperty('border-radius', '20%');
+        single_message.style.setProperty('background','white');
+        single_message.style.setProperty('top','10px');
+        single_message.style.setProperty('width','80px');
+        single_message.style.setProperty('display', 'none');
+    }
 
     function CheckUserExists(uid)
     {
@@ -417,101 +288,17 @@ odoo.define('pos_chat_button', function (require){
         return -1;
     }
 
-    // Clears others messages,
-    // cause push() func. pushes object
-    // to the all cells in array
-    function ClearBadData(ind)
+    function Push_new_message(i, uid, message)
     {
-        for(var i = 0; i < all_messages.length; i++)
-        {
-            if(ind != i)
-            {
-                all_messages[i].length = 0;
-            }
-        }
+        return all_messages[i].push({
+            text: message,
+            user_id : uid,
+            class : 'new-message-'+uid+'-'+all_messages[i].length,
+            appeared : false
+        });
     }
 //    $("." + message_class + "").fadeIn();
 //    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
 
     return ChatButton;
 });
-
-
-
-
-//    function SendMessage(uid)
-//    {
-//        var i = NumInQueue(uid);
-//        if(all_messages[i].length == 2)
-//        {
-//            var text = all_messages[i][1].text;
-//            all_messages[i][1] = all_messages[i][0];
-//            clearTimeout(all_timeOuts[i][0]);
-//            Disappear(i, all_messages[i]);
-//            all_messages[i][0].text = text;
-//        }
-//
-//        var newMessage = document.getElementById('text-line');
-//        var current_message = {
-//            text : newMessage.value,
-//            time : Math.floor(Date.now()/1000),
-//            user_id : uid,
-//            class : 'new-message-' + uid + '-' + all_messages[i].length,
-//            id : 'message-id-' + uid + '-' + all_messages[i].length,
-//            appeared : false
-//        }
-//
-//
-//        if(all_messages[i].length == 1 && all_messages[i][0].class == 'new-message-1')
-//        {
-//            all_messages[i][0].class = 'new-message-0';
-//            all_messages[i][0].id = 'message-id-0';
-//        }
-//
-//        all_messages[i].push(current_message);
-//        for(var j = 0; j < all_messages.length; j++)
-//        {
-//            if(j!=i)
-//                all_messages[j].pop();
-//        }
-//
-//        self._rpc({
-//            model: "pos.chat",
-//            method: "send_field_updates",
-//            args: [current_message.text, current_message.time,
-//             '', '', session.uid]
-//        });
-//
-//        showMessages(current_message ,uid, i);
-//        newMessage.value = '';
-//    }
-//
-//    function showMessages(new_message, uid, i)
-//    {
-//        var num = all_messages[i].length - 1;
-//        message = document.getElementById('message-id-' + uid + '');
-//
-//        var out ='';
-//        if(num == 1)
-//            out += '<div class="' + all_messages[i][num - 1].class + '" id="' +
-//            all_messages[i][num - 1].id + '"><em>' + all_messages[i][num - 1].text + '</em></div>';
-//
-//        out += '<div class="' + new_message.class + '" id="' +
-//        new_message.id + '"><em>' + new_message.text + '</em></div>';
-//
-//        message.innerHTML = out;
-//
-//        if(new_message.appeared == false)
-//        {
-//            $("."+ new_message.class +"").fadeIn();
-//            new_message.appeared = true;
-//            all_timeOuts[i].push(window.setTimeout(Disappear,5000,i, new_message));
-//        }
-//    }
-//
-//    function Disappear(i, new_message)
-//    {
-//        $("."+ new_message.class +"").fadeOut();
-//        all_messages[i].shift();
-//        all_timeOuts[i].shift();
-//    }
