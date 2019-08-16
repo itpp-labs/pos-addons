@@ -188,14 +188,16 @@ odoo.define('pos_chat_button', function (require){
         var cnt = NumInQueue(uid) + 1;
         var action_window = document.getElementById('main-window');
         var angle = (2 * 3.1415 / chat_users.length) * cnt;
-        var circle_x = action_window.offsetWidth / 2;
-        var circle_y = action_window.offsetHeight / 2;
-        var x = circle_x + radius*Math.cos(angle);
-        var y = circle_y + radius*Math.sin(angle);
+        var w = action_window.offsetWidth;
+        var h = action_window.offsetHeight;
+        var x = Math.trunc(radius*Math.cos(angle));
+        var y = Math.trunc(radius*Math.sin(angle));
 
         avatar.style.setProperty('position', 'absolute');
-        avatar.style.setProperty('left', x - (avatar.offsetWidth / 2) + 'px');
-        avatar.style.setProperty('top', y - (avatar.offsetHeight / 2) + 'px');
+        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
+        avatar.style.setProperty('top', h/2 - (avatar.offsetHeight / 2) + 'px');
+        avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
+        avatar.style.setProperty('transition','transform .2s ease-in-out');
     }
 //---------Message sending part---------------------
     function TakeNewMessage()
