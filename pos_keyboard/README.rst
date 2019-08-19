@@ -15,7 +15,7 @@ Contributors
 ------------
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
-* `Kildebekov Anvar <https://it-projects.info/team/KildebekovAnvar>`__
+* `Anvar Kildebekov <https://it-projects.info/team/fedoranvar>`__
 
 Sponsors
 --------
