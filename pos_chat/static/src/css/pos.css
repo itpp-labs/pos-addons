@@ -88,3 +88,133 @@
     margin-left: 10px;
 }
 
+
+/*  ********* The custom screen widget  ********* */
+.pos .main-action{
+    position: absolute;
+    top: 60px;
+    bottom: 100px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.pos .chat-tools{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    justify-content: center
+}
+
+.pos .chat-tools .button.back{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next:active{
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .chat-tools .button.back:active{
+    color: white;
+    transition-duration: 0.2s;]
+}
+
+.pos .chat-tools .button.next{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next:hover{
+  background: #2db34a;
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+  border-radius: 30px;
+  transform: translateY(-4px);
+}
+
+.pos .chat-tools .button.back:hover{
+  background: red;
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+  border-radius: 30px;
+  transform: translateY(-4px);
+}
+
+.pos .chat-tools .text-input-place:focus{
+    border-radius: 5px;
+  transform: translateY(-5px);
+}
+
+.pos .chat-tools .text-input-place:hover{
+    border-radius: 5px;
+    transition-duration: 0.5s;
+}
+
+.pos .chat-tools .text-input-place{
+    resize: none;
+    border-radius: 30px;
+    transition-duration: 0.5s;
+}
+
+.pos .main-action .chat-user {
+    position: absolute;
+    left: var(--pos-X);
+    top: var(--pos-Y);
+    animation: animX 2s cubic-bezier(0, 1.7, 0.5, 1),
+    animY 2s cubic-bezier(0, 0.2, 0.2, 1);
+}
+
+.pos .main-action .chat-user .avatar{
+    border-radius: 50%;
+}
+
+@keyframes animX {
+   from {
+      left: 0px;
+   }
+   to {
+      left: var(--pos-X);
+   }
+}
+
+@keyframes animY {
+   from {
+      top: 0px;
+   }
+   to {
+      top: var(--pos-Y);
+   }
+}

@@ -13,8 +13,7 @@
             <div class="popup popup-chat">
 
                 <div id="message-field">
-                    <ul class="messages" id="message-list">
-                    </ul>
+                    <ul class="messages" id="message-list"></ul>
                 </div>
                 <div class="chat-popup" id="myForm">
                   <form class="form-container">
@@ -34,9 +33,29 @@
                   </form>
                 </div>
             </div>
-            <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
         </div>
     </t>
 
 
+    <t t-name="CustomScreenWidget">
+
+        <div class="main-action" id="main-window">
+<!--            <div class="chat-user" id="picture">-->
+<!--                <img src="/web/image/res.partner/3/image_small" class="avatar"></img>-->
+<!--                <div class="new-message" id="message-id"></div>-->
+<!--            </div>-->
+        </div>
+        <div class="chat-tools">
+
+            <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+                <span class="button next">
+                     Send
+                   <i class="fa fa-angle-double-right" />
+                </span>
+                <span class="button back">
+                   <i class="fa fa-angle-double-left" />
+                     Back
+                </span>
+        </div>
+    </t>
 </templates>
