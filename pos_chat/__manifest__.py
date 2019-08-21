@@ -5,11 +5,10 @@
     'summary': """Chat for employees""",
 
     'description': """
-        POS Chat - module for chatting with colleges:
-            - chat rooms
+        POS Chat - module for chatting with colleges
     """,
 
-    'author': "Your Company",
+    'author': "IT-Projects LLC",
     'website': "https://eda.yandex/restaurant/mcdonalds_ufa",
 
     # Categories can be used to filter modules in modules listing
@@ -19,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['point_of_sale'],
 
     # always loaded
     'data': [
