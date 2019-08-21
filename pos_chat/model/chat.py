@@ -1,5 +1,4 @@
 from odoo import models, fields, api, _
-import wdb
 
 class Chat(models.Model):
     _name = 'pos.chat'
