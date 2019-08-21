@@ -1586,9 +1586,6 @@ pos.mobile .clientlist-screen .top-content .button {
     display: inline-block;
 }
 /*Mobile screen*/
-.pos.mobile .window {
-    display: none;
-}
 .pos.mobile .mobile-active-screen {
     display: block;
 }
