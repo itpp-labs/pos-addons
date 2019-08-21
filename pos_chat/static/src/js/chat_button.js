@@ -119,6 +119,7 @@ odoo.define('pos_chat_button', function (require){
         {
             var text = all_messages[i][1].text;
             all_messages[i][1] = all_messages[i][0];
+            clearTimeout(all_timeOuts[i][0]);
             Disappear(data.uid);
             all_messages[i][0].text = text;
         }
