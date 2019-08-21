@@ -74,6 +74,19 @@ odoo.define('pos_mobile.tour', function(require) {
         }];
     }
 
+    function select_customer(customer_name) {
+        return [{
+            trigger: '.js_customer_name:visible',
+            content: "click on Customer button",
+        }, {
+            trigger: 'table.client-list:visible td:contains("' + customer_name + '")',
+            content: "Click on customer",
+        }, {
+            trigger: '.button.next',
+            content: "Set customer",
+        }];
+    }
+
     var steps = [{
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
@@ -101,6 +114,7 @@ odoo.define('pos_mobile.tour', function(require) {
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
     steps = steps.concat(generate_payment_screen_keypad_steps("0.90"));
+    steps = steps.concat(select_customer("Brandon Freeman"));
     steps = steps.concat(finish_order());
 
     steps = steps.concat([{
