@@ -13,6 +13,7 @@ odoo.define('pos_chat_button', function (require){
     var all_messages = [];
     var all_timeOuts = [];
     var chat_users = [];
+    var messages_cnt = [];
 
     var class_array = [];
 
@@ -138,6 +139,7 @@ odoo.define('pos_chat_button', function (require){
 
         all_messages.push(new Array());
         all_timeOuts.push(new Array());
+        messages_cnt.push(0);
 
         ShowUsers();
     }
@@ -172,7 +174,7 @@ odoo.define('pos_chat_button', function (require){
             (item.uid + 1) + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
 
-            out += '<div class="new-message" id="message-id-'+item.uid+'"></div>';
+            out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
             out += '</div>';
         });
         window.innerHTML = out;
@@ -220,8 +222,6 @@ odoo.define('pos_chat_button', function (require){
 
         var length = Push_new_message(i, session.uid, newMessage.value);
 
-        var temp_class = all_messages[i][length - 1].class;
-
         showMessage(session.uid);
 
         self._rpc({
@@ -236,31 +236,33 @@ odoo.define('pos_chat_button', function (require){
 
     function showMessage(uid)
     {
-        console.log("appear");
-        var i = NumInQueue(uid);
+        var i = NumInQueue(uid), num = all_messages[i].length - 1;
+        var cnt = messages_cnt[i]++;
         var num = all_messages[i].length - 1;
-        var mes_class = 'new-message-'+uid+'-'+num;
 
-        var message = document.getElementById('message-id-' + uid + '');
+        var mes_class = 'new-message-'+uid+'-'+cnt;
+        all_messages[i][num].class = mes_class;
+        var mes_id = 'single-message-'+uid+'-'+cnt;
+
+        var message = document.getElementById('message-id-' + uid);
         var out = '';
 
-        if(num == 1)
-            out += '<div id="single-message-'+uid+'-0" class="' + mes_class + '">'+
-            all_messages[i][num - 1].text+'</div>';
+        if(num > 0)
+            out += '<li id="single-message-'+uid+'-'+
+            (cnt - 1)+'" class="new-message-'+uid+'-'+(cnt - 1)+ '">'+
+            all_messages[i][num - 1].text+'</li>';
 
-        out += '<div id="single-message-'+uid+'-'+num+'" class="' + mes_class + '">'+
-        all_messages[i][num].text+'</div>';
+        out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
+        all_messages[i][num].text+'</li>';
 
         message.innerHTML = out;
-        if(num == 1)
-            message_view('single-message-'+uid+'-0');
-        if(all_messages[i][num].appeared == false)
-        {
-            message_view('single-message-'+uid+'-'+num);
-            $("."+mes_class).fadeIn();
-            all_messages[i][num].appeared = true;
-            all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
-        }
+        if(num > 0)
+            message_view('single-message-'+uid+'-'+(cnt - 1), false);
+
+        message_view(mes_id, true);
+        $("."+mes_class).fadeIn();
+        all_messages[i][num].appeared = true;
+        all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
     }
 
     function Disappear(uid)
@@ -268,18 +270,18 @@ odoo.define('pos_chat_button', function (require){
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
-        console.log("disappear");
     }
 //---------Help functions part----------------------
 
-    function message_view(message_id)
+    function message_view(message_id, display)
     {
         single_message = document.getElementById(message_id);
         single_message.style.setProperty('border-radius', '20%');
         single_message.style.setProperty('background','white');
         single_message.style.setProperty('top','10px');
         single_message.style.setProperty('width','80px');
-        single_message.style.setProperty('display', 'none');
+        if(display)
+            single_message.style.setProperty('display', 'none');
     }
 
     function CheckUserExists(uid)
@@ -308,7 +310,8 @@ odoo.define('pos_chat_button', function (require){
             text: message,
             user_id : uid,
             class : 'new-message-'+uid+'-'+all_messages[i].length,
-            appeared : false
+            appeared : false,
+            cnt : -1
         });
     }
 //    $("." + message_class + "").fadeIn();
