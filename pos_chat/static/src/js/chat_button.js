@@ -145,17 +145,7 @@ odoo.define('pos_chat_button', function (require){
 
     function DeleteUser(user_id)
     {
-        for(var i = 0; i < chat_users.length; i++)
-        {
-            if(chat_users[i].uid == user_id)
-            {
-                // Array shift
-                for(var j = i; j < chat_users.length - 1; j++)
-                    chat_users[j] = chat_users[j + 1];
-                // Delete array's last object
-                chat_users.pop();
-            }
-        }
+        DeleteUserData(user_id);
         ShowUsers();
     }
 
@@ -298,7 +288,6 @@ odoo.define('pos_chat_button', function (require){
         {
             if(chat_users[i].uid == uid) return i;
         }
-        alert( "NumInQueue returned -1" );
         return -1;
     }
 
@@ -310,6 +299,20 @@ odoo.define('pos_chat_button', function (require){
             class : 'new-message-'+uid+'-'+all_messages[i].length,
             cnt : -1
         });
+    }
+
+    function DeleteUserData(uid)
+    {
+        var j = NumInQueue(uid);
+        for(var i = j; i < chat_users.length; i++)
+        {
+            chat_users[i] = chat_users[i + 1];
+            all_messages[i] = all_messages[i + 1];
+            all_timeOuts[i] = all_timeOuts[i + 1];
+        }
+        chat_users.pop();
+        all_messages.pop();
+        all_timeOuts.pop();
     }
 //    $("." + message_class + "").fadeIn();
 //    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
