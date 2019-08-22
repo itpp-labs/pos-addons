@@ -39,8 +39,20 @@ odoo.define('pos_chat_button', function (require){
                 args: ['', 'Connect',
                  session.uid]
             });
+            window.setTimeout(Refresh, 1000, self);
         }
     });
+
+    function Refresh(self)
+    {
+        self._rpc({
+            model: "pos.chat",
+            method: "send_field_updates",
+            args: ['', 'Connect',
+             session.uid]
+        });
+        window.setTimeout(Refresh, 1000, self);
+    }
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -252,7 +264,6 @@ odoo.define('pos_chat_button', function (require){
         message_view(mes_id, true);
         $("."+mes_class).fadeIn();
         all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
-        console.log('appear');
     }
 
     function Disappear(uid)
@@ -260,7 +271,6 @@ odoo.define('pos_chat_button', function (require){
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
-        console.log('disappear');
     }
 //---------Help functions part----------------------
 
