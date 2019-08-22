@@ -16,6 +16,8 @@ odoo.define('pos_chat_button', function (require){
 
     var class_array = [];
 
+    var Disconnected = false;
+
     var ChatButton = screens.ActionButtonWidget.extend({
         template: 'ChatButton',
         button_click: function () {
@@ -29,14 +31,13 @@ odoo.define('pos_chat_button', function (require){
                     uid : session.uid
                 });
             }
+            Disconnected = false;
 
             ShowUsers();
 
             Refresh(self);
         }
     });
-
-    var Disconnected = false;
 
     function Refresh(self)
     {
