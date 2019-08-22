@@ -10,6 +10,7 @@ Credits
 Contributors
 ------------
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Eugene Molotov <https://github.com/em230418>`__
 
 Sponsors
 --------
@@ -36,4 +37,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
+Tested on Odoo 12.0 472bfdca561fcdf3a535c4c92cadf0ede1d4fab4
