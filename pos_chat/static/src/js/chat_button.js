@@ -4,7 +4,6 @@ odoo.define('pos_chat_button', function (require){
     var gui = require('point_of_sale.gui');
     var screens = require('point_of_sale.screens');
     var session = require('web.session');
-    var PopupWidget = require('point_of_sale.popups');
     var models = require('point_of_sale.models');
     var rpc = require('web.rpc');
 
@@ -115,15 +114,6 @@ odoo.define('pos_chat_button', function (require){
     function AddNewMessage(data)
     {
         var i = NumInQueue(data.uid);
-
-        if(all_messages[i].length == 2)
-        {
-            var text = all_messages[i][1].text;
-            all_messages[i][1] = all_messages[i][0];
-            clearTimeout(all_timeOuts[i][0]);
-            Disappear(data.uid);
-            all_messages[i][0].text = text;
-        }
 
         Push_new_message(i, data.uid, data.message);
 
@@ -261,8 +251,8 @@ odoo.define('pos_chat_button', function (require){
 
         message_view(mes_id, true);
         $("."+mes_class).fadeIn();
-        all_messages[i][num].appeared = true;
         all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
+        console.log('appear');
     }
 
     function Disappear(uid)
@@ -270,6 +260,7 @@ odoo.define('pos_chat_button', function (require){
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
+        console.log('disappear');
     }
 //---------Help functions part----------------------
 
@@ -310,7 +301,6 @@ odoo.define('pos_chat_button', function (require){
             text: message,
             user_id : uid,
             class : 'new-message-'+uid+'-'+all_messages[i].length,
-            appeared : false,
             cnt : -1
         });
     }
