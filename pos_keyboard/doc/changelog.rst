@@ -1,3 +1,9 @@
+
+`1.1.5`
+-------
+
+**Fix:** Function 'disconnect' not working in expected way
+
 `1.1.4`
 -------
 
