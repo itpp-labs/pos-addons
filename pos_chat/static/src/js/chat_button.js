@@ -36,8 +36,11 @@ odoo.define('pos_chat_button', function (require){
         }
     });
 
+    var Disconnected = false;
+
     function Refresh(self)
     {
+        if(Disconnected) return;
         self._rpc({
             model: "pos.chat",
             method: "send_field_updates",
@@ -91,7 +94,7 @@ odoo.define('pos_chat_button', function (require){
                     method: "send_field_updates",
                     args: ['', 'Disconnect', session.uid]
                 });
-
+                Disconnected = true;
             });
 
             this.$('.next').click(function () {
