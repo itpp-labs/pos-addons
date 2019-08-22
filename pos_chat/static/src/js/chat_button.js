@@ -310,6 +310,7 @@ odoo.define('pos_chat_button', function (require){
             all_messages[i] = all_messages[i + 1];
             all_timeOuts[i] = all_timeOuts[i + 1];
         }
+        messages_cnt.pop();
         chat_users.pop();
         all_messages.pop();
         all_timeOuts.pop();
