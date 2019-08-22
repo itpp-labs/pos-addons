@@ -32,14 +32,7 @@ odoo.define('pos_chat_button', function (require){
 
             ShowUsers();
 
-
-            self._rpc({
-                model: "pos.chat",
-                method: "send_field_updates",
-                args: ['', 'Connect',
-                 session.uid]
-            });
-            window.setTimeout(Refresh, 1000, self);
+            Refresh(self);
         }
     });
 
@@ -51,7 +44,7 @@ odoo.define('pos_chat_button', function (require){
             args: ['', 'Connect',
              session.uid]
         });
-        window.setTimeout(Refresh, 1000, self);
+        window.setTimeout(Refresh, 2000, self);
     }
 
     var PosModelSuper = models.PosModel;
