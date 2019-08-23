@@ -1,4 +1,5 @@
 /*  Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
+    Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_keyboard.tour', function (require) {
     "use strict";
@@ -9,6 +10,10 @@ odoo.define('pos_keyboard.tour', function (require) {
 
     function open_pos_neworder() {
         return [{
+            trigger: 'ul.o_menu_apps li.dropdown a.full',
+            content: _t("Show Apps Menu"),
+            position: 'bottom',
+        }, {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
             position: 'bottom',
@@ -20,7 +25,7 @@ odoo.define('pos_keyboard.tour', function (require) {
             content: "Switch to table or make dummy action",
             trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
             position: "bottom",
-            timeout: 20000,
+            timeout: 30000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
@@ -57,13 +62,33 @@ odoo.define('pos_keyboard.tour', function (require) {
         }];
     }
 
+    function connect_disconnect_keyboard() {
+        var stps = [{
+            content: "Open Payment-Screen",
+            trigger: '.pay-circle',
+        }];
+
+        if (odoo._modules.indexOf('pos_cashier_select') !== -1) {
+            stps = stps.concat([{
+            trigger: '.modal-dialog.cashier .selection-item:contains("Admin")',
+            content: 'select first cashier',
+        }]);
+        }
+
+        stps = stps.concat([{
+            content: 'Close Payment-Screen',
+            trigger: '.button:contains(Back)',
+        }]);
+        return stps;
+    }
+
     function open_cashier_popup_and_close_it() {
         return [{
             content: "Open cashier selection popup",
             trigger: '.username',
         }, {
             content: "Make dummy action and simulate escape button clicking",
-            trigger: '.modal-dialog:not(".oe_hidden") p.title',
+            trigger: '.modal-dialog:not(".oe_hidden")',
             run: function(){
                 simulate_keyup_event(27);
                 setTimeout(function () {
@@ -81,9 +106,12 @@ odoo.define('pos_keyboard.tour', function (require) {
     }
 
     var steps = [];
+    var quantity = 3;
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(add_product_to_order('Miscellaneous'));
-    steps = steps.concat(update_qty_for_product(3));
+    steps = steps.concat(update_qty_for_product(quantity));
+    steps = steps.concat(connect_disconnect_keyboard());
+    steps = steps.concat(update_qty_for_product(quantity+1));
     steps = steps.concat(open_cashier_popup_and_close_it());
 
     tour.register('pos_keyboard_tour', { test: true, url: '/web' }, steps);
