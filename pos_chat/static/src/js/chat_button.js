@@ -113,6 +113,12 @@ odoo.define('pos_chat_button', function (require){
     {
         var i = NumInQueue(data.uid);
 
+        if(all_messages[i].length >= 2)
+        {
+            clearTimeout(all_timeOuts[i][0]);
+            Disappear(data.uid);
+        }
+
         Push_new_message(i, data.uid, data.message);
 
         showMessage(data.uid);
@@ -148,8 +154,8 @@ odoo.define('pos_chat_button', function (require){
         chat_users.forEach(function (item)
         {
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+NumInQueue(item.uid)+'">';
-            out += '<img src="/web/image/res.user/' +
-            (item.uid + 1) + '/image_small" id="ava-' +
+            out += '<img src="/web/image/res.users/' +
+            item.uid + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
@@ -263,8 +269,6 @@ odoo.define('pos_chat_button', function (require){
         {
             if(chat_users[i].uid == uid) return i;
         }
-        alert("Oh shit, here we go again");
-        return -1;
     }
 
     function Push_new_message(i, uid, message)
