@@ -148,7 +148,7 @@ odoo.define('pos_chat_button', function (require){
         chat_users.forEach(function (item)
         {
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+NumInQueue(item.uid)+'">';
-            out += '<img src="/web/image/res.partner/' +
+            out += '<img src="/web/image/res.user/' +
             (item.uid + 1) + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
 
