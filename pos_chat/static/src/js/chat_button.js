@@ -24,16 +24,7 @@ odoo.define('pos_chat_button', function (require){
             self = this;
             this.gui.show_screen('custom_screen');
 
-            if(!CheckUserExists(session.uid))
-            {
-                AddNewUser({
-                    name : session.name,
-                    uid : session.uid
-                });
-            }
             Disconnected = false;
-
-            ShowUsers();
 
             Refresh(self);
         }
@@ -48,7 +39,7 @@ odoo.define('pos_chat_button', function (require){
             args: ['', 'Connect',
              session.uid]
         });
-        window.setTimeout(Refresh, 2000, self);
+        window.setTimeout(Refresh,1500, self)
     }
 
     var PosModelSuper = models.PosModel;
@@ -65,8 +56,6 @@ odoo.define('pos_chat_button', function (require){
         on_barcode_updates: function(data){
 
             var self = this;
-
-            if(session.uid == data.uid) return;
 
             if(data.command == 'Connect')
             {
@@ -87,7 +76,7 @@ odoo.define('pos_chat_button', function (require){
           var self = this;
           this._super();
 
-            this.$('.back').click(function () {
+            this.$('.back').off().click(function () {
                 self.gui.show_screen('products');
 
                 self._rpc({
@@ -98,11 +87,11 @@ odoo.define('pos_chat_button', function (require){
                 Disconnected = true;
             });
 
-            this.$('.next').click(function () {
+            this.$('.next').off().click(function () {
                 TakeNewMessage()
             });
 
-            this.$("#text-line").keyup(function(event){
+            this.$("#text-line").off().keyup(function(event){
 
                 if(event.keyCode == 13){
                     TakeNewMessage()
@@ -183,16 +172,6 @@ odoo.define('pos_chat_button', function (require){
         var w = action_window.offsetWidth;
         var h = action_window.offsetHeight;
 
-        if(chat_users.length == 1)
-        {
-            avatar.style.setProperty('position', 'absolute');
-            avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
-            avatar.style.setProperty('top', -avatar.offsetHeight + 'px');
-            avatar.style.setProperty('transform','translate3d(0px,'+h/2+'px,0px)');
-            avatar.style.setProperty('transition','transform 1s ease-in-out');
-            return;
-        }
-
         var x = Math.trunc(radius*Math.cos(angle));
         var y = Math.trunc(radius*Math.sin(angle));
 
@@ -208,10 +187,6 @@ odoo.define('pos_chat_button', function (require){
         var i = NumInQueue(session.uid);
 
         var newMessage = document.getElementById('text-line');
-
-        var length = Push_new_message(i, session.uid, newMessage.value);
-
-        showMessage(session.uid);
 
         self._rpc({
             model: "pos.chat",
@@ -288,6 +263,7 @@ odoo.define('pos_chat_button', function (require){
         {
             if(chat_users[i].uid == uid) return i;
         }
+        alert("Oh shit, here we go again");
         return -1;
     }
 
