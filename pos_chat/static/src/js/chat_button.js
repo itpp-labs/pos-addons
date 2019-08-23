@@ -236,6 +236,7 @@ odoo.define('pos_chat_button', function (require){
 
     function Disappear(uid)
     {
+        if(all_messages[NumInQueue(uid)].length == 0) return;
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
