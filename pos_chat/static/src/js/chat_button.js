@@ -194,12 +194,17 @@ odoo.define('pos_chat_button', function (require){
 
         var newMessage = document.getElementById('text-line');
 
-        self._rpc({
-            model: "pos.chat",
-            method: "send_field_updates",
-            args: [newMessage.value,
-             '', session.uid]
-        });
+        if(!is_it_tag(newMessage.value))
+        {
+            self._rpc({
+                model: "pos.chat",
+                method: "send_field_updates",
+                args: [newMessage.value,
+                 '', session.uid]
+            });
+        }
+        else
+            alert("Nice try, but i've learned to evade tags");
 
         newMessage.value = '';
     }
@@ -225,6 +230,8 @@ odoo.define('pos_chat_button', function (require){
         out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</li>';
 
+        out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
+
         message.innerHTML = out;
         if(num > 0)
             message_view('single-message-'+uid+'-'+(cnt - 1), false);
@@ -249,7 +256,8 @@ odoo.define('pos_chat_button', function (require){
         single_message.style.setProperty('border-radius', '20%');
         single_message.style.setProperty('background','white');
         single_message.style.setProperty('top','10px');
-        single_message.style.setProperty('width','80px');
+        single_message.style.setProperty('width','100px');
+        single_message.style.setProperty('font','14pt sans-serif');
         if(display)
             single_message.style.setProperty('display', 'none');
     }
@@ -295,6 +303,21 @@ odoo.define('pos_chat_button', function (require){
         chat_users.pop();
         all_messages.pop();
         all_timeOuts.pop();
+    }
+
+    function is_it_tag(str)
+    {
+        var left = 0, right = 0, slash = 0;
+        for(var i = 0; i < str.length; i++)
+        {
+            if(str[i] == '<')left++;
+            if(str[i] == '>')right++;
+            if(str[i] == '/') slash++;
+        }
+        if(left == 2 && right == 2 && slash == 1)
+            return true;
+        else
+            return false;
     }
 //    $("." + message_class + "").fadeIn();
 //    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
