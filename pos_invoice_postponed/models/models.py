@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import copy
@@ -25,7 +25,8 @@ class PosOrder(models.Model):
         if not float_is_zero(order['amount_paid'], account_precision):
             acc_journal = self.env['account.journal']
             payments = order.get('statement_ids')
-            postponed_payments = filter(lambda x: acc_journal.browse(x[2]['journal_id']).postponed_invoice, payments)
+            postponed_payments = list(filter(lambda x: acc_journal.browse(x[2]['journal_id']).postponed_invoice, payments))
+
             if postponed_payments:
                 user_id = self.env['res.users'].browse(order['user_id'])
                 partner_id = self.env['res.partner'].browse(order['partner_id'])
@@ -98,8 +99,9 @@ class PosConfig(models.Model):
         return res
 
     def init_postponed_journal(self):
-        """Init demo Journals for current company"""
-        demo_is_on = self.env['ir.module.module'].search([('name', '=', MODULE)]).demo
+        """Init demo Journals for current company
+            sudo() - is for creating sessions by 'non-administrator' users"""
+        demo_is_on = self.env['ir.module.module'].sudo().search([('name', '=', MODULE)]).demo
         if not demo_is_on:
             return
         # Multi-company is not primary task for this module, but I copied this
