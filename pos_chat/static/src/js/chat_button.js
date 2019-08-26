@@ -39,7 +39,7 @@ odoo.define('pos_chat_button', function (require){
             args: ['', 'Connect',
              session.uid]
         });
-        window.setTimeout(Refresh,1500, self)
+        window.setTimeout(Refresh,2000, self)
     }
 
     var PosModelSuper = models.PosModel;
@@ -194,17 +194,15 @@ odoo.define('pos_chat_button', function (require){
 
         var newMessage = document.getElementById('text-line');
 
-        if(!is_it_tag(newMessage.value))
-        {
-            self._rpc({
-                model: "pos.chat",
-                method: "send_field_updates",
-                args: [newMessage.value,
-                 '', session.uid]
-            });
-        }
-        else
-            alert("Nice try, but i've learned to evade tags");
+        var text = newMessage.value;
+        if(is_it_tag(newMessage.value, false))
+            text = is_it_tag(newMessage.value, true);
+
+        self._rpc({
+            model: "pos.chat",
+            method: "send_field_updates",
+            args: [text, '', session.uid]
+        });
 
         newMessage.value = '';
     }
@@ -238,7 +236,7 @@ odoo.define('pos_chat_button', function (require){
 
         message_view(mes_id, true);
         $("."+mes_class).fadeIn();
-        all_timeOuts[i].push(window.setTimeout(Disappear,5000, uid));
+        all_timeOuts[i].push(window.setTimeout(Disappear,15000, uid));
     }
 
     function Disappear(uid)
@@ -305,15 +303,20 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts.pop();
     }
 
-    function is_it_tag(str)
+    function is_it_tag(str, send)
     {
         var left = 0, right = 0, slash = 0;
+        var text = '';
         for(var i = 0; i < str.length; i++)
         {
+            if(left + right == 2 && str[i] != '<')
+                text += str[i];
             if(str[i] == '<')left++;
             if(str[i] == '>')right++;
             if(str[i] == '/') slash++;
         }
+
+        if(send) return text;
         if(left == 2 && right == 2 && slash == 1)
             return true;
         else
