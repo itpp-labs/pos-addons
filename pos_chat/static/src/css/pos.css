@@ -201,20 +201,8 @@
     border-radius: 50%;
 }
 
-@keyframes animX {
-   from {
-      left: 0px;
-   }
-   to {
-      left: var(--pos-X);
-   }
-}
-
-@keyframes animY {
-   from {
-      top: 0px;
-   }
-   to {
-      top: var(--pos-Y);
-   }
+.pos .user-name{
+    background: #a9a9ff;
+    border-radius: 30%;
+    text-align: center;
 }
