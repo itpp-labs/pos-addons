@@ -7,14 +7,14 @@ odoo.define('pos_chat_button', function (require){
     var models = require('point_of_sale.models');
     var rpc = require('web.rpc');
 
-    var models = require('point_of_sale.models');
-
     var all_messages = [];
     var all_timeOuts = [];
     var chat_users = [];
     var messages_cnt = [];
     var game_started = false;
     var users_seted = 0;
+    var bus_self;
+    var max_users = 10;
 
     var class_array = [];
 
@@ -39,7 +39,7 @@ odoo.define('pos_chat_button', function (require){
             model: "pos.chat",
             method: "send_field_updates",
             args: ['', 'Connect',
-             session.uid]
+             session.uid, 'but-1000']
         });
         window.setTimeout(Refresh,2000, self)
     }
@@ -51,8 +51,14 @@ odoo.define('pos_chat_button', function (require){
 
           PosModelSuper.prototype.initialize.apply(this, arguments);
           var self = this;
+          bus_self = self;
+          self.bus.add_channel_callback('but-1000', self.on_barcode_updates, self);
 
-          self.bus.add_channel_callback("pos_chat_228", self.on_barcode_updates, self);
+          for(var i = 0; i < max_users; i++)
+          {
+                if(NumInQueue(session.uid) == i) continue;
+                self.bus.add_channel_callback('but-'+i, self.on_barcode_updates, self);
+          }
         },
 
         on_barcode_updates: function(data){
@@ -91,7 +97,7 @@ odoo.define('pos_chat_button', function (require){
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: ['', 'Disconnect', session.uid]
+                    args: ['', 'Disconnect', session.uid, 'but-1000']
                 });
                 Disconnected = true;
             });
@@ -265,11 +271,14 @@ odoo.define('pos_chat_button', function (require){
         if(delete_last_char) text.substring(0, text.length - 2);
 
         if(!game_started && chat_users.length > 1)
-            self._rpc({
-                model: "pos.chat",
-                method: "send_field_updates",
-                args: [text, 'SetName', session.uid]
-            });
+        {
+            for(var i = 0; i < chat_users.length; i++)
+                self._rpc({
+                    model: "pos.chat",
+                    method: "send_field_updates",
+                    args: [text, 'SetName', session.uid, 'but-'+next_to_me(session.uid)]
+                });
+        }
 
         if(is_it_tag(newMessage.value, false))
             text = is_it_tag(newMessage.value, true);
@@ -278,14 +287,14 @@ odoo.define('pos_chat_button', function (require){
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
-                args: [text, '', session.uid]
+                args: [text, '', session.uid, 'but-1000']
             });
 
         if(game_started && newMessage.value == chat_users[i].name)
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
-                args: ['', 'Won', session.uid]
+                args: ['', 'Won', session.uid, 'but-1000']
             });
 
         newMessage.value = '';

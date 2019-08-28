@@ -12,7 +12,7 @@ class Chat(models.Model):
         return self.current_user
 
     @api.model
-    def send_field_updates(self, message, command, uid):
-        channel_name = "pos_chat_228"
+    def send_field_updates(self, message, command, uid, channel):
+        channel_name = channel
         data = {'message': message, 'uid': uid, 'command': command}
         self.env['pos.config'].send_to_all_poses(channel_name, data)
