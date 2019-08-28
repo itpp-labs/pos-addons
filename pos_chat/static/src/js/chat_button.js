@@ -14,7 +14,7 @@ odoo.define('pos_chat_button', function (require){
     var game_started = false;
     var users_seted = 0;
     var bus_self;
-    var max_users = 10;
+    var max_users = 20;
 
     var class_array = [];
 
@@ -226,7 +226,7 @@ odoo.define('pos_chat_button', function (require){
             item.uid + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
 
-            if(game_started && !chat_users[NumInQueue(item.uid)].won)
+            if(game_started && !chat_users[NumInQueue(item.uid)].won && session.uid != item.uid)
                out += '<div class="user-name">'+chat_users[NumInQueue(item.uid)].name+'</div>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
