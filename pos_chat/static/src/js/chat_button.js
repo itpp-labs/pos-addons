@@ -74,10 +74,13 @@ odoo.define('pos_chat_button', function (require){
                 if(is_all_won())
                 {
                     game_started = false;
+                    users_seted = 0;
                     chat_users.forEach(function(item)
                     {
                         item.name = '';
+                        item.won = false;
                     });
+                window.setTimeout(ShowUsers,2000);
                 }
             }
             else
@@ -103,13 +106,13 @@ odoo.define('pos_chat_button', function (require){
             });
 
             this.$('.next').off().click(function () {
-                TakeNewMessage()
+                TakeNewMessage(false);
             });
 
             this.$("#text-line").off().keyup(function(event){
 
                 if(event.keyCode == 13){
-                    TakeNewMessage()
+                    TakeNewMessage(true);
                 }
             });
         }
@@ -157,7 +160,8 @@ odoo.define('pos_chat_button', function (require){
     function DeleteUser(user_id)
     {
         DeleteUserData(user_id);
-        ShowUsers();
+        if(user_id != session.uid)
+            ShowUsers();
     }
 
     function NewName(data)
@@ -186,9 +190,23 @@ odoo.define('pos_chat_button', function (require){
     function Show_winner(data)
     {
         chat_users[NumInQueue(data.uid)].won = true;
-        document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('border-radius','30%');
-        document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('transition','0.5s linear');
-        document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('background', 'green');
+        var out = '';
+        if(data.uid == session.uid)
+        {
+            user = document.getElementById('main-window');
+            out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
+            out += '<img src="/pos_chat/static/src/img/win.png"></img>';
+            window.setTimeout(ShowUsers,2000);
+            user.innerHTML = out;
+        }
+        else
+        {
+            if(typeof document.getElementById('picture-'+NumInQueue(data.uid)) == 'null') return;
+            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('background', 'green');
+            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('transition','0.5s linear');
+            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('opacity','1');
+            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('border-radius','30%');
+        }
     }
 
 //----------Set avatar and animation part--------------
@@ -238,12 +256,16 @@ odoo.define('pos_chat_button', function (require){
         avatar.style.setProperty('transition','transform .3s ease-in-out');
     }
 //---------Message sending part---------------------
-    function TakeNewMessage()
+    function TakeNewMessage(delete_last_char)
     {
         var i = NumInQueue(session.uid);
 
         var newMessage = document.getElementById('text-line');
+
+        if(newMessage.value == '') {newMessage.value = ''; return;}
+
         var text = newMessage.value;
+        if(delete_last_char) text.substring(0, text.length - 1);
 
         if(!game_started && chat_users.length > 1)
             self._rpc({
@@ -255,7 +277,7 @@ odoo.define('pos_chat_button', function (require){
         if(is_it_tag(newMessage.value, false))
             text = is_it_tag(newMessage.value, true);
 
-        if(newMessage.value != '' && game_started)
+        if(game_started && newMessage.value != chat_users[i].name)
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
@@ -293,7 +315,7 @@ odoo.define('pos_chat_button', function (require){
         out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</li>';
 
-        out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
+        out += '<audio src="/pos_chat/static/src/sound/msg.wav" autoplay="true"></audio>';
 
         message.innerHTML = out;
         if(num > 0)
@@ -306,6 +328,7 @@ odoo.define('pos_chat_button', function (require){
 
     function Disappear(uid)
     {
+        if(typeof all_messages[NumInQueue(uid)] == 'undefined') return;
         if(all_messages[NumInQueue(uid)].length == 0) return;
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
