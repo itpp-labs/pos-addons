@@ -143,6 +143,7 @@ odoo.define('pos_chat_button', function (require){
     {
         chat_users.push({
             name : '',
+            true_name : session.name,
             uid : user_data.uid,
             participate : false,
             won : false
@@ -222,6 +223,7 @@ odoo.define('pos_chat_button', function (require){
         chat_users.forEach(function (item)
         {
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+NumInQueue(item.uid)+'">';
+            out += '<div class="user-name">'+chat_users[NumInQueue(item.uid)].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
             item.uid + '/image_small" id="ava-' +
             NumInQueue(item.uid)+'" class="avatar"></img>';
