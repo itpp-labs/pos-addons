@@ -1,3 +1,8 @@
+`4.2.9`
+-------
+
+- **Fix:** Expected singleton error on adding POSes to a multisession
+
 `4.2.8`
 -------
 
