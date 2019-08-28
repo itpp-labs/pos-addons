@@ -38,7 +38,7 @@ odoo.define('pos_chat_button', function (require){
         self._rpc({
             model: "pos.chat",
             method: "send_field_updates",
-            args: ['', 'Connect',
+            args: [session.name, '', 'Connect',
              session.uid, 'but-1000']
         });
         window.setTimeout(Refresh,2000, self)
@@ -97,7 +97,7 @@ odoo.define('pos_chat_button', function (require){
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: ['', 'Disconnect', session.uid, 'but-1000']
+                    args: ['', '', 'Disconnect', session.uid, 'but-1000']
                 });
                 Disconnected = true;
             });
@@ -143,7 +143,7 @@ odoo.define('pos_chat_button', function (require){
     {
         chat_users.push({
             name : '',
-            true_name : session.name,
+            true_name : user_data.name,
             uid : user_data.uid,
             participate : false,
             won : false
@@ -278,7 +278,7 @@ odoo.define('pos_chat_button', function (require){
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: [text, 'SetName', session.uid, 'but-'+next_to_me(session.uid)]
+                    args: ['', text, 'SetName', session.uid, 'but-'+next_to_me(session.uid)]
                 });
         }
 
@@ -289,14 +289,14 @@ odoo.define('pos_chat_button', function (require){
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
-                args: [text, '', session.uid, 'but-1000']
+                args: ['', text, '', session.uid, 'but-1000']
             });
 
         if(game_started && newMessage.value == chat_users[i].name)
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
-                args: ['', 'Won', session.uid, 'but-1000']
+                args: ['', '', 'Won', session.uid, 'but-1000']
             });
 
         newMessage.value = '';
