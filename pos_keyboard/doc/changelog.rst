@@ -1,3 +1,14 @@
+
+`1.1.5`
+-------
+
+**Fix:** Function 'disconnect' not working in expected way
+
+`1.1.4`
+-------
+
+**Fix:** Incompatibility with some modules led to the action duplicating
+
 `1.1.3`
 -------
 
