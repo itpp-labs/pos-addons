@@ -4,7 +4,7 @@ import odoo.tests
 from odoo.api import Environment
 
 
-@odoo.tests.common.at_install(True)
+@odoo.tests.common.at_install(False)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
 
@@ -12,10 +12,13 @@ class TestUi(odoo.tests.HttpCase):
         cr = self.registry.cursor()
         env = Environment(cr, self.uid, {})
         env['ir.module.module'].search([('name', '=', 'pos_scan_ref')], limit=1).state = 'installed'
-        cr.release()
+        env['pos.config'].search([]).write({
+            'module_pos_restaurant': False,
+        })
         env['product.template'].search([('name', '=', "Boni Oranges")], limit=1).write({
             'default_code': '1234567890333',
         })
+        cr.release()
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
         self.phantom_js("/web",
