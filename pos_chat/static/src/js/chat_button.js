@@ -39,26 +39,19 @@ odoo.define('pos_chat_button', function (require){
             model: "pos.chat",
             method: "send_field_updates",
             args: [session.name, '', 'Connect',
-             session.uid, 'but-1000']
+             session.uid]
         });
-        window.setTimeout(Refresh,2000, self)
+        window.setTimeout(Refresh,5000, self)
     }
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
 
         initialize: function () {
-
           PosModelSuper.prototype.initialize.apply(this, arguments);
           var self = this;
           bus_self = self;
-          self.bus.add_channel_callback('but-1000', self.on_barcode_updates, self);
-
-          for(var i = 0; i < max_users; i++)
-          {
-                if(NumInQueue(session.uid) == i) continue;
-                self.bus.add_channel_callback('but-'+i, self.on_barcode_updates, self);
-          }
+          self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
         },
 
         on_barcode_updates: function(data){
@@ -80,8 +73,12 @@ odoo.define('pos_chat_button', function (require){
                 if(is_all_won())
                     AbortGame();
             }
-            else
+            else if(data.command == 'GotName')
+                GotNewName(data.uid)
+            else if(data.command == 'Message')
                 AddNewMessage(data);
+            else
+                NewName(data)
         },
     });
 
@@ -97,7 +94,7 @@ odoo.define('pos_chat_button', function (require){
                 self._rpc({
                     model: "pos.chat",
                     method: "send_field_updates",
-                    args: ['', '', 'Disconnect', session.uid, 'but-1000']
+                    args: ['', '', 'Disconnect', session.uid]
                 });
                 Disconnected = true;
             });
@@ -136,6 +133,13 @@ odoo.define('pos_chat_button', function (require){
 
         Push_new_message(i, data.uid, data.message);
 
+        if(game_started && data.message == chat_users[NumInQueue(data.uid)].name)
+            self._rpc({
+                model: "pos.chat",
+                method: "send_field_updates",
+                args: ['', '', 'Won', data.uid]
+            });
+
         showMessage(data.uid);
     }
 
@@ -165,12 +169,32 @@ odoo.define('pos_chat_button', function (require){
             ShowUsers();
     }
 
-    function NewName(data)
+    function GotNewName(uid)
     {
-        var n = next_to_me(data.uid);
-
+        var n = NumInQueue(uid);
         if(!chat_users[n].participate) users_seted++;
         chat_users[n].participate = true;
+
+        if(chat_users.length == users_seted)
+        {
+            game_started = true;
+            ShowUsers();
+        }
+        else
+        {
+            document.getElementById('picture-'+n).style.setProperty('background', 'green');
+            document.getElementById('picture-'+n).style.setProperty('transition','0.5s linear');
+            document.getElementById('picture-'+n).style.setProperty('opacity','1');
+            document.getElementById('picture-'+n).style.setProperty('border-radius','30%');
+        }
+    }
+
+    function NewName(data)
+    {
+        var n = NumInQueue(data.uid);
+
+        if(!chat_users[back_from_next(n)].participate) users_seted++;
+        chat_users[back_from_next(n)].participate = true;
         chat_users[n].name = data.message;
 
         if(chat_users.length == users_seted)
@@ -180,10 +204,10 @@ odoo.define('pos_chat_button', function (require){
         }
         else
         {
-            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('background', 'green');
-            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('transition','0.5s linear');
-            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('opacity','1');
-            document.getElementById('picture-'+NumInQueue(data.uid)).style.setProperty('border-radius','30%');
+            document.getElementById('picture-'+back_from_next(n)).style.setProperty('background', 'green');
+            document.getElementById('picture-'+back_from_next(n)).style.setProperty('transition','0.5s linear');
+            document.getElementById('picture-'+back_from_next(n)).style.setProperty('opacity','1');
+            document.getElementById('picture-'+back_from_next(n)).style.setProperty('border-radius','30%');
         }
     }
 
@@ -274,12 +298,17 @@ odoo.define('pos_chat_button', function (require){
 
         if(!game_started && chat_users.length > 1)
         {
-            for(var i = 0; i < chat_users.length; i++)
-                self._rpc({
-                    model: "pos.chat",
-                    method: "send_field_updates",
-                    args: ['', text, 'SetName', session.uid, 'but-'+next_to_me(session.uid)]
-                });
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_channel_all_but_id",
+                args: [text, chat_users[next_to_me(session.uid)].uid]
+            });
+
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_channel_by_id",
+                args: [chat_users[next_to_me(session.uid)].uid, session.uid, 'GotName']
+            });
         }
 
         if(is_it_tag(newMessage.value, false))
@@ -289,14 +318,7 @@ odoo.define('pos_chat_button', function (require){
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
-                args: ['', text, '', session.uid, 'but-1000']
-            });
-
-        if(game_started && newMessage.value == chat_users[i].name)
-            self._rpc({
-                model: "pos.chat",
-                method: "send_field_updates",
-                args: ['', '', 'Won', session.uid, 'but-1000']
+                args: ['', text, 'Message', session.uid]
             });
 
         newMessage.value = '';
@@ -447,6 +469,12 @@ odoo.define('pos_chat_button', function (require){
     {
         if(NumInQueue(uid) == chat_users.length - 1) return 0;
         else return NumInQueue(uid) + 1;
+    }
+
+    function back_from_next(n)
+    {
+        if(n == 0) return (chat_users.length - 1);
+        else return n - 1;
     }
 //    $("." + message_class + "").fadeIn();
 //    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
