@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_pin
 #. openerp-web
-#: code:addons/pos_pin/static/src/js/pos.js:83
+#: code:addons/pos_pin/static/src/js/pos.js:88
 #, python-format
 msgid "Incorrect Password"
 msgstr ""
 
 #. module: pos_pin
 #. openerp-web
-#: code:addons/pos_pin/static/src/js/pos.js:77
+#: code:addons/pos_pin/static/src/js/pos.js:82
 #, python-format
 msgid "Password ?"
 msgstr ""
