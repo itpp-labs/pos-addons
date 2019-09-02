@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:353
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:356
 #, python-format
 msgid "Are you sure ?"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:422
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:425
 #, python-format
 msgid "Can not open the Table"
 msgstr ""
@@ -36,7 +36,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:349
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:352
 #, python-format
 msgid "Forbidden to remove the last table on the floor."
 msgstr ""
@@ -70,7 +70,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:344
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:347
 #, python-format
 msgid "Please, complete your orders before deleting the table."
 msgstr ""
@@ -82,7 +82,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:354
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:357
 #, python-format
 msgid "Removing a table cannot be undone"
 msgstr ""
@@ -95,7 +95,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:423
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:426
 #, python-format
 msgid "The Table is served by another waiter "
 msgstr ""
@@ -108,15 +108,15 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:355
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:358
 #, python-format
 msgid "The table can be used in other POS"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:343
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:348
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:346
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:351
 #, python-format
 msgid "You can not remove the table"
 msgstr ""
