@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_order_note
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 # Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
@@ -12,11 +12,12 @@ msgstr ""
 "POT-Creation-Date: 2017-12-31 00:08+0000\n"
 "PO-Revision-Date: 2017-12-31 00:08+0000\n"
 "Last-Translator: Alexandr Frrost <alexandr.frrost@gmail.com>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_order_note
@@ -84,8 +85,8 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_order_note
@@ -97,14 +98,14 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:312
+#: code:addons/pos_order_note/static/src/js/order_note.js:325
 #, python-format
 msgid "Add Note for Order"
 msgstr "Agregar Nota a la Orden"
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:316
+#: code:addons/pos_order_note/static/src/js/order_note.js:329
 #, python-format
 msgid "Add Note for Product"
 msgstr "Agregar Nota al Producto"
@@ -242,7 +243,6 @@ msgstr "Otras"
 #: model:ir.actions.act_window,name:pos_order_note.pos_product_notes_action
 #: model:ir.ui.menu,name:pos_order_note.menu_pos_product_notes
 #: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_form_view
-#: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_tree_view
 msgid "POS Product Notes"
 msgstr "Notas de Productos del TPV"
 
