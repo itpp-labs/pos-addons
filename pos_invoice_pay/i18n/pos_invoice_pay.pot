@@ -1,34 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_invoice_pay
+#	* pos_invoice_pay
 #
-# Translators:
-# charles paul requena palomino <rcharles84@gmail.com>, 2018
-# Gustavo Valverde, 2018
-# Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:49+0000\n"
-"PO-Revision-Date: 2018-04-27 23:49+0000\n"
-"Last-Translator: Alexandr Frrost <alexandr.frrost@gmail.com>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
-"teams/76080/es/)\n"
-"Language: es\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: pos_invoice_pay
 #. openerp-web
 #: code:addons/pos_invoice_pay/static/src/js/test_pos_invoice.js:13
 #, python-format
-msgid ""
-"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system "
-"continues to run without an internet connection.</p>"
+msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_invoice_pay
@@ -48,7 +37,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:71
 #, python-format
 msgid "Amount"
-msgstr "Monto"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -92,7 +81,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:154
 #, python-format
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.model.fields,field_description:pos_invoice_pay.field_account_payment_cashier
@@ -113,7 +102,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/js/main.js:550
 #, python-format
 msgid "Change Cashier"
-msgstr "Cambiar Cajero"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -145,7 +134,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:pos_invoice_pay.pos_invoice_pay_report
 #, python-format
 msgid "Customer"
-msgstr "Cliente"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -196,14 +185,14 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/js/main.js:888
 #, python-format
 msgid "Error"
-msgstr "Error"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:16
-#, fuzzy, python-format
+#, python-format
 msgid "Fetch Invoices"
-msgstr "Factura"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -228,7 +217,7 @@ msgstr ""
 #: model:ir.model,name:pos_invoice_pay.model_account_invoice
 #, python-format
 msgid "Invoice"
-msgstr "Factura"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -247,7 +236,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:38
 #, python-format
 msgid "Invoiced"
-msgstr "Facturado"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -295,7 +284,7 @@ msgstr ""
 #. module: pos_invoice_pay
 #: model:ir.ui.view,arch_db:pos_invoice_pay.pos_invoice_pay_report
 msgid "Paid"
-msgstr "Pagada"
+msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.ui.view,arch_db:pos_invoice_pay.pos_invoice_pay_report
@@ -354,7 +343,7 @@ msgstr ""
 #. module: pos_invoice_pay
 #: model:ir.model,name:pos_invoice_pay.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Órdenes del Punto de Venta"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -369,7 +358,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:64
 #, python-format
 msgid "Product"
-msgstr "Producto"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -383,7 +372,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:67
 #, python-format
 msgid "Quantity"
-msgstr "Cantidad"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -415,7 +404,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:180
 #, python-format
 msgid "Salesperson"
-msgstr "Vendedor"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -457,14 +446,14 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:184
 #, python-format
 msgid "Status"
-msgstr "Estatus"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:42
 #, python-format
 msgid "Subtotal"
-msgstr "Subtotal"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -488,7 +477,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:69
 #, python-format
 msgid "Taxes"
-msgstr "Impuestos"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -525,7 +514,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:182
 #, python-format
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -541,7 +530,7 @@ msgstr ""
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:68
 #, python-format
 msgid "Unit Price"
-msgstr "Precio Unitario"
+msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.actions.server,name:pos_invoice_pay.action_update_pos_invoices
@@ -606,9 +595,10 @@ msgstr ""
 #. module: pos_invoice_pay
 #: model:ir.model,name:pos_invoice_pay.model_pos_config
 msgid "pos.config"
-msgstr "pos.config"
+msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.model,name:pos_invoice_pay.model_report_point_of_sale_report_saledetails
 msgid "report.point_of_sale.report_saledetails"
 msgstr ""
+
