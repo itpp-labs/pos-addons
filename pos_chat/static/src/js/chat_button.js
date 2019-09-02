@@ -7,57 +7,76 @@ odoo.define('pos_chat_button', function (require){
     var models = require('point_of_sale.models');
     var rpc = require('web.rpc');
 
+//-------------------- Variables -----------------------
+
+    // All users messages stored here
     var all_messages = [];
+    // Messages timeouts needs to store,
+    // cause only this way we can know when to delete the message
     var all_timeOuts = [];
+    // Information about every user
     var chat_users = [];
+    // I don't remember why i added this,
+    // but without it, app don't work:D
     var messages_cnt = [];
-    var game_started = false;
+    // Needs to know how meny users was invited to the game
     var users_seted = 0;
-    var bus_self;
-    var max_users = 20;
-
-    var class_array = [];
-
+    // Needs to check user status: Connected or Disconnected
     var Disconnected = false;
+    // if you want to set name, press 'Set name' button
+    var set_name = false;
 
+//------------------------------------------------------
+
+//-------------- New screen defenition -----------------
     var ChatButton = screens.ActionButtonWidget.extend({
         template: 'ChatButton',
         button_click: function () {
             self = this;
             this.gui.show_screen('custom_screen');
 
+            // When user connects to session
             Disconnected = false;
 
+            // This way we can know who is in the chat room now
             Refresh(self);
         }
     });
 
+    // Every user sends 'Connect' command every 2s
     function Refresh(self)
     {
+        // End condition
         if(Disconnected || users_seted > 0) return;
+        // Throwing 'Connect' command to all POS session's users
         self._rpc({
             model: "pos.chat",
             method: "send_field_updates",
             args: [session.name, '', 'Connect',
              session.uid]
         });
-        window.setTimeout(Refresh,5000, self)
+        // Calling this function after 2s
+        window.setTimeout(Refresh, 2000, self)
     }
+
+
+//-------------- Longpooling functions -----------------
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
 
         initialize: function () {
-          PosModelSuper.prototype.initialize.apply(this, arguments);
-          var self = this;
-          bus_self = self;
-          self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
+
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            var self = this;
+            // Listen to 'pos_chat' channel
+            self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
         },
 
         on_barcode_updates: function(data){
 
             var self = this;
-
+            // If someone connected to the chat
             if(data.command == 'Connect')
             {
                 if(!CheckUserExists(data.uid) && users_seted == 0)
@@ -65,9 +84,9 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command == 'Disconnect')
                 DeleteUser(data.uid);
-            else if(data.command == 'SetName')
+            else if(data.command == 'SetName') // If new name setted by the neighbour
                 NewName(data);
-            else if(data.command == 'Won')
+            else if(data.command == 'Won') // If this user guessed his game name
             {
                 Show_winner(data);
                 if(is_all_won())
@@ -75,19 +94,24 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command == 'GotName')
                 GotNewName(data.uid)
-            else if(data.command == 'Message')
+            else if(data.command == 'Message') // If someone throwed a message
                 AddNewMessage(data);
-            else
+            else if(data.command = 'AllowChange')
+                AllowChangeName(data);
+            else // If someone added the name to his neighbour
                 NewName(data)
         },
     });
 
+//------------------------------------------------------
+
+//---------- Text insertion buttons control ------------
     var CustomScreenWidget = screens.ScreenWidget.extend({
         template: 'CustomScreenWidget',
         show: function () {
           var self = this;
           this._super();
-
+            // Returning to POS main screen
             this.$('.back').off().click(function () {
                 self.gui.show_screen('products');
 
@@ -98,20 +122,46 @@ odoo.define('pos_chat_button', function (require){
                 });
                 Disconnected = true;
             });
-
+            // Send new messages using button
             this.$('.next').off().click(function () {
                 TakeNewMessage(false);
             });
-
+            // Send new messages using 'Enter' key on keyboard
             this.$("#text-line").off().keyup(function(event){
-
                 if(event.keyCode == 13){
                     TakeNewMessage(true);
                 }
             });
+            //-------------- Game Control Buttons ------------------
+
+            var set_but = document.getElementById('set-game-name');
+            var allow_but = document.getElementById('allow-set-name');
+
+            set_but.onclick = function ()
+            {
+                if(set_name)
+                    set_name = false;
+                else
+                {
+                    alert("Try to set the name");
+                    set_name = true;
+                }
+            }
+
+            allow_but.onclick = function ()
+            {
+                self._rpc({
+                    model: "pos.chat",
+                    method: "send_field_updates",
+                    args: ['', '', 'AllowChange', session.uid]
+                });
+            }
+
+        //------------------------------------------------------
         }
     });
 
+    // Defining new screen
     gui.define_screen({name:'custom_screen', widget: CustomScreenWidget});
 
     screens.define_action_button({
@@ -119,7 +169,9 @@ odoo.define('pos_chat_button', function (require){
         'widget': ChatButton,
     });
 
-//----------Users relations part-----------------
+//------------------------------------------------------
+
+//--------------- Users relations part -----------------
 
     function AddNewMessage(data)
     {
@@ -133,7 +185,7 @@ odoo.define('pos_chat_button', function (require){
 
         Push_new_message(i, data.uid, data.message);
 
-        if(game_started && data.message == chat_users[NumInQueue(data.uid)].name)
+        if(data.message == chat_users[NumInQueue(data.uid)].name)
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
@@ -150,7 +202,8 @@ odoo.define('pos_chat_button', function (require){
             true_name : user_data.name,
             uid : user_data.uid,
             participate : false,
-            won : false
+            won : false,
+            allow_change_name: true
         });
 
         all_messages.push(new Array());
@@ -163,7 +216,7 @@ odoo.define('pos_chat_button', function (require){
     function DeleteUser(user_id)
     {
         DeleteUserData(user_id);
-        if(chat_users.length == 1 && game_started)
+        if(chat_users.length == 1)
             AbortGame();
         if(user_id != session.uid)
             ShowUsers();
@@ -175,18 +228,9 @@ odoo.define('pos_chat_button', function (require){
         if(!chat_users[n].participate) users_seted++;
         chat_users[n].participate = true;
 
-        if(chat_users.length == users_seted)
-        {
-            game_started = true;
-            ShowUsers();
-        }
-        else
-        {
-            document.getElementById('picture-'+n).style.setProperty('background', 'green');
-            document.getElementById('picture-'+n).style.setProperty('transition','0.5s linear');
-            document.getElementById('picture-'+n).style.setProperty('opacity','1');
-            document.getElementById('picture-'+n).style.setProperty('border-radius','30%');
-        }
+        under_text = document.getElementById('game-nick-'+uid);
+        under_text.style.setProperty('opacity','1');
+        under_text.style.setProperty('transition','0.5s ease-in');
     }
 
     function NewName(data)
@@ -197,18 +241,9 @@ odoo.define('pos_chat_button', function (require){
         chat_users[back_from_next(n)].participate = true;
         chat_users[n].name = data.message;
 
-        if(chat_users.length == users_seted)
-        {
-            game_started = true;
-            ShowUsers();
-        }
-        else
-        {
-            document.getElementById('picture-'+back_from_next(n)).style.setProperty('background', 'green');
-            document.getElementById('picture-'+back_from_next(n)).style.setProperty('transition','0.5s linear');
-            document.getElementById('picture-'+back_from_next(n)).style.setProperty('opacity','1');
-            document.getElementById('picture-'+back_from_next(n)).style.setProperty('border-radius','30%');
-        }
+        under_text = document.getElementById('game-nick-'+data.uid);
+        under_text.style.setProperty('opacity','1');
+        under_text.style.setProperty('transition','0.5s ease-in');
     }
 
     function Show_winner(data)
@@ -237,7 +272,28 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
-//----------Set avatar and animation part--------------
+    function AllowChangeName(data)
+    {
+        var hat_text = document.getElementById('user-name-'+data.uid);
+        var i = NumInQueue(data.uid);
+        if(chat_users[i].allow_change_name)
+        {
+            hat_text.style.setProperty('background','red');
+            hat_text.style.setProperty('color','white');
+            chat_users[i].allow_change_name = false;
+        }
+        else
+        {
+            hat_text.style.setProperty('background','#a9a9ff');
+            hat_text.style.setProperty('color','white');
+            chat_users[i].allow_change_name = true;
+        }
+        hat_text.style.setProperty('transition','0.2s ease-in');
+    }
+
+//------------------------------------------------------
+
+//---------- Set avatar and animation part -------------
     var radius = 200;
 
     function ShowUsers()
@@ -246,14 +302,12 @@ odoo.define('pos_chat_button', function (require){
         var out = '';
         chat_users.forEach(function (item)
         {
-            out += '<div class="chat-user-'+item.uid+'" id="picture-'+NumInQueue(item.uid)+'">';
-            out += '<div class="user-name">'+chat_users[NumInQueue(item.uid)].true_name+'</div>';
+            var i = NumInQueue(item.uid);
+            out += '<div class="chat-user-'+item.uid+'" id="picture-'+i+'">';
+            out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
-            item.uid + '/image_small" id="ava-' +
-            NumInQueue(item.uid)+'" class="avatar"></img>';
-
-            if(game_started && !chat_users[NumInQueue(item.uid)].won && session.uid != item.uid)
-               out += '<div class="user-name">'+chat_users[NumInQueue(item.uid)].name+'</div>';
+            item.uid + '/image_small" id="ava-' + i +'" class="avatar" style="border-radius:50%;"></img>';
+            out += '<div class="user-name" id="game-nick-'+item.uid+'" style="opacity: 0;"></div>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
             out += '</div>';
@@ -261,8 +315,6 @@ odoo.define('pos_chat_button', function (require){
         window.innerHTML = out;
 
         chat_users.forEach(function(item){
-            var avatar = document.getElementById('ava-'+NumInQueue(item.uid)+'');
-            avatar.style.setProperty('border-radius', '50%');
             SetPos(document.getElementById('picture-'+NumInQueue(item.uid)), item.uid);
         });
     }
@@ -284,7 +336,10 @@ odoo.define('pos_chat_button', function (require){
         avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
         avatar.style.setProperty('transition','transform .3s ease-in-out');
     }
-//---------Message sending part---------------------
+//------------------------------------------------------
+
+//------ Message taking and showing functions ----------
+
     function TakeNewMessage(delete_last_char)
     {
         var i = NumInQueue(session.uid);
@@ -296,7 +351,10 @@ odoo.define('pos_chat_button', function (require){
         var text = newMessage.value;
         if(delete_last_char) text.substring(0, text.length - 2);
 
-        if(!game_started && chat_users.length > 1)
+        if(is_it_tag(newMessage.value, false))
+            text = is_it_tag(newMessage.value, true);
+
+        if(chat_users.length > 1 && set_name && chat_users[next_to_me(session.uid)].allow_change_name)
         {
             self._rpc({
                 model: "pos.chat",
@@ -309,17 +367,16 @@ odoo.define('pos_chat_button', function (require){
                 method: "send_to_channel_by_id",
                 args: [chat_users[next_to_me(session.uid)].uid, session.uid, 'GotName']
             });
+            set_name = false;
         }
-
-        if(is_it_tag(newMessage.value, false))
-            text = is_it_tag(newMessage.value, true);
-
-        if(game_started && newMessage.value != chat_users[i].name)
+        else if(!set_name && newMessage.value != chat_users[i].name)
             self._rpc({
                 model: "pos.chat",
                 method: "send_field_updates",
                 args: ['', text, 'Message', session.uid]
             });
+        else if(set_name)
+            alert("OOPS!You can't change your neighbour name, cause he blocked name changing");
 
         newMessage.value = '';
     }
@@ -357,6 +414,7 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts[i].push(window.setTimeout(Disappear,15000, uid));
     }
 
+    // Messages slow disapperaring
     function Disappear(uid)
     {
         if(typeof all_messages[NumInQueue(uid)] == 'undefined') return;
@@ -406,7 +464,7 @@ odoo.define('pos_chat_button', function (require){
             cnt : -1
         });
     }
-
+    // Users all data deletion
     function DeleteUserData(uid)
     {
         var j = NumInQueue(uid);
@@ -421,7 +479,7 @@ odoo.define('pos_chat_button', function (require){
         all_messages.pop();
         all_timeOuts.pop();
     }
-
+    // Is this string the tag checking
     function is_it_tag(str, send)
     {
         var left = 0, right = 0, slash = 0;
@@ -441,7 +499,7 @@ odoo.define('pos_chat_button', function (require){
         else
             return false;
     }
-
+    // Is all users guessed their game names checking
     function is_all_won()
     {
         for(var i = 0; i < chat_users.length; i++)
@@ -453,7 +511,6 @@ odoo.define('pos_chat_button', function (require){
 
     function AbortGame()
     {
-        game_started = false;
         users_seted = 0;
         chat_users.forEach(function(item)
         {
@@ -464,7 +521,7 @@ odoo.define('pos_chat_button', function (require){
         if(chat_users.length > 1)
             window.setTimeout(ShowUsers,2000);
     }
-
+    // Returns pointer to the neighbour
     function next_to_me(uid)
     {
         if(NumInQueue(uid) == chat_users.length - 1) return 0;
@@ -476,8 +533,6 @@ odoo.define('pos_chat_button', function (require){
         if(n == 0) return (chat_users.length - 1);
         else return n - 1;
     }
-//    $("." + message_class + "").fadeIn();
-//    var disappear_bool_timer = window.setTimeout(function(){disappeared_first = true;},5000);
 
     return ChatButton;
 });

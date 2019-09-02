@@ -159,7 +159,7 @@
 
 .pos .chat-tools .button.next:hover{
   background: #2db34a;
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
   transition-timing-function: linear;
   border-radius: 30px;
   transform: translateY(-4px);
@@ -197,12 +197,41 @@
     animY 2s cubic-bezier(0, 0.2, 0.2, 1);
 }
 
-.pos .main-action .chat-user .avatar{
-    border-radius: 50%;
-}
-
 .pos .user-name{
     background: #a9a9ff;
     border-radius: 30%;
     text-align: center;
+    color: white;
+}
+
+.pos .chat-tools .set-button:hover{
+    background: #2db34a;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .chat-tools .set-button:active{
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .chat-tools .set-button{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    color: #555c6c;
 }
