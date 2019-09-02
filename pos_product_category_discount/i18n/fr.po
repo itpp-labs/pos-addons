@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_product_category_discount
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 msgid ""
@@ -11,11 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2017-08-18 08:52+0000\n"
 "PO-Revision-Date: 2017-08-18 08:52+0000\n"
 "Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
-"Language-Team: French (https://www.transifex.com/it-projects-llc/teams/76080/fr/)\n"
+"Language-Team: French (https://www.transifex.com/it-projects-llc/teams/76080/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: pos_product_category_discount
@@ -45,7 +46,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/discount_program.js:375
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:252
 #: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
 #, python-format
 msgid "Apply"
@@ -53,7 +54,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/discount_program.js:432
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:312
 #, python-format
 msgid "Apply Change"
 msgstr ""
@@ -121,11 +122,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_product_category_discount.field_product_product_discount_allowed
 #: model:ir.model.fields,field_description:pos_product_category_discount.field_product_template_discount_allowed
 msgid "Discount allowed"
-msgstr ""
-
-#. module: pos_product_category_discount
-#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_form_view
-msgid "Discount category"
 msgstr ""
 
 #. module: pos_product_category_discount
@@ -221,7 +217,6 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_form_view
-#: model:ir.ui.view,arch_db:pos_product_category_discount.pos_discount_program_tree_view
 msgid "Pos Discount Program"
 msgstr ""
 
