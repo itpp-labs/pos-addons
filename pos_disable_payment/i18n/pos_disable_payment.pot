@@ -19,11 +19,6 @@ msgid "Access"
 msgstr ""
 
 #. module: pos_disable_payment
-#: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_decrease_kitchen_only
-msgid "Allow change Qty for kitchen orders"
-msgstr ""
-
-#. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_create_order_line
 msgid "Allow create order line"
 msgstr ""
@@ -66,11 +61,6 @@ msgstr ""
 #. module: pos_disable_payment
 #: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_allow_delete_order_line
 msgid "Allow remove order line"
-msgstr ""
-
-#. module: pos_disable_payment
-#: model:ir.model.fields,field_description:pos_disable_payment.field_res_users_is_restaurant_installed
-msgid "Is Restaurant Installed"
 msgstr ""
 
 #. module: pos_disable_payment
