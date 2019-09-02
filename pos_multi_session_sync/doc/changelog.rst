@@ -1,3 +1,7 @@
+`1.0.6`
+-------
+- **Fix:** Possible error with multiple multi sessions with the same multi session ID
+
 `1.0.5`
 -------
 - **Fix:** Cross multi-sesion messaging in case the same pos was assigned to a different multi-session
