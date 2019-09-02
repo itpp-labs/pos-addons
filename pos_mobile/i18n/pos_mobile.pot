@@ -1,36 +1,29 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * pos_mobile
-#
-# Translators:
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Dawid Runowski <dawrun@outlook.com>, 2019
+#	* pos_mobile
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-10 16:49+0000\n"
-"PO-Revision-Date: 2017-11-20 12:05+0000\n"
-"Last-Translator: Dawid Runowski <dawrun@outlook.com>, 2019\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
-"de/)\n"
-"Language: de\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: pos_mobile
 #. openerp-web
 #: code:addons/pos_mobile/static/src/xml/pos.xml:82
 #, python-format
 msgid "Customer"
-msgstr "Kunde"
+msgstr ""
 
 #. module: pos_mobile
 #. openerp-web
 #: code:addons/pos_mobile/static/src/xml/pos.xml:62
 #, python-format
 msgid "Please select a payment method."
-msgstr "Bitte eine Zahlungsart wählen."
+msgstr ""
+
