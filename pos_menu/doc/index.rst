@@ -13,7 +13,7 @@ Usage
 * Open menu ``Point of Sale >> Configuration >> Product Sets``
 * Click ``[Create]``
 * Populate the fields
-  
+
   * Name
   * Products
 
