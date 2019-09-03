@@ -19,12 +19,22 @@ odoo.define('pos_chat_button', function (require){
     // I don't remember why i added this,
     // but without it, app don't work:D
     var messages_cnt = [];
-    // Needs to check user status: Connected or Disconnected
-    var Disconnected = false;
     // if you want to set name, press 'Set name' button
     var set_name = false;
     // Are user in chat room right now
     var in_chat = false;
+
+//------------------------------------------------------
+
+//-------------Help functions part----------------------
+    // Checks out which num user has
+    function NumInQueue(uid)
+    {
+        for(var i = 0; i < chat_users.length; i++)
+        {
+            if(chat_users[i].uid == uid) return i;
+        }
+    }
 
 //------------------------------------------------------
 
@@ -35,32 +45,17 @@ odoo.define('pos_chat_button', function (require){
             self = this;
             this.gui.show_screen('custom_screen');
 
-            // When user connects to session
-            Disconnected = false;
             // User in to the chat room
             in_chat = true;
-
-            // This way we can know who is in the chat room now
-            Refresh(self);
+            // Current users says that he connected to other users
+            self._rpc({
+                model: "pos.chat",
+                method: "send_field_updates",
+                args: [session.name, '', 'Connect',
+                 session.uid]
+            });
         }
     });
-
-    // Every user sends 'Connect' command every 2s
-    function Refresh(self)
-    {
-        // End condition
-        if(Disconnected) return;
-        // Throwing 'Connect' command to all POS session's users
-        self._rpc({
-            model: "pos.chat",
-            method: "send_field_updates",
-            args: [session.name, '', 'Connect',
-             session.uid]
-        });
-        // Calling this function after 2s
-        window.setTimeout(Refresh, 2000, self)
-    }
-
 
 //-------------- Longpooling functions -----------------
 
@@ -76,7 +71,7 @@ odoo.define('pos_chat_button', function (require){
         },
 
         on_barcode_updates: function(data){
-
+            if(!in_chat) {return;}
             var self = this;
             // If someone connected to the chat
             if(data.command == 'Connect')
@@ -96,6 +91,8 @@ odoo.define('pos_chat_button', function (require){
                 AddNewMessage(data);
             else if(data.command == 'AllowChange')
                 AllowChangeName(data);
+            else if(data.command == 'Exist')
+                AddExistUser(data);
             else // If someone added the name to his neighbour
                 NewName(data)
         },
@@ -207,9 +204,42 @@ odoo.define('pos_chat_button', function (require){
         all_messages.push(new Array());
         all_timeOuts.push(new Array());
         messages_cnt.push(0);
+        if(user_data.uid == session.uid) {ShowUsers();return;}
+        var i = NumInQueue(session.uid);
+
+        // Tell to new user about current user
+        self._rpc({
+            model: "pos.chat",
+            method: "send_to_user",
+            args: [chat_users[i].name, chat_users[i].true_name,
+            chat_users[i].participate, chat_users[i].allow_change_name,
+            session.uid, 'Exist', user_data.uid]
+        });
 
         if(in_chat)
+        {
             ShowUsers();
+        }
+    }
+
+    function AddExistUser(data)
+    {
+        chat_users.push({
+            name : data.name,
+            true_name : data.true_name,
+            uid : data.uid,
+            participate : data.participate,
+            allow_change_name: data.allow
+        });
+        var temp = chat_users[chat_users.length - 1];
+        chat_users[chat_users.length - 1] = chat_users[chat_users.length - 2];
+        chat_users[chat_users.length - 2] = temp;
+
+        all_messages.push(new Array());
+        all_timeOuts.push(new Array());
+        messages_cnt.push(0);
+
+        ShowUsers();
     }
 
     function DeleteUser(user_id)
@@ -248,7 +278,7 @@ odoo.define('pos_chat_button', function (require){
             chat_users[n].name = '';
             chat_users[n].participate = false;
             user = document.getElementById('main-window');
-            if(typeof user == 'null') return;
+            if(typeof user === null) return;
             out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
             out += '<img src="/pos_chat/static/src/img/win.png" id="congrats-img"></img>';
             window.setTimeout(ShowUsers,2000);
@@ -373,7 +403,9 @@ odoo.define('pos_chat_button', function (require){
                 args: ['', text, 'Message', session.uid]
             });
         else if(set_name)
+        {
             alert("OOPS!You can't change your neighbour name, cause he blocked name changing");
+        }
 
         newMessage.value = '';
     }
@@ -389,7 +421,7 @@ odoo.define('pos_chat_button', function (require){
         var mes_id = 'single-message-'+uid+'-'+cnt;
 
         var message = document.getElementById('message-id-' + uid);
-        if(message == null) return;
+        if(typeof message === null) {return};
         var out = '';
 
         if(num > 0)
@@ -414,12 +446,14 @@ odoo.define('pos_chat_button', function (require){
     // Messages slow disapperaring
     function Disappear(uid)
     {
-        if(typeof all_messages[NumInQueue(uid)] == 'undefined') return;
-        if(all_messages[NumInQueue(uid)].length == 0) return;
+        if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return};
+        if(all_messages[NumInQueue(uid)].length == 0) {return};
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
     }
+//--------------------------------------------------
+
 //---------Help functions part----------------------
 
     function message_view(message_id, display)
@@ -441,15 +475,6 @@ odoo.define('pos_chat_button', function (require){
             if(uid == chat_users[i].uid) return true;
         }
         return false;
-    }
-
-    // Checks out which num user has
-    function NumInQueue(uid)
-    {
-        for(var i = 0; i < chat_users.length; i++)
-        {
-            if(chat_users[i].uid == uid) return i;
-        }
     }
 
     function Push_new_message(i, uid, message)
@@ -484,7 +509,6 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts = [];
         messages_cnt = [];
         set_name = false;
-        Disconnected = true;
         // User out of the chat room
         in_chat = false;
     }
@@ -495,8 +519,10 @@ odoo.define('pos_chat_button', function (require){
         var text = '';
         for(var i = 0; i < str.length; i++)
         {
-            if(left + right == 2 && str[i] != '<')
+            if(left + right === 2 && str[i] !== '<')
+            {
                 text += str[i];
+            }
             if(str[i] == '<')left++;
             if(str[i] == '>')right++;
             if(str[i] == '/') slash++;
@@ -520,6 +546,6 @@ odoo.define('pos_chat_button', function (require){
         if(n == 0) return (chat_users.length - 1);
         else return n - 1;
     }
-
+//--------------------------------------------------
     return ChatButton;
 });

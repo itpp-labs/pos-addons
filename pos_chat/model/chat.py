@@ -45,3 +45,13 @@ class Chat(models.Model):
         self.env['bus.bus'].sendmany([[channel, data]])
         _logger.debug('POS notifications for %s: %s', pos_id, [[channel, data]])
         return 1
+
+    @api.model
+    def send_to_user(self, name, true_name, participate, allow, from_uid, command, to_uid):
+        data = {'name': name, 'true_name': true_name, 'participate': participate, 'allow': allow,
+                'uid': from_uid, 'command': command}
+        pos_id = self.env['pos.session'].search([('state', '=', 'opened'), ('user_id', '=', to_uid)], limit=1).id
+        channel = self._get_full_channel_name_by_id(self.env.cr.dbname, pos_id, "pos_chat")
+        self.env['bus.bus'].sendmany([[channel, data]])
+        _logger.debug('POS notifications for %s: %s', pos_id, [[channel, data]])
+        return 1
