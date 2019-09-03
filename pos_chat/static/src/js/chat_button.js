@@ -25,6 +25,8 @@ odoo.define('pos_chat_button', function (require){
     var Disconnected = false;
     // if you want to set name, press 'Set name' button
     var set_name = false;
+    // Are user in chat room right now
+    var in_chat = false;
 
 //------------------------------------------------------
 
@@ -37,6 +39,8 @@ odoo.define('pos_chat_button', function (require){
 
             // When user connects to session
             Disconnected = false;
+            // User in to the chat room
+            in_chat = true;
 
             // This way we can know who is in the chat room now
             Refresh(self);
@@ -96,7 +100,7 @@ odoo.define('pos_chat_button', function (require){
                 GotNewName(data.uid)
             else if(data.command == 'Message') // If someone throwed a message
                 AddNewMessage(data);
-            else if(data.command = 'AllowChange')
+            else if(data.command == 'AllowChange')
                 AllowChangeName(data);
             else // If someone added the name to his neighbour
                 NewName(data)
@@ -114,6 +118,8 @@ odoo.define('pos_chat_button', function (require){
             // Returning to POS main screen
             this.$('.back').off().click(function () {
                 self.gui.show_screen('products');
+                // User out of the chat room
+                in_chat = false;
 
                 self._rpc({
                     model: "pos.chat",
@@ -210,7 +216,8 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts.push(new Array());
         messages_cnt.push(0);
 
-        ShowUsers();
+        if(in_chat)
+            ShowUsers();
     }
 
     function DeleteUser(user_id)
@@ -227,10 +234,6 @@ odoo.define('pos_chat_button', function (require){
         var n = NumInQueue(uid);
         if(!chat_users[n].participate) users_seted++;
         chat_users[n].participate = true;
-
-        under_text = document.getElementById('game-nick-'+uid);
-        under_text.style.setProperty('opacity','1');
-        under_text.style.setProperty('transition','0.5s ease-in');
     }
 
     function NewName(data)
@@ -244,6 +247,7 @@ odoo.define('pos_chat_button', function (require){
         under_text = document.getElementById('game-nick-'+data.uid);
         under_text.style.setProperty('opacity','1');
         under_text.style.setProperty('transition','0.5s ease-in');
+        under_text.innerHTML = chat_users[n].name;
     }
 
     function Show_winner(data)
@@ -300,6 +304,7 @@ odoo.define('pos_chat_button', function (require){
     {
         var window = document.getElementById('main-window');
         var out = '';
+        var visible = 0;
         chat_users.forEach(function (item)
         {
             var i = NumInQueue(item.uid);
@@ -307,7 +312,9 @@ odoo.define('pos_chat_button', function (require){
             out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
             item.uid + '/image_small" id="ava-' + i +'" class="avatar" style="border-radius:50%;"></img>';
-            out += '<div class="user-name" id="game-nick-'+item.uid+'" style="opacity: 0;"></div>';
+            if(chat_users[NumInQueue(session.uid)].won && !chat_users[i].won) visible = 1;
+            else visible = 0;
+            out += '<div class="user-name" id="game-nick-'+item.uid+'" style="opacity: '+visible+';"></div>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
             out += '</div>';
