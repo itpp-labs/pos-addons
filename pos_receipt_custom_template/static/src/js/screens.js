@@ -11,6 +11,14 @@ odoo.define('pos_receipt_custom_template.screens', function(require){
             var display_time = false;
             if (this.pos.table) {
                 var open_time = this.pos.table.open_time || this.pos.get_current_datetime();
+                if (open_time && typeof open_time === "string") {
+                    open_time = open_time.split(" ");
+                    open_time = {
+                        'time': open_time[1],
+                        'date': open_time[0],
+                    };
+                }
+
                 var payment_time = this.pos.get_current_datetime();
 
                 display_time = {time: open_time.time + "-" + payment_time.time};
