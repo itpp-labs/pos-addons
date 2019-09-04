@@ -21,6 +21,8 @@ odoo.define('pos_chat_button', function (require){
     var messages_cnt = [];
     // Are user in chat room right now
     var in_chat = false;
+    // Full channel name
+    var channel = "pos_chat";
 
 //------------------------------------------------------
 
@@ -198,16 +200,18 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts.push(new Array());
         messages_cnt.push(0);
         if(user_data.uid == session.uid) {ShowUsers();return;}
-        var i = NumInQueue(session.uid);
 
         // Tell to new user about current user
-        self._rpc({
-            model: "pos.chat",
-            method: "send_to_user",
-            args: [chat_users[i].name, chat_users[i].true_name,
-            chat_users[i].participate, chat_users[i].allow_change_name,
-            session.uid, 'Exist', user_data.uid]
-        });
+        window.setTimeout(function(){
+            var i = NumInQueue(session.uid);
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_user",
+                args: [chat_users[i].name, chat_users[i].true_name,
+                chat_users[i].participate, chat_users[i].allow_change_name,
+                session.uid, 'Exist', user_data.uid]
+            });
+        }, 200 * i + 1);
 
         if(in_chat)
         {
@@ -367,7 +371,7 @@ odoo.define('pos_chat_button', function (require){
 
         var newMessage = document.getElementById('text-line');
 
-        if(newMessage.value == '') {newMessage.value = ''; return;}
+        if(newMessage.value === '') {newMessage.value = ''; return;}
 
         var text = newMessage.value;
         if(delete_last_char) text.substring(0, text.length - 2);
@@ -387,7 +391,7 @@ odoo.define('pos_chat_button', function (require){
     function SetNewName()
     {
         var newMessage = document.getElementById('text-line');
-        if(newMessage.value == '') {newMessage.value = ''; return;}
+        if(newMessage.value === '') {newMessage.value = ''; return;}
         var text = newMessage.value;
 
         if(chat_users.length > 1 && chat_users[next_to_me(session.uid)].allow_change_name)
