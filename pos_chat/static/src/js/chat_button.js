@@ -278,7 +278,7 @@ odoo.define('pos_chat_button', function (require){
             user = document.getElementById('main-window');
             if(typeof user === null) return;
             out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
-            out += '<img src="/pos_chat/static/src/img/win.png" id="congrats-img"></img>';
+            out += '<img src="/pos_chat/static/src/img/win.png" id="congrats-img" style="width: 100%;height: 50%;"></img>';
             window.setTimeout(ShowUsers,2000);
             if(user != null)
                 user.innerHTML = out;
