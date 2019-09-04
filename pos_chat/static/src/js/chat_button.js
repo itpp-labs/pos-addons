@@ -19,8 +19,6 @@ odoo.define('pos_chat_button', function (require){
     // I don't remember why i added this,
     // but without it, app don't work:D
     var messages_cnt = [];
-    // if you want to set name, press 'Set name' button
-    var set_name = false;
     // Are user in chat room right now
     var in_chat = false;
 
@@ -44,7 +42,6 @@ odoo.define('pos_chat_button', function (require){
         button_click: function () {
             self = this;
             this.gui.show_screen('custom_screen');
-
             // User in to the chat room
             in_chat = true;
             // Current users says that he connected to other users
@@ -56,6 +53,8 @@ odoo.define('pos_chat_button', function (require){
             });
         }
     });
+
+//------------------------------------------------------
 
 //-------------- Longpooling functions -----------------
 
@@ -128,20 +127,14 @@ odoo.define('pos_chat_button', function (require){
                     TakeNewMessage(true);
                 }
             });
-            //-------------- Game Control Buttons ------------------
+//-------------- Game Control Buttons ------------------
 
             var set_but = document.getElementById('set-game-name');
             var allow_but = document.getElementById('allow-set-name');
 
             set_but.onclick = function ()
             {
-                if(set_name)
-                    set_name = false;
-                else
-                {
-                    alert("Try to set the name");
-                    set_name = true;
-                }
+                SetNewName();
             }
 
             allow_but.onclick = function ()
@@ -231,9 +224,10 @@ odoo.define('pos_chat_button', function (require){
             participate : data.participate,
             allow_change_name: data.allow
         });
-        var temp = chat_users[chat_users.length - 1];
-        chat_users[chat_users.length - 1] = chat_users[chat_users.length - 2];
-        chat_users[chat_users.length - 2] = temp;
+        var n = chat_users.length;
+        var temp = chat_users[n - 1];
+        chat_users[n - 1] = chat_users[n - 2];
+        chat_users[n - 2] = temp;
 
         all_messages.push(new Array());
         all_timeOuts.push(new Array());
@@ -381,7 +375,22 @@ odoo.define('pos_chat_button', function (require){
         if(is_it_tag(newMessage.value, false))
             text = is_it_tag(newMessage.value, true);
 
-        if(chat_users.length > 1 && set_name && chat_users[next_to_me(session.uid)].allow_change_name)
+        self._rpc({
+            model: "pos.chat",
+            method: "send_field_updates",
+            args: ['', text, 'Message', session.uid]
+        });
+
+        newMessage.value = '';
+    }
+
+    function SetNewName()
+    {
+        var newMessage = document.getElementById('text-line');
+        if(newMessage.value == '') {newMessage.value = ''; return;}
+        var text = newMessage.value;
+
+        if(chat_users.length > 1 && chat_users[next_to_me(session.uid)].allow_change_name)
         {
             self._rpc({
                 model: "pos.chat",
@@ -394,17 +403,10 @@ odoo.define('pos_chat_button', function (require){
                 method: "send_to_channel_by_id",
                 args: [chat_users[next_to_me(session.uid)].uid, session.uid, 'GotName']
             });
-            set_name = false;
         }
-        else if(!set_name && newMessage.value != chat_users[i].name)
-            self._rpc({
-                model: "pos.chat",
-                method: "send_field_updates",
-                args: ['', text, 'Message', session.uid]
-            });
-        else if(set_name)
+        else
         {
-            alert("OOPS!You can't change your neighbour name, cause he blocked name changing");
+            alert("Oops! You can't change your neighbours name");
         }
 
         newMessage.value = '';
@@ -508,7 +510,6 @@ odoo.define('pos_chat_button', function (require){
         all_messages = [];
         all_timeOuts = [];
         messages_cnt = [];
-        set_name = false;
         // User out of the chat room
         in_chat = false;
     }
