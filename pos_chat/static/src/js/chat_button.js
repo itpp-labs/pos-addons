@@ -211,7 +211,7 @@ odoo.define('pos_chat_button', function (require){
                 chat_users[i].participate, chat_users[i].allow_change_name,
                 session.uid, 'Exist', user_data.uid]
             });
-        }, 200 * i + 1);
+        }, 200 * NumInQueue(session.uid) + 1);
 
         if(in_chat)
         {
