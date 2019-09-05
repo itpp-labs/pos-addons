@@ -132,83 +132,6 @@ odoo.define('pos_chat_button', function (require){
 
 //------------------------------------------------------
 
-//--------------- Users relations part -----------------
-
-    function AddNewMessage(data)
-    {
-        var i = NumInQueue(data.uid);
-        if(all_messages[i].length >= 2)
-        {
-            clearTimeout(all_timeOuts[i][0]);
-            Disappear(data.uid);
-        }
-        Push_new_message(i, data.uid, data.message);
-        showMessage(data.uid);
-    }
-
-    function AddNewUser(user_data)
-    {
-        chat_users.push({
-            name : '',
-            true_name : user_data.name,
-            uid : user_data.uid,
-            participate : false,
-            allow_change_name: true
-        });
-
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
-        messages_cnt.push(0);
-        if(user_data.uid == session.uid) {ShowUsers(); return;}
-
-        // Tell to new user about current user
-        window.setTimeout(function(){
-            var i = NumInQueue(session.uid);
-            self._rpc({
-                model: "pos.chat",
-                method: "send_to_user",
-                args: [chat_users[i].name, chat_users[i].true_name,
-                chat_users[i].participate, chat_users[i].allow_change_name,
-                session.uid, 'Exist', user_data.uid]
-            });
-        }, 200 * NumInQueue(session.uid) + 1);
-
-        if(in_chat)
-        {
-            ShowUsers();
-        }
-    }
-
-    function AddExistUser(data)
-    {
-        chat_users.push({
-            name : data.name,
-            true_name : data.true_name,
-            uid : data.uid,
-            participate : data.participate,
-            allow_change_name: data.allow
-        });
-        var n = chat_users.length;
-        var temp = chat_users[n - 1];
-        chat_users[n - 1] = chat_users[n - 2];
-        chat_users[n - 2] = temp;
-
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
-        messages_cnt.push(0);
-
-        ShowUsers();
-    }
-
-    function DeleteUser(user_id)
-    {
-        DeleteUserData(user_id);
-        if(user_id != session.uid)
-            ShowUsers();
-    }
-
-//------------------------------------------------------
-
 //---------- Set avatar and animation part -------------
     var radius = 200;
 
@@ -397,14 +320,99 @@ odoo.define('pos_chat_button', function (require){
         }
         // If send mode is active
         if(send) {
-            return text
+            return text;
         };
 
         if(left == 2 && right == 2 && slash == 1)
-            {return true;}
+        {
+            return true;
+        }
         else
-            {return false;}
+        {
+            return false;
+        }
     }
 //--------------------------------------------------
+
+//--------------- Users relations part -----------------
+
+    function AddNewMessage(data)
+    {
+        var i = NumInQueue(data.uid);
+        if(all_messages[i].length >= 2)
+        {
+            clearTimeout(all_timeOuts[i][0]);
+            Disappear(data.uid);
+        }
+        Push_new_message(i, data.uid, data.message);
+        showMessage(data.uid);
+    }
+
+    function AddNewUser(user_data)
+    {
+        chat_users.push({
+            name : '',
+            true_name : user_data.name,
+            uid : user_data.uid,
+            participate : false,
+            allow_change_name: true
+        });
+
+        all_messages.push(new Array());
+        all_timeOuts.push(new Array());
+        messages_cnt.push(0);
+
+        if(user_data.uid === session.uid) {
+            ShowUsers();
+            return;
+        }
+
+        // Tell to new user about current user
+        window.setTimeout(function(){
+            var i = NumInQueue(session.uid);
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_user",
+                args: [chat_users[i].name, chat_users[i].true_name,
+                chat_users[i].participate, chat_users[i].allow_change_name,
+                session.uid, 'Exist', user_data.uid]
+            });
+        }, 200 * NumInQueue(session.uid) + 1);
+
+        if(in_chat)
+        {
+            ShowUsers();
+        }
+    }
+
+    function AddExistUser(data)
+    {
+        chat_users.push({
+            name : data.name,
+            true_name : data.true_name,
+            uid : data.uid,
+            participate : data.participate,
+            allow_change_name: data.allow
+        });
+        var n = chat_users.length;
+        var temp = chat_users[n - 1];
+        chat_users[n - 1] = chat_users[n - 2];
+        chat_users[n - 2] = temp;
+
+        all_messages.push(new Array());
+        all_timeOuts.push(new Array());
+        messages_cnt.push(0);
+
+        ShowUsers();
+    }
+
+    function DeleteUser(user_id)
+    {
+        DeleteUserData(user_id);
+        if(user_id != session.uid)
+            ShowUsers();
+    }
+
+//------------------------------------------------------
     return ChatButton;
 });
