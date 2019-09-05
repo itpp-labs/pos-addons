@@ -28,11 +28,11 @@ odoo.define('pos_chat_button', function (require){
 
 //-------------Help functions part----------------------
     // Checks out which num user has
-    function NumInQueue(uid)
-    {
-        for(var i = 0; i < chat_users.length; i++)
-        {
-            if(chat_users[i].uid == uid) return i;
+    function NumInQueue(uid){
+        for(var i = 0; i < chat_users.length; i++){
+            if(chat_users[i].uid == uid) {
+                return i;
+            }
         }
     }
 
@@ -64,7 +64,6 @@ odoo.define('pos_chat_button', function (require){
     models.PosModel = models.PosModel.extend({
 
         initialize: function () {
-
             PosModelSuper.prototype.initialize.apply(this, arguments);
             var self = this;
             // Listen to 'pos_chat' channel
@@ -72,20 +71,25 @@ odoo.define('pos_chat_button', function (require){
         },
 
         on_barcode_updates: function(data){
-            if(!in_chat) {return;}
+            if(!in_chat){
+                return;
+            }
             var self = this;
             // If someone connected to the chat
-            if(data.command == 'Connect')
-            {
-                if(!CheckUserExists(data.uid))
+            if(data.command == 'Connect'){
+                if(!CheckUserExists(data.uid)){
                     AddNewUser(data);
+                }
             }
-            else if(data.command == 'Disconnect')
+            else if(data.command == 'Disconnect'){
                 DeleteUser(data.uid);
-            else if(data.command == 'Message') // If someone throwed a message
+            }
+            else if(data.command == 'Message'){ // If someone throwed a message
                 AddNewMessage(data);
-            else if(data.command == 'Exist')
-                AddExistUser(data);
+            }
+            else if(data.command == 'Exist'){
+                    AddExistUser(data);
+            }
         },
     });
 
@@ -135,13 +139,11 @@ odoo.define('pos_chat_button', function (require){
 //---------- Set avatar and animation part -------------
     var radius = 200;
 
-    function ShowUsers()
-    {
+    function ShowUsers(){
         var window = document.getElementById('main-window');
         var out = '';
         var visible = 0;
-        chat_users.forEach(function (item)
-        {
+        chat_users.forEach(function (item){
             var i = NumInQueue(item.uid);
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+i+'">';
             out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
@@ -158,8 +160,7 @@ odoo.define('pos_chat_button', function (require){
         });
     }
 
-    function SetPos(avatar, uid)
-    {
+    function SetPos(avatar, uid){
         var cnt = NumInQueue(uid) + 1;
         var action_window = document.getElementById('main-window');
         var angle = (2 * 3.1415 / chat_users.length) * cnt;
@@ -179,19 +180,24 @@ odoo.define('pos_chat_button', function (require){
 
 //------ Message taking and showing functions ----------
 
-    function TakeNewMessage(delete_last_char)
-    {
+    function TakeNewMessage(delete_last_char){
         var i = NumInQueue(session.uid);
 
         var newMessage = document.getElementById('text-line');
 
-        if(newMessage.value === '') {newMessage.value = ''; return;}
+        if(newMessage.value === ''){
+            newMessage.value = '';
+            return;
+        }
 
         var text = newMessage.value;
-        if(delete_last_char) text.substring(0, text.length - 2);
+        if(delete_last_char) {
+            text.substring(0, text.length - 2);
+        }
 
-        if(is_it_tag(newMessage.value, false))
+        if(is_it_tag(newMessage.value, false)){
             text = is_it_tag(newMessage.value, true);
+        }
 
         self._rpc({
             model: "pos.chat",
@@ -202,8 +208,7 @@ odoo.define('pos_chat_button', function (require){
         newMessage.value = '';
     }
 
-    function showMessage(uid)
-    {
+    function showMessage(uid){
         var i = NumInQueue(uid), num = all_messages[i].length - 1;
         var cnt = messages_cnt[i]++;
         var num = all_messages[i].length - 1;
@@ -213,13 +218,16 @@ odoo.define('pos_chat_button', function (require){
         var mes_id = 'single-message-'+uid+'-'+cnt;
 
         var message = document.getElementById('message-id-' + uid);
-        if(typeof message === null) {return};
+        if(typeof message === null) {
+            return;
+        }
         var out = '';
 
-        if(num > 0)
+        if(num > 0){
             out += '<li id="single-message-'+uid+'-'+
             (cnt - 1)+'" class="new-message-'+uid+'-'+(cnt - 1)+ '">'+
             all_messages[i][num - 1].text+'</li>';
+        }
 
         out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</li>';
@@ -227,8 +235,9 @@ odoo.define('pos_chat_button', function (require){
         out += '<audio src="/pos_chat/static/src/sound/msg.wav" autoplay="true"></audio>';
 
         message.innerHTML = out;
-        if(num > 0)
+        if(num > 0){
             message_view('single-message-'+uid+'-'+(cnt - 1), false);
+        }
 
         message_view(mes_id, true);
         $("."+mes_class).fadeIn();
@@ -236,8 +245,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     // Messages slow disapperaring
-    function Disappear(uid)
-    {
+    function Disappear(uid){
         if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return};
         if(all_messages[NumInQueue(uid)].length == 0) {return};
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
@@ -248,29 +256,26 @@ odoo.define('pos_chat_button', function (require){
 
 //---------Help functions part----------------------
 
-    function message_view(message_id, display)
-    {
+    function message_view(message_id, display){
         single_message = document.getElementById(message_id);
         single_message.style.setProperty('border-radius', '20%');
         single_message.style.setProperty('background','white');
         single_message.style.setProperty('top','10px');
         single_message.style.setProperty('width','100px');
         single_message.style.setProperty('font','14pt sans-serif');
-        if(display)
+        if(display){
             single_message.style.setProperty('display', 'none');
+        }
     }
 
-    function CheckUserExists(uid)
-    {
-        for(var i = 0; i < chat_users.length; i++)
-        {
+    function CheckUserExists(uid){
+        for(var i = 0; i < chat_users.length; i++){
             if(uid == chat_users[i].uid) return true;
         }
         return false;
     }
 
-    function Push_new_message(i, uid, message)
-    {
+    function Push_new_message(i, uid, message){
         return all_messages[i].push({
             text: message,
             user_id : uid,
@@ -279,11 +284,9 @@ odoo.define('pos_chat_button', function (require){
         });
     }
     // Users all data deletion
-    function DeleteUserData(uid)
-    {
+    function DeleteUserData(uid){
         var j = NumInQueue(uid);
-        for(var i = j; i < chat_users.length; i++)
-        {
+        for(var i = j; i < chat_users.length; i++){
             chat_users[i] = chat_users[i + 1];
             all_messages[i] = all_messages[i + 1];
             all_timeOuts[i] = all_timeOuts[i + 1];
@@ -294,8 +297,7 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts.pop();
     }
 
-    function DeleteMyData()
-    {
+    function DeleteMyData(){
         chat_users = [];
         all_messages = [];
         all_timeOuts = [];
@@ -308,10 +310,8 @@ odoo.define('pos_chat_button', function (require){
     {
         var left = 0, right = 0, slash = 0;
         var text = '';
-        for(var i = 0; i < str.length; i++)
-        {
-            if(left + right === 2 && str[i] !== '<')
-            {
+        for(var i = 0; i < str.length; i++){
+            if(left + right === 2 && str[i] !== '<'){
                 text += str[i];
             }
             if(str[i] == '<')left++;
@@ -321,14 +321,12 @@ odoo.define('pos_chat_button', function (require){
         // If send mode is active
         if(send) {
             return text;
-        };
+        }
 
-        if(left == 2 && right == 2 && slash == 1)
-        {
+        if(left == 2 && right == 2 && slash == 1){
             return true;
         }
-        else
-        {
+        else{
             return false;
         }
     }
@@ -336,11 +334,9 @@ odoo.define('pos_chat_button', function (require){
 
 //--------------- Users relations part -----------------
 
-    function AddNewMessage(data)
-    {
+    function AddNewMessage(data){
         var i = NumInQueue(data.uid);
-        if(all_messages[i].length >= 2)
-        {
+        if(all_messages[i].length >= 2){
             clearTimeout(all_timeOuts[i][0]);
             Disappear(data.uid);
         }
@@ -348,8 +344,7 @@ odoo.define('pos_chat_button', function (require){
         showMessage(data.uid);
     }
 
-    function AddNewUser(user_data)
-    {
+    function AddNewUser(user_data){
         chat_users.push({
             name : '',
             true_name : user_data.name,
@@ -377,7 +372,7 @@ odoo.define('pos_chat_button', function (require){
                 chat_users[i].participate, chat_users[i].allow_change_name,
                 session.uid, 'Exist', user_data.uid]
             });
-        }, 200 * NumInQueue(session.uid) + 1);
+        }, (200 * NumInQueue(session.uid)) + 1);
 
         if(in_chat)
         {
@@ -385,8 +380,7 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
-    function AddExistUser(data)
-    {
+    function AddExistUser(data){
         chat_users.push({
             name : data.name,
             true_name : data.true_name,
@@ -406,11 +400,11 @@ odoo.define('pos_chat_button', function (require){
         ShowUsers();
     }
 
-    function DeleteUser(user_id)
-    {
+    function DeleteUser(user_id){
         DeleteUserData(user_id);
-        if(user_id != session.uid)
+        if(user_id !== session.uid){
             ShowUsers();
+        }
     }
 
 //------------------------------------------------------
