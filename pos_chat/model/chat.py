@@ -20,13 +20,11 @@ class Chat(models.Model):
 
     @api.model
     def send_to_channel_all_but_id(self, new_name, but_uid):
-        # pos_id = 0
         poses_ids = self.env['pos.session'].search([('state', '=', 'opened')])
-        but_pos_session_id = poses_ids.filtered(lambda ps: ps.user_id == but_uid)
-
         data = {'uid': but_uid, 'message': new_name}
-
-        for pos_id in (poses_ids - but_pos_session_id).ids:
+        for pos_id in poses_ids.ids:
+            if(pos_id == self.env['pos.session'].search([('state', '=', 'opened'), ('user_id', '=', but_uid)], limit=1).id):
+                continue
             channel = self._get_full_channel_name_by_id(self.env.cr.dbname, pos_id, "pos_chat")
             self.env['bus.bus'].sendmany([[channel, data]])
             _logger.debug('POS notifications for %s: %s', pos_id, [[channel, data]])
