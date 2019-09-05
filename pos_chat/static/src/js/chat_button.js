@@ -30,7 +30,7 @@ odoo.define('pos_chat_button', function (require){
     // Checks out which num user has
     function NumInQueue(uid){
         for(var i = 0; i < chat_users.length; i++){
-            if(chat_users[i].uid == uid) {
+            if(chat_users[i].uid === uid) {
                 return i;
             }
         }
@@ -54,43 +54,6 @@ odoo.define('pos_chat_button', function (require){
                  session.uid]
             });
         }
-    });
-
-//------------------------------------------------------
-
-//-------------- Longpooling functions -----------------
-
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-
-        initialize: function () {
-            PosModelSuper.prototype.initialize.apply(this, arguments);
-            var self = this;
-            // Listen to 'pos_chat' channel
-            self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
-        },
-
-        on_barcode_updates: function(data){
-            if(!in_chat){
-                return;
-            }
-            var self = this;
-            // If someone connected to the chat
-            if(data.command == 'Connect'){
-                if(!CheckUserExists(data.uid)){
-                    AddNewUser(data);
-                }
-            }
-            else if(data.command == 'Disconnect'){
-                DeleteUser(data.uid);
-            }
-            else if(data.command == 'Message'){ // If someone throwed a message
-                AddNewMessage(data);
-            }
-            else if(data.command == 'Exist'){
-                    AddExistUser(data);
-            }
-        },
     });
 
 //------------------------------------------------------
@@ -323,7 +286,7 @@ odoo.define('pos_chat_button', function (require){
             return text;
         }
 
-        if(left == 2 && right == 2 && slash == 1){
+        if(left === 2 && right === 2 && slash === 1){
             return true;
         }
         else{
@@ -406,6 +369,42 @@ odoo.define('pos_chat_button', function (require){
             ShowUsers();
         }
     }
+
+//------------------------------------------------------
+//-------------- Longpooling functions -----------------
+
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+
+        initialize: function () {
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            var self = this;
+            // Listen to 'pos_chat' channel
+            self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
+        },
+
+        on_barcode_updates: function(data){
+            if(!in_chat){
+                return;
+            }
+            var self = this;
+            // If someone connected to the chat
+            if(data.command === 'Connect'){
+                if(!CheckUserExists(data.uid)){
+                    AddNewUser(data);
+                }
+            }
+            else if(data.command === 'Disconnect'){
+                DeleteUser(data.uid);
+            }
+            else if(data.command == 'Message'){ // If someone throwed a message
+                AddNewMessage(data);
+            }
+            else if(data.command == 'Exist'){
+                    AddExistUser(data);
+            }
+        },
+    });
 
 //------------------------------------------------------
     return ChatButton;
