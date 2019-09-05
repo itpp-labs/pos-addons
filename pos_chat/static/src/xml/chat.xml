@@ -56,14 +56,6 @@
                    <i class="fa fa-angle-double-left" />
                      Back
                 </span>
-                <div class="game-control">
-                    <button type="button" class="set-button" id="set-game-name">
-                        Set name
-                    </button>
-                    <button type="button" class="set-button" id="allow-set-name">
-                        Allow to set name
-                    </button>
-                </div>
         </div>
     </t>
 </templates>
