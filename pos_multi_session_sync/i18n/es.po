@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_multi_session_sync
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 # Gustavo Valverde <g.valverde02@gmail.com>, 2017
@@ -12,12 +12,18 @@ msgstr ""
 "POT-Creation-Date: 2017-10-14 10:52+0000\n"
 "PO-Revision-Date: 2017-10-14 10:52+0000\n"
 "Last-Translator: Gustavo Valverde <g.valverde02@gmail.com>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_run_ID
+msgid "Actual run_id of the multi_session"
+msgstr ""
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_create_uid
@@ -128,11 +134,6 @@ msgid "Order uid"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_order_ids
-msgid "Orders"
-msgstr "Órdenes"
-
-#. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_pos_ID
 msgid "POS"
 msgstr "TPV"
@@ -140,6 +141,11 @@ msgstr "TPV"
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_pos_session_ID
 msgid "POS session"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_nonce
+msgid "Random nonce"
 msgstr ""
 
 #. module: pos_multi_session_sync
@@ -153,12 +159,17 @@ msgid "Running count"
 msgstr ""
 
 #. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_run_ID
+msgid "Session"
+msgstr ""
+
+#. module: pos_multi_session_sync
 #: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_multi_session_ID
 #: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_ID
 msgid ""
 "Set the same value for POSes where orders should be synced. Keep empty if "
-"this POS should not use syncing. Before updating it you need to close active"
-" session"
+"this POS should not use syncing. Before updating it you need to close active "
+"session"
 msgstr ""
 
 #. module: pos_multi_session_sync
@@ -190,3 +201,6 @@ msgstr ""
 #: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_pos
 msgid "pos_multi_session_sync.pos"
 msgstr ""
+
+#~ msgid "Orders"
+#~ msgstr "Órdenes"

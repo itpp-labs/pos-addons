@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_print_method
-# 
+#
 # Translators:
 # Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
 # charles paul requena palomino <rcharles84@gmail.com>, 2018
@@ -12,11 +12,12 @@ msgstr ""
 "POT-Creation-Date: 2018-04-27 23:49+0000\n"
 "PO-Revision-Date: 2018-04-27 23:49+0000\n"
 "Last-Translator: charles paul requena palomino <rcharles84@gmail.com>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_print_method
@@ -60,8 +61,8 @@ msgstr "<p>Haga clic en el producto 2</p>"
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_print_method

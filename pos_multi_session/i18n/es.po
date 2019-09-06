@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_multi_session
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
 # Alexandr Frrost <alexandr.frrost@gmail.com>, 2018
@@ -12,34 +12,40 @@ msgstr ""
 "POT-Creation-Date: 2017-12-31 00:08+0000\n"
 "PO-Revision-Date: 2017-12-31 00:08+0000\n"
 "Last-Translator: Alexandr Frrost <alexandr.frrost@gmail.com>, 2018\n"
-"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/teams/76080/es/)\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:7
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:12
 #, python-format
 msgid ", edited by"
 msgstr ", editado por"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:24
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:27
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_config_multi_session_accept_incoming_orders
 msgid "Accept incoming orders"
 msgstr "Aceptar órdenes entrantes"
+
+#. module: pos_multi_session
+#: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_multi_session_active
+msgid "Active"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model.fields,field_description:pos_multi_session.field_pos_multi_session_create_uid
@@ -118,23 +124,18 @@ msgstr "Nombre"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:18
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:25
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:23
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:30
 #, python-format
 msgid "New"
 msgstr "Actual"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:737
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1059
 #, python-format
-msgid ""
-"No connection to the server. You can create new orders only. It is forbidden"
-" to modify existing orders."
+msgid "No connection to the server."
 msgstr ""
-"Se perdió la conexión al servidor. Solo puedes crear ordenes nuevas. Está "
-"prohibido modificar ordenes existentes hasta que se reestablezca la "
-"conexión."
 
 #. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session_run_ID
@@ -161,7 +162,7 @@ msgstr "TPVs en Multi-sesión"
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:20
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:23
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr "¿Listo para lanzar su <b>punto de venta</b>? <i>Haga clic aquí</i>."
@@ -177,16 +178,28 @@ msgid "Running count"
 msgstr ""
 
 #. module: pos_multi_session
+#: model:ir.model.fields,help:pos_multi_session.field_pos_multi_session_multi_session_active
+msgid "Select the checkbox to enable synchronization for POSes"
+msgstr ""
+
+#. module: pos_multi_session
 #: model:ir.model.fields,help:pos_multi_session.field_pos_config_multi_session_id
 msgid ""
-"Set the same value for POSes where orders should be synced. Keep empty if "
-"this POS should not use syncing. Before updating it you need to close active"
-" session"
+"Set the same value for POSes where orders should be synced.Uncheck the box "
+"\"Active\" if the POS should not use syncing.Before updating you need to "
+"close active session"
 msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.ui.view,arch_db:pos_multi_session.multi_session_form
 msgid "Settings"
+msgstr ""
+
+#. module: pos_multi_session
+#. openerp-web
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:172
+#, python-format
+msgid "Sync Orders"
 msgstr ""
 
 #. module: pos_multi_session
@@ -197,7 +210,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:671
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:974
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
@@ -212,23 +225,28 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:717
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1016
 #, python-format
 msgid "Warning"
 msgstr "Atención"
 
 #. module: pos_multi_session
 #: model:ir.ui.view,arch_db:pos_multi_session.view_pos_config_form
-msgid ""
-"You need to close current session to be able modify Multi-session value"
+msgid "You need to close current session to be able modify Multi-session value"
 msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:5
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:10
 #, python-format
 msgid "added by"
 msgstr "agregado por"
+
+#. module: pos_multi_session
+#: model:ir.ui.view,arch_db:pos_multi_session.multi_session_form
+#: model:ir.ui.view,arch_db:pos_multi_session.view_pos_config_form
+msgid "http://yourhost"
+msgstr ""
 
 #. module: pos_multi_session
 #: model:ir.model,name:pos_multi_session.model_pos_config
@@ -244,3 +262,11 @@ msgstr "pos.multi_session"
 #: model:ir.model,name:pos_multi_session.model_pos_session
 msgid "pos.session"
 msgstr "pos.session"
+
+#~ msgid ""
+#~ "No connection to the server. You can create new orders only. It is "
+#~ "forbidden to modify existing orders."
+#~ msgstr ""
+#~ "Se perdió la conexión al servidor. Solo puedes crear ordenes nuevas. Está "
+#~ "prohibido modificar ordenes existentes hasta que se reestablezca la "
+#~ "conexión."
