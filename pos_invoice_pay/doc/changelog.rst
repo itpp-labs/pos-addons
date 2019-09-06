@@ -1,3 +1,7 @@
+`1.0.4`
+
+**Fix:** The change value is not saved on the invoice after payment
+
 `1.0.3`
 -------
 
