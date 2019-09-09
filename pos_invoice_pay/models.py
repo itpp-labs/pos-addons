@@ -29,7 +29,10 @@ class PosOrder(models.Model):
             inv_obj = self.env['account.invoice'].search([('id', '=', inv_id)])
             journal_id = statement[2]['journal_id']
             journal = self.env['account.journal'].search([('id', '=', journal_id)])
-            amount = statement[2]['amount']
+            amount = min(
+                statement[2]['amount'],  # amount payed including change
+                invoice['data']['invoice_to_pay']['residual'],  # amount required to pay
+            )
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
