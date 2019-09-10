@@ -10,7 +10,7 @@ odoo.define('pos_multi_session_restaurant.tour', function (require) {
     var steps = tour.tours.tour_pos_multi_session.steps;
 
     var element = _.find(steps, function(step){
-        return step.trigger === ".o_pos_kanban button.oe_kanban_action_button";
+        return step.trigger === ".o_pos_kanban :has(div.o_primary:contains('Bar')) button.oe_kanban_action_button";
     });
 
     steps.splice(steps.indexOf(element) + 1,
