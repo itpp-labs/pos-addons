@@ -249,7 +249,7 @@ msgid "Invoice No"
 msgstr ""
 
 #. module: pos_invoice_pay
-#: code:addons/pos_invoice_pay/models.py:181
+#: code:addons/pos_invoice_pay/models.py:185
 #: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_session__session_payments
 #, python-format
 msgid "Invoice Payments"
