@@ -23,6 +23,8 @@ odoo.define('pos_chat_button', function (require){
     var in_chat = false;
     // Full channel name
     var channel = "pos_chat";
+    // Shows game stage
+    var game_started = false;
 
 //------------------------------------------------------
 
@@ -48,7 +50,7 @@ odoo.define('pos_chat_button', function (require){
             in_chat = true;
             // Current users says that he connected to other users
             self._rpc({
-                model: "pos.chat",
+                model: "pos.session",
                 method: "send_field_updates",
                 args: [session.name, '', 'Connect',
                  session.uid]
@@ -69,7 +71,7 @@ odoo.define('pos_chat_button', function (require){
                 self.gui.show_screen('products');
 
                 self._rpc({
-                    model: "pos.chat",
+                    model: "pos.session",
                     method: "send_field_updates",
                     args: ['', '', 'Disconnect', session.uid]
                 });
@@ -86,6 +88,15 @@ odoo.define('pos_chat_button', function (require){
                     TakeNewMessage(true);
                 }
             });
+            var r_but = document.getElementById('ready-button');
+
+            r_but.onclick = function (){
+                self._rpc({
+                    model: "pos.session",
+                    method: "game_started",
+                    args: [session.uid, chat_users.length]
+                });
+            }
         }
     });
 
@@ -163,7 +174,7 @@ odoo.define('pos_chat_button', function (require){
         }
 
         self._rpc({
-            model: "pos.chat",
+            model: "pos.session",
             method: "send_field_updates",
             args: ['', text, 'Message', session.uid]
         });
@@ -307,7 +318,8 @@ odoo.define('pos_chat_button', function (require){
         showMessage(data.uid);
     }
 
-    function AddNewUser(user_data){
+    function AddNewUser(user_data)
+    {
         chat_users.push({
             name : '',
             true_name : user_data.name,
@@ -319,23 +331,19 @@ odoo.define('pos_chat_button', function (require){
         all_messages.push(new Array());
         all_timeOuts.push(new Array());
         messages_cnt.push(0);
-
-        if(user_data.uid === session.uid) {
-            ShowUsers();
-            return;
-        }
+        if(user_data.uid == session.uid) {ShowUsers();return;}
 
         // Tell to new user about current user
         window.setTimeout(function(){
             var i = NumInQueue(session.uid);
             self._rpc({
-                model: "pos.chat",
-                method: "send_to_user",
+                model: "pos.session",
+                method: "send_all_user_data_to",
                 args: [chat_users[i].name, chat_users[i].true_name,
                 chat_users[i].participate, chat_users[i].allow_change_name,
                 session.uid, 'Exist', user_data.uid]
             });
-        }, (200 * NumInQueue(session.uid)) + 1);
+        }, 200 * NumInQueue(session.uid) + 1);
 
         if(in_chat)
         {
@@ -349,7 +357,8 @@ odoo.define('pos_chat_button', function (require){
             true_name : data.true_name,
             uid : data.uid,
             participate : data.participate,
-            allow_change_name: data.allow
+            allow_change_name: data.allow,
+            cards : []
         });
         var n = chat_users.length;
         var temp = chat_users[n - 1];
@@ -367,6 +376,23 @@ odoo.define('pos_chat_button', function (require){
         DeleteUserData(user_id);
         if(user_id !== session.uid){
             ShowUsers();
+        }
+    }
+
+    function Distribute_cards(data, took_cards){
+        if(took_cards){
+            var str = data.message;
+            for(var i = 0; i < str.length; i++){
+                if(str[i] != ',' && str[i] != ' ')
+                    chat_users[NumInQueue(session.uid)].cards.push(str[i]);
+            }
+        }
+        else if(session.uid == chat_users[0].uid)
+        {
+            self._rpc({
+                model: "pos.session",
+                method: "distribution"
+            });
         }
     }
 
@@ -397,15 +423,22 @@ odoo.define('pos_chat_button', function (require){
             else if(data.command === 'Disconnect'){
                 DeleteUser(data.uid);
             }
-            else if(data.command == 'Message'){ // If someone throwed a message
+            else if(data.command === 'Message'){ // If someone throwed a message
                 AddNewMessage(data);
             }
-            else if(data.command == 'Exist'){
+            else if(data.command === 'Exist'){
                     AddExistUser(data);
+            }
+            else if(data.command === 'game_started'){
+                game_started = true;
+                alert("GAME STARTED!!!!!!!!!!!!!!!!");
+                Distribute_cards(data, false);
+            }
+            else if(data.command == 'Cards'){
+                Distribute_cards(data, true);
             }
         },
     });
-
 //------------------------------------------------------
     return ChatButton;
 });

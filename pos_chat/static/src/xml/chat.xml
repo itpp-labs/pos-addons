@@ -39,12 +39,7 @@
 
     <t t-name="CustomScreenWidget">
 
-        <div class="main-action" id="main-window">
-<!--            <div class="chat-user" id="picture">-->
-<!--                <img src="/web/image/res.partner/3/image_small" class="avatar"></img>-->
-<!--                <div class="new-message" id="message-id"></div>-->
-<!--            </div>-->
-        </div>
+        <div class="main-action" id="main-window"></div>
         <div class="chat-tools">
 
             <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
@@ -56,6 +51,11 @@
                    <i class="fa fa-angle-double-left" />
                      Back
                 </span>
+        </div>
+        <div class="game-tools">
+            <span type="button" class="ready-button" id="ready-button">
+                Ready
+            </span>
         </div>
     </t>
 </templates>

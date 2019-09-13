@@ -205,7 +205,7 @@
     color: white;
 }
 
-.pos .chat-tools .set-button:hover{
+.pos .ready-button:hover{
     background: #2db34a;
     transition-timing-function: linear;
     border-radius: 30px;
@@ -214,12 +214,12 @@
     transition-duration: 0.2s;
 }
 
-.pos .chat-tools .set-button:active{
+.pos .ready-button:active{
     color: white;
     transition-duration: 0.2s;
 }
 
-.pos .chat-tools .set-button{
+.pos .ready-button{
     -webkit-flex-grow: 1;
     flex-grow: 1;
     background: #e2e2e2;
@@ -231,8 +231,7 @@
     border-radius: 10px;
     padding: 0px 10px;
     font-size: 18px;
-    margin-top: 20px;
-    margin-left: 6px;
-    margin-bottom: 6px;
     color: #555c6c;
+    margin-top: 20px;
+    margin-left: 20px;
 }
