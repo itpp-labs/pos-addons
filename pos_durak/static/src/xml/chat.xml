@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ChatButton">
+      <div class="control-button">
+        <i class="fa fa-list-alt" />
+          Chat Button
+      </div>
+    </t>
+
+    <t t-name="ChatPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-chat">
+
+                <div id="message-field">
+                    <ul class="messages" id="message-list"></ul>
+                </div>
+                <div class="chat-popup" id="myForm">
+                  <form class="form-container">
+
+                    <span class='button back'>
+                      <i class='fa fa-angle-double-left'></i>
+                          Back
+                    </span>
+
+                    <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+
+                    <span class='button next'>
+                        Send
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+
+                  </form>
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+    <t t-name="CustomScreenWidget">
+
+        <div class="main-action" id="main-window"></div>
+        <div class="chat-tools">
+
+            <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+                <span class="button next">
+                     Send
+                   <i class="fa fa-angle-double-right" />
+                </span>
+                <span class="button back">
+                   <i class="fa fa-angle-double-left" />
+                     Back
+                </span>
+        </div>
+        <div class="game-tools">
+            <span type="button" class="ready-button" id="ready-button">
+                Ready
+            </span>
+        </div>
+    </t>
+</templates>
