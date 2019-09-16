@@ -16,6 +16,7 @@ class Chat(models.Model):
             })
         data = {'name': name, 'message': message, 'uid': uid, 'command': command}
         self.env['pos.config'].send_to_all_poses(channel_name, data)
+        return 1
 
     @api.model
     def send_to_user(self, command, message, pos_id):
@@ -64,15 +65,13 @@ class Chat(models.Model):
                 players[i].write({
                     'cards': temp_str
                 })
-                self.send_to_user('Cards', temp_str, players[i])
+                self.send_to_user('Cards', temp_str, players[i].id)
                 i += 1
             if(i >= len(players)):
                 break
-        k = len(players)*7 - 1
-        while k < 52:
-            temp_str += str(seq[k])
-        import wdb
-        wdb.set_trace()
+        temp_str = ''
+        for k in range(len(players)*7 - 1, 52):
+            temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(random.randint(0, 3)),
                                 temp_str , "Extra", -1)
         return 1

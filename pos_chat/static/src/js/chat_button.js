@@ -25,6 +25,10 @@ odoo.define('pos_chat_button', function (require){
     var channel = "pos_chat";
     // Shows game stage
     var game_started = false;
+    // Beated cards
+    var beated = [];
+    // Donald Trump
+    var trump = ''
 
 //------------------------------------------------------
 
@@ -89,7 +93,6 @@ odoo.define('pos_chat_button', function (require){
                 }
             });
             var r_but = document.getElementById('ready-button');
-
             r_but.onclick = function (){
                 self._rpc({
                     model: "pos.session",
@@ -325,7 +328,8 @@ odoo.define('pos_chat_button', function (require){
             true_name : user_data.name,
             uid : user_data.uid,
             participate : false,
-            allow_change_name: true
+            allow_change_name: true,
+            cards : []
         });
 
         all_messages.push(new Array());
@@ -381,11 +385,20 @@ odoo.define('pos_chat_button', function (require){
 
     function Distribute_cards(data, took_cards){
         if(took_cards){
+            var ses = NumInQueue(session.uid);
             var str = data.message;
-            for(var i = 0; i < str.length; i++){
-                if(str[i] != ',' && str[i] != ' ')
-                    chat_users[NumInQueue(session.uid)].cards.push(str[i]);
+            for(var i = 0; i < str.length - 1; i++){
+                var num = '';
+                if(str[i] != ' '){
+                    if(str[i + 1] != ' '){
+                        chat_users[ses].cards.push(str[i] + str[i + 1]);
+                        i++;
+                    }
+                    else
+                        chat_users[ses].cards.push(str[i]);
+                }
             }
+            alert(str + "\n" + chat_users[ses].cards);
         }
         else if(session.uid == chat_users[0].uid)
         {
@@ -393,6 +406,22 @@ odoo.define('pos_chat_button', function (require){
                 model: "pos.session",
                 method: "distribution"
             });
+        }
+    }
+
+    function SaveExtraCards(data){
+        trump = data.name;
+        var str = data.message;
+        for(var i = 0; i < str.length - 1; i++){
+            var num = '';
+            if(str[i] != ' '){
+                if(str[i + 1] != ' '){
+                    beated.push(str[i] + str[i + 1]);
+                    i++;
+                }
+                else
+                    beated.push(str[i]);
+            }
         }
     }
 
@@ -434,8 +463,11 @@ odoo.define('pos_chat_button', function (require){
                 alert("GAME STARTED!!!!!!!!!!!!!!!!");
                 Distribute_cards(data, false);
             }
-            else if(data.command == 'Cards'){
+            else if(data.command === 'Cards'){
                 Distribute_cards(data, true);
+            }
+            else if(data.command === 'Extra'){
+                SaveExtraCards(data);
             }
         },
     });
