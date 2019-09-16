@@ -107,7 +107,7 @@ odoo.define('pos_chat_button', function (require){
     gui.define_screen({name:'custom_screen', widget: CustomScreenWidget});
 
     screens.define_action_button({
-        'name': 'chat_button',
+        'name': 'durak_button',
         'widget': ChatButton,
     });
 
@@ -209,7 +209,7 @@ odoo.define('pos_chat_button', function (require){
         out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</li>';
 
-        out += '<audio src="/pos_chat/static/src/sound/msg.wav" autoplay="true"></audio>';
+        out += '<audio src="/pos_durak/static/src/sound/msg.wav" autoplay="true"></audio>';
 
         message.innerHTML = out;
         if(num > 0){

@@ -2,7 +2,7 @@
 
 <odoo>
 
-    <record id="group_pos_chat" model="res.groups">
+    <record id="group_pos_durak" model="res.groups">
         <field name="name">Chat Updates Manager</field>
     </record>
 

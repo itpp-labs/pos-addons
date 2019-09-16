@@ -1,1 +1,1 @@
-from . import chat
+from . import durak
