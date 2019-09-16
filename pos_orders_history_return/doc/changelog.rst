@@ -1,7 +1,7 @@
-.. _changelog:
+`1.0.6`
+-------
 
-Updates
-=======
+**Fix:** Unavailability to return fractional product amount
 
 `1.0.5`
 -------
