@@ -116,6 +116,19 @@ odoo.define('pos_chat_button', function (require){
 //---------- Set avatar and animation part -------------
     var radius = 200;
 
+    function ShowCards(){
+        var window = document.getElementById('main-window');
+        var block = document.getElementById('cards');
+        var me = NumInQueue(session.uid);
+        var out = '', w = 60/chat_users[me].cards.length - 5;
+        for(var i = 0; i < chat_users[me].cards.length; i++){
+            var n = chat_users[me].cards[i];
+            out+='<img src="/pos_durak/static/src/img/kards/'+
+            n+'.png" id="card-'+n+'" class="card" style="right: '+(50 - i*w)+'%"></img>'
+        }
+        block.innerHTML = out;
+    }
+
     function ShowUsers(){
         var window = document.getElementById('main-window');
         var out = '';
@@ -398,7 +411,7 @@ odoo.define('pos_chat_button', function (require){
                         chat_users[ses].cards.push(str[i]);
                 }
             }
-            alert(str + "\n" + chat_users[ses].cards);
+            ShowCards();
         }
         else if(session.uid == chat_users[0].uid)
         {

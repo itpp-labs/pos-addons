@@ -106,6 +106,7 @@
     position: absolute;
     bottom: 20px;
     left: 20px;
+    width: 40%;
     justify-content: center
 }
 
@@ -158,24 +159,24 @@
 }
 
 .pos .chat-tools .button.next:hover{
-  background: #2db34a;
-  transition-duration: 0.2s;
-  transition-timing-function: linear;
-  border-radius: 30px;
-  transform: translateY(-4px);
+    background: #2db34a;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
 }
 
 .pos .chat-tools .button.back:hover{
-  background: red;
-  transition-duration: 0.5s;
-  transition-timing-function: linear;
-  border-radius: 30px;
-  transform: translateY(-4px);
+    background: red;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
 }
 
 .pos .chat-tools .text-input-place:focus{
     border-radius: 5px;
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .pos .chat-tools .text-input-place:hover{
@@ -193,8 +194,6 @@
     position: absolute;
     left: var(--pos-X);
     top: var(--pos-Y);
-    animation: animX 2s cubic-bezier(0, 1.7, 0.5, 1),
-    animY 2s cubic-bezier(0, 0.2, 0.2, 1);
 }
 
 .pos .user-name{
@@ -234,4 +233,16 @@
     color: #555c6c;
     margin-top: 20px;
     margin-left: 20px;
+}
+
+.card{
+    position: absolute;
+    bottom: -30%;
+    width: 75px;
+    height: 175px;
+}
+
+.card:hover{
+    transform: translateY(-10%);
+    transition-duration: 0.2s;
 }

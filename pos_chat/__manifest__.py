@@ -22,7 +22,6 @@
 
     # always loaded
     'data': [
-        'security/pos_chat_security.xml',
         'view/chat_rooms.xml',
     ],
     'qweb': [

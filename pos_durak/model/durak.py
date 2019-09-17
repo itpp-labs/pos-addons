@@ -50,7 +50,7 @@ class Chat(models.Model):
     @api.model
     def distribution(self):
         players = self.search([('plays','=',True)])
-        seq = [*range(0,52)]
+        seq = [*range(0,51)]
         random.shuffle(seq)
         card_nums = []
         i = 0
@@ -70,7 +70,7 @@ class Chat(models.Model):
             if(i >= len(players)):
                 break
         temp_str = ''
-        for k in range(len(players)*7 - 1, 52):
+        for k in range(len(players)*7 - 1, 51):
             temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(random.randint(0, 3)),
                                 temp_str , "Extra", -1)

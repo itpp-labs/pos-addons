@@ -23,22 +23,16 @@ odoo.define('pos_chat_button', function (require){
     var in_chat = false;
     // Full channel name
     var channel = "pos_chat";
-    // Shows game stage
-    var game_started = false;
-    // Beated cards
-    var beated = [];
-    // Donald Trump
-    var trump = ''
 
 //------------------------------------------------------
 
 //-------------Help functions part----------------------
     // Checks out which num user has
-    function NumInQueue(uid){
-        for(var i = 0; i < chat_users.length; i++){
-            if(chat_users[i].uid === uid) {
-                return i;
-            }
+    function NumInQueue(uid)
+    {
+        for(var i = 0; i < chat_users.length; i++)
+        {
+            if(chat_users[i].uid == uid) return i;
         }
     }
 
@@ -54,12 +48,55 @@ odoo.define('pos_chat_button', function (require){
             in_chat = true;
             // Current users says that he connected to other users
             self._rpc({
-                model: "pos.session",
+                model: "pos.chat",
                 method: "send_field_updates",
                 args: [session.name, '', 'Connect',
                  session.uid]
             });
         }
+    });
+
+//------------------------------------------------------
+
+//-------------- Longpooling functions -----------------
+
+    var PosModelSuper = models.PosModel;
+    models.PosModel = models.PosModel.extend({
+
+        initialize: function () {
+
+            PosModelSuper.prototype.initialize.apply(this, arguments);
+            var self = this;
+            // Listen to 'pos_chat' channel
+            self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
+        },
+
+        on_barcode_updates: function(data){
+            if(!in_chat) {return;}
+            var self = this;
+            // If someone connected to the chat
+            if(data.command == 'Connect')
+            {
+                if(!CheckUserExists(data.uid))
+                    AddNewUser(data);
+            }
+            else if(data.command == 'Disconnect')
+                DeleteUser(data.uid);
+            else if(data.command == 'SetName') // If new name setted by the neighbour
+                NewName(data);
+            else if(data.command == 'Won') // If this user guessed his game name
+                Show_winner(data);
+            else if(data.command == 'GotName')
+                GotNewName(data.uid)
+            else if(data.command == 'Message') // If someone throwed a message
+                AddNewMessage(data);
+            else if(data.command == 'AllowChange')
+                AllowChangeName(data);
+            else if(data.command == 'Exist')
+                AddExistUser(data);
+            else // If someone added the name to his neighbour
+                NewName(data)
+        },
     });
 
 //------------------------------------------------------
@@ -75,7 +112,7 @@ odoo.define('pos_chat_button', function (require){
                 self.gui.show_screen('products');
 
                 self._rpc({
-                    model: "pos.session",
+                    model: "pos.chat",
                     method: "send_field_updates",
                     args: ['', '', 'Disconnect', session.uid]
                 });
@@ -92,14 +129,26 @@ odoo.define('pos_chat_button', function (require){
                     TakeNewMessage(true);
                 }
             });
-            var r_but = document.getElementById('ready-button');
-            r_but.onclick = function (){
+//-------------- Game Control Buttons ------------------
+
+            var set_but = document.getElementById('set-game-name');
+            var allow_but = document.getElementById('allow-set-name');
+
+            set_but.onclick = function ()
+            {
+                SetNewName();
+            }
+
+            allow_but.onclick = function ()
+            {
                 self._rpc({
-                    model: "pos.session",
-                    method: "game_started",
-                    args: [session.uid, chat_users.length]
+                    model: "pos.chat",
+                    method: "send_field_updates",
+                    args: ['', '', 'AllowChange', session.uid]
                 });
             }
+
+        //------------------------------------------------------
         }
     });
 
@@ -113,19 +162,177 @@ odoo.define('pos_chat_button', function (require){
 
 //------------------------------------------------------
 
+//--------------- Users relations part -----------------
+
+    function AddNewMessage(data)
+    {
+        var i = NumInQueue(data.uid);
+
+        if(all_messages[i].length >= 2)
+        {
+            clearTimeout(all_timeOuts[i][0]);
+            Disappear(data.uid);
+        }
+
+        Push_new_message(i, data.uid, data.message);
+
+        if(data.message == chat_users[NumInQueue(data.uid)].name)
+            self._rpc({
+                model: "pos.chat",
+                method: "send_field_updates",
+                args: ['', '', 'Won', data.uid]
+            });
+
+        showMessage(data.uid);
+    }
+
+    function AddNewUser(user_data)
+    {
+        chat_users.push({
+            name : '',
+            true_name : user_data.name,
+            uid : user_data.uid,
+            participate : false,
+            allow_change_name: true
+        });
+
+        all_messages.push(new Array());
+        all_timeOuts.push(new Array());
+        messages_cnt.push(0);
+        if(user_data.uid == session.uid) {ShowUsers();return;}
+
+        // Tell to new user about current user
+        window.setTimeout(function(){
+            var i = NumInQueue(session.uid);
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_user",
+                args: [chat_users[i].name, chat_users[i].true_name,
+                chat_users[i].participate, chat_users[i].allow_change_name,
+                session.uid, 'Exist', user_data.uid]
+            });
+        }, 200 * NumInQueue(session.uid) + 1);
+
+        if(in_chat)
+        {
+            ShowUsers();
+        }
+    }
+
+    function AddExistUser(data)
+    {
+        chat_users.push({
+            name : data.name,
+            true_name : data.true_name,
+            uid : data.uid,
+            participate : data.participate,
+            allow_change_name: data.allow
+        });
+        var n = chat_users.length;
+        var temp = chat_users[n - 1];
+        chat_users[n - 1] = chat_users[n - 2];
+        chat_users[n - 2] = temp;
+
+        all_messages.push(new Array());
+        all_timeOuts.push(new Array());
+        messages_cnt.push(0);
+
+        ShowUsers();
+    }
+
+    function DeleteUser(user_id)
+    {
+        DeleteUserData(user_id);
+        if(user_id != session.uid)
+            ShowUsers();
+    }
+
+    function GotNewName(uid)
+    {
+        var n = NumInQueue(uid);
+        chat_users[n].participate = true;
+    }
+
+    function NewName(data)
+    {
+        var n = NumInQueue(data.uid);
+
+        chat_users[back_from_next(n)].participate = true;
+        chat_users[n].name = data.message;
+
+        under_text = document.getElementById('game-nick-'+data.uid);
+        under_text.style.setProperty('opacity','1');
+        under_text.style.setProperty('transition','0.5s ease-in');
+        under_text.innerHTML = chat_users[n].name;
+    }
+
+    function Show_winner(data)
+    {
+        var out = '';
+        var n = NumInQueue(data.uid);
+        chat_users[NumInQueue(data.uid)].name = '';
+        if(data.uid == session.uid)
+        {
+            chat_users[n].name = '';
+            chat_users[n].participate = false;
+            user = document.getElementById('main-window');
+            if(typeof user === null) return;
+            out += '<audio src="/pos_chat/static/src/sound/puk.wav" autoplay="true"></audio>';
+            out += '<img src="/pos_chat/static/src/img/win.png" id="congrats-img" style="width: 100%;height: 50%;"></img>';
+            window.setTimeout(ShowUsers,2000);
+            if(user != null)
+                user.innerHTML = out;
+        }
+        else
+        {
+            if(document.getElementById('picture-'+n) == null) return;
+            under_text = document.getElementById('game-nick-'+data.uid);
+            under_text.style.setProperty('opacity','0');
+            under_text.style.setProperty('transition','1s ease-in');
+            under_text.innerHTML = chat_users[n].name;
+        }
+    }
+
+    function AllowChangeName(data)
+    {
+        var hat_text = document.getElementById('user-name-'+data.uid);
+        var i = NumInQueue(data.uid);
+        if(chat_users[i].allow_change_name)
+        {
+            hat_text.style.setProperty('background','red');
+            hat_text.style.setProperty('color','white');
+            chat_users[i].allow_change_name = false;
+        }
+        else
+        {
+            hat_text.style.setProperty('background','#a9a9ff');
+            hat_text.style.setProperty('color','white');
+            chat_users[i].allow_change_name = true;
+        }
+        hat_text.style.setProperty('transition','0.2s ease-in');
+    }
+
+//------------------------------------------------------
+
 //---------- Set avatar and animation part -------------
     var radius = 200;
 
-    function ShowUsers(){
+    function ShowUsers()
+    {
         var window = document.getElementById('main-window');
         var out = '';
         var visible = 0;
-        chat_users.forEach(function (item){
+        chat_users.forEach(function (item)
+        {
             var i = NumInQueue(item.uid);
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+i+'">';
             out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
             item.uid + '/image_small" id="ava-' + i +'" class="avatar" style="border-radius:50%;"></img>';
+            if(chat_users[i].name != '') visible = 1;
+            else visible = 0;
+            out += '<div class="user-name" id="game-nick-'+item.uid+'" style="opacity: '+visible+'">'+
+            chat_users[i].name+'</div>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
             out += '</div>';
@@ -137,7 +344,8 @@ odoo.define('pos_chat_button', function (require){
         });
     }
 
-    function SetPos(avatar, uid){
+    function SetPos(avatar, uid)
+    {
         var cnt = NumInQueue(uid) + 1;
         var action_window = document.getElementById('main-window');
         var angle = (2 * 3.1415 / chat_users.length) * cnt;
@@ -157,27 +365,22 @@ odoo.define('pos_chat_button', function (require){
 
 //------ Message taking and showing functions ----------
 
-    function TakeNewMessage(delete_last_char){
+    function TakeNewMessage(delete_last_char)
+    {
         var i = NumInQueue(session.uid);
 
         var newMessage = document.getElementById('text-line');
 
-        if(newMessage.value === ''){
-            newMessage.value = '';
-            return;
-        }
+        if(newMessage.value === '') {newMessage.value = ''; return;}
 
         var text = newMessage.value;
-        if(delete_last_char) {
-            text.substring(0, text.length - 2);
-        }
+        if(delete_last_char) text.substring(0, text.length - 2);
 
-        if(is_it_tag(newMessage.value, false)){
+        if(is_it_tag(newMessage.value, false))
             text = is_it_tag(newMessage.value, true);
-        }
 
         self._rpc({
-            model: "pos.session",
+            model: "pos.chat",
             method: "send_field_updates",
             args: ['', text, 'Message', session.uid]
         });
@@ -185,7 +388,36 @@ odoo.define('pos_chat_button', function (require){
         newMessage.value = '';
     }
 
-    function showMessage(uid){
+    function SetNewName()
+    {
+        var newMessage = document.getElementById('text-line');
+        if(newMessage.value === '') {newMessage.value = ''; return;}
+        var text = newMessage.value;
+
+        if(chat_users.length > 1 && chat_users[next_to_me(session.uid)].allow_change_name)
+        {
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_channel_all_but_id",
+                args: [text, chat_users[next_to_me(session.uid)].uid]
+            });
+
+            self._rpc({
+                model: "pos.chat",
+                method: "send_to_channel_by_id",
+                args: [chat_users[next_to_me(session.uid)].uid, session.uid, 'GotName']
+            });
+        }
+        else
+        {
+            alert("Oops! You can't change your neighbours name");
+        }
+
+        newMessage.value = '';
+    }
+
+    function showMessage(uid)
+    {
         var i = NumInQueue(uid), num = all_messages[i].length - 1;
         var cnt = messages_cnt[i]++;
         var num = all_messages[i].length - 1;
@@ -195,16 +427,13 @@ odoo.define('pos_chat_button', function (require){
         var mes_id = 'single-message-'+uid+'-'+cnt;
 
         var message = document.getElementById('message-id-' + uid);
-        if(typeof message === null) {
-            return;
-        }
+        if(typeof message === null) {return};
         var out = '';
 
-        if(num > 0){
+        if(num > 0)
             out += '<li id="single-message-'+uid+'-'+
             (cnt - 1)+'" class="new-message-'+uid+'-'+(cnt - 1)+ '">'+
             all_messages[i][num - 1].text+'</li>';
-        }
 
         out += '<li id="'+mes_id+'" class="' + mes_class + '">'+
         all_messages[i][num].text+'</li>';
@@ -212,9 +441,8 @@ odoo.define('pos_chat_button', function (require){
         out += '<audio src="/pos_chat/static/src/sound/msg.wav" autoplay="true"></audio>';
 
         message.innerHTML = out;
-        if(num > 0){
+        if(num > 0)
             message_view('single-message-'+uid+'-'+(cnt - 1), false);
-        }
 
         message_view(mes_id, true);
         $("."+mes_class).fadeIn();
@@ -222,7 +450,8 @@ odoo.define('pos_chat_button', function (require){
     }
 
     // Messages slow disapperaring
-    function Disappear(uid){
+    function Disappear(uid)
+    {
         if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return};
         if(all_messages[NumInQueue(uid)].length == 0) {return};
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
@@ -233,26 +462,29 @@ odoo.define('pos_chat_button', function (require){
 
 //---------Help functions part----------------------
 
-    function message_view(message_id, display){
+    function message_view(message_id, display)
+    {
         single_message = document.getElementById(message_id);
         single_message.style.setProperty('border-radius', '20%');
         single_message.style.setProperty('background','white');
         single_message.style.setProperty('top','10px');
         single_message.style.setProperty('width','100px');
         single_message.style.setProperty('font','14pt sans-serif');
-        if(display){
+        if(display)
             single_message.style.setProperty('display', 'none');
-        }
     }
 
-    function CheckUserExists(uid){
-        for(var i = 0; i < chat_users.length; i++){
+    function CheckUserExists(uid)
+    {
+        for(var i = 0; i < chat_users.length; i++)
+        {
             if(uid == chat_users[i].uid) return true;
         }
         return false;
     }
 
-    function Push_new_message(i, uid, message){
+    function Push_new_message(i, uid, message)
+    {
         return all_messages[i].push({
             text: message,
             user_id : uid,
@@ -261,9 +493,11 @@ odoo.define('pos_chat_button', function (require){
         });
     }
     // Users all data deletion
-    function DeleteUserData(uid){
+    function DeleteUserData(uid)
+    {
         var j = NumInQueue(uid);
-        for(var i = j; i < chat_users.length; i++){
+        for(var i = j; i < chat_users.length; i++)
+        {
             chat_users[i] = chat_users[i + 1];
             all_messages[i] = all_messages[i + 1];
             all_timeOuts[i] = all_timeOuts[i + 1];
@@ -274,7 +508,8 @@ odoo.define('pos_chat_button', function (require){
         all_timeOuts.pop();
     }
 
-    function DeleteMyData(){
+    function DeleteMyData()
+    {
         chat_users = [];
         all_messages = [];
         all_timeOuts = [];
@@ -287,190 +522,35 @@ odoo.define('pos_chat_button', function (require){
     {
         var left = 0, right = 0, slash = 0;
         var text = '';
-        for(var i = 0; i < str.length; i++){
-            if(left + right === 2 && str[i] !== '<'){
+        for(var i = 0; i < str.length; i++)
+        {
+            if(left + right === 2 && str[i] !== '<')
+            {
                 text += str[i];
             }
             if(str[i] == '<')left++;
             if(str[i] == '>')right++;
             if(str[i] == '/') slash++;
         }
-        // If send mode is active
-        if(send) {
-            return text;
-        }
 
-        if(left === 2 && right === 2 && slash === 1){
+        if(send) return text;
+        if(left == 2 && right == 2 && slash == 1)
             return true;
-        }
-        else{
+        else
             return false;
-        }
+    }
+    // Returns pointer to the neighbour
+    function next_to_me(uid)
+    {
+        if(NumInQueue(uid) == chat_users.length - 1) return 0;
+        else return NumInQueue(uid) + 1;
+    }
+
+    function back_from_next(n)
+    {
+        if(n == 0) return (chat_users.length - 1);
+        else return n - 1;
     }
 //--------------------------------------------------
-
-//--------------- Users relations part -----------------
-
-    function AddNewMessage(data){
-        var i = NumInQueue(data.uid);
-        if(all_messages[i].length >= 2){
-            clearTimeout(all_timeOuts[i][0]);
-            Disappear(data.uid);
-        }
-        Push_new_message(i, data.uid, data.message);
-        showMessage(data.uid);
-    }
-
-    function AddNewUser(user_data)
-    {
-        chat_users.push({
-            name : '',
-            true_name : user_data.name,
-            uid : user_data.uid,
-            participate : false,
-            allow_change_name: true,
-            cards : []
-        });
-
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
-        messages_cnt.push(0);
-        if(user_data.uid == session.uid) {ShowUsers();return;}
-
-        // Tell to new user about current user
-        window.setTimeout(function(){
-            var i = NumInQueue(session.uid);
-            self._rpc({
-                model: "pos.session",
-                method: "send_all_user_data_to",
-                args: [chat_users[i].name, chat_users[i].true_name,
-                chat_users[i].participate, chat_users[i].allow_change_name,
-                session.uid, 'Exist', user_data.uid]
-            });
-        }, 200 * NumInQueue(session.uid) + 1);
-
-        if(in_chat)
-        {
-            ShowUsers();
-        }
-    }
-
-    function AddExistUser(data){
-        chat_users.push({
-            name : data.name,
-            true_name : data.true_name,
-            uid : data.uid,
-            participate : data.participate,
-            allow_change_name: data.allow,
-            cards : []
-        });
-        var n = chat_users.length;
-        var temp = chat_users[n - 1];
-        chat_users[n - 1] = chat_users[n - 2];
-        chat_users[n - 2] = temp;
-
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
-        messages_cnt.push(0);
-
-        ShowUsers();
-    }
-
-    function DeleteUser(user_id){
-        DeleteUserData(user_id);
-        if(user_id !== session.uid){
-            ShowUsers();
-        }
-    }
-
-    function Distribute_cards(data, took_cards){
-        if(took_cards){
-            var ses = NumInQueue(session.uid);
-            var str = data.message;
-            for(var i = 0; i < str.length - 1; i++){
-                var num = '';
-                if(str[i] != ' '){
-                    if(str[i + 1] != ' '){
-                        chat_users[ses].cards.push(str[i] + str[i + 1]);
-                        i++;
-                    }
-                    else
-                        chat_users[ses].cards.push(str[i]);
-                }
-            }
-            alert(str + "\n" + chat_users[ses].cards);
-        }
-        else if(session.uid == chat_users[0].uid)
-        {
-            self._rpc({
-                model: "pos.session",
-                method: "distribution"
-            });
-        }
-    }
-
-    function SaveExtraCards(data){
-        trump = data.name;
-        var str = data.message;
-        for(var i = 0; i < str.length - 1; i++){
-            var num = '';
-            if(str[i] != ' '){
-                if(str[i + 1] != ' '){
-                    beated.push(str[i] + str[i + 1]);
-                    i++;
-                }
-                else
-                    beated.push(str[i]);
-            }
-        }
-    }
-
-//------------------------------------------------------
-//-------------- Longpooling functions -----------------
-
-    var PosModelSuper = models.PosModel;
-    models.PosModel = models.PosModel.extend({
-
-        initialize: function () {
-            PosModelSuper.prototype.initialize.apply(this, arguments);
-            var self = this;
-            // Listen to 'pos_chat' channel
-            self.bus.add_channel_callback("pos_chat", self.on_barcode_updates, self);
-        },
-
-        on_barcode_updates: function(data){
-            if(!in_chat){
-                return;
-            }
-            var self = this;
-            // If someone connected to the chat
-            if(data.command === 'Connect'){
-                if(!CheckUserExists(data.uid)){
-                    AddNewUser(data);
-                }
-            }
-            else if(data.command === 'Disconnect'){
-                DeleteUser(data.uid);
-            }
-            else if(data.command === 'Message'){ // If someone throwed a message
-                AddNewMessage(data);
-            }
-            else if(data.command === 'Exist'){
-                    AddExistUser(data);
-            }
-            else if(data.command === 'game_started'){
-                game_started = true;
-                alert("GAME STARTED!!!!!!!!!!!!!!!!");
-                Distribute_cards(data, false);
-            }
-            else if(data.command === 'Cards'){
-                Distribute_cards(data, true);
-            }
-            else if(data.command === 'Extra'){
-                SaveExtraCards(data);
-            }
-        },
-    });
-//------------------------------------------------------
     return ChatButton;
 });
