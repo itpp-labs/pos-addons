@@ -2,7 +2,9 @@
  Merge POS Orders
 ==================
 
-Merge POS orders into a single order in a few clicks
+Merge POS orders into a single order in a few clicks.
+
+.. note::  Does not work in the *Store mode*.  Will be fixed soon.
 
 Credits
 =======
