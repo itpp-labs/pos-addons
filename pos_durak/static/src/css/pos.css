@@ -237,12 +237,12 @@
 
 .card{
     position: absolute;
-    bottom: -30%;
-    width: 75px;
-    height: 175px;
+    bottom: -250px;
+    width: 150px;
+    height: 350px;
 }
 
 .card:hover{
-    transform: translateY(-10%);
+    transform: translateY(-20%);
     transition-duration: 0.2s;
 }

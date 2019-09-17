@@ -120,7 +120,7 @@ odoo.define('pos_chat_button', function (require){
         var window = document.getElementById('main-window');
         var block = document.getElementById('cards');
         var me = NumInQueue(session.uid);
-        var out = '', w = 60/chat_users[me].cards.length - 5;
+        var out = '', w = 60/chat_users[me].cards.length;
         for(var i = 0; i < chat_users[me].cards.length; i++){
             var n = chat_users[me].cards[i];
             out+='<img src="/pos_durak/static/src/img/kards/'+
@@ -473,7 +473,6 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'game_started'){
                 game_started = true;
-                alert("GAME STARTED!!!!!!!!!!!!!!!!");
                 Distribute_cards(data, false);
             }
             else if(data.command === 'Cards'){
