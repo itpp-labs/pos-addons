@@ -6,7 +6,7 @@
     "summary": """Support payment by scanning user's QR""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ['images/pos_alipay.png'],
     "version": "11.0.1.0.0",
     "application": False,
 
