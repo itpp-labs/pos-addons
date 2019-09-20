@@ -1,4 +1,5 @@
 import random
+import re
 from odoo import models, fields, api, _
 
 class Chat(models.Model):
@@ -36,7 +37,7 @@ class Chat(models.Model):
 
     @api.model
     def game_started(self, uid, max_users):
-        pos_id = self.search([('user_id','=',uid)]).id
+        pos_id = self.search([('user_id', '=', uid)]).id
         self.search([("id", "=", pos_id)]).write({
             'plays': True
         })
@@ -49,8 +50,8 @@ class Chat(models.Model):
 
     @api.model
     def distribution(self):
-        players = self.search([('plays','=',True)])
-        seq = [*range(0,51)]
+        players = self.search([('plays', '=', True)])
+        seq = [*range(0, 51)]
         random.shuffle(seq)
         card_nums = []
         i = 0
@@ -73,5 +74,16 @@ class Chat(models.Model):
         for k in range(len(players)*7 - 1, 51):
             temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(random.randint(0, 3)),
-                                temp_str , "Extra", -1)
+                                temp_str, "Extra", -1)
+        return 1
+
+    @api.model
+    def Moved(self, from_uid, card):
+        pos = self.search([('user_id', '=', from_uid)])
+        pos.write({
+            'cards': re.sub(card + " ", "", pos.cards)
+        })
+        import wdb
+        wdb.set_trace()
+        self.send_field_updates('', card + " " + str(from_uid), 'Move', -1)
         return 1

@@ -29,6 +29,10 @@ odoo.define('pos_chat_button', function (require){
     var beated = [];
     // Donald Trump
     var trump = ''
+    // who moves
+    var who_moves = -1
+    // Game mode
+    var attacking = false;
 
 //------------------------------------------------------
 
@@ -92,13 +96,22 @@ odoo.define('pos_chat_button', function (require){
                     TakeNewMessage(true);
                 }
             });
-            var r_but = document.getElementById('ready-button');
-            r_but.onclick = function (){
-                self._rpc({
-                    model: "pos.session",
-                    method: "game_started",
-                    args: [session.uid, chat_users.length]
-                });
+
+            window.onclick=function(e){
+                var elem = e ? e.target : window.event.srcElement;
+                if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
+                   var num = '';
+                   if(elem.id[elem.id.length - 2] != '-') num = elem.id[elem.id.length - 2];
+                   num += elem.id[elem.id.length - 1];
+                   Move(num);
+                }
+                else if(elem.id === "ready-button"){
+                    self._rpc({
+                        model: "pos.session",
+                        method: "game_started",
+                        args: [session.uid, chat_users.length]
+                    });
+                }
             }
         }
     });
@@ -120,11 +133,11 @@ odoo.define('pos_chat_button', function (require){
         var window = document.getElementById('main-window');
         var block = document.getElementById('cards');
         var me = NumInQueue(session.uid);
-        var out = '', w = 60/chat_users[me].cards.length;
+        var out = '', w = (60/chat_users[me].cards.length)/2;
         for(var i = 0; i < chat_users[me].cards.length; i++){
             var n = chat_users[me].cards[i];
-            out+='<img src="/pos_durak/static/src/img/kards/'+
-            n+'.png" id="card-'+n+'" class="card" style="right: '+(50 - i*w)+'%"></img>'
+            out+='<img type="button" src="/pos_durak/static/src/img/kards/'+
+            n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"></img>'
         }
         block.innerHTML = out;
     }
@@ -161,10 +174,29 @@ odoo.define('pos_chat_button', function (require){
         var y = Math.trunc(radius*Math.sin(angle));
 
         avatar.style.setProperty('position', 'absolute');
-        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
+        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) - w/4 + 'px');
         avatar.style.setProperty('top', h/2 - (avatar.offsetHeight / 2) + 'px');
         avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
         avatar.style.setProperty('transition','transform .3s ease-in-out');
+    }
+
+    function Second_scene(data){
+        var who_attacks = [-1,-1],str = data.message, who_defends;
+        var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
+        who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
+        who_defends = next_to(who_attacks[0]);
+        who_attacks[1] = next_to(who_defends);
+        var window = document.getElementById('main-window');
+        var w = window.offsetWidth, h = window.offsetHeight;
+        attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
+        attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
+        defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
+        attacker_id_1.style.setProperty('transform','translate3d('+(w*0.9)+'px,'+(h*0.1)+'px,0px)');
+        attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
+        attacker_id_2.style.setProperty('transform','translate3d('+(w*0.9)+'px,'+(h*0.9)+'px,0px)');
+        attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
+        defender_id.style.setProperty('transform','translate3d('+(w*0.1)+'px,'+(h*0.5)+'px,0px)');
+        defender_id.style.setProperty('transition','transform .3s ease-in-out');
     }
 //------------------------------------------------------
 
@@ -236,8 +268,8 @@ odoo.define('pos_chat_button', function (require){
 
     // Messages slow disapperaring
     function Disappear(uid){
-        if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return};
-        if(all_messages[NumInQueue(uid)].length == 0) {return};
+        if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return;}
+        if(all_messages[NumInQueue(uid)].length == 0) {return;}
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
@@ -319,6 +351,11 @@ odoo.define('pos_chat_button', function (require){
         else{
             return false;
         }
+    }
+
+    function next_to(uid){
+        if(NumInQueue(uid) == chat_users.length - 1) return 0;
+        else return NumInQueue(uid) + 1;
     }
 //--------------------------------------------------
 
@@ -438,6 +475,26 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
+    function Move(card_num){
+        if(who_moves === -1){
+            who_moves = chat_users[0].uid;
+        }
+        else{
+            who_moves = next_to(who_moves);
+        }
+
+        if(who_moves == session.uid || next_to(who_moves) == session.uid){
+            self._rpc({
+                model: "pos.session",
+                method: "Moved",
+                args: [session.uid, card_num]
+            });
+        }
+        else{
+            alert('Not so fast, its not your turn!');
+        }
+    }
+
 //------------------------------------------------------
 //-------------- Longpooling functions -----------------
 
@@ -480,6 +537,10 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'Extra'){
                 SaveExtraCards(data);
+            }
+            else if(data.command === 'Move'){
+                attacking = true;
+                Second_scene(data);
             }
         },
     });
