@@ -17,14 +17,12 @@ class Chat(models.Model):
             })
         data = {'name': name, 'message': message, 'uid': uid, 'command': command}
         self.env['pos.config'].send_to_all_poses(channel_name, data)
-        return 1
 
     @api.model
     def send_to_user(self, command, message, pos_id):
         data = {'command': command, 'message': message}
         channel = self.env['pos.config']._get_full_channel_name_by_id(self.env.cr.dbname, pos_id, "pos_chat")
         self.env['bus.bus'].sendmany([[channel, data]])
-        return 1
 
     @api.model
     def send_all_user_data_to(self, name, true_name, participate, allow, from_uid, command, to_uid):
@@ -33,7 +31,6 @@ class Chat(models.Model):
         pos_id = self.search([('state', '=', 'opened'), ('user_id', '=', to_uid)], limit=1).id
         channel = self.env['pos.config']._get_full_channel_name_by_id(self.env.cr.dbname, pos_id, "pos_chat")
         self.env['bus.bus'].sendmany([[channel, data]])
-        return 1
 
     @api.model
     def game_started(self, uid, max_users):
@@ -46,7 +43,6 @@ class Chat(models.Model):
             return 1
         if cnt >= max_users or cnt == 7:
             self.send_field_updates("", "", "game_started", -1)
-        return 1
 
     @api.model
     def distribution(self):
@@ -75,7 +71,6 @@ class Chat(models.Model):
             temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(random.randint(0, 3)),
                                 temp_str, "Extra", -1)
-        return 1
 
     @api.model
     def Moved(self, from_uid, card):
@@ -83,7 +78,4 @@ class Chat(models.Model):
         pos.write({
             'cards': re.sub(card + " ", "", pos.cards)
         })
-        import wdb
-        wdb.set_trace()
         self.send_field_updates('', card + " " + str(from_uid), 'Move', -1)
-        return 1

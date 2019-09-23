@@ -28,9 +28,9 @@ odoo.define('pos_chat_button', function (require){
     // Beated cards
     var beated = [];
     // Donald Trump
-    var trump = ''
+    var trump = '';
     // who moves
-    var who_moves = -1
+    var who_moves = -1;
     // Game mode
     var attacking = false;
 
@@ -174,7 +174,7 @@ odoo.define('pos_chat_button', function (require){
         var y = Math.trunc(radius*Math.sin(angle));
 
         avatar.style.setProperty('position', 'absolute');
-        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) - w/4 + 'px');
+        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
         avatar.style.setProperty('top', h/2 - (avatar.offsetHeight / 2) + 'px');
         avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
         avatar.style.setProperty('transition','transform .3s ease-in-out');
@@ -191,12 +191,21 @@ odoo.define('pos_chat_button', function (require){
         attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
         attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
         defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
-        attacker_id_1.style.setProperty('transform','translate3d('+(w*0.9)+'px,'+(h*0.1)+'px,0px)');
-        attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
-        attacker_id_2.style.setProperty('transform','translate3d('+(w*0.9)+'px,'+(h*0.9)+'px,0px)');
-        attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
-        defender_id.style.setProperty('transform','translate3d('+(w*0.1)+'px,'+(h*0.5)+'px,0px)');
-        defender_id.style.setProperty('transition','transform .3s ease-in-out');
+        if(attacker_id_1 !== null){
+            var point = attacker_id_1.getBoundingClientRect();
+            attacker_id_1.style.setProperty('transform','translate3d('+(w*0.9 - point.left)+'px,'+(point.top - h*0.1)+'px,0px)');
+            attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
+        }
+        if(attacker_id_2 !== null){
+            var point = attacker_id_2.getBoundingClientRect();
+            attacker_id_2.style.setProperty('transform','translate3d('+(w*0.9 - point.left)+'px,'+(h*0.9 - point.top)+'px,0px)');
+            attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
+        }
+        if(defender_id !== null){
+            var point = defender_id.getBoundingClientRect();
+            defender_id.style.setProperty('transform','translate3d('+(point.left - w*0.1)+'px,'+(h*0.5 - point.top)+'px,0px)');
+            defender_id.style.setProperty('transition','transform .3s ease-in-out');
+        }
     }
 //------------------------------------------------------
 
