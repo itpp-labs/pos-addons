@@ -17,7 +17,6 @@ odoo.define('pos_multi_session', function(require){
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling.connection');
     var rpc = require('web.rpc');
-    var Model = require('web.Model');
     var gui = require('point_of_sale.gui');
     var posDB = require('point_of_sale.DB');
 
