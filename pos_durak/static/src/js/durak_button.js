@@ -192,18 +192,18 @@ odoo.define('pos_chat_button', function (require){
         attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
         defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
         if(attacker_id_1 !== null){
-            var point = attacker_id_1.getBoundingClientRect();
-            attacker_id_1.style.setProperty('transform','translate3d('+(w*0.9 - point.left)+'px,'+(point.top - h*0.1)+'px,0px)');
+            var point = attacker_id_1.getBoundingClientRect(), x = point.left, y = point.top;
+            attacker_id_1.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.9 - y)+'px,0px)');
             attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
         }
         if(attacker_id_2 !== null){
-            var point = attacker_id_2.getBoundingClientRect();
-            attacker_id_2.style.setProperty('transform','translate3d('+(w*0.9 - point.left)+'px,'+(h*0.9 - point.top)+'px,0px)');
+            var point = attacker_id_2.getBoundingClientRect(), x = point.left, y = point.top;
+            attacker_id_2.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.9 - y)+'px,0px)');
             attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
         }
         if(defender_id !== null){
-            var point = defender_id.getBoundingClientRect();
-            defender_id.style.setProperty('transform','translate3d('+(point.left - w*0.1)+'px,'+(h*0.5 - point.top)+'px,0px)');
+            var point = defender_id.getBoundingClientRect(), x = point.left, y = point.top;
+            defender_id.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.1 - y)+'px,0px)');
             defender_id.style.setProperty('transition','transform .3s ease-in-out');
         }
     }
