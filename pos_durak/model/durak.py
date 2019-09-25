@@ -8,7 +8,7 @@ class Chat(models.Model):
     plays = fields.Boolean(default=False)
     cards = fields.Text(default='')
 
-    @api.model
+    @api.modelgit
     def send_field_updates(self, name, message, command, uid):
         channel_name = "pos_chat"
         if command == "Disconnect":

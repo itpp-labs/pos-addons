@@ -92,7 +92,7 @@ odoo.define('pos_chat_button', function (require){
             });
             // Send new messages using 'Enter' key on keyboard
             this.$("#text-line").off().keyup(function(event){
-                if(event.keyCode == 13){
+                if(event.keyCode === 13){
                     TakeNewMessage(true);
                 }
             });
@@ -101,7 +101,7 @@ odoo.define('pos_chat_button', function (require){
                 var elem = e ? e.target : window.event.srcElement;
                 if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
                    var num = '';
-                   if(elem.id[elem.id.length - 2] != '-') num = elem.id[elem.id.length - 2];
+                   if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
                    num += elem.id[elem.id.length - 1];
                    Move(num);
                 }
@@ -242,7 +242,6 @@ odoo.define('pos_chat_button', function (require){
     function showMessage(uid){
         var i = NumInQueue(uid), num = all_messages[i].length - 1;
         var cnt = messages_cnt[i]++;
-        var num = all_messages[i].length - 1;
 
         var mes_class = 'new-message-'+uid+'-'+cnt;
         all_messages[i][num].class = mes_class;
@@ -278,7 +277,7 @@ odoo.define('pos_chat_button', function (require){
     // Messages slow disapperaring
     function Disappear(uid){
         if(typeof all_messages[NumInQueue(uid)] === 'undefined') {return;}
-        if(all_messages[NumInQueue(uid)].length == 0) {return;}
+        if(all_messages[NumInQueue(uid)].length === 0) {return;}
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
@@ -301,7 +300,7 @@ odoo.define('pos_chat_button', function (require){
 
     function CheckUserExists(uid){
         for(var i = 0; i < chat_users.length; i++){
-            if(uid == chat_users[i].uid) return true;
+            if(uid === chat_users[i].uid) return true;
         }
         return false;
     }
@@ -345,9 +344,9 @@ odoo.define('pos_chat_button', function (require){
             if(left + right === 2 && str[i] !== '<'){
                 text += str[i];
             }
-            if(str[i] == '<')left++;
-            if(str[i] == '>')right++;
-            if(str[i] == '/') slash++;
+            if(str[i] === '<')left++;
+            if(str[i] === '>')right++;
+            if(str[i] === '/') slash++;
         }
         // If send mode is active
         if(send) {
@@ -363,7 +362,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function next_to(uid){
-        if(NumInQueue(uid) == chat_users.length - 1) return 0;
+        if(NumInQueue(uid) === chat_users.length - 1) return 0;
         else return NumInQueue(uid) + 1;
     }
 //--------------------------------------------------
@@ -394,10 +393,10 @@ odoo.define('pos_chat_button', function (require){
             cards : []
         });
 
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
+        all_messages.push([]);
+        all_timeOuts.push([]);
         messages_cnt.push(0);
-        if(user_data.uid == session.uid) {ShowUsers();return;}
+        if(user_data.uid === session.uid) {ShowUsers();return;}
 
         // Tell to new user about current user
         window.setTimeout(function(){
@@ -431,8 +430,8 @@ odoo.define('pos_chat_button', function (require){
         chat_users[n - 1] = chat_users[n - 2];
         chat_users[n - 2] = temp;
 
-        all_messages.push(new Array());
-        all_timeOuts.push(new Array());
+        all_messages.push([]);
+        all_timeOuts.push([]);
         messages_cnt.push(0);
 
         ShowUsers();
@@ -451,8 +450,8 @@ odoo.define('pos_chat_button', function (require){
             var str = data.message;
             for(var i = 0; i < str.length - 1; i++){
                 var num = '';
-                if(str[i] != ' '){
-                    if(str[i + 1] != ' '){
+                if(str[i] !== ' '){
+                    if(str[i + 1] !== ' '){
                         chat_users[ses].cards.push(str[i] + str[i + 1]);
                         i++;
                     }
@@ -462,7 +461,7 @@ odoo.define('pos_chat_button', function (require){
             }
             ShowCards();
         }
-        else if(session.uid == chat_users[0].uid)
+        else if(session.uid === chat_users[0].uid)
         {
             self._rpc({
                 model: "pos.session",
@@ -476,8 +475,8 @@ odoo.define('pos_chat_button', function (require){
         var str = data.message;
         for(var i = 0; i < str.length - 1; i++){
             var num = '';
-            if(str[i] != ' '){
-                if(str[i + 1] != ' '){
+            if(str[i] !== ' '){
+                if(str[i + 1] !== ' '){
                     beated.push(str[i] + str[i + 1]);
                     i++;
                 }
@@ -495,7 +494,7 @@ odoo.define('pos_chat_button', function (require){
             who_moves = next_to(who_moves);
         }
 
-        if(who_moves == session.uid || next_to(who_moves) == session.uid){
+        if(who_moves === session.uid || next_to(who_moves) === session.uid){
             self._rpc({
                 model: "pos.session",
                 method: "Moved",
