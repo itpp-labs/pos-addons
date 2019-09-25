@@ -184,8 +184,8 @@ odoo.define('pos_chat_button', function (require){
         var who_attacks = [-1,-1],str = data.message, who_defends;
         var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
         who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
-        who_defends = next_to(who_attacks[0]);
-        who_attacks[1] = next_to(who_defends);
+        who_defends = chat_users[next_to(who_attacks[0])].uid;
+        who_attacks[1] = chat_users[next_to(who_defends)].uid;
         var window = document.getElementById('main-window');
         var w = window.offsetWidth, h = window.offsetHeight;
         attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
@@ -382,6 +382,9 @@ odoo.define('pos_chat_button', function (require){
 
     function AddNewUser(user_data)
     {
+        // If user connected too late
+        if(game_started) return;
+
         chat_users.push({
             name : '',
             true_name : user_data.name,
