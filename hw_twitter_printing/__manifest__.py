@@ -4,7 +4,7 @@
     "summary": """Print tweets with specific hashtags""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": [],
+    "images": ['images/networkprinter.jpg'],
     "version": "10.0.1.0.0",
     "application": False,
 
