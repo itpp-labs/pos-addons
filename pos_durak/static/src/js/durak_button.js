@@ -1,45 +1,45 @@
 odoo.define('pos_chat_button', function (require){
       'use_strict';
 
-    var gui = require('point_of_sale.gui');
-    var screens = require('point_of_sale.screens');
-    var session = require('web.session');
-    var models = require('point_of_sale.models');
-    var rpc = require('web.rpc');
+    let gui = require('point_of_sale.gui');
+    let screens = require('point_of_sale.screens');
+    let session = require('web.session');
+    let models = require('point_of_sale.models');
+    let rpc = require('web.rpc');
 
 //-------------------- Variables -----------------------
 
     // All users messages stored here
-    var all_messages = [];
+    let all_messages = [];
     // Messages timeouts needs to store,
     // cause only this way we can know when to delete the message
-    var all_timeOuts = [];
+    let all_timeOuts = [];
     // Information about every user
-    var chat_users = [];
+    let chat_users = [];
     // I don't remember why i added this,
     // but without it, app don't work:D
-    var messages_cnt = [];
+    let messages_cnt = [];
     // Are user in chat room right now
-    var in_chat = false;
+    let in_chat = false;
     // Full channel name
-    var channel = "pos_chat";
+    let channel = "pos_chat";
     // Shows game stage
-    var game_started = false;
+    let game_started = false;
     // Beated cards
-    var beated = [];
+    let beated = [];
     // Donald Trump
-    var trump = '';
+    let trump = '';
     // who moves
-    var who_moves = -1;
+    let who_moves = -1;
     // Game mode
-    var attacking = false;
+    let attacking = false;
 
 //------------------------------------------------------
 
 //-------------Help functions part----------------------
     // Checks out which num user has
     function NumInQueue(uid){
-        for(var i = 0; i < chat_users.length; i++){
+        for(let i = 0; i < chat_users.length; i++){
             if(chat_users[i].uid === uid) {
                 return i;
             }
@@ -98,9 +98,9 @@ odoo.define('pos_chat_button', function (require){
             });
 
             window.onclick=function(e){
-                var elem = e ? e.target : window.event.srcElement;
+                let elem = e ? e.target : window.event.srcElement;
                 if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
-                   var num = '';
+                   let num = '';
                    if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
                    num += elem.id[elem.id.length - 1];
                    Move(num);
@@ -130,12 +130,12 @@ odoo.define('pos_chat_button', function (require){
     var radius = 200;
 
     function ShowCards(){
-        var window = document.getElementById('main-window');
-        var block = document.getElementById('cards');
-        var me = NumInQueue(session.uid);
-        var out = '', w = (60/chat_users[me].cards.length)/2;
-        for(var i = 0; i < chat_users[me].cards.length; i++){
-            var n = chat_users[me].cards[i];
+        let window = document.getElementById('main-window');
+        let block = document.getElementById('cards');
+        let me = NumInQueue(session.uid);
+        let out = '', w = (60/chat_users[me].cards.length)/2;
+        for(let i = 0; i < chat_users[me].cards.length; i++){
+            let n = chat_users[me].cards[i];
             out+='<img type="button" src="/pos_durak/static/src/img/kards/'+
             n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"></img>'
         }
@@ -143,11 +143,11 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function ShowUsers(){
-        var window = document.getElementById('main-window');
-        var out = '';
-        var visible = 0;
+        let window = document.getElementById('main-window');
+        let out = '';
+        let visible = 0;
         chat_users.forEach(function (item){
-            var i = NumInQueue(item.uid);
+            let i = NumInQueue(item.uid);
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+i+'">';
             out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
@@ -164,14 +164,14 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function SetPos(avatar, uid){
-        var cnt = NumInQueue(uid) + 1;
-        var action_window = document.getElementById('main-window');
-        var angle = (2 * 3.1415 / chat_users.length) * cnt;
-        var w = action_window.offsetWidth;
-        var h = action_window.offsetHeight;
+        let cnt = NumInQueue(uid) + 1;
+        let action_window = document.getElementById('main-window');
+        let angle = (2 * 3.1415 / chat_users.length) * cnt;
+        let w = action_window.offsetWidth;
+        let h = action_window.offsetHeight;
 
-        var x = Math.trunc(radius*Math.cos(angle));
-        var y = Math.trunc(radius*Math.sin(angle));
+        let x = Math.trunc(radius*Math.cos(angle));
+        let y = Math.trunc(radius*Math.sin(angle));
 
         avatar.style.setProperty('position', 'absolute');
         avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
@@ -181,29 +181,56 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Second_scene(data){
-        var who_attacks = [-1,-1],str = data.message, who_defends;
-        var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
+        let who_attacks = [-1,-1],str = data.message, who_defends;
+        let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
         who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
         who_defends = chat_users[next_to(who_attacks[0])].uid;
         who_attacks[1] = chat_users[next_to(who_defends)].uid;
-        var window = document.getElementById('main-window');
-        var w = window.offsetWidth, h = window.offsetHeight;
-        attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
-        attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
-        defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
+        let window = document.getElementById('main-window');
+        let w = window.offsetWidth, h = window.offsetHeight;
+        let attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
+        let attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
+        let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
+        // Inscription showing
+        if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
+            let out = '<p class="game-inscription">Attack '+chat_users[NumInQueue(who_defends)].name+'</p>';
+            let text = document.getElementById('for-inscriptions');
+            text.innerHTML = out;
+            $(".game-inscription").fadeIn(500);
+            setTimeout(function () {
+                let temp = document.getElementById('inscription');
+                $(".game-inscription").fadeOut(500);
+            },1500);
+        }
+        if(session.uid === who_defends){
+            let out = '<p class="game-inscription">Defend yourself</p>';
+            let text = document.getElementById('for-inscriptions');
+            text.innerHTML = out;
+            $(".game-inscription").fadeIn(500);
+            setTimeout(function () {
+                let temp = document.getElementById('inscription');
+                $(".game-inscription").fadeOut(500);
+            },1500);
+        }
+
         if(attacker_id_1 !== null){
-            var point = attacker_id_1.getBoundingClientRect(), x = point.left, y = point.top;
-            attacker_id_1.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.9 - y)+'px,0px)');
+            let x = attacker_id_1.offsetLeft, y = attacker_id_1.offsetTop, bias = attacker_id_1.offsetWidth;
+            let bias_top = session.uid === who_defends ? -(y+h*0.05) : (h*0.75 - y);
+            attacker_id_1.style.setProperty('transform','translate3d('
+                +(w/2 - x - bias)+'px,'+(bias_top)+'px,0px)');
             attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
         }
-        if(attacker_id_2 !== null){
-            var point = attacker_id_2.getBoundingClientRect(), x = point.left, y = point.top;
-            attacker_id_2.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.9 - y)+'px,0px)');
+        if(attacker_id_2 !== null && who_attacks[0] !== who_attacks[1]){
+            let x = attacker_id_2.offsetLeft, y = attacker_id_2.offsetTop, bias = attacker_id_2.offsetWidth;
+            let bias_top = session.uid === who_defends ? -(y+h*0.05) : (h*0.75 - y);
+            attacker_id_2.style.setProperty('transform','translate3d('
+                +(w/2 - x + bias)+'px,'+(bias_top)+'px,0px)');
             attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
         }
         if(defender_id !== null){
-            var point = defender_id.getBoundingClientRect(), x = point.left, y = point.top;
-            defender_id.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+(h*0.1 - y)+'px,0px)');
+            let x = defender_id.offsetLeft, y = defender_id.offsetTop;
+            let bias_top = session.uid === who_defends ? (h*0.75 - y) : -(y+h*0.05);
+            defender_id.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+bias_top+'px,0px)');
             defender_id.style.setProperty('transition','transform .3s ease-in-out');
         }
     }
@@ -212,9 +239,9 @@ odoo.define('pos_chat_button', function (require){
 //------ Message taking and showing functions ----------
 
     function TakeNewMessage(delete_last_char){
-        var i = NumInQueue(session.uid);
+        let i = NumInQueue(session.uid);
 
-        var newMessage = document.getElementById('text-line');
+        let newMessage = document.getElementById('text-line');
 
         if(newMessage.value === ''){
             newMessage.value = '';
@@ -438,6 +465,11 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function DeleteUser(user_id){
+        let exist = false;
+        chat_users.forEach(function (item) {
+           if(item.uid === user_id) exist = true;
+        });
+        if(!exist) { return; }
         DeleteUserData(user_id);
         if(user_id !== session.uid){
             ShowUsers();
