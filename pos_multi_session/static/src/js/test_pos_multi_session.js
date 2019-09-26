@@ -29,7 +29,7 @@ odoo.define('pos_multi_session.tour', function (require) {
         position: 'bottom',
         edition: 'enterprise'
     }, {
-        trigger: ".o_pos_kanban button.oe_kanban_action_button",
+        trigger: ".o_pos_kanban :has(div.o_primary:contains('Bar')) button.oe_kanban_action_button",
         content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
         position: "bottom"
     }, {
