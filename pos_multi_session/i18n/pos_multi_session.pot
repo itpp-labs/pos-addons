@@ -228,7 +228,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1055
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1065
 #, python-format
 msgid "No connection to the server."
 msgstr ""
@@ -324,7 +324,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:171
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:169
 #, python-format
 msgid "Sync Orders"
 msgstr ""
@@ -337,7 +337,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:970
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:971
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
@@ -354,7 +354,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1012
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1022
 #, python-format
 msgid "Warning"
 msgstr ""
