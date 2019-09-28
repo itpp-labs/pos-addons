@@ -7,7 +7,7 @@
     "name": """Hardware Network Printer""",
     "summary": """Hardware Driver for Network Printers""",
     "category": "Point of Sale",
-    "images": [],
+    "images": ['images/networkprinter.jpg'],
     "version": "10.0.2.0.1",
     "application": False,
 
