@@ -19,7 +19,7 @@ Barcode Payment
 QR Code Payment
 ---------------
 
-* Cashier clicks a button to  get one-time url and shows it to Buyer as a QR Code
+* Cashier clicks a button to get one-time url and shows it to Buyer as a QR Code
 
   * QR can be shown in POS
   * QR can be shown in Mobile POS (``pos_mobile`` module is recommended)

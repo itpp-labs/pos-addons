@@ -6,7 +6,7 @@
     "summary": """Technical module to integrate odoo with Alipay""",
     "category": "Hidden",
     # "live_test_url": "",
-    "images": [],
+    "images": ['images/alipay.png'],
     "version": "11.0.1.0.0",
     "application": False,
 
