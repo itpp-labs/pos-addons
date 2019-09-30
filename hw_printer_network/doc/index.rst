@@ -17,12 +17,6 @@ Usage
 
 * To know how to update odoo command-line options and edit odoo source follow this `video <https://drive.google.com/file/d/1tdQAOldgFO96x5fvbEI-H84Qdmcg3DR2/view>`__ .
 
-.. video:: hw_printer_network\video\hw_printer_network module installation.mp4
-   :width: 500
-   :height: 300
-   :autoplay:
-   :nocontrols:
-
 .. note::
     Use the module together with `Pos Network Printer <https://apps.odoo.com/apps/modules/10.0/pos_printer_network>`__
 
