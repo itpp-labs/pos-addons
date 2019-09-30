@@ -21,3 +21,5 @@ List of repositories:
 Donation
 ========
 Feel free to support our efforts by purchasing [our pos modules at app store](https://apps.odoo.com/apps/modules/category/Point%20of%20Sale/browse?price=Paid&order=Newest&author=IT-Projects+LLC)
+
+...
