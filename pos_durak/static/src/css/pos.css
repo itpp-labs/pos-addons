@@ -237,9 +237,9 @@
 
 .card{
     position: absolute;
-    bottom: -250px;
-    width: 150px;
-    height: 350px;
+    bottom: -100px;
+    width: 75px;
+    height: 150px;
 }
 
 .card:hover{

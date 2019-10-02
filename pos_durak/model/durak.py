@@ -2,13 +2,13 @@ import random
 import re
 from odoo import models, fields, api, _
 
-class Chat(models.Model):
+class Durak(models.Model):
     _inherit = 'pos.session'
 
     plays = fields.Boolean(default=False)
     cards = fields.Text(default='')
 
-    @api.modelgit
+    @api.model
     def send_field_updates(self, name, message, command, uid):
         channel_name = "pos_chat"
         if command == "Disconnect":
@@ -49,13 +49,14 @@ class Chat(models.Model):
     @api.model
     def distribution(self):
         players = self.search([('plays', '=', True)])
-        seq = [*range(0, 51)]
+        seq = [*range(0, 52)]
+        how_much_cards = 7
         random.shuffle(seq)
         card_nums = []
         i = 0
         for num in seq:
             card_nums.append(num)
-            if len(card_nums) == 7:
+            if len(card_nums) == how_much_cards:
                 temp_str = ""
                 for j in card_nums:
                     temp_str += str(j)
@@ -69,9 +70,9 @@ class Chat(models.Model):
             if(i >= len(players)):
                 break
         temp_str = ''
-        for k in range(len(players)*7 - 1, 51):
+        for k in range(len(players)*how_much_cards - 1, len(seq) - 2):
             temp_str += str(seq[k]) + ' '
-        self.send_field_updates(str(random.randint(0, 3)),
+        self.send_field_updates(str(seq[len(seq) - 1]),
                                 temp_str, "Extra", -1)
         return 1
 
