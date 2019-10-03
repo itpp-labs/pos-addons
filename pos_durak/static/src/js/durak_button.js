@@ -30,7 +30,7 @@ odoo.define('pos_chat_button', function (require){
     // Donald Trump
     let trump = '';
     // who moves
-    let who_moves = -1;
+    let who_moves = 0;
     // Game mode
     let attacking = false;
     // How much cards on the table
@@ -128,8 +128,55 @@ odoo.define('pos_chat_button', function (require){
 
 //------------------------------------------------------
 
+//--------------- Game table actions -------------------
+    function Card_power(card_num) {
+        let n = Number(card_num);
+        let cnt = 0;
+        while(n < 13){
+            n -= 13;
+            cnt++;
+        }
+        return [n, cnt];
+    }
+
+    function Comp(card_num1, card_num2){
+        let card1 = Card_power(card_num1);
+        let card2 = Card_power(card_num2);
+        card1[0] = (card1[1] === trump[1]) ? (card1[0] + 100) : card1[0];
+        card2[0] = (card2[1] === trump[1]) ? (card2[0] + 100) : card2[0];
+        if (card1[1] === card2[1] || card1[1] === trump[1] || card2[1] === trump[1]){
+            return card1[0] > card2[0] ? 1 : 2;
+        }
+        return -1;
+    }
+
+    function PutOn(card) {
+        cards_n++;
+        let window = document.getElementById('main-window');
+        let w = window.offsetWidth, h = window.offsetHeight;
+        if(cards_n === 1){
+            let x = card.offsetLeft, y = card.offsetTop;
+            card.style.setProperty('transform','translate3d('
+                +(w/2 - x)+'px,'+(h/2 - y)+'px,0px)');
+        }
+    }
+
+    function Move(card_num){
+        if(who_moves === NumInQueue(session.uid)){
+            self._rpc({
+                model: "pos.session",
+                method: "Moved",
+                args: [session.uid, chat_users[who_moves].uid, card_num]
+            });
+        }
+        else{
+            alert('Not so fast, its not your turn!');
+        }
+    }
+//------------------------------------------------------
+
 //---------- Set avatar and animation part -------------
-    var radius = 200;
+    let radius = 180;
 
     function ShowCards(){
         let window = document.getElementById('main-window');
@@ -234,41 +281,6 @@ odoo.define('pos_chat_button', function (require){
             let bias_top = session.uid === who_defends ? (h*0.75 - y) : -(y+h*0.05);
             defender_id.style.setProperty('transform','translate3d('+(w/2 - x)+'px,'+bias_top+'px,0px)');
             defender_id.style.setProperty('transition','transform .3s ease-in-out');
-        }
-    }
-//------------------------------------------------------
-
-//--------------- Game table actions -------------------
-    function Card_power(card_num) {
-        let n = Number(card_num);
-        let cnt = 0;
-        while(n < 13){
-            n -= 13;
-            cnt++;
-        }
-        return [n, cnt];
-    }
-
-    function Comp(card_num1, card_num2){
-        let card1 = Card_power(card_num1);
-        let card2 = Card_power(card_num2);
-        card1[0] = (card1[1] === trump[1]) ? (card1[0] + 100) : card1[0];
-        card2[0] = (card2[1] === trump[1]) ? (card2[0] + 100) : card2[0];
-        if (card1[1] === card2[1] || card1[1] === trump[1] || card2[1] === trump[1]){
-            return card1[0] > card2[0] ? 1 : 2;
-        }
-        return -1;
-    }
-
-    function PutOn(card) {
-        cards_n++;
-        let window = document.getElementById('main-window');
-        let w = window.offsetWidth, h = window.offsetHeight;
-        if(cards_n === 1){
-            let x = card.offsetLeft, y = card.offsetTop;
-            card.style.setProperty('transform','translate3d('
-                +(w/2 - x)+'px,'+(h/2 - y)+'px,0px)');
-            card.style.setProperty('transition','all .3s ease-in-out');
         }
     }
 //------------------------------------------------------
@@ -417,17 +429,15 @@ odoo.define('pos_chat_button', function (require){
             return text;
         }
 
-        if(left === 2 && right === 2 && slash === 1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return left === 2 && right === 2 && slash === 1 ? true : false;
     }
 
     function next_to(uid){
-        if(NumInQueue(uid) === chat_users.length - 1) return 0;
-        else return NumInQueue(uid) + 1;
+        return NumInQueue(uid) === chat_users.length - 1 ? 0 : NumInQueue(uid) + 1;
+    }
+
+    function who_steps_next() {
+        who_moves = chat_users.length < who_moves + 1 ? who_moves+1 : 0;
     }
 //--------------------------------------------------
 
@@ -555,22 +565,6 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
-    function Move(card_num){
-        if(who_moves === session.uid){
-            self._rpc({
-                model: "pos.session",
-                method: "Moved",
-                args: [session.uid, card_num]
-            });
-
-            let card = document.getElementById('card-'+card_num);
-            PutOn(card);
-        }
-        else{
-            alert('Not so fast, its not your turn!');
-        }
-    }
-
 //------------------------------------------------------
 //-------------- Longpooling functions -----------------
 
@@ -617,6 +611,9 @@ odoo.define('pos_chat_button', function (require){
             else if(data.command === 'Move'){
                 attacking = true;
                 Second_scene(data);
+
+            let card = document.getElementById('card-'+card_num);
+            PutOn(card);
             }
         },
     });

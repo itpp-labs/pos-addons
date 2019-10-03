@@ -27,6 +27,9 @@
             <span type="button" class="ready-button" id="ready-button">
                 Ready
             </span>
+            <span type="button" class="ready-button" id="step-button" style="display: none">
+                Complete move
+            </span>
         </div>
     </t>
 </templates>

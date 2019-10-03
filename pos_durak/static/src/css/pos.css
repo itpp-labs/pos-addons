@@ -240,6 +240,7 @@
     bottom: -100px;
     width: 75px;
     height: 150px;
+    transition: all .3s ease-in-out;
 }
 
 .card:hover{

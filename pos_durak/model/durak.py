@@ -5,8 +5,12 @@ from odoo import models, fields, api, _
 class Durak(models.Model):
     _inherit = 'pos.session'
 
+    def default_game_id(self):
+        return self.env.ref('base_game').id
+
     plays = fields.Boolean(default=False)
     cards = fields.Text(default='')
+    game_id = fields.Many2one('game', default=default_game_id)
 
     @api.model
     def send_field_updates(self, name, message, command, uid):
@@ -47,7 +51,16 @@ class Durak(models.Model):
         return 1
 
     @api.model
-    def distribution(self):
+    def CardPower(self, card_num):
+        card = int(card_num)
+        cnt = 0
+        while card < 13:
+            card -= 13
+            cnt += 1
+        return [card, cnt]
+
+    @api.model
+    def _distribution(self):
         players = self.search([('plays', '=', True)])
         seq = [*range(0, 52)]
         how_much_cards = 7
@@ -74,10 +87,12 @@ class Durak(models.Model):
             temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(seq[len(seq) - 1]),
                                 temp_str, "Extra", -1)
+
+        # self.game_id.trump = self.CardPower(str(seq[len(seq) - 1]))[1]
         return 1
 
     @api.model
-    def Moved(self, from_uid, card):
+    def Moved(self, from_uid, who_defends, card):
         pos = self.search([('user_id', '=', from_uid)])
         pos.write({
             'cards': re.sub(card + " ", "", pos.cards)
