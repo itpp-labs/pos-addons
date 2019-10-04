@@ -46,10 +46,6 @@
     font-family: Lato;
 }
 
-.pos .modal-dialog .message-field{
-    height:
-}
-
 .pos .modal-dialog .popup .Label{
     margin-top: 10px;
 }
@@ -190,12 +186,6 @@
     transition-duration: 0.5s;
 }
 
-.pos .main-action .chat-user {
-    position: absolute;
-    left: var(--pos-X);
-    top: var(--pos-Y);
-}
-
 .pos .user-name{
     background: #a9a9ff;
     border-radius: 30%;
@@ -250,9 +240,10 @@
 
 .tips{
     position: absolute;
-    top: 40%;
+    top: 20%;
     left: 10%;
     font-size: 30px;
-    color: #0f610f;
-    display: none;
+    color: #ffc526;
+    opacity: 0;
+    transition: all .3s ease-in-out;
 }

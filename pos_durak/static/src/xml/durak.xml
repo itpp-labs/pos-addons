@@ -9,7 +9,7 @@
     </t>
 
     <t t-name="CustomScreenWidget">
-        <div id="for-inscriptions"></div>
+        <div id="for-inscriptions" class="border"></div>
         <div class="main-action" id="main-window"></div>
         <div class="chat-tools">
             <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>

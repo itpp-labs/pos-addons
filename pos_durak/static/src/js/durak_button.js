@@ -171,7 +171,7 @@ odoo.define('pos_chat_button', function (require){
         let sign = (cards_n + 1)%2 === 0 ? 1 : -1;
         let cw = card.offsetWidth, ch = card.offsetHeight;
 
-        let put_w = (w - cw)/2 + cards_n*(cw/2)*sign, put_h = (h - ch)/2;
+        let put_w = (w - cw)/2 + cards_n*cw*sign*0.8, put_h = (h - ch)/2;
         let x = card.offsetLeft, y = card.offsetTop;
         card.style.setProperty('transform','translate3d('
             +(put_w - x)+'px,'+(put_h - y)+'px,0px)');
@@ -260,6 +260,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Second_scene(data){
+        document.getElementById('step-button').style.opacity = 1;
         let who_attacks = [-1,-1],str = data.message, who_defends;
         who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
         who_defends = next_to(who_attacks[0]);
@@ -271,15 +272,15 @@ odoo.define('pos_chat_button', function (require){
         let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
         // Inscription showing
         if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
-            let out = '<p class="tips">Attack '+chat_users[NumInQueue(who_defends)].name+'</p>';
+            let out = 'Attack'+chat_users[NumInQueue(who_defends)].name;
             let text = document.getElementById('for-inscriptions');
-            text.innerHTML = out;
+            text.textContent = out;
             Tip(1500, 500);
         }
         if(session.uid === who_defends){
-            let out = '<p class="tips">Defend yourself</p>';
+            let out = 'Defend yourself ';
             let text = document.getElementById('for-inscriptions');
-            text.innerHTML = out;
+            text.textContent = out;
             Tip(1500, 500);
         }
 
@@ -632,8 +633,10 @@ odoo.define('pos_chat_button', function (require){
                 SaveExtraCards(data);
             }
             else if(data.command === 'Move'){
+                if(!attacking){
+                    Second_scene(data);
+                }
                 attacking = true;
-                Second_scene(data);
                 let str = data.message;
                 let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
                 let card = document.getElementById('card-'+attack_card);
