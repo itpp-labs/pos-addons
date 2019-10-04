@@ -84,9 +84,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/misc-addons/12.0
+Demo: http://runbot.it-projects.info/demo/misc-addons/13.0
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/wechat/
+HTML Description: https://apps.odoo.com/apps/modules/13.0/wechat/
 
 Usage instructions: `<doc/index.rst>`_
 

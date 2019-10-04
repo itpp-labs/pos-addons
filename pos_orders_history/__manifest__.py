@@ -40,7 +40,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "POS Orders History",
     "demo_addons": [
