@@ -23,7 +23,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/13.0/pos_invoice_pay/>`__.
 
       Thank you for understanding!
 
@@ -32,9 +32,9 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/13.0
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/
+HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_invoice_pay/
 
 Usage instructions: `<doc/index.rst>`__
 
