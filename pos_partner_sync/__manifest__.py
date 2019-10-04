@@ -33,7 +33,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Sync Partner data in POS",
     "demo_addons": [

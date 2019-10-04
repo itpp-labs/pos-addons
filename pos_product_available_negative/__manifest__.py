@@ -32,5 +32,5 @@
     "qweb": [
     ],
 
-    'installable': True,
+    'installable': False,
 }
