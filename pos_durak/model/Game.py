@@ -5,5 +5,5 @@ class Game(models.Model):
     _description = 'Game fields'
 
     trump = fields.Integer()
-    session_ids = fields.One2many('pos.session', 'game_id')
+    # session_ids = fields.One2many('pos.session', 'game_id')
     name = fields.Char()
