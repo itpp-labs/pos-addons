@@ -114,6 +114,11 @@ odoo.define('pos_chat_button', function (require){
                         args: [session.uid, chat_users.length]
                     });
                 }
+                else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava"){
+                    let num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
+                        + elem.id[elem.id.length - 1];
+                    HowMuchCards(chat_users[Number(num)].uid);
+                }
             }
         }
     });
@@ -129,6 +134,15 @@ odoo.define('pos_chat_button', function (require){
 //------------------------------------------------------
 
 //--------------- Game table actions -------------------
+
+    function Tip(how_long_to_hold, delay){
+        $(".tips").fadeIn(delay);
+        setTimeout(function () {
+            let temp = document.getElementById('inscription');
+            $(".tips").fadeOut(delay);
+        },how_long_to_hold);
+    }
+
     function Card_power(card_num) {
         let n = Number(card_num);
         let cnt = 0;
@@ -184,8 +198,10 @@ odoo.define('pos_chat_button', function (require){
         })
     }
 
-    function ShowHowMuchCards(){
-
+    function ShowHowMuchCards(num){
+        let text = document.getElementsByClassName('tips')[0];
+        text = String(num);
+        Tip(1500, 500);
     }
 //------------------------------------------------------
 
@@ -255,24 +271,16 @@ odoo.define('pos_chat_button', function (require){
         let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
         // Inscription showing
         if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
-            let out = '<p class="game-inscription">Attack '+chat_users[NumInQueue(who_defends)].name+'</p>';
+            let out = '<p class="tips">Attack '+chat_users[NumInQueue(who_defends)].name+'</p>';
             let text = document.getElementById('for-inscriptions');
             text.innerHTML = out;
-            $(".game-inscription").fadeIn(500);
-            setTimeout(function () {
-                let temp = document.getElementById('inscription');
-                $(".game-inscription").fadeOut(500);
-            },1500);
+            Tip(1500, 500);
         }
         if(session.uid === who_defends){
-            let out = '<p class="game-inscription">Defend yourself</p>';
+            let out = '<p class="tips">Defend yourself</p>';
             let text = document.getElementById('for-inscriptions');
             text.innerHTML = out;
-            $(".game-inscription").fadeIn(500);
-            setTimeout(function () {
-                let temp = document.getElementById('inscription');
-                $(".game-inscription").fadeOut(500);
-            },1500);
+            Tip(1500, 500);
         }
 
         if(attacker_id_1 !== null){

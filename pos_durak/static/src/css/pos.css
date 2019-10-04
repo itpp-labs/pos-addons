@@ -248,10 +248,10 @@
     transition-duration: 0.2s;
 }
 
-.game-inscription{
+.tips{
     position: absolute;
     top: 40%;
-    left: 40%;
+    left: 10%;
     font-size: 30px;
     color: #0f610f;
     display: none;
