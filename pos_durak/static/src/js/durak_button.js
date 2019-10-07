@@ -135,12 +135,23 @@ odoo.define('pos_chat_button', function (require){
 
 //--------------- Game table actions -------------------
 
-    function Tip(how_long_to_hold, delay){
+    function Tip(str, how_long_to_hold, delay){
+        let window = document.getElementById('main-window');
+        let text = document.getElementById('for-inscriptions');
+        text.innerHTML = str;
         $(".tips").fadeIn(delay);
+
+        text.style.setProperty('transform','translate3d(0px,'
+            +(window.offsetHeight/2 - text.offsetTop)+'px,0px)');
         setTimeout(function () {
-            let temp = document.getElementById('inscription');
+        text.style.setProperty('transform','translate3d(0px,'
+            +(window.offsetHeight*3 - text.offsetTop)+'px,0px)');
+        },1000);
+
+        setTimeout(function () {
             $(".tips").fadeOut(delay);
-        },how_long_to_hold);
+            text.style.setProperty('top', '0');
+        },how_long_to_hold + 1000);
     }
 
     function Card_power(card_num) {
@@ -199,9 +210,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function ShowHowMuchCards(num){
-        let text = document.getElementsByClassName('tips')[0];
-        text = String(num);
-        Tip(1500, 500);
+        Tip(num, 1500, 500);
     }
 //------------------------------------------------------
 
@@ -260,7 +269,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Second_scene(data){
-        document.getElementById('step-button').style.opacity = 1;
+        document.getElementById('step-button').style.setProperty('opacity', '1');
         let who_attacks = [-1,-1],str = data.message, who_defends;
         who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
         who_defends = next_to(who_attacks[0]);
@@ -272,16 +281,10 @@ odoo.define('pos_chat_button', function (require){
         let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
         // Inscription showing
         if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
-            let out = 'Attack'+chat_users[NumInQueue(who_defends)].name;
-            let text = document.getElementById('for-inscriptions');
-            text.textContent = out;
-            Tip(1500, 500);
+            Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000, 500);
         }
         if(session.uid === who_defends){
-            let out = 'Defend yourself ';
-            let text = document.getElementById('for-inscriptions');
-            text.textContent = out;
-            Tip(1500, 500);
+            Tip('Defend yourself', 2000, 500);
         }
 
         if(attacker_id_1 !== null){
@@ -433,6 +436,7 @@ odoo.define('pos_chat_button', function (require){
         messages_cnt = [];
         // User out of the chat room
         in_chat = false;
+        game_started = false;
     }
     // Is this string the tag checking
     function is_it_tag(str, send)
@@ -568,7 +572,7 @@ odoo.define('pos_chat_button', function (require){
         {
             self._rpc({
                 model: "pos.session",
-                method: "distribution"
+                method: "cards_distribution"
             });
         }
     }

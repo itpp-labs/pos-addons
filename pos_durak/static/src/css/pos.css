@@ -223,6 +223,7 @@
     color: #555c6c;
     margin-top: 20px;
     margin-left: 20px;
+    transition: all .3s ease-in-out;
 }
 
 .card{
@@ -240,10 +241,9 @@
 
 .tips{
     position: absolute;
-    top: 20%;
-    left: 10%;
-    font-size: 30px;
+    top: 0%;
+    left: 50%;
+    font-size: 100px;
     color: #ffc526;
-    opacity: 0;
     transition: all .3s ease-in-out;
 }

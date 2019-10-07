@@ -10,6 +10,7 @@ class Durak(models.Model):
 
     plays = fields.Boolean(default=False)
     cards = fields.Text(default='')
+    cards_num = fields.Integer(default=0)
     # game_id = fields.Many2one('game', default=default_game_id)
 
     @api.model
@@ -60,7 +61,7 @@ class Durak(models.Model):
         return [card, cnt]
 
     @api.model
-    def distribution(self):
+    def cards_distribution(self):
         players = self.search([('plays', '=', True)])
         seq = [*range(0, 52)]
         how_much_cards = 7
@@ -76,7 +77,8 @@ class Durak(models.Model):
                     temp_str += ' '
                 card_nums.clear()
                 players[i].write({
-                    'cards': temp_str
+                    'cards': temp_str,
+                    'cards_num': 7
                 })
                 self.send_to_user('Cards', temp_str, players[i].id)
                 i += 1
@@ -94,15 +96,19 @@ class Durak(models.Model):
     @api.model
     def moved(self, from_uid, card):
         pos = self.search([('user_id', '=', from_uid)])
+        cards_cnt_before = len(pos.cards)
         pos.write({
-            'cards': re.sub(card + " ", "", pos.cards)
+            'cards': re.sub(card + " ", "", pos.cards),
         })
+        if len(pos.cards) == cards_cnt_before:
+            return 1
+        pos.write({'cards_num': pos.cards_num - 1})
         self.send_field_updates('', card + " " + str(from_uid), 'Move', from_uid)
         return 1
 
     @api.model
     def number_of_cards(self, uid, from_uid):
-        how_much_cards = len(self.filtered(lambda r: r.user_id == uid).cards)
-        self.send_to_user('HowMuchCards', str(how_much_cards),
-                          str(self.filtered(lambda r: r.user_id == from_uid).id))
+        self.send_to_user('HowMuchCards',
+                          str(self.search([('user_id', '=', uid)]).cards_num),
+                          self.search([('user_id', '=', from_uid)]).id)
         return 1
