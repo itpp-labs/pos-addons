@@ -141,11 +141,9 @@ odoo.define('pos_chat_button', function (require){
         text.innerHTML = str;
         $(".tips").fadeIn(delay);
 
-        text.style.setProperty('transform','translate3d(0px,'
-            +(window.offsetHeight/2 - text.offsetTop)+'px,0px)');
+        text.style.setProperty('transform','translate3d(0px,'+(window.offsetHeight/2 - text.offsetTop)+'px,0px)');
         setTimeout(function () {
-        text.style.setProperty('transform','translate3d(0px,'
-            +(window.offsetHeight*3 - text.offsetTop)+'px,0px)');
+        text.style.setProperty('transform','translate3d(0px,'+(window.offsetHeight*3 - text.offsetTop)+'px,0px)');
         },1000);
 
         setTimeout(function () {
@@ -212,6 +210,17 @@ odoo.define('pos_chat_button', function (require){
     function ShowHowMuchCards(num){
         Tip(num, 1500, 500);
     }
+
+    // let global_enemy_cards = '';
+    // function DownloadEnemyCards(str){
+    //     let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
+    //
+    //     let enemy_cards = document.getElementById('enenmy-cards');
+    //     enemy_cards.innerHTML = global_enemy_cards;1
+    //     let card = document.getElementById('card-'+attack_card);
+    //     PutOn(card);
+    // }
+
 //------------------------------------------------------
 
 //---------- Set avatar and animation part -------------
@@ -225,7 +234,7 @@ odoo.define('pos_chat_button', function (require){
         for(let i = 0; i < chat_users[me].cards.length; i++){
             let n = chat_users[me].cards[i];
             out+='<img type="button" src="/pos_durak/static/src/img/kards/'+
-            n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"></img>'
+            n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"></img>';
         }
         block.innerHTML = out;
     }
@@ -512,8 +521,7 @@ odoo.define('pos_chat_button', function (require){
             });
         }, 200 * NumInQueue(session.uid) + 1);
 
-        if(in_chat)
-        {
+        if(in_chat){
             ShowUsers();
         }
     }
@@ -527,8 +535,8 @@ odoo.define('pos_chat_button', function (require){
             allow_change_name: data.allow,
             cards : []
         });
-        let n = chat_users.length;
-        let temp = chat_users[n - 1];
+        const n = chat_users.length;
+        const temp = chat_users[n - 1];
         chat_users[n - 1] = chat_users[n - 2];
         chat_users[n - 2] = temp;
 
@@ -542,9 +550,13 @@ odoo.define('pos_chat_button', function (require){
     function DeleteUser(user_id){
         let exist = false;
         chat_users.forEach(function (item) {
-           if(item.uid === user_id) exist = true;
+           if(item.uid === user_id) {
+               exist = true;
+           }
         });
-        if(!exist) { return; }
+        if(!exist) {
+            return;
+        }
         DeleteUserData(user_id);
         if(user_id !== session.uid){
             ShowUsers();
@@ -642,9 +654,7 @@ odoo.define('pos_chat_button', function (require){
                 }
                 attacking = true;
                 let str = data.message;
-                let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
-                let card = document.getElementById('card-'+attack_card);
-                PutOn(card);
+                DownloadEnemyCards(str);
             }
             else if(data.command === 'HowMuchCards'){
                 ShowHowMuchCards(data.message)
