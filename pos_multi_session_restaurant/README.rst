@@ -24,7 +24,7 @@ If you use dbfilter, don't forget to specify correct proxy on printers
 Further information
 -------------------
 
-Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
+Tested on Odoo 11.0 c6f1f054662574d16d9673218b5172f02a1636a3
 
 Need our service?
 -----------------

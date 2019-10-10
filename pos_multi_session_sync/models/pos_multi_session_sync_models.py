@@ -130,7 +130,7 @@ class PosMultiSessionSync(models.Model):
             return updated_message
 
         self.broadcast_message(updated_message)
-        return {'action': 'update_revision_ID', 'revision_ID': order.revision_ID,
+        return {'action': 'update_revision_ID', 'revision_ID': order.revision_ID, 'uid': order.order_uid,
                 'order_ID': updated_message['data']['sequence_number'], 'run_ID': order.run_ID}
 
     @api.multi
