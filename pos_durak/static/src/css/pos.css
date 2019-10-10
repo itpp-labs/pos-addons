@@ -247,3 +247,10 @@
     color: #ffc526;
     transition: all .3s ease-in-out;
 }
+
+.enemy-card{
+    position: absolute;
+    width: 75px;
+    height: 150px;
+    transition: all .3s ease-in-out;
+}

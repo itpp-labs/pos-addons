@@ -21,8 +21,8 @@
                      Back
                 </span>
         </div>
-        <div id="cards"/>
-        <div id="enenmy-cards"/>
+        <div id="cards"></div>
+        <div id="enemy-cards"></div>
         <div class="game-tools">
             <span type="button" class="ready-button" id="ready-button">
                 Ready

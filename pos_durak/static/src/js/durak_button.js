@@ -184,6 +184,7 @@ odoo.define('pos_chat_button', function (require){
         let x = card.offsetLeft, y = card.offsetTop;
         card.style.setProperty('transform','translate3d('
             +(put_w - x)+'px,'+(put_h - y)+'px,0px)');
+        card.style.setProperty('opacity','1');
     }
 
     function Move(card_num){
@@ -211,15 +212,13 @@ odoo.define('pos_chat_button', function (require){
         Tip(num, 1500, 500);
     }
 
-    // let global_enemy_cards = '';
-    // function DownloadEnemyCards(str){
-    //     let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
-    //
-    //     let enemy_cards = document.getElementById('enenmy-cards');
-    //     enemy_cards.innerHTML = global_enemy_cards;1
-    //     let card = document.getElementById('card-'+attack_card);
-    //     PutOn(card);
-    // }
+    let global_enemy_cards = '';
+    function DownloadEnemyCards(n){
+        global_enemy_cards +='<img type="button" src="/pos_durak/static/src/img/kards/'+
+            n+'.png" id="card-'+n+'" class="card"/>';
+        let enemy_cards = document.getElementById('enemy-cards');
+        enemy_cards.innerHTML = global_enemy_cards;
+    }
 
 //------------------------------------------------------
 
@@ -234,7 +233,7 @@ odoo.define('pos_chat_button', function (require){
         for(let i = 0; i < chat_users[me].cards.length; i++){
             let n = chat_users[me].cards[i];
             out+='<img type="button" src="/pos_durak/static/src/img/kards/'+
-            n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"></img>';
+            n+'.png" id="card-'+n+'" class="card" style="right: '+(30 - i*w)+'%"/>';
         }
         block.innerHTML = out;
     }
@@ -242,13 +241,12 @@ odoo.define('pos_chat_button', function (require){
     function ShowUsers(){
         let window = document.getElementById('main-window');
         let out = '';
-        let visible = 0;
         chat_users.forEach(function (item){
             let i = NumInQueue(item.uid);
             out += '<div class="chat-user-'+item.uid+'" id="picture-'+i+'">';
             out += '<div class="user-name" id="user-name-'+item.uid+'">'+chat_users[i].true_name+'</div>';
             out += '<img src="/web/image/res.users/' +
-            item.uid + '/image_small" id="ava-' + i +'" class="avatar" style="border-radius:50%;"></img>';
+            item.uid + '/image_small" id="ava-' + i +'" class="avatar" style="border-radius:50%;"/>';
 
             out += '<ul class="new-message" id="message-id-'+item.uid+'"></ul>';
             out += '</div>';
@@ -277,10 +275,9 @@ odoo.define('pos_chat_button', function (require){
         avatar.style.setProperty('transition','transform .3s ease-in-out');
     }
 
-    function Second_scene(data){
+    function Second_scene(data, who_attacking){
         document.getElementById('step-button').style.setProperty('opacity', '1');
-        let who_attacks = [-1,-1],str = data.message, who_defends;
-        who_attacks[0] = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
+        let who_attacks = [who_attacking, -1], who_defends;
         who_defends = next_to(who_attacks[0]);
         who_attacks[1] = next_to(who_defends);
         let window = document.getElementById('main-window');
@@ -649,12 +646,18 @@ odoo.define('pos_chat_button', function (require){
                 SaveExtraCards(data);
             }
             else if(data.command === 'Move'){
+                let str = data.message;
+                let who_attacks = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
                 if(!attacking){
-                    Second_scene(data);
+                    Second_scene(data, who_attacks);
                 }
                 attacking = true;
-                let str = data.message;
-                DownloadEnemyCards(str);
+                let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
+                if(who_attacks !== session.uid){
+                    DownloadEnemyCards(attack_card);
+                }
+                let card = document.getElementById('card-'+attack_card);
+                PutOn(card);
             }
             else if(data.command === 'HowMuchCards'){
                 ShowHowMuchCards(data.message)
