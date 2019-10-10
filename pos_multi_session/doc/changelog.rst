@@ -1,3 +1,13 @@
+`4.2.10`
+--------
+
+- **Fix:** Synchronization error after an order was created offline
+
+`4.2.9`
+-------
+
+- **Fix:** Error "journal_id is not defined" after add new journal to another POS with same multi-session
+
 `4.2.8`
 -------
 

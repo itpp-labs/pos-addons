@@ -107,7 +107,7 @@ odoo.define('pos_multi_session_restaurant', function(require){
 
             // Is there a table on the floor?
             if (table) {
-                floor_table = table.floor.tables.find(function (t) {
+                floor_table = _.find(table.floor.tables, function (t) {
                     return t.id === data.table_id;
                 });
             }
