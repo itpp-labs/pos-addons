@@ -114,6 +114,13 @@ odoo.define('pos_chat_button', function (require){
                         args: [session.uid, chat_users.length]
                     });
                 }
+                else if(elem.id === "step-button"){
+                    if(in_chat){
+                        // Should return stack of actions
+                        // like delete enemy cards and some kind of shit
+                        ShowUsers();
+                    }
+                }
                 else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava"){
                     let num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
                         + elem.id[elem.id.length - 1];
@@ -173,7 +180,7 @@ odoo.define('pos_chat_button', function (require){
         return -1;
     }
 
-    function PutOn(card) {
+    function PutOn(card, who_attacks) {
         cards_n++;
         let window = document.getElementById('main-window');
         let w = window.offsetWidth, h = window.offsetHeight;
@@ -185,6 +192,7 @@ odoo.define('pos_chat_button', function (require){
         card.style.setProperty('transform','translate3d('
             +(put_w - x)+'px,'+(put_h - y)+'px,0px)');
         card.style.setProperty('opacity','1');
+        card.style.left = x;card.style.top = y;
     }
 
     function Move(card_num){
@@ -212,12 +220,11 @@ odoo.define('pos_chat_button', function (require){
         Tip(num, 1500, 500);
     }
 
-    let global_enemy_cards = '';
-    function DownloadEnemyCards(n){
-        global_enemy_cards +='<img type="button" src="/pos_durak/static/src/img/kards/'+
-            n+'.png" id="card-'+n+'" class="card"/>';
-        let enemy_cards = document.getElementById('enemy-cards');
-        enemy_cards.innerHTML = global_enemy_cards;
+    function DownloadEnemyCards(n, user){
+        chat_users[NumInQueue(user)].cards.push(n);
+        let out ='<img type="button" src="/pos_durak/static/src/img/kards/'+
+                n+'.png" id="card-'+n+'" class="enemy-card"/>';
+        document.getElementById('enemy-cards').innerHTML += out;
     }
 
 //------------------------------------------------------
@@ -654,10 +661,10 @@ odoo.define('pos_chat_button', function (require){
                 attacking = true;
                 let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
                 if(who_attacks !== session.uid){
-                    DownloadEnemyCards(attack_card);
+                    DownloadEnemyCards(attack_card, who_attacks);
                 }
                 let card = document.getElementById('card-'+attack_card);
-                PutOn(card);
+                PutOn(card, who_attacks);
             }
             else if(data.command === 'HowMuchCards'){
                 ShowHowMuchCards(data.message)

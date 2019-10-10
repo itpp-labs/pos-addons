@@ -252,5 +252,7 @@
     position: absolute;
     width: 75px;
     height: 150px;
+    top: 50%;
+    left: -75px;
     transition: all .3s ease-in-out;
 }
