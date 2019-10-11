@@ -12,7 +12,7 @@ odoo.define('pos_chat_button', function (require){
     // All users messages stored here
     let all_messages = [];
     // Messages timeouts needs to store,
-    // cause only this way we can know when to delete the message
+    // cause only this way we can know when to delete the m
     let all_timeOuts = [];
     // Information about every user
     let chat_users = [];
@@ -33,8 +33,15 @@ odoo.define('pos_chat_button', function (require){
     let who_moves = 0;
     // Game mode
     let attacking = false;
+    let W = 0;
+    let H = 0;
+    // On table cards
+    let on_table_cards = [];
+    let complete_move = 0;
     // How much cards on the table
-    let cards_n = 0;
+    let moves_cnt = 0;
+    // Cards max count
+    let max_cards = 7;
 
 //------------------------------------------------------
 
@@ -48,6 +55,39 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
+    function ControlOnClick(e) {
+        let elem = e ? e.target : window.event.srcElement;
+        if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
+           let num = '';
+           if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
+           num += elem.id[elem.id.length - 1];
+           if(session.uid === next_to(who_moves, true)){
+               // Defense
+           }
+           else{
+               Move(num);
+           }
+        }
+        else if(elem.id === "ready-button"){
+            self._rpc({
+                model: "pos.session",
+                method: "game_started",
+                args: [session.uid, chat_users.length]
+            });
+        }
+        else if(elem.id === "step-button"){
+            self._rpc({
+               model: 'pos.session',
+               method: 'send_field_updates',
+               args: ['','','Move_done',session.uid]
+            });
+        }
+        else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava" && game_started){
+            let num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
+                + elem.id[elem.id.length - 1];
+            HowMuchCards(chat_users[Number(num)].uid);
+        }
+    }
 //------------------------------------------------------
 
 //-------------- New screen defenition -----------------
@@ -58,6 +98,8 @@ odoo.define('pos_chat_button', function (require){
             this.gui.show_screen('custom_screen');
             // User in to the chat room
             in_chat = true;
+            W = document.getElementById('main-window').offsetWidth;
+            H = document.getElementById('main-window').offsetHeight;
             // Current users says that he connected to other users
             self._rpc({
                 model: "pos.session",
@@ -100,32 +142,7 @@ odoo.define('pos_chat_button', function (require){
             });
 
             window.onclick=function(e){
-                let elem = e ? e.target : window.event.srcElement;
-                if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
-                   let num = '';
-                   if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
-                   num += elem.id[elem.id.length - 1];
-                   Move(num);
-                }
-                else if(elem.id === "ready-button"){
-                    self._rpc({
-                        model: "pos.session",
-                        method: "game_started",
-                        args: [session.uid, chat_users.length]
-                    });
-                }
-                else if(elem.id === "step-button"){
-                    if(in_chat){
-                        // Should return stack of actions
-                        // like delete enemy cards and some kind of shit
-                        ShowUsers();
-                    }
-                }
-                else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava"){
-                    let num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
-                        + elem.id[elem.id.length - 1];
-                    HowMuchCards(chat_users[Number(num)].uid);
-                }
+                ControlOnClick(e);
             }
         }
     });
@@ -143,14 +160,13 @@ odoo.define('pos_chat_button', function (require){
 //--------------- Game table actions -------------------
 
     function Tip(str, how_long_to_hold, delay){
-        let window = document.getElementById('main-window');
         let text = document.getElementById('for-inscriptions');
         text.innerHTML = str;
         $(".tips").fadeIn(delay);
 
-        text.style.setProperty('transform','translate3d(0px,'+(window.offsetHeight/2 - text.offsetTop)+'px,0px)');
+        text.style.setProperty('transform','translate3d(0px,'+(H/2 - text.offsetTop)+'px,0px)');
         setTimeout(function () {
-        text.style.setProperty('transform','translate3d(0px,'+(window.offsetHeight*3 - text.offsetTop)+'px,0px)');
+        text.style.setProperty('transform','translate3d(0px,'+(H*3 - text.offsetTop)+'px,0px)');
         },1000);
 
         setTimeout(function () {
@@ -181,13 +197,10 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function PutOn(card, who_attacks) {
-        cards_n++;
-        let window = document.getElementById('main-window');
-        let w = window.offsetWidth, h = window.offsetHeight;
-        let sign = (cards_n + 1)%2 === 0 ? 1 : -1;
+        let sign = (moves_cnt + 1)%2 === 0 ? 1 : -1;
         let cw = card.offsetWidth, ch = card.offsetHeight;
 
-        let put_w = (w - cw)/2 + cards_n*cw*sign*0.8, put_h = (h - ch)/2;
+        let put_w = (W - cw)/2 + moves_cnt*cw*sign*0.8, put_h = (H - ch)/2;
         let x = card.offsetLeft, y = card.offsetTop;
         card.style.setProperty('transform','translate3d('
             +(put_w - x)+'px,'+(put_h - y)+'px,0px)');
@@ -196,7 +209,20 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Move(card_num){
-        if(who_moves === NumInQueue(session.uid)){
+        if(moves_cnt >= max_cards){
+            alert('You can step only '+max_cards+' times!');
+            return;
+        }
+        let stepper = [chat_users[who_moves].uid,
+            next_to(next_to(who_moves, true))];
+        if(stepper[0] === session.uid){
+            self._rpc({
+                model: "pos.session",
+                method: "moved",
+                args: [session.uid, card_num]
+            });
+        }
+        else if(stepper[1] === session.uid){
             self._rpc({
                 model: "pos.session",
                 method: "moved",
@@ -227,13 +253,75 @@ odoo.define('pos_chat_button', function (require){
         document.getElementById('enemy-cards').innerHTML += out;
     }
 
+    function DeleteCard(n, who){
+        on_table_cards.push(n);
+        for(let i = 0; i < chat_users[who].cards.length; i++){
+            if(n === chat_users[who].cards[i]){
+                chat_users[who].cards.splice(i,1);
+            }
+        }
+    }
+
+    function First_scene(){
+        attacking = false;
+        complete_move = 0;
+        moves_cnt = 0;
+        for(let i = 0; i < on_table_cards.length; i++){
+            let card = document.getElementById('card-'+on_table_cards[i]);
+            card.style.setProperty('display', 'none');
+        }
+        document.getElementById('enemy-cards').style.setProperty('opacity', '0');
+        document.getElementById('step-button').style.setProperty('opacity', '0');
+        if(in_chat){
+            ShowUsers();
+        }
+    }
+
+    function Second_scene(data, who_attacking){
+        document.getElementById('ready-button').style.setProperty('display', 'none');
+        let who_attacks = [who_attacking, -1], who_defends;
+        who_defends = next_to(who_attacks[0], false);
+        who_attacks[1] = next_to(who_defends, false);
+        if(who_attacks[0] === session.uid || who_attacks[1] === session.uid){
+            document.getElementById('step-button').style.setProperty('opacity', '1');
+        }
+        let attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
+        let attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
+        let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
+        // Inscription showing
+        if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
+            Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000, 500);
+        }
+        if(session.uid === who_defends){
+            Tip('Defend yourself', 2000, 500);
+        }
+
+        if(attacker_id_1 !== null){
+            let x = attacker_id_1.offsetLeft, y = attacker_id_1.offsetTop, bias = attacker_id_1.offsetWidth;
+            let bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
+            attacker_id_1.style.setProperty('transform','translate3d('
+                +(W/2 - x - bias)+'px,'+(bias_top)+'px,0px)');
+            attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
+        }
+        if(attacker_id_2 !== null && who_attacks[0] !== who_attacks[1]){
+            let x = attacker_id_2.offsetLeft, y = attacker_id_2.offsetTop, bias = attacker_id_2.offsetWidth;
+            let bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
+            attacker_id_2.style.setProperty('transform','translate3d('
+                +(W/2 - x + bias)+'px,'+(bias_top)+'px,0px)');
+            attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
+        }
+        if(defender_id !== null){
+            let x = defender_id.offsetLeft, y = defender_id.offsetTop;
+            let bias_top = session.uid === who_defends ? (H*0.75 - y) : -(y+H*0.05);
+            defender_id.style.setProperty('transform','translate3d('
+                +(W/2 - x)+'px,'+bias_top+'px,0px)');
+            defender_id.style.setProperty('transition','transform .3s ease-in-out');
+        }
+    }
 //------------------------------------------------------
 
 //---------- Set avatar and animation part -------------
-    let radius = 180;
-
     function ShowCards(){
-        let window = document.getElementById('main-window');
         let block = document.getElementById('cards');
         let me = NumInQueue(session.uid);
         let out = '', w = (60/chat_users[me].cards.length)/2;
@@ -267,60 +355,16 @@ odoo.define('pos_chat_button', function (require){
 
     function SetPos(avatar, uid){
         let cnt = NumInQueue(uid) + 1;
-        let action_window = document.getElementById('main-window');
         let angle = (2 * 3.1415 / chat_users.length) * cnt;
-        let w = action_window.offsetWidth;
-        let h = action_window.offsetHeight;
-
+        let radius = Math.min(W*0.7,H*0.7)/2;
         let x = Math.trunc(radius*Math.cos(angle));
         let y = Math.trunc(radius*Math.sin(angle));
 
         avatar.style.setProperty('position', 'absolute');
-        avatar.style.setProperty('left', w/2 - (avatar.offsetWidth / 2) + 'px');
-        avatar.style.setProperty('top', h/2 - (avatar.offsetHeight / 2) + 'px');
+        avatar.style.setProperty('left', W/2 - (avatar.offsetWidth / 2) + 'px');
+        avatar.style.setProperty('top', H*0.4 - (avatar.offsetHeight / 2) + 'px');
         avatar.style.setProperty('transform','translate3d('+x+'px,'+y+'px,0px)');
         avatar.style.setProperty('transition','transform .3s ease-in-out');
-    }
-
-    function Second_scene(data, who_attacking){
-        document.getElementById('step-button').style.setProperty('opacity', '1');
-        let who_attacks = [who_attacking, -1], who_defends;
-        who_defends = next_to(who_attacks[0]);
-        who_attacks[1] = next_to(who_defends);
-        let window = document.getElementById('main-window');
-        let w = window.offsetWidth, h = window.offsetHeight;
-        let attacker_id_1 = document.getElementById('picture-'+NumInQueue(who_attacks[0]));
-        let attacker_id_2 = document.getElementById('picture-'+NumInQueue(who_attacks[1]));
-        let defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
-        // Inscription showing
-        if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
-            Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000, 500);
-        }
-        if(session.uid === who_defends){
-            Tip('Defend yourself', 2000, 500);
-        }
-
-        if(attacker_id_1 !== null){
-            let x = attacker_id_1.offsetLeft, y = attacker_id_1.offsetTop, bias = attacker_id_1.offsetWidth;
-            let bias_top = session.uid === who_defends ? -(y+h*0.05) : (h*0.75 - y);
-            attacker_id_1.style.setProperty('transform','translate3d('
-                +(w/2 - x - bias)+'px,'+(bias_top)+'px,0px)');
-            attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
-        }
-        if(attacker_id_2 !== null && who_attacks[0] !== who_attacks[1]){
-            let x = attacker_id_2.offsetLeft, y = attacker_id_2.offsetTop, bias = attacker_id_2.offsetWidth;
-            let bias_top = session.uid === who_defends ? -(y+h*0.05) : (h*0.75 - y);
-            attacker_id_2.style.setProperty('transform','translate3d('
-                +(w/2 - x + bias)+'px,'+(bias_top)+'px,0px)');
-            attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
-        }
-        if(defender_id !== null){
-            let x = defender_id.offsetLeft, y = defender_id.offsetTop;
-            let bias_top = session.uid === who_defends ? (h*0.75 - y) : -(y+h*0.05);
-            defender_id.style.setProperty('transform','translate3d('
-                +(w/2 - x)+'px,'+bias_top+'px,0px)');
-            defender_id.style.setProperty('transition','transform .3s ease-in-out');
-        }
     }
 //------------------------------------------------------
 
@@ -472,13 +516,10 @@ odoo.define('pos_chat_button', function (require){
         return left === 2 && right === 2 && slash === 1 ? true : false;
     }
 
-    function next_to(uid){
-        return NumInQueue(uid) === chat_users.length - 1 ?
-            chat_users[0].uid : chat_users[NumInQueue(uid) + 1].uid;
-    }
-
-    function who_steps_next() {
-        who_moves = chat_users.length < who_moves + 1 ? who_moves+1 : 0;
+    function next_to(num, already_converted){
+        let i = already_converted ? num : NumInQueue(num);
+        return i === chat_users.length - 1 ?
+            chat_users[0].uid : chat_users[i + 1].uid;
     }
 //--------------------------------------------------
 
@@ -653,6 +694,7 @@ odoo.define('pos_chat_button', function (require){
                 SaveExtraCards(data);
             }
             else if(data.command === 'Move'){
+                moves_cnt++;
                 let str = data.message;
                 let who_attacks = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
                 if(!attacking){
@@ -665,9 +707,17 @@ odoo.define('pos_chat_button', function (require){
                 }
                 let card = document.getElementById('card-'+attack_card);
                 PutOn(card, who_attacks);
+                DeleteCard(attack_card, NumInQueue(who_attacks));
             }
             else if(data.command === 'HowMuchCards'){
                 ShowHowMuchCards(data.message)
+            }
+            else if(data.command === 'Move_done'){
+                complete_move++;
+                if(complete_move === 2){
+                    First_scene();
+                    who_moves = next_to(who_moves, true);
+                }
             }
         },
     });
