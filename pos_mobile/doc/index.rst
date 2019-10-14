@@ -15,22 +15,23 @@ According to the library note: fastclick offers no benefit on newer browsers, an
 
 Possible error is:
 
-[Violation] A non-passive event listener was added to a scroll lock event . Consider marking the event handler as 'passive' to make the page more responsive.
+[Violation] A non-passive event listener was added to a scroll lock event. Consider marking the event handler as 'passive' to make the page more responsive.
 
 The following commit removes fastclick in Odoo 12.0:
 https://github.com/odoo/odoo/commit/d458ec953b179596330091b3efe729868fb56ca2
 
-To apply the update on earlier odoo version you can use git commands or use patch file remove_fastclick.patch. The patch can be found at module source. Exact commands are as following:
+To apply the update on earlier odoo version you can use git commands or use patch file ``remove_fastclick.patch``. The patch can be found at module source. Exact commands are as following:
 
-If odoo is a git folder:
+If odoo is a git folder: ::
 
-cd /path/to/odoo/source
-git fetch
-git cherry-pick d458ec953b179596330091b3efe729868fb56ca2
-if your installation does not have git:
+ cd /path/to/odoo/source
+ git fetch
+ git cherry-pick d458ec953b179596330091b3efe729868fb56ca2
 
-cd /path/to/odoo/source
-patch -p1 < /path/to/remove_fastclick.patch
+if your installation does not have git: ::
+
+ cd /path/to/odoo/source
+ patch -p1 < /path/to/remove_fastclick.patch
 
 
 Usage
