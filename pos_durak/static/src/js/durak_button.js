@@ -200,11 +200,11 @@ odoo.define('pos_chat_button', function (require){
         let sign = (moves_cnt + 1)%2 === 0 ? 1 : -1;
         let cw = card.offsetWidth, ch = card.offsetHeight;
 
-        let put_w = (W - cw)/2 + moves_cnt*cw*sign*0.8, put_h = (H - ch)/2;
+        let put_w = (W - cw)/2 + moves_cnt*cw*sign*0.5, put_h = (H - ch)/2;
         let x = card.offsetLeft, y = card.offsetTop;
+        card.style.setProperty('opacity','1');
         card.style.setProperty('transform','translate3d('
             +(put_w - x)+'px,'+(put_h - y)+'px,0px)');
-        card.style.setProperty('opacity','1');
         card.style.left = x;card.style.top = y;
     }
 
@@ -214,7 +214,7 @@ odoo.define('pos_chat_button', function (require){
             return;
         }
         let stepper = [chat_users[who_moves].uid,
-            next_to(next_to(who_moves, true))];
+            next_to(next_to(who_moves, true),false)];
         if(stepper[0] === session.uid){
             self._rpc({
                 model: "pos.session",
@@ -222,7 +222,7 @@ odoo.define('pos_chat_button', function (require){
                 args: [session.uid, card_num]
             });
         }
-        else if(stepper[1] === session.uid){
+        else if(stepper[1] === session.uid && attacking){
             self._rpc({
                 model: "pos.session",
                 method: "moved",
@@ -268,9 +268,8 @@ odoo.define('pos_chat_button', function (require){
         moves_cnt = 0;
         for(let i = 0; i < on_table_cards.length; i++){
             let card = document.getElementById('card-'+on_table_cards[i]);
-            card.style.setProperty('display', 'none');
+            card.style.setProperty('opacity', '0');
         }
-        document.getElementById('enemy-cards').style.setProperty('opacity', '0');
         document.getElementById('step-button').style.setProperty('opacity', '0');
         if(in_chat){
             ShowUsers();
@@ -716,7 +715,7 @@ odoo.define('pos_chat_button', function (require){
                 complete_move++;
                 if(complete_move === 2){
                     First_scene();
-                    who_moves = next_to(who_moves, true);
+                    who_moves = NumInQueue(next_to(who_moves, true));
                 }
             }
         },
