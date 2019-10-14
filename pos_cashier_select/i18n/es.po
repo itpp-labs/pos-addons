@@ -21,35 +21,35 @@ msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/xml/pos.xml:19
+#: code:addons/pos_cashier_select/static/src/xml/pos.xml:17
 #, python-format
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:106
+#: code:addons/pos_cashier_select/static/src/js/main.js:107
 #, python-format
 msgid "Change Cashier"
 msgstr "Cambiar Cajero"
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:91
+#: code:addons/pos_cashier_select/static/src/js/main.js:92
 #, python-format
 msgid "Empty Serial/Lot Number"
 msgstr "Número de Lote/Serial Vacío"
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:92
+#: code:addons/pos_cashier_select/static/src/js/main.js:93
 #, python-format
 msgid "One or more product(s) required serial/lot number."
 msgstr "Uno o más producto(s) requieren número de serie/lote."
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:178
+#: code:addons/pos_cashier_select/static/src/js/main.js:179
 #, python-format
 msgid "Select User"
 msgstr "Seleccionar Usuario"

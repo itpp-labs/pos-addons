@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -36,7 +36,13 @@ msgid "If box is unchecked the displayed prices will not include discounts"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
+#: model:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
+msgid "Include Discount"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
 #: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_config_include_discount_in_prices
+#: model:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
 msgid "Include Discount in Prices"
 msgstr ""
 
@@ -50,7 +56,7 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #: model:ir.model,name:pos_orderline_absolute_discount.model_pos_order_line
-msgid "Lines of Point of Sale"
+msgid "Lines of Point of Sale Orders"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
@@ -79,7 +85,7 @@ msgid "With a"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: code:addons/pos_orderline_absolute_discount/models/pos_order_model.py:50
+#: code:addons/pos_orderline_absolute_discount/models/pos_order_model.py:49
 #, python-format
 msgid "You have to select a pricelist in the sale form !"
 msgstr ""

@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:26
+#: code:addons/pos_print_method/static/src/js/tour.js:27
 #, python-format
 msgid "<p>Click <b>Fruits and Vegetables</b> category.</p>"
 msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:38
+#: code:addons/pos_print_method/static/src/js/tour.js:39
 #, python-format
 msgid "<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"
 msgstr ""
@@ -36,14 +36,14 @@ msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:30
+#: code:addons/pos_print_method/static/src/js/tour.js:31
 #, python-format
 msgid "<p>Click product 1</p>"
 msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:34
+#: code:addons/pos_print_method/static/src/js/tour.js:35
 #, python-format
 msgid "<p>Click product 2</p>"
 msgstr ""

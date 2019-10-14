@@ -5,7 +5,6 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
     var models = require('pos_product_category_discount.models');
     var screens = require('pos_discount_base.screens');
     var gui = require('point_of_sale.gui');
-    var Model = require('web.Model');
     var Widget = require('web.Widget');
     var core = require('web.core');
     var PosDiscountWidget = require('pos_discount.pos_discount');
@@ -140,6 +139,13 @@ odoo.define('pos_product_category_discount.widgets', function (require) {
             var self = this;
             this._super(options);
             this.popup_discount = false;
+
+            if (typeof options === 'string') {
+                options = {title: options};
+            } else {
+                options = options || {};
+            }
+
             if (options && options.disc_program) {
                 this.popup_discount = true;
                 this.events = _.extend(this.events || {}, {

@@ -58,7 +58,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:123
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:118
 #, python-format
 msgid "Got unknown table "
 msgstr ""
@@ -71,7 +71,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:124
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:119
 #, python-format
 msgid "Order will be moved to  table"
 msgstr ""
@@ -85,7 +85,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #: model:ir.model.fields,field_description:pos_multi_session_restaurant.field_restaurant_floor_pos_multi_session_ids
-msgid "Pos multi session ids"
+msgid "Pos Multi Session"
 msgstr ""
 
 #. module: pos_multi_session_restaurant

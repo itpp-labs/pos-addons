@@ -97,12 +97,12 @@
         <t t-if="debt != 0">
             <t t-if="widget.pos.config.debt_type == 'debt'">
                 <span t-attf-class="client-debt #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''}">
-                    <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + (Math.round(debt * 100) / 100).toString() + ']': '')"/>
+                    <t t-esc="(widget.pos.get_client() ? ' [Debt: ' + widget.format_currency(debt) + ']': '')"/>
                 </span>
             </t>
             <t t-if="widget.pos.config.debt_type == 'credit'">
                 <span t-attf-class="client-credit #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''}">
-                    <t t-esc="(widget.pos.get_client() ? ' [Credit: ' + (- Math.round(debt * 100) / 100).toString() + ']': '')"/>
+                    <t t-esc="(widget.pos.get_client() ? ' [Credit: ' + widget.format_currency(debt) + ']': '')"/>
                 </span>
             </t>
         </t>
@@ -111,10 +111,10 @@
     <t t-extend="PaymentScreenWidget">
         <t t-jquery="t[t-if*='!widget.pos.get_client()']" t-operation="after">
             <span t-attf-class="client-debt #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'negative' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'positive' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'debt' ? ' [Debt: ' + (Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'debt' ? ' [Debt: ' + widget.format_currency(widget.pos.get_client().debt) + ']': '')"/>
             </span>
             <span t-attf-class="client-credit #{(widget.pos.get_client() and widget.pos.get_client().debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and widget.pos.get_client().debt gt 0) ? 'negative' : ''}">
-                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'credit' ? ' [Credit: ' + (- Math.round(widget.pos.get_client().debt * 100) / 100).toString() + ']': '')"/>
+                <t t-esc="(widget.pos.get_client() and widget.pos.config.debt_type == 'credit' ? ' [Credit: ' + widget.format_currency(-widget.pos.get_client().debt) + ']': '')"/>
             </span>
         </t>
 
@@ -208,14 +208,6 @@
     </t>
 
     <t t-extend="XmlReceipt">
-        <t t-jquery="t[t-if='receipt.cashier']" t-operation="after">
-            <t t-if='receipt.client'>
-                <div class='client'>
-                    <div>--------------------------------</div>
-                    <div>Customer: <t t-esc='receipt.client' /></div>
-                </div>
-            </t>
-        </t>
         <t t-jquery=".before-footer" t-operation="before">
             <div t-if="receipt.debt_before or receipt.debt_after" class="debt">
                 <t t-set="debt_label" t-value="receipt.debt_type=='debt' and 'Debt' or 'Credits'"/>

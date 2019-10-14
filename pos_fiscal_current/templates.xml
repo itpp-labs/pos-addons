@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <!-- POS -->
         <template id="assets_backend" name="pos_fiscal_current assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
@@ -10,5 +9,4 @@
               <link rel="stylesheet" href="/pos_fiscal_current/static/src/css/pos_fc.css"/>
             </xpath>
         </template>
-    </data>
 </openerp>

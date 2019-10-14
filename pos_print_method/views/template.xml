@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
         <template id="assets_backend" name="pos_print_method_assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_print_method/static/src/js/print_method.js"></script>
@@ -12,5 +11,4 @@
                 <script type="text/javascript" src="/pos_print_method/static/src/js/tour.js"></script>
             </xpath>
         </template>
-    </data>
 </openerp>

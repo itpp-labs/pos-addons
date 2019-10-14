@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,23 +14,27 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_debt_notebook_sync
-#: model:ir.filters,name:pos_debt_notebook_sync.filter_debt_payments
-msgid "Debt payments"
+#: model:base.automation,name:pos_debt_notebook_sync.rule_pos_credit_updates
+#: model:ir.actions.server,name:pos_debt_notebook_sync.rule_pos_credit_updates_ir_actions_server
+msgid "Notify POS about Debt updates (on addins Manual Credit Updates)."
 msgstr ""
 
 #. module: pos_debt_notebook_sync
-#: model:ir.filters,name:pos_debt_notebook_sync.filter_done_orders
-msgid "Finished orders"
+#: model:base.automation,name:pos_debt_notebook_sync.rule_new_payment
+#: model:ir.actions.server,name:pos_debt_notebook_sync.rule_new_payment_ir_actions_server
+msgid "Notify POS about Debt updates (on new payment)."
 msgstr ""
 
 #. module: pos_debt_notebook_sync
-#: model:ir.actions.server,name:pos_debt_notebook_sync.action_notify_pos_about_debt_updates
-msgid "Notify POS about Debt updates"
+#: model:base.automation,name:pos_debt_notebook_sync.rule_credit_products_invoice
+#: model:ir.actions.server,name:pos_debt_notebook_sync.rule_credit_products_invoice_ir_actions_server
+msgid "Notify POS about Debt updates (on selling Credit products via invoices)."
 msgstr ""
 
 #. module: pos_debt_notebook_sync
-#: model:ir.filters,name:pos_debt_notebook_sync.filter_paid_invoices
-msgid "Paid invoices"
+#: model:base.automation,name:pos_debt_notebook_sync.rule_credit_products
+#: model:ir.actions.server,name:pos_debt_notebook_sync.rule_credit_products_ir_actions_server
+msgid "Notify POS about Debt updates (on selling Credit products)."
 msgstr ""
 
 #. module: pos_debt_notebook_sync

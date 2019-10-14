@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -78,22 +78,23 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:206
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:217
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:218
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:229
 #, python-format
 msgid "No Ticket."
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:174
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:182
 #, python-format
 msgid "No XML Receipt."
 msgstr ""
 
 #. module: pos_orders_history_reprint
-#: model:ir.actions.server,name:pos_orders_history_reprint.action_notify_pos_receipt_updates
-msgid "Notify POS about Receipt updates"
+#: model:base.automation,name:pos_orders_history_reprint.rule_new_receipt
+#: model:ir.actions.server,name:pos_orders_history_reprint.rule_new_receipt_ir_actions_server
+msgid "Notify POS about new receipt."
 msgstr ""
 
 #. module: pos_orders_history_reprint
@@ -151,15 +152,15 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:207
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:218
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:219
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:230
 #, python-format
 msgid "There is no Ticket for the order."
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:175
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:183
 #, python-format
 msgid "There is no XML receipt for the order."
 msgstr ""

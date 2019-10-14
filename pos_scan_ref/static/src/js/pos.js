@@ -71,6 +71,6 @@ PosDb.include({
     },
     get_product_by_reference: function(ref){
         return this.product_by_reference[ref];
-    }
+    },
 });
 });

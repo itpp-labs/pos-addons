@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015 igallyamov <https://github.com/igallyamov>
 # Copyright 2016 ufaks <https://github.com/ufaks>
 # Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
@@ -11,13 +10,14 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": ['images/keyboard.png'],
-    "version": "10.0.1.1.5",
+    "version": "11.0.1.1.5",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
     "license": "LGPL-3",
+
     "price": 15.00,
     "currency": "EUR",
 

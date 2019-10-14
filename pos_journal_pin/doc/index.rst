@@ -13,12 +13,13 @@ Configuration
 Manager's PIN
 -------------
 
-Set a PIN for a POS manager as it's explained in `Confirm POS action by PIN <https://apps.odoo.com/apps/modules/10.0/pos_pin/>`_  module.
+Set a PIN for a POS manager as it's explained in `Confirm POS action by PIN <https://apps.odoo.com/apps/modules/11.0/pos_pin/>`_  module.
 As Administrator please follow next scenario:
 
 Journal
 -------
 
+  * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
   * Open ``[[Point of Sale]] >> Payment Methods`` menu
   * Choose a journal or create one, be sure the journal is active in POS
   * Activate **Manager's Permission** field

@@ -8,7 +8,7 @@ odoo.define('pos_partner_sync.pos', function (require) {
     var models = require('point_of_sale.models');
     var longpolling = require('pos_longpolling');
     var gui = require('point_of_sale.gui');
-    var Model = require('web.Model');
+    var rpc = require('web.rpc');
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -67,10 +67,14 @@ odoo.define('pos_partner_sync.pos', function (require) {
             ids = Array.isArray(ids)
             ? ids
             : [ids];
-            new Model(model_name).call("read", [ids, fields], {}, {'shadow': true}).then(function(partners) {
-                // we add this trick with get_partner_write_date to be able to process several updates within the second
-                // it is restricted by built-in behavior in add_partners function
-                self.db.partner_write_date = 0;
+            rpc.query({
+                model: model_name,
+                method: 'read',
+                args: [ids, fields],
+            }, {
+                shadow: true,
+            }).then(function(partners) {
+                // check if the partners we got were real updates
                 if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {

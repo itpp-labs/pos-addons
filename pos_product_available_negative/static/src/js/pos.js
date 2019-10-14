@@ -13,6 +13,9 @@ odoo.define('pos_product_available_negative.pos', function (require) {
         validate_order: function(force_validation) {
             var self = this;
             var _super = this._super;
+            if (!this.pos.config.negative_order_manager_permission) {
+                return this._super(force_validation);
+            }
             var order = this.pos.get_order();
             var orderlines = order.get_orderlines();
             var has_negative_product = false;
@@ -47,6 +50,29 @@ odoo.define('pos_product_available_negative.pos', function (require) {
             : false;
             return json;
         }
+    });
+
+    screens.ProductListWidget.include({
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent,options);
+            if (!this.pos.config.negative_order_warning) {
+                return;
+            }
+
+            var click_product_handler_super = this.click_product_handler;
+            this.click_product_handler = function(){
+                var product = self.pos.db.get_product_by_id(this.dataset.productId);
+                if (product.type === 'product' && product.qty_available <= 0) {
+                    var that = this;
+                    return self.gui.show_popup('alert',{
+                            'title': _t('The product is out of stock'),
+                            'body': _t("It's unavailable to add the product"),
+                        });
+                }
+                _.bind(click_product_handler_super, this)();
+            };
+        },
     });
 
 });

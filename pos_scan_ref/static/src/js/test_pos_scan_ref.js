@@ -1,3 +1,5 @@
+/*  Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_scan_ref.tour', function (require) {
     "use strict";
 
@@ -34,6 +36,6 @@ odoo.define('pos_scan_ref.tour', function (require) {
             position: "bottom",
         }];
 
-    tour.register('tour_pos_scan_ref', { test: true, url: '/web?debug=assets#' }, steps);
+    tour.register('tour_pos_scan_ref', { test: true, url: '/web' }, steps);
 
 });

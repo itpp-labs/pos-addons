@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Artem Losev
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).

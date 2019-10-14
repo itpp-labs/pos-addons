@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
 # Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
@@ -9,7 +8,7 @@
     "summary": """Forced choose a cashier before switching to payment screen""",
     "category": "Point of Sale",
     "images": ['images/pos_cashier_select.png'],
-    "version": "10.0.1.0.2",
+    "version": "11.0.1.0.2",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",

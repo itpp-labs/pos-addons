@@ -10,6 +10,7 @@ Credits
 Contributors
 ------------
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Anvar Kildebekov <https://it-projects.info/team/fedoranvar>`__
 
 Sponsors
 --------
@@ -19,7 +20,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_menu/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_menu/>`__.
 
       Thank you for understanding!
 
@@ -28,12 +29,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/10.0/pos-addons
+Demo: http://runbot.it-projects.info/demo/11.0/pos-addons
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_menu/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_menu/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 0351677a00df8bd76fa207a38dc2ecdefdc6940a
+Tested on Odoo 11.0 dff2e242a5e5288cb3c8408a9b635a4c85034e83
