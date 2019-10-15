@@ -1,7 +1,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """WeChat API for mini-program""",
+    "name": """WeChat mini-program API""",
     "summary": """Technical module to intergrate odoo with WeChat mini-program""",
     "category": "Hidden",
     # "live_test_url": "",
