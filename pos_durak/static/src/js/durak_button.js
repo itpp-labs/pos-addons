@@ -72,6 +72,19 @@ odoo.define('pos_chat_button', function (require){
         def_cards = [0,0];
     }
 
+    function Take_cards() {
+        // Need to finish
+        let temp_cards;NEED TO FINISH TAKE CARDS FUNCTION HERE AND IN PY
+        for(let i = 0; i < on_table_cards.length; i++){
+            temp_cards += on_table_cards[i] + ' ';
+        }
+        self._rpc({
+            model: "pos.session",
+            method: "take_cards",
+            args: [session.uid, temp_cards]
+        });
+    }
+
 //------------------------------------------------------
 
 //-------------Help functions part----------------------
@@ -82,6 +95,15 @@ odoo.define('pos_chat_button', function (require){
                 return i;
             }
         }
+    }
+
+    function OnTable(n) {
+        for(let i = 0; i < on_table_cards.length; i++){
+            if(on_table_cards[i] === n) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function is_on_table_card(num) {
@@ -125,6 +147,9 @@ odoo.define('pos_chat_button', function (require){
                method: 'send_field_updates',
                args: ['','','Move_done',session.uid]
             });
+        }
+        else if(elem.id === "take-button"){
+            Take_Cards();
         }
         else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava" && game_started){
             let num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
@@ -329,15 +354,17 @@ odoo.define('pos_chat_button', function (require){
         attacking = false;
         complete_move = 0;
         moves_cnt = 0;
-        for(let i = 0; i < on_table_cards.length; i++){
-            let card = document.getElementById('card-'+on_table_cards[i]);
+        while(on_table_cards.length > 0){
+            let card = document.getElementById('card-'+on_table_cards[0]);
             card.style.setProperty('opacity', '0');
+            on_table_cards.shift();
         }
         for(let i = 0; i < chat_users.length; i++){
             document.getElementById('picture-'+i).
             style.setProperty('opacity','1');
         }
         document.getElementById('step-button').style.setProperty('opacity', '0');
+        document.getElementById('take-button').style.setProperty('opacity','0');
         if(in_chat){
             ShowUsers();
         }
@@ -368,6 +395,8 @@ odoo.define('pos_chat_button', function (require){
             Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000, 500);
         }
         if(session.uid === who_defends){
+            let button = document.getElementById('take-button');
+            button.style.setProperty('opacity','1');
             Tip('Defend yourself', 2000, 500);
         }
 
@@ -802,7 +831,14 @@ odoo.define('pos_chat_button', function (require){
                     DownloadEnemyCards(card1, data.uid);
                     DownloadEnemyCards(card2, data.uid);
                 }
-                on_table_cards.push(card1, card2);
+                if(OnTable(card1)){
+                    on_table_cards.push(card1);
+                }
+                self._rpc({
+                    model: "pos.session",
+                    method: "delete_card",
+                    args: [session.uid, card1]
+                });
                 Cover(card1, data.x, data.y);
                 beated.push(card1, card2);
             }

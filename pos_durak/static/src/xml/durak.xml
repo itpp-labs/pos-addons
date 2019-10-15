@@ -30,6 +30,9 @@
             <span type="button" class="ready-button" id="step-button" style="opacity: 0">
                 Complete move
             </span>
+            <span type="button" class="ready-button" id="take-button" style="opacity: 0">
+                Take cards
+            </span>
         </div>
         <div id="for-inscriptions" class="tips"/>
     </t>

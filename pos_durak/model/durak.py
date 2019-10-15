@@ -94,15 +94,22 @@ class Durak(models.Model):
         return 1
 
     @api.model
-    def moved(self, from_uid, card):
-        pos = self.search([('user_id', '=', from_uid)])
-        cards_cnt_before = len(pos.cards)
-        pos.write({
-            'cards': re.sub(card + " ", "", pos.cards),
+    def delete_card(self, uid, card):
+        user = self.search([('user_id', '=', uid)])
+        user.write({
+            'cards': re.sub(card + " ", "", user.cards),
         })
-        if len(pos.cards) == cards_cnt_before:
+        return 1
+
+    @api.model
+    def moved(self, from_uid, card):
+        user = self.search([('user_id', '=', from_uid)])
+        cards_cnt_before = len(user.cards)
+
+        self.delete_card(user, card)
+        if len(user.cards) == cards_cnt_before:
             return 1
-        pos.write({'cards_num': pos.cards_num - 1})
+        user.write({'cards_num': user.cards_num - 1})
         self.send_field_updates('', card + " " + str(from_uid), 'Move', from_uid)
         return 1
 
@@ -125,4 +132,12 @@ class Durak(models.Model):
     def send_cards(self, uid):
         cards = self.filtered(lambda el: el.user_id == uid).cards
         self.send_to_user("Cards", cards, self.search([('user_id', '=', uid)]).id)
+        return 1
+
+    @api.model
+    def take_cards(self, uid, cards):
+        user = self.search([('user_id', '=', uid)])
+        user.write({
+            'cards': user.cards + ' ' + cards
+        })
         return 1
