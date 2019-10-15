@@ -115,7 +115,6 @@ class Durak(models.Model):
 
     @api.model
     def defend(self, uid, card1, card2, x, y):
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         data = {'uid': uid, 'first': card1, 'second': card2, 'command': 'Defense', 'x': x, 'y': y}
         for pos in self.search([('plays', '=', True)]):
             channel = self.env['pos.config']._get_full_channel_name_by_id(self.env.cr.dbname, pos.id, "pos_chat")

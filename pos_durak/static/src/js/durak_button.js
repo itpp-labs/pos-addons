@@ -45,9 +45,32 @@ odoo.define('pos_chat_button', function (require){
     // Defender counter
     let choose_and_beat = 0;
     let def_cards = [0,0];
-    let all_cards = [];
+    const all_cards = [];
     let last_moved_card = -1;
-    let card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
+    const card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
+
+//------------------------------------------------------
+
+//--------------- Game table actions -------------------
+
+    function Defendence(x, y) {
+        let ans = Comp(def_cards[0], def_cards[1]);
+        if(ans === 2){
+            alert('Your card is weaker!');
+        }
+        else if(ans === -1){
+            alert('This cards are different suits!')
+        }
+        else if(ans === 1){
+            self._rpc({
+                model: "pos.session",
+                method: "defend",
+                args: [session.uid, def_cards[0], def_cards[1], x, y]
+            });
+        }
+
+        def_cards = [0,0];
+    }
 
 //------------------------------------------------------
 
@@ -230,11 +253,11 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Cover(card, x2, y2) {
-        let card1 = document.getElementById('card-'+card);
-        let x1 = card1.offsetLeft, y1 = card1.offsetTop;
+        const card1 = document.getElementById('card-'+card);
+        const x1 = card1.offsetLeft, y1 = card1.offsetTop;
         let w = card1.offsetWidth, h = card1.offsetHeight;
-        card1.style.setProperty('transform','translate3d('
-            +(x2*W - w/2 - x1)+'px,'+(y2*H - h/2 - y1)+'px,0px)');
+        card1.style.setProperty('transform','translate3d('+
+            (x2*W - w/2 - x1)+'px,'+(y2*H - h/2 - y1)+'px,0px)');
     }
 
     function Move(card_num){
@@ -300,25 +323,6 @@ odoo.define('pos_chat_button', function (require){
                 chat_users[who].cards.splice(i,1);
             }
         }
-    }
-
-    function Defendence(x, y) {
-        let ans = Comp(def_cards[0], def_cards[1]);
-        if(ans === 2){
-            alert('Your card is weaker!');
-        }
-        else if(ans === -1){
-            alert('This cards are different suits!')
-        }
-        else if(ans === 1){
-            self._rpc({
-                model: "pos.session",
-                method: "defend",
-                args: [session.uid, def_cards[0], def_cards[1], x, y]
-            });
-        }
-
-        def_cards = [0,0];
     }
 
     function First_scene(){
@@ -773,7 +777,7 @@ odoo.define('pos_chat_button', function (require){
                 }
                 attacking = true;
                 let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
-                last_moved_card = attack_card
+                last_moved_card = attack_card;
                 if(who_attacks !== session.uid){
                     DownloadEnemyCards(attack_card, who_attacks);
                 }
@@ -798,9 +802,9 @@ odoo.define('pos_chat_button', function (require){
                     DownloadEnemyCards(card1, data.uid);
                     DownloadEnemyCards(card2, data.uid);
                 }
+                on_table_cards.push(card1, card2);
                 Cover(card1, data.x, data.y);
-                beated.push(card1);
-                beated.push(card2);
+                beated.push(card1, card2);
             }
         },
     });
