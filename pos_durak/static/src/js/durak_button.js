@@ -236,6 +236,8 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Move(card_num){
+        // Need to check suit of card, and make a decide
+        // Can player make a step or no
         if(moves_cnt >= max_cards){
             alert('You can step only '+max_cards+' times!');
             return;
