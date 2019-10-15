@@ -46,6 +46,8 @@ odoo.define('pos_chat_button', function (require){
     let choose_and_beat = 0;
     let def_cards = [0,0];
     let all_cards = [];
+    let last_moved_card = -1;
+    let card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
 
 //------------------------------------------------------
 
@@ -80,7 +82,7 @@ odoo.define('pos_chat_button', function (require){
                def_cards[choose_and_beat - 1] = num;
                if(choose_and_beat === 2){
                    choose_and_beat = 0;
-                   Defendence(e.pageX, e.pageY);
+                   Defendence(e.pageX/W, e.pageY/H);
                }
            }
            else{
@@ -232,12 +234,18 @@ odoo.define('pos_chat_button', function (require){
         let x1 = card1.offsetLeft, y1 = card1.offsetTop;
         let w = card1.offsetWidth, h = card1.offsetHeight;
         card1.style.setProperty('transform','translate3d('
-            +(x2 - w/2 - x1)+'px,'+(y2 - h/2 - y1)+'px,0px)');
+            +(x2*W - w/2 - x1)+'px,'+(y2*H - h/2 - y1)+'px,0px)');
     }
 
     function Move(card_num){
         // Need to check suit of card, and make a decide
         // Can player make a step or no
+        if(attacking){
+            if(Card_power(card_num)[1] !== Card_power(last_moved_card)[1]){
+                alert('Card suit should be -'+ card_suits[Card_power(last_moved_card)[1]]);
+                return;
+            }
+        }
         if(moves_cnt >= max_cards){
             alert('You can step only '+max_cards+' times!');
             return;
@@ -765,6 +773,7 @@ odoo.define('pos_chat_button', function (require){
                 }
                 attacking = true;
                 let attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
+                last_moved_card = attack_card
                 if(who_attacks !== session.uid){
                     DownloadEnemyCards(attack_card, who_attacks);
                 }
