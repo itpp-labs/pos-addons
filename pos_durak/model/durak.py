@@ -112,3 +112,13 @@ class Durak(models.Model):
                           str(self.search([('user_id', '=', uid)]).cards_num),
                           self.search([('user_id', '=', from_uid)]).id)
         return 1
+
+    def defend(self, uid, card, to_card):
+        data = {'uid': uid, 'card1': card, 'card2': to_card, 'command': 'Defence'}
+        self.env['pos.config'].send_to_all_poses("pos_chat", data)
+        return 1
+
+    def send_cards(self, uid):
+        cards = self.filtered(lambda el: el.user_id == uid).cards
+        self.send_to_user("Cards", cards, self.search([('user_id', '=', uid)]).id)
+        return 1
