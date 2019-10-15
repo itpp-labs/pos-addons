@@ -28,7 +28,7 @@ If odoo is a git folder: ::
  git fetch
  git cherry-pick d458ec953b179596330091b3efe729868fb56ca2
 
-if your installation does not have git: ::
+If your installation does not have git: ::
 
  cd /path/to/odoo/source
  patch -p1 < /path/to/remove_fastclick.patch
