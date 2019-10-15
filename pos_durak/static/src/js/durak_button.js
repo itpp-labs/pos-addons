@@ -45,6 +45,7 @@ odoo.define('pos_chat_button', function (require){
     // Defender counter
     let choose_and_beat = 0;
     let def_cards = [0,0];
+    let all_cards = [];
 
 //------------------------------------------------------
 
@@ -79,7 +80,7 @@ odoo.define('pos_chat_button', function (require){
                def_cards[choose_and_beat - 1] = num;
                if(choose_and_beat === 2){
                    choose_and_beat = 0;
-                   Defendence();
+                   Defendence(e.pageX, e.pageY);
                }
            }
            else{
@@ -226,13 +227,12 @@ odoo.define('pos_chat_button', function (require){
         card.style.left = x;card.style.top = y;
     }
 
-    function Cover(card, to_card) {
-        let card1 = document.getElementById('card-'+to_card);
-        let card2 = document.getElementById('card-'+card);
-        let x = card1.offsetLeft, y = card1.offsetTop;
+    function Cover(card, x2, y2) {
+        let card1 = document.getElementById('card-'+card);
+        let x1 = card1.offsetLeft, y1 = card1.offsetTop;
         let w = card1.offsetWidth, h = card1.offsetHeight;
-        card2.style.setProperty('transform','translate3d('
-            +(x + w*0.2 - card2.offsetLeft)+'px,'+(y + h*0.2 - card2.offsetTop)+'px,0px)');
+        card1.style.setProperty('transform','translate3d('
+            +(x2 - w/2 - x1)+'px,'+(y2 - h/2 - y1)+'px,0px)');
     }
 
     function Move(card_num){
@@ -266,7 +266,7 @@ odoo.define('pos_chat_button', function (require){
             model: "pos.session",
             method: 'number_of_cards',
             args: [uid, session.uid]
-        })
+        });
     }
 
     function ShowHowMuchCards(num){
@@ -274,6 +274,10 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function DownloadEnemyCards(n, user){
+        for(let i = 0; i < all_cards.length; i++){
+            if(n === all_cards[i]) return;
+        }
+        all_cards.push(n);
         chat_users[NumInQueue(user)].cards.push(n);
         let out ='<img type="button" src="/pos_durak/static/src/img/kards/'+
                 n+'.png" id="card-'+n+'" class="enemy-card"/>';
@@ -288,7 +292,7 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
-    function Defendence() {
+    function Defendence(x, y) {
         let ans = Comp(def_cards[0], def_cards[1]);
         if(ans === 2){
             alert('Your card is weaker!');
@@ -300,7 +304,7 @@ odoo.define('pos_chat_button', function (require){
             self._rpc({
                 model: "pos.session",
                 method: "defend",
-                args: [session.uid, def_cards[0], def_cards[1]]
+                args: [session.uid, def_cards[0], def_cards[1], x, y]
             });
         }
 
@@ -778,9 +782,14 @@ odoo.define('pos_chat_button', function (require){
                 }
             }
             else if(data.command === 'Defense'){
-                Cover(data.card1, data.card2);
-                beated.push(data.card1);
-                beated.push(data.card2);
+                let card1 = data.first, card2 = data.second;
+                if(data.uid !== session.uid){
+                    DownloadEnemyCards(card1, data.uid);
+                    DownloadEnemyCards(card2, data.uid);
+                }
+                Cover(card1, data.x, data.y);
+                beated.push(card1);
+                beated.push(card2);
             }
         },
     });

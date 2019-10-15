@@ -113,11 +113,16 @@ class Durak(models.Model):
                           self.search([('user_id', '=', from_uid)]).id)
         return 1
 
-    def defend(self, uid, card, to_card):
-        data = {'uid': uid, 'card1': card, 'card2': to_card, 'command': 'Defence'}
-        self.env['pos.config'].send_to_all_poses("pos_chat", data)
+    @api.model
+    def defend(self, uid, card1, card2, x, y):
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        data = {'uid': uid, 'first': card1, 'second': card2, 'command': 'Defense', 'x': x, 'y': y}
+        for pos in self.search([('plays', '=', True)]):
+            channel = self.env['pos.config']._get_full_channel_name_by_id(self.env.cr.dbname, pos.id, "pos_chat")
+            self.env['bus.bus'].sendmany([[channel, data]])
         return 1
 
+    @api.model
     def send_cards(self, uid):
         cards = self.filtered(lambda el: el.user_id == uid).cards
         self.send_to_user("Cards", cards, self.search([('user_id', '=', uid)]).id)
