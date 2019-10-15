@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ChatButton">
+      <div class="control-button">
+        <i class="fa fa-list-alt" />
+          Play and chat
+      </div>
+    </t>
+
+    <t t-name="CustomScreenWidget">
+        <div class="main-action" id="main-window"/>
+        <div class="chat-tools">
+            <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
+                <span class="button next">
+                     Send
+                   <i class="fa fa-angle-double-right" />
+                </span>
+                <span class="button back">
+                   <i class="fa fa-angle-double-left" />
+                     Back
+                </span>
+        </div>
+        <div id="cards"></div>
+        <div id="enemy-cards"></div>
+        <div class="game-tools">
+            <span type="button" class="ready-button" id="ready-button">
+                Ready
+            </span>
+            <span type="button" class="ready-button" id="step-button" style="opacity: 0">
+                Complete move
+            </span>
+        </div>
+        <div id="for-inscriptions" class="tips"/>
+    </t>
+</templates>

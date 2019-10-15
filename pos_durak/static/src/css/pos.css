@@ -1,0 +1,258 @@
+/*  ********* Chat screen's style ********* */
+
+.screen .screen-content{
+    margin: 0px auto;
+    max-width: 1024px;
+    text-align: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.screen .full-content .chat_window .white-space
+{
+    height: 400px;
+    width: 100%;
+}
+
+.screen .full-content .chat_window .input-text
+{
+    background-color: white;
+    height: 80px;
+    width: 100%;
+}
+
+.screen .full-content .chat_window .white-space-below
+{
+    height: 56px;
+    width: 100%;
+}
+
+/*  ********* The PopupWidgets  ********* */
+
+.pos .modal-dialog .popup{
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    width:500px;
+    height:400px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.4);
+    z-index:1200;
+    font-family: 'Lato';
+    font-family: Lato;
+}
+
+.pos .modal-dialog .popup .Label{
+    margin-top: 10px;
+}
+
+.pos .modal-dialog .popup .text-input-place{
+    margin-top: 350px;
+    height: 22px;
+    border-bottom: 2px solid green;
+}
+
+.pos .modal-dialog .button.next{
+    margin-top: 350px;
+}
+
+.pos .modal-dialog .button.back{
+    margin-top: 350px;
+}
+
+.pos .modal-dialog .messages{
+    overflow: scroll;
+    position: absolute;
+    top: 20px;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pos .modal-dialog .text-right.small{
+    text-align: left;
+    margin-left: 10px;
+}
+
+
+/*  ********* The custom screen widget  ********* */
+.pos .main-action{
+    position: absolute;
+    top: 60px;
+    bottom: 100px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.pos .chat-tools{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 40%;
+    justify-content: center
+}
+
+.pos .chat-tools .button.back{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next:active{
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .chat-tools .button.back:active{
+    color: white;
+    transition-duration: 0.2s;]
+}
+
+.pos .chat-tools .button.next{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all linear 150ms;
+}
+
+.pos .chat-tools .button.next:hover{
+    background: #2db34a;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
+}
+
+.pos .chat-tools .button.back:hover{
+    background: red;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
+}
+
+.pos .chat-tools .text-input-place:focus{
+    border-radius: 5px;
+    transform: translateY(-5px);
+}
+
+.pos .chat-tools .text-input-place:hover{
+    border-radius: 5px;
+    transition-duration: 0.5s;
+}
+
+.pos .chat-tools .text-input-place{
+    resize: none;
+    border-radius: 30px;
+    transition-duration: 0.5s;
+}
+
+.pos .user-name{
+    background: #a9a9ff;
+    border-radius: 30%;
+    text-align: center;
+    width: 100px;
+    color: white;
+}
+
+.pos .ready-button:hover{
+    background: #2db34a;
+    transition-timing-function: linear;
+    border-radius: 30px;
+    transform: translateY(-4px);
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .ready-button:active{
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.pos .ready-button{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    background: #e2e2e2;
+    border: solid 1px #bfbfbf;
+    display: inline-block;
+    line-height: 38px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 18px;
+    color: #555c6c;
+    margin-top: 20px;
+    margin-left: 20px;
+    transition: all .3s ease-in-out;
+}
+
+.card{
+    position: absolute;
+    bottom: -100px;
+    width: 75px;
+    height: 150px;
+    transition: all .3s ease-in-out;
+}
+
+.card:hover{
+    transform: translateY(-20%);
+    transition-duration: 0.2s;
+}
+
+.tips{
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    font-size: 36px;
+    color: #ffc526;
+    transition: all .3s ease-in-out;
+}
+
+.enemy-card{
+    position: absolute;
+    width: 75px;
+    height: 150px;
+    top: 50%;
+    left: -75px;
+    transition: all .3s ease-in-out;
+}
