@@ -2,7 +2,4 @@
 
 <odoo>
 
-     <record id="point_of_sale.group_pos_manager" model="res.groups">
-        <field name="implied_ids" eval="[(4, ref('group_pos_credit_update_manager'))]"/>
-    </record>
 </odoo>

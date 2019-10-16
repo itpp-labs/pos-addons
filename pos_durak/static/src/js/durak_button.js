@@ -147,7 +147,7 @@ odoo.define('pos_chat_button', function (require){
             Take_Cards();
         }
         else if(elem.id[0]+elem.id[1]+elem.id[2] === "ava" && game_started){
-            var num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
+            num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
                 + elem.id[elem.id.length - 1];
             HowMuchCards(chat_users[Number(num)].uid);
         }
@@ -821,7 +821,7 @@ odoo.define('pos_chat_button', function (require){
                 var temp_window = document.getElementById('main-window');
                 temp_window.innerHTML += '<img type="button" src="/pos_durak/static/src/img/'+
                     card_suits[trump[1]]+'.png" id="suit" style=";' +
-                    'position:absolute;left:40%;top:40%;opacity: 0.2;"/>'
+                    'position:absolute;left:40%;top:40%;opacity: 0.2;"/>';
             }
             else if(data.command === 'Move'){
                 moves_cnt++;
@@ -846,8 +846,8 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'Move_done'){
                 complete_move++;
-                if(complete_move === 2 && chat_users.length > 2 ||
-                complete_move === 1 && chat_users.length === 2){
+                if((complete_move === 2 && chat_users.length > 2) ||
+                    (complete_move === 1 && chat_users.length === 2)){
                     // Take new cards
                     var temp = NumInQueue(session.uid);
                     for(var i = 0; i < temp_extra_cards.length; i++){
