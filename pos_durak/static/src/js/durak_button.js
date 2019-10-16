@@ -10,7 +10,7 @@ odoo.define('pos_chat_button', function (require){
 //-------------------- Variables -----------------------
 
     // All users messages stored here
-     all_messages = [];
+    var all_messages = [];
     // Messages timeouts needs to store,
     // cause only this way we can know when to delete the m
     var all_timeOuts = [];
