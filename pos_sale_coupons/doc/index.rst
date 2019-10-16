@@ -10,3 +10,19 @@ Installation
 
 Usage
 =====
+
+* Open ``Sales >> Configuration >> Coupon Program``
+
+  * Click ``[Create]``
+  * Specify the fields:
+
+    * Based on Products
+    * Quantity
+    * Reward
+    * Reward Line Product
+    * POS Product
+
+* Go to ``Sales >> Configuration >> Coupon Program``
+
+  * Open POS session
+  * Click ``[Sell Coupon]``

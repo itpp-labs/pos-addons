@@ -10,8 +10,8 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_sale_coupons/",
     "license": "LGPL-3",
-    # "price": 0.00,
-    # "currency": "EUR",
+    "price": 49.00,
+    "currency": "EUR",
 
     "depends": [
         "sale_coupon",
