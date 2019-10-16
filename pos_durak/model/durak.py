@@ -86,7 +86,7 @@ class Durak(models.Model):
             if(i >= len(players)):
                 break
         temp_str = ''
-        for k in range(len(players)*how_much_cards - 1, len(seq) - 2):
+        for k in range(len(players)*how_much_cards, len(seq) - 2):
             temp_str += str(seq[k]) + ' '
         self.send_field_updates(str(seq[len(seq) - 1]),
                                 temp_str, "Extra", -1)
