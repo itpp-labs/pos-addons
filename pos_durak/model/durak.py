@@ -129,16 +129,8 @@ class Durak(models.Model):
         return 1
 
     @api.model
-    def send_cards(self, uid):
-        cards = self.filtered(lambda el: el.user_id == uid).cards
-        self.send_to_user("Cards", cards, self.search([('user_id', '=', uid)]).id)
-        return 1
-
-    @api.model
     def resent_cards(self, uid):
-        import wdb
-        wdb.set_trace()
-        user = self.filtered(lambda r: r.user_id == uid)
+        user = self.search([('user_id', '=', uid)])
         self.send_to_user('Cards', user.cards, user.id)
         return 1
 
@@ -146,7 +138,7 @@ class Durak(models.Model):
     def take_cards(self, uid, cards):
         user = self.search([('user_id', '=', uid)])
         user.write({
-            'cards': user.cards + ' ' + cards
+            'cards': user.cards + cards
         })
-        self.resent_cards(uid)
+        self.send_field_updates('', user.cards, 'Loser', user.id)
         return 1

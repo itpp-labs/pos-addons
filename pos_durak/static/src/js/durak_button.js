@@ -74,7 +74,7 @@ odoo.define('pos_chat_button', function (require){
 
     function Take_Cards() {
         // Need to finish
-        let temp_cards;
+        let temp_cards = '';
         for(let i = 0; i < on_table_cards.length; i++){
             temp_cards += on_table_cards[i] + ' ';
         }
@@ -363,6 +363,7 @@ odoo.define('pos_chat_button', function (require){
         if(in_chat){
             ShowUsers();
         }
+        who_moves = NumInQueue(next_to(who_moves, true));
     }
 
     function Second_scene(data, who_attacking){
@@ -708,8 +709,11 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Distribute_cards(data, took_cards){
+        let ses = NumInQueue(session.uid);
+        while(chat_users[ses].cards.length > 0){
+            chat_users[ses].cards.shift();
+        }
         if(took_cards){
-            let ses = NumInQueue(session.uid);
             let str = data.message;
             for(let i = 0; i < str.length - 1; i++){
                 let num = '';
@@ -824,7 +828,6 @@ odoo.define('pos_chat_button', function (require){
                 complete_move++;
                 if(complete_move === 2){
                     First_scene();
-                    who_moves = NumInQueue(next_to(who_moves, true));
                 }
             }
             else if(data.command === 'Defense'){
@@ -841,6 +844,14 @@ odoo.define('pos_chat_button', function (require){
                 }
                 Cover(card1, data.x, data.y);
                 beated.push(card1, card2);
+            }
+            else if(data.command === 'Loser'){
+                First_scene();
+                // who_moves === session.uid, cause in 'First_scene' method
+                // we appropriated who_moves = next_to(who_moves)
+                if(chat_users[who_moves].uid === session.uid){
+                    Distribute_cards(data, true);
+                }
             }
         },
     });
