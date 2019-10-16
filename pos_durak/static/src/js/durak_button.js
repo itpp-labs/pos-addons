@@ -367,6 +367,10 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Second_scene(data, who_attacking){
+        // Show suit
+        let temp_window = document.getElementById('main-window');
+        temp_window.innerHTML += '<img type="button" src="/pos_durak/static/src/img/'+
+            card_suits[trump[1]]+'.png" id="suit" style="opacity: 0.3"/>'
         document.getElementById('ready-button').style.setProperty('display', 'none');
         let who_attacks = [who_attacking, -1], who_defends;
         who_defends = next_to(who_attacks[0], false);
