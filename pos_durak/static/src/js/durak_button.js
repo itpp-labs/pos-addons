@@ -45,11 +45,11 @@ odoo.define('pos_chat_button', function (require){
     // Defender counter
     var choose_and_beat = 0;
     var def_cards = [0,0];
-    const all_cards = [];
+    var all_cards = [];
     var last_moved_card = -1;
     var extra_cards = [];
     var temp_extra_cards = [];
-    const card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
+    var card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
 
 //------------------------------------------------------
 
@@ -273,8 +273,8 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Cover(card, x2, y2) {
-        const card1 = document.getElementById('card-'+card);
-        const x1 = card1.offsetLeft, y1 = card1.offsetTop;
+        var card1 = document.getElementById('card-'+card);
+        var x1 = card1.offsetLeft, y1 = card1.offsetTop;
         var w = card1.offsetWidth, h = card1.offsetHeight;
         card1.style.setProperty('transform','translate3d('+
             (x2*W - w/2 - x1)+'px,'+(y2*H - h/2 - y1)+'px,0px)');
@@ -354,17 +354,18 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function First_scene(){
+        var i;
         attacking = false;
         complete_move = 0;
         moves_cnt = 0;
-        for(var i = 0; i < on_table_cards.length; i++){
+        for(i = 0; i < on_table_cards.length; i++){
             var card = document.getElementById('card-'+on_table_cards[i]);
             card.style.setProperty('opacity', '0');
         }
         while(on_table_cards.length > 0){
             on_table_cards.shift();
         }
-        for(var i = 0; i < chat_users.length; i++){
+        for(i = 0; i < chat_users.length; i++){
             document.getElementById('picture-'+i).
             style.setProperty('opacity','1');
         }
@@ -378,7 +379,8 @@ odoo.define('pos_chat_button', function (require){
 
     function Second_scene(data, who_attacking){
         document.getElementById('ready-button').style.setProperty('display', 'none');
-        var who_attacks = [who_attacking, -1], who_defends;
+        var who_attacks = [who_attacking, -1];
+        var who_defends;
         who_defends = next_to(who_attacks[0], false);
         who_attacks[1] = next_to(who_defends, false);
         if(who_attacks[0] === session.uid || who_attacks[1] === session.uid){
@@ -693,8 +695,8 @@ odoo.define('pos_chat_button', function (require){
             allow_change_name: data.allow,
             cards : []
         });
-        const n = chat_users.length;
-        const temp = chat_users[n - 1];
+        var n = chat_users.length;
+        var temp = chat_users[n - 1];
         chat_users[n - 1] = chat_users[n - 2];
         chat_users[n - 2] = temp;
 
