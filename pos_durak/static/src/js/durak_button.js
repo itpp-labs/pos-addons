@@ -55,13 +55,34 @@ odoo.define('pos_chat_button', function (require){
 
 //--------------- Game table actions -------------------
 
+    function Card_power(card_num) {
+        var n = Number(card_num);
+        var cnt = 0;
+        while(n >= 13){
+            n -= 13;
+            cnt++;
+        }
+        return [n === 0 ? 13 : n, cnt];
+    }
+
+    function Comp(card_num1, card_num2){
+        var card1 = Card_power(card_num1);
+        var card2 = Card_power(card_num2);
+        card1[0] = (card1[1] === trump[1]) ? (card1[0] + 100) : card1[0];
+        card2[0] = (card2[1] === trump[1]) ? (card2[0] + 100) : card2[0];
+        if (card1[1] === card2[1] || card1[1] === trump[1] || card2[1] === trump[1]){
+            return card1[0] > card2[0] ? 1 : 2;
+        }
+        return -1;
+    }
+
     function Defendence(x, y) {
         var ans = Comp(def_cards[0], def_cards[1]);
         if(ans === 2){
             alert('Your card is weaker!');
         }
         else if(ans === -1){
-            alert('This cards are different suits!')
+            alert('This cards are different suits!');
         }
         else if(ans === 1){
             self._rpc({
@@ -110,8 +131,8 @@ odoo.define('pos_chat_button', function (require){
 
     function ControlOnClick(e) {
         var elem = e ? e.target : window.event.srcElement;
+        var num = '';
         if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
-           var num = '';
            if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
            num += elem.id[elem.id.length - 1];
            if(session.uid === next_to(who_moves, true)){
@@ -221,6 +242,88 @@ odoo.define('pos_chat_button', function (require){
 
 //------------------------------------------------------
 
+//---------Help functions part----------------------
+
+    function message_view(message_id, display){
+        var single_message = document.getElementById(message_id);
+        single_message.style.setProperty('border-radius', '20%');
+        single_message.style.setProperty('background','white');
+        single_message.style.setProperty('top','10px');
+        single_message.style.setProperty('width','100px');
+        single_message.style.setProperty('font','14pt sans-serif');
+        if(display){
+            single_message.style.setProperty('display', 'none');
+        }
+    }
+
+    function CheckUserExists(uid){
+        for(var i = 0; i < chat_users.length; i++){
+            if(uid === chat_users[i].uid) return true;
+        }
+        return false;
+    }
+
+    function Push_new_message(i, uid, message){
+        return all_messages[i].push({
+            text: message,
+            user_id : uid,
+            class : 'new-message-'+uid+'-'+all_messages[i].length,
+            cnt : -1
+        });
+    }
+    // Users all data deletion
+    function DeleteUserData(uid){
+        var j = NumInQueue(uid);
+        for(var i = j; i < chat_users.length; i++){
+            chat_users[i] = chat_users[i + 1];
+            all_messages[i] = all_messages[i + 1];
+            all_timeOuts[i] = all_timeOuts[i + 1];
+        }
+        messages_cnt.pop();
+        chat_users.pop();
+        all_messages.pop();
+        all_timeOuts.pop();
+    }
+
+    function DeleteMyData(){
+        chat_users = [];
+        all_messages = [];
+        all_timeOuts = [];
+        messages_cnt = [];
+        // User out of the chat room
+        in_chat = false;
+        game_started = false;
+        document.getElementById('enemy-cards').innerHTML = '';
+        document.getElementById('cards').innerHTML = '';
+    }
+    // Is this string the tag checking
+    function is_it_tag(str, send)
+    {
+        var left = 0, right = 0, slash = 0;
+        var text = '';
+        for(var i = 0; i < str.length; i++){
+            if(left + right === 2 && str[i] !== '<'){
+                text += str[i];
+            }
+            if(str[i] === '<')left++;
+            if(str[i] === '>')right++;
+            if(str[i] === '/') slash++;
+        }
+        // If send mode is active
+        if(send) {
+            return text;
+        }
+
+        return left === 2 && right === 2 && slash === 1 ? true : false;
+    }
+
+    function next_to(num, already_converted){
+        var i = already_converted ? num : NumInQueue(num);
+        return i === chat_users.length - 1 ?
+            chat_users[0].uid : chat_users[i + 1].uid;
+    }
+//--------------------------------------------------
+
 //--------------- Game table actions -------------------
 
     function Tip(str, how_long_to_hold, delay){
@@ -239,32 +342,11 @@ odoo.define('pos_chat_button', function (require){
         },how_long_to_hold + 1000);
     }
 
-    function Card_power(card_num) {
-        var n = Number(card_num);
-        var cnt = 0;
-        while(n >= 13){
-            n -= 13;
-            cnt++;
-        }
-        return [n === 0 ? 13 : n, cnt];
-    }
-
-    function Comp(card_num1, card_num2){
-        var card1 = Card_power(card_num1);
-        var card2 = Card_power(card_num2);
-        card1[0] = (card1[1] === trump[1]) ? (card1[0] + 100) : card1[0];
-        card2[0] = (card2[1] === trump[1]) ? (card2[0] + 100) : card2[0];
-        if (card1[1] === card2[1] || card1[1] === trump[1] || card2[1] === trump[1]){
-            return card1[0] > card2[0] ? 1 : 2;
-        }
-        return -1;
-    }
-
     function PutOn(card) {
         var sign = (moves_cnt + 1)%2 === 0 ? 1 : -1;
         var cw = card.offsetWidth, ch = card.offsetHeight;
 
-        var put_w = (W - cw)/2 + moves_cnt*cw*sign*0.5, put_h = (H - ch)/2;
+        var put_w = ((W - cw)/2) + (moves_cnt*cw)*(sign*0.5), put_h = (H - ch)/2;
         var x = card.offsetLeft, y = card.offsetTop;
         card.style.setProperty('opacity','1');
         card.style.setProperty('transform','translate3d('
@@ -277,7 +359,7 @@ odoo.define('pos_chat_button', function (require){
         var x1 = card1.offsetLeft, y1 = card1.offsetTop;
         var w = card1.offsetWidth, h = card1.offsetHeight;
         card1.style.setProperty('transform','translate3d('+
-            (x2*W - w/2 - x1)+'px,'+(y2*H - h/2 - y1)+'px,0px)');
+            (((x2*W) - w/2) - x1)+'px,'+(((y2*H) - h/2) - y1)+'px,0px)');
     }
 
     function Move(card_num){
@@ -328,7 +410,9 @@ odoo.define('pos_chat_button', function (require){
 
     function DownloadEnemyCards(n, user){
         for(var i = 0; i < all_cards.length; i++){
-            if(n === all_cards[i]) return;
+            if(n === all_cards[i]){
+                return;
+            }
         }
         all_cards.push(n);
         chat_users[NumInQueue(user)].cards.push(n);
@@ -354,7 +438,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function First_scene(){
-        var i;
+        var i = 0;
         attacking = false;
         complete_move = 0;
         moves_cnt = 0;
@@ -380,7 +464,7 @@ odoo.define('pos_chat_button', function (require){
     function Second_scene(data, who_attacking){
         document.getElementById('ready-button').style.setProperty('display', 'none');
         var who_attacks = [who_attacking, -1];
-        var who_defends;
+        var who_defends = -1;
         who_defends = next_to(who_attacks[0], false);
         who_attacks[1] = next_to(who_defends, false);
         if(who_attacks[0] === session.uid || who_attacks[1] === session.uid){
@@ -425,7 +509,7 @@ odoo.define('pos_chat_button', function (require){
         }
         if(defender_id !== null){
             x = defender_id.offsetLeft, y = defender_id.offsetTop;
-            bias_top = session.uid === who_defends ? (H*0.75 - y) : -(y+H*0.05);
+            bias_top = session.uid === who_defends ? ((H*0.75) - y) : -(y+(H*0.05));
             defender_id.style.setProperty('transform','translate3d('
                 +(W/2 - x)+'px,'+bias_top+'px,0px)');
             defender_id.style.setProperty('transition','transform .3s ease-in-out');
@@ -512,7 +596,8 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function showMessage(uid){
-        var i = NumInQueue(uid), num = all_messages[i].length - 1;
+        var i = NumInQueue(uid);
+        var num = all_messages[i].length - 1;
         var cnt = messages_cnt[i]++;
 
         var mes_class = 'new-message-'+uid+'-'+cnt;
@@ -553,88 +638,6 @@ odoo.define('pos_chat_button', function (require){
         $('.'+all_messages[NumInQueue(uid)][0].class).fadeOut();
         all_messages[NumInQueue(uid)].shift();
         all_timeOuts[NumInQueue(uid)].shift();
-    }
-//--------------------------------------------------
-
-//---------Help functions part----------------------
-
-    function message_view(message_id, display){
-        var single_message = document.getElementById(message_id);
-        single_message.style.setProperty('border-radius', '20%');
-        single_message.style.setProperty('background','white');
-        single_message.style.setProperty('top','10px');
-        single_message.style.setProperty('width','100px');
-        single_message.style.setProperty('font','14pt sans-serif');
-        if(display){
-            single_message.style.setProperty('display', 'none');
-        }
-    }
-
-    function CheckUserExists(uid){
-        for(var i = 0; i < chat_users.length; i++){
-            if(uid === chat_users[i].uid) return true;
-        }
-        return false;
-    }
-
-    function Push_new_message(i, uid, message){
-        return all_messages[i].push({
-            text: message,
-            user_id : uid,
-            class : 'new-message-'+uid+'-'+all_messages[i].length,
-            cnt : -1
-        });
-    }
-    // Users all data deletion
-    function DeleteUserData(uid){
-        var j = NumInQueue(uid);
-        for(var i = j; i < chat_users.length; i++){
-            chat_users[i] = chat_users[i + 1];
-            all_messages[i] = all_messages[i + 1];
-            all_timeOuts[i] = all_timeOuts[i + 1];
-        }
-        messages_cnt.pop();
-        chat_users.pop();
-        all_messages.pop();
-        all_timeOuts.pop();
-    }
-
-    function DeleteMyData(){
-        chat_users = [];
-        all_messages = [];
-        all_timeOuts = [];
-        messages_cnt = [];
-        // User out of the chat room
-        in_chat = false;
-        game_started = false;
-        document.getElementById('enemy-cards').innerHTML = '';
-        document.getElementById('cards').innerHTML = '';
-    }
-    // Is this string the tag checking
-    function is_it_tag(str, send)
-    {
-        var left = 0, right = 0, slash = 0;
-        var text = '';
-        for(var i = 0; i < str.length; i++){
-            if(left + right === 2 && str[i] !== '<'){
-                text += str[i];
-            }
-            if(str[i] === '<')left++;
-            if(str[i] === '>')right++;
-            if(str[i] === '/') slash++;
-        }
-        // If send mode is active
-        if(send) {
-            return text;
-        }
-
-        return left === 2 && right === 2 && slash === 1 ? true : false;
-    }
-
-    function next_to(num, already_converted){
-        var i = already_converted ? num : NumInQueue(num);
-        return i === chat_users.length - 1 ?
-            chat_users[0].uid : chat_users[i + 1].uid;
     }
 //--------------------------------------------------
 
