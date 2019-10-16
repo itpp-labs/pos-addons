@@ -96,7 +96,7 @@
         <field name="model">pos.config</field>
         <field name="inherit_id" ref="pos_longpolling.view_pos_config_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='autostart_longpolling']" position="attributes">
+            <xpath expr="//div[@id='autostart_longpolling']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
         </field>
