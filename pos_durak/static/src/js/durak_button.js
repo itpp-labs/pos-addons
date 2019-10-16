@@ -231,7 +231,7 @@ odoo.define('pos_chat_button', function (require){
         text.style.setProperty('transform','translate3d(0px,'+(H/2 - text.offsetTop)+'px,0px)');
         setTimeout(function () {
         text.style.setProperty('transform','translate3d(0px,'+(H*3 - text.offsetTop)+'px,0px)');
-        },1000);
+        },how_long_to_hold);
 
         setTimeout(function () {
             $(".tips").fadeOut(delay);
@@ -344,13 +344,13 @@ odoo.define('pos_chat_button', function (require){
             }
         }
         on_table_cards.push(n);
-        temp_extra_cards.push(extra_cards[0]);
-        extra_cards.shift();
-        self._rpc({
-            model: "pos.session",
-            method: "send_field_updates",
-            args: ['', '', 'DeleteExtraCard', session.uid]
-        });
+        if(session.uid === chat_users[who].uid){
+            self._rpc({
+                model: "pos.session",
+                method: "send_field_updates",
+                args: ['', '', 'DeleteExtraCard', chat_users[who].uid]
+            });
+        }
     }
 
     function First_scene(){
@@ -377,10 +377,6 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function Second_scene(data, who_attacking){
-        // Show suit
-        var temp_window = document.getElementById('main-window');
-        temp_window.innerHTML += '<img type="button" src="/pos_durak/static/src/img/'+
-            card_suits[trump[1]]+'.png" id="suit" style="opacity: 0.3"/>'
         document.getElementById('ready-button').style.setProperty('display', 'none');
         var who_attacks = [who_attacking, -1], who_defends;
         who_defends = next_to(who_attacks[0], false);
@@ -410,23 +406,24 @@ odoo.define('pos_chat_button', function (require){
             Tip('Defend yourself', 2000, 500);
         }
 
+        var x, y, bias, bias_top;
         if(attacker_id_1 !== null){
-            var x = attacker_id_1.offsetLeft, y = attacker_id_1.offsetTop, bias = attacker_id_1.offsetWidth;
-            var bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
+            x = attacker_id_1.offsetLeft, y = attacker_id_1.offsetTop, bias = attacker_id_1.offsetWidth;
+            bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
             attacker_id_1.style.setProperty('transform','translate3d('
                 +(W/2 - x - bias)+'px,'+(bias_top)+'px,0px)');
             attacker_id_1.style.setProperty('transition','transform .3s ease-in-out');
         }
         if(attacker_id_2 !== null && who_attacks[0] !== who_attacks[1]){
-            var x = attacker_id_2.offsetLeft, y = attacker_id_2.offsetTop, bias = attacker_id_2.offsetWidth;
-            var bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
+            x = attacker_id_2.offsetLeft, y = attacker_id_2.offsetTop, bias = attacker_id_2.offsetWidth;
+            bias_top = session.uid === who_defends ? -(y+H*0.05) : (H*0.75 - y);
             attacker_id_2.style.setProperty('transform','translate3d('
                 +(W/2 - x + bias)+'px,'+(bias_top)+'px,0px)');
             attacker_id_2.style.setProperty('transition','transform .3s ease-in-out');
         }
         if(defender_id !== null){
-            var x = defender_id.offsetLeft, y = defender_id.offsetTop;
-            var bias_top = session.uid === who_defends ? (H*0.75 - y) : -(y+H*0.05);
+            x = defender_id.offsetLeft, y = defender_id.offsetTop;
+            bias_top = session.uid === who_defends ? (H*0.75 - y) : -(y+H*0.05);
             defender_id.style.setProperty('transform','translate3d('
                 +(W/2 - x)+'px,'+bias_top+'px,0px)');
             defender_id.style.setProperty('transition','transform .3s ease-in-out');
@@ -608,6 +605,8 @@ odoo.define('pos_chat_button', function (require){
         // User out of the chat room
         in_chat = false;
         game_started = false;
+        document.getElementById('enemy-cards').innerHTML = '';
+        document.getElementById('cards').innerHTML = '';
     }
     // Is this string the tag checking
     function is_it_tag(str, send)
@@ -816,6 +815,11 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'Extra'){
                 SaveExtraCards(data);
+                // Show suit
+                var temp_window = document.getElementById('main-window');
+                temp_window.innerHTML += '<img type="button" src="/pos_durak/static/src/img/'+
+                    card_suits[trump[1]]+'.png" id="suit" style=";' +
+                    'position:absolute;left:40%;top:40%;opacity: 0.2;"/>'
             }
             else if(data.command === 'Move'){
                 moves_cnt++;
@@ -823,6 +827,7 @@ odoo.define('pos_chat_button', function (require){
                 var who_attacks = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
                 if(!attacking){
                     Second_scene(data, who_attacks);
+                    Tip('If defender beated cards, press "Complete move")', 4000, 400);
                 }
                 attacking = true;
                 var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
@@ -867,6 +872,7 @@ odoo.define('pos_chat_button', function (require){
                 }
                 Cover(card1, data.x, data.y);
                 beated.push(card1, card2);
+                DeleteCard(card1, NumInQueue(data.uid));
             }
             else if(data.command === 'Loser'){
                 First_scene();
@@ -878,7 +884,14 @@ odoo.define('pos_chat_button', function (require){
                 who_moves = NumInQueue(next_to(who_moves, true));
             }
             else if(data.command === 'DeleteExtraCard'){
-                if(data.uid !== session.uid){
+                if(extra_cards.length === 0){
+                    return;
+                }
+
+                if(chat_users[NumInQueue(data.uid)].cards.length < max_cards){
+                    if(session.uid === data.uid){
+                        temp_extra_cards.push(extra_cards[0]);
+                    }
                     extra_cards.shift();
                 }
             }
