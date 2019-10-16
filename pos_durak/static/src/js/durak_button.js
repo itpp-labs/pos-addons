@@ -113,9 +113,9 @@ odoo.define('pos_chat_button', function (require){
            if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
            num += elem.id[elem.id.length - 1];
            if(session.uid === next_to(who_moves, true)){
-               // if(!is_on_table_card(num)){
-               //     return;
-               // }
+               if(!OnTable(num) && choose_and_beat > 0){
+                   return;
+               }
                choose_and_beat++;
                def_cards[choose_and_beat - 1] = num;
                if(choose_and_beat === 2){
@@ -258,7 +258,7 @@ odoo.define('pos_chat_button', function (require){
         return -1;
     }
 
-    function PutOn(card, who_attacks) {
+    function PutOn(card) {
         let sign = (moves_cnt + 1)%2 === 0 ? 1 : -1;
         let cw = card.offsetWidth, ch = card.offsetHeight;
 
@@ -817,7 +817,7 @@ odoo.define('pos_chat_button', function (require){
                     DownloadEnemyCards(attack_card, who_attacks);
                 }
                 let card = document.getElementById('card-'+attack_card);
-                PutOn(card, who_attacks);
+                PutOn(card);
                 DeleteCard(attack_card, NumInQueue(who_attacks));
                 on_table_cards.push(attack_card);
             }
@@ -852,6 +852,7 @@ odoo.define('pos_chat_button', function (require){
                 if(chat_users[who_moves].uid === session.uid){
                     Distribute_cards(data, true);
                 }
+                who_moves = NumInQueue(next_to(who_moves, true));
             }
         },
     });

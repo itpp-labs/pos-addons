@@ -17,7 +17,8 @@ class Durak(models.Model):
     def send_field_updates(self, name, message, command, uid):
         channel_name = "pos_chat"
         if command == "Disconnect":
-            self.search([("user_id", "=", uid)]).write({'plays': False, 'cards': ''})
+            self.search([("user_id", "=", uid)]).write({'plays': False, 'cards': '',
+                                                        'cards_num': 0})
         data = {'name': name, 'message': message, 'uid': uid, 'command': command}
         self.env['pos.config'].send_to_all_poses(channel_name, data)
         return 1
