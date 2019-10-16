@@ -1,8 +1,8 @@
-=================
- POS Sale Coupon
-=================
+=============
+ POS Coupons
+=============
 
-Allows to use discount sale coupons in POS orders
+The module allows to use sale coupons in POS
 
 Credits
 =======
