@@ -1,4 +1,5 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+   Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_wechat', function(require){
     "use strict";
@@ -131,9 +132,16 @@ odoo.define('pos_wechat', function(require){
                 }
             });
         },
+        check_is_integer: function(value) {
+            // Due to travis AssertionError: ('TypeError: undefined is not a function (evaluating "'Number.isInteger(+code)')\n"
+             return (Number.isInteger && Number.isInteger(value)) ||
+                   (typeof value === "number" &&
+                   isFinite(value) &&
+                   Math.floor(value) === value);
+        },
         check_auth_code: function(code) {
             // TODO: do we need to integrate this with barcode.nomenclature?
-            if (code && Number.isInteger(+code) &&
+            if (code && this.check_is_integer(+code) &&
                 code.length === 18 &&
                 +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
                 return true;
