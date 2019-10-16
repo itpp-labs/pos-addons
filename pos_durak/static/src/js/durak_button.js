@@ -72,9 +72,9 @@ odoo.define('pos_chat_button', function (require){
         def_cards = [0,0];
     }
 
-    function Take_cards() {
+    function Take_Cards() {
         // Need to finish
-        let temp_cards;NEED TO FINISH TAKE CARDS FUNCTION HERE AND IN PY
+        let temp_cards;
         for(let i = 0; i < on_table_cards.length; i++){
             temp_cards += on_table_cards[i] + ' ';
         }
@@ -103,13 +103,6 @@ odoo.define('pos_chat_button', function (require){
                 return true;
             }
         }
-        return false;
-    }
-
-    function is_on_table_card(num) {
-        on_table_cards.forEach(function (item) {
-            if(item === num) return true;
-        });
         return false;
     }
 
@@ -290,7 +283,7 @@ odoo.define('pos_chat_button', function (require){
         // Can player make a step or no
         if(attacking){
             if(Card_power(card_num)[1] !== Card_power(last_moved_card)[1]){
-                alert('Card suit should be -'+ card_suits[Card_power(last_moved_card)[1]]);
+                alert('Card suit should be - '+ card_suits[Card_power(last_moved_card)[1]]);
                 return;
             }
         }
@@ -354,9 +347,11 @@ odoo.define('pos_chat_button', function (require){
         attacking = false;
         complete_move = 0;
         moves_cnt = 0;
-        while(on_table_cards.length > 0){
-            let card = document.getElementById('card-'+on_table_cards[0]);
+        for(let i = 0; i < on_table_cards.length; i++){
+            let card = document.getElementById('card-'+on_table_cards[i]);
             card.style.setProperty('opacity', '0');
+        }
+        while(on_table_cards.length > 0){
             on_table_cards.shift();
         }
         for(let i = 0; i < chat_users.length; i++){
@@ -793,6 +788,13 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'Cards'){
                 Distribute_cards(data, true);
+                if(chat_users[NumInQueue(session.uid)].cards.length === 0){
+                    self._rpc({
+                        model: "pos.session",
+                        method: "resent_cards",
+                        args: [session.uid]
+                    });
+                }
             }
             else if(data.command === 'Extra'){
                 SaveExtraCards(data);
@@ -831,14 +833,12 @@ odoo.define('pos_chat_button', function (require){
                     DownloadEnemyCards(card1, data.uid);
                     DownloadEnemyCards(card2, data.uid);
                 }
-                if(OnTable(card1)){
+                if(!OnTable(card1)){
                     on_table_cards.push(card1);
                 }
-                self._rpc({
-                    model: "pos.session",
-                    method: "delete_card",
-                    args: [session.uid, card1]
-                });
+                if(!OnTable(card2)){
+                    on_table_cards.push(card2);
+                }
                 Cover(card1, data.x, data.y);
                 beated.push(card1, card2);
             }

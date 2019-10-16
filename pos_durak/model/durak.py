@@ -94,10 +94,10 @@ class Durak(models.Model):
         return 1
 
     @api.model
-    def delete_card(self, uid, card):
+    def delete_card(self, uid, card1):
         user = self.search([('user_id', '=', uid)])
         user.write({
-            'cards': re.sub(card + " ", "", user.cards),
+            'cards': re.sub(card1 + " ", "", user.cards)
         })
         return 1
 
@@ -105,8 +105,7 @@ class Durak(models.Model):
     def moved(self, from_uid, card):
         user = self.search([('user_id', '=', from_uid)])
         cards_cnt_before = len(user.cards)
-
-        self.delete_card(user, card)
+        self.delete_card(from_uid, card)
         if len(user.cards) == cards_cnt_before:
             return 1
         user.write({'cards_num': user.cards_num - 1})
@@ -122,6 +121,7 @@ class Durak(models.Model):
 
     @api.model
     def defend(self, uid, card1, card2, x, y):
+        self.delete_card(uid, card1)
         data = {'uid': uid, 'first': card1, 'second': card2, 'command': 'Defense', 'x': x, 'y': y}
         for pos in self.search([('plays', '=', True)]):
             channel = self.env['pos.config']._get_full_channel_name_by_id(self.env.cr.dbname, pos.id, "pos_chat")
@@ -135,9 +135,18 @@ class Durak(models.Model):
         return 1
 
     @api.model
+    def resent_cards(self, uid):
+        import wdb
+        wdb.set_trace()
+        user = self.filtered(lambda r: r.user_id == uid)
+        self.send_to_user('Cards', user.cards, user.id)
+        return 1
+
+    @api.model
     def take_cards(self, uid, cards):
         user = self.search([('user_id', '=', uid)])
         user.write({
             'cards': user.cards + ' ' + cards
         })
+        self.resent_cards(uid)
         return 1
