@@ -1,6 +1,6 @@
 {
-    "name": """POS Sale Coupon""",
-    "summary": """Allows to use discount sale coupons in POS orders""",
+    "name": """POS Coupons""",
+    "summary": """Use sale coupons in POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "12.0.1.0.0",
