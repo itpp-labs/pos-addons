@@ -1,1 +1,1 @@
-from . import durak, Game
+from . import durak
