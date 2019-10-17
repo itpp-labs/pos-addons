@@ -8,7 +8,6 @@ odoo.define('pos_scan_ref.tour', function (require) {
     var core = require('web.core');
     var _t = core._t;
 
-
         var steps = [{
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: _t("Ready to launch your point of sale? Click here."),
@@ -28,7 +27,7 @@ odoo.define('pos_scan_ref.tour', function (require) {
             content: 'Scan product by reference code',
             trigger: '.pos-branding',
             run: function () {
-                posmodel.barcode_reader.scan(refcode);
+                window.posmodel.barcode_reader.scan(refcode);
             },
         }, {
             content: 'Check that the product was scanned successfully',

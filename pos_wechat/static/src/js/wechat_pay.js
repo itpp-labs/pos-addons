@@ -133,17 +133,18 @@ odoo.define('pos_wechat', function(require){
             });
         },
         check_is_integer: function(value) {
-            // Due to travis AssertionError: ('TypeError: undefined is not a function (evaluating "'Number.isInteger(+code)')\n"
+            // Due to travis AssertionError: ('TypeError: undefined is not a function (evaluating "'Number.isInteger(code)')\n"
              return (Number.isInteger && Number.isInteger(value)) ||
                    (typeof value === "number" &&
                    isFinite(value) &&
                    Math.floor(value) === value);
         },
-        check_auth_code: function(code) {
+        check_auth_code: function(value) {
             // TODO: do we need to integrate this with barcode.nomenclature?
-            if (code && this.check_is_integer(+code) &&
+            var code = Number(value);
+            if (code && this.check_is_integer(code) &&
                 code.length === 18 &&
-                +code[0] === 1 && (+code[1] >= 0 && +code[1] <= 5)) {
+                code[0] === 1 && (code[1] >= 0 && code[1] <= 5)) {
                 return true;
             }
             return false;
