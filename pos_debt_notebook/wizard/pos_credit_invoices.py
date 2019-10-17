@@ -36,7 +36,6 @@ class PosCreditInvoices(models.TransientModel):
 
     line_ids = fields.Many2many('pos.credit.invoices.line', copy=True)
 
-    @api.multi
     @api.onchange('journal_id')
     @api.depends('partner_ids', 'journal_id', 'amount', 'update_type', 'new_balance')
     def _compute_totals(self):
@@ -117,7 +116,6 @@ class PosCreditInvoices(models.TransientModel):
                 credit_update = self.env['pos.credit.update'].create(vals)
                 credit_update.switch_to_confirm()
 
-    @api.multi
     def add_partners_with_debt(self):
         if self.journal_id:
             partners = self.env['res.partner'].search([])
@@ -154,7 +152,6 @@ class PosCreditInvoicesLine(models.TransientModel):
     amount = fields.Float('Write-off amount', readonly=True)
     total_balance = fields.Float('Total Credits', compute='_compute_total_balance', readonly=True)
 
-    @api.multi
     @api.depends('wizard_id', 'amount', 'partner_id')
     def _compute_total_balance(self):
         for rec in self:

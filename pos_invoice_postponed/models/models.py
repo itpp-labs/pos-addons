@@ -91,7 +91,6 @@ class AccountJournal(models.Model):
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    @api.multi
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_postponed_journal()

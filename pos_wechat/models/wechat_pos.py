@@ -10,7 +10,6 @@ class WeChatPos(models.AbstractModel):
 
     pos_id = fields.Many2one('pos.config')
 
-    @api.multi
     def _send_pos_notification(self):
         self.ensure_one()
         msg = self._prepare_message()
