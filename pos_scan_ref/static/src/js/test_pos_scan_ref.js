@@ -26,7 +26,7 @@ odoo.define('pos_scan_ref.tour', function (require) {
             content: 'Scan product by reference code',
             trigger: '.pos-branding',
             run: function () {
-                posmodel.barcode_reader.scan(refcode);
+                window.posmodel.barcode_reader.scan(refcode);
             },
         }, {
             content: 'Check that the product was scanned successfully',
