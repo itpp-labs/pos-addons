@@ -220,8 +220,8 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         });
                     }
                 });
-            } else if (self.pos.config.show_posted_orders && order.state === "invoiced") {
-                 rpc.query({
+            } else if (self.pos.config.show_posted_orders && order.state === "invoiced" || 
+                rpc.query({
                     model: 'pos.xml_receipt',
                     method: 'search_read',
                     args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]
