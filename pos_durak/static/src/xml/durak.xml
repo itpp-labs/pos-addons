@@ -23,6 +23,7 @@
         </div>
         <div id="cards"></div>
         <div id="enemy-cards"></div>
+        <div id="card-suit"></div>
         <div class="game-tools">
             <span type="button" class="ready-button" id="ready-button">
                 Ready

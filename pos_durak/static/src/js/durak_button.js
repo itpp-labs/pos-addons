@@ -46,7 +46,7 @@ odoo.define('pos_chat_button', function (require){
     var choose_and_beat = 0;
     var def_cards = [0,0];
     var all_cards = [];
-    var last_moved_card = -1;
+    var moved_cards = [];
     var extra_cards = [];
     var temp_extra_cards = [];
     var card_suits = ['Heart', 'Diamond', 'Clubs', 'Spade'];
@@ -123,6 +123,15 @@ odoo.define('pos_chat_button', function (require){
     function OnTable(n) {
         for(var i = 0; i < on_table_cards.length; i++){
             if(on_table_cards[i] === n) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function Is_card_moved(card_power) {
+        for(var i = 0; i < moved_cards.length; i++){
+            if(moved_cards[i] === card_power[0]){
                 return true;
             }
         }
@@ -366,8 +375,8 @@ odoo.define('pos_chat_button', function (require){
         // Need to check suit of card, and make a decide
         // Can player make a step or no
         if(attacking){
-            if(Card_power(card_num)[1] !== Card_power(last_moved_card)[1]){
-                alert('Card suit should be - '+ card_suits[Card_power(last_moved_card)[1]]);
+            if(!Is_card_moved(Card_power(card_num))){
+                alert("You can move with this card");
                 return;
             }
         }
@@ -448,6 +457,9 @@ odoo.define('pos_chat_button', function (require){
         }
         while(on_table_cards.length > 0){
             on_table_cards.shift();
+        }
+        while(moved_cards.length > 0){
+            moved_cards.shift();
         }
         for(i = 0; i < chat_users.length; i++){
             document.getElementById('picture-'+i).
@@ -821,8 +833,8 @@ odoo.define('pos_chat_button', function (require){
             else if(data.command === 'Extra'){
                 SaveExtraCards(data);
                 // Show suit
-                var temp_window = document.getElementById('main-window');
-                temp_window.innerHTML += '<img type="button" src="/pos_durak/static/src/img/'+
+                var temp_window = document.getElementById('card-suit');
+                temp_window.innerHTML = '<img type="button" src="/pos_durak/static/src/img/'+
                     card_suits[trump[1]]+'.png" id="suit" style=";' +
                     'position:absolute;left:40%;top:40%;opacity: 0.2;"/>';
             }
@@ -836,7 +848,7 @@ odoo.define('pos_chat_button', function (require){
                 }
                 attacking = true;
                 var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
-                last_moved_card = attack_card;
+                moved_cards.push(Card_power(attack_card)[0]);
                 if(who_attacks !== session.uid){
                     DownloadEnemyCards(attack_card, who_attacks);
                 }
