@@ -244,7 +244,7 @@
     top: 0%;
     left: 50%;
     font-size: 36px;
-    color: #ffc526;
+    color: #b819ff;
     transition: all .3s ease-in-out;
 }
 
@@ -255,4 +255,10 @@
     top: 50%;
     left: -75px;
     transition: all .3s ease-in-out;
+}
+
+#take-button{
+    position: absolute;
+    right: 30px;
+    top: 30px;
 }

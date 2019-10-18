@@ -41,7 +41,7 @@ odoo.define('pos_chat_button', function (require){
     // How much cards on the table
     var moves_cnt = 0;
     // Cards max count
-    var max_cards = 7;
+    var max_cards = 6;
     // Defender counter
     var choose_and_beat = 0;
     var def_cards = [0,0];
@@ -54,6 +54,22 @@ odoo.define('pos_chat_button', function (require){
 //------------------------------------------------------
 
 //--------------- Game table actions -------------------
+
+    function Tip(str, how_long_to_hold){
+        var text = document.getElementById('for-inscriptions');
+        text.innerHTML = str;
+        $(".tips").fadeIn(500);
+
+        text.style.setProperty('transform','translate3d(0px,'+(H/2 - text.offsetTop)+'px,0px)');
+        setTimeout(function () {
+        text.style.setProperty('transform','translate3d(0px,'+(H*3 - text.offsetTop)+'px,0px)');
+        },how_long_to_hold);
+
+        setTimeout(function () {
+            $(".tips").fadeOut(500);
+            text.style.setProperty('top', '0');
+        },how_long_to_hold + 1000);
+    }
 
     function Card_power(card_num) {
         var n = Number(card_num);
@@ -144,6 +160,7 @@ odoo.define('pos_chat_button', function (require){
         if(elem.id[0]+elem.id[1]+elem.id[2]+elem.id[3] === 'card'){
            if(elem.id[elem.id.length - 2] !== '-') num = elem.id[elem.id.length - 2];
            num += elem.id[elem.id.length - 1];
+           // Checking who is player - defender or attacker
            if(session.uid === next_to(who_moves, true)){
                if(!OnTable(num) && choose_and_beat > 0){
                    return;
@@ -180,6 +197,11 @@ odoo.define('pos_chat_button', function (require){
             num = (elem.id[elem.id.length - 2] !== '-' ? elem.id[elem.id.length - 2] : '')
                 + elem.id[elem.id.length - 1];
             HowMuchCards(chat_users[Number(num)].uid);
+        }
+        else{
+            // If you missed
+            choose_and_beat--;
+            Tip("Firstly - choose card, then - beat another one", 4000);
         }
     }
 //------------------------------------------------------
@@ -335,22 +357,6 @@ odoo.define('pos_chat_button', function (require){
 
 //--------------- Game table actions -------------------
 
-    function Tip(str, how_long_to_hold, delay){
-        var text = document.getElementById('for-inscriptions');
-        text.innerHTML = str;
-        $(".tips").fadeIn(delay);
-
-        text.style.setProperty('transform','translate3d(0px,'+(H/2 - text.offsetTop)+'px,0px)');
-        setTimeout(function () {
-        text.style.setProperty('transform','translate3d(0px,'+(H*3 - text.offsetTop)+'px,0px)');
-        },how_long_to_hold);
-
-        setTimeout(function () {
-            $(".tips").fadeOut(delay);
-            text.style.setProperty('top', '0');
-        },how_long_to_hold + 1000);
-    }
-
     function PutOn(card) {
         var sign = (moves_cnt + 1)%2 === 0 ? 1 : -1;
         var cw = card.offsetWidth, ch = card.offsetHeight;
@@ -374,6 +380,9 @@ odoo.define('pos_chat_button', function (require){
     function Move(card_num){
         // Need to check suit of card, and make a decide
         // Can player make a step or no
+        if(OnTable(card_num)){
+            return;
+        }
         if(attacking){
             if(!Is_card_moved(Card_power(card_num))){
                 alert("You can move with this card");
@@ -414,7 +423,7 @@ odoo.define('pos_chat_button', function (require){
     }
 
     function ShowHowMuchCards(num){
-        Tip(num, 1500, 500);
+        Tip(num, 1500);
     }
 
     function DownloadEnemyCards(n, user){
@@ -446,11 +455,22 @@ odoo.define('pos_chat_button', function (require){
         }
     }
 
+    function AddExtraCards(temp) {
+        for(var i = 0; i < temp_extra_cards.length; i++){
+            chat_users[temp].cards.push(temp_extra_cards[i]);
+        }
+        while(temp_extra_cards.length > 0){
+            temp_extra_cards.shift();
+        }
+    }
+
     function First_scene(){
         var i = 0;
         attacking = false;
         complete_move = 0;
         moves_cnt = 0;
+        // Take new cards
+        AddExtraCards(NumInQueue(session.uid));
         for(i = 0; i < on_table_cards.length; i++){
             var card = document.getElementById('card-'+on_table_cards[i]);
             card.style.setProperty('opacity', '0');
@@ -471,6 +491,7 @@ odoo.define('pos_chat_button', function (require){
             ShowUsers();
         }
         who_moves = NumInQueue(next_to(who_moves, true));
+        ShowCards();
     }
 
     function Second_scene(data, who_attacking){
@@ -496,12 +517,12 @@ odoo.define('pos_chat_button', function (require){
         var defender_id = document.getElementById('picture-'+NumInQueue(who_defends));
         // Inscription showing
         if(session.uid === who_attacks[0] || session.uid === who_attacks[1]){
-            Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000, 500);
+            Tip('Attack'+String(chat_users[NumInQueue(who_defends)].name), 2000);
         }
         if(session.uid === who_defends){
             var button = document.getElementById('take-button');
             button.style.setProperty('opacity','1');
-            Tip('Defend yourself', 2000, 500);
+            Tip('Defend yourself', 2000);
         }
 
         var x, y, bias, bias_top;
@@ -758,8 +779,7 @@ odoo.define('pos_chat_button', function (require){
             }
             ShowCards();
         }
-        else if(session.uid === chat_users[0].uid)
-        {
+        else if(session.uid === chat_users[0].uid){
             self._rpc({
                 model: "pos.session",
                 method: "cards_distribution"
@@ -822,7 +842,7 @@ odoo.define('pos_chat_button', function (require){
             }
             else if(data.command === 'Cards'){
                 Distribute_cards(data, true);
-                if(chat_users[NumInQueue(session.uid)].cards.length === 0){
+                if(chat_users[NumInQueue(session.uid)].cards.length < 6){
                     self._rpc({
                         model: "pos.session",
                         method: "resent_cards",
@@ -836,7 +856,7 @@ odoo.define('pos_chat_button', function (require){
                 var temp_window = document.getElementById('card-suit');
                 temp_window.innerHTML = '<img type="button" src="/pos_durak/static/src/img/'+
                     card_suits[trump[1]]+'.png" id="suit" style=";' +
-                    'position:absolute;left:40%;top:40%;opacity: 0.2;"/>';
+                    'position:absolute;left:30%;top:30%;opacity: 0.2;"/>';
             }
             else if(data.command === 'Move'){
                 moves_cnt++;
@@ -844,7 +864,7 @@ odoo.define('pos_chat_button', function (require){
                 var who_attacks = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
                 if(!attacking){
                     Second_scene(data, who_attacks);
-                    Tip('If defender beated cards, press "Complete move")', 4000, 400);
+                    Tip('If defender beated cards, press "Complete move")', 4000);
                 }
                 attacking = true;
                 var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
@@ -863,16 +883,7 @@ odoo.define('pos_chat_button', function (require){
                 complete_move++;
                 if((complete_move === 2 && chat_users.length > 2) ||
                     (complete_move === 1 && chat_users.length === 2)){
-                    // Take new cards
-                    var temp = NumInQueue(session.uid);
-                    for(var i = 0; i < temp_extra_cards.length; i++){
-                        chat_users[temp].cards.push(temp_extra_cards[i]);
-                    }
-                    while(temp_extra_cards.length > 0){
-                        temp_extra_cards.shift();
-                    }
                     First_scene();
-                    ShowCards();
                 }
             }
             else if(data.command === 'Defense'){
@@ -883,9 +894,11 @@ odoo.define('pos_chat_button', function (require){
                 }
                 if(!OnTable(card1)){
                     on_table_cards.push(card1);
+                    moved_cards.push(Card_power(card1)[0]);
                 }
                 if(!OnTable(card2)){
                     on_table_cards.push(card2);
+                    moved_cards.push(Card_power(card2)[0]);
                 }
                 Cover(card1, data.x, data.y);
                 beated.push(card1, card2);

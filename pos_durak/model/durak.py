@@ -63,12 +63,14 @@ class Durak(models.Model):
 
     @api.model
     def cards_distribution(self):
-        players = self.search([('plays', '=', True)])
+        print('STARTED TO CALCULATE!')
+        players = self.search([('plays', '=', True), ('state', '=', 'opened')])
         seq = [*range(0, 52)]
-        how_much_cards = 7
+        how_much_cards = 6
         random.shuffle(seq)
         card_nums = []
         i = 0
+        print('START CYCLE!')
         for num in seq:
             card_nums.append(num)
             if len(card_nums) == how_much_cards:
@@ -81,15 +83,19 @@ class Durak(models.Model):
                     'cards': temp_str,
                     'cards_num': 7
                 })
+                print('SENDING CARDS TO ' + str(players[i].id))
                 self.send_to_user('Cards', temp_str, players[i].id)
+                print('SENT CARDS TO ' + str(players[i].id))
                 i += 1
             if(i >= len(players)):
                 break
         temp_str = ''
         for k in range(len(players)*how_much_cards, len(seq) - 2):
             temp_str += str(seq[k]) + ' '
+        print('SENDING EXTRA CARDS')
         self.send_field_updates(str(seq[len(seq) - 1]),
                                 temp_str, "Extra", -1)
+        print('SENT EXTRA CARDS')
 
         # self.game_id.trump = self.CardPower(str(seq[len(seq) - 1]))[1]
         return 1
@@ -105,10 +111,7 @@ class Durak(models.Model):
     @api.model
     def moved(self, from_uid, card):
         user = self.search([('user_id', '=', from_uid)])
-        cards_cnt_before = len(user.cards)
         self.delete_card(from_uid, card)
-        if len(user.cards) == cards_cnt_before:
-            return 1
         user.write({'cards_num': user.cards_num - 1})
         self.send_field_updates('', card + " " + str(from_uid), 'Move', from_uid)
         return 1

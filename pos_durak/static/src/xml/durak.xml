@@ -10,6 +10,7 @@
 
     <t t-name="CustomScreenWidget">
         <div class="main-action" id="main-window"/>
+        <div id="card-suit"></div>
         <div class="chat-tools">
             <textarea class="text-input-place" id="text-line" tabindex="2" placeholder="Write something..."/>
                 <span class="button next">
@@ -23,7 +24,6 @@
         </div>
         <div id="cards"></div>
         <div id="enemy-cards"></div>
-        <div id="card-suit"></div>
         <div class="game-tools">
             <span type="button" class="ready-button" id="ready-button">
                 Ready
