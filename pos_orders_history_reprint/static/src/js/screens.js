@@ -205,8 +205,23 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         "width": "100%"
                     });
                 }
-            } else if (self.pos.config.show_posted_orders && order.state === "done" || self.pos.config.show_posted_orders && order.state === "invoiced") {
+            } else if (self.pos.config.show_posted_orders && order.state === "done" || 
                 rpc.query({
+                    model: 'pos.xml_receipt',
+                    method: 'search_read',
+                    args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]
+                }).then(function(t) {
+                    if (t && t.length) {
+                        self.render_receipt(t[0]);
+                    } else {
+                        self.gui.show_popup('error',{
+                            'title': _t('No Ticket.'),
+                            'body': _t('There is no Ticket for the order.'),
+                        });
+                    }
+                });
+            } else if (self.pos.config.show_posted_orders && order.state === "invoiced") {
+                 rpc.query({
                     model: 'pos.xml_receipt',
                     method: 'search_read',
                     args: [[['pos_reference', '=', order.pos_reference],['receipt_type', '=', 'ticket']]]
