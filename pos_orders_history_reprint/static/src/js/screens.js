@@ -205,7 +205,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         "width": "100%"
                     });
                 }
-            } else if (self.pos.config.show_posted_orders && order.state === "done" || 
+            } else if (self.pos.config.show_posted_orders && order.state === "done"){
                 rpc.query({
                     model: 'pos.xml_receipt',
                     method: 'search_read',
@@ -220,7 +220,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         });
                     }
                 });
-            } else if (self.pos.config.show_posted_orders && order.state === "invoiced" || 
+            } else if (self.pos.config.show_posted_orders && order.state === "invoiced") {
                 rpc.query({
                     model: 'pos.xml_receipt',
                     method: 'search_read',
