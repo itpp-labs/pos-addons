@@ -200,8 +200,10 @@ odoo.define('pos_chat_button', function (require){
         }
         else{
             // If you missed
-            choose_and_beat--;
-            Tip("Firstly - choose card, then - beat another one", 4000);
+            if (choose_and_beat === 1){
+                choose_and_beat--;
+                Tip("Firstly - choose card, then - beat another one", 4000);
+            }
         }
     }
 //------------------------------------------------------
@@ -864,7 +866,7 @@ odoo.define('pos_chat_button', function (require){
                 var who_attacks = Number((str[str.length - 2] === ' ' ? '':str[str.length - 2]) + str[str.length - 1]);
                 if(!attacking){
                     Second_scene(data, who_attacks);
-                    Tip('If defender beated cards, press "Complete move")', 4000);
+                    Tip('If defender beated cards, press "Complete move" button)', 4000);
                 }
                 attacking = true;
                 var attack_card = str[0] + (str[1] === ' ' ? '':str[1]);
