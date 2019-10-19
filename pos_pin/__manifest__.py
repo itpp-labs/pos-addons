@@ -16,7 +16,7 @@
         'data.xml',
     ],
 
-    "price": 20.00,
+    "price": 10.00,
     "currency": "EUR",
 
     'installable': False,
