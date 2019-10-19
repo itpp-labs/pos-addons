@@ -15,7 +15,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available_negative/",
     "license": "LGPL-3",
-    "price": 50.00,
+    "price": 25.00,
     "currency": "EUR",
 
     "depends": [
