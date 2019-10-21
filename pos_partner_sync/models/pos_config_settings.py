@@ -9,14 +9,12 @@ class ResConfigSettings(models.TransientModel):
     sync_field_ids = fields.Many2many('ir.model.fields', string='Synchronized Fields',
                                       domain=[('model', '=', 'res.partner')])
 
-    @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
         for record in self:
             config_parameters.sudo().set_param("pos_partner_sync.sync_field_ids", ', '.join(str(x) for x in record.sync_field_ids.ids))
 
-    @api.multi
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
         config_parameters = self.env["ir.config_parameter"].sudo()

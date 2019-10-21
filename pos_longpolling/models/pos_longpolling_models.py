@@ -19,7 +19,6 @@ class PosConfig(models.Model):
     autostart_longpolling = fields.Boolean('Autostart longpolling', default=True,
                                            help='When switched off longpoling will start only when other module start it')
 
-    @api.multi
     def _send_to_channel(self, channel_name, message='PONG'):
         notifications = []
         for ps in self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id', 'in', self.ids)]):
@@ -37,7 +36,6 @@ class PosConfig(models.Model):
         _logger.debug('POS notifications for %s: %s', pos_id, [[channel, message]])
         return 1
 
-    @api.multi
     def _get_full_channel_name(self, channel_name):
         self.ensure_one()
         return self._get_full_channel_name_by_id(self._cr.dbname, self.id, channel_name)

@@ -27,7 +27,6 @@ class PosOrder(models.Model):
         self.return_from_ui(pos_retuned_orders)
         return super(PosOrder, self).create_from_ui(orders)
 
-    @api.multi
     def return_from_ui(self, orders):
         for tmp_order in orders:
             # eliminates the return of the order several times at the same time

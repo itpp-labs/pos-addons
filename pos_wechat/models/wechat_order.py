@@ -8,7 +8,6 @@ class WeChatOrder(models.Model):
     _inherit = ['wechat.order', 'wechat.pos']
     _name = 'wechat.order'
 
-    @api.multi
     def _prepare_message(self):
         self.ensure_one()
         result_json = json.loads(self.result_raw)

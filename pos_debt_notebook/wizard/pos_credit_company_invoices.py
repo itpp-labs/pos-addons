@@ -57,7 +57,6 @@ class PosCreditInvoices(models.TransientModel):
     def _compute_total(self):
         self.total = sum((line.amount for line in self.line_ids))
 
-    @api.multi
     def apply(self):
         if self.line_ids and self.line_ids[0] and not self.line_ids[0].partner_id:
             # some strange case when data does not pass from form and lines are created empty

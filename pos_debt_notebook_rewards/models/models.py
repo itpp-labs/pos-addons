@@ -46,7 +46,6 @@ class PosCreditUpdateReward(models.Model):
         vals = self.update_vals_with_journal(vals)
         return super(PosCreditUpdateReward, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         vals = self.update_vals_with_journal(vals)
         return super(PosCreditUpdateReward, self).write(vals)

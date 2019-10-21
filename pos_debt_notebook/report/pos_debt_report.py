@@ -32,7 +32,6 @@ class PosDebtReport(models.Model):
     balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
     product_list = fields.Text('Product List', readonly=True)
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_pos_debt')
         self._cr.execute("""

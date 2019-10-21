@@ -46,7 +46,6 @@ class PosConfig(models.Model):
         else:
             return [('id', 'in', [])]
 
-    @api.multi
     def _write(self, vals):
         # made to prevent 'expected singleton' errors in *pos.config* constraints
         result = False
@@ -71,7 +70,6 @@ class PosMultiSession(models.Model):
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
 
-    @api.multi
     def action_set_default_multi_session(self):
         """
             during installation of the module set default multi-session
@@ -83,7 +81,6 @@ class PosMultiSession(models.Model):
             'multi_session_id': self.id
         })
 
-    @api.multi
     def name_get(self):
         """ Override name_get method to return generated name."""
         res = super(PosMultiSession, self).name_get()
@@ -94,7 +91,6 @@ class PosMultiSession(models.Model):
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
-    @api.multi
     def action_pos_session_close(self):
         res = super(PosSession, self).action_pos_session_close()
         active_sessions = self.env['pos.session'].search([('state', '!=', 'closed'), ('config_id.multi_session_id', '=', self.config_id.multi_session_id.id)])
