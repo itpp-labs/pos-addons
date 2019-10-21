@@ -2,9 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-=====================================
- Pay Sale Orders & Invoices over POS
-=====================================
+========================
+ POS: Pay SO & Invoices
+========================
 
 The module allows to handle the payment process for Sale Orders/Invoices over POS
 
