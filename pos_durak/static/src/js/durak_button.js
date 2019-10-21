@@ -9,6 +9,7 @@ odoo.define('pos_chat_button', function (require){
 
 //-------------------- Variables -----------------------
 
+    // New vers.
     // All users messages stored here
     var all_messages = [];
     // Messages timeouts needs to store,
