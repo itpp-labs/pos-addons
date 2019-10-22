@@ -9,7 +9,7 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": [],
-    "version": "12.0.1.0.6",
+    "version": "12.0.1.0.7",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
