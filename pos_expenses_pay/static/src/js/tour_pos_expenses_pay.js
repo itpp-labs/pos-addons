@@ -22,7 +22,7 @@ odoo.define('pos_expenses_pay.tour', function(require) {
         timeout: 20000,
         run: function () {
             // it's a check
-        }
+        },
     }, {
         content: "Switch to table or make dummy action",
         trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
