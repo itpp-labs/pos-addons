@@ -47,7 +47,7 @@
             <form string="Point of Sale Analysis">
                 <group>
                     <field name="order_id" />
-                    <field name="invoice_id" />
+                    <field name="move_id" />
                     <field name="update_id" />
                     <field name="credit_product" />
                     <field name="state" />
@@ -148,7 +148,6 @@
     <record id="action_report_pos_debt_all" model="ir.actions.act_window">
         <field name="name">Debts / Credits</field>
         <field name="res_model">report.pos.debt</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph,tree,form</field>
         <field name="search_view_id" ref="view_report_pos_debt_search" />
         <field name="context">{}</field>
@@ -156,7 +155,6 @@
     <record id="action_report_pos_debt_partner" model="ir.actions.act_window">
         <field name="name">Partner Debts / Credits</field>
         <field name="res_model">report.pos.debt</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph,tree,form</field>
         <field name="search_view_id" ref="view_report_pos_debt_search" />
         <field name="context">{'search_default_partner_id': active_id}</field>

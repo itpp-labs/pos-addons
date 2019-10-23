@@ -37,7 +37,7 @@
     ],
     "qweb": ["static/src/xml/pos.xml"],
     "demo": ["data/demo.xml"],
-    "installable": False,
+    "installable": True,
     "uninstall_hook": "pre_uninstall",
     "demo_title": "POS Debt/Credit Notebook",
     "demo_addons": [],

@@ -45,7 +45,6 @@
     <record id="action_pos_credit_invoices_company" model="ir.actions.act_window">
         <field name="name">Generate POS Credits Invoices</field>
         <field name="res_model">pos.credit.invoices.company</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="context">{}</field>

@@ -24,7 +24,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook_sync/>`__.
 
       Thank you for understanding!
 
@@ -33,12 +33,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/13.0
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/
+HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook_sync/
 
 Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545
+Tested on Odoo 13.0 cdc09f5b70ad200014ac38f314bf1ec53cd5b8ca

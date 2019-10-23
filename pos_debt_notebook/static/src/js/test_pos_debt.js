@@ -122,9 +122,11 @@ odoo.define("pos_debt_notebook.tour", function(require) {
 
     var steps = [];
     steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(add_product_to_order("Miscellaneous"));
-    steps = steps.concat(set_customer("Joel Willis"));
-    steps = steps.concat(debt_method_paying("Credits"));
+    steps = steps.concat(add_product_to_order('Office Chair'));
+    steps = steps.concat(set_customer('Joel Willis'));
+    steps = steps.concat(debt_method_paying('Credits'));
+
+    tour.register('tour_pos_debt_notebook', { test: true, url: '/web' }, steps);
 
     tour.register("tour_pos_debt_notebook", {test: true, url: "/web"}, steps);
 });
