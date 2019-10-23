@@ -3,3 +3,7 @@
     margin-right: 10%;
     width: 80%;
 }
+
+.coupon_value_specification {
+    display: none;
+}

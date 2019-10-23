@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
     <record id="coupon_update_pos_action" model="base.automation">
         <field name="name">Update Coupons</field>
@@ -6,6 +9,17 @@
         <field name="state">code</field>
         <field name="code">
             record.action_updated_coupon()
+        </field>
+        <field name="trigger">on_create_or_write</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="coupon_program_update_pos_action" model="base.automation">
+        <field name="name">Update Coupon Programs</field>
+        <field name="model_id" ref="sale_coupon.model_sale_coupon_program"/>
+        <field name="state">code</field>
+        <field name="code">
+            record.action_updated_coupon_program()
         </field>
         <field name="trigger">on_create_or_write</field>
         <field name="active" eval="True"/>

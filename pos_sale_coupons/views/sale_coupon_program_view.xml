@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
 
     <!-- Coupon Program -->
@@ -10,6 +13,7 @@
             <group name='reward' position="inside">
                 <field name="pos_product_id"/>
                 <field name="force_sale_before_consumption"/>
+                <field name="is_code_storage_program" attrs="{'invisible': [('discount_type', '!=', 'fixed_amount')]}"/>
             </group>
             <xpath expr="//field[@name='order_count']/.." position="after">
                 <button class="oe_stat_button" type="object" icon="fa-usd" name="action_view_pos_orders">
