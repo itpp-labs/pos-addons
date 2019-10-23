@@ -13,4 +13,26 @@
         </div>
     </t>
 
+
+    <t t-name="CouponInputPopupWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-textinput">
+                <header class="title"><t t-esc=" widget.options.title || '' " /></header>
+                <input type='text' t-att-value="widget.options.value || ''"></input>
+                <p class="coupon_value_specification">
+                    Please Specify Coupon Amount
+                </p>
+                <input class="coupon_value_specification" value="" type="text" name="coupon_value"/>
+                <div class="footer">
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
 </templates>

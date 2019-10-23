@@ -67,6 +67,20 @@ odoo.define('pos_sale_coupons.db', function (require) {
         get_sale_coupon_program_by_id: function(id) {
             return this.sale_coupon_programs_by_id[id];
         },
+
+        update_sale_coupon_programs: function(coupon_programs) {
+            var self = this;
+            _.each(coupon_programs, function (coupon_program) {
+                self.sale_coupon_programs_by_id[coupon_program.id] = coupon_program;
+                // Search old coupon_program by id
+                var old_coupon_program = self.sale_coupon_programs.find(function(record) {
+                    return record.id === coupon_program.id;
+                });
+                var index = self.sale_coupon_programs.indexOf(old_coupon_program);
+                // Update old coupon_program to new
+                self.sale_coupon_programs[index] = coupon_program;
+            });
+        },
     });
 
     return PosDb;
