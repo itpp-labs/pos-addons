@@ -16,7 +16,7 @@ class TestUi(odoo.tests.HttpCase):
         # this you end up with js, css but no qweb.
         cr = self.registry.cursor()
         env = Environment(cr, self.uid, {})
-        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
+        env['ir.module.module'].search([('name', '=', 'pos_expenses_pay')], limit=1).state = 'installed'
         cr.release()
 
         self.phantom_js(
