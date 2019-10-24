@@ -3,7 +3,7 @@
     "summary": """Technical module to implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
-    "version": "12.0.2.1.2",
+    "version": "13.0.2.1.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -32,5 +32,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
