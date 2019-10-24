@@ -1,3 +1,8 @@
+`1.2.5`
+-------
+
+**Fix:** "Print Receipt" printed unwanted buttons
+
 `1.2.4`
 -------
 
