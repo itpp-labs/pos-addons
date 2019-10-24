@@ -1,15 +1,15 @@
 /*  Copyright 2018 Artyom Losev
     Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).*/
 
-odoo.define('pos_orders_history', function (require) {
+odoo.define('pos_expenses_pay.pos', function (require) {
     "use strict";
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     var gui = require('point_of_sale.gui');
     var PosDB = require('point_of_sale.DB');
     var core = require('web.core');
-    var longpolling = require('pos_longpolling');
     var PopupWidget = require('point_of_sale.popups');
     var rpc = require('web.rpc');
 
@@ -31,18 +31,22 @@ odoo.define('pos_orders_history', function (require) {
         on_expenses_updates: function (message) {
             var self = this;
             message.updated_expenses.forEach(function (id) {
-                self.get_expense(id).done(function(expense) {
+                self.fetch_expense_sheet_by_id(id).done(function(expense) {
                     self.update_expenses(expense);
                 });
             });
         },
 
-        get_expense: function (id) {
+        fetch_expense_sheet_by_id: function (id) {
             return rpc.query({
                 model: 'hr.expense.sheet',
                 method: 'read',
                 args: [id]
             });
+        },
+
+        get_expense_by_id: function (id) {
+            return this.db.expenses_by_id[id];
         },
 
         update_expenses: function (expense) {
@@ -57,13 +61,13 @@ odoo.define('pos_orders_history', function (require) {
                     break;
                 }
             }
-            delete this.db.expenses_by_id[expense.id];
+            delete this.get_expense_by_id(expense.id);
             var def = $.Deferred();
             if (((expense.state === 'post') || (expense.state === 'approve')) && !expense.pos_session_id) {
                 this.db.expenses.unshift(expense);
                 this.db.expenses_by_id[expense.id] = expense;
-                if (!this.db.expenses_by_id[expense.id].expense_lines) {
-                    this.db.expenses_by_id[expense.id].expense_lines = [];
+                if (!this.get_expense_by_id(expense.id).expense_lines) {
+                    this.get_expense_by_id(expense.id).expense_lines = [];
                     this.fetch_expense_lines([expense.id]).then(function (res) {
                         self.set_expense_lines(res);
                         def.resolve();
@@ -98,9 +102,9 @@ odoo.define('pos_orders_history', function (require) {
             var sheet_id = 0;
             for (var i = 0; i < lines.length; i++) {
                 sheet_id = lines[i].sheet_id[0];
-                var line_ids = _.pluck(this.db.expenses_by_id[sheet_id].expense_lines, 'id');
+                var line_ids = _.pluck(this.get_expense_by_id(sheet_id).expense_lines, 'id');
                 if (!_.contains(line_ids, lines[i].id)) {
-                    this.db.expenses_by_id[sheet_id].expense_lines.push(lines[i]);
+                    this.get_expense_by_id(sheet_id).expense_lines.push(lines[i]);
                 }
             }
         }
@@ -127,8 +131,7 @@ odoo.define('pos_orders_history', function (require) {
             });
 
             expense_sheet_ids = _.pluck(self.db.expenses, 'id');
-            self.fetch_expense_lines(expense_sheet_ids).
-            then(function (expense_lines) {
+            self.fetch_expense_lines(expense_sheet_ids).then(function (expense_lines) {
                 self.set_expense_lines(expense_lines);
             });
         },
@@ -175,14 +178,13 @@ odoo.define('pos_orders_history', function (require) {
 
     var ExpensesScreenWidget = screens.ScreenWidget.extend({
         template: 'ExpensesScreenWidget',
+        auto_back: true,
 
         init: function(parent, options){
             this._super(parent, options);
             this.selected_expense = false;
             this.subscribe();
-
         },
-        auto_back: true,
 
         subscribe: function () {
             var subscriber = {
@@ -279,7 +281,7 @@ odoo.define('pos_orders_history', function (require) {
                 this.show_select_button();
                 this.show_order_details($line);
                 var y = event.pageY - $line.parent().offset().top;
-                this.selected_expense = this.pos.db.expenses_by_id[id];
+                this.selected_expense = this.pos.get_expense_by_id(id);
             }
         },
 
@@ -335,17 +337,24 @@ odoo.define('pos_orders_history', function (require) {
         },
 
         click_confirm: function () {
+            var expense_id = this.options.expense_id;
+            var expense = this.pos.get_expense_by_id(expense_id);
+            if (!expense.journal_id) {
+                return this.gui.show_popup('error', {
+                    'title': _t('Error'),
+                    'body': _t('Expenses must have an expense journal specified to generate accounting entries.'),
+                });
+            }
             var self = this,
-                id = this.options.expense_id,
                 cashier = this.pos.get_cashier(),
                 session_id = this.pos.pos_session.id;
             rpc.query({
                 model: 'hr.expense.sheet',
                 method: 'process_expense_from_pos',
-                args: [id, cashier.name, session_id],
+                args: [expense_id, cashier.name, session_id],
             }).then(function (res) {
                 self.gui.close_popup();
-                self.gui.show_screen('products');                
+                self.gui.show_screen('products');
             }).fail(function (type, error) {
                 self.gui.show_popup('error', {
                     'title': _t(error.message),

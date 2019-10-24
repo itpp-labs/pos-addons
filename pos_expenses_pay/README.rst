@@ -24,7 +24,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_expenses_pay/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_expenses_pay/>`__.
 
       Thank you for understanding!
 
@@ -41,4 +41,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 e9454e79e27d0b85546132cbe00b391e974c66bf
+Tested on Odoo 12.0 25b8aeb9e2e9f2d1a3745ce5e7ee43ed3eef6872

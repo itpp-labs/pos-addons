@@ -10,7 +10,7 @@
     "category": "Point of Sale",
     # "live_test_URL": "",
     "images": ["images/pos_expenses_pay.jpg"],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev",
