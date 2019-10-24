@@ -4,7 +4,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-mobile-ui?version=12.0",
     "images": ["images/pos_mobile.png"],
-    "version": "12.0.1.2.2",
+    "version": "13.0.1.2.2",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -34,7 +34,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "POS Mobile UI",
     "demo_addons": ["pos_mobile_restaurant"],

@@ -11,7 +11,15 @@ odoo.define('pos_mobile.chrome', function (require) {
         // This method instantiates all the screens, widgets, etc.
         build_widgets: function() {
             this._super();
+            // Function works not only with inner templates but
+            // also with global DOM-elements which are not rendered yet
+            var self=this;
+            this.pos.ready.then(function() {
+                self.reattach_dom_elements();
+            });
+        },
 
+        reattach_dom_elements: function() {
             $('.pos').addClass('mobile');
 
             this.swiper_order = new window.Swiper(".swiper-container-order", {
