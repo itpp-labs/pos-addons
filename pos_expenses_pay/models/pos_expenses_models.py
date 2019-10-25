@@ -1,5 +1,5 @@
 # Copyright 2018 Artyom Losev
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import fields, models, api, _
@@ -50,8 +50,8 @@ class HrExpenseSheet(models.Model):
         partner_id = self.address_id.id or self.employee_id.id and self.employee_id.address_home_id.id
         date = fields.Date.context_today(self)
         # Cash method as default
-        payment_method_id = 2
-        journal_id = 8
+        journal_id = self.env['account.journal'].search([('type', '=', 'cash')], limit=1).id
+        payment_method_id = self.env['account.payment.method'].search([('payment_type', '=', 'outbound')], limit=1).id
         return {
             'partner_type': 'supplier',
             'payment_type': 'outbound',
