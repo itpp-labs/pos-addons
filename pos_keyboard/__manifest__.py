@@ -11,7 +11,7 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": ['images/keyboard.png'],
-    "version": "12.0.1.1.5",
+    "version": "13.0.1.1.5",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
@@ -40,7 +40,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     # "demo_title": "{MODULE_NAME}",
     # "demo_addons": [
