@@ -5,7 +5,7 @@
     "summary": """Technical module to intergrate odoo with WeChat mini-program""",
     "category": "Hidden",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/wechat_miniprogram.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
