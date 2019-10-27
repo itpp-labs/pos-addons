@@ -5,7 +5,7 @@
     "summary": """Technical module to intergrate odoo with Tencent Cloud SMS""",
     "category": "Hidden",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/qcloud_sms1.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
