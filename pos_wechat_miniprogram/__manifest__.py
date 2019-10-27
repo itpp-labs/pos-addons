@@ -5,7 +5,7 @@
     "summary": """Integrate POS with WeChat mini-program""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/pos_wechat_miniprogram.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
 
