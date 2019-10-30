@@ -8,7 +8,7 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
     "images": [],
-    "version": "11.0.1.1.1",
+    "version": "11.0.1.1.2",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",

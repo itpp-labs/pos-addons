@@ -1,3 +1,8 @@
+`1.1.2`
+-------
+
+- **Fix:** No warning message when setting manually, or by adding a new orderline, a quantity of product that exceeds available in stock
+
 `1.1.1`
 -------
 
