@@ -88,6 +88,29 @@
                     </div>
                 </div>
             </xpath>
+            <xpath expr="//field[@name='journal_id']/../../../../.." position="after">
+                <h2 attrs="{'invisible': [('is_installed_account_accountant', '=', True)]}">Accounting</h2>
+                <div class="row mt16 o_settings_container" attrs="{'invisible': [('is_installed_account_accountant', '=', True)]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label string="Journal Entries"/>
+                            <div class="text-muted">
+                                Configuration for journal entries of PoS orders
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16" title="Whenever you close a session, one entry is generated in the following accounting journal for all the orders not invoiced. Invoices are recorded in accounting separately.">
+                                    <label string="Sales Journal" for="journal_id" class="col-md-3 o_light_label" widget="selection"/>
+                                    <field name="journal_id"/>
+                                </div>
+                                <div class="row" groups="account.group_account_user" title="Get one journal item per product rather than one journal item per receipt line. This works for any anonymous order. If the customer is set on the order, one journal item is created for each receipt line. This option is recommended for an easy review of your journal entries when managing lots of orders.">
+                                    <label string="Group Journal Items" for="group_by" class="col-md-3 o_light_label"/>
+                                    <field name="group_by"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 

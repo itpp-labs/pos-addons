@@ -1,3 +1,8 @@
+`4.2.11`
+--------
+
+- **Fix:** Access error for poses created for different companies
+
 `4.2.10`
 --------
 
