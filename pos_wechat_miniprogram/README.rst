@@ -1,6 +1,6 @@
-=========================================
- Integrate POS with WeChat mini-program
-=========================================
+==========================
+ POS: WeChat Mini-program
+==========================
 
 Integrate POS with WeChat mini-program
 

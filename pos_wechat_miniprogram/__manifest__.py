@@ -1,7 +1,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Integrate POS with WeChat mini-program""",
+    "name": """POS: WeChat Mini-program""",
     "summary": """Integrate POS with WeChat mini-program""",
     "category": "Point of Sale",
     # "live_test_url": "",

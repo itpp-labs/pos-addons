@@ -1,6 +1,6 @@
-========================================
- Integrate POS with WeChat mini-program
-========================================
+==========================
+ POS: WeChat Mini-program
+==========================
 
 Follow instructions of `WeChat API <https://apps.odoo.com/apps/modules/11.0/wechat_miniprogram/>`__ module.
 
