@@ -21,7 +21,6 @@ odoo.define('pos_multi_session', function(require){
     var gui = require('point_of_sale.gui');
     var posDB = require('point_of_sale.DB');
 
-
     var _t = core._t;
 
 
@@ -701,10 +700,16 @@ odoo.define('pos_multi_session', function(require){
             return data;
         },
         init_from_JSON: function(json) {
+            var self = this;
             this.new_order = json.new_order;
             this.order_on_server = json.order_on_server;
             this.revision_ID = json.revision_ID;
             this.run_ID = json.run_ID;
+            // the journal may not exist for the current POS
+            var statement_ids = json.statement_ids.filter(function (statement_id) {
+                return self.pos.cashregisters_by_id[statement_id];
+            });
+            json.statement_ids = statement_ids;
             OrderSuper.prototype.init_from_JSON.call(this, json);
         },
         send_updates_to_server: function(){

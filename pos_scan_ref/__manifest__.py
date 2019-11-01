@@ -3,12 +3,12 @@
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
 # License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
 {
-    "name": "Scan & search a product by ref in POS",
+    'name': 'Find item by ref in POS',
     "summary": """Adds the ability to searching product by ref in POS""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
     "images": ['images/pos_scan_ref.jpg'],
-    "version": "11.0.1.0.0",
+    "version": "11.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",

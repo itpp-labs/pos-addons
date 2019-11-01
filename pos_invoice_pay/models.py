@@ -27,14 +27,13 @@ class PosOrder(models.Model):
             inv_obj = self.env['account.invoice'].browse(inv_id)
             journal_id = statement[2]['journal_id']
             journal = self.env['account.journal'].browse(journal_id)
-            amount = statement[2]['amount']
+            amount = min(
+                statement[2]['amount'],  # amount payed including change
+                invoice['data']['invoice_to_pay']['residual'],  # amount required to pay
+            )
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
-            if amount > inv_obj.residual:
-                session_id = self.env['pos.session'].browse(invoice['data']['pos_session_id'])
-                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id.id
-                payment_difference_handling = 'reconcile'
 
             vals = {
                 'journal_id': journal.id,

@@ -1,3 +1,9 @@
+`1.0.3`
+-------
+
+- **Fix:** Incompatibility with pos_scan_ref module
+- **Fix:** Scanning error
+
 `1.0.2`
 -------
 

@@ -27,7 +27,7 @@ odoo.define('pos_product_available_negative.pos', function (require) {
                         'title': _t('Order has out-of-stock product and must be approved by supervisor'),
                         'special_group': this.pos.config.negative_order_group_id[0],
                         'do_not_change_cashier': true,
-                        'product-imgarguments': {'ask_untill_correct': true},
+                        'arguments': {'ask_untill_correct': true},
                     }).done(function(user){
                         order.negative_stock_user_id = user;
                         _super.call(self, force_validation);

@@ -1,3 +1,8 @@
+`1.1.1`
+-------
+
+- **Fix:** Cashier was changed after giving the authorization of the sale
+
 `1.1.0`
 -------
 
