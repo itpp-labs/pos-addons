@@ -27,7 +27,7 @@ msgstr ""
 
 #. module: pos_journal_pin
 #. openerp-web
-#: code:addons/pos_journal_pin/static/src/js/test_pos_journal_pin.js:48
+#: code:addons/pos_journal_pin/static/src/js/test_pos_journal_pin.js:49
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 
 #. module: pos_journal_pin
 #. openerp-web
-#: code:addons/pos_journal_pin/static/src/js/test_pos_journal_pin.js:41
+#: code:addons/pos_journal_pin/static/src/js/test_pos_journal_pin.js:42
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
