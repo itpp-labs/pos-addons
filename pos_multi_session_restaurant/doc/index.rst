@@ -22,6 +22,11 @@ A floor can be added to a multi-session by two ways:
 
 * Default method: Add floor to POS belonging to necessary multi-session via ``[[ Point of Sale ]] >> Configuration >> Point of sale``
 
+Local run
+---------
+
+If you use dbfilter, don't forget to specify correct proxy on printers
+
 Usage
 =====
 

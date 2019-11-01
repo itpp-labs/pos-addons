@@ -1,7 +1,12 @@
+`1.2.2`
+-------
+
+**Fix:** The change value is not saved on the invoice after payment
+**Fix:** Don't auto-complete the current order after paying the invoice
+
 `1.2.1`
 -------
 
-**Fix:** Don't auto-complete the current order after paying the invoice
 **Fix:** Incorrect receipt printing in the PosBox
 
 `1.2.0`

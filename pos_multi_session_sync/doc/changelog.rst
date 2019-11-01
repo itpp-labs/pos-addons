@@ -1,3 +1,17 @@
+`1.0.7`
+-------
+- **Fix:** Updated 'update_revision_ID' message
+- **Fix:** Possible error with multiple multi sessions with the same multi session ID
+
+`1.0.6`
+-------
+- **Fix:** Updated 'update_revision_ID' message
+
+`1.0.5`
+-------
+- **Fix:** Cross multi-sesion messaging in case the same pos was assigned to a different multi-session
+- **Fix:** Possible loss of orders for multiple multi-sessions working simultaneously when another new one starts
+
 `1.0.4`
 -------
 - **Fix:** Random sync problems

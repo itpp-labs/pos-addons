@@ -40,8 +40,8 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:316
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:63
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:321
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:66
 #, python-format
 msgid "Apply"
 msgstr ""
@@ -53,15 +53,15 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:35
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:59
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:38
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:62
 #, python-format
 msgid "Cancel"
 msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:95
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:98
 #, python-format
 msgid "Cancel by"
 msgstr ""
@@ -97,7 +97,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:83
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:88
 #, python-format
 msgid "Cancellation Reason"
 msgstr ""
@@ -183,7 +183,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:222
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:227
 #, python-format
 msgid "Indicate the reason for cancellation."
 msgstr ""
@@ -228,7 +228,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:76
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:79
 #, python-format
 msgid "Name"
 msgstr ""
@@ -245,7 +245,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:39
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:42
 #, python-format
 msgid "Ok"
 msgstr ""
@@ -262,7 +262,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/models.js:37
+#: code:addons/pos_order_cancel/static/src/js/models.js:41
 #, python-format
 msgid "Order Deleting"
 msgstr ""
@@ -274,7 +274,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:24
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:27
 #, python-format
 msgid "Other"
 msgstr ""
@@ -326,15 +326,15 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:123
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:128
 #, python-format
 msgid "Quantity for Cancellation"
 msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:9
 #: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:12
+#: code:addons/pos_order_cancel/static/src/xml/cancel_order.xml:15
 #: model:ir.model.fields,field_description:pos_order_cancel.field_pos_cancelled_reason_name
 #, python-format
 msgid "Reason"
@@ -457,7 +457,7 @@ msgstr ""
 
 #. module: pos_order_cancel
 #. openerp-web
-#: code:addons/pos_order_cancel/static/src/js/widgets.js:221
+#: code:addons/pos_order_cancel/static/src/js/widgets.js:226
 #, python-format
 msgid "Warning"
 msgstr ""

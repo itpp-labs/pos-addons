@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="autostart_longpolling" class="col-xs-12 col-md-6 o_setting_box">
+                        <div id="autostart_longpolling" class="col-xs-12 col-md-6 o_setting_box" invisible="1">
                             <div class="o_setting_left_pane">
                                 <field name="autostart_longpolling"/>
                             </div>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
@@ -13,7 +12,7 @@ class TestUi(odoo.tests.HttpCase):
     def test_01_pos_postponed_invoice(self):
 
         self.phantom_js('/pos/web?m=1',
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('pos_invoice_postponed_tour'), 1000",
+                        "odoo.__DEBUG__.services['web_tour.tour'].run('pos_invoice_postponed_tour', 1000)",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.pos_invoice_postponed_tour.ready",
                         login="admin", timeout=240)
 

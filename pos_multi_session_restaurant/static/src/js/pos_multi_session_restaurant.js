@@ -101,13 +101,18 @@ odoo.define('pos_multi_session_restaurant', function(require){
             var floor_table = false;
             var order = false;
 
+            // Multi session without floors
+            if (!this.config.ms_floor_ids.length) {
+                return PosModelSuper.prototype.ms_create_order.call(this, options);
+            }
+
             if (data.table_id) {
                 table = this.tables_by_id[data.table_id];
             }
 
             // Is there a table on the floor?
             if (table) {
-                floor_table = table.floor.tables.find(function (t) {
+                floor_table = _.find(table.floor.tables, function (t) {
                     return t.id === data.table_id;
                 });
             }

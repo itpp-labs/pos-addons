@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
     <record id="demo_reason_1" model="pos.cancelled_reason">
         <field name="name">Wrong Quantity</field>

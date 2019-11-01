@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+    License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).-->
 <templates id="template" xml:space="preserve">
     <t t-name="CashierSelectionPopupWidget">
         <div class="modal-dialog cashier">

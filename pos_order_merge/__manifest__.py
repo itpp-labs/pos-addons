@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     "name": """Merge POS Orders""",
     "summary": """Merge POS orders into a single order""",
     "category": "Point of Sale",
     "images": ["images/pos_order_merge_main.jpg"],
-    "version": "10.0.1.0.0",
+    "version": "11.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov, Alexandr Kolushov",
@@ -34,5 +33,5 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

@@ -14,6 +14,13 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_partner_sync
+#. openerp-web
+#: code:addons/pos_partner_sync/static/src/js/test_pos_opens.js:16
+#, python-format
+msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
+msgstr ""
+
+#. module: pos_partner_sync
 #: model:ir.model,name:pos_partner_sync.model_res_partner
 msgid "Partner"
 msgstr ""
@@ -21,6 +28,13 @@ msgstr ""
 #. module: pos_partner_sync
 #: model:ir.ui.view,arch_db:pos_partner_sync.res_config_settings_partner_sync_view_form
 msgid "Point of Sale Syncronization Fields"
+msgstr ""
+
+#. module: pos_partner_sync
+#. openerp-web
+#: code:addons/pos_partner_sync/static/src/js/test_pos_opens.js:12
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_partner_sync
