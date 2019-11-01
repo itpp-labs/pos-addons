@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_keyboard
 #. openerp-web
-#: code:addons/pos_keyboard/static/src/js/test_pos_keyboard.js:17
+#: code:addons/pos_keyboard/static/src/js/test_pos_keyboard.js:18
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_keyboard
 #. openerp-web
-#: code:addons/pos_keyboard/static/src/js/test_pos_keyboard.js:13
+#: code:addons/pos_keyboard/static/src/js/test_pos_keyboard.js:14
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
