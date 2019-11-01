@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2004-2015 Odoo S.A.
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -7,9 +5,9 @@
     "name": """Sync Partners in POS""",
     "summary": """Instant updates of the partner data in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-partner-sync?version=11.0",
     "images": ["images/pos_partner_sync.jpg"],
-    "version": "10.0.2.0.1",
+    "version": "11.0.2.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

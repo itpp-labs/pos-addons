@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -40,7 +40,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:252
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:258
 #: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
 #, python-format
 msgid "Apply"
@@ -48,7 +48,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:312
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:318
 #, python-format
 msgid "Apply Change"
 msgstr ""

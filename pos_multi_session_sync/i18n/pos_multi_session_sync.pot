@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -120,7 +120,7 @@ msgstr ""
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_order_uid
-msgid "Order uid"
+msgid "Order Uid"
 msgstr ""
 
 #. module: pos_multi_session_sync
@@ -171,7 +171,7 @@ msgstr ""
 
 #. module: pos_multi_session_sync
 #: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_user_ID
-msgid "User id"
+msgid "User Id"
 msgstr ""
 
 #. module: pos_multi_session_sync

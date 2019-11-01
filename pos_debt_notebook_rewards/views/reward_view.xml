@@ -90,17 +90,12 @@
     </record>
 
     <record id="server_action_pos_credit_update_reward" model="ir.actions.server">
+        <field name="type">ir.actions.server</field>
         <field name="name">Confirm</field>
         <field name="model_id" ref="point_of_sale.menu_point_config_product"/>
+        <field name="binding_model_id" ref="pos_debt_notebook_rewards.model_pos_credit_update_reward" />
         <field name="state">code</field>
         <field name="code">env['pos.credit.update.reward'].do_confirm()</field>
-    </record>
-
-    <record id="option_pos_credit_update_reward" model="ir.values">
-        <field name="name">Confirm</field>
-        <field name="key2">client_action_multi</field>
-        <field name="model">pos.credit.update.reward</field>
-        <field name="value" eval="'ir.actions.server,%d'%server_action_pos_credit_update_reward"/>
     </record>
 
     <menuitem id="menu_pos_credit_update_reward" name="Rewards" action="action_pos_credit_update_reward" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_user" sequence="100"/>

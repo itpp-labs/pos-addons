@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -38,7 +37,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
             def __init__(self):
                 self.param = None
 
-            def create(self, param):
+            def create(self, param):  # pylint: disable=method-required-super
                 self.param = param
                 return self
 

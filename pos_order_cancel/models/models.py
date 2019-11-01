@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
 # Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
@@ -62,7 +61,7 @@ class PosOrder(models.Model):
         order = super(PosOrder, self)._process_order(pos_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
             if pos_order['reason']:
-                order.cancellation_reason = pos_order['reason'].encode('utf-8').strip(" \t\n")
+                order.cancellation_reason = pos_order['reason'].encode('utf-8')
             order.is_cancelled = True
         return order
 

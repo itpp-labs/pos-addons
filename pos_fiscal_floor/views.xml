@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
         <record model="ir.ui.view" id="view_restaurant_floor_form">
             <field name="name">restaurant.floor.form.view.inherit</field>
             <field name="model">restaurant.floor</field>
@@ -19,5 +18,4 @@
             </xpath>
         </template>
 
-    </data>
 </openerp>

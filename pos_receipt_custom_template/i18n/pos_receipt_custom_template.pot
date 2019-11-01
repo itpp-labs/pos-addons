@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -29,11 +29,6 @@ msgid "Created on"
 msgstr ""
 
 #. module: pos_receipt_custom_template
-#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config_custom_ticket
-msgid "Custom"
-msgstr ""
-
-#. module: pos_receipt_custom_template
 #: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config_custom_xml_receipt
 msgid "Custom PosBox Receipt"
 msgstr ""
@@ -45,12 +40,25 @@ msgstr ""
 
 #. module: pos_receipt_custom_template
 #: model:ir.ui.view,arch_db:pos_receipt_custom_template.pos_custom_receipt_form_view
+#: model:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
 msgid "Custom Receipt"
 msgstr ""
 
 #. module: pos_receipt_custom_template
+#: model:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Receipt Template"
+msgstr ""
+
+#. module: pos_receipt_custom_template
+#: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config_custom_ticket
+#: model:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
 #: model:ir.model.fields,field_description:pos_receipt_custom_template.field_pos_config_custom_ticket_id
-msgid "Custom Template"
+#: model:ir.ui.view,arch_db:pos_receipt_custom_template.view_pos_config_form
+msgid "Custom Ticket Template"
 msgstr ""
 
 #. module: pos_receipt_custom_template
@@ -99,6 +107,11 @@ msgid "Order Receipt"
 msgstr ""
 
 #. module: pos_receipt_custom_template
+#: model:ir.model,name:pos_receipt_custom_template.model_pos_custom_receipt
+msgid "POS Custom Receipt/Ticket"
+msgstr ""
+
+#. module: pos_receipt_custom_template
 #: model:ir.model,name:pos_receipt_custom_template.model_product_template
 msgid "Product Template"
 msgstr ""
@@ -135,10 +148,5 @@ msgstr ""
 #. module: pos_receipt_custom_template
 #: model:ir.model,name:pos_receipt_custom_template.model_pos_config
 msgid "pos.config"
-msgstr ""
-
-#. module: pos_receipt_custom_template
-#: model:ir.model,name:pos_receipt_custom_template.model_pos_custom_receipt
-msgid "pos.custom_receipt"
 msgstr ""
 

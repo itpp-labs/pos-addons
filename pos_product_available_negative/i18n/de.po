@@ -31,7 +31,7 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:56
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:57
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -53,7 +53,7 @@ msgstr "Genehmigung von negativem Bestand"
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:49
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:50
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
@@ -80,14 +80,14 @@ msgstr "Point of Sale-Bestellungen"
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:77
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:78
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:71
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:72
 #, python-format
 msgid "check restriction popup"
 msgstr ""

@@ -15,7 +15,8 @@ odoo.define('pos_invoice_pay.tour', function (require) {
         }, {
             content: "Switch to table or make dummy action",
             trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
-            position: "bottom"
+            position: "bottom",
+            timeout: 20000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
@@ -31,7 +32,7 @@ odoo.define('pos_invoice_pay.tour', function (require) {
             trigger: '.modal-dialog:not(.oe_hidden) .popup-selection .selection-item:contains("Administrator"), .invoice-list-screen:not(".oe_hidden") .list thead:first()',
         }, {
             content: "Select Invoice",
-            trigger: '.invoice-list-screen .list-contents tr.invoice:first',
+            trigger: '.invoice-list-screen .list-contents tr.invoice:contains("4,610"):first',
         }, {
             content: "Click next",
             trigger: '.invoice-list-screen .button.next.highlight',
@@ -44,16 +45,16 @@ odoo.define('pos_invoice_pay.tour', function (require) {
             trigger: '.button.paymentmethod:contains("' + pay_method +'")',
             content: _t("Click the payment method"),
         }, {
-            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="9"]',
+            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="4"]',
             content: 'Set payment amount',
         }, {
-            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="9"]',
+            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="6"]',
             content: 'Set payment amount',
         }, {
-            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="9"]',
+            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="1"]',
             content: 'Set payment amount',
         }, {
-            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="9"]',
+            trigger: '.invoice-payment-screen:not(".oe_hidden") .numpad button[data-action="0"]',
             content: 'Set payment amount',
         }, {
             extra_trigger: '.button.next.highlight:contains("Validate")',

@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -15,35 +15,35 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:353
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:361
 #, python-format
 msgid "Are you sure ?"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:422
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:430
 #, python-format
 msgid "Can not open the Table"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:153
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:158
 #, python-format
 msgid "Do you want to reload this page to receive the latest updates?"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:349
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:357
 #, python-format
 msgid "Forbidden to remove the last table on the floor."
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:152
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:157
 #, python-format
 msgid "Got a new table"
 msgstr ""
@@ -70,19 +70,19 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:344
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:352
 #, python-format
 msgid "Please, complete your orders before deleting the table."
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #: model:ir.model.fields,field_description:pos_multi_session_restaurant.field_restaurant_floor_pos_multi_session_ids
-msgid "Pos multi session ids"
+msgid "Pos Multi Session"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:354
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:362
 #, python-format
 msgid "Removing a table cannot be undone"
 msgstr ""
@@ -95,7 +95,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:423
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:431
 #, python-format
 msgid "The Table is served by another waiter "
 msgstr ""
@@ -108,15 +108,15 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:355
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:363
 #, python-format
 msgid "The table can be used in other POS"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:343
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:348
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:351
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:356
 #, python-format
 msgid "You can not remove the table"
 msgstr ""

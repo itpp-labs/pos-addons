@@ -11,37 +11,40 @@
 `4.2.8`
 -------
 
+- **Fix:** Paid order could appear again in POS in case of problems with connection within payment process
 - **Fix:** After restoring the connection, numbers of created and paid offline POS orders were not counted, that could lead to order loss in some cases
 
 `4.2.7`
 -------
 
-- **Fix:** Paid order could appear again in POS in case of problems with connection within payment process
+- **Fix:** The Multi-sessions menu is not available for POS Managers
+- **Fix:** Error on using different companies within the same multi-session
 
 `4.2.6`
 -------
 
-- **Fix:** The Multi-sessions menu is not available for POS Managers
+- **Fix:** Unsynced order in some cases
 
 `4.2.5`
 -------
 
-- **Fix:** Unsynced order in some cases
+**Fix:** Do not create a new order after removing the last order from another POS if you are on the Floor
 
 `4.2.4`
 -------
 
-**Fix:** Do not create a new order after removing the last order from another POS if you are on the Floor
+**Improvement:** Code refactoring to pay technical debt
 
 `4.2.3`
 -------
 
-**Improvement:** Code refactoring to pay technical debt
+**Fix:** Don't make automatic scrolling of the current order on changing other orders
+**Fix:** Before this fix if we have a rerender of the product list every time, then we will get a hang and slow response of the system.
 
 `4.2.2`
 -------
 
-**Fix:** Don't make automatic scrolling of the current order on changing other orders
+**Fix:** `Longpoll Handling Error` related to property of undefined
 
 `4.2.1`
 -------
@@ -157,7 +160,7 @@
 -------
 
 **Fix:** Orders some times was out of sync. Now its ok.
-**Fix:** A bug related to updates in built-in bus module from Jan 20th 2016: https://github.com/odoo/odoo/commit/8af3841cb25cee33fd503ebe692abb8f98d4840a
+**Fix:** Fix a bug related to updates in built-in bus module from Jan 20th 2016: https://github.com/odoo/odoo/commit/8af3841cb25cee33fd503ebe692abb8f98d4840a
 **New:** Added demo data.
 **New:** keep empty order. In previous version we deleted it when new Order from another POS is come. Now you can set it up in settings.
 **New:** switch on income order if active order is empty. You can chose to switch on new income order or not.

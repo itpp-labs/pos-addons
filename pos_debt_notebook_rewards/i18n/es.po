@@ -379,13 +379,25 @@ msgstr "Contador de mensajes sin leer"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_update_type
-msgid "Update type"
+#, fuzzy
+msgid "Update Type"
 msgstr "Tipo de actualización"
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_new_balance
 msgid "Value to set balance to. Used only in Draft state."
 msgstr "Valor para establecer el balance a. Usado solo en el estado borrador."
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,field_description:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+#, fuzzy
+msgid "Website Messages"
+msgstr "Mensajes"
+
+#. module: pos_debt_notebook_rewards
+#: model:ir.model.fields,help:pos_debt_notebook_rewards.field_pos_credit_update_reward_website_message_ids
+msgid "Website communication history"
+msgstr ""
 
 #. module: pos_debt_notebook_rewards
 #: model:ir.ui.view,arch_db:pos_debt_notebook_rewards.view_pos_credit_update_reward_search

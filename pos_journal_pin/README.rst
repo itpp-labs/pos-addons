@@ -14,6 +14,7 @@ Credits
 Contributors
 ------------
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
 
 Sponsors
 --------
@@ -25,7 +26,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_journal_pin/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_journal_pin/>`__.
 
       Thank you for understanding!
 
@@ -34,14 +35,14 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_journal_pin/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_journal_pin/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_journal_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_journal_pin.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_journal_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_journal_pin.atom>`_
 
-Tested on Odoo 10.0 49ca43d75cb9a97642c820c2466d454f1ce604cb
+Tested on Odoo 11.0 9e12d722238fafeeabc057f5a50f7d6012f9ea4

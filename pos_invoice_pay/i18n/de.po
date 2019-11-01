@@ -81,7 +81,7 @@ msgstr "Zurück"
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:889
+#: code:addons/pos_invoice_pay/static/src/js/main.js:885
 #, python-format
 msgid "Can't validate selected invoice."
 msgstr ""
@@ -109,8 +109,8 @@ msgstr "ändern"
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:522
-#: code:addons/pos_invoice_pay/static/src/js/main.js:550
+#: code:addons/pos_invoice_pay/static/src/js/main.js:521
+#: code:addons/pos_invoice_pay/static/src/js/main.js:549
 #, python-format
 msgid "Change Cashier"
 msgstr "Kassierer wechseln"
@@ -126,7 +126,7 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/test_pos_invoice.js:45
+#: code:addons/pos_invoice_pay/static/src/js/test_pos_invoice.js:46
 #, fuzzy, python-format
 msgid "Click the payment method"
 msgstr "Bitte eine Zahlungsart wählen."
@@ -155,6 +155,11 @@ msgid "Date"
 msgstr ""
 
 #. module: pos_invoice_pay
+#: model:ir.model.fields,field_description:pos_invoice_pay.field_account_payment_datetime
+msgid "Datetime"
+msgstr ""
+
+#. module: pos_invoice_pay
 #. openerp-web
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:37
 #, python-format
@@ -168,6 +173,11 @@ msgstr "geliefert"
 #, python-format
 msgid "Description"
 msgstr "Beschreibun"
+
+#. module: pos_invoice_pay
+#: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_config_pos_invoice_pay_writeoff_account_id
+msgid "Difference Account"
+msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -193,10 +203,17 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:888
+#: code:addons/pos_invoice_pay/static/src/js/main.js:884
 #, python-format
 msgid "Error"
 msgstr "Fehler"
+
+#. module: pos_invoice_pay
+#. openerp-web
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1036
+#, fuzzy, python-format
+msgid "Excessive payment amount."
+msgstr "inkorrekte Zahlungssumme"
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -213,12 +230,12 @@ msgid "Fetch Orders"
 msgstr "Nächste Bestellun"
 
 #. module: pos_invoice_pay
-#: model:ir.model.fields,help:pos_invoice_pay.field_pos_config_show_invoices
+#: model:ir.ui.view,arch_db:pos_invoice_pay.view_pos_config_form
 msgid "Fetch and pay regular invoices"
 msgstr ""
 
 #. module: pos_invoice_pay
-#: model:ir.model.fields,help:pos_invoice_pay.field_pos_config_show_sale_orders
+#: model:ir.ui.view,arch_db:pos_invoice_pay.view_pos_config_form
 msgid "Fetch and pay sale orders"
 msgstr ""
 
@@ -243,11 +260,23 @@ msgid "Invoice No"
 msgstr "Rechnungsnummer"
 
 #. module: pos_invoice_pay
+#: code:addons/pos_invoice_pay/models.py:180
+#: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_session_session_payments
+#, fuzzy, python-format
+msgid "Invoice Payments"
+msgstr "Rechnungsstatu"
+
+#. module: pos_invoice_pay
 #. openerp-web
 #: code:addons/pos_invoice_pay/static/src/xml/pos.xml:38
 #, python-format
 msgid "Invoiced"
 msgstr "Fakturiert"
+
+#. module: pos_invoice_pay
+#: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_session_session_invoices_total
+msgid "Invoices"
+msgstr "Rechnungen"
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -265,8 +294,8 @@ msgstr "Nächste Bestellun"
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:737
-#: code:addons/pos_invoice_pay/static/src/js/main.js:898
+#: code:addons/pos_invoice_pay/static/src/js/main.js:735
+#: code:addons/pos_invoice_pay/static/src/js/main.js:894
 #, python-format
 msgid "No invoice"
 msgstr "Keine Rechnung"
@@ -293,6 +322,11 @@ msgid "Order"
 msgstr "Nächste Bestellun"
 
 #. module: pos_invoice_pay
+#: model:ir.model.fields,field_description:pos_invoice_pay.field_account_payment_pos_session_id
+msgid "POS session"
+msgstr ""
+
+#. module: pos_invoice_pay
 #: model:ir.ui.view,arch_db:pos_invoice_pay.pos_invoice_pay_report
 msgid "Paid"
 msgstr "Bezahlt"
@@ -303,14 +337,10 @@ msgid "Paid Orders/Invoices"
 msgstr "Bezahlte Bestellungen/Rechnungen"
 
 #. module: pos_invoice_pay
-#: model:ir.model.fields,field_description:pos_invoice_pay.field_account_payment_paid_by_pos
-msgid "Paid by pos"
-msgstr ""
-
-#. module: pos_invoice_pay
 #: model:ir.ui.view,arch_db:pos_invoice_pay.view_pos_config_form
-msgid "Pay Sale Orders & Invoices"
-msgstr ""
+#, fuzzy
+msgid "Pay Sale Orders &amp; Invoices"
+msgstr "Bezahlte Bestellungen/Rechnungen"
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -387,8 +417,13 @@ msgid "Quantity"
 msgstr "Mene"
 
 #. module: pos_invoice_pay
+#: model:ir.model,name:pos_invoice_pay.model_sale_order
+msgid "Quotation"
+msgstr ""
+
+#. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/test_pos_invoice.js:71
+#: code:addons/pos_invoice_pay/static/src/js/test_pos_invoice.js:72
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
@@ -399,11 +434,6 @@ msgstr ""
 #, python-format
 msgid "Register Payment"
 msgstr "Zahlung registrieren"
-
-#. module: pos_invoice_pay
-#: model:ir.model,name:pos_invoice_pay.model_sale_order
-msgid "Sales Order"
-msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.ui.view,arch_db:pos_invoice_pay.pos_invoice_pay_report
@@ -445,12 +475,30 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_config_show_invoices
-msgid "Show Invoices in POS"
-msgstr ""
+#, fuzzy
+msgid "Show Invoices"
+msgstr "Rechnungen suchen"
 
 #. module: pos_invoice_pay
 #: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_config_show_sale_orders
-msgid "Show Sale Orders in POS"
+#, fuzzy
+msgid "Show Sale Orders"
+msgstr "Point of Sale-Bestellungen"
+
+#. module: pos_invoice_pay
+#: model:ir.model.fields,help:pos_invoice_pay.field_pos_config_show_invoices
+#, fuzzy
+msgid "Show invoices in POS"
+msgstr "Keine Rechnung"
+
+#. module: pos_invoice_pay
+#: model:ir.model.fields,help:pos_invoice_pay.field_pos_session_session_payments
+msgid "Show invoices paid in the Session"
+msgstr ""
+
+#. module: pos_invoice_pay
+#: model:ir.model.fields,help:pos_invoice_pay.field_pos_config_show_sale_orders
+msgid "Show sale orders in POS"
 msgstr ""
 
 #. module: pos_invoice_pay
@@ -507,9 +555,16 @@ msgid "Tendered"
 msgstr ""
 
 #. module: pos_invoice_pay
+#: model:ir.model.fields,help:pos_invoice_pay.field_pos_config_pos_invoice_pay_writeoff_account_id
+msgid "The account is used for the difference between due and paid amount"
+msgstr ""
+"Das Konto wird für die Differenz zwischen der unbezahlten und bezahlten "
+"Summe verwendet"
+
+#. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:738
-#: code:addons/pos_invoice_pay/static/src/js/main.js:899
+#: code:addons/pos_invoice_pay/static/src/js/main.js:736
+#: code:addons/pos_invoice_pay/static/src/js/main.js:895
 #, python-format
 msgid "There must be invoice selected."
 msgstr "Es muss eine Rechnung gewählt sein."
@@ -546,14 +601,18 @@ msgid "Unit Price"
 msgstr "Preis pro Einheit"
 
 #. module: pos_invoice_pay
-#: model:ir.actions.server,name:pos_invoice_pay.action_update_pos_invoices
-msgid "Update pos invoices"
-msgstr ""
+#: model:base.automation,name:pos_invoice_pay.invoice_update_pos_action
+#: model:ir.actions.server,name:pos_invoice_pay.invoice_update_pos_action_ir_actions_server
+#, fuzzy
+msgid "Update Invoices"
+msgstr "Rechnungen"
 
 #. module: pos_invoice_pay
-#: model:ir.actions.server,name:pos_invoice_pay.action_update_pos_sale_orders
-msgid "Update pos sale_order"
-msgstr ""
+#: model:base.automation,name:pos_invoice_pay.so_update_pos_action
+#: model:ir.actions.server,name:pos_invoice_pay.so_update_pos_action_ir_actions_server
+#, fuzzy
+msgid "Update Sale Order"
+msgstr "Point of Sale-Bestellungen"
 
 #. module: pos_invoice_pay
 #. openerp-web
@@ -579,28 +638,37 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1054
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1058
 #, python-format
 msgid "Wrong payment amount."
 msgstr "inkorrekte Zahlungssumme"
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1047
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1037
+#, python-format
+msgid ""
+"You can not validate the order with a change because difference account is "
+"not set. Please enter the exact payment amount."
+msgstr ""
+
+#. module: pos_invoice_pay
+#. openerp-web
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1051
 #, python-format
 msgid "You can not validate the order with zero payment amount."
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1055
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1059
 #, python-format
 msgid "You can only create positive payments."
 msgstr "Sie können nur positive Zahlungen erstellen."
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1046
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1050
 #, python-format
 msgid "Zero payment amount."
 msgstr ""
@@ -611,23 +679,17 @@ msgid "pos.config"
 msgstr "pos.config"
 
 #. module: pos_invoice_pay
+#: model:ir.model,name:pos_invoice_pay.model_pos_session
+msgid "pos.session"
+msgstr ""
+
+#. module: pos_invoice_pay
 #: model:ir.model,name:pos_invoice_pay.model_report_point_of_sale_report_saledetails
 msgid "report.point_of_sale.report_saledetails"
 msgstr ""
-
-#~ msgid "Invoice Status"
-#~ msgstr "Rechnungsstatu"
-
-#~ msgid "Invoices"
-#~ msgstr "Rechnungen"
 
 #~ msgid "Order Date"
 #~ msgstr "Bestellungsdatum"
 
 #~ msgid "Order Number"
 #~ msgstr "Bestellungsnummer"
-
-#~ msgid "The account is used for the difference between due and paid amount"
-#~ msgstr ""
-#~ "Das Konto wird für die Differenz zwischen der unbezahlten und bezahlten "
-#~ "Summe verwendet"
