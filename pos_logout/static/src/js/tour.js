@@ -1,4 +1,4 @@
-/* Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+/* Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
@@ -8,9 +8,16 @@ odoo.define('pos_logout.tour', function(require) {
     var tour = require('web_tour.tour');
 
     function pos_opening(){
-      return [{
+      return [tour.STEPS.SHOW_APPS_MENU_ITEM, {
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
         content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
+        position: 'right',
+        edition: 'community'
+    }, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
+        position: 'bottom',
+        edition: 'enterprise'
     }, {
         trigger: ".o_pos_kanban button.oe_kanban_action_button",
         content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
@@ -78,7 +85,7 @@ odoo.define('pos_logout.tour', function(require) {
         content: "confirm closing the frontend",
     }, {
         content: "wait until backend is opened",
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        trigger: '.o_pos_kanban button.oe_kanban_action_button',
         run: function () {
             // no need to click on trigger
         },
@@ -88,10 +95,11 @@ odoo.define('pos_logout.tour', function(require) {
   var steps = [];
   var username = "test";
   var userpassword = "0000";
-  steps = steps.concat(pos_opening());
-  steps = steps.concat(password_prompt(username,userpassword));
-  steps = steps.concat(pos_closing());
-
+  steps = steps.concat(
+      pos_opening(),
+      password_prompt(username, userpassword),
+      pos_closing()
+  );
 
     tour.register('pos_logout_tour', {test: true, url: '/web' }, steps);
 });

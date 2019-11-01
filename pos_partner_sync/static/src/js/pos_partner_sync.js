@@ -6,7 +6,6 @@ odoo.define('pos_partner_sync.pos', function (require) {
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
-    var longpolling = require('pos_longpolling');
     var gui = require('point_of_sale.gui');
     var rpc = require('web.rpc');
 
@@ -17,7 +16,10 @@ odoo.define('pos_partner_sync.pos', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function(){
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            this.bus.add_channel_callback("pos_partner_sync", this.on_barcode_updates, this);
+            var self = this;
+            this.ready.then(function () {
+                self.bus.add_channel_callback("pos_partner_sync", self.on_barcode_updates, self);
+            });
         },
         on_barcode_updates: function(data){
             var self = this;
@@ -75,6 +77,12 @@ odoo.define('pos_partner_sync.pos', function (require) {
                 shadow: true,
             }).then(function(partners) {
                 // check if the partners we got were real updates
+
+                // we add this trick with get_partner_write_date to be able to process several updates within the second
+                // it is restricted by built-in behavior in add_partners function
+                self.db.partner_write_date = 0;
+                // returns default value "1970-01-01 00:00:00"
+                self.db.get_partner_write_date();
                 if (self.db.add_partners(partners)) {
                     def.resolve();
                 } else {

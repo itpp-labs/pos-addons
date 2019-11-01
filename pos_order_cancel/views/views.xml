@@ -116,18 +116,18 @@
     </record>
 
     <record id="view_pos_order_filter" model="ir.ui.view">
-        <field name="name">pos.order.tree</field>
+        <field name="name">pos.order.list.select</field>
         <field name="model">pos.order</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
         <field name="arch" type="xml">
-            <xpath expr="//search/filter[2]" position="attributes">
+            <xpath expr="//filter[@name='done']" position="attributes">
                 <attribute name="domain">[('state','in',('paid','invoiced','done')),('is_cancelled','=',False)]</attribute>
             </xpath>
-            <xpath expr="//filter[4]" position="attributes">
+            <xpath expr="//filter[@name='posted']" position="attributes">
                 <attribute name="domain">[('state','=','done'),('is_cancelled','=',False)]</attribute>
             </xpath>
-            <xpath expr="//filter[4]" position="after">
-                <filter string="Canceled" domain="[('is_cancelled','=',True)]"/>
+            <xpath expr="//filter[@name='posted']" position="after">
+                <filter string="Canceled" name="canceled" domain="[('is_cancelled','=',True)]"/>
             </xpath>
         </field>
     </record>
@@ -222,15 +222,15 @@
                 <field name="reason"/>
                 <field name="current_qty"/>
                 <group expand="1" string="Group By">
-                    <filter string="Users" context="{'group_by':'user_id'}"/>
+                    <filter string="Users" name="users" context="{'group_by':'user_id'}"/>
                     <separator/>
-                    <filter string="Products" context="{'group_by':'product_id'}"/>
+                    <filter string="Products" name="products" context="{'group_by':'product_id'}"/>
                     <separator/>
-                    <filter string="POS Order" context="{'group_by':'order_id'}"/>
+                    <filter string="POS Order" name="pos_order" context="{'group_by':'order_id'}"/>
                     <separator/>
-                    <filter string="Days" context="{'group_by':'canceled_date:day'}" help="Day of canceled date"/>
-                    <filter string="Weeks" context="{'group_by':'canceled_date:week'}" help="Week of canceled date"/>
-                    <filter string="Months" context="{'group_by':'canceled_date:month'}" help="Month of canceled date"/>
+                    <filter string="Days" name="days" context="{'group_by':'canceled_date:day'}" help="Day of canceled date"/>
+                    <filter string="Weeks" name="weeks" context="{'group_by':'canceled_date:week'}" help="Week of canceled date"/>
+                    <filter string="Months" name="months" context="{'group_by':'canceled_date:month'}" help="Month of canceled date"/>
                 </group>
             </search>
         </field>

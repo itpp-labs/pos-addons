@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,12 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_qr_payments
-#: model:ir.model.fields,field_description:pos_qr_payments.field_pos_make_payment_order_ref
+#: model:ir.model.fields,field_description:pos_qr_payments.field_pos_make_payment__order_ref
 msgid "Order Ref"
 msgstr ""
 
 #. module: pos_qr_payments
-#: model:ir.model.fields,field_description:pos_qr_payments.field_pos_order_pos_reference_uid
+#: model:ir.model.fields,field_description:pos_qr_payments.field_pos_order__pos_reference_uid
 msgid "Order UID"
 msgstr ""
 

@@ -34,17 +34,20 @@ msgid "Guests ?"
 msgstr "Coperti ?"
 
 #. module: pos_mobile_restaurant
-#: model:ir.model.fields,field_description:pos_mobile_restaurant.field_pos_config_show_number_guests
+#: model:ir.model,name:pos_mobile_restaurant.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_mobile_restaurant
+#: model:ir.model.fields,field_description:pos_mobile_restaurant.field_pos_config__show_number_guests
 msgid "Show the number of guests"
 msgstr "Mostrare il numero di coperti"
 
 #. module: pos_mobile_restaurant
-#: model:ir.model.fields,help:pos_mobile_restaurant.field_pos_config_show_number_guests
-#: model:ir.ui.view,arch_db:pos_mobile_restaurant.view_pos_config_form
+#: model:ir.model.fields,help:pos_mobile_restaurant.field_pos_config__show_number_guests
+#: model_terms:ir.ui.view,arch_db:pos_mobile_restaurant.view_pos_config_form
 msgid "Show the number of guests in popup for empty table"
 msgstr "Mostra il numero di coperti dei tavoli vuoti nel menù a comparsa"
 
-#. module: pos_mobile_restaurant
-#: model:ir.model,name:pos_mobile_restaurant.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

@@ -1,15 +1,8 @@
 odoo.define('pos_order_printer_product', function(require){
 
-    var exports = {};
-
-    var Backbone = window.Backbone;
-    var core = require('web.core');
     var models = require('pos_restaurant_base.models');
-    var multiprint = require('pos_restaurant.multiprint');
-    var chrome = require('point_of_sale.chrome');
 
-    var _t = core._t;
-
+    models.load_fields('restaurant.printer', ['product_ids']);
 
     models.load_fields('restaurant.printer',['product_ids']);
 
@@ -17,6 +10,9 @@ odoo.define('pos_order_printer_product', function(require){
     models.PosModel = models.PosModel.extend({
         is_product_in_product_list: function(id, list) {
             var product_tmpl_id = this.db.get_product_by_id(id).product_tmpl_id;
+            if (Array.isArray(product_tmpl_id)) {
+                product_tmpl_id = product_tmpl_id[0];
+            }
             return $.inArray(product_tmpl_id, list) !== -1;
         },
     });
@@ -90,4 +86,6 @@ odoo.define('pos_order_printer_product', function(require){
             return _super_orderline.printable.apply(this,arguments) || printable;
         },
     });
+
+    return models;
 });

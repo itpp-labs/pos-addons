@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="pos_restaurant.kitchen_printer" model="restaurant.printer">
-        <field name="product_ids" eval="[(6, 0, [ref('point_of_sale.boni_orange_product_template')])]"/>
+        <field name="product_ids" eval="[(6, 0, [ref('pos_restaurant.water_product_template')])]"/>
     </record>
 </odoo>

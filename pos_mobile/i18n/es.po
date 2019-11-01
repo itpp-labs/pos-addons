@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_mobile
-#: model:ir.model.fields,field_description:pos_mobile.field_pos_config_auto_mobile
+#: model:ir.model.fields,field_description:pos_mobile.field_pos_config__auto_mobile
 msgid "Auto Mobile View"
 msgstr ""
 
@@ -39,12 +39,12 @@ msgid "Please select a payment method."
 msgstr ""
 
 #. module: pos_mobile
-#: model:ir.model.fields,help:pos_mobile.field_pos_config_auto_mobile
-#: model:ir.ui.view,arch_db:pos_mobile.view_pos_config_form
-msgid "Switch to Mobile view automatically depending on device"
+#: model:ir.model,name:pos_mobile.model_pos_config
+msgid "Point of Sale Configuration"
 msgstr ""
 
 #. module: pos_mobile
-#: model:ir.model,name:pos_mobile.model_pos_config
-msgid "pos.config"
+#: model:ir.model.fields,help:pos_mobile.field_pos_config__auto_mobile
+#: model_terms:ir.ui.view,arch_db:pos_mobile.view_pos_config_form
+msgid "Switch to Mobile view automatically depending on device"
 msgstr ""

@@ -65,7 +65,18 @@ Print a receipt
 * Click on ``[Payment]`` and ``[Validate]``
 * Print receipt
 
-Note
-====
-
+Check Status
+------------
 In the POS interface you can see the connection status of your printers by clicking on posbox icon at the top right corner.
+
+Known Issues and workarounds
+============================
+
+Languages support
+-----------------
+
+Arabic, Japanese, Chinese and Korean `are not officially supported <https://github.com/odoo/odoo/issues/25007#issuecomment-395700893>`_. Possible workarounds are:
+
+* `Modify posbox source <https://odoo-development.readthedocs.io/en/latest/admin/posbox/administrate-posbox.html>`_ by adding encoding of your language to `encode_char method <https://github.com/odoo/odoo/blob/21064c7de8867c9217d274cb83ff589c8ebcac75/addons/hw_escpos/escpos/escpos.py#L745-L765>`_
+
+* Use earlier version of POSBox.

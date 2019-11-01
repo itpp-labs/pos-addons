@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,13 +14,23 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_order_receipt_custom
-#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_restaurant_printer_custom_order_receipt
+#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_restaurant_printer__custom_order_receipt
 msgid "Custom Order Receipt"
+msgstr ""
+
+#. module: pos_order_receipt_custom
+#: selection:pos.custom_receipt,type:0
+msgid "Order Receipt"
 msgstr ""
 
 #. module: pos_order_receipt_custom
 #: model:ir.model,name:pos_order_receipt_custom.model_pos_custom_receipt
 msgid "POS Custom Receipt/Ticket"
+msgstr ""
+
+#. module: pos_order_receipt_custom
+#: model:ir.model,name:pos_order_receipt_custom.model_pos_config
+msgid "Point of Sale Configuration"
 msgstr ""
 
 #. module: pos_order_receipt_custom
@@ -32,32 +42,42 @@ msgid "Pre-receipt"
 msgstr ""
 
 #. module: pos_order_receipt_custom
-#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_pos_config_print_transfer_info_in_kitchen
+#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_pos_config__print_transfer_info_in_kitchen
 msgid "Print Order Transfer Ticket"
 msgstr ""
 
 #. module: pos_order_receipt_custom
-#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_restaurant_printer_custom_order_receipt_id
+#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_restaurant_printer__custom_order_receipt_id
 msgid "Print Template"
 msgstr ""
 
 #. module: pos_order_receipt_custom
-#: model:ir.model.fields,help:pos_order_receipt_custom.field_pos_config_print_transfer_info_in_kitchen
+#: model:ir.model.fields,help:pos_order_receipt_custom.field_pos_config__print_transfer_info_in_kitchen
 msgid "Print the kitchen ticket once the order is transfered to another table"
 msgstr ""
 
 #. module: pos_order_receipt_custom
-#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_pos_config_custom_kitchen_receipt
-msgid "Using of Custom Kitchen Receipt"
-msgstr ""
-
-#. module: pos_order_receipt_custom
-#: model:ir.model,name:pos_order_receipt_custom.model_pos_config
-msgid "pos.config"
+#: selection:pos.custom_receipt,type:0
+msgid "Receipt"
 msgstr ""
 
 #. module: pos_order_receipt_custom
 #: model:ir.model,name:pos_order_receipt_custom.model_restaurant_printer
-msgid "restaurant.printer"
+msgid "Restaurant Printer"
+msgstr ""
+
+#. module: pos_order_receipt_custom
+#: selection:pos.custom_receipt,type:0
+msgid "Ticket"
+msgstr ""
+
+#. module: pos_order_receipt_custom
+#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_pos_custom_receipt__type
+msgid "Type"
+msgstr ""
+
+#. module: pos_order_receipt_custom
+#: model:ir.model.fields,field_description:pos_order_receipt_custom.field_pos_config__custom_kitchen_receipt
+msgid "Using of Custom Kitchen Receipt"
 msgstr ""
 

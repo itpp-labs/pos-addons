@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -12,13 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: pos_pin
-#. openerp-web
-#: code:addons/pos_pin/static/src/js/test_pos_pin.js:16
-#, python-format
-msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
-msgstr ""
 
 #. module: pos_pin
 #. openerp-web
@@ -32,13 +25,6 @@ msgstr ""
 #: code:addons/pos_pin/static/src/js/pos.js:82
 #, python-format
 msgid "Password ?"
-msgstr ""
-
-#. module: pos_pin
-#. openerp-web
-#: code:addons/pos_pin/static/src/js/test_pos_pin.js:12
-#, python-format
-msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_pin

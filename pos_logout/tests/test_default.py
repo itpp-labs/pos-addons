@@ -3,7 +3,6 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -11,13 +10,9 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
-        # see more https://odoo-development.readthedocs.io/en/latest/dev/tests/js.html#phantom-js-python-tests
-        cr = self.registry.cursor()
-        assert cr == self.registry.test_cr
-        env = Environment(cr, self.uid, {})
+        env = self.env
 
         # From https://github.com/odoo/odoo/blob/48dafd5b2011cee966920f664a904de2e2715ae8/addons/point_of_sale/tests/test_frontend.py#L306-L310
-        #
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
@@ -30,7 +25,6 @@ class TestUi(odoo.tests.HttpCase):
             'pos_security_pin': "0000",
         })
         env['ir.module.module'].search([('name', '=', 'pos_logout')], limit=1).state = 'installed'
-        self.registry.test_cr.release()
 
         self.phantom_js(
             '/web',

@@ -10,25 +10,22 @@ odoo.define('pos_order_cancel_restaurant.tour', function(require) {
     var tour = require('web_tour.tour');
     var steps = tour.tours.pos_order_cancel_tour.steps;
 
-
-    for (var position = 0; position < steps.length; position++) {
-        if (steps[position].trigger === ".product-list .product") {
-            steps.splice(
-                position,
-                1,
-                {
-                    trigger: ".tables .table",
-                    content: "<p>Click <b>table</b></p>",
-                    position: "bottom",
-                    timeout: 20000,
-                }, {
-                    trigger: ".product-list .product",
-                    content: "<p>Click product 1</p>",
-                    position: "bottom",
-                }
-            );
-            break;
+    tour.tours.pos_order_cancel_tour.steps = steps.reduce(function(sum, step) {
+        if (step.trigger === ".product-list .product") {
+            sum.push({
+                trigger: ".tables .table",
+                content: "<p>Click <b>table</b></p>",
+                position: "bottom",
+                timeout: 20000,
+            });
         }
 
-    }
+        if (step.trigger === ".o_pos_kanban button.oe_kanban_action_button") {
+            step.trigger = ".o_pos_kanban :has(div.o_primary:contains('Bar')) button.oe_kanban_action_button";
+        }
+
+        sum.push(step);
+        return sum;
+    }, []);
+
 });

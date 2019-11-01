@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-extend="SelectionPopupWidget">
-        <t t-jquery='p[class="title"]' t-operation="append">
+        <t t-jquery='header[class="title"]' t-operation="append">
             <t t-if="widget.cashiers">
                 <span class="exit">
                     <i class="fa fa-sign-out"></i>
                 </span>
             </t>
         </t>
-        <!-- <t t-jquery='div[class="button cancel"]' t-operation="replace">
-            <t t-if="!widget.block">
-                <div class="button cancel">
-                    Cancel
-                </div>
-            </t>
-        </t> -->
     </t>
 
     <t t-name="BlockPopupWidget">

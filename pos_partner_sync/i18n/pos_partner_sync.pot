@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -21,13 +21,18 @@ msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>,
 msgstr ""
 
 #. module: pos_partner_sync
+#: model:ir.model,name:pos_partner_sync.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: pos_partner_sync
 #: model:ir.model,name:pos_partner_sync.model_res_partner
 msgid "Partner"
 msgstr ""
 
 #. module: pos_partner_sync
-#: model:ir.ui.view,arch_db:pos_partner_sync.res_config_settings_partner_sync_view_form
-msgid "Point of Sale Syncronization Fields"
+#: model_terms:ir.ui.view,arch_db:pos_partner_sync.res_config_settings_view_form
+msgid "Partner Syncronization Fields"
 msgstr ""
 
 #. module: pos_partner_sync
@@ -38,12 +43,7 @@ msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_partner_sync
-#: model:ir.model.fields,field_description:pos_partner_sync.field_res_config_settings_sync_field_ids
+#: model:ir.model.fields,field_description:pos_partner_sync.field_res_config_settings__sync_field_ids
 msgid "Synchronized Fields"
-msgstr ""
-
-#. module: pos_partner_sync
-#: model:ir.model,name:pos_partner_sync.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 

@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,30 +14,28 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_wechat
-#. openerp-web
-#: code:addons/pos_wechat/static/src/js/tour.js:21
-#, python-format
-msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
-msgstr ""
-
-#. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos_display_name
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos_id
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos__id
 msgid "ID"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos___last_update
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment_micropay_id
+#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment__micropay_id
 msgid "Micropay to refund"
+msgstr ""
+
+#. module: pos_wechat
+#: model:ir.model,name:pos_wechat.model_pos_config
+msgid "Point of Sale Configuration"
 msgstr ""
 
 #. module: pos_wechat
@@ -46,21 +44,14 @@ msgid "Point of Sale Payment"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_micropay_pos_id
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_order_pos_id
-#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos_pos_id
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_micropay__pos_id
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_order__pos_id
+#: model:ir.model.fields,field_description:pos_wechat.field_wechat_pos__pos_id
 msgid "Pos"
 msgstr ""
 
 #. module: pos_wechat
-#. openerp-web
-#: code:addons/pos_wechat/static/src/js/tour.js:17
-#, python-format
-msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr ""
-
-#. module: pos_wechat
-#: model:ir.model.fields,help:pos_wechat.field_pos_make_payment_journal_wechat
+#: model:ir.model.fields,help:pos_wechat.field_pos_make_payment__journal_wechat
 msgid "Register for WeChat payment"
 msgstr ""
 
@@ -70,27 +61,22 @@ msgid "Unified Order"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment_wechat_order_id
+#: model:ir.model,name:pos_wechat.model_wechat_micropay
+msgid "WeChat Micropay"
+msgstr ""
+
+#. module: pos_wechat
+#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment__wechat_order_id
 msgid "WeChat Order to refund"
 msgstr ""
 
 #. module: pos_wechat
-#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment_journal_wechat
-msgid "WeChat Payment"
-msgstr ""
-
-#. module: pos_wechat
-#: model:ir.model,name:pos_wechat.model_pos_config
-msgid "pos.config"
-msgstr ""
-
-#. module: pos_wechat
-#: model:ir.model,name:pos_wechat.model_wechat_micropay
-msgid "wechat.micropay"
-msgstr ""
-
-#. module: pos_wechat
 #: model:ir.model,name:pos_wechat.model_wechat_pos
-msgid "wechat.pos"
+msgid "WeChat POS"
+msgstr ""
+
+#. module: pos_wechat
+#: model:ir.model.fields,field_description:pos_wechat.field_pos_make_payment__journal_wechat
+msgid "WeChat Payment"
 msgstr ""
 

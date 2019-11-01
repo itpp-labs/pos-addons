@@ -15,7 +15,7 @@
     </record>
 
 
-    <record id="point_of_sale.pos_config_main" model="pos.config">
+    <record id="pos_restaurant.pos_config_restaurant" model="pos.config">
         <field name="multi_session_id" ref="pos_multi_session.demo_multi_session"/>
     </record>
 </odoo>

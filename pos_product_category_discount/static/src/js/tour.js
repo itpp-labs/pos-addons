@@ -18,7 +18,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
 
     function cashier_select() {
         return [{
-            trigger: '.modal-dialog.cashier .selection-item',
+            trigger: '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
             content: 'select first cashier',
         }];
     }
@@ -32,7 +32,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
             steps = steps.concat(cashier_select());
         }
         steps = steps.concat([{
-            trigger: '.paymentmethod:contains("Cash")',
+            trigger: '.paymentmethod:contains("Cash (USD)")',
             content: "pay with cash",
         }]);
         return steps;
@@ -60,12 +60,6 @@ odoo.define('pos_product_category_discount.tour', function(require) {
             trigger: '.button.next:visible',
             content: "validate the order",
         }, {
-            trigger: ".js_connecting:visible",
-            content: "verify that the order is being sent to the backend",
-            run: function () {
-                // it's a check
-            },
-        }, {
             trigger: ".js_connected:visible",
             content: "verify that the order has been succesfully sent to the backend",
             run: function () {
@@ -83,7 +77,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
             content: 'Click discount button.',
             position: 'bottom'
         },{
-            trigger: '.discount-program-list .button#3',
+            trigger: '.discount-program-list .button#1',
             content: 'select discount program',
             position: 'bottom'
         },{
@@ -94,12 +88,18 @@ odoo.define('pos_product_category_discount.tour', function(require) {
         return steps;
     }
 
-    var steps = [{
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+    var steps = [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
+        position: 'right',
+        edition: 'community'
+    }, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
         content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
         position: 'bottom',
+        edition: 'enterprise'
     }, {
-        trigger: ".o_pos_kanban button.oe_kanban_action_button",
+        trigger: '.o_pos_kanban .o_kanban_record:contains("Shop") button.oe_kanban_action_button',
         content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
         position: "bottom"
     }];
@@ -107,7 +107,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
     steps = steps.concat({
         trigger: '.o_main_content:has(.loader:hidden)',
         content: 'waiting for loading to finish',
-        timeout: 20000,
+        timeout: 60000,
         run: function () {
             // it's a check
         },
@@ -119,13 +119,13 @@ odoo.define('pos_product_category_discount.tour', function(require) {
         position: "bottom"
     });
 
-    steps = steps.concat(add_product_to_order('Peaches'));
+    steps = steps.concat(add_product_to_order('Cabinet with Doors'));
 
     steps = steps.concat(set_category_discount());
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("10"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("12.60"));
 
     steps = steps.concat(finish_order());
 
@@ -137,7 +137,7 @@ odoo.define('pos_product_category_discount.tour', function(require) {
         content: "confirm closing the frontend",
     }, {
         content: "wait until backend is opened",
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        trigger: '.o_pos_kanban button.oe_kanban_action_button',
         run: function () {
             // no need to click on trigger
         },

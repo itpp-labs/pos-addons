@@ -12,8 +12,7 @@ class TestReward(TransactionCase):
         super(TestReward, self).setUp()
         self.attendance = self.env['res.partner.attendance']
         self.pos_config = self.env['pos.config']
-        self.res_partner = self.env['res.partner']
-        self.test_partner = self.res_partner.search([('name', '=', 'David Simpson')])
+        self.test_partner = self.env.ref('base.partner_demo')
         self.reward_model = self.env['pos.credit.update.reward']
         self.reward_type_model = self.env['pos.credit.update.reward.type']
         self.user = self.env.user

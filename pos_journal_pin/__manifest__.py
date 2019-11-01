@@ -36,7 +36,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     # "demo_title": "Ask Manager to use journal",
     # "demo_addons": [

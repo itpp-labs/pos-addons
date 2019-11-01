@@ -1133,7 +1133,6 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
     border-bottom: 8px solid rgb(110,200,155) !important;
-    overflow: hidden!important;
 }
 .ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
     overflow: hidden!important;
@@ -1496,7 +1495,7 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .order-selector {
     display: flex;
     float: left;
-    max-width: 674px;
+    max-width: 670px;
     white-space: nowrap;
 }
 .pos.mobile .orders.touch-scrollable{
@@ -1586,9 +1585,6 @@ pos.mobile .clientlist-screen .top-content .button {
     display: inline-block;
 }
 /*Mobile screen*/
-.pos.mobile .window {
-    display: none;
-}
 .pos.mobile .mobile-active-screen {
     display: block;
 }

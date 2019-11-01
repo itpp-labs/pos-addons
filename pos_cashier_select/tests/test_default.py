@@ -3,7 +3,6 @@
 # License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
 
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -11,7 +10,7 @@ from odoo.api import Environment
 class TestUi(odoo.tests.HttpCase):
 
     def test_01_pos_is_loaded(self):
-        env = Environment(self.registry.test_cr, self.uid, {})
+        env = self.env
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without

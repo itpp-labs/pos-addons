@@ -2,7 +2,6 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import odoo.tests
-from odoo.api import Environment
 from mock import MagicMock
 
 
@@ -15,10 +14,8 @@ class TestUi(odoo.tests.HttpCase):
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
-        cr = self.registry.cursor()
-        env = Environment(cr, self.uid, {})
+        env = self.env
         env['ir.module.module'].search([('name', '=', 'pos_invoice_pay')], limit=1).state = 'installed'
-        cr.release()
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
         self.phantom_js("/web",
@@ -44,6 +41,15 @@ class TestModel(odoo.tests.SingleTransactionCase):
             def post(self):
                 pass
 
+        class MockedAccountInvoice():
+            def __init__(self, residual):
+                self.residual = residual
+
+            def browse(self, arg=None, prefetch=None):
+                mock = MagicMock()
+                mock.residual = self.residual
+                return mock
+
         class MockedEnv:
             def __init__(self, env, mocked_models):
                 self.env = env
@@ -53,6 +59,9 @@ class TestModel(odoo.tests.SingleTransactionCase):
                 if item in self.mocked_models:
                     return self.mocked_models[item]
                 return self.env[item]
+
+            def __setitem__(self, key, item):
+                self.mocked_models[key] = item
 
         def make_payment(due, tendered, total):
             """
@@ -108,6 +117,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
             'account.payment': mocked_account_payment,
             'account.invoice': MagicMock(),
             'account.journal': MagicMock(),
+            'pos.session': MagicMock(),
         })
 
         sample = mocked_env['pos.order'].search([], limit=1)
@@ -119,6 +129,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
         # tendered is less than due, so we must store payment with tendered value
         expected_amount = tendered
 
+        sample.env['account.invoice'] = MockedAccountInvoice(due)
         sample.process_invoice_payment(make_payment(due, tendered, total))
         self.assertEqual(mocked_account_payment.param['amount'], expected_amount)
 
@@ -128,5 +139,6 @@ class TestModel(odoo.tests.SingleTransactionCase):
         # tendered is greater than due, so we must store payment with due value, 'cos we give change back
         expected_amount = due
 
+        sample.env['account.invoice'] = MockedAccountInvoice(due)
         sample.process_invoice_payment(make_payment(due, tendered, total))
         self.assertEqual(mocked_account_payment.param['amount'], expected_amount)

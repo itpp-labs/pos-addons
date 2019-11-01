@@ -15,6 +15,7 @@ Contributors
 ------------
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Anvar Kildebekov <https://it-projects.info/team/fedoranvar>`__
 
 Sponsors
 --------
@@ -24,7 +25,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_keyboard/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_keyboard/>`__.
 
       Thank you for understanding!
 
@@ -33,12 +34,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_keyboard/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_keyboard/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 77e7d952b4c72d58c1b8f34b57e355f5b98c88b0
+Tested on Odoo 12.0 d177e8f53b01f5e09c9b49c945781b69baac7009

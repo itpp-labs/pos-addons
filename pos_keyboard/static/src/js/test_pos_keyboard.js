@@ -10,6 +10,10 @@ odoo.define('pos_keyboard.tour', function (require) {
 
     function open_pos_neworder() {
         return [{
+            trigger: 'ul.o_menu_apps li.dropdown a.full',
+            content: _t("Show Apps Menu"),
+            position: 'bottom',
+        }, {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
             position: 'bottom',

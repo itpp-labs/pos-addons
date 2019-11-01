@@ -3,6 +3,7 @@
 # Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
+# Copyright 2019 Anvar Kildebekov https://it-projects.info/team/fedoranvar>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Keyboard support in Point Of Sale""",
@@ -10,7 +11,7 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
     "images": ['images/keyboard.png'],
-    "version": "11.0.1.1.5",
+    "version": "12.0.1.1.5",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",

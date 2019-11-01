@@ -28,8 +28,8 @@ Enable Discounts for POS
 * Open ``Point of Sale >> Configuration >> Point of Sale`` menu
 * Open available POS
 * Click on ``[Edit]``
-* Scroll down to ``Discounts`` section
-* Check the box ``Order Discounts``
+* Scroll down to ``Pricing`` section
+* Check the box ``Global Discounts``
 * Click on ``[Save]``
 
 Disable discount for product

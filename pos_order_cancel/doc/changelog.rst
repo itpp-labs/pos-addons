@@ -3,6 +3,11 @@
 
 - **New:** Ask Manager to cancel lines/orders
 
+`1.2.3`
+-------
+
+- **FIX:** Error opening a popup to specify the cancellation reason
+
 `1.2.2`
 -------
 

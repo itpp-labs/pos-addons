@@ -29,7 +29,7 @@ odoo.define('pos_invoice_pay.tour', function (require) {
             trigger: '.subwindow-container-fix.pads .control-button:contains("Fetch Invoices")',
         }, {
             content: "Choose Administrator",
-            trigger: '.modal-dialog:not(.oe_hidden) .popup-selection .selection-item:contains("Administrator"), .invoice-list-screen:not(".oe_hidden") .list thead:first()',
+            trigger: '.modal-dialog:not(.oe_hidden) .popup-selection .selection-item:contains("Mitchell Admin"), .invoice-list-screen:not(".oe_hidden") .list thead:first()',
         }, {
             content: "Select Invoice",
             trigger: '.invoice-list-screen .list-contents tr.invoice:contains("4,610"):first',
@@ -67,11 +67,17 @@ odoo.define('pos_invoice_pay.tour', function (require) {
         }];
     }
 
-    var steps = [{
-            trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
-            position: 'bottom',
-        }];
+    var steps = [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
+        position: 'right',
+        edition: 'community'
+    }, {
+        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+        content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
+        position: 'bottom',
+        edition: 'enterprise'
+    }];
 
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(select_invoice());

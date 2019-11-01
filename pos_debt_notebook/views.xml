@@ -2,7 +2,7 @@
 <!--Copyright 2014-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
     Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
-    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 
 <odoo>
@@ -111,7 +111,7 @@
     <field name="model">product.template</field>
     <field name="inherit_id" ref="point_of_sale.product_template_form_view"/>
     <field name="arch" type="xml">
-        <xpath expr="//group[@name='properties']">
+        <xpath expr="//group[@name='pos']">
             <group>
                 <field name="credit_product"/>
             </group>
@@ -119,13 +119,14 @@
     </field>
 </record>
 
+    <!-- RES CONFIG SETTINGS -->
 <record id="res_config_settings_view_form" model="ir.ui.view">
     <field name="name">res.config.settings.view.form.inherit</field>
     <field name="model">res.config.settings</field>
     <field name="priority" eval="50"/>
-    <field name="inherit_id" ref="base.res_config_settings_view_form" />
+    <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
     <field name="arch" type="xml">
-        <xpath expr="//div[@id='production_lot_info']" position="after">
+        <xpath expr="//div[@data-key='point_of_sale']" position="inside">
             <h2>Customer Debts</h2>
             <div class="row mt16 o_settings_container" id="customer_debts">
                 <div class="col-xs-12 col-md-6 o_setting_box">

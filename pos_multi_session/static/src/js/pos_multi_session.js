@@ -14,9 +14,8 @@ odoo.define('pos_multi_session', function(require){
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
-    var bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
-    var longpolling = require('pos_longpolling');
+    var longpolling = require('pos_longpolling.connection');
     var rpc = require('web.rpc');
     var gui = require('point_of_sale.gui');
     var posDB = require('point_of_sale.DB');
@@ -921,7 +920,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             message.data.nonce = this.get_nonce();
-            message.session_id = this.pos.pos_session.id
+            message.session_id = this.pos.pos_session.id;
             message.login_number = this.pos.pos_session.login_number;
             var send_it = function () {
                 var temp = self.pos.config.sync_server || '';

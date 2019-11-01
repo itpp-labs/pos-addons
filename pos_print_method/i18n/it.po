@@ -21,14 +21,14 @@ msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:27
+#: code:addons/pos_print_method/static/src/js/tour.js:33
 #, python-format
 msgid "<p>Click <b>Fruits and Vegetables</b> category.</p>"
 msgstr "<p>Fare clic sulla categoria <b>Frutta e verdura</b>.</p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:39
+#: code:addons/pos_print_method/static/src/js/tour.js:45
 #, python-format
 msgid "<p>Click <b>Order</b> button for printing in <b>Kitchen</b></p>"
 msgstr ""
@@ -36,28 +36,28 @@ msgstr ""
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:22
+#: code:addons/pos_print_method/static/src/js/tour.js:28
 #, python-format
 msgid "<p>Click <b>table</b></p>"
 msgstr "<p>Fare clic sul <b>tavolo</b></p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:31
+#: code:addons/pos_print_method/static/src/js/tour.js:37
 #, python-format
 msgid "<p>Click product 1</p>"
 msgstr "<p>Fare clic sul prodotto 1</p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:35
+#: code:addons/pos_print_method/static/src/js/tour.js:41
 #, python-format
 msgid "<p>Click product 2</p>"
 msgstr "<p>Fare clic sul prodotto 2</p>"
 
 #. module: pos_print_method
 #. openerp-web
-#: code:addons/pos_print_method/static/src/js/tour.js:18
+#: code:addons/pos_print_method/static/src/js/tour.js:24
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
@@ -79,7 +79,7 @@ msgid "Order Line"
 msgstr "Riga d'ordine"
 
 #. module: pos_print_method
-#: model:ir.model.fields,help:pos_print_method.field_restaurant_printer_printer_method_name
+#: model:ir.model.fields,help:pos_print_method.field_restaurant_printer__printer_method_name
 msgid ""
 "Order: Print entire order on one receipt (default odoo method). \n"
 "\n"
@@ -91,18 +91,20 @@ msgstr ""
 "Riga d'ordine: stampare le righe d'ordine su ricevute separate"
 
 #. module: pos_print_method
-#: model:ir.model.fields,field_description:pos_print_method.field_restaurant_printer_printer_method_name
+#: model:ir.model.fields,field_description:pos_print_method.field_restaurant_printer__printer_method_name
 msgid "Print Method"
 msgstr "Metodo di stampa"
 
 #. module: pos_print_method
 #. openerp-web
 #: code:addons/pos_print_method/static/src/js/tour.js:14
+#: code:addons/pos_print_method/static/src/js/tour.js:19
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr "Pronti a lanciare il <b>punto vendita</b>? <i>Fare clic qui</i>."
 
 #. module: pos_print_method
 #: model:ir.model,name:pos_print_method.model_restaurant_printer
-msgid "restaurant.printer"
+#, fuzzy
+msgid "Restaurant Printer"
 msgstr "restaurant.printer"

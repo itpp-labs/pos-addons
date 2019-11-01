@@ -15,6 +15,8 @@ When POS becomes offline, i.e. don't have connection to *Sync Server*, it is onl
 
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
+We recommend using the module together with the `pos_access_right <https://www.odoo.com/apps/modules/12.0/pos_access_right/>`__ module.
+
 Modules compatibility
 ---------------------
 
@@ -23,7 +25,7 @@ Some modules may not be compatible. It happens when a module adds additional dat
 .. code-block:: js
 
     apply_ms_data: function(data) {
-        // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
+        // This methods is added for compatibility with module https://www.odoo.com/apps/modules/12.0/pos_multi_session/
         /*
         It is necessary to check the presence of the super method
         in order to be able to inherit the apply_ms_data
@@ -60,14 +62,14 @@ Some modules may not be compatible. It happens when a module adds additional dat
 
 The example above synchronizes ``first_new_variable``, ``second_new_variable`` and other data of accross all POSes.
 
-The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/11.0/pos_order_note/>`__:
+The code below is a real example from module `pos_order_note <https://www.odoo.com/apps/modules/12.0/pos_order_note/>`__:
 
 .. code-block:: js
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         apply_ms_data: function(data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/12.0/pos_multi_session/
             if (_super_order.apply_ms_data) {
                 _super_order.apply_ms_data.apply(this, arguments);
             }
@@ -98,7 +100,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
         apply_ms_data: function(data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/11.0/pos_multi_session/
+            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/12.0/pos_multi_session/
             if (_super_orderline.apply_ms_data) {
                 _super_orderline.apply_ms_data.apply(this, arguments);
             }
@@ -120,7 +122,7 @@ The code below is a real example from module `pos_order_note <https://www.odoo.c
         }
     });
 
-Also it's possible to trigger ``new_updates_to_send`` event on data changes to force pos_multi_session module start syncronization process. Example code from `pos_product_available <https://www.odoo.com/apps/modules/11.0/pos_product_available/>`__:
+Also it's possible to trigger ``new_updates_to_send`` event on data changes to force pos_multi_session module start syncronization process. Example code from `pos_product_available <https://www.odoo.com/apps/modules/12.0/pos_product_available/>`__:
 
 .. code-block:: js
 
@@ -153,17 +155,25 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_multi_session/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
+
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_multi_session/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tests: `<external_tests/README.rst>`__
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session.atom>`_
 
-Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e
+Tested on Odoo 12.0 b50f51207aa2b4c2d264fc47797a6c123a8ea15e

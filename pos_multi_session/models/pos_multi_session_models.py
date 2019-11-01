@@ -1,6 +1,6 @@
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
-# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -27,7 +27,12 @@ class PosConfig(models.Model):
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
-    company_id = fields.Many2one(related='multi_session_id.company_id')
+
+    @api.depends('multi_session_id')
+    def _compute_current_company_id(self):
+        for record in self:
+            # company_id for pos.config has to be always set
+            record.company_id = record.multi_session_id and record.multi_session_id or self.env.user_id.company_id
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -41,9 +46,18 @@ class PosConfig(models.Model):
         else:
             return [('id', 'in', [])]
 
+    @api.multi
+    def _write(self, vals):
+        # made to prevent 'expected singleton' errors in *pos.config* constraints
+        result = False
+        for config in self:
+            result = super(PosConfig, config)._write(vals)
+        return result
+
 
 class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
+    _description = 'POS Multi Session'
 
     name = fields.Char('Name')
     multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for POSes", default=True)

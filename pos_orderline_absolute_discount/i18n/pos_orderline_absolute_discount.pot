@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -14,12 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_orderline_absolute_discount
-#: model:ir.ui.view,arch_db:pos_orderline_absolute_discount.report_saledetails
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.report_saledetails
 msgid "Disc:"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_order_line_absolute_discount
+#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_order_line__absolute_discount
 msgid "Discount per Unit (abs)"
 msgstr ""
 
@@ -31,18 +31,18 @@ msgid "Discount per Unit:"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: model:ir.model.fields,help:pos_orderline_absolute_discount.field_pos_config_include_discount_in_prices
+#: model:ir.model.fields,help:pos_orderline_absolute_discount.field_pos_config__include_discount_in_prices
 msgid "If box is unchecked the displayed prices will not include discounts"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: model:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
 msgid "Include Discount"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_config_include_discount_in_prices
-#: model:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
+#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_config__include_discount_in_prices
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
 msgid "Include Discount in Prices"
 msgstr ""
 
@@ -55,8 +55,18 @@ msgid "It is not allowed to create a credit by discount: . \n"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_report_point_of_sale_report_saledetails
+msgid "Point of Sale Details"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
 #: model:ir.model,name:pos_orderline_absolute_discount.model_pos_order_line
-msgid "Lines of Point of Sale Orders"
+msgid "Point of Sale Order Lines"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
@@ -66,7 +76,7 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #: model:ir.model,name:pos_orderline_absolute_discount.model_report_pos_order
-msgid "Point of Sale Orders Statistics"
+msgid "Point of Sale Orders Report"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
@@ -96,15 +106,5 @@ msgstr ""
 #: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:45
 #, python-format
 msgid "discount"
-msgstr ""
-
-#. module: pos_orderline_absolute_discount
-#: model:ir.model,name:pos_orderline_absolute_discount.model_pos_config
-msgid "pos.config"
-msgstr ""
-
-#. module: pos_orderline_absolute_discount
-#: model:ir.model,name:pos_orderline_absolute_discount.model_report_point_of_sale_report_saledetails
-msgid "report.point_of_sale.report_saledetails"
 msgstr ""
 

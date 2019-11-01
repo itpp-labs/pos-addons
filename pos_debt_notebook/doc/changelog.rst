@@ -1,6 +1,20 @@
+`5.3.2`
+-------
+- **Fix:** Double move lines for POS orders
+
+`5.3.1`
+-------
+- **Fix:** Credit Product Field was accessible only with **Show Full Accounting Features** option enabled so it has been moved to Sales tab
+
 `5.3.0`
 -------
 - **Improvement:** New Balance is amount for selected journal,  not for total Credits.
+
+`5.2.1`
+-------
+
+- **Improvement:** `Configuration -> Settings` were moved to `Point of Sale` menu
+- **Fix:** Error in order with combined payment methods
 
 `5.2.0`
 -------
@@ -48,6 +62,7 @@
 -------
 
 - **FIX:** compatibility with pos_category_multi
+- **FIX:** Error after clicking "Show Debt History" for a customer
 
 `5.0.3`
 -------

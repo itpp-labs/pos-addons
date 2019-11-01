@@ -1,12 +1,28 @@
-`1.2.2`
+`1.2.5`
+-------
+
+**Fix:** "Print Receipt" printed unwanted buttons
+
+`1.2.4`
 -------
 
 **Fix:** The change value is not saved on the invoice after payment
-**Fix:** Don't auto-complete the current order after paying the invoice
+
+`1.2.3`
+-------
+
+**Fix:** Paymentlines were not displayed on the ticket when an invoice is partially paid
+
+`1.2.2`
+-------
+
+**Fix:** Payment lines is reset after SO/Invoice pay
 
 `1.2.1`
 -------
 
+**Fix:** The change value is not saved on the invoice after payment
+**Fix:** Don't auto-complete the current order after paying the invoice
 **Fix:** Incorrect receipt printing in the PosBox
 
 `1.2.0`

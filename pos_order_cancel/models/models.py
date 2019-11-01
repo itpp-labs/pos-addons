@@ -11,6 +11,7 @@ import pytz
 
 class PosCancelledReason(models.Model):
     _name = "pos.cancelled_reason"
+    _description = "Cancelled Reason"
 
     sequence = fields.Integer(string="Sequence")
     name = fields.Char(string="Reason", translate=True)
@@ -26,10 +27,10 @@ class PosOrder(models.Model):
     canceled_lines = fields.One2many("pos.order.line.canceled", "order_id", string="Canceled Lines")
     computed_state = fields.Selection(
         [('draft', 'New'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')],
-        'Status', compute='_compute_state')
+        'State', compute='_compute_state')
 
-    cancelled_amount_tax = fields.Float(compute='_compute_cancelled_amount_all', string='Taxes', digits=0)
-    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Total', digits=0, default=0)
+    cancelled_amount_tax = fields.Float(compute='_compute_cancelled_amount_all', string='Cancelled Taxes', digits=0)
+    cancelled_amount_total = fields.Float(compute='_compute_cancelled_amount_all', string='Cancelled Total', digits=0, default=0)
 
     @api.depends('canceled_lines', 'canceled_lines.price_subtotal_incl', 'canceled_lines.discount')
     def _compute_cancelled_amount_all(self):
@@ -92,6 +93,7 @@ class PosOrder(models.Model):
 
 class PosOrderLineCanceled(models.Model):
     _name = "pos.order.line.canceled"
+    _description = "Order Line Canceled"
     _rec_name = "product_id"
 
     def _order_cancel_line_fields(self, line):

@@ -10,10 +10,9 @@ var gui = require('point_of_sale.gui');
 var models = require('point_of_sale.models');
 var PosDb = require('point_of_sale.DB');
 var utils = require('web.utils');
-var bus = require('bus.bus').bus;
 var screens = require('point_of_sale.screens');
 var rpc = require('web.rpc');
-var longpolling = require('pos_longpolling');
+var longpolling = require('pos_longpolling.connection');
 var chrome = require('point_of_sale.chrome');
 
 var QWeb = core.qweb;
@@ -164,7 +163,10 @@ models.PosModel = models.PosModel.extend({
         var self = this;
         _.each(ids, function (id) {
             self.update_or_fetch_invoice(id).then(function () {
-                self.gui.current_screen.show();
+                var current_screen = self.gui.current_screen;
+                if (current_screen.invoice_screen){
+                    current_screen.show();
+                }
             });
         });
     },
@@ -307,6 +309,12 @@ models.PosModel = models.PosModel.extend({
 
     stop_invoice_processing: function () {
         this.add_itp_data = false;
+        // remove order paymentlines
+        var order = this.get_order();
+        var lines = order.get_paymentlines();
+        for ( var i = 0; i < lines.length; i++ ) {
+            order.remove_paymentline(lines[i]);
+        }
     }
 });
 
@@ -751,12 +759,12 @@ var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
                 self.pos.gui.screen_instances.invoice_payment.render_paymentlines();
                 self.gui.show_screen('invoice_payment', {type: 'orders'});
             });
-        }).fail(function (err, event) {
+        }).fail(function (err, errorEvent) {
             self.gui.show_popup('error', {
                 'title': _t(err.message),
                 'body': _t(err.data.arguments[0])
             });
-            event.preventDefault();
+            errorEvent.preventDefault();
         });
     },
     _search: function (query) {
@@ -783,6 +791,7 @@ gui.define_screen({name:'sale_orders_list', widget: SaleOrdersWidget});
 
 var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
     template: 'InvoicesWidget',
+    invoice_screen: true,
     init: function () {
         this._super.apply(this, arguments);
         this.$listEl = '.invoice';
@@ -905,7 +914,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     template: 'InvoicePaymentScreenWidget',
     get_invoice_residual: function () {
         if (this.pos.selected_invoice) {
-            return this.pos.selected_invoice.residual;
+            return round_pr(this.pos.selected_invoice.residual, this.pos.currency.rounding);
         }
         return 0;
     },
@@ -1068,7 +1077,7 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
     },
     show: function(){
         this._super();
-        if (this.pos.config.iface_invoicing) {
+        if (this.pos.config.module_account) {
             var order = this.pos.get_order();
             if (!order.is_to_invoice() && this.get_type() === "orders") {
                 this.click_invoice();

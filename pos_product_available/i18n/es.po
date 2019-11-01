@@ -30,7 +30,7 @@ msgstr ""
 #. module: pos_product_available
 #. openerp-web
 #: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:13
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:71
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:72
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
@@ -44,29 +44,30 @@ msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:46
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:48
 #, python-format
 msgid "Click the payment method"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:64
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:67
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:65
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:68
 #, python-format
 msgid "Close POS"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:39
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:42
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:86
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:87
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:92
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr "¿Listo para lanzar su <b>punto de venta</b>? <i>Haga clic aquí</i>."

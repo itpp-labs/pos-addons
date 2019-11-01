@@ -1,40 +1,47 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_multi_session_sync
-# 
+#
 # Translators:
-# Translation Bot <i18n-bot@it-projects.info>, 2018
-# 
+# Dinar <gabbasov@it-projects.info>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2018-04-21 00:09+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2018\n"
-"Language-Team: Russian (https://www.transifex.com/it-projects-llc/teams/76080/ru/)\n"
+"POT-Creation-Date: 2017-10-31 10:51+0000\n"
+"PO-Revision-Date: 2017-10-31 10:51+0000\n"
+"Last-Translator: Dinar <gabbasov@it-projects.info>, 2017\n"
+"Language-Team: Russian (https://www.transifex.com/it-projects-llc/"
+"teams/76080/ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_create_uid
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_create_uid
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_create_uid
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__run_ID
+msgid "Actual run_id of the multi_session"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__create_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__create_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_create_date
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_create_date
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_create_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__create_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__create_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_dbname
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__dbname
 msgid "Dbname"
 msgstr ""
 
@@ -44,9 +51,9 @@ msgid "Deleted"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_display_name
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_display_name
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_display_name
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__display_name
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__display_name
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__display_name
 msgid "Display Name"
 msgstr "Отображаемое Имя"
 
@@ -56,51 +63,51 @@ msgid "Draft"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_id
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_id
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_id
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__id
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__id
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__id
 msgid "ID"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session___last_update
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order___last_update
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos___last_update
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session____last_update
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order____last_update
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_write_uid
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_write_uid
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_write_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__write_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__write_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_write_date
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_write_date
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_write_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__write_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__write_date
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_message_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__multi_session_message_ID
 msgid "Last sent Multi-session message number"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_multi_session_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__multi_session_ID
 msgid "Multi session"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_multi_session_ID
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__multi_session_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__multi_session_ID
 msgid "Multi-session"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order_run_ID
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order__run_ID
 msgid ""
 "Number of Multi-session starts. It's incremented each time the last session "
 "in Multi-session is closed. It's used to prevent synchronization of old "
@@ -108,61 +115,82 @@ msgid ""
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order_revision_ID
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_order__revision_ID
 msgid "Number of updates received from clients"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_order_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__order_ID
 msgid "Order"
 msgstr "Заказ"
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_order
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__order
 msgid "Order JSON format"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_order_uid
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__order_uid
+#, fuzzy
 msgid "Order Uid"
-msgstr ""
+msgstr "Заказ"
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_order_ids
-msgid "Orders"
-msgstr ""
-
-#. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_pos_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__pos_ID
 msgid "POS"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_pos_session_ID
+#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_pos
+msgid "POS Config Sync"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_multi_session
+msgid "POS Multi Session Sync"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_order
+msgid "POS Multi Session Sync Order"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__pos_session_ID
 msgid "POS session"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_revision_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__nonce
+msgid "Random nonce"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__revision_ID
 msgid "Revision"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_run_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__run_ID
 msgid "Running count"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session_multi_session_ID
-#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_pos_multi_session_ID
-msgid ""
-"Set the same value for POSes where orders should be synced. Keep empty if "
-"this POS should not use syncing. Before updating it you need to close active"
-" session"
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__run_ID
+msgid "Session"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order_state
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_multi_session__multi_session_ID
+#: model:ir.model.fields,help:pos_multi_session_sync.field_pos_multi_session_sync_pos__multi_session_ID
+msgid ""
+"Set the same value for POSes where orders should be synced. Keep empty if "
+"this POS should not use syncing. Before updating it you need to close active "
+"session"
+msgstr ""
+
+#. module: pos_multi_session_sync
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_order__state
 msgid "State"
 msgstr ""
 
@@ -172,21 +200,6 @@ msgid "Unpaid and removed"
 msgstr ""
 
 #. module: pos_multi_session_sync
-#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos_user_ID
+#: model:ir.model.fields,field_description:pos_multi_session_sync.field_pos_multi_session_sync_pos__user_ID
 msgid "User Id"
-msgstr ""
-
-#. module: pos_multi_session_sync
-#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_multi_session
-msgid "pos_multi_session_sync.multi_session"
-msgstr ""
-
-#. module: pos_multi_session_sync
-#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_order
-msgid "pos_multi_session_sync.order"
-msgstr ""
-
-#. module: pos_multi_session_sync
-#: model:ir.model,name:pos_multi_session_sync.model_pos_multi_session_sync_pos
-msgid "pos_multi_session_sync.pos"
 msgstr ""

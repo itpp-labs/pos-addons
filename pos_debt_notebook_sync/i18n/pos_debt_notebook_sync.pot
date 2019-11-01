@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -39,6 +39,6 @@ msgstr ""
 
 #. module: pos_debt_notebook_sync
 #: model:ir.model,name:pos_debt_notebook_sync.model_pos_config
-msgid "pos.config"
+msgid "Point of Sale Configuration"
 msgstr ""
 

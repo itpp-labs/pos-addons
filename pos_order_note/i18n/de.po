@@ -1,42 +1,43 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * pos_order_note
-# 
+#
 # Translators:
 # Translation Bot <i18n-bot@it-projects.info>, 2017
-# 
+# Ermin Trevisan <trevi@twanda.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 23:55+0000\n"
-"PO-Revision-Date: 2017-11-23 06:38+0000\n"
-"Last-Translator: Translation Bot <i18n-bot@it-projects.info>, 2017\n"
-"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/de/)\n"
+"POT-Creation-Date: 2017-10-27 14:43+0000\n"
+"PO-Revision-Date: 2017-10-27 14:43+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:31
-#: code:addons/pos_order_note/static/src/js/tour.js:47
+#: code:addons/pos_order_note/static/src/js/tour.js:38
+#: code:addons/pos_order_note/static/src/js/tour.js:54
 #, python-format
 msgid "<p>Click on <b>Note</b> button</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:51
+#: code:addons/pos_order_note/static/src/js/tour.js:58
 #, python-format
 msgid "<p>Click on <b>Order Note</b></p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:63
+#: code:addons/pos_order_note/static/src/js/tour.js:70
 #, python-format
 msgid ""
 "<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"
@@ -44,48 +45,48 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:22
+#: code:addons/pos_order_note/static/src/js/tour.js:28
 #, python-format
 msgid "<p>Click on <b>table</b></p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:43
-#: code:addons/pos_order_note/static/src/js/tour.js:59
+#: code:addons/pos_order_note/static/src/js/tour.js:50
+#: code:addons/pos_order_note/static/src/js/tour.js:66
 #, python-format
 msgid "<p>Click on Confirm button</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:55
+#: code:addons/pos_order_note/static/src/js/tour.js:62
 #, python-format
 msgid "<p>Click on predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:35
+#: code:addons/pos_order_note/static/src/js/tour.js:42
 #, python-format
 msgid "<p>Click on the first predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:39
+#: code:addons/pos_order_note/static/src/js/tour.js:46
 #, python-format
 msgid "<p>Click on the second predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:18
+#: code:addons/pos_order_note/static/src/js/tour.js:24
 #, python-format
 msgid ""
 "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
-"laptops, or industrial hardware.</p><p>Once the session launched, the system"
-" continues to run without an internet connection.</p>"
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
 msgstr ""
 "<p>Anklicken, um das POS-System zu starten. Es <b>läuft auf Tablets</b>, "
 "Laptops, oder industrieller Hardware.</p><p>Sobald eine Sitzung gestartet "
@@ -93,21 +94,21 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:26
+#: code:addons/pos_order_note/static/src/js/tour.js:33
 #, python-format
 msgid "<p>Select the first product in the product list</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:315
+#: code:addons/pos_order_note/static/src/js/order_note.js:329
 #, python-format
 msgid "Add Note for Order"
 msgstr "Bemerkung zu Bestellung"
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:319
+#: code:addons/pos_order_note/static/src/js/order_note.js:333
 #, python-format
 msgid "Add Note for Product"
 msgstr "Notiz zu Produkt hinzufügen"
@@ -120,6 +121,12 @@ msgid "Apply"
 msgstr "Anwenden"
 
 #. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_product_product__pos_notes
+#: model:ir.model.fields,field_description:pos_order_note.field_product_template__pos_notes
+msgid "Auto-applied Note for Kitchen"
+msgstr ""
+
+#. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:284
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:306
@@ -128,42 +135,42 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #. module: pos_order_note
-#: model:ir.actions.act_window,help:pos_order_note.pos_product_notes_action
+#: model_terms:ir.actions.act_window,help:pos_order_note.pos_product_notes_action
 msgid "Click to define a new notes."
 msgstr "Hier klicken um eine neue Notiz zu erstellen"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_create_uid
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__create_uid
 msgid "Created by"
 msgstr "Erstellt durch"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_create_date
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__create_date
 msgid "Created on"
 msgstr "Erstellt am"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_display_name
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__display_name
 msgid "Display Name"
 msgstr "Anzeigename"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_id
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__id
 msgid "ID"
 msgstr "ID"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes___last_update
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes____last_update
 msgid "Last Modified on"
 msgstr "Zuletzt geändert am"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_write_uid
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__write_uid
 msgid "Last Updated by"
 msgstr "Zuletzt aktualisiert durch"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_write_date
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__write_date
 msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
@@ -189,7 +196,7 @@ msgstr "Name"
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:264
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_name
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__name
 #, python-format
 msgid "Note"
 msgstr "Notiz"
@@ -204,9 +211,7 @@ msgid "Note:"
 msgstr "Notiz:"
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_product_product_pos_notes
-#: model:ir.model.fields,field_description:pos_order_note.field_product_template_pos_notes
-#: model:ir.ui.view,arch_db:pos_order_note.view_template_property_form
+#: model_terms:ir.ui.view,arch_db:pos_order_note.view_template_property_form
 msgid "Notes for POS"
 msgstr "Notizen für POS"
 
@@ -243,11 +248,16 @@ msgstr "Anderes"
 
 #. module: pos_order_note
 #: model:ir.actions.act_window,name:pos_order_note.pos_product_notes_action
+#: model:ir.model,name:pos_order_note.model_pos_product_notes
 #: model:ir.ui.menu,name:pos_order_note.menu_pos_product_notes
-#: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_form_view
-#: model:ir.ui.view,arch_db:pos_order_note.pos_product_notes_tree_view
+#: model_terms:ir.ui.view,arch_db:pos_order_note.pos_product_notes_form_view
 msgid "POS Product Notes"
 msgstr "POS Produktnotizen"
+
+#. module: pos_order_note
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__pos_category_ids
+msgid "Point of Sale Categories"
+msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
@@ -264,22 +274,27 @@ msgstr "Produktvorlage"
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/js/tour.js:14
+#: code:addons/pos_order_note/static/src/js/tour.js:19
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr ""
-"Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
+msgstr "Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
 
 #. module: pos_order_note
-#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_sequence
+#: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes__sequence
 msgid "Sequence"
 msgstr "Reihenfolge"
 
 #. module: pos_order_note
-#: model:ir.ui.view,arch_db:pos_order_note.view_template_property_form
+#: model:ir.model.fields,help:pos_order_note.field_pos_product_notes__pos_category_ids
+msgid ""
+"The note will be available for this group of POS categories. Leave the field "
+"empty so that the note is available for all POS categories."
+msgstr ""
+
+#. module: pos_order_note
+#: model_terms:ir.ui.view,arch_db:pos_order_note.view_template_property_form
 msgid "This note will be displayed on the POS."
 msgstr "Diese Notiz wird am POS angezeigt"
 
-#. module: pos_order_note
-#: model:ir.model,name:pos_order_note.model_pos_product_notes
-msgid "pos.product_notes"
-msgstr "pos.product_notes"
+#~ msgid "pos.product_notes"
+#~ msgstr "pos.product_notes"

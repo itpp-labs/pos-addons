@@ -1,9 +1,11 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history_return.models', function (require) {
     "use strict";
 
     var models = require('pos_orders_history.models');
+    var field_utils = require('web.field_utils');
 
     var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
@@ -21,12 +23,15 @@ odoo.define('pos_orders_history_return.models', function (require) {
             options = options || {};
             if (this.get_mode() === "return") {
                 var current_return_qty = this.get_current_product_return_qty(product);
-                var quantity = 1;
-                if(typeof options.quantity !== 'undefined') {
-                    quantity = options.quantity;
-                }
-                if (current_return_qty + quantity <= product.max_return_qty) {
-                    _super_order.add_product.apply(this, arguments);
+                var residual_qty = product.max_return_qty - current_return_qty || 0;
+                if (residual_qty > 0.0001) {
+                    var quantity = Math.min(options.quantity || 1, product.max_return_qty, residual_qty);
+                    _super_order.add_product.apply(this, [
+                        product,
+                         _.extend(options || {}, {
+                            quantity: field_utils.format.float(quantity, {digits: [69, 3]}),
+                        }),
+                    ]);
                     this.change_return_product_limit(product);
                 }
             } else {
@@ -51,9 +56,9 @@ odoo.define('pos_orders_history_return.models', function (require) {
             if (this.get_mode() === "return_without_receipt") {
                 return;
             }
-            var el = $('span[data-product-id="'+product.id+'"] .max-return-qty');
+            var el = $('article[data-product-id="'+product.id+'"] .max-return-qty');
             var qty = this.get_current_product_return_qty(product);
-            el.html(product.max_return_qty - qty);
+            el.html(field_utils.format.float(product.max_return_qty - qty, {digits: [69, 3]}));
         },
         export_as_JSON: function() {
             var data = _super_order.export_as_JSON.apply(this, arguments);

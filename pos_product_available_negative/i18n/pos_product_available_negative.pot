@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -21,11 +21,6 @@ msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>,
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config_negative_order_manager_permission
-msgid "Ask Managers Permission to proceed order with negative stock products"
-msgstr ""
-
-#. module: pos_product_available_negative
 #. openerp-web
 #: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:57
 #, python-format
@@ -33,29 +28,17 @@ msgid "Click the payment method"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config_negative_order_group_id
+#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config__negative_order_group_id
 msgid "Group allows to sell products which are out of a stock."
 msgstr ""
 
 #. module: pos_product_available_negative
-#. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:70
-#, python-format
-msgid "It's unavailable to add the product"
-msgstr ""
-
-#. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config_negative_order_manager_permission
-msgid "Managers Permission"
-msgstr ""
-
-#. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config_negative_order_group_id
+#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config__negative_order_group_id
 msgid "Negative Order Group"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_order_negative_stock_user_id
+#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_order__negative_stock_user_id
 msgid "Negative stock approval"
 msgstr ""
 
@@ -68,19 +51,19 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:27
+#: code:addons/pos_product_available_negative/static/src/js/pos.js:24
 #, python-format
 msgid "Order has out-of-stock product and must be approved by supervisor"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.ui.view,arch_db:pos_product_available_negative.view_pos_product_available_negative_config_form
-msgid "Out of Stock Products"
+#: model:ir.model.fields,help:pos_product_available_negative.field_pos_order__negative_stock_user_id
+msgid "Person who authorized a sale with a product which is out of a stock"
 msgstr ""
 
 #. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_order_negative_stock_user_id
-msgid "Person who authorized a sale with a product which is out of a stock"
+#: model:ir.model,name:pos_product_available_negative.model_pos_config
+msgid "Point of Sale Configuration"
 msgstr ""
 
 #. module: pos_product_available_negative
@@ -91,25 +74,9 @@ msgstr ""
 #. module: pos_product_available_negative
 #. openerp-web
 #: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:78
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:83
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
-msgstr ""
-
-#. module: pos_product_available_negative
-#: model:ir.model.fields,field_description:pos_product_available_negative.field_pos_config_negative_order_warning
-msgid "Show Warning"
-msgstr ""
-
-#. module: pos_product_available_negative
-#: model:ir.model.fields,help:pos_product_available_negative.field_pos_config_negative_order_warning
-msgid "Show Warning on adding out of stock products"
-msgstr ""
-
-#. module: pos_product_available_negative
-#. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:69
-#, python-format
-msgid "The product is out of stock"
 msgstr ""
 
 #. module: pos_product_available_negative
@@ -117,10 +84,5 @@ msgstr ""
 #: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:72
 #, python-format
 msgid "check restriction popup"
-msgstr ""
-
-#. module: pos_product_available_negative
-#: model:ir.model,name:pos_product_available_negative.model_pos_config
-msgid "pos.config"
 msgstr ""
 

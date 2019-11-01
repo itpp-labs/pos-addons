@@ -1,10 +1,12 @@
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl
+   :alt: License: LGPL-3
+
 ==========================
  POS Advanced Order Notes
 ==========================
 
-* allows to add a note to entire order
-* allows to use predefined notes
-* allows to specify note at product form to apply it automatically on adding to order at POS
+This module allows adding notes to the entire order, to use already predefined notes and to speed up the process of creating orders by specifying products also via notes, which can be automatically applied further.
 
 Credits
 =======
@@ -21,15 +23,25 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
+      To get a guaranteed support
+      you are kindly requested to purchase the module
+      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_order_note/>`__.
+
+      Thank you for understanding!
+
+      `IT-Projects Team <https://www.it-projects.info/team>`__
+
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_order_note/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_note/
 
-Usage instructions: `<doc/index.rst>`__
+Usage instructions: `<doc/index.rst>`_
 
-Changelog: `<doc/changelog.rst>`__
+Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 808c0e5dde61027241ff59b1674b159067da0d7e
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_order_note.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_order_note.atom>`_
+
+Tested on Odoo 12.0 9ed9710b2b9ad685f4f09e42930e212d3cec71e5

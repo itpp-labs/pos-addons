@@ -36,7 +36,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     # "demo_title": "Creation of Postponed invoices in POS",
     # "demo_addons": [
