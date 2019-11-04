@@ -2,13 +2,12 @@
 <odoo>
     <template id="point_of_sale_assets" name="pos_longpolling assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/longpolling.js"></script>
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/longpolling_bus.js"></script>
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/crosstab_bus.js"></script>
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/chrome.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/LongpollingBus.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/LongpollingModel.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/SyncBusService.js"></script>
+            <script type="text/javascript" src="/pos_longpolling/static/src/js/PosConnection.js"></script>
             <script type="text/javascript" src="/pos_longpolling/static/src/js/pos.js"></script>
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/widgets.js"></script>
-            <script type="text/javascript" src="/pos_longpolling/static/src/js/sync_bus_service.js"></script>
         </xpath>
     </template>
 

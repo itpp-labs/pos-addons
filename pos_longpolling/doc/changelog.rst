@@ -1,3 +1,8 @@
+`2.3.0`
+-------
+
+- **IMP:** File refactoring. Changes after Pull request https://github.com/odoo/odoo/pull/28092 to Odoo was merged
+
 `2.2.0`
 -------
 
