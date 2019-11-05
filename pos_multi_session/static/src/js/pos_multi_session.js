@@ -17,9 +17,7 @@ odoo.define('pos_multi_session', function(require){
     var chrome = require('point_of_sale.chrome');
     var longpolling = require('pos_longpolling.connection');
     var rpc = require('web.rpc');
-    var PosBaseWidget = require('point_of_sale.BaseWidget');
     var gui = require('point_of_sale.gui');
-    var framework = require('web.framework');
     var posDB = require('point_of_sale.DB');
 
 
@@ -289,7 +287,10 @@ odoo.define('pos_multi_session', function(require){
                     });
                     this.pos_session.order_ID = data.order_ID;
                     var sequence_number = this.pos_session.sequence_number;
-                    this.pos_session.sequence_number = data.order_ID + 1 || 1;
+                    if (sequence_number && sequence_number < (data.order_ID + 1 || 1)) {
+                        // that's a case when sync_all request response comes earlier than created offline orders were sent
+                        this.pos_session.sequence_number = data.order_ID + 1 || 1;
+                    }
                     this.ms_syncing_in_progress = false;
                     if (!data.uid){
                         // if it wasnt sync for only one order
@@ -716,24 +717,6 @@ odoo.define('pos_multi_session', function(require){
                 return self.pos.multi_session.update(data).done(function(res){
                     self.order_on_server = true;
                     self.set_orderlines_offline();
-                    if (res && res.action === "update_revision_ID") {
-                        var server_revision_ID = res.revision_ID;
-                        var order_ID = res.order_ID;
-                        if (order_ID && self.sequence_number !== order_ID) {
-                            self.sequence_number = order_ID;
-                            // sequence number replace
-                            self.pos.pos_session.order_ID = order_ID;
-                            var sequence_number = self.pos.pos_session.sequence_number;
-                            self.pos.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, order_ID + 1 || 1);
-                            // rerender order
-                            self.trigger('change');
-                        }
-                        if (server_revision_ID && server_revision_ID > self.revision_ID) {
-                            self.revision_ID = server_revision_ID;
-                            self.save_to_db();
-                        }
-
-                    }
                 });
             };
             if (!this.pos.multi_session_active){
@@ -741,7 +724,25 @@ odoo.define('pos_multi_session', function(require){
             }
             this.enquied = true;
             this.pos.multi_session.enque(f);
-        }
+        },
+
+        update_revision_id: function(res){
+            var server_revision_ID = res.revision_ID;
+            var order_ID = res.order_ID;
+            if (order_ID && (this.sequence_number !== order_ID || this.pos.pos_session.sequence_number === order_ID)) {
+                this.sequence_number = order_ID;
+                // sequence number replace
+                this.pos.pos_session.order_ID = order_ID;
+                var sequence_number = this.pos.pos_session.sequence_number;
+                this.pos.pos_session.sequence_number = Math.max(Boolean(sequence_number) && sequence_number, order_ID + 1 || 1);
+                // rerender order
+                this.trigger('change');
+            }
+            if (server_revision_ID && server_revision_ID > this.revision_ID) {
+                this.revision_ID = server_revision_ID;
+                this.save_to_db();
+            }
+        },
     });
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
@@ -981,6 +982,15 @@ odoo.define('pos_multi_session', function(require){
                 }
                 if (self.pos.sync_bus) {
                     self.pos.sync_bus.longpolling_connection.network_is_on();
+                }
+
+                if (res && res.action === "update_revision_ID" && res.uid) {
+                    var order = _.find(self.pos.get_order_list(), function(o){
+                        return o.uid === res.uid;
+                    });
+                    if (order) {
+                        order.update_revision_id(res);
+                    }
                 }
             });
         },

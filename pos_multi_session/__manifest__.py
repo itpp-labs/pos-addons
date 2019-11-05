@@ -1,5 +1,5 @@
 # Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# Copyright 2017-2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2017-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -9,7 +9,7 @@
     "category": "Point Of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=12.0',
     "images": ["images/pos-multi-session.png"],
-    "version": "12.0.4.2.8",
+    "version": "12.0.4.2.10",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",

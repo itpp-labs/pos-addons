@@ -28,6 +28,10 @@ class PosOrder(models.Model):
             journal_id = statement[2]['journal_id']
             journal = self.env['account.journal'].browse(journal_id)
             amount = statement[2]['amount']
+            amount_without_change = min(
+                statement[2]['amount'],  # amount payed including change
+                invoice['data']['invoice_to_pay']['residual'],  # amount required to pay
+            )
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
@@ -43,7 +47,7 @@ class PosOrder(models.Model):
                 'communication': invoice['data']['invoice_to_pay']['number'],
                 'invoice_ids': [(4, inv_id, None)],
                 'payment_type': 'inbound',
-                'amount': amount,
+                'amount': amount_without_change,
                 'currency_id': inv_obj.currency_id.id,
                 'partner_id': invoice['data']['invoice_to_pay']['partner_id'][0],
                 'partner_type': 'customer',

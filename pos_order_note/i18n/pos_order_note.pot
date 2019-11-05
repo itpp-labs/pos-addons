@@ -101,7 +101,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:309
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:308
 #, python-format
 msgid "Apply"
 msgstr ""
@@ -114,8 +114,8 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:284
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:306
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:283
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:305
 #, python-format
 msgid "Cancel"
 msgstr ""
@@ -174,7 +174,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:322
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:321
 #, python-format
 msgid "Name"
 msgstr ""
@@ -213,7 +213,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:287
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:286
 #, python-format
 msgid "Ok"
 msgstr ""
@@ -227,7 +227,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:280
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:279
 #, python-format
 msgid "Other"
 msgstr ""
