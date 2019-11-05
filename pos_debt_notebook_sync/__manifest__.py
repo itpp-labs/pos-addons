@@ -25,6 +25,7 @@
     ],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
+        'views/assets.xml',
         "views/template.xml",
         "data/base_action_rule.xml",
     ],
