@@ -1,3 +1,9 @@
+`1.2.2`
+-------
+
+- **Fix:** Customer list was not shown
+- **Fix:** Customer list was not scrollable
+
 `1.2.1`
 -------
 

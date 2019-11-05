@@ -517,7 +517,7 @@ class PosOrder(models.Model):
             update['order_id'] = order.id
             entry = self.env['pos.credit.update'].sudo().create(update)
             entry.switch_to_confirm()
-        order.action_pos_order_paid()
+        order.set_discounts()
         return order
 
     @api.model
@@ -526,13 +526,8 @@ class PosOrder(models.Model):
         res['amount_via_discount'] = ui_order.get('amount_via_discount', 0)
         return res
 
-    def action_pos_order_paid(self):
-        self.set_discounts(self.amount_via_discount)
-        # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
-        self._onchange_amount_all()
-        return super(PosOrder, self).action_pos_order_paid()
-
-    def set_discounts(self, amount):
+    def set_discounts(self):
+        amount = self.amount_via_discount
         for line in self.lines:
             if float_is_zero(amount, self.env['decimal.precision'].precision_get('Account')):
                 break
@@ -546,6 +541,8 @@ class PosOrder(models.Model):
             # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
             line._onchange_amount_line_all()
             amount -= price - line.price_subtotal_incl
+        # since 12.0v methods used api.depends in 11.0 use api.onchange, so we need to update some fields manually
+        self._onchange_amount_all()
         return amount
 
     def test_paid(self):

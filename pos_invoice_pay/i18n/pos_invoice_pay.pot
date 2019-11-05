@@ -70,7 +70,7 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:890
+#: code:addons/pos_invoice_pay/static/src/js/main.js:894
 #, python-format
 msgid "Can't validate selected invoice."
 msgstr ""
@@ -98,8 +98,8 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:526
-#: code:addons/pos_invoice_pay/static/src/js/main.js:554
+#: code:addons/pos_invoice_pay/static/src/js/main.js:529
+#: code:addons/pos_invoice_pay/static/src/js/main.js:557
 #, python-format
 msgid "Change Cashier"
 msgstr ""
@@ -192,14 +192,14 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:889
+#: code:addons/pos_invoice_pay/static/src/js/main.js:893
 #, python-format
 msgid "Error"
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1041
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1045
 #, python-format
 msgid "Excessive payment amount."
 msgstr ""
@@ -249,7 +249,7 @@ msgid "Invoice No"
 msgstr ""
 
 #. module: pos_invoice_pay
-#: code:addons/pos_invoice_pay/models.py:181
+#: code:addons/pos_invoice_pay/models.py:185
 #: model:ir.model.fields,field_description:pos_invoice_pay.field_pos_session__session_payments
 #, python-format
 msgid "Invoice Payments"
@@ -283,8 +283,8 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:740
-#: code:addons/pos_invoice_pay/static/src/js/main.js:899
+#: code:addons/pos_invoice_pay/static/src/js/main.js:743
+#: code:addons/pos_invoice_pay/static/src/js/main.js:903
 #, python-format
 msgid "No invoice"
 msgstr ""
@@ -560,8 +560,8 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:741
-#: code:addons/pos_invoice_pay/static/src/js/main.js:900
+#: code:addons/pos_invoice_pay/static/src/js/main.js:744
+#: code:addons/pos_invoice_pay/static/src/js/main.js:904
 #, python-format
 msgid "There must be invoice selected."
 msgstr ""
@@ -633,35 +633,35 @@ msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1063
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1067
 #, python-format
 msgid "Wrong payment amount."
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1042
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1046
 #, python-format
 msgid "You can not validate the order with a change because difference account is not set. Please enter the exact payment amount."
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1056
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1060
 #, python-format
 msgid "You can not validate the order with zero payment amount."
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1064
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1068
 #, python-format
 msgid "You can only create positive payments."
 msgstr ""
 
 #. module: pos_invoice_pay
 #. openerp-web
-#: code:addons/pos_invoice_pay/static/src/js/main.js:1055
+#: code:addons/pos_invoice_pay/static/src/js/main.js:1059
 #, python-format
 msgid "Zero payment amount."
 msgstr ""

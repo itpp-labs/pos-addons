@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
         <record id="view_restaurant_printer_form" model="ir.ui.view">
             <field name="name">Order Printer</field>
             <field name="model">restaurant.printer</field>
             <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='proxy_ip']" position="after">
+                <xpath expr="//field[@name='product_categories_ids']" position="before">
                     <field name="network_printer"/>
                 </xpath>
             </field>
@@ -16,7 +20,7 @@
             <field name="model">restaurant.printer</field>
             <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='proxy_ip']" position="after">
+                <xpath expr="//field[@name='product_categories_ids']" position="before">
                     <field name="network_printer"/>
                 </xpath>
             </field>
