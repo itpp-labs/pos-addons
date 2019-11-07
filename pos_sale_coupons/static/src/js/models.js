@@ -229,7 +229,7 @@ odoo.define('pos_sale_coupons.models', function (require) {
             if (this.coupon) {
                 data.coupon_id = this.coupon.id;
                 data.coupon_state = this.coupon.state;
-                data.coupon_value = this.coupon.coupon_value;
+                data.coupon_value = data.price_unit || this.coupon.coupon_value || 0;
             }
             return data;
         },
