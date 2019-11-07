@@ -41,7 +41,7 @@ class PosOrderLine(models.Model):
                                          ('discount_fixed_amount', '=', float(value))], limit=1)
         if not current_prog:
             current_prog = base_prog.copy({
-                'name': base_prog.name + ': ' + value,
+                'name': base_prog.name + ': ' + str(value),
                 'is_code_storage_program': False,
                 'parented_storage_program': base_prog.id,
                 'discount_fixed_amount': float(value)
