@@ -58,8 +58,8 @@ class PosOrder(models.Model):
         return order
 
     @api.model
-    def _process_order(self, pos_order):
-        order = super(PosOrder, self)._process_order(pos_order)
+    def _process_order(self, pos_order, draft, existing_order):
+        order = super(PosOrder, self)._process_order(pos_order, draft, existing_order)
         if 'is_cancelled' in pos_order and pos_order['is_cancelled'] is True:
             if pos_order['reason']:
                 order.cancellation_reason = pos_order['reason'].encode('utf-8')
@@ -103,7 +103,7 @@ class PosOrderLineCanceled(models.Model):
     product_id = fields.Many2one('product.product', string='Product', domain=[('sale_ok', '=', True)], required=True, change_default=True, readonly=True)
     discount = fields.Float(string='Discount (%)', digits=0, default=0.0, readonly=True)
     price_unit = fields.Float(string='Unit Price', digits=0, readonly=True)
-    user_id = fields.Many2one(comodel_name='res.users', string='Salesman', help="Person who removed order line", default=lambda self: self.env.uid, readonly=True)
+    user_id = fields.Many2one(related='order_id.user_id', string='Salesman', help="Person who removed order line")
     qty = fields.Float('Cancelled Quantity', default=1, readonly=True)
     current_qty = fields.Float('Remainder', default=0, readonly=True)
     reason = fields.Text(string="Reasons as Text", help="The Reason of Line Canceled", readonly=True)
@@ -117,7 +117,7 @@ class PosOrderLineCanceled(models.Model):
                                             'canceled_line_id', 'cancelled_reason_id', string='Predefined Reasons')
 
     # the absolute_discount field is needed for compatibility
-    # with <https://www.odoo.com/apps/modules/10.0/pos_orderline_absolute_discount/> module
+    # with <https://www.odoo.com/apps/modules/13.0/pos_orderline_absolute_discount/> module
     absolute_discount = fields.Float(string='Discount (abs)', digits=0, default=0.0, readonly=True)
 
     @api.depends('price_unit', 'tax_ids', 'qty', 'discount', 'product_id')
@@ -147,9 +147,13 @@ class PosOrderLineCanceled(models.Model):
             canceled_date = canceled_date.astimezone(pytz.utc)
             canceled_date = fields.Datetime.to_string(canceled_date)
             values['canceled_date'] = canceled_date
-        if values.get('cancelled_reason_ids') and len(values.get('cancelled_reason_ids')) > 0:
-            values['cancelled_reason_ids'] = [(4, id) for id in values.get('cancelled_reason_ids')]
-        return super(PosOrderLineCanceled, self).create(values)
+        cancelled_reason_ids = values.get('cancelled_reason_ids')
+        if cancelled_reason_ids and len(cancelled_reason_ids) > 0:
+            values['cancelled_reason_ids'] = [(4, ID) for ID in cancelled_reason_ids]
+        # Filter out not existing fields to get rid of warnings
+        model_fields = self.env['pos.order.line.canceled']._fields
+        vals = {x: y for x, y in values.items() if x in model_fields}
+        return super(PosOrderLineCanceled, self).create(vals)
 
 
 class PosConfig(models.Model):

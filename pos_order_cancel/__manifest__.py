@@ -9,12 +9,12 @@
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel.png"],
-    "version": "12.0.1.3.0",
+    "version": "13.0.1.3.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_cancel/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_order_cancel/",
     "license": "LGPL-3",
     "price": 200.00,
     "currency": "EUR",
@@ -44,5 +44,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
