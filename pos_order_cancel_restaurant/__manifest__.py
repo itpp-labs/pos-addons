@@ -10,7 +10,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_cancel_restaurant/",
     "license": "LGPL-3",
-    "price": 50.00,
+    "price": 25.00,
     "currency": "EUR",
 
     "depends": [
