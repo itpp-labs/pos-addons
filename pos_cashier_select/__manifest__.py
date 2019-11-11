@@ -10,7 +10,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/",
     "license": "LGPL-3",
-    "price": 39.00,
+    "price": 20.00,
     "currency": "EUR",
 
     "depends": [
