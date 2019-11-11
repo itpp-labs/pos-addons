@@ -27,7 +27,7 @@ class PosConfig(models.Model):
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
     company_id = fields.Many2one(related='multi_session_id.company_id', store=True, default=lambda self: self.env.user.company_id)
-    stock_location_id = fields.Many2one(related='multi_session_id.stock_location_id', store=True)
+    # stock_location_id = fields.Many2one(related='multi_session_id.stock_location_id', store=True)
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -59,30 +59,27 @@ class PosMultiSession(models.Model):
                                  "It's used to prevent synchronization of old orders")
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
-    stock_location_id = fields.Many2one(
-        'stock.location', string='Stock Location',
-        domain=[('usage', '=', 'internal')], required=True, default=_get_default_location)
 
     @api.model
     def action_set_default_multi_session(self):
         """
-            during installation of the module set default multi-sessions (separate default multi-session for every company)
-            for all POSes for which multi_session_id is not specified
+            during installation of the module set default multi-sessions
+            (separate default multi-session for each company)
+            for all POSes with not set multi_session_id
         """
         companies = self.env['res.company'].search([])
         for company in companies:
             configs = self.env['pos.config'].search([('multi_session_id', '=', False), ('company_id', '=', company.id)])
 
-            # If exist POSes with the company then we need to create default multi-session
+            # If there are POSes with the company then we need to create default multi-session
             if configs:
                 # Create default multi-session for current company
-                stock_location = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1).lot_stock_id
                 multi_session = self.create({
                     'name': 'Default Multi Session (%s)' % company.name,
                     'multi_session_active': False,
                     'company_id': company.id,
-                    'stock_location_id': stock_location.id
                 })
+                # odoo.exceptions.ValidationError: ('Error while validating constraint\n\nExpected singleton: pos.config(1, 2, 3)', None)
                 for c in configs:
                     c.write({
                         'multi_session_id': multi_session.id

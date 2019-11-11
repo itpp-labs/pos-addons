@@ -3,6 +3,7 @@
 
 - **Fix:** Access error for poses created for different companies
 - **Fix:** Error during installation in multi-company mode
+- **Improvement:** Company rule  for multi-session model
 
 `4.2.10`
 --------
