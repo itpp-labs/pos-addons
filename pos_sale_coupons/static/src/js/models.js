@@ -231,13 +231,17 @@ odoo.define('pos_sale_coupons.models', function (require) {
                 data.coupon_state = this.coupon.state;
                 data.coupon_value = data.price_unit || this.coupon.coupon_value || 0;
             }
+            if (!data.price_unit && this.coupon && this.coupon.coupon_value) {
+                data.price_unit = parseInt(this.coupon.coupon_value);
+            }
             return data;
         },
         init_from_JSON: function(json) {
             if (json.coupon_id) {
                 this.coupon = {
                     id: json.coupon_id,
-                    state: json.coupon_state
+                    state: json.coupon_state,
+                    coupon_value: json.coupon_value
                 };
             }
             _super_orderline.init_from_JSON.call(this, json);
@@ -249,7 +253,16 @@ odoo.define('pos_sale_coupons.models', function (require) {
             }
             this.coupon = data.coupon || false;
             this.trigger('change', this);
-        }
+        },
+
+        set_unit_price: function(price){
+            if (this.coupon) {
+                coupon_price = this.coupon.coupon_value && parseInt(this.coupon.coupon_value);
+                price = coupon_price || price;
+            }
+            _super_orderline.set_unit_price.apply(this, arguments);
+            console.log(this);
+        },
     });
 
     return models;
