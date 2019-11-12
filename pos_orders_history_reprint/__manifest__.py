@@ -8,7 +8,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=11.0",
     "images": ["images/pos_orders_reprint_main.png"],
-    "version": "11.0.1.0.4",
+    "version": "11.0.1.0.5",
     "application": False,
 
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
