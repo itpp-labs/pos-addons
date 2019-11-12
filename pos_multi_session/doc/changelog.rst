@@ -1,8 +1,3 @@
-`4.2.11`
---------
-
-- **Fix:** Correcting "There is No Ticket for the Order" Message for Orders with Invoiced Status
-
 `4.2.10`
 --------
 
