@@ -226,7 +226,7 @@ class PosConfig(models.Model):
             #  Check if the debt journal is created already for the company.
             return
 
-        account_obj = self.env['account.account']
+        account_obj = self.env['account.account'].sudo()
         debt_account_old_version = account_obj.search([
             ('code', '=', 'XDEBT'), ('company_id', '=', user.company_id.id)])
         if debt_account_old_version:
@@ -247,7 +247,7 @@ class PosConfig(models.Model):
             })
 
         default_debt_limit = 0
-        demo_is_on = self.env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')]).demo
+        demo_is_on = self.env['ir.module.module'].sudo().search([('name', '=', 'pos_debt_notebook')]).demo
         if demo_is_on:
             self.create_demo_debt_journals(user, debt_account)
             default_debt_limit = 1000
@@ -315,7 +315,7 @@ class PosConfig(models.Model):
             return
         user = vals['user']
         debt_account = vals['debt_account']
-        new_sequence = self.env['ir.sequence'].create({
+        new_sequence = self.env['ir.sequence'].sudo().create({
             'name': vals['sequence_name'] + str(user.company_id.id),
             'padding': 3,
             'prefix': vals['prefix'] + str(user.company_id.id),
@@ -327,7 +327,7 @@ class PosConfig(models.Model):
             'res_id': new_sequence.id,
             'noupdate': vals['noupdate'],  # If it's False, target record (res_id) will be removed while module update
         })
-        debt_journal = self.env['account.journal'].create({
+        debt_journal = self.env['account.journal'].sudo().create({
             'name': vals['journal_name'],
             'code': vals['code'],
             'type': vals['type'],

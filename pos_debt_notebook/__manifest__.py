@@ -16,7 +16,7 @@
     'category': 'Point Of Sale',
     'live_test_url': 'http://apps.it-projects.info/shop/product/pos-debt-notebook?version=10.0',
     "images": ['images/debt_notebook.png'],
-    'version': '10.0.5.3.0',
+    'version': '10.0.5.3.1',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
