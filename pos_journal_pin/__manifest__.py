@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """POS Payments by Manager's PIN""",
@@ -7,15 +8,15 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
     "images": ['images/pos_journal_pin.jpg'],
-    "version": "10.0.1.0.0",
+    "version": "10.0.1.0.1",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "LGPL-3",
-    # "price": 9.00,
-    # "currency": "EUR",
+    "price": 80.00,
+    "currency": "EUR",
 
     "depends": [
         "pos_pin",
