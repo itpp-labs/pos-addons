@@ -1,7 +1,10 @@
+`5.3.2`
+-------
+- **Fix:** Double move lines for POS orders
+
 `5.3.1`
 -------
 - **Fix:** Credit Product Field was accessible only with **Show Full Accounting Features** option enabled so it has been moved to Sales tab
-
 
 `5.3.0`
 -------

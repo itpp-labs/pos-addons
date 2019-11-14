@@ -1,3 +1,8 @@
+`2.1.1`
+-------
+
+**Fix:** Unavailability to install module if iot module is installed already
+
 `2.1.0`
 -------
 

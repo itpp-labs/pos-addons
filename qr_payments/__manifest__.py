@@ -5,7 +5,7 @@
     "summary": """Technical module to support qr-based payments like Alipay, WeChat""",
     "category": "Hidden",
     # "live_test_url": "",
-    "images": [],
+    "images": ["images/QR-based payments.jpg"],
     "version": "12.0.1.0.1",
     "application": False,
 
