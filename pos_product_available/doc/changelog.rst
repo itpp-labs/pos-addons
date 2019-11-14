@@ -1,7 +1,7 @@
-.. _changelog:
+`1.0.7`
+-------
 
-Updates
-=======
+- **Fix:** Non rounded long values of quantities
 
 `1.0.6`
 -------
