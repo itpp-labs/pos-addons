@@ -16,6 +16,7 @@
                     <label for="name" class="oe_edit_only"/>
                     <h1><field name="name"/></h1>
                     <group string="Settings">
+                        <field name="company_id"/>
                         <field name="pos_ids" widget="many2many_tags" domain="[('current_session_state', '!=', 'opened')]" options="{'not_delete': True}"/>
                         <field name="multi_session_active"/>
                         <field name="sync_server" placeholder="http://yourhost"/>

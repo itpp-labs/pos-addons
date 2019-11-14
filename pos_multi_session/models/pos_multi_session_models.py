@@ -26,8 +26,6 @@ class PosConfig(models.Model):
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
-    company_id = fields.Many2one(related='multi_session_id.company_id', store=True, default=lambda self: self.env.user.company_id)
-    # stock_location_id = fields.Many2one(related='multi_session_id.stock_location_id', store=True)
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -45,6 +43,13 @@ class PosConfig(models.Model):
     def _write(self, vals):
         # made to prevent 'expected singleton' errors in *pos.config* constraints
         result = False
+        if 'multi_session_id' in vals:
+            multi_session_id = vals.get('multi_session_id')
+            if multi_session_id:
+                multi_session_id = self.multi_session_id.browse(multi_session_id)
+                vals['company_id'] = multi_session_id.company_id.id
+            else:
+                vals['company_id'] = self.env.user.company_id.id
         for config in self:
             result = super(PosConfig, config)._write(vals)
         return result
