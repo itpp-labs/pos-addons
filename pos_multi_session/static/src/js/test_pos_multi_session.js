@@ -23,13 +23,16 @@ odoo.define('pos_multi_session.tour', function (require) {
             content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
             position: 'bottom',
         }, {
-            trigger: ".o_pos_kanban button.oe_kanban_action_button",
+            trigger: '.o_pos_kanban :has(div.o_primary:contains("Main")) button.btn-primary.oe_kanban_action_button',
             content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
             position: "bottom"
         }, {
-            content: 'waiting for loading to finish',
-            trigger: '.neworder-button > .fa-plus',
+            content: 'waiting for loading to finish and make a dummy click',
+            trigger: '.pos-branding',
             timeout: 20000,
+        }, {
+            content: 'Click new order button',
+            trigger: '.neworder-button > .fa-plus',
         }
     ];
 

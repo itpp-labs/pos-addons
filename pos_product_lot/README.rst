@@ -27,3 +27,5 @@ HTML Description: Description: https://apps.odoo.com/apps/modules/10.0/pos_produ
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
+
+Tested on Odoo 10.0 d998a83e8b1a73a522f3991eea729fe342f79bba

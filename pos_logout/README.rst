@@ -9,7 +9,9 @@ Credits
 
 Contributors
 ------------
-* `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
 
 Sponsors
 --------
@@ -19,7 +21,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/10.0/pos_qr_login/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_qr_login/>`__.
 
       Thank you for understanding!
 
@@ -36,4 +38,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 a63ecee47ac271b1f0a23528d9d5eab7f63ae528
+Tested on Odoo 11.0 dff2e242a5e5288cb3c8408a9b635a4c85034e83

@@ -57,3 +57,18 @@ msgstr ""
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
+#. module: pos_product_available
+#: model:ir.model.fields,field_description:pos_product_available.field_pos_config_show_qtys
+msgid "Show Product Qtys"
+msgstr ""
+
+#. module: pos_product_available
+#: model:ir.model.fields,help:pos_product_available.field_pos_config_show_qtys
+msgid "Show Product Qtys in POS"
+msgstr ""
+
+#. module: pos_product_available
+#: model:ir.model,name:pos_product_available.model_pos_config
+msgid "pos.config"
+msgstr ""
+
