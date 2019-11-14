@@ -326,9 +326,9 @@ tr.sale-order {
     .pos .pos-topheader,
     .pos .pos-leftpane,
     .pos .keyboard_frame,
-    .pos .receipt-screen header,
-    .pos .receipt-screen .top-content,
-    .pos .receipt-screen .centered-content .button {
+    .pos .invoice-receipt-screen header,
+    .pos .invoice-receipt-screen .top-content,
+    .pos .invoice-receipt-screen .centered-content .button {
         display: none !important;
     }
     .pos,

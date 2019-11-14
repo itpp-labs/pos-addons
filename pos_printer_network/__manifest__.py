@@ -3,7 +3,7 @@
     "summary": """The time has come. Print POS orders and receipts by using network printers""",
     "category": "Point of Sale",
     "images": ['images/pos_printer_network_main.png'],
-    "version": "12.0.2.1.0",
+    "version": "12.0.2.1.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
