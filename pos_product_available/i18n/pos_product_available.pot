@@ -44,6 +44,12 @@ msgid "Close POS"
 msgstr ""
 
 #. module: pos_product_available
+#: code:addons/pos_product_available/tests/test_quantities.py:32
+#, python-format
+msgid "INV: %s"
+msgstr ""
+
+#. module: pos_product_available
 #. openerp-web
 #: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:42
 #, python-format

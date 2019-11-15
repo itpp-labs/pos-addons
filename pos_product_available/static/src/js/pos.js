@@ -2,13 +2,14 @@
     Copyright 2016 gaelTorrecillas <https://github.com/gaelTorrecillas>
     Copyright 2016 manawi <https://github.com/manawi>
     Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2018,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_product_available.PosModel', function(require){
 "use strict";
 
     var rpc = require('web.rpc');
     var models = require('point_of_sale.models');
+    var field_utils = require('web.field_utils');
 
     var PosModelSuper = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
@@ -20,6 +21,7 @@ odoo.define('pos_product_available.PosModel', function(require){
             var prod_model = _.find(this.models, function(model){
                 return model.model === 'product.product';
             });
+
             if (prod_model) {
                 prod_model.fields.push('qty_available', 'type');
                 var context_super = prod_model.context;
@@ -57,7 +59,8 @@ odoo.define('pos_product_available.PosModel', function(require){
             var self = this;
             order.orderlines.each(function(line){
                 var product = line.get_product();
-                product.qty_available -= line.get_quantity();
+                product.qty_available = product.format_float_value(
+                    product.qty_available - line.get_quantity(), {digits: [69, 3]});
                 self.refresh_qty_available(product);
             });
             // compatibility with pos_multi_session
@@ -73,7 +76,7 @@ odoo.define('pos_product_available.PosModel', function(require){
         },
         refresh_qty_available:function(product){
             var $elem = $("[data-product-id='"+product.id+"'] .qty-tag");
-            $elem.html(product.qty_available);
+            $elem.html(product.rounded_qty());
             if (product.qty_available <= 0 && !$elem.hasClass('not-available')){
                 $elem.addClass('not-available');
             }
@@ -114,7 +117,17 @@ odoo.define('pos_product_available.PosModel', function(require){
                 this.pos.set_product_qty_available(product, data.qty_available);
             }
         },
-
     });
 
+    var ProductSuper = models.Product;
+    models.Product = models.Product.extend({
+        format_float_value: function(val) {
+            var value = parseFloat(val);
+            value = field_utils.format.float(value, {digits: [69, 3]});
+            return String(parseFloat(value));
+        },
+        rounded_qty: function() {
+            return this.format_float_value(this.qty_available);
+        },
+    });
 });

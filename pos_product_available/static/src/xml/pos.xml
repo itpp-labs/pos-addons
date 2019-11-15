@@ -7,7 +7,7 @@
         <t t-jquery=".product-img" t-operation="append">
             <t t-if="widget.pos.config.show_qtys &amp;&amp; product.type == 'product'">
                 <span t-attf-class="qty-tag #{product.qty_available lte 0 ? 'not-available':''}">
-                    <t t-esc="product.qty_available"/>
+                    <t t-esc="product.rounded_qty()"/>
                 </span>
             </t>
         </t>
@@ -19,7 +19,7 @@
         <t t-jquery="t[t-esc='line.get_quantity_str()']" t-operation="after">
             <t t-if="widget.pos.config.show_qtys &amp;&amp; line.get_product().type == 'product'">
                 <t t-set='qty_available' t-value='line.get_product().qty_available'/>
-                (of <span t-attf-class="qty-info #{qty_available lt line.quantity ? 'not-available':''}"><t t-esc="qty_available"/></span>)
+                (of <span t-attf-class="qty-info #{qty_available lt line.quantity ? 'not-available':''}"><t t-esc="line.get_product().rounded_qty()"/></span>)
             </t>
         </t>
     </t>
