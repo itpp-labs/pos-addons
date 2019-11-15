@@ -101,6 +101,11 @@ odoo.define('pos_sale_coupons.models', function (require) {
             } else if (program.reward_type === 'product') {
                 this.apply_product_reward_program(coupon, program);
             }
+            var partner_id = coupon.partner_id && coupon.partner_id[0];
+            if (partner_id) {
+                partner_id = this.pos.db.get_partner_by_id(partner_id);
+                this.set_client(partner_id);
+            }
         },
         apply_discount_program: function(coupon, program) {
             var discount_product = this.pos.db.product_by_id[program.discount_line_product_id[0]];
