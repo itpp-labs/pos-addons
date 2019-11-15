@@ -29,6 +29,9 @@
         <field name="model">sale.coupon</field>
         <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
         <field name="arch" type="xml">
+            <field name='state' position="before">
+                <button name="action_sold_via_so" type="object" string="Sold via SO" class="oe_highlight" states="new"/>
+            </field>
             <field name='sales_order_id' position="after">
                 <field name="pos_order_id" attrs="{'invisible': [('pos_order_id', '=', False)]}"/>
                 <field name="sold_via_order_id" attrs="{'invisible': [('sold_via_order_id', '=', False)]}"/>

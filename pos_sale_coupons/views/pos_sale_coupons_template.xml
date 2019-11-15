@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Copyright 2019 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
 <odoo>
     <template id="point_of_sale_assets" name="pos_sale_coupons assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
@@ -9,9 +11,9 @@
         </xpath>
     </template>
 
-    <!--<template id="assets_backend" name="pos_sale_coupons backend_assets" inherit_id="web.assets_backend">-->
-        <!--<xpath expr="." position="inside">-->
-            <!--<script type="text/javascript" src="/pos_sale_coupons/static/src/js/test_longpoll_pos.js"></script>-->
-        <!--</xpath>-->
-    <!--</template>-->
+<!--    <template id="assets_backend" name="pos_sale_coupons backend_assets" inherit_id="web.assets_backend">-->
+<!--        <xpath expr="." position="inside">-->
+<!--            &lt;!&ndash;<script type="text/javascript" src="/pos_sale_coupons/static/src/js/test_longpoll_pos.js"></script>&ndash;&gt;-->
+<!--        </xpath>-->
+<!--    </template>-->
 </odoo>
