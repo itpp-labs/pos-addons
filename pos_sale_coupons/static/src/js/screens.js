@@ -210,5 +210,23 @@ odoo.define('pos_sale_coupons.screens', function (require) {
         },
     });
 
+    screens.PaymentScreenWidget.include({
+        validate_order: function(options) {
+            var order = this.pos.get_order();
+            var client = order.get_client();
+            var consume_coupon_orderlines = _.filter(order.get_orderlines(), function(ol){
+                var coupon = ol.product.coupon;
+                return coupon && coupon.state === 'consumed';
+            });
+            if (consume_coupon_orderlines.length && !client){
+                return this.gui.show_popup('error',{
+                    'title': _t('Client is not set'),
+                    'body': _t('Please set a Customer in order to continue'),
+                });
+            }
+            return this._super(options);
+        },
+    });
+
     return screens;
 });

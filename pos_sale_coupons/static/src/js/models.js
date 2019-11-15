@@ -262,11 +262,10 @@ odoo.define('pos_sale_coupons.models', function (require) {
 
         set_unit_price: function(price){
             if (this.coupon) {
-                coupon_price = this.coupon.coupon_value && parseInt(this.coupon.coupon_value);
+                var coupon_price = this.coupon.coupon_value && parseInt(this.coupon.coupon_value);
                 price = coupon_price || price;
             }
             _super_orderline.set_unit_price.apply(this, arguments);
-            console.log(this);
         },
     });
 
