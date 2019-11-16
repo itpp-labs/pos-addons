@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2018 Artem Losev
-     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+     Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
     <record model="ir.ui.view" id="view_pos_config_form">
@@ -50,6 +50,14 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="show_cancelled_orders"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="show_invoiced_orders"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_invoiced_orders"/>
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
