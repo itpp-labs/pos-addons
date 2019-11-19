@@ -17,6 +17,7 @@ Credits
 Contributors
 ------------
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/Kolushov Alexandr>`__
 
 Sponsors
 --------

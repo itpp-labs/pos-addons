@@ -1,5 +1,6 @@
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Artem Losev
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 from odoo import fields, models, api
@@ -21,6 +22,7 @@ class PosConfig(models.Model):
 
     show_cancelled_orders = fields.Boolean("Show Cancelled Orders", default=True)
     show_posted_orders = fields.Boolean("Show Posted Orders", default=False)
+    show_invoiced_orders = fields.Boolean("Show Invoiced Orders", default=False)
     show_barcode_in_receipt = fields.Boolean("Show Barcode in Receipt", default=True)
 
     # ir.actions.server methods:

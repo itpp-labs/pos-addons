@@ -1,6 +1,6 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
- * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history.models', function (require) {
     "use strict";
@@ -19,22 +19,31 @@ odoo.define('pos_orders_history.models', function (require) {
         add_subscriber: function (subscriber) {
             this.subscribers.push(subscriber);
         },
-        on_orders_history_updates: function(message) {
-            var self = this;
-            // state of orders
-            var state = ['paid'];
+
+        get_order_history_state_domain: function() {
+            var states = ['paid'];
             if (this.config.show_cancelled_orders) {
-                state.push('cancel');
+                states.push('cancel');
             }
             if (this.config.show_posted_orders) {
-                state.push('done');
+                states.push('done');
             }
+            if (this.config.show_invoiced_orders) {
+                states.push('invoiced');
+            }
+            return states;
+        },
+
+        on_orders_history_updates: function(message) {
+            var self = this;
+            // states of orders
+            var states = this.get_order_history_state_domain();
             message.updated_orders.forEach(function (id) {
                 self.get_order_history(id).done(function(order) {
                     if (order instanceof Array) {
                         order = order[0];
                     }
-                    if (state.indexOf(order.state) !== -1) {
+                    if (states.indexOf(order.state) !== -1) {
                         self.update_orders_history(order);
                     }
                 });
@@ -140,16 +149,9 @@ odoo.define('pos_orders_history.models', function (require) {
         domain: function(self) {
             var domain = [];
 
-            // state of orders
-            var state = ['paid'];
-            if (self.config.show_cancelled_orders) {
-                state.push('cancel');
-            }
-            if (self.config.show_posted_orders) {
-                state.push('done');
-            }
-
-            domain.push(['state','in',state]);
+            // states of orders
+            var states = self.get_order_history_state_domain();
+            domain.push(['state','in',states]);
 
             // number of orders
             if (self.config.load_orders_of_last_n_days) {

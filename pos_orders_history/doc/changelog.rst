@@ -1,7 +1,7 @@
-.. _changelog:
+`1.3.0`
+-------
 
-Updates
-=======
+**Improvement:** Show Invoiced Orders option
 
 `1.2.1`
 -------
