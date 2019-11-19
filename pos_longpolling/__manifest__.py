@@ -3,12 +3,12 @@
     "summary": """Technical module to implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
-    "version": "12.0.2.3.0",
+    "version": "13.0.2.3.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_longpolling/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_longpolling/",
     "license": "LGPL-3",
     # "price": 0.00,
     # "currency": "EUR",
@@ -32,5 +32,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

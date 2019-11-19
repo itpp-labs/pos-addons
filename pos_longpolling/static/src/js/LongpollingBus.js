@@ -33,6 +33,7 @@ odoo.define('pos_longpolling.LongpollingBus', function(require){
                 poll_connection.set_waiting_poll_response(false);
                 poll_connection.network_is_on();
             }, function (error, ev) {
+                ev = ev || error.event;
                 self._pollRpc = false;
                 // DIFFERENCES FROM ORIGINAL:
                 // * change connection status to offline

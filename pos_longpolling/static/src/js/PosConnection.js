@@ -3,11 +3,12 @@ odoo.define('pos_longpolling.PosConnection', function(require){
 
     var LongpollingModel = require('pos_longpolling.LongpollingModel');
     var bus_longpolling = require('pos_longpolling.LongpollingBus');
-    var core = require('web.core');
     var SyncBusService = require('pos_longpolling.SyncBusService');
-    var crash_manager = require('web.crash_manager');
-    var session = require('web.session');
     var ServiceProviderMixin = require('web.ServiceProviderMixin');
+    var session = require('web.session');
+    var CrashManager = require('web.CrashManager');
+    var crash_manager = new CrashManager.CrashManager();
+    var core = require('web.core');
     var _t = core._t;
 
 
