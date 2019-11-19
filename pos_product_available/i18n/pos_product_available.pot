@@ -57,6 +57,11 @@ msgid "Open the payment screen"
 msgstr ""
 
 #. module: pos_product_available
+#: model:ir.model,name:pos_product_available.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_product_available
 #. openerp-web
 #: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:87
 #: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:92
@@ -65,17 +70,12 @@ msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_product_available
-#: model:ir.model.fields,field_description:pos_product_available.field_pos_config_show_qtys
+#: model:ir.model.fields,field_description:pos_product_available.field_pos_config__show_qtys
 msgid "Show Product Qtys"
 msgstr ""
 
 #. module: pos_product_available
-#: model:ir.model.fields,help:pos_product_available.field_pos_config_show_qtys
+#: model:ir.model.fields,help:pos_product_available.field_pos_config__show_qtys
 msgid "Show Product Qtys in POS"
-msgstr ""
-
-#. module: pos_product_available
-#: model:ir.model,name:pos_product_available.model_pos_config
-msgid "pos.config"
 msgstr ""
 
