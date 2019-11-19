@@ -1,4 +1,4 @@
-odoo.define('pos_longpolling.widgets', function(require){
+odoo.define('pos_longpolling.chrome', function(require){
     "use strict";
 
     var core = require('web.core');

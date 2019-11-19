@@ -1,3 +1,8 @@
+`1.0.7`
+-------
+- **Fix:** Updated 'update_revision_ID' message
+- **Fix:** Possible error with multiple multi sessions with the same multi session ID
+
 `1.0.6`
 -------
 - **Fix:** Updated 'update_revision_ID' message

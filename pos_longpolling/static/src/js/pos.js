@@ -2,7 +2,7 @@ odoo.define('pos_longpolling.pos', function(require){
     "use strict";
 
     var models = require('point_of_sale.models');
-    var PosConnection = require('pos_longpolling.connection');
+    var PosConnection = require('pos_longpolling.PosConnection');
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({

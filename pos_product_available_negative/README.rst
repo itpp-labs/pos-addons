@@ -7,7 +7,7 @@
 ==================================
 
 The module depends on the pos_pin module. Before POS order validation the module checks whether the order contains
-products with no positive quantity. If it does then a cashier get popup with selection users. A sale is take place
+products with no positive quantity. If it does then a cashier gets popup to select users. A sale is take place
 if the selected user has group which is specified in the POS config parameter "Negative Order Group". Otherwise
 the sale is rejected.
 
@@ -47,4 +47,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos_addons/commits/13.0/pos_product_available_negative.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos_addons/commits/13.0/pos_product_available_negative.atom>`_
 
-Tested on Odoo 11.0 97dbb8c6af4c6af0622497b276bdfb40ee0a3215
+Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b

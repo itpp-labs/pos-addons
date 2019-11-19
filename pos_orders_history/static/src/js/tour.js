@@ -168,7 +168,7 @@ odoo.define('pos_orders_history.tour', function(require) {
                 this.select_table(),
                 this.add_product_to_order('LED Lamp'),
                 this.goto_payment_screen_and_select_payment_method(),
-                this.generate_payment_screen_keypad_steps("0.90"),
+                this.generate_payment_screen_keypad_steps("9"),
                 this.finish_order(),
                 this.close_pos(),
                 this.open_pos(),

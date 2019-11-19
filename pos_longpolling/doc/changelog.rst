@@ -1,3 +1,13 @@
+`2.3.0`
+-------
+
+- **IMP:** File refactoring. Changes after Pull request https://github.com/odoo/odoo/pull/28092 to Odoo was merged
+
+`2.2.0`
+-------
+
+- **IMP:** *Autostart longpolling* field is hidden on the `POS config` form to prevent possible misconfigurations.
+
 `2.1.2`
 -------
 

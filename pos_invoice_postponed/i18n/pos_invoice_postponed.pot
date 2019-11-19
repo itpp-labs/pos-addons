@@ -1,0 +1,116 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_invoice_postponed
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:17
+#, python-format
+msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:43
+#, python-format
+msgid "Click the customer"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:64
+#, python-format
+msgid "Click the payment method"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: model:ir.model.fields,field_description:pos_invoice_postponed.field_account_journal_postponed_invoice
+msgid "Create Postponed Invoice"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:29
+#, python-format
+msgid "Customer Error"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:30
+#, python-format
+msgid "Customer is not set. Please set a customer to proceed postponed invoice payment"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: model:ir.model,name:pos_invoice_postponed.model_account_journal
+msgid "Journal"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:40
+#, python-format
+msgid "Open the customer screen"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:57
+#, python-format
+msgid "Open the payment screen"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:36
+#, python-format
+msgid "Payment Method Error"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:37
+#, python-format
+msgid "Please do not use postpone payment methods with regular ones"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: model:ir.model,name:pos_invoice_postponed.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: model:ir.model.fields,field_description:pos_invoice_postponed.field_pos_order_postponed
+msgid "Postponed Invoice"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#. openerp-web
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:13
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: code:addons/pos_invoice_postponed/models/models.py:64
+#, python-format
+msgid "This Postponed invoice has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>"
+msgstr ""
+
+#. module: pos_invoice_postponed
+#: model:ir.model,name:pos_invoice_postponed.model_pos_config
+msgid "pos.config"
+msgstr ""
+

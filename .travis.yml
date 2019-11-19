@@ -7,7 +7,6 @@ sudo: false
 cache: pip
 
 addons:
-  # odoo 12.0+ uses command "INSERT ... ON CONFLICT ...", which is available in 9.5+ only
   postgresql: "9.5"
   apt:
     packages:
@@ -25,7 +24,8 @@ env:
   matrix:
   - LINT_CHECK="1"
   - CHECK_TAGS="1"
-  - TESTS="1" ODOO_REPO="odoo/odoo" MAKEPOT="1"
+  - TESTS="1" ODOO_REPO="odoo/odoo"
+  - MAKEPOT="1"
   - TESTS="1" ODOO_REPO="OCA/OCB""
 
 

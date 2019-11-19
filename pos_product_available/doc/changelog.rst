@@ -1,7 +1,13 @@
-.. _changelog:
+`1.1.0`
+-------
 
-Updates
-=======
+- **New:** Added option to show product quantities
+
+`1.0.7`
+-------
+
+- **Fix:** Non rounded long values of quantities
+
 
 `1.0.6`
 -------

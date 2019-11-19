@@ -1,4 +1,4 @@
-/*  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+/*  Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_product_available.tour', function (require) {
     "use strict";
@@ -16,7 +16,7 @@ odoo.define('pos_product_available.tour', function (require) {
             content: "Switch to table or make dummy action",
             trigger: '.table, .order-button.selected',
             position: "bottom",
-            timeout: 20000,
+            timeout: 30000,
         }, {
             content: 'waiting for loading to finish',
             trigger: '.order-button.neworder-button',
@@ -74,10 +74,10 @@ odoo.define('pos_product_available.tour', function (require) {
         }];
     }
 
-    function check_quantity() {
+    function check_quantity(qty) {
         return [{
             content: 'check quantity',
-            extra_trigger: '.product-list .product:contains("LED Lamp") .qty-tag.not-available:not(:contains("0"))',
+            extra_trigger: '.product-list .product:contains("LED Lamp") .qty-tag:contains(' + String(qty) + '):not(.not-available)',
             trigger: '.order-button.selected',
         }];
     }
@@ -93,12 +93,14 @@ odoo.define('pos_product_available.tour', function (require) {
         position: 'bottom',
         edition: 'enterprise'
     }];
-    steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(add_product_to_order('LED Lamp'));
-    steps = steps.concat(payment('Cash (USD)'));
-    steps = steps.concat(close_pos());
-    steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(check_quantity());
+    steps = steps.concat(
+        open_pos_neworder(),
+        add_product_to_order('LED Lamp'),
+        payment('Cash (USD)'),
+        close_pos(),
+        open_pos_neworder(),
+        check_quantity(2)
+    );
 
     tour.register('tour_pos_product_available', { test: true, url: '/web' }, steps);
 
