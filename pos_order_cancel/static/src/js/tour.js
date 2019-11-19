@@ -1,3 +1,7 @@
+/* Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
+ * Copyright 2017 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+ * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_order_cancel.tour', function(require) {
     "use strict";
 

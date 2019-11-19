@@ -34,7 +34,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
             def __init__(self):
                 self.param = None
 
-            def create(self, param):
+            def create(self, param):  # pylint: disable=method-required-super
                 self.param = param
                 return self
 

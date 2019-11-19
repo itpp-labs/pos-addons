@@ -15,35 +15,35 @@ msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/xml/pos.xml:17
+#: code:addons/pos_cashier_select/static/src/xml/pos.xml:19
 #, python-format
 msgid "Cancel"
 msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:107
+#: code:addons/pos_cashier_select/static/src/js/main.js:106
 #, python-format
 msgid "Change Cashier"
 msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:92
+#: code:addons/pos_cashier_select/static/src/js/main.js:91
 #, python-format
 msgid "Empty Serial/Lot Number"
 msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:93
+#: code:addons/pos_cashier_select/static/src/js/main.js:92
 #, python-format
 msgid "One or more product(s) required serial/lot number."
 msgstr ""
 
 #. module: pos_cashier_select
 #. openerp-web
-#: code:addons/pos_cashier_select/static/src/js/main.js:179
+#: code:addons/pos_cashier_select/static/src/js/main.js:178
 #, python-format
 msgid "Select User"
 msgstr ""

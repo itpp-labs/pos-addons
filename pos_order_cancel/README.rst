@@ -28,12 +28,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/10.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
 
-HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_order_cancel/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_cancel/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 dad095de301580cdde70eba747792e835cbbc0fd
+Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b

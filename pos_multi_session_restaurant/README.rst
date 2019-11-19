@@ -15,21 +15,14 @@ Syncs additional restaurant data:
 
 Each multi-session and each unsynchronized POS may have its own floor set. POSes in multi-session have same floors.
 
-FIXME: there is issue with floor real-time synchronization, to synchronize tables after modifying them it is mandatory to refresh all POSes pages, also deleting a table with open order on it leads to constant error messages. See https://github.com/it-projects-llc/pos-addons/issues/375.
-
-Local run
----------
-
-If you use dbfilter, don't forget to specify correct proxy on printers
-
 Credits
 =======
 
 Contributors
 ------------
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
-* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
 Sponsors
 --------

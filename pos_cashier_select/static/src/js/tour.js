@@ -1,3 +1,5 @@
+/*  Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_cashier_select.tour', function(require) {
     "use strict";
 

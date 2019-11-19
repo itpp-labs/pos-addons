@@ -1,0 +1,30 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_disable_payment_restaurant
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_disable_payment_restaurant
+#: model:ir.model.fields,field_description:pos_disable_payment_restaurant.field_res_users_allow_decrease_kitchen
+msgid "Allow change Qty for kitchen orders"
+msgstr ""
+
+#. module: pos_disable_payment_restaurant
+#: model:ir.model.fields,field_description:pos_disable_payment_restaurant.field_res_users_allow_remove_kitchen_order_line
+msgid "Allow remove kitchen order line"
+msgstr ""
+
+#. module: pos_disable_payment_restaurant
+#: model:ir.model,name:pos_disable_payment_restaurant.model_res_users
+msgid "Users"
+msgstr ""
+

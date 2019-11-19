@@ -12,7 +12,6 @@ var PosDb = require('point_of_sale.DB');
 var utils = require('web.utils');
 var screens = require('point_of_sale.screens');
 var rpc = require('web.rpc');
-var longpolling = require('pos_longpolling.connection');
 var chrome = require('point_of_sale.chrome');
 
 var QWeb = core.qweb;

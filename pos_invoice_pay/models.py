@@ -27,18 +27,13 @@ class PosOrder(models.Model):
             inv_obj = self.env['account.invoice'].browse(inv_id)
             journal_id = statement[2]['journal_id']
             journal = self.env['account.journal'].browse(journal_id)
-            amount = statement[2]['amount']
-            amount_without_change = min(
+            amount = min(
                 statement[2]['amount'],  # amount payed including change
                 invoice['data']['invoice_to_pay']['residual'],  # amount required to pay
             )
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
             payment_difference_handling = 'open'
-            if amount > inv_obj.residual:
-                session_id = self.env['pos.session'].browse(invoice['data']['pos_session_id'])
-                writeoff_acc_id = session_id.config_id.pos_invoice_pay_writeoff_account_id.id
-                payment_difference_handling = 'reconcile'
 
             vals = {
                 'journal_id': journal.id,
@@ -47,7 +42,7 @@ class PosOrder(models.Model):
                 'communication': invoice['data']['invoice_to_pay']['number'],
                 'invoice_ids': [(4, inv_id, None)],
                 'payment_type': 'inbound',
-                'amount': amount_without_change,
+                'amount': amount,
                 'currency_id': inv_obj.currency_id.id,
                 'partner_id': invoice['data']['invoice_to_pay']['partner_id'][0],
                 'partner_type': 'customer',
@@ -102,11 +97,12 @@ class AccountInvoice(models.Model):
             res.append(line)
         return res
 
-    @api.one
     @api.depends('payment_move_line_ids.amount_residual')
     def _get_payment_info_JSON(self):
-        if self.payment_move_line_ids:
-            for move in self.payment_move_line_ids:
+        for record in self:
+            if not record.payment_move_line_ids:
+                pass
+            for move in record.payment_move_line_ids:
                 if move.payment_id.cashier:
                     if move.move_id.ref:
                         move.move_id.ref = "%s by %s" % (move.move_id.ref, move.payment_id.cashier.name)
