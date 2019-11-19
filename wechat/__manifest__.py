@@ -14,7 +14,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/wechat/",
     "license": "LGPL-3",
-    "price": 150.00,
+    "price": 75.00,
     "currency": "EUR",
 
     "depends": [
@@ -37,5 +37,5 @@
     "qweb": [],
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

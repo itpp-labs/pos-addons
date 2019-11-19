@@ -15,7 +15,7 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
-    "price": 39.00,
+    "price": 20.00,
     "currency": "EUR",
 
     "depends": [
@@ -36,7 +36,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Lock POS Screen",
     "demo_addons": [

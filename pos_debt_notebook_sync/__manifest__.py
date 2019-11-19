@@ -15,7 +15,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/",
     "license": "LGPL-3",
-    "price": 510.00,
+    "price": 255.00,
     "currency": "EUR",
 
     "depends": [
@@ -36,7 +36,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Internal Credit System",
     "demo_addons": [

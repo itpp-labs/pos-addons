@@ -16,7 +16,6 @@ class ResPartner(models.Model):
                 return True
         return False
 
-    @api.multi
     def write(self, vals):
         result = super(ResPartner, self).write(vals)
         if self.check_fields_to_send(vals):
@@ -30,7 +29,6 @@ class ResPartner(models.Model):
             self.send_field_updates([partner.id])
         return partner
 
-    @api.multi
     def unlink(self):
         res = super(ResPartner, self).unlink()
         self.send_field_updates(self.ids, action='unlink')

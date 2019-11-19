@@ -13,7 +13,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_payment_wechat/",
     "license": "LGPL-3",
-    "price": 330.00,
+    "price": 165.00,
     "currency": "EUR",
 
     "depends": [
@@ -35,5 +35,5 @@
     ],
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

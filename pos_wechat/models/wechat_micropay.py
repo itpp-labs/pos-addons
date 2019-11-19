@@ -43,7 +43,6 @@ class Micropay(models.Model):
     def _on_micropay(self, record):
         record._send_pos_notification()
 
-    @api.multi
     def _prepare_message(self):
         self.ensure_one()
         result_json = json.loads(self.result_raw)

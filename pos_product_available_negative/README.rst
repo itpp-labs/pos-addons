@@ -28,7 +28,7 @@ Maintainers
 
       To get a guaranteed support
       you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_product_available_negative/>`__.
+      at `odoo apps store <https://apps.odoo.com/apps/modules/13.0/pos_product_available_negative/>`__.
 
       Thank you for understanding!
 
@@ -37,14 +37,14 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos_addons/12.0
+Demo: http://runbot.it-projects.info/demo/pos_addons/13.0
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_product_available_negative/
+HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_product_available_negative/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos_addons/commits/12.0/pos_product_available_negative.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos_addons/commits/12.0/pos_product_available_negative.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos_addons/commits/13.0/pos_product_available_negative.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos_addons/commits/13.0/pos_product_available_negative.atom>`_
 
 Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b

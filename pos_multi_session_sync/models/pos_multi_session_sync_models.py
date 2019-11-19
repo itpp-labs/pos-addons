@@ -37,7 +37,6 @@ class PosMultiSessionSync(models.Model):
     run_ID = fields.Integer(index=True, string='Session', help='Actual run_id of the multi_session')
     dbname = fields.Char(index=True)
 
-    @api.multi
     def on_update_message(self, message):
         self.ensure_one()
         if message['data']['run_ID'] > self.run_ID:
@@ -53,7 +52,6 @@ class PosMultiSessionSync(models.Model):
             res = self.broadcast_message(message)
         return res
 
-    @api.multi
     def prepare_new_session(self, message):
         self.ensure_one()
         run_ID = message['data']['run_ID']
@@ -67,7 +65,6 @@ class PosMultiSessionSync(models.Model):
             old_orders.write({'state': 'unpaid'})
             self.write({'order_ID': 0})
 
-    @api.multi
     def check_order_revision(self, message, order):
         self.ensure_one()
         client_revision_ID = message['data']['revision_ID']
@@ -84,7 +81,6 @@ class PosMultiSessionSync(models.Model):
         else:
             return True
 
-    @api.multi
     def dict_compare(self, d1, d2):
         self.ensure_one()
         d1_keys = set(d1.keys())
@@ -107,7 +103,6 @@ class PosMultiSessionSync(models.Model):
 
         return modified, added, removed
 
-    @api.multi
     def set_changes(self, message, order):
         self.ensure_one()
         order = json.loads(order.order)
@@ -123,7 +118,6 @@ class PosMultiSessionSync(models.Model):
                     e[2]['is_changed'] = True
         return message
 
-    @api.multi
     def set_and_broadcast_order(self, message):
         self.ensure_one()
 
@@ -136,7 +130,6 @@ class PosMultiSessionSync(models.Model):
         return {'action': 'update_revision_ID', 'revision_ID': order.revision_ID, 'uid': order.order_uid,
                 'order_ID': updated_message['data']['sequence_number'], 'run_ID': order.run_ID}
 
-    @api.multi
     def set_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
@@ -176,7 +169,6 @@ class PosMultiSessionSync(models.Model):
 
         return (order, message)
 
-    @api.multi
     def get_sync_all(self, message):
         self.ensure_one()
         pos_ID = message['data']['pos_id']
@@ -238,7 +230,6 @@ class PosMultiSessionSync(models.Model):
             self.send_sync_message(data)
             return {}
 
-    @api.multi
     def remove_order(self, message):
         self.ensure_one()
         order_uid = message['data']['uid']
@@ -264,7 +255,6 @@ class PosMultiSessionSync(models.Model):
         self.broadcast_message(message)
         return {'order_ID': self.order_ID}
 
-    @api.multi
     def send_sync_message(self, message):
         self.ensure_one()
         notifications = []
@@ -282,7 +272,6 @@ class PosMultiSessionSync(models.Model):
 
         return 1
 
-    @api.multi
     def broadcast_message(self, message):
         self.ensure_one()
         notifications = []

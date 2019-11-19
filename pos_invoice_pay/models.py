@@ -167,12 +167,10 @@ class PosSession(models.Model):
                                        string='Invoice Payments', help="Show invoices paid in the Session")
     session_invoices_total = fields.Float('Invoices', compute='_compute_session_invoices_total')
 
-    @api.multi
     def _compute_session_invoices_total(self):
         for rec in self:
             rec.session_invoices_total = sum(rec.session_payments.mapped('invoice_ids').mapped('amount_total') + [0])
 
-    @api.multi
     def action_invoice_payments(self):
         payments = self.env['account.payment'].search([('pos_session_id', 'in', self.ids)])
         invoices = payments.mapped('invoice_ids').ids

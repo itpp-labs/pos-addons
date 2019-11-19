@@ -15,7 +15,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_return/",
     "license": "LGPL-3",
-    "price": 39.00,
+    "price": 20.00,
     "currency": "EUR",
 
     "depends": [
@@ -38,7 +38,7 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "POS Orders Refund",
     "demo_addons": [

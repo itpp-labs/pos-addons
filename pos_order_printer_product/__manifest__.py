@@ -11,7 +11,7 @@
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
-    "price": 49.00,
+    "price": 25.00,
     "currency": "EUR",
 
     "depends": [
@@ -34,5 +34,5 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }

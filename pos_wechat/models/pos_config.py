@@ -9,7 +9,6 @@ MODULE = 'pos_wechat'
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    @api.multi
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_pos_wechat_journals()

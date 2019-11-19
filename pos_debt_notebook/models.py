@@ -21,7 +21,6 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    @api.multi
     @api.depends('report_pos_debt_ids')
     def _compute_debt(self):
         domain = [('partner_id', 'in', self.ids)]
@@ -37,7 +36,6 @@ class ResPartner(models.Model):
             r.debt = -res_index[r.id]['balance']
             r.credit_balance = -r.debt
 
-    @api.multi
     @api.depends('report_pos_debt_ids')
     def _compute_debt_company(self):
         partners = self.filtered(lambda r: len(r.child_ids))
@@ -62,7 +60,6 @@ class ResPartner(models.Model):
             r.debt_company = -res_index[r.id]
             r.credit_balance_company = -r.debt_company
 
-    @api.multi
     def debt_history(self, limit=0):
         """
         Get debt details
@@ -177,7 +174,6 @@ class ResPartner(models.Model):
             del partner['debt_limit']
         return super(ResPartner, self).create_from_ui(partner)
 
-    @api.multi
     def _compute_partner_journal_debt(self, journal_id):
         domain = [('partner_id', 'in', self.ids),
                   ('journal_id', '=', journal_id)]
@@ -203,14 +199,12 @@ class ResConfigSettings(models.TransientModel):
     ], default='debt', string='Debt Type', help='Way to display debt value (label and sign of the amount). '
                                                 'In both cases debt will be red, credit - green')
 
-    @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
         for record in self:
             config_parameters.sudo().set_param("pos_debt_notebook.debt_type", record.debt_type)
 
-    @api.multi
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
@@ -392,7 +386,6 @@ class PosConfig(models.Model):
             })
         return debt_journal
 
-    @api.multi
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         self.init_debt_journal()
@@ -477,7 +470,6 @@ class PosOrder(models.Model):
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'order_id', string='Non-Accounting Payments')
     amount_via_discount = fields.Float('Amount via Discounts', help="Service field for proper order proceeding")
 
-    @api.multi
     @api.depends('lines', 'lines.product_id', 'lines.product_id.name', 'lines.qty', 'lines.price_unit')
     def _compute_product_list(self):
         for order in self:
@@ -558,7 +550,6 @@ class AccountBankStatement(models.Model):
     pos_credit_update_ids = fields.One2many('pos.credit.update', 'account_bank_statement_id', string='Non-Accounting Transactions')
     pos_credit_update_balance = fields.Monetary(compute='_compute_credit_balance', string='Non-Accounting Transactions (Balance)', store=True)
 
-    @api.multi
     @api.depends('pos_credit_update_ids', 'pos_credit_update_ids.balance')
     def _compute_credit_balance(self):
         for st in self:
@@ -608,7 +599,6 @@ class PosCreditUpdate(models.Model):
     reversed_balance = fields.Monetary(compute="_compute_reversed_balance", string="Payments",
                                        help="Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts).")
 
-    @api.multi
     @api.depends('order_id', 'journal_id')
     def _compute_bank_statement(self):
         for record in self:
@@ -617,7 +607,6 @@ class PosCreditUpdate(models.Model):
                 record.account_bank_statement_id = record.env['account.bank.statement']\
                     .search([('journal_id', '=', record.journal_id.id), ('pos_session_id', '=', order.session_id.id)]).id
 
-    @api.multi
     @api.depends('balance')
     def _compute_reversed_balance(self):
         for record in self:
@@ -641,7 +630,6 @@ class PosCreditUpdate(models.Model):
         self.update_balance(vals)
         return super(PosCreditUpdate, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         self.update_balance(vals)
         return super(PosCreditUpdate, self).write(vals)

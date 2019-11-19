@@ -11,7 +11,7 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orderline_absolute_discount/",
     "license": "LGPL-3",
-    "price": 79.00,
+    "price": 40.00,
     "currency": "EUR",
 
     "depends": [
@@ -35,7 +35,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 
     "demo_title": "Absolute Discounts in POS",
     "demo_addons": [
