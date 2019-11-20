@@ -38,7 +38,7 @@ odoo.define('pos_orders_history.tour', function(require) {
                 steps = steps.concat(this.cashier_select());
             }
             steps = steps.concat([{
-                trigger: '.paymentmethod:contains("Cash (USD)")',
+                trigger: '.paymentmethod:contains("Cash")',
                 content: "pay with cash",
             }]);
             return steps;
@@ -97,7 +97,7 @@ odoo.define('pos_orders_history.tour', function(require) {
                 trigger: ".order-line td:first",
                 content: "open fist order",
             }, {
-                trigger: ".line-element-container:first .line-line:contains('LED Lamp')",
+                trigger: ".line-element-container:first .line-line:contains('Conference Chair')",
                 run: function () {
                     // it's a check
                 },
@@ -123,22 +123,21 @@ odoo.define('pos_orders_history.tour', function(require) {
                 trigger: ".o_pos_kanban button.oe_kanban_action_button",
                 content: "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
                 position: "bottom"
-            },{
-                trigger: '.o_main_content:has(.loader:hidden)',
-                content: 'waiting for loading to finish',
-                timeout: 20000,
-                run: function () {
-                    // it's a check
-                },
-            }];
+            },
+            this.select_table(20000)
+            ];
         },
 
-        select_table: function() {
-            return {
+        select_table: function(timeout) {
+            var step = {
                 content: "Switch to table or make dummy action",
                 trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
                 position: "bottom"
             };
+            if (timeout) {
+                step.timeout = timeout;
+            }
+            return step;
         },
 
         close_pos: function() {
@@ -166,9 +165,9 @@ odoo.define('pos_orders_history.tour', function(require) {
         create_order_steps: function() {
             return [].concat(
                 this.select_table(),
-                this.add_product_to_order('LED Lamp'),
+                this.add_product_to_order('Conference Chair'),
                 this.goto_payment_screen_and_select_payment_method(),
-                this.generate_payment_screen_keypad_steps("9"),
+                this.generate_payment_screen_keypad_steps("99"),
                 this.finish_order(),
                 this.close_pos(),
                 this.open_pos(),

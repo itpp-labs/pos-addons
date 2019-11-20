@@ -1,20 +1,20 @@
 # Copyright 2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Artem Losev
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": "POS Orders History",
     "summary": """See all paid orders from special menu in POS""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=12.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=13.0",
     "images": ['images/pos_orders_history_main.png'],
-    "version": "12.0.1.2.1",
+    "version": "13.0.1.2.1",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_orders_history/",
     "license": "LGPL-3",
     "price": 59.00,
     "currency": "EUR",
@@ -40,7 +40,7 @@
     "post_init_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 
     "demo_title": "POS Orders History",
     "demo_addons": [

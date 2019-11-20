@@ -35,7 +35,7 @@ class PosConfig(models.Model):
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
-    pos_name = fields.Char(related="config_id.name")
+    pos_name = fields.Char(related="config_id.name", string='Point of Sale Name')
     pos_history_reference_uid = fields.Char(compute='_compute_pos_history_reference_uid', readonly=True, store=True)
 
     @api.depends('pos_reference')
