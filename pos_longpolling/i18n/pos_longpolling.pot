@@ -25,8 +25,8 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/longpolling.js:115
-#: code:addons/pos_longpolling/static/src/js/longpolling.js:116
+#: code:addons/pos_longpolling/static/src/js/PosConnection.js:115
+#: code:addons/pos_longpolling/static/src/js/PosConnection.js:116
 #, python-format
 msgid "Longpolling Handling Error"
 msgstr ""
