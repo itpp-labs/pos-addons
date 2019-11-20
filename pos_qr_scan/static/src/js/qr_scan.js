@@ -160,7 +160,7 @@ odoo.define('pos_qr_scan', function(require){
             if(this.gUM){
                 var self = this;
                 try{
-                    gCtx.drawImage(this.video_element,0,0);
+                    this.gCtx.drawImage(this.video_element,0,0);
                     try{
                         qrcode.decode();
                     }
@@ -187,6 +187,7 @@ odoo.define('pos_qr_scan', function(require){
             gCanvas.height = h;
             var gCtx = gCanvas.getContext("2d");
             gCtx.clearRect(0, 0, w, h);
+            this.gCtx = gCtx;
         }
 
     });
