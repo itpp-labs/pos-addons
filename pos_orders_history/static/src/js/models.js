@@ -13,14 +13,17 @@ odoo.define('pos_orders_history.models', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function () {
             _super_pos_model.initialize.apply(this, arguments);
-            this.bus.add_channel_callback("pos_orders_history", this.on_orders_history_updates, this);
+            var self = this;
+            this.ready.then(function () {
+                self.bus.add_channel_callback("pos_orders_history", self.on_orders_history_updates, self);
+            });
             this.subscribers = [];
         },
         add_subscriber: function (subscriber) {
             this.subscribers.push(subscriber);
         },
 
-        get_order_history_state_domain: function() {
+        get_order_history_domain_states: function() {
             var states = ['paid'];
             if (this.config.show_cancelled_orders) {
                 states.push('cancel');
@@ -37,9 +40,10 @@ odoo.define('pos_orders_history.models', function (require) {
         on_orders_history_updates: function(message) {
             var self = this;
             // states of orders
-            var states = this.get_order_history_state_domain();
-            message.updated_orders.forEach(function (id) {
-                self.get_order_history(id).done(function(order) {
+            var states = this.get_order_history_domain_states();
+            var order_ids = message.updated_orders;
+            return this.fetch_order_history_orders_by_ids(order_ids).done(function(orders) {
+                _.each(orders, function(order){
                     if (order instanceof Array) {
                         order = order[0];
                     }
@@ -47,23 +51,30 @@ odoo.define('pos_orders_history.models', function (require) {
                         self.update_orders_history(order);
                     }
                 });
-                self.get_order_history_lines_by_order_id(id).done(function (lines) {
+            }).done(function() {
+                self.fetch_order_history_lines_by_order_ids(order_ids).done(function (lines) {
                     self.update_orders_history_lines(lines);
                 });
             });
         },
-        get_order_history: function (id) {
+        fetch_order_history_orders_by_ids: function(ids) {
+            if (!(ids instanceof Array)) {
+                ids = [ids];
+            }
             return rpc.query({
                 model: 'pos.order',
                 method: 'search_read',
-                args: [[['id', '=', id]]]
+                args: [[['id', 'in', ids]]]
             });
         },
-        get_order_history_lines_by_order_id: function (id) {
+        fetch_order_history_lines_by_order_ids: function (ids) {
+            if (!(ids instanceof Array)) {
+                ids = [ids];
+            }
             return rpc.query({
                 model: 'pos.order.line',
                 method: 'search_read',
-                args: [[['order_id', '=', id]]]
+                args: [[['order_id', 'in', ids]]]
             });
         },
         update_orders_history: function (orders) {
@@ -150,7 +161,7 @@ odoo.define('pos_orders_history.models', function (require) {
             var domain = [];
 
             // states of orders
-            var states = self.get_order_history_state_domain();
+            var states = self.get_order_history_domain_states();
             domain.push(['state','in',states]);
 
             // number of orders

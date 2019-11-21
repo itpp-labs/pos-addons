@@ -1,3 +1,8 @@
+`1.4.0`
+-------
+
+**Improvement:** Reduced quantity of requests to the server
+
 `1.3.0`
 -------
 
