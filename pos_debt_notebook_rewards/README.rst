@@ -2,9 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-==================================================
- Rewards for shifts in POS Debt & Credit notebook
-==================================================
+=========================
+ POS: rewards for shifts
+=========================
 
 Rewards for shifts in POS Debt & Credit notebook
 

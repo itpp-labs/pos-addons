@@ -1,11 +1,11 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Rewards for shifts in POS Debt & Credit notebook""",
+    "name": """POS: rewards for shifts""",
     "summary": """Rewards for shifts in POS Debt & Credit notebook""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ['images/pos_debt_notebook_rewards.jpg'],
     "version": "12.0.1.0.0",
     "application": False,
 
