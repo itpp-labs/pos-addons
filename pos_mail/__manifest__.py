@@ -2,10 +2,10 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """POS Receipts by mail""",
-    "summary": """Module allows to send POS receipts to a partner""",
+    "summary": """Module allows to send POS receipts to partners by mail""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=12.0",
-    "images": [],
+    "images": ["images/pos_mail.jpg"],
     "version": "12.0.1.0.0",
     "application": False,
 

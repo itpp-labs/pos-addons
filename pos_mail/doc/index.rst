@@ -38,4 +38,3 @@ Will be converted to
     <p>Your order is: ${order.pos_reference}</p>
 
     <p>Best wishes.</p>
-
