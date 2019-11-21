@@ -3,7 +3,7 @@
     "summary": """Technical module in POS""",
     "category": "Point of Sale",
     # "live_test_URL": "",
-    "images": [],
+    "images": ['images/pos_restaurant_base.jpg'],
     "version": "12.0.2.0.4",
     "application": False,
 
