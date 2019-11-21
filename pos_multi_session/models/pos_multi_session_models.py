@@ -83,7 +83,6 @@ class PosMultiSession(models.Model):
         companies = self.env['res.company'].search([])
         for company in companies:
             configs = self.env['pos.config'].search([('multi_session_id', '=', False), ('company_id', '=', company.id)])
-
             # If there are POSes with the company then we need to create default multi-session
             if configs:
                 # Create default multi-session for current company
