@@ -5,9 +5,8 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
-from odoo import api
-from odoo import fields
-from odoo import models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -54,6 +53,11 @@ class PosConfig(models.Model):
             result = super(PosConfig, config)._write(vals)
         return result
 
+    @api.multi
+    def open_session_cb(self):
+        if not self.multi_session_id:
+            raise ValidationError(_("The Multi-Session is not defined for point of sale") + ' ' + self.name)
+        return super(PosConfig, self).open_session_cb()
 
 class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
