@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Kildebekov Anvar  <https://it-projects.info/team/kildebekov>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import models, fields, api
-
 
 MODULE = 'pos_journal_pin'
 
@@ -25,7 +24,9 @@ class PosConfig(models.Model):
 
     def init_pin_journal(self):
         """Init demo Journals for current company"""
-        demo_is_on = self.env['ir.module.module'].search([('name', '=', MODULE)]).demo
+        # Access rejection of demo user, "*.sudo().*" - superuser-rights for creating session
+        demo_is_on = self.env['ir.module.module'].sudo().search([('name', '=', MODULE)]).demo
+
         if not demo_is_on:
             return
         # Multi-company is not primary task for this module, but I copied this
@@ -55,7 +56,7 @@ class PosConfig(models.Model):
 
     def _create_pin_journal(self, vals):
         user = self.env.user
-        new_sequence = self.env['ir.sequence'].create({
+        new_sequence = self.env['ir.sequence'].sudo().create({
             'name': vals['sequence_name'] + str(user.company_id.id),
             'padding': 3,
             'prefix': vals['prefix'] + str(user.company_id.id),
@@ -67,7 +68,7 @@ class PosConfig(models.Model):
             'res_id': new_sequence.id,
             'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
         })
-        pin_journal = self.env['account.journal'].create({
+        pin_journal = self.env['account.journal'].sudo().create({
             'name': vals['journal_name'],
             'code': vals['code'],
             'type': vals['type'],

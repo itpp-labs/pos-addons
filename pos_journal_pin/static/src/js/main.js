@@ -1,4 +1,5 @@
 // Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+// Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 odoo.define('pos_journal_pin', function (require) {
 'use_strict';
@@ -7,12 +8,18 @@ var core = require('web.core');
 var models = require('point_of_sale.models');
 var screens = require('point_of_sale.screens');
 
-var QWeb = core.qweb;
 var _t = core._t;
 
     models.load_fields('account.journal', ['ask_manager']);
 
     screens.PaymentScreenWidget.include({
+        click_numpad: function(button) {
+            var paymentlines = this.pos.get_order().get_paymentlines();
+            if (paymentlines.length || !this.pos.cashregisters[0].journal.ask_manager) {
+                return this._super(button);
+            }
+            this.click_paymentmethods(this.pos.cashregisters[0].journal_id[0]);
+        },
         click_paymentmethods: function(id) {
             var self = this;
             var cashregister = null;

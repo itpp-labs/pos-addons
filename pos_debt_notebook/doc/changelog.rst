@@ -1,22 +1,32 @@
+`5.3.1`
+-------
+
+- **FIX:** with installed pos_journal_pin, pos_invoice_postponed demo-user can't create pos-session
+
 `5.3.0`
 -------
+
 - **Improvement:** New Balance is amount for selected journal,  not for total Credits.
 
 `5.2.0`
 -------
+
 - **ADD:** Button on the ``Write-off Credits`` form. Adds all partners with debt according to the selected journal
 - **ADD:** Availability to write-off credits via ``Manual Credit Updates``
 
 `5.1.4`
 -------
+
 - **FIX:** Payment mistakes on in case SERIALIZATION_FAILURE in order processing
 
 `5.1.3`
 -------
+
 - **FIX:** Error related to pos loading with the lack of customers
 
 `5.1.2`
 -------
+
 - **FIX:** Availability to buy credit top-up products with discount credits
 - **FIX:** Error related to automatic receipt printing
 - **ADD:** Mandatory Payment Method selection for return orders
@@ -26,10 +36,12 @@
 
 `5.1.1`
 -------
+
 - **FIX:** Compatibility with pos_orders_history_return module
 
 `5.1.0`
 -------
+
 - **NEW:** Wizard allow to create invoices for sets of partners: `Balance update`, `New Balance`
 - **FIX:** Error related to paying with not discount credit journals in POS
 - **FIX:** Invoices paid with credit journals now counts in partner debts

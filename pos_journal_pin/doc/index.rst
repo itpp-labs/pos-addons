@@ -19,6 +19,7 @@ As Administrator please follow next scenario:
 Journal
 -------
 
+  * `Activate Developer Mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
   * Open ``[[Point of Sale]] >> Payment Methods`` menu
   * Choose a journal or create one, be sure the journal is active in POS
   * Activate **Manager's Permission** field
