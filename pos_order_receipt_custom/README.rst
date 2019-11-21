@@ -2,9 +2,9 @@
    :target: https://www.gnu.org/licenses/lgpl
    :alt: License: LGPL-3
 
-=================================
- Customizable POS Kitchen Ticket
-=================================
+===========================
+ Custom POS Kitchen Ticket
+===========================
 
 The module allows to customize POS kitchen ticket
 

@@ -5,7 +5,7 @@
     "summary": """Customize POS kitchen ticket as you need""",
     "category": "Point of Sale",
     # "live_test_url": "",
-    "images": [],
+    "images": ['images/pos_order_receipt_custom.jpg'],
     "version": "12.0.1.0.5",
     "application": False,
 
