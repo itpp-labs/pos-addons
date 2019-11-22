@@ -15,17 +15,15 @@ Then use keys with numbers to enter quantity, price or discount.
 If you want to reset the amount of product to zero or delete them you can use ``Backspace`` .
 
 
-=========== ===================== =================
-Type        Numpad                Extra keys
-=========== ===================== =================
-mode qty    ``/``                 ``q``
------------ --------------------- -----------------
-mode disc   ``-``                 ``d``
------------ --------------------- -----------------
-mode price  ``*``                 ``p``
------------ --------------------- -----------------
-+/-         ``+``                 ``s``
-=========== ===================== =================
+=========== ==============
+Type        Extra keys
+=========== ==============
+mode qty    ``q``
+----------- --------------
+mode disc   ``d``
+----------- --------------
+mode price  ``p``
+=========== ==============
 
 Also inside the Pop-ups windows you can use ``Enter``, ``Backspace`` and ``Esc`` keys in order to speed up the process of interaction with the System.
 
@@ -52,9 +50,8 @@ User Scenario
   
 * Work in your own account using hotkeys for each mode on the Numpad or just press Extra keys. Then enter numbers.
   
-  * You can use ``/`` or ``q`` in case of Qrt mode
-  * You can use ``-`` or ``d`` in case of Disc mode
-  * You can use ``*`` or ``p`` in case of Price mode
-  * You can use ``+`` or ``s`` in case of +/- 
+  * You can use ``q`` in case of Qrt mode
+  * You can use ``d`` in case of Disc mode
+  * You can use ``p`` in case of Price mode
 
 RESULT: In opened POS Keyboard support is invoked instantly and available for further work without any extra action.

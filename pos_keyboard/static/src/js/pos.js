@@ -22,19 +22,62 @@ odoo.define('pos_keyboard.pos', function (require) {
             _super_posmodel.initialize.call(this, session, attributes);
             this.ready.then(function(){
                 self.keypad.set_action_callback(function(data){
-                    var current_screen = self.gui.current_screen;
                     var current_popup = self.gui.current_popup;
-
                     if (current_popup) {
                         current_popup.keypad_action(data);
-                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
-                        current_screen.numpad.keypad_action(data);
                     }
                 });
             });
         }
     });
 
+    gui.Gui.include({
+        show_popup: function(name,options) {
+            this._super(name,options);
+            this.remove_keyboard_handler();
+            this.pos.keypad.connect();
+        },
+
+        close_popup: function() {
+            this._super();
+            this.add_keyboard_handler();
+            this.pos.keypad.disconnect();
+        },
+
+        add_keyboard_handler: function () {
+            var current_screen = this.current_screen;
+            if (!current_screen) {
+                return;
+            }
+            if (current_screen.keyboard_handler) {
+                // PaymentScreen
+                $('body').keypress(current_screen.keyboard_handler);
+                $('body').keydown(current_screen.keyboard_keydown_handler);
+            }
+            if (current_screen._onKeypadKeyDown) {
+                // ProductScreen
+                $(document).on('keydown.productscreen', this.screen_instances.products._onKeypadKeyDown);
+            }
+        },
+
+        remove_keyboard_handler: function () {
+            var current_screen = this.current_screen;
+            if (!current_screen) {
+                return;
+            }
+            if (current_screen.keyboard_handler) {
+                // PaymentScreen
+                $('body').off('keypress', current_screen.keyboard_handler);
+                $('body').off('keydown', current_screen.keyboard_keydown_handler);
+            }
+            if (current_screen._onKeypadKeyDown) {
+                // ProductScreen
+                $(document).off('keydown.productscreen', current_screen._onKeypadKeyDown);
+            }
+        },
+    });
+
+    // it's added to show '*' in password pop-up
     gui.Gui.prototype.popup_classes.filter(function(c){
         return c.name === 'password';
     })[0].widget.include({
@@ -88,36 +131,35 @@ odoo.define('pos_keyboard.pos', function (require) {
         },
     });
 
-    screens.NumpadWidget.include({
-        keypad_action: function(data){
-             var type = this.pos.keypad.type;
-             if (data.type === type.numchar){
-                 this.state.appendNewChar(data.val);
-             }
-             else if (data.type === type.bmode) {
-                 this.state.changeMode(data.val);
-             }
-             else if (data.type === type.sign){
-                 this.clickSwitchSign();
-             }
-             else if (data.type === type.backspace){
-                 this.clickDeleteLastChar();
-             }
-        }
-    });
-    
-    screens.PaymentScreenWidget.include({
-        show: function(){
+    screens.ProductScreenWidget.include({
+        _handleBufferedKeys: function () {
+            // If more than 2 keys are recorded in the buffer, chances are high that the input comes
+            // from a barcode scanner. In this case, we don't do anything.
+            if (this.buffered_key_events.length > 2) {
+                this.buffered_key_events = [];
+                return;
+            }
+
+            for (var i = 0; i < this.buffered_key_events.length; ++i) {
+                var ev = this.buffered_key_events[i];
+
+                switch (ev.key){
+                    case "q":
+                        this.numpad.state.changeMode('quantity');
+                        break;
+                    case "d":
+                        this.numpad.state.changeMode('discount');
+                        break;
+                    case "p":
+                        this.numpad.state.changeMode('price');
+                        break;
+                }
+            }
             this._super();
-            this.pos.keypad.disconnect();
         },
-        hide: function(){
-            this._super();
-            this.pos.keypad.connect();
-        }
     });
     
-    // this module mimics a keypad-only cash register. Use connect() and 
+    // this module mimics a keypad-only cash register. Use connect() and
     // disconnect() to activate and deactivate it.
     var Keypad = core.Class.extend({
         init: function(attributes){
@@ -206,6 +248,7 @@ odoo.define('pos_keyboard.pos', function (require) {
             $('body').on('keyup', '', function (e){
                 var statusHandler  =  !rx.test(e.target.tagName)  ||
                     e.target.disabled || e.target.readOnly;
+                // TODO: simplify that stuff/ it might be needed only for password pop-up
                 if (statusHandler){
                     var is_number = false;
                     var type = self.type;
@@ -249,7 +292,7 @@ odoo.define('pos_keyboard.pos', function (require) {
                         self.data.type = undefined;
                         self.data.val = undefined;
                         ok = false;
-                    } 
+                    }
 
                     if (is_number) {
                         if (timeStamp + 50 > new Date().getTime()) {
@@ -267,14 +310,15 @@ odoo.define('pos_keyboard.pos', function (require) {
             self.active = true;
         },
 
-        // stops catching keyboard events 
+        // stops catching keyboard events
         disconnect: function(){
             $('body').off('keyup', '');
             this.active = false;
         }
     });
-    
+
     return {
         Keypad: Keypad
     };
+
 });
