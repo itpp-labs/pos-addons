@@ -24,16 +24,15 @@ odoo.define('pos_order_note.tour', function(require) {
         content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
         position: "bottom"
     }, {
-        trigger: ".tables .table",
-        content: _t("<p>Click on <b>table</b></p>"),
+        trigger: ".tables .table, .order-button.select-order.selected",
+        content: _t("Click on table or make a dummy action"),
         position: "bottom",
-        timeout: 20000,
+        timeout: 30000,
     }, {
         trigger: ".product-list .product",
         content: _t("<p>Select the first product in the product list</p>"),
         position: "bottom"
-    },
-    {
+    },{
         trigger: ".control-button:has(.fa-tag)",
         content: _t("<p>Click on <b>Note</b> button</p>"),
         position: "bottom"
@@ -65,10 +64,5 @@ odoo.define('pos_order_note.tour', function(require) {
         trigger: ".popup-confirm-note .confirm",
         content: _t("<p>Click on Confirm button</p>"),
         position: "bottom"
-    }, {
-        trigger: ".control-buttons .order-submit",
-        content: _t("<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"),
-        position: "bottom"
-    }
-    ]);
+    }]);
 });
