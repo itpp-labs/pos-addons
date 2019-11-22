@@ -36,6 +36,11 @@ It's highly recommended to `check odoo and postgresql settings about connections
 
 Where ``max_connections`` is postgresql setting and the rest are from odoo.
 
+Installation
+============
+
+The module version 2.3.0 requires Odoo to be updated at least to the 2f849cf80d1262f8e801b20321d99fdff667090c commit.
+
 Usage
 =====
 
