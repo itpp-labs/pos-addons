@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <template id="assets_backend" name="pos_category_multi_assets" inherit_id="point_of_sale.assets">
-            <xpath expr="//link[last()]" position="after">
+        <template id="assets_backend" name="pos_product_category_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_product_category_discount/static/src/js/widgets.js"></script>
                 <script type="text/javascript" src="/pos_product_category_discount/static/src/js/models.js"></script>
+            </xpath>
+            <xpath expr="//link[@id='pos-stylesheet']" position="after">
                 <link rel="stylesheet" href="/pos_product_category_discount/static/src/css/pos.css"/>
             </xpath>
         </template>
