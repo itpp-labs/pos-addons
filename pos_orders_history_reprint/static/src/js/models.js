@@ -72,7 +72,7 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
             return [['pos_reference','in',pos_reference]];
         },
         condition: function(self) {
-            return self.config.orders_history && !self.config.load_barcode_order_only;
+            return self.config.orders_history && !self.config.load_barcode_order_only && self.config.reprint_orders;
         },
         loaded: function (self, receipts) {
             if (receipts && receipts.length) {
