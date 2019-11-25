@@ -4,7 +4,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     'name': 'Confirm POS action by PIN',
-    'version': '12.0.1.2.2',
+    'version': '13.0.1.2.2',
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'summary': 'Technical module for confirmation any action by user of specific group',
     'license': 'LGPL-3',
@@ -12,7 +12,7 @@
     "images": ['images/pos_pin.jpg'],
     "support": "pos@it-projects.info",
     'website': 'https://it-projects.info',
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale', 'pos_hr'],
     'data': [
         'data.xml',
     ],
@@ -20,5 +20,5 @@
     "price": 10.00,
     "currency": "EUR",
 
-    'installable': False,
+    'installable': True,
 }

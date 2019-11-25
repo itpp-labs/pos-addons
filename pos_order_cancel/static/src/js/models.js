@@ -65,7 +65,7 @@ odoo.define('pos_order_cancel.models', function (require) {
                 new_line.canceled_date = this.get_datetime();
             }
             new_line.cancelled_id = line.id;
-            new_line.user_id = this.pos.get_cashier().id;
+            new_line.employee_id = this.pos.get_cashier().id;
             new_line.user_name = this.pos.get_cashier().name;
             line.cancelled_line = new_line;
             this.canceled_lines.push([0, 0, new_line]);
@@ -109,8 +109,8 @@ odoo.define('pos_order_cancel.models', function (require) {
                     line.cancelled_line.qty = line.max_quantity - line.quantity;
                     line.cancelled_line.current_qty = line.quantity;
                 }
-                if (!line.cancelled_line.user_id) {
-                    line.cancelled_line.user_id = this.pos.get_cashier().id;
+                if (!line.cancelled_line.employee_id) {
+                    line.cancelled_line.employee_id = this.pos.get_cashier().id;
                     line.cancelled_line.user_name = this.pos.get_cashier().name;
                 }
                 this.trigger('new_updates_to_send');

@@ -47,4 +47,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_pin.atom>`_
 
-Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b
+Tested on Odoo 13.0 97dbb8c6af4c6af0622497b276bdfb40ee0a3215

@@ -48,24 +48,28 @@ odoo.define('pos_order_cancel.widgets', function (require) {
         show_popup: function(type, line){
             var self = this;
             if (this.pos.config.ask_managers_pin) {
+                var cashier = this.pos.get_cashier();
                 // check for admin rights
-                var manager_group_id = this.pos.config.group_pos_manager_id[0];
-                var is_manager = _.include(this.pos.get_cashier().groups_id, manager_group_id);
-                if (!is_manager) {
+                if (cashier.role !== 'manager') {
                     return this.pos.gui.sudo_custom({
-                        special_group: manager_group_id,
+                        current_cashier: cashier,
                         do_not_change_cashier: true,
+                        only_managers: true,
                         arguments: {
                             ask_untill_correct: true,
                         }
-                    }).done(function(user){
+                    }).then(function(user){
                         self.show_confirm_cancellation_popup(type, line);
-                    }).fail(function(res){
+                    }, function(res){
                         if (type === 'product') {
                             var order = self.pos.get_order();
                             var orderline = line || order.get_selected_orderline();
                             orderline.cancel_quantity_changes();
                         }
+                        self.gui.show_popup('error',{
+                            'title': _t('Warning'),
+                            'body': _t('You have no permission for that.'),
+                        });
                     });
                 }
             }

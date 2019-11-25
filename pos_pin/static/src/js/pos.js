@@ -12,16 +12,17 @@ odoo.define('pos_pin.pos', function (require) {
     gui.Gui.include({
         sudo_custom: function(options) {
             options = options || {};
-            var user = options.user || this.pos.get_cashier();
+            var user = options.current_cashier || this.pos.get_cashier();
         
-            if ($.inArray(options.special_group, user.groups_id) >= 0) {
+            if (user.role === 'manager') {
                 return new $.Deferred().resolve(user);
-            } else {
+            } else if (this.pos.config.module_pos_hr) {
                 return this.select_user_custom(_.extend(options, {
                     'security': true,
-                    'current_user': this.pos.get_cashier(),
+                    'current_user': user,
                 }));
             }
+            return new $.Deferred().reject(user);
         },
         select_user_custom: function(options){
             options = options || {};
@@ -29,30 +30,25 @@ odoo.define('pos_pin.pos', function (require) {
             var def = new $.Deferred();
 
             var list = [];
-            for (var i = 0; i < this.pos.users.length; i++) {
-                var user = this.pos.users[i];
-                if ($.inArray(options.special_group, user.groups_id) >= 0) {
+            _.each(this.pos.employees, function(employee) {
+                if (!options.only_managers || employee.role === 'manager') {
                     list.push({
-                        'label': user.name,
-                        'item':  user
+                    'label': employee.name,
+                    'item':  employee,
                     });
-                }
-            }
-
-            this.show_popup('selection',{
-                'title': options.title || _t('Select User'),
-                'list': list,
-                'confirm': function(cashier){
-                    def.resolve(cashier);
-                },
-                'cancel':  function(){
-                    def.reject();
                 }
             });
 
+            this.show_popup('selection', {
+                title: options.title || _t('Select User'),
+                list: list,
+                confirm: def.resolve,
+                cancel: def.reject,
+            });
+
             return def.then(function(cashier){
-                if (options.security && cashier !== options.current_user && cashier.pos_security_pin) {
-                    return self.ask_password(cashier.pos_security_pin, options.arguments).then(function(){
+                if (options.security && cashier !== options.current_user && cashier.pin) {
+                    return self.ask_password(cashier.pin, options.arguments).then(function(){
                         return cashier;
                     });
                 }
@@ -81,7 +77,7 @@ odoo.define('pos_pin.pos', function (require) {
             this.show_popup('password',{
                 'title': _t('Password ?'),
                 confirm: function(pw) {
-                    if (pw === password) {
+                    if (window.Sha1.hash(pw) === password) {
                         lock.resolve();
                     } else {
                         self.show_popup('error', {
