@@ -1,3 +1,8 @@
+`2.1.3`
+-------
+
+ - **FIX:** Removed block screen during updating longpolling connection request
+
 `2.1.2`
 -------
 
