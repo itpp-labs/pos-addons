@@ -9,7 +9,7 @@
     "category": "Point Of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0',
     "images": ["images/pos-multi-session.png"],
-    "version": "11.0.4.2.10",
+    "version": "11.0.4.2.12",
     "application": False,
 
     "author": "IT-Projects LLC, Ivan Yelizariev",
@@ -28,7 +28,8 @@
         "data/pos_multi_session_data.xml",
         "security/ir.model.access.csv",
         "views/pos_multi_session_views.xml",
-        "multi_session_view.xml"
+        "multi_session_view.xml",
+        "security/ir_rule.xml",
     ],
     "qweb": [
         "static/src/xml/pos_multi_session.xml",

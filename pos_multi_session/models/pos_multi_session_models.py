@@ -1,13 +1,12 @@
 # Copyright 2015-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Ilyas Rakhimkulov
-# Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# Copyright 2016-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+# Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2016-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
-from odoo import api
-from odoo import fields
-from odoo import models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -18,8 +17,7 @@ class PosConfig(models.Model):
     multi_session_id = fields.Many2one('pos.multi_session', 'Multi-session',
                                        help='Set the same value for POSes where orders should be synced.'
                                             'Uncheck the box "Active" if the POS should not use syncing.'
-                                            'Before updating you need to close active session',
-                                       default=lambda self: self.env.ref('pos_multi_session.default_multi_session', raise_if_not_found=False))
+                                            'Before updating you need to close active session')
     multi_session_accept_incoming_orders = fields.Boolean('Accept incoming orders', default=True)
     multi_session_replace_empty_order = fields.Boolean('Replace empty order', default=True, help='Empty order is deleted whenever new order is come from another POS')
     multi_session_deactivate_empty_order = fields.Boolean('Deactivate empty order', default=False, help='POS is switched to new foreign Order, if current order is empty')
@@ -27,7 +25,6 @@ class PosConfig(models.Model):
     sync_server = fields.Char(related='multi_session_id.sync_server')
     autostart_longpolling = fields.Boolean(default=False)
     fiscal_position_ids = fields.Many2many(related='multi_session_id.fiscal_position_ids')
-    company_id = fields.Many2one(related='multi_session_id.company_id')
 
     def _search_current_session_state(self, operator, value):
         ids = map(lambda x: x.id, self.env["pos.config"].search([]))
@@ -41,9 +38,32 @@ class PosConfig(models.Model):
         else:
             return [('id', 'in', [])]
 
+    @api.multi
+    def _write(self, vals):
+        # made to prevent 'expected singleton' errors in *pos.config* constraints
+        result = False
+        if 'multi_session_id' in vals:
+            multi_session_id = vals.get('multi_session_id')
+            if multi_session_id:
+                multi_session_id = self.multi_session_id.browse(multi_session_id)
+                vals['company_id'] = multi_session_id.company_id.id
+            else:
+                vals['company_id'] = self.env.user.company_id.id
+        for config in self:
+            result = super(PosConfig, config)._write(vals)
+        return result
+
+    @api.multi
+    def open_session_cb(self):
+        if not self.multi_session_id:
+            raise ValidationError(_("The Multi-Session is not defined for point of sale") + ' ' + self.name)
+        return super(PosConfig, self).open_session_cb()
 
 class PosMultiSession(models.Model):
     _name = 'pos.multi_session'
+
+    def _get_default_location(self):
+        return self.env['stock.warehouse'].search([('company_id', '=', self.env.user.company_id.id)], limit=1).lot_stock_id
 
     name = fields.Char('Name')
     multi_session_active = fields.Boolean(string="Active", help="Select the checkbox to enable synchronization for POSes", default=True)
@@ -57,17 +77,29 @@ class PosMultiSession(models.Model):
     fiscal_position_ids = fields.Many2many('account.fiscal.position', string='Fiscal Positions', ondelete="restrict")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.user.company_id)
 
-    @api.multi
+    @api.model
     def action_set_default_multi_session(self):
         """
-            during installation of the module set default multi-session
-            for all POSes for which multi_session_id is not specified
+            during installation of the module set default multi-sessions
+            (separate default multi-session for each company)
+            for all POSes with not set multi_session_id
         """
-        self.ensure_one()
-        configs = self.env['pos.config'].search([('multi_session_id', '=', False)])
-        configs.write({
-            'multi_session_id': self.id
-        })
+        companies = self.env['res.company'].search([])
+        for company in companies:
+            configs = self.env['pos.config'].search([('multi_session_id', '=', False), ('company_id', '=', company.id)])
+            # If there are POSes with the company then we need to create default multi-session
+            if configs:
+                # Create default multi-session for current company
+                multi_session = self.create({
+                    'name': 'Default Multi Session (%s)' % company.name,
+                    'multi_session_active': False,
+                    'company_id': company.id,
+                })
+                # odoo.exceptions.ValidationError: ('Error while validating constraint\n\nExpected singleton: pos.config(1, 2, 3)', None)
+                for c in configs:
+                    c.write({
+                        'multi_session_id': multi_session.id
+                    })
 
     @api.multi
     def name_get(self):
