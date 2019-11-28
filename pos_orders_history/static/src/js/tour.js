@@ -162,7 +162,7 @@ odoo.define('pos_orders_history.tour', function(require) {
                     });
                 },
             }].concat(
-                this.select_table(0, 5)
+                this.select_table(0, 2)
             );
         },
 
