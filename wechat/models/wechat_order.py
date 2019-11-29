@@ -152,7 +152,7 @@ class WeChatOrder(models.Model):
         :param lines: list of dictionary
         :param pay_amount: amount in currency (not cents)
         """
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].sudo().get_param('wechat.local_sandbox') == '1'
         vals = {
             'trade_type': 'NATIVE',
             'line_ids': [(0, 0, data) for data in lines],

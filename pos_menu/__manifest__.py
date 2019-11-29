@@ -1,10 +1,13 @@
-# -*- coding: utf-8 -*-
+# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+
 {
     "name": """Product Sets for POS""",
     "summary": """Add own set of products per each POS""",
     "category": "Point Of Sale",
     "images": ["images/pos_menu_main.jpg"],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",
@@ -36,5 +39,5 @@
     "uninstall_hook": None,
 
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

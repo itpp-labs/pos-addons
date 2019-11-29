@@ -1,3 +1,6 @@
+/* Copyright 2019 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
+ * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+
 odoo.define('pos_menu.tour', function(require) {
     "use strict";
 

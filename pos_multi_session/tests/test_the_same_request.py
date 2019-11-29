@@ -14,7 +14,7 @@ class TestUi(odoo.tests.TransactionCase):
 
         ms_model = self.env["pos_multi_session_sync.multi_session"]
 
-        allow_public = self.env['ir.config_parameter'].get_param('pos_longpolling.allow_public')
+        allow_public = self.env['ir.config_parameter'].sudo().get_param('pos_longpolling.allow_public')
         if allow_public:
             ms_model = ms_model.sudo()
         ms = ms_model.search([('multi_session_ID', '=', int(multi_session.id)),

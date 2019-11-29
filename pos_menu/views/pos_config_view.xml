@@ -3,7 +3,7 @@
     <record id="view_pos_config_form" model="ir.ui.view">
         <field name="name">pos.config.form.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='iface_print_skip_screen']" position="after">
                 <field name="current_session_state" invisible="1"/>

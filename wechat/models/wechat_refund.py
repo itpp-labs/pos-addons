@@ -42,7 +42,7 @@ class WeChatRefund(models.Model):
 
     def action_confirm(self):
         self.ensure_one()
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].sudo().get_param('wechat.local_sandbox') == '1'
         wpay = self.env['ir.config_parameter'].get_wechat_pay_object()
         record = self.order_id or self.micropay_id
         if debug:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
@@ -6,9 +5,9 @@
     "name": """Disable options in POS (restaurant extension)""",
     "summary": """Control access to POS restaurant options""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-disable-payment-restaurant?version=10.0",
+    "live_test_url": "http://apps.it-projects.info/shop/product/pos-disable-payment-restaurant?version=12.0",
     "images": ['images/pos_disable_payment_restaurant.jpg'],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

@@ -4,7 +4,7 @@ odoo.define('pos_product_lot.PosLot', function(require) {
 var models = require('point_of_sale.models');
 var PosDB = require('point_of_sale.DB');
 var screens = require('point_of_sale.screens');
-var Model = require('web.Model');
+var rpc = require('web.rpc');
 
 // from http://vk.com/js/common.js
 function geByClass(searchClass, node, tag) {

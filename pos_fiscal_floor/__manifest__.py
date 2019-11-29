@@ -1,6 +1,6 @@
 {
     'name': 'POS fiscal floor',
-    'version': '10.0.1.0.1',
+    'version': '12.0.1.0.1',
     'author': 'IT-Projects LLC',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',

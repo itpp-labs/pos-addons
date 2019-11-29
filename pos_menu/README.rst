@@ -10,6 +10,8 @@ Credits
 Contributors
 ------------
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
+* `Ilmir Karamov <https://it-projects.info/team/ilmir-k>`__
 
 Sponsors
 --------
@@ -28,7 +30,7 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/10.0/pos-addons
+Demo: http://runbot.it-projects.info/demo/12.0/pos-addons
 
 HTML Description: https://apps.odoo.com/apps/modules/10.0/pos_menu/
 
@@ -36,4 +38,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 10.0 0351677a00df8bd76fa207a38dc2ecdefdc6940a
+Tested on Odoo 12.0 0351677a00df8bd76fa207a38dc2ecdefdc6940a

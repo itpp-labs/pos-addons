@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Partner Deselection""",
     "summary": """The module deselects a partner in opened POS on expiry the predefined time interval after the customer was set.""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=12.0",
     "images": ['images/pos_partner_deselection.jpg'],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

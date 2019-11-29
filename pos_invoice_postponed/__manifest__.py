@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 {
     "name": """Creation of Postponed invoices in POS""",
     "summary": """This module allows the usage of a regular POS order payment process to create an invoice to be paid later""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=12.0",
     "images": ['images/postponed2.jpg'],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
 
     "author": "IT-Projects LLC, Kolushov Alexandr",

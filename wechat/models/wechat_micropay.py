@@ -39,7 +39,7 @@ class Micropay(models.Model):
         :param pay_amount: Specifies the amount to pay. The units are in currency units (not cents)
         :param create_vals: extra args to pass on record creation
         """
-        debug = self.env['ir.config_parameter'].get_param('wechat.local_sandbox') == '1'
+        debug = self.env['ir.config_parameter'].sudo().get_param('wechat.local_sandbox') == '1'
         total_fee = int(100*pay_amount)
         vals = {
             'journal_id': kwargs['journal_id'],
