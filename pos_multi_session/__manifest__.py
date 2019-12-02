@@ -4,7 +4,7 @@
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
-    "name": """Sync POS orders across multiple sessions""",
+    "name": """Sync POS orders""",
     "summary": """Use multiple POS for handling orders""",
     "category": "Point Of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=12.0',
