@@ -9,7 +9,9 @@ odoo.define('pos_qr_scan', function(require){
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
-    Quagga = window.Quagga;
+    var core = require('web.core');
+    var _t = core._t;
+    var Quagga = window.Quagga;
 
     var QrButton = screens.ActionButtonWidget.extend({
         template: 'QrButton',
@@ -54,26 +56,26 @@ odoo.define('pos_qr_scan', function(require){
                 inputStream : {
                     name : "Live",
                     type : "LiveStream",
-                    target: document.querySelector('#preview')    // Or '#yourElement' (optional)
+                    target: document.querySelector('#preview')
                 },
                 decoder : {
                     readers : [
-                        "code_128_reader",
+                        // "code_128_reader",
                         "ean_reader",
-                        "ean_8_reader",
-                        "code_39_reader",
-                        "code_39_vin_reader",
-                        "codabar_reader",
-                        "upc_reader",
-                        "upc_e_reader",
-                        "i2of5_reader",
-                        "code_93_reader",
+                        // "ean_8_reader",
+                        // "code_39_reader",
+                        // "code_39_vin_reader",
+                        // "codabar_reader",
+                        // "upc_reader",
+                        // "upc_e_reader",
+                        // "i2of5_reader",
+                        // "code_93_reader",
                     ]
                 }
             }, function(err) {
                 if (err) {
                     console.log(err);
-                    return
+                    return;
                 }
                 console.log("Initialization finished. Ready to start");
                 Quagga.start();
@@ -161,9 +163,14 @@ odoo.define('pos_qr_scan', function(require){
                 }
             } else{
                 console.log("no navigator.mediaDevices.enumerateDevices" );
+                this.pos.gui.show_popup('alert', {
+                    title: _t('Error'),
+                    body: _t('No Media Devices Found')
+                });
             }
         },
         generate_qr_scanner: function() {
+            var self = this;
             this.cam_is_on = true;
             setTimeout(function(){
                 self.captureToCanvas();
