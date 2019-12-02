@@ -1,3 +1,8 @@
+`2.0.0`
+-------
+
+- **Improvement:** - Barcode scanner added
+
 `1.0.2`
 -------
 

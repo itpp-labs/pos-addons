@@ -1,19 +1,31 @@
 =========================
- QR Code Scanning in POS
+ POS QR/Barcode Scanning
 =========================
 
-Scans QR codes via device's camera.
+Scans QR codes and barcodes via device's camera.
+
+the module supports next barcode codings:
+
+* code 128
+* ean
+* ean 8
+* code 39
+* code 39 vin
+* codabar
+* upc
+* upc e
+* i2of5
+* code 93
 
 Usage
 =====
 
-To subscribe to scanning event use following code in js::
+To subscribe to qr scanning event use following code in js::
 
     var core = require('web.core');
     core.bus.on('qr_scanned', this, function(value){
         // your handler here
-    })
-
+    });
 
 Credits
 =======
@@ -41,4 +53,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 c7171795f891335e8a8b6d5a6b796c28cea77fea
+Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b

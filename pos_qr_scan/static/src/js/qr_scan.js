@@ -1,5 +1,5 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-   Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+   Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_qr_scan', function(require){
     var exports = {};
@@ -9,6 +9,7 @@ odoo.define('pos_qr_scan', function(require){
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
     var screens = require('point_of_sale.screens');
+    Quagga = window.Quagga;
 
     var QrButton = screens.ActionButtonWidget.extend({
         template: 'QrButton',
@@ -32,16 +33,75 @@ odoo.define('pos_qr_scan', function(require){
             var self = this;
             this.gUM = false;
             this._super(options);
-            this.generate_qr_scanner();
+            this.prepare_video_element();
+            var config = this.pos.config;
+            if (config.use_only_qr_scan) {
+                this.generate_qr_scanner();
+            } else if (config.use_only_barcode_scan) {
+                this.generate_barcode_scanner();
+            } else {
+                this.generate_qr_scanner();
+                this.generate_barcode_scanner();
+            }
+            this.read_callback = options.read_callback || this.read;
+        },
+        init: function(parent, args) {
+            this._super(parent, args);
+        },
+        generate_barcode_scanner: function () {
+            var self = this;
+            Quagga.init({
+                inputStream : {
+                    name : "Live",
+                    type : "LiveStream",
+                    target: document.querySelector('#preview')    // Or '#yourElement' (optional)
+                },
+                decoder : {
+                    readers : [
+                        "code_128_reader",
+                        "ean_reader",
+                        "ean_8_reader",
+                        "code_39_reader",
+                        "code_39_vin_reader",
+                        "codabar_reader",
+                        "upc_reader",
+                        "upc_e_reader",
+                        "i2of5_reader",
+                        "code_93_reader",
+                    ]
+                }
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+            });
+
+            Quagga.onDetected(function(result) {
+                var code = result.codeResult.code;
+
+                if (this.lastResult !== code) {
+                    this.lastResult = code;
+                    var $node = null,
+                        canvas = Quagga.canvas.dom.image;
+                    self.read_callback(code, 'barcode');
+                }
+            });
         },
         click_cancel: function() {
-            this.stop_camera();
             this._super(arguments);
+            this.stop_camera();
         },
         stop_camera: function(camera){
             this.cam_is_on = false;
             if (this.stream){
                 this.stream.getTracks()[0].stop();
+            }
+            if (!this.pos.config.use_only_qr_scan) {
+                Quagga.stop();
+                Quagga.offDetected();
             }
         },
         add_button: function(content) {
@@ -64,16 +124,16 @@ odoo.define('pos_qr_scan', function(require){
                 return cam.deviceId === id;
             });
         },
-        generate_qr_scanner: function() {
-            var options = false;
-            var self = this;
+        prepare_video_element: function() {
             this.video_element = document.getElementById("preview");
             $(this.video_element).on('click',function(){
                 self.click_cancel();
             });
+            var options = false;
+            var self = this;
             if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices){
                 this.capture_timeout = 700;
-                try{
+                try {
                     navigator.mediaDevices.enumerateDevices().then(function(devices) {
                         self.video_devices = _.filter(devices, function(d) {
                            return d.kind === 'videoinput';
@@ -96,31 +156,35 @@ odoo.define('pos_qr_scan', function(require){
                         }
                         self.start_webcam(options);
                     });
-                }
-                catch(e){
+                } catch(e){
                     alert(e);
                 }
-            }
-            else{
+            } else{
                 console.log("no navigator.mediaDevices.enumerateDevices" );
-                this.start_webcam(options);
             }
         },
+        generate_qr_scanner: function() {
+            this.cam_is_on = true;
+            setTimeout(function(){
+                self.captureToCanvas();
+            }, this.capture_timeout);
+        },
 
-        read: function(result){
+        read: function(result, method){
+            method = method || 'qr';
             // Trigger event on scanning and close camera window
             if (this.pos.debug){
-                console.log('QR scanned', result);
+                console.log(method.toUpperCase() + ' scanned', result);
             }
-            core.bus.trigger('qr_scanned', result);
-            posmodel.gui.popup_instances.qr_scan.click_cancel();
+            this.click_cancel();
+            core.bus.trigger(method + '_scanned', result);
         },
 
         start_webcam: function(options){
             var self = this;
             this.initCanvas(800, 600);
             qrcode.callback = function(value){
-                self.read(value);
+                self.read_callback(value, 'qr');
             }
             if(navigator.mediaDevices.getUserMedia){
                 navigator.mediaDevices.getUserMedia({video: options, audio: false}).
@@ -141,11 +205,6 @@ odoo.define('pos_qr_scan', function(require){
                 webkit = true;
                 navigator.webkitGetUserMedia({video:options, audio: false}, success, error);
             }
-
-            this.cam_is_on = true;
-            setTimeout(function(){
-                self.captureToCanvas();
-            }, this.capture_timeout);
         },
 
         success: function(stream){

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <templates id="template" xml:space="preserve">
 
     <t t-name="QrButton">
         <div class='control-button'>
-            <i class='fa fa-qrcode' /> QR Scan
+            <i class='fa fa-qrcode' /> QR / Barcode Scan
         </div>
     </t>
 
@@ -15,7 +17,7 @@
                 </div>
                 <div class="transparent_sidebar">
                     <div class="title">
-                        <p>QR Scanning</p>
+                        <p>QR / Barcode Scanning</p>
                     </div>
                     <div class="body">
                         <p>Cameras:</p>

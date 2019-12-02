@@ -1,5 +1,5 @@
 =========================
- QR Code Scanning in POS
+ POS QR/Barcode Scanning
 =========================
 
 Installation
