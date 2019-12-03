@@ -20,7 +20,7 @@ Maintainers
 -----------
 * `IT-Projects LLC <https://it-projects.info>`__
 
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_menu/>`__.
+      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_menu/>`__.
 
       Thank you for understanding!
 
@@ -29,12 +29,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/11.0/pos-addons
+Demo: http://runbot.it-projects.info/demo/12.0/pos-addons
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_menu/
+HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_menu/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 11.0 dff2e242a5e5288cb3c8408a9b635a4c85034e83
+Tested on Odoo 12.0 dff2e242a5e5288cb3c8408a9b635a4c85034e83
