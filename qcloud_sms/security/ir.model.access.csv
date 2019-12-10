@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_qcloud_sms,access_qcloud_sms,model_qcloud_sms,base.group_user,1,1,1,0
+access_qcloud_sms_template,access_qcloud_sms_template,model_qcloud_sms_template,base.group_user,1,1,1,0

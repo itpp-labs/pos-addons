@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_alipay_order_line,access_alipay_order_line,model_alipay_order_line,base.group_user,1,0,0,0
+access_alipay_order,access_alipay_order,model_alipay_order,base.group_user,1,0,0,0
+access_alipay_refund,access_alipay_refund,model_alipay_refund,base.group_user,1,0,0,0
+access_product_product,access_product_product,product.model_product_product,alipay.group_miniprogram_user,1,0,0,0
+access_product_template,access_product_template,product.model_product_template,alipay.group_miniprogram_user,1,0,0,0
+access_product_attribute_value,access_product_attribute_value,product.model_product_attribute_value,alipay.group_miniprogram_user,1,0,0,0
+access_product_attribute_price,access_product_attribute_price,product.model_product_attribute_price,alipay.group_miniprogram_user,1,0,0,0
