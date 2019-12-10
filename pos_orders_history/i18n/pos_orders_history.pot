@@ -165,6 +165,11 @@ msgid "POS"
 msgstr ""
 
 #. module: pos_orders_history
+#: model:ir.model.fields,field_description:pos_orders_history.field_pos_config_is_pos_order_cancel_installed
+msgid "POS Order Cancel Module Installed"
+msgstr ""
+
+#. module: pos_orders_history
 #. openerp-web
 #: code:addons/pos_orders_history/static/src/xml/pos.xml:97
 #, python-format
