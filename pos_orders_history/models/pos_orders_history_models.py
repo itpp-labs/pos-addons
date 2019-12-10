@@ -24,6 +24,14 @@ class PosConfig(models.Model):
     show_posted_orders = fields.Boolean("Show Posted Orders", default=False)
     show_invoiced_orders = fields.Boolean("Show Invoiced Orders", default=False)
     show_barcode_in_receipt = fields.Boolean("Show Barcode in Receipt", default=True)
+    is_pos_order_cancel_installed = fields.Boolean("POS Order Cancel Module Installed",
+                                                   compute="_compute_is_pos_order_cancel_installed")
+
+    def _compute_is_pos_order_cancel_installed(self):
+        pos_order_cancel = self.env['ir.module.module'].sudo().search(
+            [('name', '=', 'pos_order_cancel'), ('state', '=', 'installed')])
+        for pos_config in self:
+            pos_config.is_pos_order_cancel_installed = pos_order_cancel and pos_order_cancel.id
 
     # ir.actions.server methods:
     @api.model

@@ -1,3 +1,9 @@
+`1.4.0`
+-------
+
+**Improvement:** Reduced quantity of requests to the server
+**Improvement:** "Show Cancelled Orders" option is shown only with "Saving removed products of POS order" module installed
+
 `1.3.0`
 -------
 

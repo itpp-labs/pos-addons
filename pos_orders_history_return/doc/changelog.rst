@@ -1,7 +1,7 @@
-.. _changelog:
+`1.1.0`
+-------
 
-Updates
-=======
+**Improvement:** Reduced quantity of requests to the server
 
 `1.0.5`
 -------
