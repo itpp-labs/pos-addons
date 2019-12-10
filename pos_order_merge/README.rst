@@ -7,8 +7,7 @@ Merge POS orders into a single order in a few clicks.
 Roadmap
 =======
 
-.. note::  Does not work in the *Store mode*, where the floors are not located.
-*A floor is a place for tables.*
+.. note::  Does not work in the *Store mode*, where the floors are not located. *A floor is a place for tables.*
 
 TODO: Store mode
 

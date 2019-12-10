@@ -30,12 +30,12 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
             });
         },
         get_receipt_by_id: function(id) {
-            return this.orders_history_receipt.find(function(receipt){
+            return _.find(this.orders_history_receipt, function(receipt){
                 return receipt.id === id;
             });
         },
         get_receipt_by_order_reference_and_type: function(reference, type) {
-            return this.orders_history_receipt.find(function(receipt){
+            return _.find(this.orders_history_receipt, function(receipt){
                 return receipt.pos_reference === reference && receipt.receipt_type === type;
             });
         },
@@ -72,7 +72,7 @@ odoo.define('pos_orders_history_reprint.models', function (require) {
             return [['pos_reference','in',pos_reference]];
         },
         condition: function(self) {
-            return self.config.orders_history && !self.config.load_barcode_order_only;
+            return self.config.orders_history && !self.config.load_barcode_order_only && self.config.reprint_orders;
         },
         loaded: function (self, receipts) {
             if (receipts && receipts.length) {

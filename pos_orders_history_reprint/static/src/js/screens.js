@@ -1,6 +1,6 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
- * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history_reprint.screens', function (require) {
     "use strict";
@@ -65,8 +65,10 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
         set_reprint_action: function() {
             var self = this;
             this.$('.actions.oe_hidden').removeClass('oe_hidden');
-            this.$('.button.reprint').unbind('click');
-            this.$('.button.reprint').click(function (e) {
+            var $reprint_button = this.$('.button.reprint');
+            $reprint_button.removeClass('oe_hidden');
+            $reprint_button.unbind('click');
+            $reprint_button.click(function (e) {
                 var parent = $(this).parents('.order-line');
                 var id = parseInt(parent.data('id'));
                 self.click_reprint_order(id);
@@ -205,7 +207,7 @@ odoo.define('pos_orders_history_reprint.screens', function (require) {
                         "width": "100%"
                     });
                 }
-            } else if (self.pos.config.show_posted_orders && order.state === "done") {
+            } else if (self.pos.config.show_posted_orders && (order.state === "done" || order.state === "invoiced")){
                 rpc.query({
                     model: 'pos.xml_receipt',
                     method: 'search_read',
