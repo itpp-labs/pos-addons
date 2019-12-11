@@ -7,7 +7,7 @@ Longpolling
 
 Check following resources about activating longpolling:
 
-* Official doc: https://www.odoo.com/documentation/11.0/setup/deploy.html#builtin-server
+* Official doc: https://www.odoo.com/documentation/13.0/setup/deploy.html#builtin-server
 * Non-official doc: https://odoo-development.readthedocs.io/en/latest/admin/longpolling.html
 
 In short, you need to start server with non-zero ``workers`` parameter:::

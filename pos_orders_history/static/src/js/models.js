@@ -11,7 +11,10 @@ odoo.define('pos_orders_history.models', function (require) {
     models.PosModel = models.PosModel.extend({
         initialize: function () {
             _super_pos_model.initialize.apply(this, arguments);
-            this.bus.add_channel_callback("pos_orders_history", this.on_orders_history_updates, this);
+            var self = this;
+            this.ready.then(function () {
+                self.bus.add_channel_callback("pos_orders_history", self.on_orders_history_updates, self);
+            });
             this.subscribers = [];
         },
         add_subscriber: function (subscriber) {
@@ -28,7 +31,7 @@ odoo.define('pos_orders_history.models', function (require) {
                 state.push('done');
             }
             message.updated_orders.forEach(function (id) {
-                self.get_order_history(id).done(function(order) {
+                self.get_order_history(id).then(function(order) {
                     if (order instanceof Array) {
                         order = order[0];
                     }
@@ -36,7 +39,7 @@ odoo.define('pos_orders_history.models', function (require) {
                         self.update_orders_history(order);
                     }
                 });
-                self.get_order_history_lines_by_order_id(id).done(function (lines) {
+                self.get_order_history_lines_by_order_id(id).then(function (lines) {
                     self.update_orders_history_lines(lines);
                 });
             });

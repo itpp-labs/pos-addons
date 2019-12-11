@@ -3,12 +3,11 @@
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-import odoo.tests
+from odoo.tests import tagged, HttpCase
 
 
-@odoo.tests.common.at_install(True)
-@odoo.tests.common.post_install(True)
-class TestUi(odoo.tests.HttpCase):
+@tagged('at_install', 'post_install')
+class TestUi(HttpCase):
 
     def test_01_check_history(self):
         # needed because tests are run before the module is marked as

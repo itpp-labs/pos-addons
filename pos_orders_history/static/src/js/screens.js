@@ -1,6 +1,6 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
- * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+ * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define('pos_orders_history.screens', function (require) {
     "use strict";
@@ -134,7 +134,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                     if (o instanceof Array) {
                         o = o[0];
                     }
-                    self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                    self.pos.get_order_history_lines_by_order_id(o.id).then(function (lines) {
                         self.pos.update_orders_history_lines(lines);
                         self.search_order_on_history(o);
                     });
@@ -185,10 +185,8 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_orders_by_filter: function(filter, orders) {
             var self = this;
             if (filter === "user") {
-                var user_id = this.pos.user.id;
-                if (this.pos.get_cashier()) {
-                    user_id = this.pos.get_cashier().id;
-                }
+                var cashier = this.pos.get_cashier();
+                var user_id = (cashier && cashier.user_id && cashier.user_id[0]) || this.pos.user.id;
                 return orders.filter(function(order) {
                     return order.user_id[0] === user_id;
                 });
@@ -364,7 +362,7 @@ odoo.define('pos_orders_history.screens', function (require) {
             this.gui.current_screen.$('.searchbox input').keypress();
         },
         get_product_image_url: function(product_id){
-            return window.location.origin + '/web/image?model=product.product&field=image_small&id='+product_id;
+            return window.location.origin + '/web/image?model=product.product&field=image_128&id='+product_id;
         },
     });
     gui.define_screen({name:'orders_history_screen', widget: screens.OrdersHistoryScreenWidget});
@@ -401,7 +399,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                             if (o instanceof Array) {
                                 o = o[0];
                             }
-                            self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                            self.pos.get_order_history_lines_by_order_id(o.id).then(function (lines) {
                                 self.pos.update_orders_history_lines(lines);
                                 self.search_order_on_history(o);
                             });
