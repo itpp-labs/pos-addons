@@ -18,6 +18,7 @@ odoo.define('pos_orders_history_reprint.tour', function(require) {
     var steps = [].concat(
         hist_tour.open_pos_steps(),
         hist_tour.create_order_steps(),
+        hist_tour.fetch_history(),
         hist_tour.orders_history(),
         reprint_order(),
         hist_tour.close_pos()

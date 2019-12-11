@@ -41,7 +41,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                     if (o && o.length) {
                         self.pos.update_orders_history(o);
                         o.forEach(function (exist_order) {
-                            self.pos.get_order_history_lines_by_order_id(exist_order.id).done(function (lines) {
+                            self.pos.fetch_order_history_lines_by_order_ids(exist_order.id).done(function (lines) {
                                 self.pos.update_orders_history_lines(lines);
                                 if (!exist_order.returned_order) {
                                     self.search_order_on_history(exist_order);
@@ -101,7 +101,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
             var sequence_number = split_sequence_number[split_sequence_number.length - 1];
 
             var orders = this.pos.get('orders').models;
-            var exist_order = orders.find(function(o) {
+            var exist_order = _.find(orders, function(o) {
                 return o.uid === uid && Number(o.sequence_number) === Number(sequence_number);
             });
 
@@ -203,7 +203,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                             var line = self.pos.db.line_by_id[line_id];
                             var product = self.pos.db.get_product_by_id(line.product_id[0]);
 
-                            var exist_product = products.find(function(r){
+                            var exist_product = _.find(products, function(r){
                                 return r.id === product.id;
                             });
                             if (exist_product) {
@@ -221,7 +221,7 @@ odoo.define('pos_orders_history_return.screens', function (require) {
                 // update max qty for current return order
                 order.return_lines.forEach(function(line) {
                     var product = self.pos.db.get_product_by_id(line.product_id[0]);
-                    var exist_product = products.find(function(r){
+                    var exist_product = _.find(products, function(r){
                         return r.id === product.id;
                     });
                     if (exist_product) {

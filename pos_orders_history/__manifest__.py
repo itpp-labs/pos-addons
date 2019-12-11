@@ -1,7 +1,7 @@
 # Copyright 2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Artem Losev
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     "name": "POS Orders History",
@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=12.0",
     "images": ['images/pos_orders_history_main.png'],
-    "version": "12.0.1.2.1",
+    "version": "12.0.1.4.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

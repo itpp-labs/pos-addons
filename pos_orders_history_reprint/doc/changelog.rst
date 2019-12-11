@@ -1,7 +1,14 @@
-.. _changelog:
+`1.0.6`
+-------
 
-Updates
-=======
+- **Fix:** Downloading tickets even if the "Reprint" option is off
+- **Fix:** "Reprint" button on the orders history list was shown when "Reprint" option was off
+
+`1.0.5`
+--------
+
+- **Fix:** Correcting "There is No Ticket for the Order" Message for Orders with Invoiced Status
+
 
 `1.0.4`
 -------
