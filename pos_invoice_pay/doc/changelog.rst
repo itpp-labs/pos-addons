@@ -1,3 +1,10 @@
+`1.3.0`
+-------
+
+**New:** Implement printing invoice lines in receipts
+**Fix:** Fixed field properties typo in sale_order_cashier_selection and invoice_cashier_selection
+**Fix:** Fixed "'bool' object has no attribute 'mapped'" error in get_sale_details
+
 `1.2.3`
 -------
 
