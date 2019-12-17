@@ -23,7 +23,8 @@
                 <script type="text/javascript" src="/pos_qr_scan/static/lib/jsqrcode/alignpat.js"></script>
                 <script type="text/javascript" src="/pos_qr_scan/static/lib/jsqrcode/databr.js"></script>
 
-                <script type="text/javascript" src="/pos_qr_scan/static/lib/Quagga/quagga.min.js"></script>
+    <!--        <script type="text/javascript" src="/pos_qr_scan/static/lib/Quagga/quagga.min.js"></script>-->
+                <script type="text/javascript" src="/pos_qr_scan/static/lib/barcode/barcode.js"></script>
 
                 <script type="text/javascript" src="/pos_qr_scan/static/src/js/qr_scan.js"></script>
             </xpath>

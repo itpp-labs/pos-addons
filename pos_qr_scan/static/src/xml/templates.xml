@@ -14,6 +14,7 @@
             <div class="popup popup-qr_scan">
                 <div id="preview-container">
                     <video id="preview" class="video_preview" autoplay="true"></video>
+                    <canvas id="barcodecanvasg" ></canvas>
                 </div>
                 <div class="transparent_sidebar">
                     <div class="title">
@@ -29,6 +30,7 @@
                 </div>
             </div>
             <canvas id="qr-canvas" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
+            <canvas id="qr-canvasg" width="800" height="600" style="width: 800px; height: 600px; display:none"></canvas>
         </div>
     </t>
 

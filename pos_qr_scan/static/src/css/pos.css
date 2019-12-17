@@ -49,3 +49,11 @@
 .fa-qrcode:before {
   content: "\f029";
 }
+
+video {
+  -moz-transform:scale(1.8);
+  -webkit-transform:scale(1.8);
+  -o-transform:scale(1.8);
+  -ms-transform:scale(1.8);
+  transform:scale(1.8);
+}

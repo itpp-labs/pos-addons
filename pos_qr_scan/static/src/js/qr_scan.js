@@ -52,45 +52,57 @@ odoo.define('pos_qr_scan', function(require){
         },
         generate_barcode_scanner: function () {
             var self = this;
-            Quagga.init({
-                inputStream : {
-                    name : "Live",
-                    type : "LiveStream",
-                    target: document.querySelector('#preview')
-                },
-                decoder : {
-                    readers : [
-                        // "code_128_reader",
-                        "ean_reader",
-                        // "ean_8_reader",
-                        // "code_39_reader",
-                        // "code_39_vin_reader",
-                        // "codabar_reader",
-                        // "upc_reader",
-                        // "upc_e_reader",
-                        // "i2of5_reader",
-                        // "code_93_reader",
-                    ]
-                }
-            }, function(err) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                console.log("Initialization finished. Ready to start");
-                Quagga.start();
-            });
-
-            Quagga.onDetected(function(result) {
-                var code = result.codeResult.code;
-
-                if (this.lastResult !== code) {
-                    this.lastResult = code;
-                    var $node = null,
-                        canvas = Quagga.canvas.dom.image;
-                    self.read_callback(code, 'barcode');
+            barcode.config.start = 0.1;
+            barcode.config.end = 0.9;
+            barcode.config.video = '#preview';
+            barcode.config.canvas = '#qr-canvas';
+            barcode.config.canvasg = '#qr-canvasg';
+            barcode.setHandler(function(barcode) {
+                if (this.lastResult !== barcode) {
+                    this.lastResult = barcode;
+                    self.read_callback(barcode, 'barcode');
                 }
             });
+            barcode.init();
+            // Quagga.init({
+            //     inputStream : {
+            //         name : "Live",
+            //         type : "LiveStream",
+            //         target: document.querySelector('#preview')
+            //     },
+            //     decoder : {
+            //         readers : [
+            //             // "code_128_reader",
+            //             "ean_reader",
+            //             // "ean_8_reader",
+            //             // "code_39_reader",
+            //             // "code_39_vin_reader",
+            //             // "codabar_reader",
+            //             // "upc_reader",
+            //             // "upc_e_reader",
+            //             // "i2of5_reader",
+            //             // "code_93_reader",
+            //         ]
+            //     }
+            // }, function(err) {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     console.log("Initialization finished. Ready to start");
+            //     Quagga.start();
+            // });
+            //
+            // Quagga.onDetected(function(result) {
+            //     var code = result.codeResult.code;
+            //
+            //     if (this.lastResult !== code) {
+            //         this.lastResult = code;
+            //         var $node = null,
+            //             canvas = Quagga.canvas.dom.image;
+            //         self.read_callback(code, 'barcode');
+            //     }
+            // });
         },
         click_cancel: function() {
             this._super(arguments);
@@ -102,8 +114,8 @@ odoo.define('pos_qr_scan', function(require){
                 this.stream.getTracks()[0].stop();
             }
             if (!this.pos.config.use_only_qr_scan) {
-                Quagga.stop();
-                Quagga.offDetected();
+                // Quagga.stop();
+                // Quagga.offDetected();
             }
         },
         add_button: function(content) {
@@ -246,7 +258,7 @@ odoo.define('pos_qr_scan', function(require){
             }
         },
         initCanvas: function(w,h){
-            var gCanvas = document.getElementById("qr-canvas");
+            var gCanvas = document.getElementById("qr-canvasg");
             gCanvas.style.width = w + "px";
             gCanvas.style.height = h + "px";
             gCanvas.width = w;
