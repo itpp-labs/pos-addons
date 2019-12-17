@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<templates>
+
+    <t t-extend="ClientDetailsEdit">
+        <t t-jquery="input.detail.barcode" t-operation="after">
+            <span class='button scan barcode' data="barcode"><i class='fa fa-qrcode' role="img" aria-label="Scan" title="Scan"/></span>
+        </t>
+
+        <t t-jquery="input.detail.vat" t-operation="after">
+            <span class='button scan' data="vat"><i class='fa fa-qrcode' role="img" aria-label="Scan" title="Scan"/></span>
+        </t>
+    </t>
+
+</templates>

@@ -1,3 +1,13 @@
+`2.0.0`
+-------
+
+- **Improvement:** - Barcode scanner added
+
+`1.0.2`
+-------
+
+- **Fix:** - Scanner didn't work due to "ReferenceError: gCtx is not defined"
+
 `1.0.1`
 -------
 

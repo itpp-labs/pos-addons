@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <h2>QR / Barcode Scanning</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="text-muted col-xs-12 col-md-12 o_setting_box">
+                        By Default QR and Barcode scanning are both enabled
+                    </div>
+                    <div id="use_only_qr_scan" class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="use_only_qr_scan"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="use_only_qr_scan"/>
+                        </div>
+                    </div>
+                    <div id="use_only_barcode_scan" class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="use_only_barcode_scan"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="use_only_barcode_scan"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
