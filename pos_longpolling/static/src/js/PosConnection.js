@@ -99,7 +99,11 @@ odoo.define('pos_longpolling.PosConnection', function(require){
         on_notification_do: function (channel, message) {
             var self = this;
             if (_.isString(channel)) {
-                channel = JSON.parse(channel);
+                try {
+                    channel = JSON.parse(channel);
+                } catch (err) {
+                    // nothing to report, channel name as is
+                }
             }
             if(Array.isArray(channel) && (channel[1] in self.channel_callbacks)){
                 try {
