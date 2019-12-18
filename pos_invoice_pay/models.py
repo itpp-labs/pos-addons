@@ -1,5 +1,5 @@
 # Copyright 2017 Artyom Losev
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 from odoo import api, models, fields, _
 
@@ -11,10 +11,11 @@ class PosOrder(models.Model):
     _inherit = 'pos.order'
 
     @api.model
-    def create_from_ui(self, orders):
+    def create_from_ui(self, orders, draft=False):
         invoices_to_pay = [o for o in orders if o.get('data').get('invoice_to_pay')]
         original_orders = [o for o in orders if o not in invoices_to_pay]
-        res = super(PosOrder, self).create_from_ui(original_orders)
+        # import wdb; wdb.set_trace()
+        res = super(PosOrder, self).create_from_ui(original_orders, draft=draft)
         if invoices_to_pay:
             for inv in invoices_to_pay:
                 self.process_invoice_payment(inv)
@@ -24,12 +25,12 @@ class PosOrder(models.Model):
     def process_invoice_payment(self, invoice):
         for statement in invoice['data']['statement_ids']:
             inv_id = invoice['data']['invoice_to_pay']['id']
-            inv_obj = self.env['account.invoice'].browse(inv_id)
-            journal_id = statement[2]['journal_id']
-            journal = self.env['account.journal'].browse(journal_id)
+            inv_obj = self.env['account.move'].browse(inv_id)
+            payment_method_id = statement[2]['payment_method_id']
+            journal = self.env['pos.payment.method'].browse(payment_method_id)
             amount = min(
                 statement[2]['amount'],  # amount payed including change
-                invoice['data']['invoice_to_pay']['residual'],  # amount required to pay
+                invoice['data']['invoice_to_pay']['amount_residual'],  # amount required to pay
             )
             cashier = invoice['data']['user_id']
             writeoff_acc_id = False
@@ -39,7 +40,7 @@ class PosOrder(models.Model):
                 'journal_id': journal.id,
                 'payment_method_id': 1,
                 'payment_date': invoice['data']['creation_date'],
-                'communication': invoice['data']['invoice_to_pay']['number'],
+                # 'communication': invoice['data']['invoice_to_pay']['number'],
                 'invoice_ids': [(4, inv_id, None)],
                 'payment_type': 'inbound',
                 'amount': amount,
@@ -57,9 +58,9 @@ class PosOrder(models.Model):
     @api.model
     def process_invoices_creation(self, sale_order_id):
         order = self.env['sale.order'].browse(sale_order_id)
-        inv_id = order.action_invoice_create()
-        self.env['account.invoice'].browse(inv_id).action_invoice_open()
-        return inv_id
+        inv_id = order._create_invoices(final=True)
+        # self.env['account.move'].browse(inv_id).action_invoice_open()
+        return inv_id.id
 
 
 class AccountPayment(models.Model):
@@ -71,30 +72,18 @@ class AccountPayment(models.Model):
 
 
 class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = 'account.move'
 
     def action_updated_invoice(self):
         message = {'channel': INV_CHANNEL, 'id': self.id}
         self.env['pos.config'].search([])._send_to_channel(INV_CHANNEL, message)
 
     @api.model
-    def get_invoice_lines_for_pos(self, invoice_ids):
-        res = []
-        invoice_lines = self.env['account.invoice.line'].search([('invoice_id', 'in', invoice_ids)])
-        for l in invoice_lines:
-            line = {
-                'invoice_id': l.invoice_id.id,
-                'id': l.id,
-                'name': l.name,
-                'account': l.account_id.name,
-                'product': l.product_id.name,
-                'price_unit': l.price_unit,
-                'qty': l.quantity,
-                'tax': [tax.name or ' ' for tax in l.invoice_line_tax_ids],
-                'discount': l.discount,
-                'amount': l.price_subtotal
-            }
-            res.append(line)
+    def get_invoice_lines_for_pos(self, move_ids):
+        res = self.env['account.move.line'].search_read(
+            [('move_id', 'in', move_ids)],
+            ['id', 'move_id', 'name', 'account', 'product', 'price_unit', 'qty', 'tax', 'discount', 'amount']
+        )
         return res
 
     @api.depends('payment_move_line_ids.amount_residual')
@@ -136,10 +125,16 @@ class SaleOrder(models.Model):
                 'discount': l.discount,
                 'subtotal': l.price_subtotal,
                 'total': l.price_total,
-                'invoiceble': ((l.qty_delivered > 0) or (l.product_id.invoice_policy == 'order'))
+                'invoiceable': ((l.qty_delivered > 0) or (l.product_id.invoice_policy == 'order'))
             }
             res.append(line)
         return res
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    # invoiceable = fields.Boolean(compute)
 
 
 class PosConfig(models.Model):
@@ -179,7 +174,7 @@ class PosSession(models.Model):
             'name': _('Invoice Payments'),
             'type': 'ir.actions.act_window',
             'domain': domain,
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'view_type': 'form',
             'view_mode': 'tree,form',
         }

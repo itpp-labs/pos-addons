@@ -63,7 +63,7 @@ tr.sale-order {
     border: solid 1px rgb(215,215,215);
 }
 
-.pos .list tr.sale-order-line.invoiceble {
+.pos .list tr.sale-order-line.invoiceable {
     background-color: rgba(110, 200, 155, 0.5);
     border: solid 1px rgb(215,215,215);
 
