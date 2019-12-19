@@ -4,14 +4,18 @@
 
 Installation
 ============
+
 * `Install <https://odoo-development.readthedocs.io/en/latest/odoo/usage/install-module.html>`__ this module in a usual way
 
 Configuration
 =============
-Activate product variants in Sales app settings.
+
+* Open ``Inventory >> Settings``
+* Activate ``Attributes and Variants``
 
 Usage
 =====
+
 * Open ``Inventory >> Products``
 * Create new product
 * Open ``Inventory >> Product Variants``
