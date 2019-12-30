@@ -5,7 +5,7 @@
     "summary": """Use NFC readers to scan RFID as barcodes""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
-    "images": [],
+    "images": ['images/pos_nfs2.jpg'],
     "version": "10.0.1.0.0",
     "application": False,
 
