@@ -131,7 +131,7 @@ class PosConfig(models.Model):
 
     def _create_postponed_journal(self, vals):
         user = self.env.user
-        new_sequence = self.env['ir.sequence'].create({
+        new_sequence = self.env['ir.sequence'].sudo().create({
             'name': vals['sequence_name'] + str(user.company_id.id),
             'padding': 3,
             'prefix': vals['prefix'] + str(user.company_id.id),
@@ -143,7 +143,7 @@ class PosConfig(models.Model):
             'res_id': new_sequence.id,
             'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
         })
-        pin_journal = self.env['account.journal'].create({
+        pin_journal = self.env['account.journal'].sudo().create({
             'name': vals['journal_name'],
             'code': vals['code'],
             'type': vals['type'],
