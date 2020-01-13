@@ -8,7 +8,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-return?version=12.0",
     "images": ["images/pos_orders_return_main.jpg"],
-    "version": "12.0.1.0.6",
+    "version": "12.0.1.1.0",
     "application": False,
 
     "author": "IT-Projects LLC, Dinar Gabbasov",

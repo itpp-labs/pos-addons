@@ -20,7 +20,7 @@ class TestUi(odoo.tests.HttpCase):
 
         self.phantom_js(
             '/web',
-            "odoo.__DEBUG__.services['web_tour.tour'].run('pos_orders_history_return_tour', 500)",
+            "odoo.__DEBUG__.services['web_tour.tour'].run('pos_orders_history_return_tour', 700)",
             "odoo.__DEBUG__.services['web_tour.tour'].tours.pos_orders_history_return_tour.ready",
             login="admin",
             timeout=240,

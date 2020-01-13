@@ -134,7 +134,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                     if (o instanceof Array) {
                         o = o[0];
                     }
-                    self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                    self.pos.fetch_order_history_lines_by_order_ids(o.id).done(function (lines) {
                         self.pos.update_orders_history_lines(lines);
                         self.search_order_on_history(o);
                     });
@@ -254,7 +254,7 @@ odoo.define('pos_orders_history.screens', function (require) {
         get_order_line_data: function(order) {
             var self = this;
             return _.map(order.lines, function (id) {
-                var line = self.pos.db.line_by_id[id];
+                var line = self.pos.db.line_by_id[id] || {};
                 line.image = self.get_product_image_url(line.product_id[0]);
                 return line;
             });
@@ -401,7 +401,7 @@ odoo.define('pos_orders_history.screens', function (require) {
                             if (o instanceof Array) {
                                 o = o[0];
                             }
-                            self.pos.get_order_history_lines_by_order_id(o.id).done(function (lines) {
+                            self.pos.fetch_order_history_lines_by_order_ids(o.id).done(function (lines) {
                                 self.pos.update_orders_history_lines(lines);
                                 self.search_order_on_history(o);
                             });

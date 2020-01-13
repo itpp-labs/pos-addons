@@ -18,10 +18,10 @@ odoo.define('pos_orders_history_return.tour', function(require) {
     var steps = [].concat(
         hist_tour.open_pos_steps(),
         hist_tour.create_order_steps(),
-        hist_tour.create_order_steps(),
+        hist_tour.fetch_history(),
         hist_tour.orders_history(),
         return_order(),
-        hist_tour.add_product_to_order('LED Lamp'),
+        hist_tour.add_product_to_order(),
         hist_tour.goto_payment_screen_and_select_payment_method(),
         hist_tour.finish_order(),
         hist_tour.close_pos()
