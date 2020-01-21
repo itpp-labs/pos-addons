@@ -16,11 +16,11 @@ class TestUi(odoo.tests.HttpCase):
         # this you end up with js, css but no qweb.
         cr = self.registry.cursor()
         env = Environment(cr, self.uid, {})
-        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook')], limit=1).state = 'installed'
+        env['ir.module.module'].search([('name', '=', 'pos_debt_notebook_sync')], limit=1).state = 'installed'
         cr.release()
 
         # without a delay there might be problems caused by a not yet loaded button's action
         self.phantom_js("/web",
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_debt_notebook', 1000)",
-                        "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_debt_notebook.ready",
+                        "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_debt_notebook_sync', 1000)",
+                        "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_debt_notebook_sync.ready",
                         login="admin", timeout=140)
