@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2018 Artem Losev
+     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
 <templates id="template" xml:space="preserve">
 
@@ -88,32 +89,21 @@
             <td><t t-esc='order.pos_name'/></td>
             <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
             <td><t t-esc='order.user_id[1]' /></td>
-            <t t-if="!order.computed_state">
-                <td>
-                    <t t-if="order.state == 'done'">
-                        Posted
-                    </t>
-                    <t t-if="order.state == 'paid'">
-                        Paid
-                    </t>
-                    <t t-if="order.state == 'cancel'">
-                        Cancelled
-                    </t>
-                </td>
-            </t>
-            <t t-if="order.computed_state">
-                <td>
-                    <t t-if="order.computed_state == 'done'">
-                        Posted
-                    </t>
-                    <t t-if="order.computed_state == 'paid'">
-                        Paid
-                    </t>
-                    <t t-if="order.computed_state == 'cancel'">
-                        Cancelled
-                    </t>
-                </td>
-            </t>
+            <t t-set="state"  t-value="order.computed_state &amp;&amp; order.computed_state || order.state"/>
+            <td>
+                <t t-if="state == 'done'">
+                    Posted
+                </t>
+                <t t-if="state == 'paid'">
+                    Paid
+                </t>
+                <t t-if="state == 'cancel'">
+                    Cancelled
+                </t>
+                <t t-if="state == 'invoiced'">
+                    Invoiced
+                </t>
+            </td>
             <td class="actions oe_hidden">
             </td>
         </tr>
