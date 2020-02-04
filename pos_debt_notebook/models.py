@@ -9,13 +9,14 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import copy
-from odoo import models, fields, api, SUPERUSER_ID
+from odoo import models, fields, api, SUPERUSER_ID, _
 from datetime import datetime
 from pytz import timezone
 import pytz
 import odoo.addons.decimal_precision as dp
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools import float_is_zero
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
@@ -123,7 +124,7 @@ class ResPartner(models.Model):
         if limit:
             for partner_id in self.ids:
                 data[partner_id]['history'] = self.env['report.pos.debt'].search_read(
-                    domain=[('partner_id', '=', partner_id)],
+                    domain=[('partner_id', '=', partner_id), ('journal_id', 'in', debt_journals.ids)],
                     fields=fields,
                     limit=limit,
                 )
@@ -436,6 +437,13 @@ class AccountJournal(models.Model):
         if self.credits_via_discount is True:
             self.pos_cash_out = False
 
+    @api.onchange('debt')
+    def _onchange_debt(self):
+        origin = self._origin
+        if (not self.debt) and origin.debt:
+            raise ValidationError(_('Some Customers may have debts/credits in this journal.\n '
+                                    'Be sure that it will not harm'))
+
 
 class PosConfiguration(models.TransientModel):
     _inherit = 'pos.config.settings'
@@ -595,6 +603,13 @@ class PosCreditUpdate(models.Model):
     account_bank_statement_id = fields.Many2one('account.bank.statement', compute='_compute_bank_statement', string="Account Bank Statement", store=True)
     reversed_balance = fields.Monetary(compute="_compute_reversed_balance", string="Payments",
                                        help="Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts).")
+
+    @api.constrains('journal_id')
+    def validate_email(self):
+        for obj in self:
+            if not obj.journal_id.debt:
+                raise ValidationError("Credit Updates may be created only for credit journals !")
+        return True
 
     @api.multi
     @api.depends('order_id', 'journal_id')
