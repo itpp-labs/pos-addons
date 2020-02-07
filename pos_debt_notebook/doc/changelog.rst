@@ -2,6 +2,7 @@
 -------
 
 - **FIX:** Error in getting customer history when a journal was unset as ``Debt`` one. Or when manual credit update was created with not debt journal
+- **FIX:** "Could not get property 'debt' of undefined" Error after creating a new customer in POS
 
 `5.3.1`
 -------
