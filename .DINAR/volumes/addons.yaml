@@ -4,4 +4,4 @@ base-addons:
 
 # list of modules that will not be installed at any case
 excluded-addons:
-  - hw_proxy
+  - hw_proxy,hw_printer_network,hw_twitter_printing
