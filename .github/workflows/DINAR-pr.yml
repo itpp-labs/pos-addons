@@ -57,7 +57,7 @@ jobs:
               cd $WORKDIR
               # TODO use fixed version instead of master
               curl https://raw.githubusercontent.com/itpp-labs/DINAR/master/local-files/docker-compose.yml > docker-compose.yml
-              export REGISTRY=docker.pkg.github.com REPOSITORY=${{ github.repository }} VERSION=${{ github.event.pull_request.base.ref }}
+              export REGISTRY=docker.pkg.github.com REPOSITORY=${{ github.repository }} REPO_NAME=$(echo ${{ github.repository }} | sed "s;.*/;;") VERSION=${{ github.event.pull_request.base.ref }}
               git clone --depth=1 --branch $VERSION git@github.com:${{ github.repository }} pr-files
               # Version in PR
               REVISION=${{ github.event.pull_request.head.sha}}
