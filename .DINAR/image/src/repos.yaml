@@ -1,0 +1,12 @@
+# Documentation: https://github.com/Tecnativa/doodba#optodoocustomsrcreposyaml
+
+# Odoo source.
+# Update this section to switch to OCA/OCB or apply custom patches
+odoo:
+  defaults:
+    depth: 1
+  remotes:
+    origin: https://github.com/odoo/odoo.git
+  target: origin $ODOO_VERSION
+  merges:
+    - origin $ODOO_VERSION

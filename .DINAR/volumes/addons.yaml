@@ -1,0 +1,7 @@
+# list of modules to install before running tests
+base-addons:
+  - sale,stock,contacts
+
+# list of modules that will not be installed at any case
+excluded-addons:
+  - hw_proxy
