@@ -26,41 +26,6 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.7.x'
-    - name: Check for initial version of editable files
-      run: |
-        set -x
-        mkdir -p REPO/.DINAR/image/dependencies/
-        # pip.txt
-        cp -n REPO/requirements.txt REPO/.DINAR/image/dependencies/pip.txt || true
-
-        # check if oca_dependencies file is not converted to addons.yaml yet
-        ADDONS_YAML=REPO/.DINAR/image/src/addons.yaml
-        REPOS_YAML=REPO/.DINAR/image/src/repos.yaml
-        RUN_OCA2CONFIGS=$(test -e REPO/oca_dependencies.txt && test ! -e $ADDONS_YAML && echo "yes" || true)
-
-        # other files
-        cp -rnT DINAR/editable-files/ REPO/
-
-        # make addons.yaml from oca_dependencies.txt
-        test "$RUN_OCA2CONFIGS" = "yes" && python DINAR/workflow-files/oca_dependencies2configs.py REPO/oca_dependencies.txt $ADDONS_YAML $REPOS_YAML || true
-    - run: |
-        # TODO: move this to the commit action
-        echo ${GITHUB_REF}
-        BRANCH="${GITHUB_REF:11}"
-        echo "::set-env name=BRANCH::$BRANCH"
-    - name: Commit changes
-      uses: stefanzweifel/git-auto-commit-action@master
-      with:
-        #author_name: Marc Demo (Github Actions)
-        #author_email: i18n-bot@it-projects.info
-        branch: ${{ env.BRANCH }}
-        commit_message: |
-          :construction_worker_man: Update Editable DINAR files
-
-          Pushed from .github/workflows/DINAR.yml
-        repository: REPO
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Prepare build folder
       run: |
         cp -rnT DINAR/embedded-files/ REPO/
