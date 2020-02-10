@@ -28,8 +28,9 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
             var self = this;
             var order = this.pos.get_order();
           if (!order.get_selected_orderline()) {
-                if (!this.discount_summary_selected)
-                    return this._super(val);
+                if (!this.discount_summary_selected) {
+return this._super(val);
+}
                 var mode = this.numpad_state.get('mode');
                 if (mode=='discount'){
                     var order = this.pos.get('selectedOrder');

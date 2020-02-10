@@ -38,9 +38,9 @@ odoo.define('pos_product_available.PosModel', function(require){
             }
 
             return loaded.then(function(){
-                return new Model('product.product').query(['qty_available', 'type']).
-                    filter([['sale_ok','=',true],['available_in_pos','=',true]]).
-                    context({'location': self.config.stock_location_id[0]}).all().then(function(products){
+                return new Model('product.product').query(['qty_available', 'type'])
+                    .filter([['sale_ok','=',true],['available_in_pos','=',true]])
+                    .context({'location': self.config.stock_location_id[0]}).all().then(function(products){
                         set_prod_vals(products);
                     });
             });

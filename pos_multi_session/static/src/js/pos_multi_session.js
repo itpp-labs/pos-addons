@@ -183,7 +183,7 @@ odoo.define('pos_multi_session', function(require){
                             load_sync_all_request();
                         }, 2000);
                     });
-                }
+                };
 
                 load_sync_all_request();
             });
@@ -244,7 +244,7 @@ odoo.define('pos_multi_session', function(require){
             // there are two types of message construction, get_attr extract required data from either of them
             var get_attr = function(obj, attr){
                 return obj[attr] || obj.data && obj.data[attr];
-            }
+            };
             var same_session_check = get_attr(message, 'session_id') === this.pos_session.id;
             var same_login_check = get_attr(message, 'login_number') === this.pos_session.login_number;
             if (same_session_check &&
@@ -352,8 +352,8 @@ odoo.define('pos_multi_session', function(require){
                 var client = order.pos.db.get_partner_by_id(data.partner_id);
                 if(!client) {
 
-                    $.when(this.load_new_partners_by_id(data.partner_id)).
-                    then(function(new_client){
+                    $.when(this.load_new_partners_by_id(data.partner_id))
+                    .then(function(new_client){
                         new_client = order.pos.db.get_partner_by_id(data.partner_id);
                         order.set_client(new_client);
                     }, function(){
@@ -443,11 +443,11 @@ odoo.define('pos_multi_session', function(require){
             var fields = _.find(this.models,function(model){
                 return model.model === 'res.partner';
             }).fields;
-            new Model('res.partner').
-                query(fields).
-                filter([['id','=',partner_id]]).
-                all({'timeout':3000, 'shadow': true}).
-                then(function(partners){
+            new Model('res.partner')
+                .query(fields)
+                .filter([['id','=',partner_id]])
+                .all({'timeout':3000, 'shadow': true})
+                .then(function(partners){
                      // check if the partners we got were real updates
                     if (self.db.add_partners(partners)) {
                         def.resolve();
@@ -919,7 +919,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             message.data.pos_id = this.pos.config.id;
             message.data.nonce = this.get_nonce();
-            message.session_id = this.pos.pos_session.id
+            message.session_id = this.pos.pos_session.id;
             message.login_number = this.pos.pos_session.login_number;
             var send_it = function () {
                 var temp = self.pos.config.sync_server || '';

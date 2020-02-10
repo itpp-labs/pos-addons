@@ -15,8 +15,9 @@ odoo.define('pos_fiscal_floor', function (require) {
                     return obj.id == f_id;
                 });
                 order.fiscal_position = obj;
-                if (order.fiscal_position)
-                    order.trigger('change');
+                if (order.fiscal_position) {
+order.trigger('change');
+}
             }
         }
     });
@@ -25,9 +26,11 @@ odoo.define('pos_fiscal_floor', function (require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
-            var floor_model = _.find(this.models, function(model){ return model.model === 'restaurant.floor'; });
+            var floor_model = _.find(this.models, function(model){
+ return model.model === 'restaurant.floor';
+});
             floor_model.fields.push('pos_default_fiscal');
             return _super_posmodel.initialize.call(this, session, attributes);
         }
-    })
-})
+    });
+});

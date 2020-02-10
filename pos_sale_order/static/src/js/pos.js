@@ -25,8 +25,9 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
                         'quantity':item.product_uom_qty
                     };
                     order.addProduct(product, options);
-                    if (item.discount)
-                        order.getSelectedLine().set_discount(item.discount);
+                    if (item.discount) {
+order.getSelectedLine().set_discount(item.discount);
+}
                 });
                 self.hide();
             });
@@ -67,14 +68,14 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
             if(this.numpad_state){
                 //this.numpad_state.reset();
                 //this.numpad_state.changeMode('payment');
-                this.numpad_state.bind('set_value',   this.set_value, this);
+                this.numpad_state.bind('set_value', this.set_value, this);
                 //this.numpad_state.bind('change:mode', this.set_mode_back_to_payment, this);
             }
 
         },
         disable_numpad: function(){
             if(this.numpad_state){
-                this.numpad_state.unbind('set_value',  this.set_value);
+                this.numpad_state.unbind('set_value', this.set_value);
                 //this.numpad_state.unbind('change:mode',this.set_mode_back_to_payment);
             }
         },
@@ -98,6 +99,6 @@ function pos_website_sale(instance, module){ //module is instance.point_of_sale
         var module = instance.point_of_sale;
         pos_website_sale(instance, module);
     };
-})();
+}());
 
 $('<link rel="stylesheet" href="/pos_sale_order/static/src/css/pos.css"></link>').appendTo($("head"));

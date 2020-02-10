@@ -16,12 +16,12 @@ odoo.define('pos_pin.pos', function (require) {
 
             if ($.inArray(options.special_group, user.groups_id) >= 0) {
                 return new $.Deferred().resolve(user);
-            } else {
+            }
                 return this.select_user_custom(_.extend(options, {
                     'security': true,
                     'current_user': this.pos.get_cashier(),
                 }));
-            }
+
         },
         select_user_custom: function(options){
             options = options || {};
