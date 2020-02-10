@@ -288,7 +288,7 @@ S_RASTER_2H = "\x1d\x76\x30\x02"  # Set raster image double height
 S_RASTER_Q = "\x1d\x76\x30\x03"  # Set raster image quadruple
 
 
-""" ESC/POS Exceptions classes """
+# ESC/POS Exceptions classes
 
 
 class Error(Exception):
