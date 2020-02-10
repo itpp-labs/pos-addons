@@ -5,6 +5,7 @@
     Copyright 2019 ssaid <https://github.com/ssaid>
     Copyright 2019 raulovallet <https://github.com/raulovallet>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+/* eslint-disable complexity */
 odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
 
@@ -13,27 +14,6 @@ odoo.define('pos_keyboard.pos', function (require) {
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var PopupWidget = require('point_of_sale.popups');
-
-    var _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
-            var self = this;
-            this.keypad = new Keypad({'pos': this});
-            _super_posmodel.initialize.call(this, session, attributes);
-            this.ready.then(function(){
-                self.keypad.set_action_callback(function(data){
-                    var current_screen = self.gui.current_screen;
-                    var current_popup = self.gui.current_popup;
-
-                    if (current_popup) {
-                        current_popup.keypad_action(data);
-                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
-                        current_screen.numpad.keypad_action(data);
-                    }
-                });
-            });
-        }
-    });
 
     gui.Gui.prototype.popup_classes.filter(function(c){
         return c.name === 'password';
@@ -129,10 +109,10 @@ odoo.define('pos_keyboard.pos', function (require) {
                 escape: 'escape',
             };
             this.data = {
-                type: undefined,
-                val: undefined
+                // type: undefined,
+                // val: undefined
             };
-            this.action_callback = undefined;
+            delete this.action_callback;
             this.active = false;
         },
 
@@ -152,7 +132,7 @@ odoo.define('pos_keyboard.pos', function (require) {
 
         //remove action callback
         reset_action_callback: function(){
-            this.action_callback = undefined;
+            delete this.action_callback;
         },
 
         // starts catching keyboard events and tries to interpret keystrokes,
@@ -243,8 +223,8 @@ odoo.define('pos_keyboard.pos', function (require) {
                         self.data.type = type.escape;
                         ok = true;
                     } else {
-                        self.data.type = undefined;
-                        self.data.val = undefined;
+                        delete self.data.type;
+                        delete self.data.val;
                         ok = false;
                     }
 
@@ -270,6 +250,27 @@ self.action_callback(self.data);
         disconnect: function(){
             $('body').off('keyup', '');
             this.active = false;
+        }
+    });
+
+    var _super_posmodel = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            var self = this;
+            this.keypad = new Keypad({'pos': this});
+            _super_posmodel.initialize.call(this, session, attributes);
+            this.ready.then(function(){
+                self.keypad.set_action_callback(function(data){
+                    var current_screen = self.gui.current_screen;
+                    var current_popup = self.gui.current_popup;
+
+                    if (current_popup) {
+                        current_popup.keypad_action(data);
+                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
+                        current_screen.numpad.keypad_action(data);
+                    }
+                });
+            });
         }
     });
 
