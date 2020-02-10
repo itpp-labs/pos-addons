@@ -113,7 +113,7 @@ msgid "pos.config"
 msgstr ""
 
 #. module: pos_orders_history_return
-#: code:addons/pos_orders_history_return/models/pos_order.py:87
+#: code:addons/pos_orders_history_return/models/pos_order.py:105
 #, python-format
 msgid "return"
 msgstr ""
