@@ -118,7 +118,7 @@ class ExternalTestCase(unittest2.TestCase):
 
         self.phantom_run(cmd, timeout)
 
-    # Copy-paste from openerp/tests/common.py
+    # Copy-paste from odoo/tests/common.py
     def phantom_run(self, cmd, timeout):
         _logger.info('phantom_run executing %s', ' '.join(cmd))
 

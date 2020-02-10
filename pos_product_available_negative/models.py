@@ -3,7 +3,7 @@
 # Copyright 2016 manawi <https://github.com/manawi>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
-from openerp import api, fields, models
+from odoo import api, fields, models
 
 
 class PosConfig(models.Model):
