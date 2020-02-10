@@ -1,4 +1,4 @@
-from openerp import fields, models
+from odoo import fields, models
 
 
 class PosCategoryMulti(models.Model):
