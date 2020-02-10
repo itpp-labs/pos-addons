@@ -8,10 +8,9 @@ import odoo.tests
 @odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
-
     def main(self, login):
         self.phantom_js(
-            '/web',
+            "/web",
             "odoo.__DEBUG__.services['web_tour.tour'].run('pos_journal_pin_tour')",
             "odoo.__DEBUG__.services['web_tour.tour'].tours.pos_journal_pin_tour.ready",
             login=login,

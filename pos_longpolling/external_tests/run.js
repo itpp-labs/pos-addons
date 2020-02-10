@@ -1,3 +1,4 @@
+/* eslint-disable */ // TODO: fix eslint if this file is used
 /*
 Script allows to run headless POS. It run POS scripts (e.g. sending longpolling requests) for TIMEOUT secs and then stops.
 
@@ -8,7 +9,6 @@ API
 e.g.
 
   phantomjs http://pos.10.local/pos/web 025590b63e43f9efe53d0096c5affbe69ddfc092 60
-
 
 
 Usage:
@@ -22,7 +22,6 @@ Usage:
 for i in `seq 100`; do /usr/local/bin/phantomjs run.js http://pos.10.local/pos/web 025590b63e43f9efe53d0096c5affbe69ddfc092 300 & ; done
 
 -- will run 100 instances for 300 seconds
-
 
 
 */
@@ -58,4 +57,3 @@ for (var i=0; i < pages_num; i++){
 setTimeout(function(){
     phantom.exit();
 }, timeout*1000);
-

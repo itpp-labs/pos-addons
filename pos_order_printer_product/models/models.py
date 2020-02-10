@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields
+from odoo import fields, models
 
 
 class RestaurantPrinter(models.Model):
-    _inherit = 'restaurant.printer'
+    _inherit = "restaurant.printer"
 
-    product_ids = fields.Many2many('product.template', column1='printers_id',
-                                   column2='product_id', string='Printed Products')
+    product_ids = fields.Many2many(
+        "product.template",
+        column1="printers_id",
+        column2="product_id",
+        string="Printed Products",
+    )
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.template'
+    _inherit = "product.template"
 
-    printers_ids = fields.Many2many('restaurant.printer', column1='product_id',
-                                    column2='printers_id', string='Printers')
+    printers_ids = fields.Many2many(
+        "restaurant.printer",
+        column1="product_id",
+        column2="printers_id",
+        string="Printers",
+    )

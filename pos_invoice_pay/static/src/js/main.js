@@ -50,8 +50,8 @@ models.PosModel = models.PosModel.extend({
     get_sale_order_lines: function (ids) {
         var self = this,
             def = $.Deferred();
-        this.get_lines(ids, 'sale.order', 'get_order_lines_for_pos').
-            then(function (lines) {
+        this.get_lines(ids, 'sale.order', 'get_order_lines_for_pos')
+            .then(function (lines) {
                 var max = lines.length,
                     i = 0,
                     so_id = 0,
@@ -80,8 +80,8 @@ models.PosModel = models.PosModel.extend({
     get_invoice_lines: function (data) {
         var self = this,
             def = $.Deferred();
-        this.get_lines(data, 'account.invoice', 'get_invoice_lines_for_pos').
-            then(function (lines) {
+        this.get_lines(data, 'account.invoice', 'get_invoice_lines_for_pos')
+            .then(function (lines) {
                 var inv = {},
                     inv_id = 0,
                     max = lines.length,
@@ -178,21 +178,21 @@ models.PosModel = models.PosModel.extend({
         var fields = _.find(this.models, function (model) {
             return model.model === model_name;
         }).fields;
-        return new Model(model_name).
-            query(fields).
-            filter([['id', '=', id]]).
-            all();
+        return new Model(model_name)
+            .query(fields)
+            .filter([['id', '=', id]])
+            .all();
     },
 
     update_or_fetch_invoice: function (id) {
         var self = this,
             def = $.Deferred();
-        this.get_res('account.invoice', id).
-            then(function (res) {
+        this.get_res('account.invoice', id)
+            .then(function (res) {
                 self.prepare_invoices_data(res);
                 self.db.update_invoice_db(res[0]);
-                self.get_invoice_lines([res[0].id]).
-                    then(function () {
+                self.get_invoice_lines([res[0].id])
+                    .then(function () {
                         def.resolve(id);
                     });
             });
@@ -202,12 +202,12 @@ models.PosModel = models.PosModel.extend({
     update_or_fetch_sale_order: function (id) {
         var def = $.Deferred(),
             self = this;
-            this.get_res('sale.order', id).
-                then(function (res) {
+            this.get_res('sale.order', id)
+                .then(function (res) {
                     self.prepare_so_data(res);
                     self.db.update_so_db(res[0]);
-                    self.get_sale_order_lines([res[0].id]).
-                        then(function () {
+                    self.get_sale_order_lines([res[0].id])
+                        .then(function () {
                             def.resolve(id);
                         });
             });
@@ -216,9 +216,9 @@ models.PosModel = models.PosModel.extend({
 
     validate_invoice: function (id) {
         var result = $.Deferred();
-        new Model('account.invoice').
-            call('action_invoice_open', [id]).
-            then(function (res) {
+        new Model('account.invoice')
+            .call('action_invoice_open', [id])
+            .then(function (res) {
                 if (res) {
                     result.resolve(id);
                 } else {
@@ -874,10 +874,10 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
             this.pos.selected_invoice = this.selected_invoice;
             switch (this.selected_invoice.state) {
             case "Draft":
-                this.pos.validate_invoice(this.selected_invoice.id).
-                    then(function (id) {
-                        self.pos.update_or_fetch_invoice(id).
-                        then(function () {
+                this.pos.validate_invoice(this.selected_invoice.id)
+                    .then(function (id) {
+                        self.pos.update_or_fetch_invoice(id)
+                        .then(function () {
                             self.render_data(self.pos.get_invoices_to_render(self.pos.db.invoices));
                             self.toggle_save_button();
                             self.pos.selected_invoice = self.pos.db.get_invoice_by_id(self.selected_invoice.id);
@@ -1015,9 +1015,9 @@ var InvoicePayment = screens.PaymentScreenWidget.extend({
             this.pos.push_order(order).then(function () {
                 self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
                 self.gui.show_screen('invoice_receipt');
-                 new Model('account.invoice').
-                    call('invoice_print', [order.invoice_to_pay.id]).
-                    then(function (action) {
+                 new Model('account.invoice')
+                    .call('invoice_print', [order.invoice_to_pay.id])
+                    .then(function (action) {
                         self.chrome.do_action(action);
                         self.pos.stop_invoice_processing();
                     });

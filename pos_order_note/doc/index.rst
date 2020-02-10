@@ -27,4 +27,3 @@ Usage
 * Click on ``Product Note`` or ``Order Note`` to apply notes for separate product or entire order accordingly
 * Select predefined notes and/or set a new one
 * Click on ``Ok``
-

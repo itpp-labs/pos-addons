@@ -89,7 +89,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 setTimeout(function(){
                     $('.order-scroller').getNiceScroll().resize();
                     $('.product-list-scroller').getNiceScroll().resize();
-                }, 300)
+                }, 300);
             }
         },
         close_bottom_menu: function() {
@@ -102,7 +102,7 @@ odoo.define('pos_mobile.screens', function (require) {
                 setTimeout(function(){
                     $('.order-scroller').getNiceScroll().resize();
                     $('.product-list-scroller').getNiceScroll().resize();
-                }, 500)
+                }, 500);
             }
         },
         change_categories_slide: function() {

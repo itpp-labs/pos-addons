@@ -13,15 +13,15 @@ odoo.define('pos_pin.pos', function (require) {
         sudo_custom: function(options) {
             options = options || {};
             var user = options.user || this.pos.get_cashier();
-        
+
             if ($.inArray(options.special_group, user.groups_id) >= 0) {
                 return new $.Deferred().resolve(user);
-            } else {
+            }
                 return this.select_user_custom(_.extend(options, {
                     'security': true,
                     'current_user': this.pos.get_cashier(),
                 }));
-            }
+
         },
         select_user_custom: function(options){
             options = options || {};
@@ -38,7 +38,7 @@ odoo.define('pos_pin.pos', function (require) {
                     });
                 }
             }
-    
+
             this.show_popup('selection',{
                 'title': options.title || _t('Select User'),
                 'list': list,

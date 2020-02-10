@@ -5,6 +5,7 @@
     Copyright 2019 ssaid <https://github.com/ssaid>
     Copyright 2019 raulovallet <https://github.com/raulovallet>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+/* eslint-disable complexity */
 odoo.define('pos_keyboard.pos', function (require) {
     "use strict";
 
@@ -13,27 +14,6 @@ odoo.define('pos_keyboard.pos', function (require) {
     var models = require('point_of_sale.models');
     var screens = require('point_of_sale.screens');
     var PopupWidget = require('point_of_sale.popups');
-
-    var _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
-            var self = this;
-            this.keypad = new Keypad({'pos': this});
-            _super_posmodel.initialize.call(this, session, attributes);
-            this.ready.then(function(){
-                self.keypad.set_action_callback(function(data){
-                    var current_screen = self.gui.current_screen;
-                    var current_popup = self.gui.current_popup;
-
-                    if (current_popup) {
-                        current_popup.keypad_action(data);
-                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
-                        current_screen.numpad.keypad_action(data);
-                    }
-                });
-            });
-        }
-    });
 
     gui.Gui.prototype.popup_classes.filter(function(c){
         return c.name === 'password';
@@ -58,7 +38,6 @@ odoo.define('pos_keyboard.pos', function (require) {
                 } catch (error){
                     return;
                 }
-                return;
             } else if (data.type === type.escape){
                 this.click_cancel();
             }
@@ -94,19 +73,16 @@ odoo.define('pos_keyboard.pos', function (require) {
              var type = this.pos.keypad.type;
              if (data.type === type.numchar){
                  this.state.appendNewChar(data.val);
-             }
-             else if (data.type === type.bmode) {
+             } else if (data.type === type.bmode) {
                  this.state.changeMode(data.val);
-             }
-             else if (data.type === type.sign){
+             } else if (data.type === type.sign){
                  this.clickSwitchSign();
-             }
-             else if (data.type === type.backspace){
+             } else if (data.type === type.backspace){
                  this.clickDeleteLastChar();
              }
         }
     });
-    
+
     screens.PaymentScreenWidget.include({
         show: function(){
             this._super();
@@ -117,8 +93,8 @@ odoo.define('pos_keyboard.pos', function (require) {
             this.pos.keypad.connect();
         }
     });
-    
-    // this module mimics a keypad-only cash register. Use connect() and 
+
+    // this module mimics a keypad-only cash register. Use connect() and
     // disconnect() to activate and deactivate it.
     var Keypad = core.Class.extend({
         init: function(attributes){
@@ -133,10 +109,10 @@ odoo.define('pos_keyboard.pos', function (require) {
                 escape: 'escape',
             };
             this.data = {
-                type: undefined,
-                val: undefined
+                // type: undefined,
+                // val: undefined
             };
-            this.action_callback = undefined;
+            delete this.action_callback;
             this.active = false;
         },
 
@@ -156,7 +132,7 @@ odoo.define('pos_keyboard.pos', function (require) {
 
         //remove action callback
         reset_action_callback: function(){
-            this.action_callback = undefined;
+            delete this.action_callback;
         },
 
         // starts catching keyboard events and tries to interpret keystrokes,
@@ -192,10 +168,10 @@ odoo.define('pos_keyboard.pos', function (require) {
             // KeyCode: Escape (Keypad 'esc')
             var KC_ESCAPE = 27;
             var kc_lookup = {
-                48: '0', 49: '1', 50: '2',  51: '3', 52: '4',
+                48: '0', 49: '1', 50: '2', 51: '3', 52: '4',
                 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
                 80: 'p', 83: 's', 68: 'd', 190: '.', 81: 'q',
-                96: '0', 97: '1', 98: '2',  99: '3', 100: '4',
+                96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
                 101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
                 106: '*', 107: '+', 109: '-', 110: '.', 111: '/'
             };
@@ -205,7 +181,7 @@ odoo.define('pos_keyboard.pos', function (require) {
             var ok = false;
             var timeStamp = 0;
             $('body').on('keyup', '', function (e){
-                var statusHandler  =  !rx.test(e.target.tagName)  ||
+                var statusHandler = !rx.test(e.target.tagName) ||
                     e.target.disabled || e.target.readOnly;
                 if (statusHandler){
                     var is_number = false;
@@ -247,10 +223,10 @@ odoo.define('pos_keyboard.pos', function (require) {
                         self.data.type = type.escape;
                         ok = true;
                     } else {
-                        self.data.type = undefined;
-                        self.data.val = undefined;
+                        delete self.data.type;
+                        delete self.data.val;
                         ok = false;
-                    } 
+                    }
 
                     if (is_number) {
                         if (timeStamp + 50 > new Date().getTime()) {
@@ -261,20 +237,43 @@ odoo.define('pos_keyboard.pos', function (require) {
                     timeStamp = new Date().getTime();
 
                     setTimeout(function(){
-                        if (ok) {self.action_callback(self.data);}
+                        if (ok) {
+self.action_callback(self.data);
+}
                     }, 50);
                 }
             });
             self.active = true;
         },
 
-        // stops catching keyboard events 
+        // stops catching keyboard events
         disconnect: function(){
             $('body').off('keyup', '');
             this.active = false;
         }
     });
-    
+
+    var _super_posmodel = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        initialize: function (session, attributes) {
+            var self = this;
+            this.keypad = new Keypad({'pos': this});
+            _super_posmodel.initialize.call(this, session, attributes);
+            this.ready.then(function(){
+                self.keypad.set_action_callback(function(data){
+                    var current_screen = self.gui.current_screen;
+                    var current_popup = self.gui.current_popup;
+
+                    if (current_popup) {
+                        current_popup.keypad_action(data);
+                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
+                        current_screen.numpad.keypad_action(data);
+                    }
+                });
+            });
+        }
+    });
+
     return {
         Keypad: Keypad
     };

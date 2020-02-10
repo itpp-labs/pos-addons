@@ -1,6 +1,7 @@
 /* Copyright 2016-2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
  * Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+/* eslint-disable */
 
 function testInject(){
     console.log('code is injected!');
@@ -109,10 +110,11 @@ window.mstest = {
             big_line = _.find(big.lines, function(line){
                 return line.name == small_line.name;
             });
-            if (!big_line)
-                included = false;
-            else if (parseInt(big_line.qty) < parseInt(small_line.qty))
-                included = false;
+            if (!big_line) {
+included = false;
+} else if (parseInt(big_line.qty) < parseInt(small_line.qty)) {
+included = false;
+}
         });
         if (!included){
             console.log('Small Order', JSON.stringify(small));

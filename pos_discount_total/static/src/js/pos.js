@@ -27,18 +27,18 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
         set_value: function(val){
             var self = this;
             var order = this.pos.get_order();
-          if (!order.get_selected_orderline()) {
-                if (!this.discount_summary_selected)
-                    return this._super(val);
-                var mode = this.numpad_state.get('mode');
-                if (mode=='discount'){
-                    var order = this.pos.get('selectedOrder');
-                    _.each(order.orderlines.models, function (model, index){
-                        model.set_discount(val);
-                    });
-                }
-            } else {
+            if (order.get_selected_orderline()) {
                 return this._super(val);
+            }
+            if (!this.discount_summary_selected) {
+                return this._super(val);
+            }
+            var mode = this.numpad_state.get('mode');
+            if (mode === 'discount'){
+                order = this.pos.get('selectedOrder');
+                _.each(order.orderlines.models, function (model, index){
+                    model.set_discount(val);
+                });
             }
         },
         renderElement:function(scrollbottom){
@@ -63,4 +63,3 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
     });
 
 });
-

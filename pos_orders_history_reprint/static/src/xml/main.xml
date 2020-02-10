@@ -12,7 +12,7 @@
 
     <t t-name="PosTicketReprint">
         <div class="pos-sale-ticket">
-            
+
             <div class="pos-center-align"><t t-esc="order.create_date"/> <t t-esc="order.name"/></div>
             <br />
             <t t-esc="order.company_id[1]"/><br />
