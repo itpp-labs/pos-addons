@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Sale orders in POS",
-    "version": "1.1.0",
+    "vesion": "10.0.1.1.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "LGPL-3",
     "category": "Point of Sale",
