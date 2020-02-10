@@ -112,7 +112,7 @@ class ExternalTestCase(unittest2.TestCase):
 
     def phantom_js_multi(self, sessions, commands, timeout=60, **kw):
         """check phantomtest.js for description of sessions and commands"""
-        for sname, sdata in sessions.items():
+        for _sname, sdata in sessions.items():
             sid = self.authenticate(sdata["login"], sdata.get("password"))
             sdata.setdefault("session_id", sid)
 
