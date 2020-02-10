@@ -240,7 +240,7 @@ odoo.define('pos_multi_session', function(require){
             var self = this;
             // there are two types of message construction, get_attr extract required data from either of them
             var get_attr = function(obj, attr){
-                return obj[attr] || obj.data && obj.data[attr];
+                return obj[attr] || (obj.data && obj.data[attr]);
             };
             var same_session_check = get_attr(message, 'session_id') === this.pos_session.id;
             var same_login_check = get_attr(message, 'login_number') === this.pos_session.login_number;
@@ -964,7 +964,7 @@ odoo.define('pos_multi_session', function(require){
                 self.client_online = true;
 
                 if (res.action === "revision_error") {
-                    if (res.state == 'deleted') {
+                    if (res.state === 'deleted') {
                         var removed_order = self.pos.get('orders').find(function(order){
                              return order.uid === res.order_uid;
                         });
