@@ -37,7 +37,7 @@ jobs:
         ODOO_VERSION="$(echo $BRANCH | python DINAR/workflow-files/branch2odoo_version.py)"
         echo "ODOO_VERSION=$ODOO_VERSION"
         echo "::set-env name=ODOO_VERSION::$ODOO_VERSION"
-        echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-dependencies:$BRANCH"
+        echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-dependencies-$BRANCH:${{ github.sha }}"
         # Registry credentials. External registry potentially can be customized here
         echo "::set-env name=REGISTRY::docker.pkg.github.com"
         echo "::set-env name=REGISTRY_USERNAME::${{ github.actor }}"
