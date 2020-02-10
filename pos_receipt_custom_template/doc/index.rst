@@ -18,7 +18,7 @@ Configuration
     * Check **[x] Receipt Printer** box
     * Check **[x] Custom PosBox Receipt** box
     * Select ``Custom PosBox Receipt Template``
-    
+
   * At ``Receipt`` section
 
     * Check **[x] Custom** box

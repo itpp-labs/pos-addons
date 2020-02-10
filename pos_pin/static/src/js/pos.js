@@ -13,7 +13,7 @@ odoo.define('pos_pin.pos', function (require) {
         sudo_custom: function(options) {
             options = options || {};
             var user = options.user || this.pos.get_cashier();
-        
+
             if ($.inArray(options.special_group, user.groups_id) >= 0) {
                 return new $.Deferred().resolve(user);
             } else {
