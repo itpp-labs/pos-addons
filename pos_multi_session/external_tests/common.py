@@ -162,7 +162,7 @@ class ExternalTestCase(unittest2.TestCase):
             # read a byte
             try:
                 ready, _, _ = select.select([phantom.stdout], [], [], 0.5)
-            except select.error, e:
+            except select.error as e:
                 # In Python 2, select.error has no relation to IOError or
                 # OSError, and no errno/strerror/filename, only a pair of
                 # unnamed arguments (matching errno and strerror)
