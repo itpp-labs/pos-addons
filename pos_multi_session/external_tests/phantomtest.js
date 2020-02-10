@@ -1,5 +1,6 @@
 // Phantomjs odoo helper
 // jshint evil: true, loopfunc: true
+/* eslint-disable */
 /*
 
 Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/openerp/tests/phantomtest.js ). It accepts following extra parameters:
