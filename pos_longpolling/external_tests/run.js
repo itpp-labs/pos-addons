@@ -1,3 +1,4 @@
+/* eslint-disable */ // TODO: fix eslint if this file is used
 /*
 Script allows to run headless POS. It run POS scripts (e.g. sending longpolling requests) for TIMEOUT secs and then stops.
 
