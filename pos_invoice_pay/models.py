@@ -106,13 +106,11 @@ class AccountInvoice(models.Model):
                 if move.payment_id.cashier:
                     if move.move_id.ref:
                         move.move_id.ref = "{} by {}".format(
-                            move.move_id.ref,
-                            move.payment_id.cashier.name,
+                            move.move_id.ref, move.payment_id.cashier.name
                         )
                     else:
                         move.move_id.name = "{} by {}".format(
-                            move.move_id.name,
-                            move.payment_id.cashier.name,
+                            move.move_id.name, move.payment_id.cashier.name
                         )
         data = super(AccountInvoice, self)._get_payment_info_JSON()
         return data

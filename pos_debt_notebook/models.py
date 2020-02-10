@@ -99,22 +99,20 @@ class ResPartner(models.Model):
         ]
         debt_journals = self.env["account.journal"].search([("debt", "=", True)])
         data = {
-                id:
-                {
-                    "history": [],
-                    "partner_id": id,
-                    "debt": 0,
-                    "records_count": 0,
-                    "debts": {
-                            dj.id:
-                            {
-                                "balance": 0,
-                                "journal_id": [dj.id, dj.name],
-                                "journal_code": dj.code,
-                            }
-                        for dj in debt_journals
-                    },
-                }
+            id: {
+                "history": [],
+                "partner_id": id,
+                "debt": 0,
+                "records_count": 0,
+                "debts": {
+                    dj.id: {
+                        "balance": 0,
+                        "journal_id": [dj.id, dj.name],
+                        "journal_code": dj.code,
+                    }
+                    for dj in debt_journals
+                },
+            }
             for id in self.ids
         }
 
@@ -636,7 +634,9 @@ class PosOrder(models.Model):
                     o_line = o_line[2]
                     name = self.env["product.product"].browse(o_line["product_id"]).name
                     product_list.append(
-                        "{}({} * {}) + ".format(name, o_line["qty"], o_line["price_unit"])
+                        "{}({} * {}) + ".format(
+                            name, o_line["qty"], o_line["price_unit"]
+                        )
                     )
                 product_list = "".join(product_list).strip(" + ")
                 credit_updates.append(
