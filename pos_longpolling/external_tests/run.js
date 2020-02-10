@@ -10,7 +10,6 @@ e.g.
   phantomjs http://pos.10.local/pos/web 025590b63e43f9efe53d0096c5affbe69ddfc092 60
 
 
-
 Usage:
 
 * Open browser dev tools, switch to Network tab
@@ -22,7 +21,6 @@ Usage:
 for i in `seq 100`; do /usr/local/bin/phantomjs run.js http://pos.10.local/pos/web 025590b63e43f9efe53d0096c5affbe69ddfc092 300 & ; done
 
 -- will run 100 instances for 300 seconds
-
 
 
 */

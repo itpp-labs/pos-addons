@@ -82,8 +82,8 @@ models.PosModel = models.PosModel.extend({
     get_sale_order_lines: function (ids) {
         var self = this,
             def = $.Deferred();
-        this.get_lines(ids, 'sale.order', 'get_order_lines_for_pos').
-            then(function (lines) {
+        this.get_lines(ids, 'sale.order', 'get_order_lines_for_pos')
+            .then(function (lines) {
                 var max = lines.length,
                     i = 0,
                     so_id = 0,
@@ -112,8 +112,8 @@ models.PosModel = models.PosModel.extend({
     get_invoice_lines: function (data) {
         var self = this,
             def = $.Deferred();
-        this.get_lines(data, 'account.invoice', 'get_invoice_lines_for_pos').
-            then(function (lines) {
+        this.get_lines(data, 'account.invoice', 'get_invoice_lines_for_pos')
+            .then(function (lines) {
                 var inv = {},
                     inv_id = 0,
                     max = lines.length,
@@ -221,12 +221,12 @@ models.PosModel = models.PosModel.extend({
     update_or_fetch_invoice: function (id) {
         var self = this,
             def = $.Deferred();
-        this.get_res('account.invoice', id).
-            then(function (res) {
+        this.get_res('account.invoice', id)
+            .then(function (res) {
                 self.prepare_invoices_data(res);
                 self.db.update_invoice_db(res[0]);
-                self.get_invoice_lines([res[0].id]).
-                    then(function () {
+                self.get_invoice_lines([res[0].id])
+                    .then(function () {
                         def.resolve(id);
                     });
             });
@@ -236,12 +236,12 @@ models.PosModel = models.PosModel.extend({
     update_or_fetch_sale_order: function (id) {
         var def = $.Deferred(),
             self = this;
-            this.get_res('sale.order', id).
-                then(function (res) {
+            this.get_res('sale.order', id)
+                .then(function (res) {
                     self.prepare_so_data(res);
                     self.db.update_so_db(res[0]);
-                    self.get_sale_order_lines([res[0].id]).
-                        then(function () {
+                    self.get_sale_order_lines([res[0].id])
+                        .then(function () {
                             def.resolve(id);
                         });
             });
@@ -879,8 +879,8 @@ var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
             this.pos.selected_invoice = this.selected_invoice;
             switch (this.selected_invoice.state) {
             case "Draft":
-                this.pos.validate_invoice(this.selected_invoice.id).
-                    then(function (id) {
+                this.pos.validate_invoice(this.selected_invoice.id)
+                    .then(function (id) {
                         self.pos.update_or_fetch_invoice(id).then(function () {
                             self.render_data(self.pos.get_invoices_to_render(self.pos.db.invoices));
                             self.toggle_save_button();
