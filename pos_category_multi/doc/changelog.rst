@@ -1,5 +1,7 @@
-Updates
-=======
+`1.0.2`
+-------
+
+**FIX:** variable product is not defined
 
 `1.0.1`
 -------

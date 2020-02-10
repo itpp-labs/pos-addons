@@ -6,6 +6,7 @@ odoo.define('pos_category_multi.DB', function (require) {
     PosDB.include({
         category_contains: function(categ_id, product_id) {
             this._super.apply(this, arguments);
+            var product = this.product_by_id[product_id];
             if (product) {
                 var cids = product.pos_category_ids;
                 for (var i = 0; i < cids.length; i++){
