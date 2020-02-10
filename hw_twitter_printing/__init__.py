@@ -41,7 +41,7 @@ class MyStreamer(TwythonStreamer):
             try:
                 self.connect_to_printer()
                 self.print_tweet(data)
-            except:
+            except Exception:
                 pass
                 # TODO: Print logs
 
@@ -58,7 +58,7 @@ class MyStreamer(TwythonStreamer):
         try:
             text = escpos_encoding.encode_str(text)
             self.printer.text(text)
-        except:
+        except Exception:
             pass
         self.printer.text("\n")
         if "quoted_status" in data:
@@ -75,7 +75,7 @@ class MyStreamer(TwythonStreamer):
             try:
                 quoted_text = escpos_encoding.encode_str(quoted_text)
                 self.printer.text(quoted_text)
-            except:
+            except Exception:
                 pass
             self.printer.text("\n")
             self.printer.set()
@@ -92,7 +92,7 @@ class MyStreamer(TwythonStreamer):
             self.printer.close()
         try:
             self.printer = Network(NETWORK_PRINTER_IP)
-        except:
+        except Exception:
             _logger.error("Can not get printer with IP: %s" % NETWORK_PRINTER_IP)
             self.printer = False
 
