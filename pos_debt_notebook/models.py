@@ -48,10 +48,10 @@ class ResPartner(models.Model):
 
         res_index = {id: 0 for id in partners.ids}
         for data in res:
-            id = data["partner_id"][0]
+            partner_id = data["partner_id"][0]
             balance = data["balance"]
             for r in partners:
-                if id == r.id or id in r.child_ids.ids:
+                if partner_id == r.id or partner_id in r.child_ids.ids:
                     res_index[r.id] += balance
 
         for r in partners:
