@@ -10,7 +10,6 @@ except ImportError:
     from mock import patch
 
 
-
 _logger = logging.getLogger(__name__)
 DUMMY_AUTH_CODE = "134579302432164181"
 DUMMY_POS_ID = 1
