@@ -44,7 +44,7 @@ class TestPosCreditUpdate(TransactionCase):
             }
         )
 
-    def get_credit_balance(self_, balance, new_balance):
+    def get_credit_balance(self, balance, new_balance):
         return -balance + new_balance
 
     def test_newbalance(self):
