@@ -73,7 +73,7 @@ odoo.define('pos_qr_show', function(require){
                 }, ""); // initial memory of ""
 
                 return rendered_html;
-            })
+            });
         },
     });
 

@@ -57,9 +57,9 @@ odoo.define('pos_choosing_cashier', function(require){
             if (this.on_cashier_screen && (parsed_result.type !== 'cashier')) {
                 console.warn("Ignored Barcode Scan:", parsed_result);
                 return;
-            } else {
-                this._super(code);
             }
+                this._super(code);
+
         },
     });
 
