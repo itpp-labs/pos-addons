@@ -10,17 +10,13 @@
     "images": ["images/pos_orders_reprint_main.png"],
     "version": "12.0.1.0.4",
     "application": False,
-
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_reprint/",
     "license": "LGPL-3",
     "price": 20.00,
     "currency": "EUR",
-
-    "depends": [
-        "pos_orders_history",
-    ],
+    "depends": ["pos_orders_history"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "security/ir.model.access.csv",
@@ -28,28 +24,18 @@
         "views/view.xml",
         "data/base_action_rule.xml",
     ],
-    "demo": [
-    ],
-    "qweb": [
-        "static/src/xml/main.xml",
-    ],
-
+    "demo": [],
+    "qweb": ["static/src/xml/main.xml"],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
     "uninstall_hook": None,
-
     "auto_install": False,
     "installable": False,
-
     "demo_title": "Reprint POS Orders Receipt",
-    "demo_addons": [
-    ],
-    "demo_addons_hidden": [
-    ],
+    "demo_addons": [],
+    "demo_addons_hidden": [],
     "demo_url": "pos-orders-reprint",
     "demo_summary": "Reprint receipts of paid POS orders",
-    "demo_images": [
-        "images/pos_orders_reprint_main.png",
-    ]
+    "demo_images": ["images/pos_orders_reprint_main.png"],
 }

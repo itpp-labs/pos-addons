@@ -158,7 +158,7 @@ odoo.define('pos_keyboard.pos', function (require) {
             this._super();
         },
     });
-    
+
     // this module mimics a keypad-only cash register. Use connect() and
     // disconnect() to activate and deactivate it.
     var Keypad = core.Class.extend({

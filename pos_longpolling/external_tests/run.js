@@ -58,4 +58,3 @@ for (var i=0; i < pages_num; i++){
 setTimeout(function(){
     phantom.exit();
 }, timeout*1000);
-

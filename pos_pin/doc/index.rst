@@ -22,7 +22,7 @@ Usage
 =====
 
 * Go to ``[[Point of Sale]] >> Dashboard``
-  
+
   * Open POS session
   * Change the user using switcher at the top left corner
   * Input PIN
