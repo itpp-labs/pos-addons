@@ -63,4 +63,3 @@ var OrderWidget = require('point_of_sale.screens').OrderWidget;
     });
 
 });
-

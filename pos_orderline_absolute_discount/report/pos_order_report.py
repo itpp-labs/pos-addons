@@ -7,8 +7,9 @@ class PosOrderReport(models.Model):
 
     @api.model_cr
     def init(self):
-        tools.drop_view_if_exists(self._cr, 'report_pos_order')
-        self._cr.execute("""
+        tools.drop_view_if_exists(self._cr, "report_pos_order")
+        self._cr.execute(
+            """
             CREATE OR REPLACE VIEW report_pos_order AS (
                 SELECT
                     MIN(l.id) AS id,
@@ -55,4 +56,5 @@ class PosOrderReport(models.Model):
                 HAVING
                     SUM(l.qty * u.factor) != 0
             )
-        """)
+        """
+        )

@@ -12,18 +12,13 @@
     "images": ["images/pos_order_cancel.png"],
     "version": "10.0.1.3.0",
     "application": False,
-
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 200.00,
     "currency": "EUR",
-
-    "depends": [
-        "point_of_sale",
-        "pos_pin",
-    ],
+    "depends": ["point_of_sale", "pos_pin"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "security/security.xml",
@@ -32,18 +27,11 @@
         "views/views.xml",
         "views/pos_config_view.xml",
     ],
-    'qweb': [
-        'static/src/xml/cancel_order.xml',
-    ],
-    "demo": [
-        'data/pos_cancelled_reason_demo.xml',
-        'views/assets_demo.xml',
-    ],
-
+    "qweb": ["static/src/xml/cancel_order.xml"],
+    "demo": ["data/pos_cancelled_reason_demo.xml", "views/assets_demo.xml"],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
-
     "auto_install": False,
     "installable": True,
 }

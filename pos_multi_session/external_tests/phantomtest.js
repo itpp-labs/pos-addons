@@ -103,7 +103,7 @@ function PhantomTest() {
     // ----------------------------------------------------
     this.pages = {}; // sname -> page
 
-    for (var sname in self.options.sessions){ 
+    for (var sname in self.options.sessions){
         session = self.options.sessions[sname];
         session.timeout = session.timeout ? Math.round(parseFloat(session.timeout)*1000 - 5000) : 10000;
 
@@ -191,7 +191,7 @@ function PhantomTest() {
 
         })();
 
-    }// for (var sname in self.options.sessions){ 
+    }// for (var sname in self.options.sessions){
 
 
     // ----------------------------------------------------

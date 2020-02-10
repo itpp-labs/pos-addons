@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
 import errno
 import glob
 import json
 import logging
 import os
-import requests
 import select
 import subprocess
-import unittest2
 import xmlrpclib
+from datetime import datetime, timedelta
+
+import requests
+import unittest2
 
 #
 # Logger
