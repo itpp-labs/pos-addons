@@ -104,7 +104,7 @@ msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_invoice_postponed
-#: code:addons/pos_invoice_postponed/models/models.py:64
+#: code:addons/pos_invoice_postponed/models/models.py:77
 #, python-format
 msgid "This Postponed invoice has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>"
 msgstr ""
