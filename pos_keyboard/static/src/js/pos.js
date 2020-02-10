@@ -233,10 +233,10 @@ odoo.define('pos_keyboard.pos', function (require) {
             // KeyCode: Escape (Keypad 'esc')
             var KC_ESCAPE = 27;
             var kc_lookup = {
-                48: '0', 49: '1', 50: '2',  51: '3', 52: '4',
+                48: '0', 49: '1', 50: '2', 51: '3', 52: '4',
                 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
                 80: 'p', 83: 's', 68: 'd', 190: '.', 81: 'q',
-                96: '0', 97: '1', 98: '2',  99: '3', 100: '4',
+                96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
                 101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
                 106: '*', 107: '+', 109: '-', 110: '.', 111: '/'
             };
@@ -246,7 +246,7 @@ odoo.define('pos_keyboard.pos', function (require) {
             var ok = false;
             var timeStamp = 0;
             $('body').on('keyup', '', function (e){
-                var statusHandler  =  !rx.test(e.target.tagName)  ||
+                var statusHandler = !rx.test(e.target.tagName) ||
                     e.target.disabled || e.target.readOnly;
                 // TODO: simplify that stuff/ it might be needed only for password pop-up
                 if (statusHandler){
@@ -303,7 +303,9 @@ odoo.define('pos_keyboard.pos', function (require) {
                     timeStamp = new Date().getTime();
 
                     setTimeout(function(){
-                        if (ok) {self.action_callback(self.data);}
+                        if (ok) {
+self.action_callback(self.data);
+}
                     }, 50);
                 }
             });
