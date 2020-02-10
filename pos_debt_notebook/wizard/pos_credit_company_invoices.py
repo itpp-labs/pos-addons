@@ -46,12 +46,12 @@ class PosCreditInvoices(models.TransientModel):
             def p2amount(p):
                 return 0
 
-        if self.payment_type == "pay_debts":
+        elif self.payment_type == "pay_debts":
 
             def p2amount(p):
                 return p.debt
 
-        if self.payment_type == "pay_per_employee":
+        elif self.payment_type == "pay_per_employee":
 
             def p2amount(p):
                 return self.amount
