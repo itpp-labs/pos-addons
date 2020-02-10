@@ -633,9 +633,7 @@ class PosOrder(models.Model):
                     o_line = o_line[2]
                     name = self.env["product.product"].browse(o_line["product_id"]).name
                     product_list.append(
-                        "{}({} * {})".format(
-                            name, o_line["qty"], o_line["price_unit"]
-                        )
+                        "{}({} * {})".format(name, o_line["qty"], o_line["price_unit"])
                     )
                 product_list = " + ".join(product_list)
                 credit_updates.append(
