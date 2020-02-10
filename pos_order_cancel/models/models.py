@@ -8,6 +8,7 @@ from datetime import datetime
 from functools import partial
 
 import pytz
+
 from odoo import api, fields, models
 
 

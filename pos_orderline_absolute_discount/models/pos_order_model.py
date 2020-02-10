@@ -3,6 +3,7 @@ import logging
 from datetime import timedelta
 
 import pytz
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 

@@ -11,11 +11,13 @@
 import copy
 from datetime import datetime
 
-import odoo.addons.decimal_precision as dp
 import pytz
+from pytz import timezone
+
 from odoo import SUPERUSER_ID, api, fields, models
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_is_zero
-from pytz import timezone
+
+import odoo.addons.decimal_precision as dp
 
 
 class ResPartner(models.Model):

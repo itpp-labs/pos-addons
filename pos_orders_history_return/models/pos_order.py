@@ -5,6 +5,7 @@
 import logging
 
 import psycopg2
+
 from odoo import _, api, fields, models, tools
 from odoo.tools import float_is_zero
 

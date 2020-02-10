@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import openerp
+
 from odoo.http import request
 
 try:

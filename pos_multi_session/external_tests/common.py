@@ -47,7 +47,7 @@ class ExternalTestCase(unittest2.TestCase):
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
         models = xmlrpclib.ServerProxy("{}/xmlrpc/2/object".format(MAIN_URL))
         assert admin_uid, "Authentication failed {}".format(
-            (DATABASE, ADMIN_LOGIN, ADMIN_PASSWORD),
+            (DATABASE, ADMIN_LOGIN, ADMIN_PASSWORD)
         )
 
         cls.admin_uid = admin_uid
