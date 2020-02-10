@@ -808,7 +808,7 @@ class PosCreditUpdate(models.Model):
         for record in self:
             record.reversed_balance = -record.balance
 
-    def get_balance(self_, balance, new_balance):
+    def get_balance(self, balance, new_balance):
         return -balance + new_balance
 
     def update_balance(self, vals):
