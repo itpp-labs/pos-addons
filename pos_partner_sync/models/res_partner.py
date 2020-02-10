@@ -1,16 +1,24 @@
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).
-from odoo import models, api
+from odoo import api, models
 
 
 class ResPartner(models.Model):
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
     def check_fields_to_send(self, vals):
-        fields = self.env["ir.config_parameter"].sudo().get_param("pos_partner_sync.sync_field_ids", default=False)
+        fields = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("pos_partner_sync.sync_field_ids", default=False)
+        )
         if not fields:
             return False
-        field_names = self.env['ir.model.fields'].browse([int(x) for x in fields.split(',')]).mapped('name')
+        field_names = (
+            self.env["ir.model.fields"]
+            .browse([int(x) for x in fields.split(",")])
+            .mapped("name")
+        )
         for name in field_names:
             if name in vals:
                 return True
@@ -33,11 +41,15 @@ class ResPartner(models.Model):
     @api.multi
     def unlink(self):
         res = super(ResPartner, self).unlink()
-        self.send_field_updates(self.ids, action='unlink')
+        self.send_field_updates(self.ids, action="unlink")
         return res
 
     @api.model
-    def send_field_updates(self, partner_ids, action=''):
+    def send_field_updates(self, partner_ids, action=""):
         channel_name = "pos_partner_sync"
-        data = {'message': 'update_partner_fields', 'action': action, 'partner_ids': partner_ids}
-        self.env['pos.config'].send_to_all_poses(channel_name, data)
+        data = {
+            "message": "update_partner_fields",
+            "action": action,
+            "partner_ids": partner_ids,
+        }
+        self.env["pos.config"].send_to_all_poses(channel_name, data)

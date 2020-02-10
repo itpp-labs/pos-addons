@@ -2,10 +2,9 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import threading
 
-
 from odoo import api
 
-__all__ = ['odoo_async_call']
+__all__ = ["odoo_async_call"]
 
 
 def odoo_async_call(target, args, kwargs, callback=None):

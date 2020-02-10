@@ -1,15 +1,15 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+from mock import MagicMock
+
 import odoo.tests
 from odoo.api import Environment
-from mock import MagicMock
 
 
 @odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
 class TestUi(odoo.tests.HttpCase):
-
     def test_pos_invoice_pay(self):
         # needed because tests are run before the module is marked as
         # installed. In js web will only load qweb coming from modules
@@ -17,22 +17,25 @@ class TestUi(odoo.tests.HttpCase):
         # this you end up with js, css but no qweb.
         cr = self.registry.cursor()
         env = Environment(cr, self.uid, {})
-        env['ir.module.module'].search([('name', '=', 'pos_invoice_pay')], limit=1).state = 'installed'
+        env["ir.module.module"].search(
+            [("name", "=", "pos_invoice_pay")], limit=1
+        ).state = "installed"
         cr.release()
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
-        self.phantom_js("/web",
-                        "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_invoice_pay', 1000)",
-                        "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_invoice_pay.ready",
-                        login="admin", timeout=200)
+        self.phantom_js(
+            "/web",
+            "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_invoice_pay', 1000)",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_invoice_pay.ready",
+            login="admin",
+            timeout=200,
+        )
 
 
 @odoo.tests.common.at_install(True)
 @odoo.tests.common.post_install(True)
 class TestModel(odoo.tests.SingleTransactionCase):
-
     def test_pay_more_than_enough(self):
-
         class MockedAccountPayment:
             def __init__(self):
                 self.param = None
@@ -59,58 +62,66 @@ class TestModel(odoo.tests.SingleTransactionCase):
             Generates input value for process_invoice_payment
             """
             return {
-                'data': {
-                    'amount_paid': tendered,
-                    'amount_return': tendered,
-                    'amount_tax': 0,
-                    'amount_total': 0,
-                    'creation_date': '2019-09-06 09:32:55',
-                    'fiscal_position_id': False,
-                    'invoice_to_pay': {
-                        'amount_tax': 0,
-                        'amount_total': total,
-                        'amount_untaxed': total,
-                        'date_due': '2019-09-06',
-                        'date_invoice': '2019-09-06',
-                        'id': 9,
-                        'lines': [],  # values are taken away
-                        'name': '',
-                        'number': 'INV/2019/0005',
-                        'origin': 'SO004',
-                        'partner_id': [35, 'China Export, Jacob Taylor'],
-                        'residual': due,
-                        'state': 'Open',
-                        'user_id': [1, 'Administrator']
+                "data": {
+                    "amount_paid": tendered,
+                    "amount_return": tendered,
+                    "amount_tax": 0,
+                    "amount_total": 0,
+                    "creation_date": "2019-09-06 09:32:55",
+                    "fiscal_position_id": False,
+                    "invoice_to_pay": {
+                        "amount_tax": 0,
+                        "amount_total": total,
+                        "amount_untaxed": total,
+                        "date_due": "2019-09-06",
+                        "date_invoice": "2019-09-06",
+                        "id": 9,
+                        "lines": [],  # values are taken away
+                        "name": "",
+                        "number": "INV/2019/0005",
+                        "origin": "SO004",
+                        "partner_id": [35, "China Export, Jacob Taylor"],
+                        "residual": due,
+                        "state": "Open",
+                        "user_id": [1, "Administrator"],
                     },
-                    'lines': [],
-                    'name': 'Order 00001-005-0001',
-                    'partner_id': False,
-                    'pos_session_id': 1,
-                    'sequence_number': 1,
-                    'statement_ids': [
-                        [0, 0, {
-                            'account_id': 27,
-                            'amount': tendered,
-                            'journal_id': 7,
-                            'name': '2019-09-06 09:32:55',
-                            'statement_id': 2
-                        }]
+                    "lines": [],
+                    "name": "Order 00001-005-0001",
+                    "partner_id": False,
+                    "pos_session_id": 1,
+                    "sequence_number": 1,
+                    "statement_ids": [
+                        [
+                            0,
+                            0,
+                            {
+                                "account_id": 27,
+                                "amount": tendered,
+                                "journal_id": 7,
+                                "name": "2019-09-06 09:32:55",
+                                "statement_id": 2,
+                            },
+                        ]
                     ],
-                    'uid': '00001-005-0001',
-                    'user_id': 1
+                    "uid": "00001-005-0001",
+                    "user_id": 1,
                 },
-                'id': '00001-005-0001',
-                'to_invoice': False
+                "id": "00001-005-0001",
+                "to_invoice": False,
             }
+
         mocked_account_payment = MockedAccountPayment()
 
-        mocked_env = MockedEnv(self.env, {
-            'account.payment': mocked_account_payment,
-            'account.invoice': MagicMock(),
-            'account.journal': MagicMock(),
-        })
+        mocked_env = MockedEnv(
+            self.env,
+            {
+                "account.payment": mocked_account_payment,
+                "account.invoice": MagicMock(),
+                "account.journal": MagicMock(),
+            },
+        )
 
-        sample = mocked_env['pos.order'].search([], limit=1)
+        sample = mocked_env["pos.order"].search([], limit=1)
         sample.env = mocked_env
 
         total = 2240
@@ -120,7 +131,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
         expected_amount = tendered
 
         sample.process_invoice_payment(make_payment(due, tendered, total))
-        self.assertEqual(mocked_account_payment.param['amount'], expected_amount)
+        self.assertEqual(mocked_account_payment.param["amount"], expected_amount)
 
         total = 2240
         tendered = 2000
@@ -129,4 +140,4 @@ class TestModel(odoo.tests.SingleTransactionCase):
         expected_amount = due
 
         sample.process_invoice_payment(make_payment(due, tendered, total))
-        self.assertEqual(mocked_account_payment.param['amount'], expected_amount)
+        self.assertEqual(mocked_account_payment.param["amount"], expected_amount)

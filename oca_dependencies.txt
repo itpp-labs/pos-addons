@@ -1,4 +1,3 @@
 OCA_web https://github.com/it-projects-llc/web
 misc-addons https://github.com/it-projects-llc/misc-addons
 stock-logistics-barcode https://github.com/it-projects-llc/stock-logistics-barcode
-

@@ -8,48 +8,33 @@
     "summary": """See all paid orders from special menu in POS""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-history?version=11.0",
-    "images": ['images/pos_orders_history_main.png'],
+    "images": ["images/pos_orders_history_main.png"],
     "version": "11.0.1.4.0",
     "application": False,
-
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "LGPL-3",
     "price": 59.00,
     "currency": "EUR",
-
-    "depends": [
-        "base_automation",
-        "pos_longpolling",
-    ],
+    "depends": ["base_automation", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_orders_history_view.xml",
         "views/pos_orders_history_template.xml",
         "data/base_action_rule.xml",
     ],
-    "qweb": [
-        "static/src/xml/pos.xml",
-    ],
-    "demo": [
-    ],
-
+    "qweb": ["static/src/xml/pos.xml"],
+    "demo": [],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
-
     "auto_install": False,
     "installable": True,
-
     "demo_title": "POS Orders History",
-    "demo_addons": [
-    ],
-    "demo_addons_hidden": [
-    ],
+    "demo_addons": [],
+    "demo_addons_hidden": [],
     "demo_url": "pos-orders-history",
     "demo_summary": "See all paid orders from special menu in POS",
-    "demo_images": [
-        "images/pos_orders_history_main.png",
-    ]
+    "demo_images": ["images/pos_orders_history_main.png"],
 }
