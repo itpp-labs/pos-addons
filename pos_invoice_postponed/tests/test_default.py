@@ -27,7 +27,9 @@ class TestUi(odoo.tests.HttpCase):
         self.assertEqual(
             len(order.statement_ids),
             0,
-            "Number of statements are {} expected {}".format(len(order.statement_ids), 0),
+            "Number of statements are {} expected {}".format(
+                len(order.statement_ids), 0
+            ),
         )
         self.assertEqual(
             order.amount_paid,
