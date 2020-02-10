@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+// complexity of set_smart_status is fixed in 11 version
 odoo.define('pos_restaurant.network_printer', function (require) {
     "use strict";
 
