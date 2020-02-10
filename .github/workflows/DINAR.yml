@@ -36,10 +36,12 @@ jobs:
         BRANCH=${REF##*/}
         REPOSITORY="${{ github.repository }}"
         REPO_NAME=${REPOSITORY##*/}
+        IMAGE_CODE=$REPO_NAME-$BRANCH
         ODOO_VERSION="$(echo $BRANCH | python DINAR/workflow-files/branch2odoo_version.py)"
         echo "ODOO_VERSION=$ODOO_VERSION"
         echo "::set-env name=ODOO_VERSION::$ODOO_VERSION"
-        echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-dependencies-$REPO_NAME-$BRANCH:${{ github.sha }}"
+        echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-dependencies-$IMAGE_CODE:${{ github.sha }}"
+        echo "::set-env name=IMAGE_CODE::$IMAGE_CODE"
         # Registry credentials. External registry potentially can be customized here
         echo "::set-env name=REGISTRY::docker.pkg.github.com"
         echo "::set-env name=REGISTRY_USERNAME::${{ github.actor }}"
@@ -74,11 +76,11 @@ jobs:
         export REPOSITORY=${{ github.repository	}}
 
         export DOODBA_WITHOUT_DEMO=all
-        export IMAGE_DB=${{ github.repository	}}/dinar-db:$ODOO_VERSION-nodemo
-        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo:$ODOO_VERSION-nodemo
+        export IMAGE_DB=${{ github.repository	}}/dinar-db-nodemo-$IMAGE_CODE:${{ github.sha }}
+        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-nodemo-$IMAGE_CODE:${{ github.sha }}
         bash DINAR/workflow-files/images-with-preinstalled-modules.sh
 
         export DOODBA_WITHOUT_DEMO=false
-        export IMAGE_DB=${{ github.repository	}}/dinar-db:$ODOO_VERSION
-        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo:$ODOO_VERSION
+        export IMAGE_DB=${{ github.repository	}}/dinar-db-$IMAGE_CODE:${{ github.sha }}
+        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-$IMAGE_CODE:${{ github.sha }}
         bash DINAR/workflow-files/images-with-preinstalled-modules.sh
