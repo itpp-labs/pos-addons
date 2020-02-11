@@ -6,7 +6,6 @@ odoo.define("pos_mobile_restaurant.gui", function(require) {
     }
 
     var gui = require("pos_mobile.gui");
-    var chrome = require("pos_mobile_restaurant.chrome");
 
     gui.Gui.include({
         change_screen_type: function(current_screen) {
