@@ -1,3 +1,7 @@
+`3.3.2`
+-------
+**Fix:** possible error in POS with multi-session disabled
+
 `3.3.1`
 -------
 **Fix:** Error on starting a multisession without any floors

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-extend="NumberPopupWidget">
         <t t-jquery="div[class='button cancel']" t-operation="after">
@@ -15,11 +15,19 @@
                     <div class="discount-program-list">
                         <ul>
                             <t t-foreach="widget.options.disc_program" t-as="program">
-                                <li><div t-attf-id="{{program.id}}" t-attf-class="button"><t t-esc="program.discount_program_name"/></div></li>
+                                <li><div
+                                        t-attf-id="{{program.id}}"
+                                        t-attf-class="button"
+                                    ><t
+                                            t-esc="program.discount_program_name"
+                                        /></div></li>
                             </t>
                         </ul>
                         <ul>
-                            <li><div id="other" class="button other-discount-program">Other</div></li>
+                            <li><div
+                                    id="other"
+                                    class="button other-discount-program"
+                                >Other</div></li>
                         </ul>
                     </div>
                 </div>
@@ -36,7 +44,7 @@
                     <em>
                         <t t-esc="line.get_discount_str()" />%
                     </em>
-                    discount (<t t-esc="line.discount_program_name"/>)
+                    discount (<t t-esc="line.discount_program_name" />)
                 </li>
             </t>
             <t t-if="!line.discount_program_name">
@@ -55,12 +63,14 @@
         <t t-jquery='.pos-disc-font' t-operation="replace">
             <t t-if="orderline.discount_program_name">
                 <div class="pos-disc-font">
-                    With a <t t-esc="orderline.get_discount()"/>% discount (<t t-esc="orderline.get_discount_name()"/>)
+                    With a <t t-esc="orderline.get_discount()" />% discount (<t
+                        t-esc="orderline.get_discount_name()"
+                    />)
                 </div>
             </t>
             <t t-if="!orderline.discount_program_name">
                 <div class="pos-disc-font">
-                    With a <t t-esc="orderline.get_discount()"/>% discount
+                    With a <t t-esc="orderline.get_discount()" />% discount
                 </div>
             </t>
         </t>
@@ -84,25 +94,29 @@
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
-                        <i class='fa fa-angle-double-left'></i>
+                        <i class='fa fa-angle-double-left' />
                         Cancel
                     </span>
                     <span class='button next oe_hidden highlight'>
                         Apply
-                        <i class='fa fa-angle-double-right'></i>
+                        <i class='fa fa-angle-double-right' />
                     </span>
                 </section>
                 <section class="full-content">
                     <div class='window'>
                         <section class='subwindow collapsed'>
                             <div class='subwindow-container collapsed'>
-                                <div class='subwindow-container-fix discount-details-contents'>
+                                <div
+                                    class='subwindow-container-fix discount-details-contents'
+                                >
                                 </div>
                             </div>
                         </section>
                         <section class='subwindow'>
                             <div class='subwindow-container'>
-                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                <div
+                                    class='subwindow-container-fix touch-scrollable scrollable-y'
+                                >
                                     <table class='discount-list'>
                                         <thead>
                                             <tr>
@@ -131,7 +145,7 @@
         <t t-jquery="tr.client-line" t-operation="append">
             <td class="discount_program_td">
                 <t t-if="partner.discount_program_id">
-                    <t t-esc='partner.discount_program_id[1]'/>
+                    <t t-esc='partner.discount_program_id[1]' />
                 </t>
             </td>
         </t>
@@ -143,7 +157,7 @@
                 <div class="client-detail discount-program-details">
                     <span class='label'>Discount</span>
                     <span t-attf-class="detail">
-                        <t t-esc='partner.discount_program_id[1]'/>
+                        <t t-esc='partner.discount_program_id[1]' />
                     </span>
                 </div>
             </t>
@@ -154,11 +168,17 @@
         <t t-jquery=".client-details-right" t-operation="append">
             <div class='client-detail discount-program-details'>
                 <span class='label'>Discount</span>
-                <select class='detail client-discount-program needsclick' name='discount_program_id'>
+                <select
+                    class='detail client-discount-program needsclick'
+                    name='discount_program_id'
+                >
                     <option value=''>None</option>
                     <t t-foreach='widget.pos.discount_program' t-as='program'>
-                        <option t-att-value='program.id' t-att-selected="partner.discount_program_id ? ((program.id === partner.discount_program_id[0]) ? true : undefined) : undefined">
-                            <t t-esc='program.discount_program_name'/>
+                        <option
+                            t-att-value='program.id'
+                            t-att-selected="partner.discount_program_id ? ((program.id === partner.discount_program_id[0]) ? true : undefined) : undefined"
+                        >
+                            <t t-esc='program.discount_program_name' />
                         </option>
                     </t>
                 </select>

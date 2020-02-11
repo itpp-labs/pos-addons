@@ -13,6 +13,9 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: "3.7.x"
+      - uses: Install not cached dependencies
+        run: |
+          pip install setuptools
       - name: Check Python Version
         run:
           echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' '

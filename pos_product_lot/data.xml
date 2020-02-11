@@ -1,12 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
-        <template id="assets_backend" name="debt pos assets" inherit_id="point_of_sale.assets">
+        <template
+            id="assets_backend"
+            name="debt pos assets"
+            inherit_id="point_of_sale.assets"
+        >
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_product_lot/static/src/js/pos.js"></script>
+                <script
+                    type="text/javascript"
+                    src="/pos_product_lot/static/src/js/pos.js"
+                />
             </xpath>
             <xpath expr="//link[@id='pos-stylesheet']" position="after">
-              <link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css"/>
+              <link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css" />
             </xpath>
         </template>
     </data>
