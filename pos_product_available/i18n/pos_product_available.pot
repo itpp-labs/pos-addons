@@ -44,7 +44,7 @@ msgid "Close POS"
 msgstr ""
 
 #. module: pos_product_available
-#: code:addons/pos_product_available/tests/test_quantities.py:32
+#: code:addons/pos_product_available/tests/test_quantities.py:36
 #, python-format
 msgid "INV: %s"
 msgstr ""
