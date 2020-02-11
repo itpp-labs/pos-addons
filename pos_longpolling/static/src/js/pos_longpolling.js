@@ -1,4 +1,5 @@
 odoo.define("pos_longpolling", function(require) {
+    "use strict";
     var exports = {};
 
     var Backbone = window.Backbone;
@@ -77,7 +78,7 @@ odoo.define("pos_longpolling", function(require) {
                 );
         },
         check_sleep_mode: function() {
-            var hidden = "";
+            // Var hidden = "";
             var visibilityChange = "";
             var self = this;
 
@@ -86,16 +87,16 @@ odoo.define("pos_longpolling", function(require) {
             }
 
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                // Hidden = "hidden";
                 visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                // Hidden = "mozHidden";
                 visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                // Hidden = "msHidden";
                 visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                // Hidden = "webkitHidden";
                 visibilityChange = "webkitvisibilitychange";
             }
 
@@ -378,9 +379,7 @@ odoo.define("pos_longpolling", function(require) {
     chrome.SynchNotificationWidget.include({
         start: function() {
             this._super();
-            var self = this;
             var element = this.$el.find(".serv_primary");
-            var bus_id = this.pos.bus.bus_id;
             this.start_bus(this.pos.bus, element);
             this.start_additional_buses();
         },
