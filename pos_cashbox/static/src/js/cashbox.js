@@ -5,7 +5,6 @@ odoo.define("pos_cashbox.open", function(require) {
 
     var WidgetButton = require("web.form_widgets").WidgetButton;
     var Session = require("web.Session");
-    var Model = require("web.DataModel");
     var core = require("web.core");
     var CrashManager = require("web.CrashManager");
 
@@ -60,7 +59,7 @@ odoo.define("pos_cashbox.open", function(require) {
             return url;
         },
         connect: function(url) {
-            this.connection = new Session(void 0, url, {use_cors: true});
+            this.connection = new Session(undefined, url, {use_cors: true});
         },
         open_cashbox: function() {
             var self = this;
