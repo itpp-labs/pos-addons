@@ -8,8 +8,6 @@ odoo.define("pos_order_receipt_custom.models", function(require) {
     require("pos_receipt_custom_template.models");
     var core = require("web.core");
 
-    var Qweb = core.qweb;
-
     models.load_fields("restaurant.printer", [
         "custom_order_receipt",
         "custom_order_receipt_id",
