@@ -25,7 +25,7 @@ odoo.define("pos_category_multi.DB", function(require) {
                 var cat = cats[j];
                 while (cat) {
                     for (var i = 0; i < category_ids.length; i++) {
-                        if (parseInt(cat) === parseInt(category_ids[i])) {
+                        if (parseInt(cat, 10) === parseInt(category_ids[i], 10)) {
                             return true;
                         }
                     }
@@ -35,6 +35,7 @@ odoo.define("pos_category_multi.DB", function(require) {
             return false;
         },
         add_products: function(products) {
+            /* eslint-disable no-param-reassign */
             this._super.apply(this, arguments);
             var stored_categories = this.product_by_category_id;
             if (!products instanceof Array) {
