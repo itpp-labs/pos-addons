@@ -15,21 +15,21 @@ msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:17
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:22
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:43
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:58
 #, python-format
 msgid "Click the customer"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:64
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:86
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -41,14 +41,14 @@ msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/main.js:28
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:31
 #, python-format
 msgid "Customer Error"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/main.js:29
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:32
 #, python-format
 msgid "Customer is not set. Please set a customer to proceed postponed invoice payment"
 msgstr ""
@@ -60,28 +60,28 @@ msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:40
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:54
 #, python-format
 msgid "Open the customer screen"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:57
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:76
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/main.js:35
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:40
 #, python-format
 msgid "Payment Method Error"
 msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/main.js:36
+#: code:addons/pos_invoice_postponed/static/src/js/main.js:41
 #, python-format
 msgid "Please do not use postpone payment methods with regular ones"
 msgstr ""
@@ -98,7 +98,7 @@ msgstr ""
 
 #. module: pos_invoice_postponed
 #. openerp-web
-#: code:addons/pos_invoice_postponed/static/src/js/tour.js:13
+#: code:addons/pos_invoice_postponed/static/src/js/tour.js:15
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
