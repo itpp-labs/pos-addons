@@ -5,7 +5,6 @@ odoo.define("pos_mobile.screens", function(require) {
     }
 
     var screens = require("point_of_sale.screens");
-    var models = require("pos_mobile.models");
 
     screens.ProductCategoriesWidget.include({
         init: function(parent, options) {
