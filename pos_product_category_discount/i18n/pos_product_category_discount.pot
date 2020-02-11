@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:63
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:73
 #, python-format
 msgid "% discount"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:58
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:66
 #, python-format
 msgid "% discount ("
 msgstr ""
@@ -40,22 +40,22 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:252
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:90
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:261
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:100
 #, python-format
 msgid "Apply"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/js/widgets.js:312
+#: code:addons/pos_product_category_discount/static/src/js/widgets.js:335
 #, python-format
 msgid "Apply Change"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:87
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:97
 #, python-format
 msgid "Cancel"
 msgstr ""
@@ -85,8 +85,8 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:144
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:156
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:158
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:170
 #, python-format
 msgid "Discount"
 msgstr ""
@@ -103,7 +103,7 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:126
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:140
 #: model:ir.model,name:pos_product_category_discount.model_pos_discount_program
 #: model:ir.model.fields,field_description:pos_product_category_discount.field_pos_category_discount_discount_program_id
 #: model:ir.model.fields,field_description:pos_product_category_discount.field_res_partner_discount_program_id
@@ -120,14 +120,14 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:109
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:123
 #, python-format
 msgid "Discount program name"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:72
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:82
 #, python-format
 msgid "Discounts:"
 msgstr ""
@@ -181,14 +181,14 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:158
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:175
 #, python-format
 msgid "None"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:22
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:30
 #, python-format
 msgid "Other"
 msgstr ""
@@ -259,24 +259,24 @@ msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:34
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:43
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:57
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:62
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:42
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:51
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:65
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:72
 #, python-format
 msgid "With a"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:45
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:53
 #, python-format
 msgid "discount"
 msgstr ""
 
 #. module: pos_product_category_discount
 #. openerp-web
-#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:36
+#: code:addons/pos_product_category_discount/static/src/xml/DiscountProgram.xml:44
 #, python-format
 msgid "discount ("
 msgstr ""
