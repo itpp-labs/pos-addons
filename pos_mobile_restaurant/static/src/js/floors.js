@@ -6,7 +6,6 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
     }
 
     var floors = require("pos_restaurant.floors");
-    var chrome = require("pos_mobile_restaurant.chrome");
     var core = require("web.core");
 
     var _t = core._t;
@@ -15,12 +14,11 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
         click_floor_button: function(event, $el) {
             this._super(event, $el);
             var id = $el.data("id");
-            var floor = this.pos.floors_by_id[id];
+            // Var floor = this.pos.floors_by_id[id];
             var slide = $("div[data-id=" + id + "][id=slide-floor]").index();
             this.chrome.swiper_floors.slideTo(slide);
         },
         save_current_floor_changes_data: function() {
-            var self = this;
             if (this.get_current_data) {
                 var collection = this.get_current_data();
                 this.pos.saved_floors_data[this.floor.id] = JSON.stringify(collection);
@@ -67,9 +65,6 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
         //  Different from Original: remove all styles specific for each table
         table_style: function() {
             var table = this.table;
-            function unit(val) {
-                return val + "px";
-            }
             var style = {};
             if (table.color) {
                 style.background = table.color;
