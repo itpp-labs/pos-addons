@@ -1,4 +1,5 @@
 odoo.define("pos_fiscal_current", function(require) {
+    "use strict";
     var screens = require("point_of_sale.screens");
 
     screens.OrderWidget.include({
