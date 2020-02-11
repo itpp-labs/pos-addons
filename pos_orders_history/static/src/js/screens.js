@@ -2,6 +2,7 @@
  * Copyright 2018 Artem Losev
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+/* eslint-disable no-useless-escape */
 odoo.define("pos_orders_history.screens", function(require) {
     "use strict";
     var screens = require("point_of_sale.screens");
@@ -78,7 +79,7 @@ odoo.define("pos_orders_history.screens", function(require) {
                     return false;
                 }
                 var parent = $(this).parent();
-                self.line_select(event, parent, parseInt(parent.data("id")));
+                self.line_select(event, parent, parseInt(parent.data("id"), 10));
             });
 
             var search_timeout = null;
@@ -328,7 +329,7 @@ odoo.define("pos_orders_history.screens", function(require) {
                 $line.addClass("active");
                 $line.addClass("highlight");
                 this.show_order_details($line);
-                var y = event.pageY - $line.parent().offset().top;
+                // Var y = event.pageY - $line.parent().offset().top;
                 this.selected_order = this.pos.db.orders_history_by_id[id];
             }
         },
