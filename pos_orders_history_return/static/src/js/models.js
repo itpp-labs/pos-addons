@@ -7,7 +7,6 @@ odoo.define("pos_orders_history_return.models", function(require) {
     var models = require("pos_orders_history.models");
     var field_utils = require("web.field_utils");
 
-    var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         get_returned_orders_by_pos_reference: function(reference) {
             var all_orders = this.db.pos_orders_history;
@@ -97,7 +96,6 @@ odoo.define("pos_orders_history_return.models", function(require) {
         },
         set_quantity: function(quantity) {
             var order = this.pos.get_order();
-            var old_quantity = String(quantity);
             if (
                 order &&
                 order.get_mode() === "return_without_receipt" &&
