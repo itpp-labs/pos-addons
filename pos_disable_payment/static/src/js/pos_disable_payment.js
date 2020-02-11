@@ -3,11 +3,7 @@ odoo.define("pos_disable_payment", function(require) {
 
     var chrome = require("point_of_sale.chrome");
     var screens = require("point_of_sale.screens");
-    var core = require("web.core");
-    var gui = require("point_of_sale.gui");
     var models = require("point_of_sale.models");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
-    var _t = core._t;
 
     models.load_fields("res.users", [
         "allow_payments",
@@ -224,7 +220,6 @@ odoo.define("pos_disable_payment", function(require) {
     });
     screens.ActionpadWidget.include({
         init: function(parent, options) {
-            var self = this;
             this._super(parent, options);
             this.pos.bind("change:cashier", this.checkManualCustomerSelecting, this);
         },
@@ -249,7 +244,6 @@ odoo.define("pos_disable_payment", function(require) {
     });
     screens.PaymentScreenWidget.include({
         init: function(parent, options) {
-            var self = this;
             this._super(parent, options);
             this.pos.bind("change:cashier", this.checkManualCustomerSelecting, this);
         },
