@@ -6,7 +6,6 @@ odoo.define("pos_mobile.gui", function(require) {
     }
 
     var gui = require("point_of_sale.gui");
-    var chrome = require("pos_mobile.chrome");
 
     gui.Gui.include({
         show_screen: function(screen_name, params, refresh, skip_close_popup) {
