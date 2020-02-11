@@ -1,3 +1,4 @@
+/* eslint-disable complexity,no-param-reassign */
 odoo.define("pos_cancel_order.order_note", function(require) {
     "use strict";
 
@@ -5,10 +6,10 @@ odoo.define("pos_cancel_order.order_note", function(require) {
     var screens = require("point_of_sale.screens");
     var gui = require("point_of_sale.gui");
     var core = require("web.core");
-    var multiprint = require("pos_restaurant.multiprint");
+    require("pos_restaurant.multiprint");
     var PosBaseWidget = require("point_of_sale.BaseWidget");
     var PopupWidget = require("point_of_sale.popups");
-    var splitbill = require("pos_restaurant.splitbill");
+    require("pos_restaurant.splitbill");
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -106,9 +107,9 @@ odoo.define("pos_cancel_order.order_note", function(require) {
             _super_order.saveChanges.call(this, arguments);
         },
         // TODO: make fast
-        computeChanges: function(categories, config) {
+        computeChanges: function() {
             var current_res = this.build_line_resume();
-            var old_res = this.saved_resume || {};
+            // Var old_res = this.saved_resume || {};
 
             var line_hash = false;
             var res = _super_order.computeChanges.apply(this, arguments);
@@ -165,7 +166,7 @@ odoo.define("pos_cancel_order.order_note", function(require) {
             for (line_hash in current_res) {
                 if (Object.prototype.hasOwnProperty.call(current_res, line_hash)) {
                     var curr = current_res[line_hash];
-                    var old = old_res[line_hash];
+                    // Var old = old_res[line_hash];
                     var current_line_id = curr.line_id;
 
                     var new_exist_change = _.find(res.new, function(r) {
@@ -250,7 +251,7 @@ odoo.define("pos_cancel_order.order_note", function(require) {
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
-        initialize: function(attr, options) {
+        initialize: function() {
             _super_orderline.initialize.apply(this, arguments);
             if (this.product.pos_notes && !this.note) {
                 this.set_note(this.product.pos_notes);
@@ -476,7 +477,6 @@ odoo.define("pos_cancel_order.order_note", function(require) {
             }
         },
         click_confirm: function() {
-            var self = this;
             this.gui.close_popup();
             var order = this.pos.get_order();
             var value = {};
@@ -504,7 +504,7 @@ odoo.define("pos_cancel_order.order_note", function(require) {
             "click .note-line": function(event) {
                 var id = event.currentTarget.getAttribute("data-id");
                 var line = $(".note-list-contents").find(
-                    ".note-line[data-id='" + parseInt(id) + "']"
+                    ".note-line[data-id='" + parseInt(id, 10) + "']"
                 );
                 this.set_active_note_status(line, Number(id));
             },
@@ -518,7 +518,6 @@ odoo.define("pos_cancel_order.order_note", function(require) {
         },
         auto_back: true,
         show: function() {
-            var self = this;
             this._super();
             this.show_next_note_button = false;
             this.notes = this.pos.product_notes;
@@ -540,7 +539,7 @@ odoo.define("pos_cancel_order.order_note", function(require) {
                 var note = notes[i];
                 var product_note_html = QWeb.render("ProductNotes", {
                     widget: this,
-                    note: notes[i],
+                    note: note,
                 });
                 var product_note = document.createElement("tbody");
                 product_note.innerHTML = product_note_html;
