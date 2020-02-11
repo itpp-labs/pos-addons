@@ -6,7 +6,6 @@ odoo.define("pos_order_receipt_custom.models", function(require) {
 
     var models = require("pos_restaurant_base.models");
     require("pos_receipt_custom_template.models");
-    var core = require("web.core");
 
     models.load_fields("restaurant.printer", [
         "custom_order_receipt",
