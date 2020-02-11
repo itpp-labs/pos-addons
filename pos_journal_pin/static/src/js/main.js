@@ -1,16 +1,16 @@
 // Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 // Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-odoo.define('pos_journal_pin', function (require) {
-'use_strict';
+odoo.define("pos_journal_pin", function(require) {
+    "use_strict";
 
-var core = require('web.core');
-var models = require('point_of_sale.models');
-var screens = require('point_of_sale.screens');
+    var core = require("web.core");
+    var models = require("point_of_sale.models");
+    var screens = require("point_of_sale.screens");
 
-var _t = core._t;
+    var _t = core._t;
 
-    models.load_fields('account.journal', ['ask_manager']);
+    models.load_fields("account.journal", ["ask_manager"]);
 
     screens.PaymentScreenWidget.include({
         click_numpad: function(button) {
@@ -23,8 +23,8 @@ var _t = core._t;
         click_paymentmethods: function(id) {
             var self = this;
             var cashregister = null;
-            for ( var i = 0; i < this.pos.cashregisters.length; i++ ) {
-                if ( this.pos.cashregisters[i].journal_id[0] === id ){
+            for (var i = 0; i < this.pos.cashregisters.length; i++) {
+                if (this.pos.cashregisters[i].journal_id[0] === id) {
                     cashregister = this.pos.cashregisters[i];
                     break;
                 }
@@ -38,15 +38,17 @@ var _t = core._t;
                 return this._super(id);
             }
             var click_paymentmethods_super = _.bind(this._super, this);
-            return this.pos.gui.sudo_custom({
-                special_group: manager_group_id,
-                do_not_change_cashier: true,
-                arguments: {
-                    ask_untill_correct: true,
-                }
-            }).done(function(user){
-                return click_paymentmethods_super(id);
-            });
+            return this.pos.gui
+                .sudo_custom({
+                    special_group: manager_group_id,
+                    do_not_change_cashier: true,
+                    arguments: {
+                        ask_untill_correct: true,
+                    },
+                })
+                .done(function(user) {
+                    return click_paymentmethods_super(id);
+                });
         },
     });
 });

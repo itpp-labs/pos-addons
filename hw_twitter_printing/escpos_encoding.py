@@ -19,9 +19,7 @@ def encode_char(char, cur_encoding):
     """
     # char_utf8 = char.encode('utf-8')
     encoded = ""
-    encoding = (
-        cur_encoding
-    )  # we reuse the last encoding to prevent code page switches at every character
+    encoding = cur_encoding  # we reuse the last encoding to prevent code page switches at every character
     encodings = {
         # TODO use ordering to prevent useless switches
         # TODO Support other encodings not natively supported by python ( Thai, Khazakh, Kanjis )

@@ -15,25 +15,22 @@
     border: 1px solid #cacaca;
     background: #e2e2e2;
     border-radius: 3px;
-    float:left;
+    float: left;
     height: 54px;
 }
-
 
 .inv-so.fetch-orders {
     width: 188px;
     font-size: 14px;
-    color:#555555;
+    color: #555555;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-
-
 }
 
 .inv-so.fetch-invoices {
     width: 216px;
     font-size: 14px;
-    color:#555555;
+    color: #555555;
     border-left: 0px;
 }
 
@@ -46,27 +43,26 @@
 }
 
 .lines-table {
-    width:100%;
-    border: solid 1px rgb(215,215,215);
+    width: 100%;
+    border: solid 1px rgb(215, 215, 215);
     margin-top: 10px;
     margin-bottom: 10px;
 }
-tr.invoice  {
-    border-bottom: 1px dashed rgb(215,215,215);
+tr.invoice {
+    border-bottom: 1px dashed rgb(215, 215, 215);
 }
 tr.sale-order {
-    border-bottom: 1px dashed rgb(215,215,215);
+    border-bottom: 1px dashed rgb(215, 215, 215);
 }
 
 .pos .list tr.sale-order-line {
-    background-color: rgb(247,247,247);
-    border: solid 1px rgb(215,215,215);
+    background-color: rgb(247, 247, 247);
+    border: solid 1px rgb(215, 215, 215);
 }
 
 .pos .list tr.sale-order-line.invoiceble {
     background-color: rgba(110, 200, 155, 0.5);
-    border: solid 1px rgb(215,215,215);
-
+    border: solid 1px rgb(215, 215, 215);
 }
 
 /* SaleOrdersWidget */
@@ -74,16 +70,16 @@ tr.sale-order {
 .pos .list-screen .full-content .subwindow {
     display: block;
 }
-.pos .list-screen .full-content .subwindow-container{
+.pos .list-screen .full-content .subwindow-container {
     display: block;
     height: 100%;
 }
 .pos .list-screen .full-content .subwindow.collapsed,
-.pos .list-screen .full-content .subwindow-container.collapsed{
+.pos .list-screen .full-content .subwindow-container.collapsed {
     height: auto;
 }
 
-.pos .list-screen .list{
+.pos .list-screen .list {
     font-size: 16px;
     width: 100%;
     line-height: 40px;
@@ -92,28 +88,28 @@ tr.sale-order {
 .pos .list-screen .list td {
     padding: 0px 8px;
 }
-.pos .list-screen .list tr{
+.pos .list-screen .list tr {
     transition: all 150ms linear;
-    background: rgb(230,230,230);
+    background: rgb(230, 230, 230);
 }
 .pos .list-screen .list thead > tr,
 .pos .list-screen .list tr:nth-child(even) {
-    background: rgb(247,247,247);
+    background: rgb(247, 247, 247);
 }
-.pos .list-screen .list tr.highlight{
+.pos .list-screen .list tr.highlight {
     transition: all 150ms linear;
-    background: rgb(110,200,155) !important;
+    background: rgb(110, 200, 155) !important;
     color: white;
 }
-.pos .list-screen .list tr.lowlight{
+.pos .list-screen .list tr.lowlight {
     transition: all 150ms linear;
     background: rgb(216, 238, 227);
 }
-.pos .list-screen .list tr.lowlight:nth-child(even){
+.pos .list-screen .list tr.lowlight:nth-child(even) {
     transition: all 150ms linear;
     background: rgb(227, 246, 237);
 }
-.pos .list-screen .client-picture{
+.pos .list-screen .client-picture {
     height: 64px;
     width: 64px;
     border-radius: 32px;
@@ -150,40 +146,40 @@ tr.sale-order {
 .pos .list-screen .client-name {
     font-size: 32px;
     line-height: 64px;
-    margin-bottom:16px;
+    margin-bottom: 16px;
 }
 .pos .list-screen .edit-buttons {
     position: absolute;
     right: 16px;
     top: 10px;
 }
-.pos .list-screen .edit-buttons .button{
+.pos .list-screen .edit-buttons .button {
     display: inline-block;
     margin-left: 16px;
-    color: rgb(128,128,128);
+    color: rgb(128, 128, 128);
     cursor: pointer;
     font-size: 36px;
 }
-.pos .list-screen .client-detail{
+.pos .list-screen .client-detail {
     line-height: 24px;
 }
-.pos .list-screen .client-detail > .label{
+.pos .list-screen .client-detail > .label {
     font-weight: bold;
     display: inline-block;
     width: 75px;
     text-align: right;
     margin-right: 8px;
 }
-.pos .list-screen .client-detail > .empty{
+.pos .list-screen .client-detail > .empty {
     opacity: 0.3;
 }
-.pos .list-screen .searchbox{
+.pos .list-screen .searchbox {
     right: auto;
     margin-left: -90px;
-    margin-top:8px;
+    margin-top: 8px;
     left: 50%;
 }
-.pos .list-screen .searchbox input{
+.pos .list-screen .searchbox input {
     width: 120px;
 }
 .pos .list-screen .button.new-customer {
@@ -197,7 +193,7 @@ tr.sale-order {
     line-height: 73px;
     font-size: 16px;
     padding: 0px 8px;
-    border: solid 1px rgb(200,200,200);
+    border: solid 1px rgb(200, 200, 200);
     border-top-width: 0;
     cursor: pointer;
     text-align: center;
@@ -239,13 +235,13 @@ tr.sale-order {
     margin-top: -25px;
     vertical-align: middle;
     border-radius: 26px;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-image-source: initial;
     border-image-slice: initial;
     border-image-width: initial;
     border-image-outset: initial;
     border-image-repeat: initial;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.4);
     font-size: 20px;
     transition: all 150ms linear;
 }
@@ -253,7 +249,7 @@ tr.sale-order {
     text-align: center;
     padding: 24px 0px 18px;
     font-size: 64px;
-    color: #43996E;
+    color: #43996e;
     text-shadow: 0px 2px white, 0px 2px 2px rgba(0, 0, 0, 0.27);
 }
 .invoice-payment-screen .paymentlines-empty .message {
@@ -285,19 +281,19 @@ tr.sale-order {
     margin: 20px;
     padding: 15px;
     font-size: 14px;
-    padding-bottom:30px;
+    padding-bottom: 30px;
     display: inline-block;
     font-family: "Inconsolata";
-    border: solid 1px rgb(220,220,220);
+    border: solid 1px rgb(220, 220, 220);
     border-radius: 3px;
     overflow: hidden;
 }
-.pos .pos-sale-ticket pre{
+.pos .pos-sale-ticket pre {
     font-family: "Inconsolata";
 }
-.pos .pos-sale-ticket .emph{
+.pos .pos-sale-ticket .emph {
     font-size: 20px;
-    margin:5px;
+    margin: 5px;
 }
 .pos .pos-sale-ticket table {
     width: 100%;
@@ -337,12 +333,12 @@ tr.sale-order {
     .pos .screen,
     .pos .window,
     .pos .window .subwindow,
-    .pos .subwindow .subwindow-container{
+    .pos .subwindow .subwindow-container {
         display: block;
         position: static;
         height: auto;
     }
-    .pos{
+    .pos {
         background: white !important;
     }
     .pos .rightpane {
@@ -352,18 +348,18 @@ tr.sale-order {
     .pos .invoice-receipt-screen {
         text-align: left;
     }
-    .pos .invoice-receipt-screen .centered-content{
+    .pos .invoice-receipt-screen .centered-content {
         position: static;
         border: none;
     }
 }
 
 /*!* Mobile Styles *!*/
-.pos.mobile table.list{
+.pos.mobile table.list {
     font-size: 30px;
     line-height: 50px;
 }
-.pos.mobile .list-screen .top-content{
+.pos.mobile .list-screen .top-content {
     text-align: left;
     margin-left: 15px;
     margin-right: 15px;
@@ -383,18 +379,18 @@ pos.mobile .list-screen .top-content .button {
 }
 .pos.mobile .list-screen .searchbox {
     margin-left: 0px;
-    margin-top:0px;
+    margin-top: 0px;
     position: relative;
     display: inline-block;
     right: 0px;
     float: initial;
     left: 0;
 }
-.pos.mobile .list-screen .searchbox input{
+.pos.mobile .list-screen .searchbox input {
     width: 275px;
     margin: 20px;
     padding: 5px 20px;
-    font-size: 35px!important;
+    font-size: 35px !important;
 }
 .pos.mobile .list-screen .button.new-customer {
     margin-left: 0px;
@@ -404,19 +400,19 @@ pos.mobile .list-screen .top-content .button {
     margin-left: 0px;
 }
 .pos.mobile .list-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    border-bottom: 8px solid rgb(110,200,155) !important;
-    overflow: hidden!important;
+    border-bottom: 8px solid rgb(110, 200, 155) !important;
+    overflow: hidden !important;
 }
 .ios .pos.mobile .list-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    overflow: hidden!important;
-    overflow-y: auto!important;
-    -webkit-overflow-scrolling: touch!important;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 .pos.mobile .list-screen .button {
     display: inline-block;
     position: relative;
 }
- .pos.mobile .list-screen .top-content .button.back {
+.pos.mobile .list-screen .top-content .button.back {
     margin-left: 0;
     margin-right: 0;
 }
@@ -427,5 +423,5 @@ pos.mobile .list-screen .top-content .button {
     left: 0 !important;
 }
 .pos.mobile .list-screen .subwindow-container-fix.touch-scrollable.scrollable-y {
-    overflow: hidden!important;
+    overflow: hidden !important;
 }

@@ -1,17 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2018 Artyom Losev
     Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
-
 <openerp>
     <data>
-        <template id="pos_invoice_pay_report" inherit_id="point_of_sale.report_saledetails">
+        <template
+            id="pos_invoice_pay_report"
+            inherit_id="point_of_sale.report_saledetails"
+        >
             <xpath expr="//div[hasclass('page')]/strong" position="after">
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <h3>Paid Orders/Invoices</h3>
-                <table  class="table table-condensed">
+                <table class="table table-condensed">
                     <thead>
                         <tr>
                             <th>Invoice No</th>
@@ -31,11 +33,11 @@
                             <td><t t-esc="inv['cashier']" /></td>
                             <td><t t-esc="inv['payment_method']" /></td>
                             <td><t t-esc="inv['amount_total']" /></td>
-                            <td><t t-esc="inv['amount']"/></td>
+                            <td><t t-esc="inv['amount']" /></td>
                         </tr>
                         <tr>
                             <td colspan="7" class="text-right">
-                                <strong>Total:</strong> <t t-esc="total_invoices"/>
+                                <strong>Total:</strong> <t t-esc="total_invoices" />
                             </td>
                         </tr>
                     </tbody>

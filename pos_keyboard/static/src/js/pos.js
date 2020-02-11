@@ -6,138 +6,139 @@
     Copyright 2019 raulovallet <https://github.com/raulovallet>
     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 /* eslint-disable complexity */
-odoo.define('pos_keyboard.pos', function (require) {
+odoo.define("pos_keyboard.pos", function(require) {
     "use strict";
 
-    var core = require('web.core');
-    var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');
-    var screens = require('point_of_sale.screens');
-    var PopupWidget = require('point_of_sale.popups');
+    var core = require("web.core");
+    var gui = require("point_of_sale.gui");
+    var models = require("point_of_sale.models");
+    var screens = require("point_of_sale.screens");
+    var PopupWidget = require("point_of_sale.popups");
 
-    gui.Gui.prototype.popup_classes.filter(function(c){
-        return c.name === 'password';
-    })[0].widget.include({
-        init: function(parent, args) {
-            this._super(parent, args);
-            this.popup_type = 'password';
-        },
-    });
+    gui.Gui.prototype.popup_classes
+        .filter(function(c) {
+            return c.name === "password";
+        })[0]
+        .widget.include({
+            init: function(parent, args) {
+                this._super(parent, args);
+                this.popup_type = "password";
+            },
+        });
 
     PopupWidget.include({
-        keypad_action: function(data){
+        keypad_action: function(data) {
             var type = this.pos.keypad.type;
-            if (data.type === type.numchar){
+            if (data.type === type.numchar) {
                 this.click_keyboard(data.val);
-            } else if (data.type === type.backspace){
-                this.click_keyboard('BACKSPACE');
-            } else if (data.type === type.enter){
-                // some pop-ups might throw an error due to lack of some income data
+            } else if (data.type === type.backspace) {
+                this.click_keyboard("BACKSPACE");
+            } else if (data.type === type.enter) {
+                // Some pop-ups might throw an error due to lack of some income data
                 try {
                     return this.click_confirm();
-                } catch (error){
+                } catch (error) {
                     return;
                 }
-            } else if (data.type === type.escape){
+            } else if (data.type === type.escape) {
                 this.click_cancel();
             }
         },
-        click_keyboard: function(value){
-            if (typeof this.inputbuffer === 'undefined') {
+        click_keyboard: function(value) {
+            if (typeof this.inputbuffer === "undefined") {
                 return;
             }
-            var newbuf = this.gui.numpad_input(
-                this.inputbuffer,
-                value,
-                {'firstinput': this.firstinput});
+            var newbuf = this.gui.numpad_input(this.inputbuffer, value, {
+                firstinput: this.firstinput,
+            });
 
-            this.firstinput = (newbuf.length === 0);
+            this.firstinput = newbuf.length === 0;
 
-            var $value = this.$('.value');
+            var $value = this.$(".value");
             if (newbuf !== this.inputbuffer) {
                 this.inputbuffer = newbuf;
                 $value.text(this.inputbuffer);
             }
-            if (this.popup_type === 'password' && newbuf) {
-                $value.text($value.text().replace(/./g, '•'));
+            if (this.popup_type === "password" && newbuf) {
+                $value.text($value.text().replace(/./g, "•"));
             }
         },
-        show: function(options){
+        show: function(options) {
             this._super(options);
-            this.$('input,textarea').focus();
+            this.$("input,textarea").focus();
         },
     });
 
     screens.NumpadWidget.include({
-        keypad_action: function(data){
-             var type = this.pos.keypad.type;
-             if (data.type === type.numchar){
-                 this.state.appendNewChar(data.val);
-             } else if (data.type === type.bmode) {
-                 this.state.changeMode(data.val);
-             } else if (data.type === type.sign){
-                 this.clickSwitchSign();
-             } else if (data.type === type.backspace){
-                 this.clickDeleteLastChar();
-             }
-        }
+        keypad_action: function(data) {
+            var type = this.pos.keypad.type;
+            if (data.type === type.numchar) {
+                this.state.appendNewChar(data.val);
+            } else if (data.type === type.bmode) {
+                this.state.changeMode(data.val);
+            } else if (data.type === type.sign) {
+                this.clickSwitchSign();
+            } else if (data.type === type.backspace) {
+                this.clickDeleteLastChar();
+            }
+        },
     });
 
     screens.PaymentScreenWidget.include({
-        show: function(){
+        show: function() {
             this._super();
             this.pos.keypad.disconnect();
         },
-        hide: function(){
+        hide: function() {
             this._super();
             this.pos.keypad.connect();
-        }
+        },
     });
 
-    // this module mimics a keypad-only cash register. Use connect() and
+    // This module mimics a keypad-only cash register. Use connect() and
     // disconnect() to activate and deactivate it.
     var Keypad = core.Class.extend({
-        init: function(attributes){
+        init: function(attributes) {
             this.pos = attributes.pos;
-            /*this.pos_widget = this.pos.pos_widget;*/
+            /* This.pos_widget = this.pos.pos_widget;*/
             this.type = {
-                numchar: 'number, dot',
-                bmode: 'quantity, discount, price',
-                sign: '+, -',
-                backspace: 'backspace',
-                enter: 'enter',
-                escape: 'escape',
+                numchar: "number, dot",
+                bmode: "quantity, discount, price",
+                sign: "+, -",
+                backspace: "backspace",
+                enter: "enter",
+                escape: "escape",
             };
             this.data = {
-                // type: undefined,
+                // Type: undefined,
                 // val: undefined
             };
             delete this.action_callback;
             this.active = false;
         },
 
-        save_callback: function(){
+        save_callback: function() {
             this.saved_callback_stack.push(this.action_callback);
         },
 
-        restore_callback: function(){
+        restore_callback: function() {
             if (this.saved_callback_stack.length > 0) {
                 this.action_callback = this.saved_callback_stack.pop();
             }
         },
 
-        set_action_callback: function(callback){
+        set_action_callback: function(callback) {
             this.action_callback = callback;
         },
 
-        //remove action callback
-        reset_action_callback: function(){
+        // Remove action callback
+        reset_action_callback: function() {
             delete this.action_callback;
         },
 
-        // starts catching keyboard events and tries to interpret keystrokes,
+        // Starts catching keyboard events and tries to interpret keystrokes,
         // calling the callback when needed.
-        connect: function(){
+        connect: function() {
             var self = this;
             if (self.active) {
                 return;
@@ -168,32 +169,61 @@ odoo.define('pos_keyboard.pos', function (require) {
             // KeyCode: Escape (Keypad 'esc')
             var KC_ESCAPE = 27;
             var kc_lookup = {
-                48: '0', 49: '1', 50: '2', 51: '3', 52: '4',
-                53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
-                80: 'p', 83: 's', 68: 'd', 190: '.', 81: 'q',
-                96: '0', 97: '1', 98: '2', 99: '3', 100: '4',
-                101: '5', 102: '6', 103: '7', 104: '8', 105: '9',
-                106: '*', 107: '+', 109: '-', 110: '.', 111: '/'
+                48: "0",
+                49: "1",
+                50: "2",
+                51: "3",
+                52: "4",
+                53: "5",
+                54: "6",
+                55: "7",
+                56: "8",
+                57: "9",
+                80: "p",
+                83: "s",
+                68: "d",
+                190: ".",
+                81: "q",
+                96: "0",
+                97: "1",
+                98: "2",
+                99: "3",
+                100: "4",
+                101: "5",
+                102: "6",
+                103: "7",
+                104: "8",
+                105: "9",
+                106: "*",
+                107: "+",
+                109: "-",
+                110: ".",
+                111: "/",
             };
 
-            //usb keyboard keyup event
+            // Usb keyboard keyup event
             var rx = /INPUT|SELECT|TEXTAREA/i;
             var ok = false;
             var timeStamp = 0;
-            $('body').on('keyup', '', function (e){
-                var statusHandler = !rx.test(e.target.tagName) ||
-                    e.target.disabled || e.target.readOnly;
-                if (statusHandler){
+            $("body").on("keyup", "", function(e) {
+                var statusHandler =
+                    !rx.test(e.target.tagName) ||
+                    e.target.disabled ||
+                    e.target.readOnly;
+                if (statusHandler) {
                     var is_number = false;
                     var type = self.type;
                     var buttonMode = {
-                        qty: 'quantity',
-                        disc: 'discount',
-                        price: 'price'
+                        qty: "quantity",
+                        disc: "discount",
+                        price: "price",
                     };
                     var token = e.keyCode;
-                    if (((token >= 96 && token <= 105) || token === 110) ||
-                        ((token >= 48 && token <= 57) || token === 190)) {
+                    if (
+                        (token >= 96 && token <= 105) ||
+                        token === 110 ||
+                        (token >= 48 && token <= 57) || token === 190
+                    ) {
                         self.data.type = type.numchar;
                         self.data.val = kc_lookup[token];
                         is_number = true;
@@ -236,45 +266,48 @@ odoo.define('pos_keyboard.pos', function (require) {
 
                     timeStamp = new Date().getTime();
 
-                    setTimeout(function(){
+                    setTimeout(function() {
                         if (ok) {
-self.action_callback(self.data);
-}
+                            self.action_callback(self.data);
+                        }
                     }, 50);
                 }
             });
             self.active = true;
         },
 
-        // stops catching keyboard events
-        disconnect: function(){
-            $('body').off('keyup', '');
+        // Stops catching keyboard events
+        disconnect: function() {
+            $("body").off("keyup", "");
             this.active = false;
-        }
+        },
     });
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
-        initialize: function (session, attributes) {
+        initialize: function(session, attributes) {
             var self = this;
-            this.keypad = new Keypad({'pos': this});
+            this.keypad = new Keypad({pos: this});
             _super_posmodel.initialize.call(this, session, attributes);
-            this.ready.then(function(){
-                self.keypad.set_action_callback(function(data){
+            this.ready.then(function() {
+                self.keypad.set_action_callback(function(data) {
                     var current_screen = self.gui.current_screen;
                     var current_popup = self.gui.current_popup;
 
                     if (current_popup) {
                         current_popup.keypad_action(data);
-                    } else if (current_screen.numpad && current_screen.numpad.keypad_action) {
+                    } else if (
+                        current_screen.numpad &&
+                        current_screen.numpad.keypad_action
+                    ) {
                         current_screen.numpad.keypad_action(data);
                     }
                 });
             });
-        }
+        },
     });
 
     return {
-        Keypad: Keypad
+        Keypad: Keypad,
     };
 });
