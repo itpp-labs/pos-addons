@@ -9,9 +9,7 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
     var screens = require("pos_orders_history.screens");
     var core = require("web.core");
     var Model = require("web.Model");
-    var utils = require("web.utils");
 
-    var round_pr = utils.round_precision;
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -54,7 +52,6 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
 
     screens.OrdersHistoryScreenWidget.include({
         show: function() {
-            var self = this;
             this._super();
             if (this.pos.config.reprint_orders) {
                 this.set_reprint_action();
@@ -66,7 +63,7 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
             this.$(".button.reprint").unbind("click");
             this.$(".button.reprint").click(function(e) {
                 var parent = $(this).parents(".order-line");
-                var id = parseInt(parent.data("id"));
+                var id = parseInt(parent.data("id"), 10);
                 self.click_reprint_order(id);
             });
         },
@@ -142,12 +139,13 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
                 this.lock_screen(false);
             }
         },
-        print_xml: function(receipt) {
+        print_xml: function(receipt_arg) {
             var self = this;
             this.show_popup = false;
             var order = this.get_order();
-            if (receipt) {
-                receipt = receipt.receipt;
+            var receipt = null;
+            if (receipt_arg) {
+                receipt = receipt_arg.receipt;
                 if (this.pos.config.show_barcode_in_receipt) {
                     var barcode = this.$el
                         .find("#barcode")
@@ -252,12 +250,12 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
                         }
                     });
             } else {
-                ticket = this.pos.get_receipt_by_order_reference_and_type(
+                var ticketbyref = this.pos.get_receipt_by_order_reference_and_type(
                     order.pos_reference,
                     "ticket"
                 );
-                if (ticket) {
-                    self.render_receipt(ticket);
+                if (ticketbyref) {
+                    self.render_receipt(ticketbyref);
                 } else {
                     this.gui.show_popup("error", {
                         title: _t("No Ticket."),
