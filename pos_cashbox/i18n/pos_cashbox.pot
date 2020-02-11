@@ -25,14 +25,14 @@ msgstr ""
 
 #. module: pos_cashbox
 #. openerp-web
-#: code:addons/pos_cashbox/static/src/js/cashbox.js:21
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:20
 #, python-format
 msgid "Connection Refused. Please check the IP address to PosBox"
 msgstr ""
 
 #. module: pos_cashbox
 #. openerp-web
-#: code:addons/pos_cashbox/static/src/js/cashbox.js:30
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:33
 #, python-format
 msgid "Connection Refused. Please check the connection to CashBox"
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 
 #. module: pos_cashbox
 #. openerp-web
-#: code:addons/pos_cashbox/static/src/js/cashbox.js:38
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:45
 #, python-format
 msgid "Incorrect Operation"
 msgstr ""
