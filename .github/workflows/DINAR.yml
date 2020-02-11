@@ -13,74 +13,74 @@ jobs:
   rebuild-images:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-      with:
-        path: REPO
-    - name: Checkout DINAR
-      uses: actions/checkout@v2
-      with:
-        path: DINAR
-        repository: itpp-labs/DINAR
-        ref: master
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.7.x'
-    - name: Prepare build folder
-      run: |
-        cp -rnT DINAR/embedded-files/ REPO/
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          path: REPO
+      - name: Checkout DINAR
+        uses: actions/checkout@v2
+        with:
+          path: DINAR
+          repository: itpp-labs/DINAR
+          ref: master
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.7.x"
+      - name: Prepare build folder
+        run: |
+          cp -rnT DINAR/embedded-files/ REPO/
 
-    - name: Set vars
-      run: |
-        REF="${{ github.ref }}"
-        BRANCH=${REF##*/}
-        REPOSITORY="${{ github.repository }}"
-        REPO_NAME=${REPOSITORY##*/}
-        IMAGE_CODE=$REPO_NAME:$BRANCH
-        ODOO_VERSION="$(echo $BRANCH | python DINAR/workflow-files/branch2odoo_version.py)"
-        echo "ODOO_VERSION=$ODOO_VERSION"
-        echo "::set-env name=ODOO_VERSION::$ODOO_VERSION"
-        echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-deps-$IMAGE_CODE"
-        echo "::set-env name=IMAGE_CODE::$IMAGE_CODE"
-        # Registry credentials. External registry potentially can be customized here
-        echo "::set-env name=REGISTRY::docker.pkg.github.com"
-        echo "::set-env name=REGISTRY_USERNAME::${{ github.actor }}"
-        echo "::set-env name=REGISTRY_PASSWORD::${{ secrets.DINAR_TOKEN }}"
-    - name: Handle Dependencies
-      uses: elgohr/Publish-Docker-Github-Action@master
-      env:
-        LOCAL_CUSTOM_DIR: ./image
-        AGGREGATE: true
-        PIP_INSTALL_ODOO: false
-        CLEAN: false
-        COMPILE: false
-      with:
-        name: ${{ env.IMAGE_ODOO_BASE }}
-        registry: ${{ env.REGISTRY }}
-        username: ${{ env.REGISTRY_USERNAME }}
-        password: ${{ env.REGISTRY_PASSWORD }}
-        buildargs: ODOO_VERSION,AGGREGATE,PIP_INSTALL_ODOO,CLEAN,COMPILE,LOCAL_CUSTOM_DIR
-        workdir: REPO/.DINAR/
-        cache: ${{ github.event_name != 'schedule' }}
-    - name: Install shyaml
-      run: |
-        pip install shyaml
-    - name: Install Base Addons
-      run: |
-        # authenticate
-        echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USERNAME" --password-stdin "$REGISTRY"
+      - name: Set vars
+        run: |
+          REF="${{ github.ref }}"
+          BRANCH=${REF##*/}
+          REPOSITORY="${{ github.repository }}"
+          REPO_NAME=${REPOSITORY##*/}
+          IMAGE_CODE=$REPO_NAME:$BRANCH
+          ODOO_VERSION="$(echo $BRANCH | python DINAR/workflow-files/branch2odoo_version.py)"
+          echo "ODOO_VERSION=$ODOO_VERSION"
+          echo "::set-env name=ODOO_VERSION::$ODOO_VERSION"
+          echo "::set-env name=IMAGE_ODOO_BASE::${{ github.repository	}}/dinar-deps-$IMAGE_CODE"
+          echo "::set-env name=IMAGE_CODE::$IMAGE_CODE"
+          # Registry credentials. External registry potentially can be customized here
+          echo "::set-env name=REGISTRY::docker.pkg.github.com"
+          echo "::set-env name=REGISTRY_USERNAME::${{ github.actor }}"
+          echo "::set-env name=REGISTRY_PASSWORD::${{ secrets.DINAR_TOKEN }}"
+      - name: Handle Dependencies
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          LOCAL_CUSTOM_DIR: ./image
+          AGGREGATE: true
+          PIP_INSTALL_ODOO: false
+          CLEAN: false
+          COMPILE: false
+        with:
+          name: ${{ env.IMAGE_ODOO_BASE }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          buildargs: ODOO_VERSION,AGGREGATE,PIP_INSTALL_ODOO,CLEAN,COMPILE,LOCAL_CUSTOM_DIR
+          workdir: REPO/.DINAR/
+          cache: ${{ github.event_name != 'schedule' }}
+      - name: Install shyaml
+        run: |
+          pip install shyaml
+      - name: Install Base Addons
+        run: |
+          # authenticate
+          echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USERNAME" --password-stdin "$REGISTRY"
 
-        # convert "base-addons" list to comma-separated list
-        export MODULES=$(cat REPO/.DINAR/volumes/addons.yaml | shyaml get-values base-addons | xargs | sed "s/ /,/g")
-        export DB_VERSION=10
-        export REPOSITORY=${{ github.repository	}}
+          # convert "base-addons" list to comma-separated list
+          export MODULES=$(cat REPO/.DINAR/volumes/addons.yaml | shyaml get-values base-addons | xargs | sed "s/ /,/g")
+          export DB_VERSION=10
+          export REPOSITORY=${{ github.repository	}}
 
-        export DOODBA_WITHOUT_DEMO=all
-        export IMAGE_DB=${{ github.repository	}}/dinar-db-nodemo-$IMAGE_CODE
-        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-nodemo-$IMAGE_CODE
-        bash DINAR/workflow-files/images-with-preinstalled-modules.sh
+          export DOODBA_WITHOUT_DEMO=all
+          export IMAGE_DB=${{ github.repository	}}/dinar-db-nodemo-$IMAGE_CODE
+          export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-nodemo-$IMAGE_CODE
+          bash DINAR/workflow-files/images-with-preinstalled-modules.sh
 
-        export DOODBA_WITHOUT_DEMO=false
-        export IMAGE_DB=${{ github.repository	}}/dinar-db-$IMAGE_CODE
-        export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-$IMAGE_CODE
-        bash DINAR/workflow-files/images-with-preinstalled-modules.sh
+          export DOODBA_WITHOUT_DEMO=false
+          export IMAGE_DB=${{ github.repository	}}/dinar-db-$IMAGE_CODE
+          export IMAGE_ODOO=${{ github.repository	}}/dinar-odoo-$IMAGE_CODE
+          bash DINAR/workflow-files/images-with-preinstalled-modules.sh
