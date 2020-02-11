@@ -1,14 +1,7 @@
 odoo.define("pos_debt_sync", function(require) {
-    var exports = {};
-
-    var session = require("web.session");
-    var Backbone = window.Backbone;
-    var core = require("web.core");
-    var screens = require("point_of_sale.screens");
+    "use strict";
     var models = require("point_of_sale.models");
-    var longpolling = require("pos_longpolling");
-
-    var _t = core._t;
+    require("pos_longpolling");
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -27,7 +20,7 @@ odoo.define("pos_debt_sync", function(require) {
                 // Reload_debts request passed, but longpoll is offline
                 self.on(
                     "updateDebtHistory",
-                    function(partner_ids) {
+                    function() {
                         if (!longpolling_connection.is_online) {
                             longpolling_connection.send_ping();
                         }
@@ -59,8 +52,8 @@ odoo.define("pos_debt_sync", function(require) {
         on_debt_updates: function(message) {
             this.reload_debts(message.updated_partners);
         },
-        _on_load_debts: function(debts) {
-            var self = this;
+        _on_load_debts: function(debts_) {
+            var debts = debts_;
             var unsent_orders = _.filter(this.db.get_orders(), function(o) {
                 return o.data.updates_debt;
             });
