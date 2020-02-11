@@ -98,7 +98,6 @@ odoo.define('pos_pin.pos', function (require) {
         },
 
         ask_password: function(password, options) {
-            var self = this;
             var lock = new $.Deferred();
 
             if (options && options.ask_untill_correct && password) {
