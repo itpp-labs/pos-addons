@@ -87,7 +87,7 @@ odoo.define("pos_multi_session_restaurant", function(require) {
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ready.then(function() {
-                if (!self.config.multi_session_id) {
+                if (!self.multi_session_active) {
                     return;
                 }
                 self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
