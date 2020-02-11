@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_partner_deselection
 #. openerp-web
-#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:17
+#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:22
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_partner_deselection
 #. openerp-web
-#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:33
+#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:45
 #, python-format
 msgid "Click the customer"
 msgstr ""
@@ -34,21 +34,21 @@ msgstr ""
 
 #. module: pos_partner_deselection
 #. openerp-web
-#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:44
+#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:59
 #, python-format
 msgid "Dummy Ation"
 msgstr ""
 
 #. module: pos_partner_deselection
 #. openerp-web
-#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:30
+#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:41
 #, python-format
 msgid "Open the customer screen"
 msgstr ""
 
 #. module: pos_partner_deselection
 #. openerp-web
-#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:13
+#: code:addons/pos_partner_deselection/static/src/js/test_pos_deselection.js:15
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
