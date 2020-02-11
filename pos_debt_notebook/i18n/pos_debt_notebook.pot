@@ -1268,7 +1268,7 @@ msgid "You cannot use Debt payment. Select customer first."
 msgstr ""
 
 #. module: pos_debt_notebook
-#: code:addons/pos_debt_notebook/__init__.py:15
+#: code:addons/pos_debt_notebook/__init__.py:16
 #, python-format
 msgid "You have open session of Point of Sale. Please close them first."
 msgstr ""
