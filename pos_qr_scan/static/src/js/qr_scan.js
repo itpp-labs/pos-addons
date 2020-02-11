@@ -92,16 +92,14 @@ odoo.define('pos_qr_scan', function(require){
                         });
                         var active_camera_id = self.pos.db.load('active_camera_id', false);
                         if(active_camera_id && self.get_camera_by_id(active_camera_id)){
-                            options = {'deviceId': {'exact':active_camera_id}}
+                            options = {'deviceId': {'exact':active_camera_id}};
                         }
                         self.start_webcam(options);
                     });
-                }
-                catch(e){
+                } catch(e){
                     alert(e);
                 }
-            }
-            else{
+            } else{
                 console.log("no navigator.mediaDevices.enumerateDevices" );
                 this.start_webcam(options);
             }
@@ -121,10 +119,10 @@ odoo.define('pos_qr_scan', function(require){
             this.initCanvas(800, 600);
             qrcode.callback = function(value){
                 self.read(value);
-            }
+            };
             if(navigator.mediaDevices.getUserMedia){
-                navigator.mediaDevices.getUserMedia({video: options, audio: false}).
-                    then(function(stream){
+                navigator.mediaDevices.getUserMedia({video: options, audio: false})
+                    .then(function(stream){
                         self.stream = stream;
                         self.success(stream);
                     }).catch(function(error){
@@ -155,28 +153,27 @@ odoo.define('pos_qr_scan', function(require){
             this.gUM=true;
         },
         captureToCanvas: function(){
-            if(!this.cam_is_on)
-                return;
+            if(!this.cam_is_on) {
+return;
+}
             if(this.gUM){
                 var self = this;
                 try{
                     this.gCtx.drawImage(this.video_element,0,0);
                     try{
                         qrcode.decode();
-                    }
-                    catch(e){
+                    } catch(e){
                         console.log(e);
                         setTimeout(function(){
                             self.captureToCanvas();
                         }, this.capture_timeout);
-                    };
-                }
-                catch(e){
+                    }
+                } catch(e){
                     console.log(e);
                     setTimeout(function(){
                         self.captureToCanvas();
                     }, this.capture_timeout);
-                };
+                }
             }
         },
         initCanvas: function(w,h){
