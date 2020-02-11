@@ -15,28 +15,28 @@ msgstr ""
 
 #. module: pos_order_print_check
 #. openerp-web
-#: code:addons/pos_order_print_check/static/src/js/models.js:40
+#: code:addons/pos_order_print_check/static/src/js/models.js:42
 #, python-format
 msgid "Error: Cannot print some of the products"
 msgstr ""
 
 #. module: pos_order_print_check
 #. openerp-web
-#: code:addons/pos_order_print_check/static/src/js/widget.js:27
+#: code:addons/pos_order_print_check/static/src/js/widget.js:31
 #, python-format
 msgid "Error: Cannot print the order"
 msgstr ""
 
 #. module: pos_order_print_check
 #. openerp-web
-#: code:addons/pos_order_print_check/static/src/js/widget.js:28
+#: code:addons/pos_order_print_check/static/src/js/widget.js:32
 #, python-format
 msgid "No connection to PosBox."
 msgstr ""
 
 #. module: pos_order_print_check
 #. openerp-web
-#: code:addons/pos_order_print_check/static/src/js/models.js:41
+#: code:addons/pos_order_print_check/static/src/js/models.js:43
 #, python-format
 msgid "No connection to the printer: "
 msgstr ""
