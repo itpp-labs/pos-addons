@@ -1,3 +1,5 @@
+// TODO
+/* eslint-disable no-param-reassign */
 odoo.define("pos_product_lot.PosLot", function(require) {
     "use strict";
 
@@ -77,7 +79,6 @@ odoo.define("pos_product_lot.PosLot", function(require) {
             return flushed;
         },
         scan_product: function(parsed_code) {
-            var self = this;
             var product = {};
             var selectedOrder = this.get("selectedOrder");
             if (parsed_code.encoding === "ean13") {
@@ -186,7 +187,7 @@ odoo.define("pos_product_lot.PosLot", function(require) {
         push_split_lot: function(product, qty) {
             var self = this;
 
-            var r_id = this.db.add_split_lot({
+            this.db.add_split_lot({
                 product: {id: product.id},
                 qty: qty || 1,
             });
