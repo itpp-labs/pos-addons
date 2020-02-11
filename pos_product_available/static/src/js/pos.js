@@ -75,7 +75,6 @@ odoo.define("pos_product_available.PosModel", function(require) {
             }
         },
         push_order: function(order, opts) {
-            var self = this;
             var pushed = PosModelSuper.push_order.call(this, order, opts);
             if (order) {
                 this.update_product_qty_from_order_lines(order);
@@ -83,7 +82,6 @@ odoo.define("pos_product_available.PosModel", function(require) {
             return pushed;
         },
         push_and_invoice_order: function(order) {
-            var self = this;
             var invoiced = PosModelSuper.push_and_invoice_order.call(this, order);
 
             if (order && order.get_client() && order.orderlines) {
