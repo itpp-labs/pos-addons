@@ -7,7 +7,6 @@ odoo.define("pos_journal_pin", function(require) {
     var models = require("point_of_sale.models");
     var screens = require("point_of_sale.screens");
 
-
     models.load_fields("account.journal", ["ask_manager"]);
 
     screens.PaymentScreenWidget.include({
