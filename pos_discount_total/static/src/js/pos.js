@@ -25,7 +25,6 @@ odoo.define("pos_discount_total", function(require) {
             $(".order .summary").removeClass("selected");
         },
         set_value: function(val) {
-            var self = this;
             var order = this.pos.get_order();
             if (order.get_selected_orderline()) {
                 return this._super(val);
