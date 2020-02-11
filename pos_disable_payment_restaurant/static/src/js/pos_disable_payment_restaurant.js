@@ -89,7 +89,9 @@ odoo.define("pos_disable_payment_restaurant", function(require) {
             numpad_buttons.removeClass("disable");
             if (
                 !user.allow_decrease_kitchen &&
-                line && line.was_printed && state.get("mode") === "quantity"
+                line &&
+                line.was_printed &&
+                state.get("mode") === "quantity"
             ) {
                 numpad_buttons.addClass("disable");
             }
