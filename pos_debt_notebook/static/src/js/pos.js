@@ -4,7 +4,7 @@
  * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
-
+/* eslint-disable complexity */
 odoo.define("pos_debt_notebook.pos", function(require) {
     "use strict";
 
@@ -23,7 +23,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function(session, attributes) {
-            var self = this;
             this.reload_debts_partner_ids = [];
             this.reload_debts_timer = $.when();
             models.load_fields("account.journal", [
@@ -295,7 +294,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             // 'debt_limit' = partner balance + debt limit
             // 'products_restriction' = sum of resticted products only
             // 'due' = remained amount to pay
-            var self = this;
             limit_code = limit_code || "all";
             var vals = {};
             if (cashregister.journal.debt) {
@@ -325,7 +323,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             return vals;
         },
         get_summary_for_cashregister: function(cashregister) {
-            var self = this;
             return _.reduce(
                 this.paymentlines.models,
                 function(memo, pl) {
@@ -365,7 +362,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             );
         },
         get_summary_for_discount_credits: function() {
-            var self = this;
             var paymentlines = this.get_paymentlines();
             return _.reduce(
                 paymentlines,
@@ -571,7 +567,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
                 });
                 return;
             }
-            client &&
+            if (client)
                 this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(
                     client.id
                 );
@@ -581,13 +577,12 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             var self = this;
             var order = this.pos.get_order(),
                 paymentlines = order.get_paymentlines(),
-                order_total = order.get_total_with_tax(),
                 partner = this.pos.get_client();
             var debt_pl = _.filter(paymentlines, function(pl) {
                 return pl.cashregister.journal.debt;
             });
             if (debt_pl && partner) {
-                var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
+                // var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
                 this._super();
                 // Offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl) {
@@ -973,7 +968,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             this.change_autopay_button(autopay_status);
         },
         render_paymentlines: function() {
-            var self = this;
             var order = this.pos.get_order();
             if (!order) {
                 return;
@@ -994,7 +988,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
     screens.ReceiptScreenWidget.include({
         show: function() {
             this._super();
-            var self = this;
             $(this.next_button_html).hide();
             if (this.pos.get_order() && this.pos.get_order().autopay_validated) {
                 $(this.next_button_html).show();
@@ -1184,7 +1177,6 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             },
             toggle_save_button: function() {
                 this._super();
-                var self = this;
                 var $pay_full_debt = this.$("#set-customer-pay-full-debt");
                 var $show_customers = this.$("#show_customers");
                 var $show_debt_history = this.$("#show_debt_history");
