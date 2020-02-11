@@ -2,9 +2,8 @@
 // Copyright 2019 Kildebekov Anvar  <https://it-projects.info/team/kildebekov>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 odoo.define("pos_journal_pin", function(require) {
-    "use_strict";
+    "use strict";
 
-    var core = require("web.core");
     var models = require("point_of_sale.models");
     var screens = require("point_of_sale.screens");
 
