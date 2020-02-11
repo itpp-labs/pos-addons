@@ -7,7 +7,6 @@ odoo.define("pos_order_cancel.models", function(require) {
 
     var models = require("point_of_sale.models");
     var core = require("web.core");
-    var QWeb = core.qweb;
     var _t = core._t;
 
     models.load_models({
@@ -32,7 +31,6 @@ odoo.define("pos_order_cancel.models", function(require) {
         destroy_and_upload_as_canceled: function(reason, cancelled_reason_ids) {
             reason = reason || "";
             cancelled_reason_ids = cancelled_reason_ids || false;
-            var self = this;
             this.is_cancelled = true;
             this.reason = reason;
             while (this.get_orderlines().length) {
