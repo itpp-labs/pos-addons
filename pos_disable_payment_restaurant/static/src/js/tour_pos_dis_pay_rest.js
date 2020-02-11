@@ -1,7 +1,6 @@
 odoo.define("pos_disable_payment_restaurant.tour", function(require) {
     "use strict";
 
-    var core = require("web.core");
     var tour = require("web_tour.tour");
 
     tour.register(
