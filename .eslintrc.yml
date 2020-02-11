@@ -101,7 +101,6 @@ rules:
   no-obj-calls: warn
   no-octal-escape: warn
   no-octal: warn
-  no-param-reassign: warn
   no-path-concat: warn
   no-process-env: warn
   no-process-exit: warn
@@ -132,7 +131,9 @@ rules:
   no-unsafe-finally: error
   no-unused-expressions: error
   no-unused-labels: error
-  no-unused-vars: error
+  no-unused-vars:
+    - error
+    - args: none  
   no-use-before-define: error
   no-useless-call: warn
   no-useless-computed-key: warn
