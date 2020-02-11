@@ -65,7 +65,6 @@ odoo.define("pos_disable_payment_restaurant", function(require) {
         },
         orderline_change_line: function(line) {
             this._super(line);
-            var user = this.pos.get_cashier() || this.pos.user;
             var order = this.pos.get_order();
             if (order) {
                 this.check_kitchen_access(line);
