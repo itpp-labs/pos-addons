@@ -13,7 +13,6 @@ odoo.define("pos_restaurant.network_printer", function(require) {
     var chrome = require("point_of_sale.chrome");
     var PopupWidget = require("point_of_sale.popups");
     var QWeb = core.qweb;
-    var mixins = core.mixins;
 
     var _t = core._t;
 
@@ -45,7 +44,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                                 url += port;
                             }
                         }
-                        item.connection = new Session(void 0, url, {use_cors: true});
+                        item.connection = new Session(undefined, url, {use_cors: true});
                     });
                 }
             });
@@ -134,7 +133,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                 name === "print_xml_receipt" &&
                 this.pos.config.receipt_printer_type === "network_printer"
             ) {
-                var connection = new Session(void 0, this.pos.proxy.host, {
+                var connection = new Session(undefined, this.pos.proxy.host, {
                     use_cors: true,
                 });
                 var callbacks = this.notifications[name] || [];
@@ -350,7 +349,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                 var printer = network_printers[i];
                 var printerline_html = QWeb.render("NetworkPrinterLine", {
                     widget: this,
-                    printer: network_printers[i],
+                    printer: printer,
                 });
                 var printerline = document.createElement("tbody");
                 printerline.innerHTML = printerline_html;
@@ -368,7 +367,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                 if (!printerline) {
                     var printerline_html = QWeb.render("USBPrinterLine", {
                         widget: this,
-                        printer: usb_printers[i],
+                        printer: printer,
                     });
                     printerline = document.createElement("tbody");
                     printerline.innerHTML = printerline_html;
