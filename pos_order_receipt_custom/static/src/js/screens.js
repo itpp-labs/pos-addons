@@ -2,8 +2,8 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
 odoo.define("pos_order_receipt_custom.screens", function(require) {
-    var screens = require("pos_receipt_custom_template.screens");
-    var gui = require("point_of_sale.gui");
+    "use strict";
+    require("pos_receipt_custom_template.screens");
     var PosBaseWidget = require("point_of_sale.BaseWidget");
     require("pos_restaurant.printbill");
     var core = require("web.core");
