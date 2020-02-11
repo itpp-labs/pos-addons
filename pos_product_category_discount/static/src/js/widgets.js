@@ -275,7 +275,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             } else {
                 this.$(".discount-list .highlight").removeClass("highlight");
                 $line.addClass("highlight");
-                // var y = event.pageY - $line.parent().offset().top;
+                // Var y = event.pageY - $line.parent().offset().top;
                 this.show_disc_button = true;
             }
 
@@ -293,7 +293,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
         })[0]
         .widget.include({
             save_changes: function() {
-                // var order = this.pos.get_order();
+                // Var order = this.pos.get_order();
                 if (this.new_client) {
                     if (
                         (this.has_client_changed() ||

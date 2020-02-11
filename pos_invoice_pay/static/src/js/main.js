@@ -1,19 +1,18 @@
 // Copyright 2018 Artyom Losev
 // Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 // License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
+/* eslint-disable no-useless-escape */
 odoo.define("pos_invoices", function(require) {
-    "use_strict";
+    "use strict";
 
     var core = require("web.core");
     var gui = require("point_of_sale.gui");
     var models = require("point_of_sale.models");
     var PosDb = require("point_of_sale.DB");
     var utils = require("web.utils");
-    var bus = require("bus.bus").bus;
     var Model = require("web.Model");
     var screens = require("point_of_sale.screens");
-    var longpolling = require("pos_longpolling");
+    require("pos_longpolling");
     var chrome = require("point_of_sale.chrome");
 
     var QWeb = core.qweb;
@@ -235,8 +234,7 @@ odoo.define("pos_invoices", function(require) {
         },
 
         get_invoices_to_render: function(invoices) {
-            var self = this,
-                muted_invoices_ids = [],
+            var muted_invoices_ids = [],
                 order = {},
                 id = 0,
                 i = 0,
@@ -409,8 +407,7 @@ odoo.define("pos_invoices", function(require) {
         },
 
         _sale_order_search_string: function(sale_order) {
-            var str = sale_order.name,
-                id_string = String(sale_order.id);
+            var str = sale_order.name;
             if (sale_order.date_order) {
                 str += "|" + sale_order.date_order;
             }
@@ -623,7 +620,7 @@ odoo.define("pos_invoices", function(require) {
             this.render_data(this.get_data());
 
             this.$(".list-contents").delegate(this.$listEl, "click", function(event) {
-                self.select_line(event, $(this), parseInt($(this).data("id")));
+                self.select_line(event, $(this), parseInt($(this).data("id"), 10));
             });
 
             if (this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard) {
@@ -669,7 +666,7 @@ odoo.define("pos_invoices", function(require) {
                 var item = data[i];
                 var item_html = QWeb.render(this.itemTemplate, {
                     widget: this,
-                    item: data[i],
+                    item: item,
                 });
                 var item_line = document.createElement("tbody");
 
@@ -1014,7 +1011,7 @@ odoo.define("pos_invoices", function(require) {
                 var total = self.pos.selected_invoice.residual,
                     due = 0,
                     plines = order.paymentlines.models;
-                if (paymentline === void 0) {
+                if (typeof paymentline === "undefined") {
                     due = total - order.get_total_paid();
                 } else {
                     due = total;
@@ -1034,7 +1031,7 @@ odoo.define("pos_invoices", function(require) {
                     change = 0,
                     plines = order.paymentlines.models,
                     i = 0;
-                if (paymentline === void 0) {
+                if (typeof paymentline === "undefined") {
                     change = -due + order.get_total_paid();
                 } else {
                     change = -due;
