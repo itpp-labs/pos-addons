@@ -4,22 +4,15 @@
 odoo.define("pos_order_cancel_restaurant.widgets", function(require) {
     "use strict";
 
-    var models = require("pos_order_cancel_restaurant.models");
     var screens = require("point_of_sale.screens");
     var chrome = require("point_of_sale.chrome");
-    var gui = require("point_of_sale.gui");
     var core = require("web.core");
-    var PopupWidget = require("point_of_sale.popups");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var PosOrderCancelWidget = require("pos_order_cancel.widgets");
 
-    var Model = require("web.DataModel");
-    var QWeb = core.qweb;
     var _t = core._t;
 
     chrome.OrderSelectorWidget.include({
         deleteorder_click_handler: function(event, $el) {
-            var self = this;
             var order = this.pos.get_order();
             if (!order) {
                 return;
@@ -55,7 +48,6 @@ odoo.define("pos_order_cancel_restaurant.widgets", function(require) {
 
     screens.OrderWidget.include({
         show_popup: function(type) {
-            var self = this;
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
             var config = this.pos.config;
