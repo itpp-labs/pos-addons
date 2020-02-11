@@ -4,7 +4,6 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
         return;
     }
 
-    var screens = require("pos_mobile.screens");
     var chrome = require("pos_mobile.chrome");
 
     chrome.Chrome.include({
