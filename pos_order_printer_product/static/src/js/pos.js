@@ -1,17 +1,11 @@
 odoo.define("pos_order_printer_product", function(require) {
-    var exports = {};
+    "use strict";
 
-    var Backbone = window.Backbone;
-    var core = require("web.core");
     var models = require("pos_restaurant_base.models");
-    var multiprint = require("pos_restaurant.multiprint");
-    var chrome = require("point_of_sale.chrome");
-
-    var _t = core._t;
+    require("pos_restaurant.multiprint");
 
     models.load_fields("restaurant.printer", ["product_ids"]);
 
-    var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         is_product_in_product_list: function(id, list) {
             var product_tmpl_id = this.db.get_product_by_id(id).product_tmpl_id;
