@@ -1,5 +1,6 @@
 // Phantomjs odoo helper
 // jshint evil: true, loopfunc: true
+/* eslint-disable */
 /*
 
 Modified phantomtest.js from odoo ( https://github.com/odoo/odoo/blob/8.0/openerp/tests/phantomtest.js ). It accepts following extra parameters:
@@ -65,7 +66,7 @@ function waitForReady (page, ready, callback, timeout){
         return page.evaluate(function (ready) {
             var r = false;
             try {
-                r = !!eval(ready);
+                r = Boolean(eval(ready));
             } catch(ex) {
             }
             return r;
@@ -103,7 +104,7 @@ function PhantomTest() {
     // ----------------------------------------------------
     this.pages = {}; // sname -> page
 
-    for (var sname in self.options.sessions){ 
+    for (var sname in self.options.sessions){
         session = self.options.sessions[sname];
         session.timeout = session.timeout ? Math.round(parseFloat(session.timeout)*1000 - 5000) : 10000;
 
@@ -149,8 +150,9 @@ function PhantomTest() {
             var page = self.page;
 
             setTimeout(function () {
-                if (pagesLoaded)
-                    return;
+                if (pagesLoaded) {
+return;
+}
                 page.evaluate(function (timeoutMessage) {
                     var message = timeoutMessage();
                     console.log('error', message);
@@ -171,7 +173,7 @@ function PhantomTest() {
                             src = v[1];
                             found = page.evaluate(function(code) {
                                 try {
-                                    return !!eval(code);
+                                    return Boolean(eval(code));
                                 } catch (e) {
                                     return false;
                                 }
@@ -189,9 +191,9 @@ function PhantomTest() {
             };
 
 
-        })();
+        }());
 
-    }// for (var sname in self.options.sessions){ 
+    }// for (var sname in self.options.sessions){
 
 
     // ----------------------------------------------------
@@ -230,12 +232,14 @@ function PhantomTest() {
                     } else {
                         console.log(currentSName, currentPage.name, 'LOADED', url, status, JSON.stringify(currentPage.cookieJar.cookies));
                         // clear localstorage leftovers
-                        currentPage.evaluate(function () {localStorage.clear(); });
+                        currentPage.evaluate(function () {
+localStorage.clear();
+});
                         // process ready
                         waitForReady(currentPage, ready, onPageReady, session.timeout);
                     }
                 });
-            })(page, sname);
+            }(page, sname));
         }//for (var sname in self.pages){
 
     };
@@ -269,15 +273,16 @@ function PhantomTest() {
             (function(){
                 var commandNum = i;
                 timer = setTimeout(function () {
-                    if (commandNum != i)
-                        return;
+                    if (commandNum != i) {
+return;
+}
                     page.evaluate(function (tools) {
                         var message = tools.timeoutMessage();
                         console.log('error', message);
                     }, tools);
                     phantom.exit(1);
                 }, command.timeout || 60333);
-            })();
+            }());
             if (extra == 'connection_off'){
                 console.log('Connection is off for', sname);
                 page.onResourceRequested = blockConnection;

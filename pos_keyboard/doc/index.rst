@@ -35,7 +35,7 @@ Backspace    ``<-``               delete symbol
 ----------- --------------------- ------------------
 Enter        ``Ok``               confirmation
 ----------- --------------------- ------------------
-Esc          ``Cancel``           close Pop-up 
+Esc          ``Cancel``           close Pop-up
 =========== ===================== ==================
 
 User Scenario
@@ -47,9 +47,9 @@ User Scenario
   * You can use ``Backspace`` if you want to delete symbol
   * You can use ``Enter`` if you want to confirm PIN code
   * You can use ``Esc`` if you want to close the Pop-up keyboard
-  
+
 * Work in your own account using hotkeys for each mode on the Numpad or just press Extra keys. Then enter numbers.
-  
+
   * You can use ``q`` in case of Qrt mode
   * You can use ``d`` in case of Disc mode
   * You can use ``p`` in case of Price mode

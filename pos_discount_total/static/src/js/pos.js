@@ -65,4 +65,3 @@ odoo.define('pos_discount_total', function(require) {
     });
 
 });
-

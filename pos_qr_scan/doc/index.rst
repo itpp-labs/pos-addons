@@ -10,7 +10,7 @@ Installation
 Configuration
 =============
 
-Browser can get access to camera only on using via ``https`` connection. 
+Browser can get access to camera only on using via ``https`` connection.
 
 Possible NGINX configurations to support ``https``::
 

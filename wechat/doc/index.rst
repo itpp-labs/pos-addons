@@ -16,7 +16,7 @@ Installation
     # to update existing installation use
     pip install -U wechatpy
 
-* Be sure that your server available for requests from outside world (i.e. it shall not be avaialble in local network only) 
+* Be sure that your server available for requests from outside world (i.e. it shall not be avaialble in local network only)
 
 Multi database
 --------------

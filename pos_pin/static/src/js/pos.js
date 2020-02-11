@@ -13,7 +13,7 @@ odoo.define('pos_pin.pos', function (require) {
         sudo_custom: function(options) {
             options = options || {};
             var user = options.current_cashier || this.pos.get_cashier();
-        
+
             if (user.role === 'manager') {
                 return new $.Deferred().resolve(user);
             } else if (this.pos.config.module_pos_hr) {
