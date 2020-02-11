@@ -582,7 +582,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
                 return pl.cashregister.journal.debt;
             });
             if (debt_pl && partner) {
-                // var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
+                // Var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
                 this._super();
                 // Offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl) {

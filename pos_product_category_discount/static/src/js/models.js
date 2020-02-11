@@ -89,7 +89,6 @@ odoo.define("pos_product_category_discount.models", function(require) {
             }
         },
         apply_discount_category: function(discount) {
-            var self = this;
             var order = this.get_order();
             var lines = order.get_orderlines().filter(function(item) {
                 if (item.product.pos_category_ids) {
