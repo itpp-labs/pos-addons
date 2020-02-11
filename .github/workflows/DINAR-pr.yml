@@ -8,47 +8,49 @@ jobs:
     name: "pre-commit"
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.7.x'
-    - name: Check Python Version
-      run: echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' ' -f1)"
-    - uses: actions/cache@v1
-      with:
-        path: ~/.cache/pre-commit
-        key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
-    - uses: pre-commit/action@v1.0.1
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.7.x"
+      - name: Check Python Version
+        run:
+          echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' '
+          -f1)"
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
+      - uses: pre-commit/action@v1.0.1
 
   review:
     name: "Quick Review"
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-      with:
-        path: REPO
-    - name: Checkout DINAR
-      uses: actions/checkout@v2
-      with:
-        path: DINAR
-        repository: itpp-labs/DINAR
-        ref: master  # TODO: use fixed version
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.7.x'
-    - name: Install python tools
-      run: |
-        pip install plumbum PyGithub
-    - name: Analyze PR
-      run: |
-        # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
-        cd REPO
-        python ../DINAR/workflow-files/analyze-pr.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.number }}
-    - name: HOW TO RUN LOCALLY
-      #if: "env.PR_UPDATED_MODULES_INSTALLABLE != ''"
-      run: |
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          path: REPO
+      - name: Checkout DINAR
+        uses: actions/checkout@v2
+        with:
+          path: DINAR
+          repository: itpp-labs/DINAR
+          ref: master # TODO: use fixed version
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.7.x"
+      - name: Install python tools
+        run: |
+          pip install plumbum PyGithub
+      - name: Analyze PR
+        run: |
+          # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
+          cd REPO
+          python ../DINAR/workflow-files/analyze-pr.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.number }}
+      - name: HOW TO RUN LOCALLY
+        #if: "env.PR_UPDATED_MODULES_INSTALLABLE != ''"
+        run: |
           cat << 'EOF'
           To test updates run:
 
