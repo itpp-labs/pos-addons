@@ -2,6 +2,7 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
 odoo.define("pos_receipt_custom_template.models", function(require) {
+    "use strict";
     var models = require("point_of_sale.models");
     var core = require("web.core");
 
@@ -80,7 +81,6 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
         },
     });
 
-    var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         custom_qweb_render: function(template, options) {
             var template_name = $(template).attr("t-name");
