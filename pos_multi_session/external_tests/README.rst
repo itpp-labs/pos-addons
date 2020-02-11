@@ -147,6 +147,7 @@ Run tests for separated servers
 ===============================
 
 To run tests on separated servers do what is written in previous paragraphs and create two dockers more. First docker below will process functionality of main server while 'odoo' container will provide synchronization. The second docker provides longpolling support for the first one.
+
 ::
 
     docker run \

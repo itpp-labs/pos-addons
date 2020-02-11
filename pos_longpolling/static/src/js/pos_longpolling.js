@@ -6,18 +6,18 @@ odoo.define('pos_longpolling', function(require){
     var session = require('web.session');
     var core = require('web.core');
     var models = require('point_of_sale.models');
-    var bus = require('bus.bus');
+    var bus_bus = require('bus.bus');
     var chrome = require('point_of_sale.chrome');
     var crash_manager = require('web.crash_manager');
     var QWeb = core.qweb;
     var _t = core._t;
 
     // prevent bus to be started by chat_manager.js
-    bus.ERROR_DELAY = 10000;
+    bus_bus.ERROR_DELAY = 10000;
     // fake value to ignore start_polling call
-    bus.bus.activated = true;
+    bus_bus.bus.activated = true;
 
-    bus.Bus.include({
+    bus_bus.Bus.include({
         init_bus: function(pos, sync_server){
             this.pos = pos;
             if (!this.channel_callbacks){
@@ -57,7 +57,7 @@ odoo.define('pos_longpolling', function(require){
                 // no error popup if request is interrupted or fails for any reason
                 e.preventDefault();
                 // random delay to avoid massive longpolling
-                setTimeout(_.bind(self.poll, self), bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
+                setTimeout(_.bind(self.poll, self), bus_bus.ERROR_DELAY + (Math.floor((Math.random()*20)+1)*1000));
             });
         },
         check_sleep_mode: function() {
@@ -83,7 +83,7 @@ odoo.define('pos_longpolling', function(require){
                 visibilityChange = 'webkitvisibilitychange';
             }
 
-            if (visibilityChange !== undefined) {
+            if (typeof visibilityChange !== "undefined") {
                 document.addEventListener(visibilityChange, onVisibilityChange, false);
             }
         },
@@ -186,7 +186,7 @@ odoo.define('pos_longpolling', function(require){
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.buses = {};
 
-            this.bus = bus.bus;
+            this.bus = bus_bus.bus;
             this.bus.lonpolling_activated = false;
             this.bus.name = 'Default';
             this.ready.then(function () {
@@ -197,7 +197,7 @@ odoo.define('pos_longpolling', function(require){
             });
         },
         add_bus: function(key, sync_server){
-            this.buses[key] = new bus.Bus();
+            this.buses[key] = new bus_bus.Bus();
             this.buses[key].init_bus(this, sync_server);
             this.buses[key].name = key;
         },

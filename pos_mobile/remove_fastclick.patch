@@ -807,11 +807,11 @@ index a049417d98de2..a1dbbfdbb46fd 100644
 --- a/addons/point_of_sale/static/src/js/chrome.js
 +++ b/addons/point_of_sale/static/src/js/chrome.js
 @@ -614,7 +614,6 @@ var Chrome = PosBaseWidget.extend(AbstractAction.prototype, {
- 
-     build_chrome: function() { 
+
+     build_chrome: function() {
          var self = this;
 -        FastClick.attach(document.body);
- 
+
          if ($.browser.chrome) {
              var chrome_version = $.browser.version.split('.')[0];
 diff --git a/addons/point_of_sale/views/point_of_sale.xml b/addons/point_of_sale/views/point_of_sale.xml
@@ -821,9 +821,8 @@ index 497e038a8ac8a..85c7e310eec7f 100644
 @@ -6,7 +6,6 @@
              <link rel="stylesheet" href="/point_of_sale/static/src/css/pos.css" id="pos-stylesheet"/>
              <link rel="stylesheet" href="/point_of_sale/static/src/css/keyboard.css"/>
- 
+
 -            <script type="text/javascript" src="/point_of_sale/static/lib/fastclick.js"></script>
              <script type="text/javascript" src="/point_of_sale/static/lib/waitfont.js"></script>
              <script type="text/javascript" src="/point_of_sale/static/src/js/main.js"></script>
              <script type="text/javascript" src="/point_of_sale/static/src/js/db.js"></script>
-

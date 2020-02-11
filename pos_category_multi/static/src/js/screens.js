@@ -7,7 +7,7 @@ odoo.define('pos_category_multi.screens', function(require){
             this._super(category, query, buy_result);
             if(query){
                 var products = this.pos.db.search_product_in_category(category.id, query);
-                var getUniqueByID = function getUniqueByID(arr) {
+                var getUniqueByID = function(arr) {
                     var unique = arr.map(function (e) {
                         return e.id;
                     }).map(function (e, i, final) {

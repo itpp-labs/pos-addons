@@ -6,28 +6,20 @@
     "images": [],
     "version": "11.0.1.0.0",
     "application": False,
-
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "LGPL-3",
     # "price": 0.00,
     # "currency": "EUR",
-
-    "depends": [
-    ],
+    "depends": [],
     "external_dependencies": {"python": ["twython", "escpos"], "bin": []},
-    "data": [
-    ],
-    "qweb": [
-    ],
-    "demo": [
-    ],
-
+    "data": [],
+    "qweb": [],
+    "demo": [],
     "post_load": "post_load",
     "pre_init_hook": None,
-    "post_init_hook": 'post_init',
-
+    "post_init_hook": "post_init",
     "auto_install": False,
     "installable": False,
 }

@@ -10,15 +10,9 @@
     "license": "AGPL-3",
     "price": 15.00,
     "currency": "EUR",
-
-    "depends": [
-        'point_of_sale',
-    ],
+    "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
-    "data": [
-        'template.xml',
-        'view.xml',
-    ],
+    "data": ["template.xml", "view.xml"],
     "demo": [],
     "installable": True,
     "auto_install": False,
