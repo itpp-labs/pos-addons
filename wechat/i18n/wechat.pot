@@ -87,7 +87,7 @@ msgid "Error"
 msgstr ""
 
 #. module: wechat
-#: code:addons/wechat/models/wechat_order.py:144
+#: code:addons/wechat/models/wechat_order.py:157
 #, python-format
 msgid "Error on sending request to WeChat: %s"
 msgstr ""
