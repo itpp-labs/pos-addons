@@ -6,7 +6,6 @@ odoo.define("pos_mobile.models", function(require) {
 
     var models = require("point_of_sale.models");
 
-    var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         get_quantity_by_product_id: function(id) {
             var lines = this.get_orderlines().filter(function(line) {
