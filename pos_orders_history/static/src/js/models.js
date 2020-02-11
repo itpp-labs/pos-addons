@@ -5,7 +5,7 @@ odoo.define("pos_orders_history.models", function(require) {
     "use strict";
     var models = require("point_of_sale.models");
     var Model = require("web.Model");
-    var longpolling = require("pos_longpolling");
+    require("pos_longpolling");
 
     var _super_pos_model = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
