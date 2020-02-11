@@ -1,13 +1,6 @@
 odoo.define("pos_absolute_discount.screens", function(require) {
-    var models = require("pos_absolute_discount.models");
+    "use strict";
     var screens = require("point_of_sale.screens");
-    var gui = require("point_of_sale.gui");
-    var core = require("web.core");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
-    var PopupWidget = require("point_of_sale.popups");
-
-    var QWeb = core.qweb;
-    var _t = core._t;
 
     screens.OrderWidget.include({
         init: function(parent, options) {
