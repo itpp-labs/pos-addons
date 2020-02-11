@@ -5,7 +5,6 @@ odoo.define("pos_order_merge.merge", function(require) {
     var models = require("point_of_sale.models");
     var screens = require("point_of_sale.screens");
     var core = require("web.core");
-    var floors = require("pos_restaurant.floors");
 
     var QWeb = core.qweb;
     var _t = core._t;
