@@ -20,7 +20,7 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:61
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:70
 #, python-format
 msgid "Actions"
 msgstr ""
@@ -39,38 +39,38 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:99
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:112
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:108
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:121
 #, python-format
 msgid "Cancelled"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:56
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:63
 #, python-format
 msgid "Customer"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:128
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:137
 #, python-format
 msgid "Discount"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/js/screens.js:102
+#: code:addons/pos_orders_history/static/src/js/screens.js:105
 #, python-format
 msgid "Enter or Scan barcode"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/js/screens.js:139
 #: code:addons/pos_orders_history/static/src/js/screens.js:147
-#: code:addons/pos_orders_history/static/src/js/screens.js:390
+#: code:addons/pos_orders_history/static/src/js/screens.js:156
+#: code:addons/pos_orders_history/static/src/js/screens.js:428
 #, python-format
 msgid "Error: Could not find the Order"
 msgstr ""
@@ -91,7 +91,7 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:124
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:133
 #, python-format
 msgid "Image"
 msgstr ""
@@ -108,7 +108,7 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/js/screens.js:121
+#: code:addons/pos_orders_history/static/src/js/screens.js:124
 #, python-format
 msgid "No Barcode"
 msgstr ""
@@ -125,14 +125,14 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:58
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:65
 #, python-format
 msgid "Order Date"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:55
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:62
 #, python-format
 msgid "Order Ref"
 msgstr ""
@@ -151,15 +151,15 @@ msgstr ""
 #. module: pos_orders_history
 #. openerp-web
 #: code:addons/pos_orders_history/static/src/xml/pos.xml:27
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:57
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:64
 #, python-format
 msgid "POS"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:96
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:109
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:105
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:118
 #, python-format
 msgid "Paid"
 msgstr ""
@@ -181,43 +181,43 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:93
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:106
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:102
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:115
 #, python-format
 msgid "Posted"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:125
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:134
 #, python-format
 msgid "Product"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:126
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:135
 #, python-format
 msgid "Quantity"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:59
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:66
 #, python-format
 msgid "Salesman"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:34
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:37
 #, python-format
 msgid "Scan Barcode"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:36
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:39
 #, python-format
 msgid "Search Orders"
 msgstr ""
@@ -244,21 +244,21 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:60
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:67
 #, python-format
 msgid "Status"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:131
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:140
 #, python-format
 msgid "Subtotal"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:130
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:139
 #, python-format
 msgid "Subtotal w/o Tax"
 msgstr ""
@@ -272,22 +272,22 @@ msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:129
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:138
 #, python-format
 msgid "Taxes"
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/js/screens.js:140
-#: code:addons/pos_orders_history/static/src/js/screens.js:391
+#: code:addons/pos_orders_history/static/src/js/screens.js:148
+#: code:addons/pos_orders_history/static/src/js/screens.js:429
 #, python-format
 msgid "There is no order with this barcode."
 msgstr ""
 
 #. module: pos_orders_history
 #. openerp-web
-#: code:addons/pos_orders_history/static/src/xml/pos.xml:127
+#: code:addons/pos_orders_history/static/src/xml/pos.xml:136
 #, python-format
 msgid "Unit Price"
 msgstr ""
