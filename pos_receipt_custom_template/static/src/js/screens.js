@@ -2,7 +2,7 @@
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 
 odoo.define("pos_receipt_custom_template.screens", function(require) {
-    var models = require("pos_receipt_custom_template.models");
+    "use strict";
     var screens = require("point_of_sale.screens");
 
     screens.ReceiptScreenWidget.include({
