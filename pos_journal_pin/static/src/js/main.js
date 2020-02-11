@@ -8,7 +8,6 @@ odoo.define("pos_journal_pin", function(require) {
     var models = require("point_of_sale.models");
     var screens = require("point_of_sale.screens");
 
-    var _t = core._t;
 
     models.load_fields("account.journal", ["ask_manager"]);
 
@@ -21,7 +20,6 @@ odoo.define("pos_journal_pin", function(require) {
             this.click_paymentmethods(this.pos.cashregisters[0].journal_id[0]);
         },
         click_paymentmethods: function(id) {
-            var self = this;
             var cashregister = null;
             for (var i = 0; i < this.pos.cashregisters.length; i++) {
                 if (this.pos.cashregisters[i].journal_id[0] === id) {
