@@ -11,18 +11,14 @@ odoo.define("pos_choosing_cashier", function(require) {
     var PopupWidget = require("point_of_sale.popups");
     var ScreenWidget = require("point_of_sale.screens").ScreenWidget;
     var Gui = require("point_of_sale.gui").Gui;
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var gui = require("point_of_sale.gui");
 
     var _t = core._t;
-    var _lt = core._lt;
-    var QWeb = core.qweb;
 
     var CashierSelectionPopupWidget = PopupWidget.extend({
         template: "CashierSelectionPopupWidget",
         show: function(options) {
             options = options || {};
-            var self = this;
             this._super(options);
 
             this.list = options.list || [];
@@ -31,7 +27,7 @@ odoo.define("pos_choosing_cashier", function(require) {
         click_item: function(event) {
             this.gui.close_popup();
             if (this.options.confirm) {
-                var item = this.list[parseInt($(event.target).data("item-index"))];
+                var item = this.list[parseInt($(event.target).data("item-index"), 10)];
                 item = item ? item.item : item;
                 this.options.confirm.call(self, item);
             }
