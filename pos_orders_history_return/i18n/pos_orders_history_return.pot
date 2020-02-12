@@ -15,22 +15,22 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:146
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:162
 #, python-format
 msgid "All products have been returned."
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:145
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:161
 #, python-format
 msgid "Error"
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:53
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:61
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:57
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:66
 #, python-format
 msgid "Error: Could not find the Order"
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:186
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:204
 #, python-format
 msgid "Order Is Empty"
 msgstr ""
@@ -93,21 +93,21 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:54
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:58
 #, python-format
 msgid "There is no order with this barcode."
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:110
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:121
 #, python-format
 msgid "Warning"
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:111
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:122
 #, python-format
 msgid "You have an unfinished return of the order. Please complete the return of the order and try again."
 msgstr ""
