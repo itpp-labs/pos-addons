@@ -22,7 +22,7 @@ msgstr ""
 
 #. module: pos_mobile_restaurant
 #. openerp-web
-#: code:addons/pos_mobile_restaurant/static/src/js/floors.js:106
+#: code:addons/pos_mobile_restaurant/static/src/js/floors.js:108
 #, python-format
 msgid "Guests ?"
 msgstr ""
