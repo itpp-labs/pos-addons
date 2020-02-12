@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:14
+#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:19
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
@@ -32,8 +32,8 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:163
-#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:164
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:186
+#: code:addons/pos_longpolling/static/src/js/pos_longpolling.js:187
 #, python-format
 msgid "Longpolling Handling Error"
 msgstr ""
@@ -50,7 +50,7 @@ msgstr ""
 
 #. module: pos_longpolling
 #. openerp-web
-#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:10
+#: code:addons/pos_longpolling/static/src/js/test_longpoll_pos.js:12
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
