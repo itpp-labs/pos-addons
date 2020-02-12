@@ -68,7 +68,7 @@ msgstr ""
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:207
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:229
 #, python-format
 msgid "Offline"
 msgstr ""
@@ -98,14 +98,14 @@ msgstr ""
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:203
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:226
 #, python-format
 msgid "Scale"
 msgstr ""
 
 #. module: pos_printer_network
 #. openerp-web
-#: code:addons/pos_printer_network/static/src/js/network_printer.js:191
+#: code:addons/pos_printer_network/static/src/js/network_printer.js:218
 #, python-format
 msgid "Scanner"
 msgstr ""
