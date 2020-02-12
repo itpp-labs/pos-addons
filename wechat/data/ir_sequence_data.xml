@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo noupdate="1">
@@ -28,42 +28,42 @@
 
     <record id="wechat_local_sandbox" model="ir.config_parameter">
         <field name="key">wechat.local_sandbox</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_app_id" model="ir.config_parameter">
         <field name="key">wechat.app_id</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_app_secret" model="ir.config_parameter">
         <field name="key">wechat.app_secret</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_mch_id" model="ir.config_parameter">
         <field name="key">wechat.mch_id</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_sub_mch_id" model="ir.config_parameter">
         <field name="key">wechat.sub_mch_id</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_sandbox" model="ir.config_parameter">
         <field name="key">wechat.sandbox</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_mch_cert" model="ir.config_parameter">
         <field name="key">wechat.mch_cert</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
     <record id="wechat_mch_key" model="ir.config_parameter">
         <field name="key">wechat.mch_key</field>
-        <field name="value"></field>
+        <field name="value" />
     </record>
 
 </odoo>

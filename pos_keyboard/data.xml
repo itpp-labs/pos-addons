@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2015 igallyamov <https://github.com/igallyamov>
     Copyright 2016 ufaks <https://github.com/ufaks>
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
@@ -7,13 +7,19 @@
 
         <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_keyboard/static/src/js/pos.js"></script>
+                <script
+                type="text/javascript"
+                src="/pos_keyboard/static/src/js/pos.js"
+            />
             </xpath>
         </template>
 
         <template id="demo_assets_backend" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/pos_keyboard/static/src/js/test_pos_keyboard.js"></script>
+                <script
+                type="text/javascript"
+                src="/pos_keyboard/static/src/js/test_pos_keyboard.js"
+            />
             </xpath>
         </template>
 

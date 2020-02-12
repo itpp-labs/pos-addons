@@ -1,16 +1,25 @@
-odoo.define('pos_disable_payment', function(require){
+odoo.define("pos_disable_payment", function(require) {
+    "use strict";
 
-"use strict";
-
-    var chrome = require('point_of_sale.chrome');
-    var screens = require('point_of_sale.screens');
-    var core = require('web.core');
-    var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');
-    var PosBaseWidget = require('point_of_sale.BaseWidget');
+    var chrome = require("point_of_sale.chrome");
+    var screens = require("point_of_sale.screens");
+    var core = require("web.core");
+    var gui = require("point_of_sale.gui");
+    var models = require("point_of_sale.models");
+    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var _t = core._t;
 
-    models.load_fields("res.users", ['allow_payments','allow_delete_order','allow_discount','allow_edit_price','allow_decrease_amount', 'allow_delete_order_line','allow_create_order_line','allow_refund','allow_manual_customer_selecting']);
+    models.load_fields("res.users", [
+        "allow_payments",
+        "allow_delete_order",
+        "allow_discount",
+        "allow_edit_price",
+        "allow_decrease_amount",
+        "allow_delete_order_line",
+        "allow_create_order_line",
+        "allow_refund",
+        "allow_manual_customer_selecting",
+    ]);
 
     // Example of event binding and handling (triggering). Look up binding lower bind('change:cashier' ...
     // Example extending of class (method set_cashier), than was created using extend.
@@ -18,53 +27,57 @@ odoo.define('pos_disable_payment', function(require){
     // exports.PosModel = Backbone.Model.extend ...
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        set_cashier: function(){
+        set_cashier: function() {
             var old_cashier_id = this.db.get_cashier() && this.db.get_cashier().id;
             PosModelSuper.prototype.set_cashier.apply(this, arguments);
             if (old_cashier_id !== this.db.get_cashier().id) {
-                this.trigger('change:cashier', this);
+                this.trigger("change:cashier", this);
             }
-        }
+        },
     });
 
     chrome.Chrome.include({
-        init: function(){
+        init: function() {
             this._super.apply(this, arguments);
-            this.pos.bind('change:selectedOrder', this.check_allow_delete_order, this);
-            this.pos.bind('change:cashier', this.check_allow_delete_order, this);
+            this.pos.bind("change:selectedOrder", this.check_allow_delete_order, this);
+            this.pos.bind("change:cashier", this.check_allow_delete_order, this);
         },
-        check_allow_delete_order: function(){
+        check_allow_delete_order: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             var order = this.pos.get_order();
             if (order) {
-                 // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
+                // User option calls "Allow remove non-empty order". So we got to check if its empty we can delete it.
                 if (!user.allow_delete_order && order.orderlines.length > 0) {
-                    this.$('.deleteorder-button').addClass('disable');
+                    this.$(".deleteorder-button").addClass("disable");
                 } else {
-                    this.$('.deleteorder-button').removeClass('disable');
+                    this.$(".deleteorder-button").removeClass("disable");
                 }
             }
         },
-        loading_hide: function(){
+        loading_hide: function() {
             this._super();
-            //extra checks on init
+            // Extra checks on init
             this.check_allow_delete_order();
-        }
+        },
     });
     chrome.OrderSelectorWidget.include({
-        renderElement: function(){
+        renderElement: function() {
             this._super();
             this.chrome.check_allow_delete_order();
-        }
+        },
     });
 
     screens.OrderWidget.include({
-        bind_order_events: function(){
+        bind_order_events: function() {
             this._super();
             var self = this;
-            var order = this.pos.get('selectedOrder');
-            order.orderlines.bind('add remove', this.chrome.check_allow_delete_order, this.chrome);
-            this.pos.bind('change:cashier', function(){
+            var order = this.pos.get("selectedOrder");
+            order.orderlines.bind(
+                "add remove",
+                this.chrome.check_allow_delete_order,
+                this.chrome
+            );
+            this.pos.bind("change:cashier", function() {
                 self.check_numpad_access();
             });
         },
@@ -73,12 +86,12 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.get_cashier() || this.pos.user;
             if (line && line.quantity <= 0) {
                 if (user.allow_delete_order_line) {
-                    $('.numpad-backspace').removeClass('disable');
+                    $(".numpad-backspace").removeClass("disable");
                 } else {
-                    $('.numpad-backspace').addClass('disable');
+                    $(".numpad-backspace").addClass("disable");
                 }
             } else {
-                $('.numpad-backspace').removeClass('disable');
+                $(".numpad-backspace").removeClass("disable");
             }
             this.check_numpad_access(line);
         },
@@ -86,7 +99,7 @@ odoo.define('pos_disable_payment', function(require){
             this._super(orderline, event);
             this.check_numpad_access(orderline);
         },
-        renderElement:function(scrollbottom){
+        renderElement: function(scrollbottom) {
             this._super(scrollbottom);
             this.check_numpad_access();
         },
@@ -97,23 +110,37 @@ odoo.define('pos_disable_payment', function(require){
                 var user = this.pos.cashier || this.pos.user;
                 var state = this.getParent().numpad.state;
                 if (!line) {
-                    $('.numpad').find('.numpad-backspace').removeClass('disable');
-                    $('.numpad').find("[data-mode='quantity']").removeClass('disable');
+                    $(".numpad")
+                        .find(".numpad-backspace")
+                        .removeClass("disable");
+                    $(".numpad")
+                        .find("[data-mode='quantity']")
+                        .removeClass("disable");
                     return false;
                 }
 
                 if (user.allow_decrease_amount) {
-                    // allow all buttons
-                    if ($('.numpad').find("[data-mode='quantity']").hasClass('disable')) {
-                        $('.numpad').find("[data-mode='quantity']").removeClass('disable');
-                        state.changeMode('quantity');
+                    // Allow all buttons
+                    if (
+                        $(".numpad")
+                            .find("[data-mode='quantity']")
+                            .hasClass("disable")
+                    ) {
+                        $(".numpad")
+                            .find("[data-mode='quantity']")
+                            .removeClass("disable");
+                        state.changeMode("quantity");
                     }
                     if (user.allow_delete_order_line) {
-                        $('.numpad').find('.numpad-backspace').removeClass('disable');
+                        $(".numpad")
+                            .find(".numpad-backspace")
+                            .removeClass("disable");
                     }
                 } else {
-                    // disable the backspace button of numpad
-                    $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                    // Disable the backspace button of numpad
+                    $(".pads .numpad")
+                        .find(".numpad-backspace")
+                        .addClass("disable");
                 }
             }
         },
@@ -122,131 +149,133 @@ odoo.define('pos_disable_payment', function(require){
             var user = this.pos.cashier || this.pos.user;
             var order = this.pos.get_order();
             if (order && !user.allow_decrease_amount) {
-                // disable the backspace button of numpad
-                $('.pads .numpad').find('.numpad-backspace').addClass('disable');
+                // Disable the backspace button of numpad
+                $(".pads .numpad")
+                    .find(".numpad-backspace")
+                    .addClass("disable");
             }
-        }
+        },
     });
 
     // Here regular binding (in init) do not work for some reasons. We got to put binding method in renderElement.
     screens.ProductScreenWidget.include({
-        start: function () {
+        start: function() {
             this._super();
             this.checkPayAllowed();
             this.checkCreateOrderLine();
             this.checkDiscountButton();
         },
-        renderElement: function () {
+        renderElement: function() {
             this._super();
-            this.pos.bind('change:cashier', this.checkPayAllowed, this);
-            this.pos.bind('change:cashier', this.checkCreateOrderLine, this);
-            this.pos.bind('change:cashier', this.checkDiscountButton, this);
+            this.pos.bind("change:cashier", this.checkPayAllowed, this);
+            this.pos.bind("change:cashier", this.checkCreateOrderLine, this);
+            this.pos.bind("change:cashier", this.checkDiscountButton, this);
         },
-        checkCreateOrderLine: function () {
+        checkCreateOrderLine: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_create_order_line) {
-                $('.numpad').show();
-                $('.rightpane').show();
-            }else{
-                $('.numpad').hide();
-                $('.rightpane').hide();
+                $(".numpad").show();
+                $(".rightpane").show();
+            } else {
+                $(".numpad").hide();
+                $(".rightpane").hide();
             }
         },
-        checkPayAllowed: function () {
+        checkPayAllowed: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
-                this.actionpad.$('.pay').removeClass('disable');
-            }else{
-                this.actionpad.$('.pay').addClass('disable');
+                this.actionpad.$(".pay").removeClass("disable");
+            } else {
+                this.actionpad.$(".pay").addClass("disable");
             }
         },
         checkDiscountButton: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_discount) {
-                $('.control-button.js_discount').removeClass('disable');
-            }else{
-                $('.control-button.js_discount').addClass('disable');
+                $(".control-button.js_discount").removeClass("disable");
+            } else {
+                $(".control-button.js_discount").addClass("disable");
             }
         },
-        show: function(reset){
+        show: function(reset) {
             this._super(reset);
             if (reset) {
                 this.order_widget.check_numpad_access();
             }
-        }
+        },
     });
     screens.ScreenWidget.include({
-        renderElement: function () {
+        renderElement: function() {
             this._super();
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').removeClass('disable');
-            }else{
-                $('.pay').addClass('disable');
+                $(".pay").removeClass("disable");
+            } else {
+                $(".pay").addClass("disable");
             }
             if (user.allow_create_order_line) {
-                $('.numpad').show();
-                $('.rightpane').show();
-            }else{
-                $('.numpad').hide();
-                $('.rightpane').hide();
+                $(".numpad").show();
+                $(".rightpane").show();
+            } else {
+                $(".numpad").hide();
+                $(".rightpane").hide();
             }
-        }
+        },
     });
     screens.ActionpadWidget.include({
         init: function(parent, options) {
             var self = this;
             this._super(parent, options);
-            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+            this.pos.bind("change:cashier", this.checkManualCustomerSelecting, this);
         },
         checkManualCustomerSelecting: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_manual_customer_selecting) {
-                this.$('.set-customer').removeClass('disable');
+                this.$(".set-customer").removeClass("disable");
             } else {
-                this.$('.set-customer').addClass('disable');
+                this.$(".set-customer").addClass("disable");
             }
         },
-        renderElement: function () {
+        renderElement: function() {
             this._super();
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_payments) {
-                $('.pay').removeClass('disable');
-            } else{
-                $('.pay').addClass('disable');
+                $(".pay").removeClass("disable");
+            } else {
+                $(".pay").addClass("disable");
             }
             this.checkManualCustomerSelecting();
-        }
+        },
     });
     screens.PaymentScreenWidget.include({
         init: function(parent, options) {
             var self = this;
             this._super(parent, options);
-            this.pos.bind('change:cashier', this.checkManualCustomerSelecting, this);
+            this.pos.bind("change:cashier", this.checkManualCustomerSelecting, this);
         },
         checkManualCustomerSelecting: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             if (user.allow_manual_customer_selecting) {
-                this.$('.js_set_customer').removeClass('disable');
+                this.$(".js_set_customer").removeClass("disable");
             } else {
-                this.$('.js_set_customer').addClass('disable');
+                this.$(".js_set_customer").addClass("disable");
             }
         },
-        renderElement: function(){
+        renderElement: function() {
             this._super();
             this.checkManualCustomerSelecting();
-        }
+        },
     });
     screens.NumpadWidget.include({
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
-            this.pos.bind('change:cashier', this.check_access, this);
+            this.pos.bind("change:cashier", this.check_access, this);
         },
-        renderElement: function(){
+        renderElement: function() {
             this._super();
             this.check_access();
         },
-        check_access: function(){
+        check_access: function() {
             var user = this.pos.get_cashier() || this.pos.user;
             var order = this.pos.get_order();
             var orderline = false;
@@ -254,28 +283,28 @@ odoo.define('pos_disable_payment', function(require){
                 orderline = order.get_selected_orderline();
             }
             if (user.allow_discount) {
-                this.$el.find("[data-mode='discount']").removeClass('disable');
-            }else{
-                this.$el.find("[data-mode='discount']").addClass('disable');
+                this.$el.find("[data-mode='discount']").removeClass("disable");
+            } else {
+                this.$el.find("[data-mode='discount']").addClass("disable");
             }
             if (user.allow_edit_price) {
-                this.$el.find("[data-mode='price']").removeClass('disable');
-            }else{
-                this.$el.find("[data-mode='price']").addClass('disable');
+                this.$el.find("[data-mode='price']").removeClass("disable");
+            } else {
+                this.$el.find("[data-mode='price']").addClass("disable");
             }
             if (user.allow_refund) {
-                this.$el.find('.numpad-minus').removeClass('disable');
-            }else{
-                this.$el.find('.numpad-minus').addClass('disable');
+                this.$el.find(".numpad-minus").removeClass("disable");
+            } else {
+                this.$el.find(".numpad-minus").addClass("disable");
             }
             if (orderline && orderline.quantity <= 0) {
                 if (user.allow_delete_order_line) {
-                    this.$el.find('.numpad-backspace').removeClass('disable');
-                } else{
-                    this.$el.find('.numpad-backspace').addClass('disable');
+                    this.$el.find(".numpad-backspace").removeClass("disable");
+                } else {
+                    this.$el.find(".numpad-backspace").addClass("disable");
                 }
             }
-        }
+        },
     });
 
     return screens;
