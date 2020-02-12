@@ -20,14 +20,14 @@ msgstr ""
 
 #. module: pos_mobile
 #. openerp-web
-#: code:addons/pos_mobile/static/src/xml/pos.xml:82
+#: code:addons/pos_mobile/static/src/xml/pos.xml:96
 #, python-format
 msgid "Customer"
 msgstr ""
 
 #. module: pos_mobile
 #. openerp-web
-#: code:addons/pos_mobile/static/src/xml/pos.xml:62
+#: code:addons/pos_mobile/static/src/xml/pos.xml:74
 #, python-format
 msgid "Please select a payment method."
 msgstr ""
