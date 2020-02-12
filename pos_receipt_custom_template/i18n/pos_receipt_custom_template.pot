@@ -128,7 +128,7 @@ msgstr ""
 
 #. module: pos_receipt_custom_template
 #. openerp-web
-#: code:addons/pos_receipt_custom_template/static/src/js/models.js:105
+#: code:addons/pos_receipt_custom_template/static/src/js/models.js:108
 #: selection:pos.custom_receipt,type:0
 #, python-format
 msgid "Receipt"
