@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-extend="SelectionPopupWidget">
         <t t-jquery='header[class="title"]' t-operation="append">
             <t t-if="widget.cashiers">
                 <span class="exit">
-                    <i class="fa fa-sign-out"></i>
+                    <i class="fa fa-sign-out" />
                 </span>
             </t>
         </t>
@@ -14,7 +14,7 @@
         <div class="modal-dialog block">
             <div class="popup popup-selection">
                 <span>
-                    <i class="fa fa-lock"></i>
+                    <i class="fa fa-lock" />
                     <p>Tap to unlock...</p>
                 </span>
             </div>

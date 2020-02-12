@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2018 Artem Losev
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
@@ -6,7 +6,7 @@
 
     <t t-name="OrdersHistoryButton">
         <div class='control-button orders-history'>
-            <i class='fa fa-list-alt '/> History
+            <i class='fa fa-list-alt ' /> History
         </div>
     </t>
 
@@ -15,11 +15,11 @@
             <div class="screen-content">
                 <section class="top-content">
                     <span class='button back'>
-                        <i class='fa fa-angle-double-left'></i>
+                        <i class='fa fa-angle-double-left' />
                         Back
                     </span>
                     <span class="filters">
-                        <i class='fa fa-filter'></i>
+                        <i class='fa fa-filter' />
                         Filters
                         <span class="button user-filter">
                             User
@@ -31,24 +31,31 @@
                             Table
                         </span>
                     </span>
-                    <span t-if="widget.pos.config.load_barcode_order_only" class="button scan-barcode">Scan Barcode</span>
+                    <span
+                        t-if="widget.pos.config.load_barcode_order_only"
+                        class="button scan-barcode"
+                    >Scan Barcode</span>
                     <span class='searchbox'>
                         <input placeholder='Search Orders' />
-                        <span class='search-clear'></span>
+                        <span class='search-clear' />
                     </span>
-                    <span class='searchbox'></span>
+                    <span class='searchbox' />
                 </section>
                 <section class="full-content">
                     <div class='window'>
                         <section class='subwindow collapsed'>
                             <div class='subwindow-container collapsed'>
-                                <div class='subwindow-container-fix orders-details-contents'>
+                                <div
+                                    class='subwindow-container-fix orders-details-contents'
+                                >
                                 </div>
                             </div>
                         </section>
                         <section class='subwindow'>
                             <div class='subwindow-container'>
-                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                <div
+                                    class='subwindow-container-fix touch-scrollable scrollable-y'
+                                >
                                     <table class='order-list'>
                                         <thead>
                                             <tr>
@@ -58,7 +65,9 @@
                                                 <th>Order Date</th>
                                                 <th>Salesman</th>
                                                 <th>Status</th>
-                                                <th class="actions oe_hidden">Actions</th>
+                                                <th
+                                                    class="actions oe_hidden"
+                                                >Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class='order-list-contents'>
@@ -76,16 +85,16 @@
     <t t-name="OrderHistory">
         <tr class='order-line' t-att-data-id='order.id'>
             <td>
-                <span class='details' >
-                    <t t-esc='order.pos_reference'/>
+                <span class='details'>
+                    <t t-esc='order.pos_reference' />
                 </span>
             </td>
 
             <td>
-                <t t-if='order.partner_id' t-esc='order.partner_id[1]'/>
-                <t t-if='!order.partner_id' t-esc='""'/>
+                <t t-if='order.partner_id' t-esc='order.partner_id[1]' />
+                <t t-if='!order.partner_id' t-esc='""' />
             </td>
-            <td><t t-esc='order.pos_name'/></td>
+            <td><t t-esc='order.pos_name' /></td>
             <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
             <td><t t-esc='order.user_id[1]' /></td>
             <t t-if="!order.computed_state">
@@ -139,20 +148,20 @@
                     <img t-att-src="line.image" />
                 </div>
             </td>
-            <td><t t-esc='line.product_id[1]'/></td>
-            <td><t t-esc='line.qty'/></td>
-            <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
-            <td><t t-esc='line.discount'/></td>
-            <td><t t-esc='line.tax_ids'/></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal)'/></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal_incl)'/></td>
+            <td><t t-esc='line.product_id[1]' /></td>
+            <td><t t-esc='line.qty' /></td>
+            <td><t t-esc='widget.format_currency(line.price_unit)' /></td>
+            <td><t t-esc='line.discount' /></td>
+            <td><t t-esc='line.tax_ids' /></td>
+            <td><t t-esc='widget.format_currency(line.price_subtotal)' /></td>
+            <td><t t-esc='widget.format_currency(line.price_subtotal_incl)' /></td>
         </tr>
     </t>
 
     <t t-extend="OrderReceipt">
         <t t-jquery="div[t-if*='receipt.footer_html']" t-operation="before">
             <span>
-                <img id="barcode"/>
+                <img id="barcode" />
             </span>
         </t>
     </t>

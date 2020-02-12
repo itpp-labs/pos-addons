@@ -1,8 +1,8 @@
-odoo.define('pos_longpolling.LongpollingModel', function(require){
+odoo.define("pos_longpolling.LongpollingModel", function(require) {
     "use strict";
 
     var Backbone = window.Backbone;
-    var session = require('web.session');
+    var session = require("web.session");
 
     var LongpollingModel = Backbone.Model.extend({
         initialize: function(pos, bus) {
@@ -41,24 +41,28 @@ odoo.define('pos_longpolling.LongpollingModel', function(require){
             this.waiting_poll_response = status;
             this.trigger("change:poll_response", status);
         },
-        update_timer: function(){
+        update_timer: function() {
             this.stop_timer();
-            this.start_timer(this.pos.config.longpolling_max_silence_timeout, 'query');
+            this.start_timer(this.pos.config.longpolling_max_silence_timeout, "query");
         },
-        stop_timer: function(){
+        stop_timer: function() {
             if (this.timer) {
                 clearTimeout(this.timer);
                 this.timer = false;
             }
         },
-        start_timer: function(time, type){
+        start_timer: function(time, type) {
             var self = this;
             this.timer = setTimeout(function() {
                 if (type === "query") {
                     self.send_ping();
                 } else if (type === "response") {
-                    if (self.pos.debug){
-                        console.log('POS LONGPOLLING start_timer error', self.bus.service, self.pos.config.name);
+                    if (self.pos.debug) {
+                        console.log(
+                            "POS LONGPOLLING start_timer error",
+                            self.bus.service,
+                            self.pos.config.name
+                        );
                     }
                     self.network_is_off();
                 }
@@ -71,28 +75,46 @@ odoo.define('pos_longpolling.LongpollingModel', function(require){
         send_ping: function(address) {
             var self = this;
             this.response_status = false;
-            var serv_adr = this.pos.config.sync_server || '';
+            var serv_adr = this.pos.config.sync_server || "";
             if (address) {
                 serv_adr = address.serv;
             }
-            if (self.pos.debug){
-                console.log('POS LONGPOLLING', self.bus.service, self.pos.config.name, "PING");
+            if (self.pos.debug) {
+                console.log(
+                    "POS LONGPOLLING",
+                    self.bus.service,
+                    self.pos.config.name,
+                    "PING"
+                );
             }
-            return session.rpc(serv_adr + "/pos_longpolling/update", {message: "PING", pos_id: self.pos.config.id, db_name: session.db},{timeout:30000}).then(function(){
-                /* If the value "response_status" is true, then the poll message came earlier
+            return session
+                .rpc(
+                    serv_adr + "/pos_longpolling/update",
+                    {message: "PING", pos_id: self.pos.config.id, db_name: session.db},
+                    {timeout: 30000}
+                )
+                .then(
+                    function() {
+                        /* If the value "response_status" is true, then the poll message came earlier
                  if the value is false you need to start the response timer*/
-                self.set_is_online(true);
-                if (!self.response_status) {
-                    self.response_timer();
-                }
-            }, function(error, e){
-                e.preventDefault();
-                if (self.pos.debug){
-                    console.log('POS LONGPOLLING send error', self.bus.service, self.pos.config.name);
-                }
-                self.network_is_off();
-            });
-        }
+                        self.set_is_online(true);
+                        if (!self.response_status) {
+                            self.response_timer();
+                        }
+                    },
+                    function(error, e) {
+                        e.preventDefault();
+                        if (self.pos.debug) {
+                            console.log(
+                                "POS LONGPOLLING send error",
+                                self.bus.service,
+                                self.pos.config.name
+                            );
+                        }
+                        self.network_is_off();
+                    }
+                );
+        },
     });
 
     return LongpollingModel;

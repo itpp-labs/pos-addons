@@ -10,28 +10,27 @@ addons:
   postgresql: "9.5"
   apt:
     packages:
-      - expect-dev  # provides unbuffer utility
-      - python-lxml  # because pip installation is slow
+      - expect-dev # provides unbuffer utility
+      - python-lxml # because pip installation is slow
 
 env:
   global:
-  - VERSION="13.0" TESTS="0" LINT_CHECK="0" UNIT_TEST="0"
-  - SERVER_OPTIONS="--log-handler=odoo.addons.pos_longpolling:DEBUG"
-  - EXCLUDE="hw_printer_network,hw_twitter_printing"
-  - PYLINT_ODOO_JSLINTRC="/home/travis/maintainer-quality-tools/travis/cfg/.jslintrc"
-
+    - VERSION="13.0" TESTS="0" LINT_CHECK="0" UNIT_TEST="0"
+    - SERVER_OPTIONS="--log-handler=odoo.addons.pos_longpolling:DEBUG"
+    - EXCLUDE="hw_printer_network,hw_twitter_printing"
+    - PYLINT_ODOO_JSLINTRC="/home/travis/maintainer-quality-tools/travis/cfg/.jslintrc"
 
   matrix:
-  - LINT_CHECK="1"
-  - CHECK_TAGS="1"
-  - TESTS="1" ODOO_REPO="odoo/odoo"
-  - MAKEPOT="1"
-  - TESTS="1" ODOO_REPO="OCA/OCB""
-
+    - LINT_CHECK="1"
+    - CHECK_TAGS="1"
+    - TESTS="1" ODOO_REPO="odoo/odoo"
+    - MAKEPOT="1"
+    - TESTS="1" ODOO_REPO="OCA/OCB""
 
 install:
   - pip install anybox.testing.openerp
-  - git clone https://github.com/it-projects-llc/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - git clone https://github.com/it-projects-llc/maintainer-quality-tools.git
+    ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
 

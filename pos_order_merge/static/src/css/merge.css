@@ -3,23 +3,23 @@
 .pos .order-merge-screen .order {
     background: white;
     padding: 15px;
-    margin-left:16px;
-    margin-right:16px;
-    margin-top:16px;
-    margin-bottom:16px;
-    font-size:16px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
     border-radius: 3px;
-    border: solid 1px rgb(220,220,220);
+    border: solid 1px rgb(220, 220, 220);
     text-align: left;
     max-width: 500px;
-    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0, 0, 0);
 }
-.order-merge-screen .order.selected{
-    background: rgb(110,200,155);
+.order-merge-screen .order.selected {
+    background: rgb(110, 200, 155);
     color: white;
     -webkit-transition: background 250ms ease-in-out;
-       -moz-transition: background 250ms ease-in-out;
-            transition: background 250ms ease-in-out;
+    -moz-transition: background 250ms ease-in-out;
+    transition: background 250ms ease-in-out;
     cursor: default;
 }
 .pos .order-merge-screen .order .client {
@@ -52,9 +52,9 @@
     color: white;
 }
 .pos .order-merge-screen .mergemethods .button.active {
-    background: #6EC89B;
+    background: #6ec89b;
     color: white;
-    border-color: #6EC89B;
+    border-color: #6ec89b;
 }
 .pos .order-merge-screen .button.change_table {
     right: 0px;
@@ -72,7 +72,7 @@
     margin-left: -4px;
 }
 .pos .order-merge-screen h2 {
-    color: #6EC89B;
+    color: #6ec89b;
 }
 .pos .order-merge-screen h2 img {
     width: 22px;
@@ -84,7 +84,7 @@
     transition: all 150ms linear;
 }
 .pos .order-merge-screen .button.highlight {
-    background: rgb(110,200,155);
+    background: rgb(110, 200, 155);
     color: white;
-    border: solid 1px rgb(110,200,155);
+    border: solid 1px rgb(110, 200, 155);
 }
