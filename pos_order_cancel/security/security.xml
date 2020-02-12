@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
     Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
@@ -6,8 +6,8 @@
 
     <record model="ir.rule" id="show_cancel_lines_only_for_user_current_company">
         <field name="name">show cancel lines only for the user current company </field>
-        <field name="model_id" ref="model_pos_order_line_canceled"/>
-        <field name="global" eval="True"/>
+        <field name="model_id" ref="model_pos_order_line_canceled" />
+        <field name="global" eval="True" />
         <field name="domain_force">[('order_id.company_id', '=', user.company_id.id)]
         </field>
     </record>

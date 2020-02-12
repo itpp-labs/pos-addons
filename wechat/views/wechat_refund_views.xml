@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
@@ -8,22 +8,26 @@
         <field name="arch" type="xml">
             <form string="Wechat Refund">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,done"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name"/></h1>
+                        <h1><field name="name" /></h1>
                     </div>
                     <group>
-                        <field name="refund_ref"/>
-                        <field name="refund_fee"/>
-                        <field name="order_id"/>
-                        <field name="micropay_id"/>
-                        <field name="debug"/>
+                        <field name="refund_ref" />
+                        <field name="refund_fee" />
+                        <field name="order_id" />
+                        <field name="micropay_id" />
+                        <field name="debug" />
                     </group>
                     <notebook>
                         <page string="Raw Response">
-                            <field name="result_raw"/>
+                            <field name="result_raw" />
                         </page>
                     </notebook>
                 </sheet>
@@ -36,9 +40,9 @@
         <field name="model">wechat.refund</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="refund_ref"/>
-                <field name="refund_fee"/>
+                <field name="name" />
+                <field name="refund_ref" />
+                <field name="refund_fee" />
             </tree>
         </field>
     </record>
@@ -48,10 +52,10 @@
         <field name="model">wechat.refund</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
-                <field name="refund_ref"/>
-                <filter string="Sandbox" domain="[('debug','=',True)]"/>
-                <filter string="Non-Sandbox" domain="[('debug','=',False)]"/>
+                <field name="name" />
+                <field name="refund_ref" />
+                <filter string="Sandbox" domain="[('debug','=',True)]" />
+                <filter string="Non-Sandbox" domain="[('debug','=',False)]" />
             </search>
         </field>
     </record>
@@ -67,6 +71,7 @@
         action='action_wechat_refund'
         id='wechat_refund_menu'
         parent='root_wechat_menu'
-        sequence='100' />
+        sequence='100'
+    />
 
 </odoo>

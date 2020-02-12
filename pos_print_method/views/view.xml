@@ -1,10 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <openerp>
 
     <record id="view_restaurant_printer" model="ir.ui.view">
         <field name="name">Order Printers</field>
         <field name="model">restaurant.printer</field>
-        <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer"/>
+        <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_categories_ids']" position="after">
                 <field name="printer_method_name" />
@@ -15,7 +15,7 @@
     <record id="view_restaurant_printer_form" model="ir.ui.view">
         <field name="name">Order Printer</field>
         <field name="model">restaurant.printer</field>
-        <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form"/>
+        <field name="inherit_id" ref="pos_restaurant.view_restaurant_printer_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='proxy_ip']" position="after">
                  <field name="printer_method_name" />

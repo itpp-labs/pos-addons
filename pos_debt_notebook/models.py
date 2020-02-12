@@ -612,10 +612,10 @@ class PosOrder(models.Model):
             product_list = list()
             for o_line in order.lines:
                 product_list.append(
-                    "%s(%s * %s) + "
+                    "%s(%s * %s)"
                     % (o_line.product_id.name, o_line.qty, o_line.price_unit)
                 )
-            order.product_list = "".join(product_list).strip(" + ")
+            order.product_list = " + ".join(product_list)
 
     @api.model
     def _process_order(self, pos_order):
@@ -634,11 +634,9 @@ class PosOrder(models.Model):
                     o_line = o_line[2]
                     name = self.env["product.product"].browse(o_line["product_id"]).name
                     product_list.append(
-                        "{}({} * {}) + ".format(
-                            name, o_line["qty"], o_line["price_unit"]
-                        )
+                        "{}({} * {})".format(name, o_line["qty"], o_line["price_unit"])
                     )
-                product_list = "".join(product_list).strip(" + ")
+                product_list = " + ".join(product_list)
                 credit_updates.append(
                     {
                         "journal_id": payment[2]["journal_id"],
