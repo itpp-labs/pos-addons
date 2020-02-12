@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
     <record id="view_pos_payment" model="ir.ui.view">
         <field name="name">pos.make.payment.form</field>
         <field name="model">pos.make.payment</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_payment"/>
+        <field name="inherit_id" ref="point_of_sale.view_pos_payment" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount']" position="after">
-                <field name="order_ref" invisible="1"/>
+                <field name="order_ref" invisible="1" />
             </xpath>
         </field>
     </record>

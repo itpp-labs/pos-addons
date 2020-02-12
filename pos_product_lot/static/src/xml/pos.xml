@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-extend="Product">
         <t t-jquery=".product-img" t-operation="append">
             <span t-if="product.is_lot" t-attf-class="lot-tag">
-                lot of <t t-esc="product.lot_qty"/>
+                lot of <t t-esc="product.lot_qty" />
             </span>
         </t>
     </t>
     <t t-extend="Orderline">
         <t t-jquery="span.price" t-operation="after">
-            <t t-set='qty_available' t-value='line.get_product().qty_available'/>
+            <t t-set='qty_available' t-value='line.get_product().qty_available' />
             <t t-if="qty_available lt line.quantity and line.get_product().lot_id">
                 <div><button class="unpack-lot">Unpack corresponding lot</button></div>
             </t>
