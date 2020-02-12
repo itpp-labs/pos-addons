@@ -25,7 +25,7 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:70
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:98
 #, python-format
 msgid "Discount per Unit:"
 msgstr ""
@@ -50,8 +50,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/pos_orderline_absolute_discount/static/src/js/models.js:38
 #, python-format
-msgid "It is not allowed to create a credit by discount: . 
-\n"
+msgid "It is not allowed to create a credit by discount: . \n"
 "The discount value should not be higher than unit price "
 msgstr ""
 
@@ -89,8 +88,8 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:25
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:44
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:32
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:57
 #, python-format
 msgid "With a"
 msgstr ""
@@ -103,8 +102,8 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:27
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:45
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:34
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:60
 #, python-format
 msgid "discount"
 msgstr ""
