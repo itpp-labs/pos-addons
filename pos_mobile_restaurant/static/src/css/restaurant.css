@@ -40,10 +40,10 @@
 .pos.mobile .scrollable-y {
     position: relative;
 }
-.pos.mobile .floor-map .table{
+.pos.mobile .floor-map .table {
     font-size: 36px;
     border-radius: 6px;
-    box-shadow: 0px 6px rgba(0,0,0,0.07);
+    box-shadow: 0px 6px rgba(0, 0, 0, 0.07);
     position: relative;
     display: inline-block;
     margin: 10px;
@@ -82,7 +82,7 @@
 .pos.mobile .floor-map .edit-bar .edit-button {
     width: 64px;
     margin-right: -8px;
-    border-right: solid 2px rgba(0,0,0,0.2);
+    border-right: solid 2px rgba(0, 0, 0, 0.2);
 }
 .pos.mobile .floor-map .edit-bar .color-picker {
     left: -212px;
@@ -95,10 +95,18 @@
     width: 120px;
     height: 120px;
 }
-.pos.mobile .floor-map .edit-bar .color-picker .color.tl {  border-top-left-radius: 6px; }
-.pos.mobile .floor-map .edit-bar .color-picker .color.tr {  border-top-right-radius: 6px; }
-.pos.mobile .floor-map .edit-bar .color-picker .color.bl {  border-bottom-left-radius: 6px; }
-.pos.mobile .floor-map .edit-bar .color-picker .color.br {  border-bottom-right-radius: 6px; }
+.pos.mobile .floor-map .edit-bar .color-picker .color.tl {
+    border-top-left-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.tr {
+    border-top-right-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.bl {
+    border-bottom-left-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.br {
+    border-bottom-right-radius: 6px;
+}
 
 .pos.mobile .floor-map .edit-bar .close-picker {
     margin-left: -32px;
@@ -114,8 +122,8 @@
     height: 96px;
     border-radius: 48px;
     margin-left: -48px;
-    margin-top:  -48px;
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+    margin-top: -48px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 .pos.mobile .floor-map .table.selected .table-handle:hover {
     width: 120px;
@@ -154,20 +162,19 @@
     line-height: initial;
     font-size: smaller;
 }
-.pos.mobile .order-button.floor-button .fa{
+.pos.mobile .order-button.floor-button .fa {
     font-size: 48px;
 }
 /* ------ ORDER LINE STATUS ------- */
 
 .pos.mobile .order .orderline.dirty {
-    border-left: solid 12px #6EC89B;
+    border-left: solid 12px #6ec89b;
     padding-left: 18px;
 }
 .pos.mobile .order .orderline.skip {
-    border-left: solid 12px #7F82AC;
+    border-left: solid 12px #7f82ac;
     padding-left: 18px;
 }
-
 
 /* ------ ORDER NOTES ------- */
 
@@ -184,21 +191,22 @@
 }
 .pos.mobile .slide-floor-menu {
     min-width: 100px;
-	width: 70%;
-	max-width: 641px;
-	background-color: #2C8DFB;
-	color: #fff;
-	overflow-y: auto;
+    width: 70%;
+    max-width: 641px;
+    background-color: #2c8dfb;
+    color: #fff;
+    overflow-y: auto;
 }
 /* ------ FLOR MAP BUTTON MENU ------- */
 .pos.mobile .swiper-container-floor-screen .menu-button {
     position: absolute;
-    top: 0px; left: 0px;
+    top: 0px;
+    left: 0px;
     padding: 9px;
     cursor: pointer;
-    -webkit-transition: .3s;
-    transition: .3s;
-    background-color: #2C8DFB;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    background-color: #2c8dfb;
     z-index: 1;
     margin-bottom: -1px;
     width: 80px;
@@ -214,8 +222,8 @@
     margin: 20px auto;
     background-color: #fff;
     border-radius: 20px;
-    -webkit-transition: .3s;
-    transition: .3s;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
 }
 .pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(1) {
     margin-top: 0px;
@@ -280,8 +288,8 @@
     margin-left: 30px;
 }
 .pos.mobile .control-button.order-submit.highlight {
-    border: initial!important;
-    background: initial!important;
+    border: initial !important;
+    background: initial !important;
 }
 .pos.mobile .control-button.order-submit .not-active {
     display: inline-block;
@@ -327,18 +335,19 @@
     width: 100%;
 }
 .pos.mobile .top-control-buttons .control-button {
-    width: calc(100%/3 - 15px);
+    width: calc(100% / 3 - 15px);
     margin: 5px;
     flex-grow: 3;
     height: 93px;
     line-height: 93px;
 }
-.pos.mobile .actionpad, .pos.mobile .numpad {
+.pos.mobile .actionpad,
+.pos.mobile .numpad {
     margin-top: 0px;
 }
 .pos.mobile .actionpad {
     max-width: initial;
-    width: calc(100%/3 - 10px);
+    width: calc(100% / 3 - 10px);
 }
 .pos.mobile .slide-numpad .numpad {
     width: 66%;
@@ -348,12 +357,13 @@
     width: calc(25% - 10px);
 }
 .pos.mobile .swipe-is-open .order-and-products {
-    height: calc(100% - 705px)!important;
+    height: calc(100% - 705px) !important;
 }
 .pos.mobile .under-search {
     max-height: 705px;
 }
-.pos.mobile .top-control-buttons .control-button:active, .pos.mobile .control-button.order-printbill:active {
+.pos.mobile .top-control-buttons .control-button:active,
+.pos.mobile .control-button.order-printbill:active {
     background: black;
     color: white;
     border-color: transparent;
@@ -361,20 +371,20 @@
 
 /* --- Restaurant for Mobile Specific CSS --- */
 .pos.mobile .screen-content-flexbox {
-    margin:     0px auto;
+    margin: 0px auto;
     text-align: left;
-    height:     100%;
-    overflow:   hidden;
-    position:   relative;
-    display:    -webkit-flex;
-    -webkit-flex-flow:  column nowrap;
-    flex-flow:  column nowrap;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    display: -webkit-flex;
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column nowrap;
 }
 .pos.mobile .swiper-container-map {
     height: 100%;
 }
 /*  ********* The Webkit Scrollbar  ********* */
-.pos.mobile .floor-map *::-webkit-scrollbar{
+.pos.mobile .floor-map *::-webkit-scrollbar {
     width: 4px;
     height: 4px;
 }

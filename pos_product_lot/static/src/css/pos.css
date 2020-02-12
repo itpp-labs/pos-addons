@@ -8,10 +8,10 @@
     background: #7f82ac;
     padding: 2px 5px;
     border-radius: 2px;
-	font-weight: bold;
+    font-weight: bold;
 }
 
-.pos .order .orderline .unpack-lot{
-	font-size: 16px;
-	height:35px;
+.pos .order .orderline .unpack-lot {
+    font-size: 16px;
+    height: 35px;
 }
