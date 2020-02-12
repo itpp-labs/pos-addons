@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_order_merge
 #. openerp-web
-#: code:addons/pos_order_merge/static/src/xml/merge.xml:36
+#: code:addons/pos_order_merge/static/src/xml/merge.xml:39
 #, python-format
 msgid "Back"
 msgstr ""
 
 #. module: pos_order_merge
 #. openerp-web
-#: code:addons/pos_order_merge/static/src/xml/merge.xml:32
+#: code:addons/pos_order_merge/static/src/xml/merge.xml:35
 #, python-format
 msgid "Change Table"
 msgstr ""
@@ -35,7 +35,7 @@ msgstr ""
 #. module: pos_order_merge
 #. openerp-web
 #: code:addons/pos_order_merge/static/src/xml/merge.xml:6
-#: code:addons/pos_order_merge/static/src/xml/merge.xml:65
+#: code:addons/pos_order_merge/static/src/xml/merge.xml:74
 #, python-format
 msgid "Join"
 msgstr ""
@@ -47,14 +47,14 @@ msgstr ""
 
 #. module: pos_order_merge
 #. openerp-web
-#: code:addons/pos_order_merge/static/src/js/merge.js:33
+#: code:addons/pos_order_merge/static/src/js/merge.js:31
 #, python-format
 msgid "Table is Empty"
 msgstr ""
 
 #. module: pos_order_merge
 #. openerp-web
-#: code:addons/pos_order_merge/static/src/js/merge.js:32
+#: code:addons/pos_order_merge/static/src/js/merge.js:30
 #, python-format
 msgid "Warning"
 msgstr ""
