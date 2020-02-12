@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: pos_wechat
 #. openerp-web
-#: code:addons/pos_wechat/static/src/js/tour.js:21
+#: code:addons/pos_wechat/static/src/js/tour.js:26
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
@@ -54,7 +54,7 @@ msgstr ""
 
 #. module: pos_wechat
 #. openerp-web
-#: code:addons/pos_wechat/static/src/js/tour.js:17
+#: code:addons/pos_wechat/static/src/js/tour.js:19
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
