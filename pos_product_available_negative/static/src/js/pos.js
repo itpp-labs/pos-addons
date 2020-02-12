@@ -71,7 +71,6 @@ odoo.define("pos_product_available_negative.pos", function(require) {
             this.click_product_handler = function() {
                 var product = self.pos.db.get_product_by_id(this.dataset.productId);
                 if (product.type === "product" && product.qty_available <= 0) {
-                    var that = this;
                     return self.gui.show_popup("alert", {
                         title: _t("The product is out of stock"),
                         body: _t("It's unavailable to add the product"),
