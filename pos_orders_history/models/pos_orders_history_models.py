@@ -53,6 +53,6 @@ class PosOrder(models.Model):
     def _compute_pos_history_reference_uid(self):
         for r in self:
             reference = r.pos_reference and re.search(
-                r"\d{1,}-\d{1,}-\d{1,}", r.pos_reference
+                r"\d{1}-\d{1}-\d{1}", r.pos_reference
             )
             r.pos_history_reference_uid = reference and reference.group(0) or ""
