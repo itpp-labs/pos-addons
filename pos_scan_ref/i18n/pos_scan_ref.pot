@@ -15,14 +15,14 @@ msgstr ""
 
 #. module: pos_scan_ref
 #. openerp-web
-#: code:addons/pos_scan_ref/static/src/js/test_pos_scan_ref.js:17
+#: code:addons/pos_scan_ref/static/src/js/test_pos_scan_ref.js:20
 #, python-format
 msgid "Click to start the point of sale interface. It runs on tablets, laptops, or industrial hardware. Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_scan_ref
 #. openerp-web
-#: code:addons/pos_scan_ref/static/src/js/test_pos_scan_ref.js:13
+#: code:addons/pos_scan_ref/static/src/js/test_pos_scan_ref.js:15
 #, python-format
 msgid "Ready to launch your point of sale? Click here."
 msgstr ""
