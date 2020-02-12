@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-    <t t-extend="OrderWidget" >
-        <t t-jquery=".order-container .summary.clearfix .subentry:first" t-operation="after">
-         <div class='fiscal'>Fiscal: <span class="value"></span></div>
+    <t t-extend="OrderWidget">
+        <t
+            t-jquery=".order-container .summary.clearfix .subentry:first"
+            t-operation="after"
+        >
+         <div class='fiscal'>Fiscal: <span class="value" /></div>
         </t>
     </t>
 </templates>
