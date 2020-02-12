@@ -27,7 +27,7 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:57
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:81
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -39,7 +39,7 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:70
+#: code:addons/pos_product_available_negative/static/src/js/pos.js:77
 #, python-format
 msgid "It's unavailable to add the product"
 msgstr ""
@@ -61,14 +61,14 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:50
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:69
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:27
+#: code:addons/pos_product_available_negative/static/src/js/pos.js:31
 #, python-format
 msgid "Order has out-of-stock product and must be approved by supervisor"
 msgstr ""
@@ -90,7 +90,7 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:78
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:109
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
@@ -107,14 +107,14 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:69
+#: code:addons/pos_product_available_negative/static/src/js/pos.js:76
 #, python-format
 msgid "The product is out of stock"
 msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:72
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:100
 #, python-format
 msgid "check restriction popup"
 msgstr ""
