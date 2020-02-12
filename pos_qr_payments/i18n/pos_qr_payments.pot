@@ -35,7 +35,7 @@ msgstr ""
 
 #. module: pos_qr_payments
 #. openerp-web
-#: code:addons/pos_qr_payments/static/src/js/pos_qr_payments.js:30
+#: code:addons/pos_qr_payments/static/src/js/pos_qr_payments.js:36
 #, python-format
 msgid "Warning"
 msgstr ""
