@@ -294,7 +294,8 @@ odoo.define("pos_keyboard.pos", function(require) {
                     if (
                         (token >= 96 && token <= 105) ||
                         token === 110 ||
-                        (token >= 48 && token <= 57) || token === 190
+                        (token >= 48 && token <= 57) ||
+                        token === 190
                     ) {
                         self.data.type = type.numchar;
                         self.data.val = kc_lookup[token];
