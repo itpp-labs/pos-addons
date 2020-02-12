@@ -43,14 +43,14 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:12
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:15
 #, python-format
 msgid ", edited by"
 msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:27
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:36
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
@@ -209,15 +209,15 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:23
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:30
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:33
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:45
 #, python-format
 msgid "New"
 msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1071
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1184
 #, python-format
 msgid "No connection to the server."
 msgstr ""
@@ -265,7 +265,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:23
+#: code:addons/pos_multi_session/static/src/js/test_pos_multi_session.js:28
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
@@ -297,7 +297,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:169
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:182
 #, python-format
 msgid "Sync Orders"
 msgstr ""
@@ -310,7 +310,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:977
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1090
 #, python-format
 msgid "There is a conflict during synchronization, try your action again"
 msgstr ""
@@ -322,7 +322,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1028
+#: code:addons/pos_multi_session/static/src/js/pos_multi_session.js:1141
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -341,7 +341,7 @@ msgstr ""
 
 #. module: pos_multi_session
 #. openerp-web
-#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:10
+#: code:addons/pos_multi_session/static/src/xml/pos_multi_session.xml:9
 #, python-format
 msgid "added by"
 msgstr ""
