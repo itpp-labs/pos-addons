@@ -15,21 +15,21 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:40
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:44
 #, python-format
 msgid "% discount"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:114
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:122
 #, python-format
 msgid "Back"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:96
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:104
 #, python-format
 msgid "Change:"
 msgstr ""
@@ -46,7 +46,7 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:69
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:75
 #, python-format
 msgid "Discount:"
 msgstr ""
@@ -78,15 +78,15 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:220
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:231
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:260
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:274
 #, python-format
 msgid "No Ticket."
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:184
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:213
 #, python-format
 msgid "No XML Receipt."
 msgstr ""
@@ -99,14 +99,14 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:19
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:23
 #, python-format
 msgid "Phone:"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:120
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:128
 #, python-format
 msgid "Print Receipt"
 msgstr ""
@@ -128,7 +128,7 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:10
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:12
 #, python-format
 msgid "Reprint"
 msgstr ""
@@ -145,22 +145,22 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:55
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:59
 #, python-format
 msgid "Subtotal:"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:221
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:232
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:261
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:275
 #, python-format
 msgid "There is no Ticket for the order."
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:185
+#: code:addons/pos_orders_history_reprint/static/src/js/screens.js:214
 #, python-format
 msgid "There is no XML receipt for the order."
 msgstr ""
@@ -172,21 +172,21 @@ msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:75
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:83
 #, python-format
 msgid "Total:"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:20
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:24
 #, python-format
 msgid "User:"
 msgstr ""
 
 #. module: pos_orders_history_reprint
 #. openerp-web
-#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:39
+#: code:addons/pos_orders_history_reprint/static/src/xml/main.xml:43
 #, python-format
 msgid "With a"
 msgstr ""
