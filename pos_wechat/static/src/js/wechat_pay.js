@@ -145,7 +145,8 @@ odoo.define("pos_wechat", function(require) {
                 this.check_is_integer(code) &&
                 code.length === 18 &&
                 code[0] === 1 &&
-                code[1] >= 0 && code[1] <= 5
+                code[1] >= 0 &&
+                code[1] <= 5
             ) {
                 return true;
             }
