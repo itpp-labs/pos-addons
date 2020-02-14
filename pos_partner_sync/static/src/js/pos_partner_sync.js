@@ -2,15 +2,13 @@
  * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_partner_sync.pos", function(require) {
+    "use strict";
     var core = require("web.core");
     var screens = require("point_of_sale.screens");
     var models = require("point_of_sale.models");
-    var longpolling = require("pos_longpolling");
-    var gui = require("point_of_sale.gui");
     var rpc = require("web.rpc");
 
     var QWeb = core.qweb;
-    var _t = core._t;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
