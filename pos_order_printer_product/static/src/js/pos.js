@@ -1,11 +1,11 @@
 odoo.define("pos_order_printer_product", function(require) {
+    "use strict";
     var models = require("pos_restaurant_base.models");
 
     models.load_fields("restaurant.printer", ["product_ids"]);
 
     models.load_fields("restaurant.printer", ["product_ids"]);
 
-    var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         is_product_in_product_list: function(id, list) {
             var product_tmpl_id = this.db.get_product_by_id(id).product_tmpl_id;
