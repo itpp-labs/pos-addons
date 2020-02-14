@@ -1,6 +1,6 @@
 {
     "name": "Product lot",
-    "version": "10.0.1.0.2",
+    "version": "11.0.1.0.2",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "LGPL-3",
     "category": "Point Of Sale",
