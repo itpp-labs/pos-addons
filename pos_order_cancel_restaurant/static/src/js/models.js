@@ -5,10 +5,6 @@ odoo.define("pos_order_cancel_restaurant.models", function(require) {
     "use strict";
 
     var models = require("pos_order_cancel.models");
-    var multiprint = require("pos_restaurant_base.models");
-    var core = require("web.core");
-    var QWeb = core.qweb;
-    var _t = core._t;
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
