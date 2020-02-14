@@ -5,8 +5,10 @@
  * Copyright 2017-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2017 David Arnold
  * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+/* eslint complexity: "off"*/
 
 odoo.define("pos_multi_session", function(require) {
+    "use strict";
     var exports = {};
 
     var session = require("web.session");
@@ -14,12 +16,10 @@ odoo.define("pos_multi_session", function(require) {
     var core = require("web.core");
     var screens = require("point_of_sale.screens");
     var models = require("point_of_sale.models");
-    var bus = require("bus.bus");
     var chrome = require("point_of_sale.chrome");
-    var longpolling = require("pos_longpolling");
     var rpc = require("web.rpc");
     var gui = require("point_of_sale.gui");
-    var posDB = require("point_of_sale.DB");
+    var posDB = require("point_of_sale.DB"); // eslint-disable-line no-unused-vars
 
     var _t = core._t;
 
@@ -263,11 +263,9 @@ odoo.define("pos_multi_session", function(require) {
                     return;
                 }
             }
-            var self = this;
             return PosModelSuper.prototype.on_removed_order.apply(this, arguments);
         },
         updates_from_server_callback: function(message) {
-            var self = this;
             // There are two types of message construction, get_attr extract required data from either of them
             var get_attr = function(obj, attr) {
                 return obj[attr] || (obj.data && obj.data[attr]);
@@ -548,7 +546,6 @@ odoo.define("pos_multi_session", function(require) {
             this._super();
         },
         renderElement: function() {
-            var self = this;
             if (this.compare_data()) {
                 return false;
             }
@@ -607,7 +604,6 @@ odoo.define("pos_multi_session", function(require) {
 
     posDB = posDB.include({
         get_unpaid_orders: function() {
-            var self = this;
             var res = this._super(arguments);
             res = _.filter(res, function(o) {
                 var pos = window.posmodel;
@@ -693,7 +689,7 @@ odoo.define("pos_multi_session", function(require) {
             var self = this;
             if (this.new_order) {
                 this.new_order = false;
-                this.pos.pos_session.order_ID = this.pos.pos_session.order_ID + 1;
+                ++this.pos.pos_session.order_ID;
                 this.trigger("change:update_new_order");
             } else {
                 // Save order to the local storage
@@ -905,7 +901,6 @@ odoo.define("pos_multi_session", function(require) {
 
     exports.MultiSession = Backbone.Model.extend({
         initialize: function(pos) {
-            var self = this;
             this.pos = pos;
             this.client_online = true;
             this.order_ID = null;
@@ -1145,7 +1140,6 @@ odoo.define("pos_multi_session", function(require) {
             }
         },
         send_draft_offline_orders: function() {
-            var self = this;
             var orders = this.pos.get("orders");
             orders.each(function(item) {
                 if (!item.order_on_server && item.get_orderlines().length > 0) {
