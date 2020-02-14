@@ -3,14 +3,7 @@
 odoo.define("pos_qr_show", function(require) {
     "use strict";
 
-    var rpc = require("web.rpc");
-    var core = require("web.core");
     var models = require("point_of_sale.models");
-    var screens = require("point_of_sale.screens");
-    var gui = require("point_of_sale.gui");
-    var session = require("web.session");
-
-    var _t = core._t;
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
@@ -43,7 +36,6 @@ odoo.define("pos_qr_show", function(require) {
             $(".qr-container").empty();
         },
         render_html_for_customer_facing_display: function() {
-            var self = this;
             var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(
                 this,
                 arguments
@@ -78,8 +70,9 @@ odoo.define("pos_qr_show", function(require) {
                     function(memory, current_element) {
                         return memory + $(current_element).prop("outerHTML");
                     },
+                    // Initial memory of ""
                     ""
-                ); // Initial memory of ""
+                );
 
                 return rendered_html;
             });
