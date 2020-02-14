@@ -8,12 +8,10 @@ odoo.define("pos_orders_history_return.screens", function(require) {
     var screens = require("pos_orders_history.screens");
     var models = require("pos_orders_history.models");
     var rpc = require("web.rpc");
-    var QWeb = core.qweb;
     var _t = core._t;
 
     screens.OrdersHistoryScreenWidget.include({
         show: function() {
-            var self = this;
             this._super();
             if (this.pos.config.return_orders) {
                 this.set_return_action();
@@ -25,7 +23,7 @@ odoo.define("pos_orders_history_return.screens", function(require) {
             this.$(".button.return").unbind("click");
             this.$(".button.return").click(function(e) {
                 var parent = $(this).parents(".order-line");
-                var id = parseInt(parent.data("id"));
+                var id = parseInt(parent.data("id"), 10);
                 self.click_return_order_by_id(id);
             });
         },
