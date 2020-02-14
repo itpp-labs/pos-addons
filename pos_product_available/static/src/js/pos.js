@@ -125,7 +125,6 @@ odoo.define("pos_product_available.PosModel", function(require) {
         },
     });
 
-    var ProductSuper = models.Product;
     models.Product = models.Product.extend({
         format_float_value: function(val) {
             var value = parseFloat(val);
