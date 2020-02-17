@@ -2,7 +2,7 @@
 # Copyright 2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Artem Losev
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": "POS Orders History",
     "summary": """See all paid orders from special menu in POS""",
@@ -14,7 +14,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 59.00,
     "currency": "EUR",
     "depends": ["base_action_rule", "pos_longpolling"],

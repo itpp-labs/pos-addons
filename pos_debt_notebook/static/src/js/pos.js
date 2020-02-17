@@ -3,7 +3,7 @@
  * Copyright 2017 Artyom Losev
  * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
- * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+ * License MIT (https://opensource.org/licenses/MIT). */
 /* eslint-disable complexity */
 odoo.define("pos_debt_notebook.pos", function(require) {
     "use strict";

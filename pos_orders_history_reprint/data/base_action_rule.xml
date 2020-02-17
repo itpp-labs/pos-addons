@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
     <!-- call notify_receipt_updates() -->
     <record id="action_notify_pos_receipt_updates" model="ir.actions.server">

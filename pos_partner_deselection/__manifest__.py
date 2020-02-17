@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Partner Deselection""",
     "summary": """The module deselects a partner in opened POS on expiry the predefined time interval after the customer was set.""",
@@ -12,7 +12,7 @@
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 29.00,
     "currency": "EUR",
     "depends": ["point_of_sale"],

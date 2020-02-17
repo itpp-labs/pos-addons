@@ -1,6 +1,6 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
- * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_orders_history.models", function(require) {
     "use strict";
     var models = require("point_of_sale.models");

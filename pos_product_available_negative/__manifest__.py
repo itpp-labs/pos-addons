@@ -4,7 +4,7 @@
     "version": "10.0.1.0.2",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "summary": "Only supervisor can approve POS Order with out-of-stock product",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
