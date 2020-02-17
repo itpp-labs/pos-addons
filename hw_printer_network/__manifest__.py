@@ -11,7 +11,7 @@
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/hw_printer_network/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/hw_printer_network/",
     "license": "Other OSI approved licence",  # MIT
     "price": 59.00,
     "currency": "EUR",

@@ -6,11 +6,11 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pos_receipt_custom_main.png"],
-    "version": "12.0.1.0.2",
+    "version": "13.0.1.0.2",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_receipt_custom_template/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_receipt_custom_template/",
     "license": "Other OSI approved licence",  # MIT
     "price": 49.00,
     "currency": "EUR",

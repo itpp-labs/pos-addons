@@ -7,11 +7,11 @@
     "category": "Hidden",
     # "live_test_url": "",
     "images": [],
-    "version": "12.0.1.0.1",
+    "version": "13.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/wechat/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/wechat/",
     "license": "Other OSI approved licence",  # MIT
     "price": 75.00,
     "currency": "EUR",

@@ -9,7 +9,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
     var rpc = require("web.rpc");
 
     var QWeb = core.qweb;
-    
+
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function() {

@@ -6,11 +6,11 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pos_debt_notebook_rewards.jpg"],
-    "version": "12.0.1.0.0",
+    "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_rewards/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook_rewards/",
     "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",

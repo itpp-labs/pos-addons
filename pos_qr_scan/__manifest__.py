@@ -4,11 +4,11 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/main.png"],
-    "version": "12.0.1.0.1",
+    "version": "13.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, KolushovAlexandr",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_scan/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_qr_scan/",
     "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
