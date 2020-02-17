@@ -7,7 +7,7 @@
     "category": "Point of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-order-print-check?version=10.0",
     "images": ["images/pos_order_print_check_main.jpg"],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@itpp.dev",
