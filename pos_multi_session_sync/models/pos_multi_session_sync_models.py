@@ -1,6 +1,7 @@
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017, 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
+# pylint: disable=invalid-commit
 import json
 import logging
 import time
