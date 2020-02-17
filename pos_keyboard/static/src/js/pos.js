@@ -4,7 +4,7 @@
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
     Copyright 2019 ssaid <https://github.com/ssaid>
     Copyright 2019 raulovallet <https://github.com/raulovallet>
-    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+    License MIT (https://opensource.org/licenses/MIT). */
 /* eslint-disable complexity */
 odoo.define("pos_keyboard.pos", function(require) {
     "use strict";

@@ -8,7 +8,7 @@
 # Copyright 2017 Lilia Salihova
 # Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
 {
     "name": "POS Debt & Credit notebook",
@@ -20,7 +20,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 280.00,
     "currency": "EUR",
     "external_dependencies": {"python": [], "bin": []},

@@ -4,7 +4,7 @@
     "summary": "Control access to the POS payments",
     "version": "10.0.3.7.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "support": "pos@it-projects.info",
     "website": "https://yelizariev.github.io",

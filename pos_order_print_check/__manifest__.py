@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Check PosBox Connection""",
     "summary": """Check the connection to PosBox before printing to avoid loosing the orders""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 89.00,
     "currency": "EUR",
     "depends": ["pos_restaurant_base", "web_tour"],

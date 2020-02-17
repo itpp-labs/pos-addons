@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 29.00,
     "currency": "EUR",
     "depends": ["pos_multi_session", "pos_menu"],
