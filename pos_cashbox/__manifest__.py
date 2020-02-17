@@ -6,7 +6,7 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-cashbox?version=10.0",
     "images": ["images/pos_cashbox_main.png"],
-    "version": "10.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
