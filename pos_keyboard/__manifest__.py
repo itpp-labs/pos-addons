@@ -13,7 +13,7 @@
     "version": "11.0.1.1.5",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/yelizariev",
     "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
