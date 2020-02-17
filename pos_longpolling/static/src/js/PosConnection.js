@@ -2,7 +2,6 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
     "use strict";
 
     var LongpollingModel = require("pos_longpolling.LongpollingModel");
-    var bus_longpolling = require("pos_longpolling.LongpollingBus");
     var SyncBusService = require("pos_longpolling.SyncBusService");
     var ServiceProviderMixin = require("web.ServiceProviderMixin");
     var session = require("web.session");
