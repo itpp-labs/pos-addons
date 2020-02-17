@@ -6,13 +6,11 @@
 odoo.define("pos_order_cancel.widgets", function(require) {
     "use strict";
 
-    var models = require("pos_order_cancel.models");
     var screens = require("point_of_sale.screens");
     var chrome = require("point_of_sale.chrome");
     var gui = require("point_of_sale.gui");
     var core = require("web.core");
     var PopupWidget = require("point_of_sale.popups");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -26,7 +24,6 @@ odoo.define("pos_order_cancel.widgets", function(require) {
 
     chrome.OrderSelectorWidget.include({
         deleteorder_click_handler: function(event, $el) {
-            var self = this;
             var order = this.pos.get_order();
             if (order.is_empty()) {
                 if (order.canceled_lines && order.canceled_lines.length) {
@@ -271,9 +268,9 @@ odoo.define("pos_order_cancel.widgets", function(require) {
             "click .reason-line": function(event) {
                 var id = event.currentTarget.getAttribute("data-id");
                 var line = $(".reason-list-contents").find(
-                    ".reason-line[data-id='" + parseInt(id) + "']"
+                    ".reason-line[data-id='" + parseInt(id, 10) + "']"
                 );
-                this.line_select(line, parseInt(id));
+                this.line_select(line, parseInt(id, 10));
             },
             "click .reason-back": function() {
                 this.cancel_changes();
@@ -321,7 +318,6 @@ odoo.define("pos_order_cancel.widgets", function(require) {
             this.toggle_save_button();
         },
         save_changes: function() {
-            var self = this;
             var order = this.pos.get_order();
             var orderline = order.get_selected_orderline();
 
@@ -351,7 +347,7 @@ odoo.define("pos_order_cancel.widgets", function(require) {
             var type = this.get_type();
             if (type === "product") {
                 var order = this.pos.get_order();
-                var line = order.get_selected_orderline().cancel_quantity_changes();
+                order.get_selected_orderline().cancel_quantity_changes();
             }
         },
         toggle_save_button: function() {
