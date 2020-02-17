@@ -2,7 +2,7 @@
     "name": "POS debranding",
     "version": "12.0.1.0.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "category": "Debranding",
     "support": "pos@it-projects.info",
     "website": "https://www.odoo.com/apps/modules/12.0/pos_debranding/",

@@ -2,7 +2,7 @@
 # Copyright 2017 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ildar Nasyrov <https://it-projects.info/team/iledarn>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Available quantity of products in POS""",
     "summary": """Adds available quantity at products in POS""",
@@ -14,7 +14,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",
     "depends": ["point_of_sale", "stock"],

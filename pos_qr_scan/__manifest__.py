@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, KolushovAlexandr",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_scan/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["pos_qr_payments"],

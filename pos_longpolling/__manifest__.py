@@ -8,7 +8,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_longpolling/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     # "price": 0.00,
     # "currency": "EUR",
     "depends": ["bus", "point_of_sale"],

@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_restaurant_base/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 35.00,
     "currency": "EUR",
     "depends": ["pos_restaurant"],

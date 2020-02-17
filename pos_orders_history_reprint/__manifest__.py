@@ -1,7 +1,7 @@
 # Copyright 2018 Losev Artyom
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Reprint POS Orders Receipt""",
     "summary": """Reprint receipts of paid POS orders""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_reprint/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["pos_orders_history"],
