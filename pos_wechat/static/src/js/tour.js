@@ -9,7 +9,6 @@ odoo.define("pos_wechat.tour", function(require) {
     var DUMMY_AUTH_CODE = "134579302432164181";
     var tour = require("web_tour.tour");
     var core = require("web.core");
-    var _t = core._t;
 
     function open_pos_neworder() {
         return [
