@@ -5,7 +5,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
     var core = require("web.core");
     var discount = require("pos_discount.pos_discount");
     var screens = require("point_of_sale.screens");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -118,7 +117,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
                     });
                 }
                 // Discount
-                var discount =
+                discount =
                     (-pc / 100.0) *
                     (order.get_total_with_tax() - price_without_discount);
                 order.product_discount = discount;
@@ -145,7 +144,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
         update_summary: function() {
             this._super();
             var order = this.pos.get_order();
-            var discount = order ? order.get_total_discount() : 0;
+            discount = order ? order.get_total_discount() : 0;
             if (this.el.querySelector(".summary .total .discount .value")) {
                 if (order && order.product_discount) {
                     discount -= order.product_discount;
@@ -195,14 +194,14 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
                 self.gui.back();
             });
 
-            var discount = this.pos.discount_program;
+            discount = this.pos.discount_program;
             this.render_list(discount);
 
             this.$(".discount-list-contents").delegate(
                 ".discount-line",
                 "click",
                 function(event) {
-                    self.line_select(event, $(this), parseInt($(this).data("id")));
+                    self.line_select(event, $(this), parseInt($(this).data("id"), 10));
                 }
             );
         },
@@ -214,7 +213,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             var contents = this.$el[0].querySelector(".discount-list-contents");
             contents.innerHTML = "";
             for (var i = 0, len = Math.min(discounts.length, 1000); i < len; i++) {
-                var discount = discounts[i];
+                discount = discounts[i];
                 var discountline = this.discount_cache.get_node(discount.id);
                 if (!discountline) {
                     var discountline_html = QWeb.render("DiscountLine", {
@@ -254,7 +253,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             } else {
                 this.$(".discount-list .highlight").removeClass("highlight");
                 $line.addClass("highlight");
-                var y = event.pageY - $line.parent().offset().top;
                 this.show_disc_button = true;
             }
 
@@ -272,7 +270,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
         })[0]
         .widget.include({
             save_changes: function() {
-                var order = this.pos.get_order();
                 if (this.new_client) {
                     if (
                         (this.has_client_changed() ||
