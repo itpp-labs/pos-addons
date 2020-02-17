@@ -3,7 +3,7 @@
     Copyright 2016 manawi <https://github.com/manawi>
     Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+    License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_product_available.PosModel", function(require) {
     "use strict";
 

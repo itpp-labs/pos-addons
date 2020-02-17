@@ -3,7 +3,7 @@
     "summary": "Control access to the POS payments",
     "version": "11.0.3.7.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0",
     "support": "pos@it-projects.info",

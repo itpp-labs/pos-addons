@@ -1,5 +1,5 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS QR Showing in POS""",
     "summary": """Show QR for qr-based payment systems in POS or Customer Screen""",
@@ -11,7 +11,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 40.00,
     "currency": "EUR",
     "depends": ["point_of_sale"],

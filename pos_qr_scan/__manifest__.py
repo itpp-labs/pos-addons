@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, KolushovAlexandr",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["pos_qr_payments"],

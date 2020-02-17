@@ -1,7 +1,7 @@
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Sync restaurant orders""",
     "summary": """Staff get order details immediately after waiter taps on tablet""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
     "website": "https://yelizariev.github.io",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 30.00,
     "currency": "EUR",
     "depends": ["pos_restaurant_base", "pos_multi_session"],

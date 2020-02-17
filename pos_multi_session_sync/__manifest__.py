@@ -1,6 +1,6 @@
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Sync Server for POS orders""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
@@ -12,7 +12,7 @@
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 60.00,
     "currency": "EUR",
     "depends": ["pos_longpolling"],

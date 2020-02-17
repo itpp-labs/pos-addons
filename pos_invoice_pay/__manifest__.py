@@ -1,6 +1,6 @@
 # Copyright 2018 Artyom Losev
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Pay Sale Orders & Invoices over POS""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
@@ -12,7 +12,7 @@
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 89.00,
     "currency": "EUR",
     "depends": ["base_automation", "sale_management", "pos_longpolling"],
