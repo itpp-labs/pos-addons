@@ -1,5 +1,5 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS: rewards for shifts""",
     "summary": """Rewards for shifts in POS Debt & Credit notebook""",
@@ -11,7 +11,7 @@
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_rewards/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",
     "depends": ["pos_debt_notebook", "base_attendance", "barcodes"],

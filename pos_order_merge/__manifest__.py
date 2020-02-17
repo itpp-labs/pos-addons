@@ -8,7 +8,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov, Alexandr Kolushov",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 69.00,
     "currency": "EUR",
     "depends": ["pos_restaurant"],

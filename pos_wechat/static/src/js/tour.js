@@ -1,5 +1,5 @@
 /* - Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+    License MIT (https://opensource.org/licenses/MIT). */
 /* This file is not used until we make a CI tool, that can run it. Normal CI cannot use longpolling.
    See https://github.com/odoo/odoo/commit/673f4aa4a77161dc58e0e1bf97e8f713b1e88491
  */
