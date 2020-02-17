@@ -2,7 +2,7 @@
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
 # Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
-# License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS Cashier Select""",
     "summary": """Forced choose a cashier before switching to payment screen""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["point_of_sale"],

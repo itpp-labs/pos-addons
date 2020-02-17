@@ -1,6 +1,6 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+   License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_wechat", function(require) {
     "use strict";
 

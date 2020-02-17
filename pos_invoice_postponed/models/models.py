@@ -1,6 +1,6 @@
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
 import copy
 

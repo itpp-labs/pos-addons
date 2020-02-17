@@ -1,7 +1,7 @@
 # Copyright 2014-2015 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
-# License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": "Find item by ref in POS",
     "summary": """Adds the ability to searching product by ref in POS""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 9.00,
     "currency": "EUR",
     "depends": ["point_of_sale"],

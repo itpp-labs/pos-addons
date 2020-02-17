@@ -1,7 +1,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS Orders Return""",
     "summary": """The module allows to make order returns from POS interface by quick & easy way""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_return/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["pos_orders_history"],

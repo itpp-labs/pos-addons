@@ -1,6 +1,6 @@
 # Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
 {
     "name": """Internal Credit System""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 255.00,
     "currency": "EUR",
     "depends": ["base_automation", "pos_longpolling", "pos_debt_notebook"],
