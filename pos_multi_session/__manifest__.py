@@ -3,6 +3,7 @@
 # Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License MIT (https://opensource.org/licenses/MIT).
+# pylint: disable=missing-manifest-dependency
 {
     "name": """Sync POS orders""",
     "summary": """Use multiple POS for handling orders""",
