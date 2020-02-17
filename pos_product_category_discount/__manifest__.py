@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_category_discount/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 39.00,
     "currency": "EUR",
     "depends": ["pos_discount"],

@@ -1,6 +1,6 @@
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Sync Partners in POS""",
     "summary": """Instant updates of the partner data in POS""",
@@ -12,7 +12,7 @@
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_barcode_sync/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 25.00,
     "currency": "EUR",
     "depends": ["point_of_sale", "pos_longpolling"],

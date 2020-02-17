@@ -1,7 +1,7 @@
 # Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
 # Copyright 2017-2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Lock POS Screen""",
     "summary": """Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN""",
@@ -13,7 +13,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
     "depends": ["pos_pin"],

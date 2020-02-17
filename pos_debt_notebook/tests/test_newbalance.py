@@ -1,7 +1,7 @@
 # Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
 from odoo.tests.common import TransactionCase
 

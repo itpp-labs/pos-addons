@@ -2,7 +2,7 @@
 <!--Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
     Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
     Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>3>
-    License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).-->
+    License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
         <template
         id="assets_backend"

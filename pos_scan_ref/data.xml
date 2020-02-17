@@ -4,7 +4,7 @@
     Copyright 2018 Ildar Nasyrov <https://it-projects.info/team/>
     Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License LGPL-3.0 (https://www.gnu.org/licenses/lgpl.html).-->
+    License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
         <template
         id="assets_backend"

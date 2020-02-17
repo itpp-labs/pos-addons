@@ -9,7 +9,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_mobile/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 300.00,
     "currency": "EUR",
     "depends": ["point_of_sale", "pos_debranding"],

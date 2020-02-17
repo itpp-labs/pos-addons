@@ -3,7 +3,7 @@
 # Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
 # Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Saving removed products of POS order""",
     "summary": """Store all cases of product removing and allow to specify reasons for it""",
@@ -14,7 +14,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_order_cancel/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 200.00,
     "currency": "EUR",
     "depends": ["point_of_sale", "pos_pin"],

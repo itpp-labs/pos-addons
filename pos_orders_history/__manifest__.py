@@ -2,7 +2,7 @@
 # Copyright 2018 Artem Losev
 # Copyright 2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": "POS Orders History",
     "summary": """See all paid orders from special menu in POS""",
@@ -14,7 +14,7 @@
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_orders_history/",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 59.00,
     "currency": "EUR",
     "depends": ["base_automation", "pos_longpolling"],
