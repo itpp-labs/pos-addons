@@ -5,7 +5,6 @@ odoo.define("pos_qr_show", function(require) {
 
     var models = require("point_of_sale.models");
 
-
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         on_payment_qr: function(order, payment_qr) {
