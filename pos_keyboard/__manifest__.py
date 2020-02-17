@@ -3,7 +3,7 @@
 # Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Keyboard support in Point Of Sale""",
     "summary": """Module allows to use usual keyboard (not virtual one) in Point of Sale""",
@@ -15,7 +15,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
     "currency": "EUR",
     "depends": ["point_of_sale"],

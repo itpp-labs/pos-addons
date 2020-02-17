@@ -1,7 +1,7 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
  * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
- * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_orders_history_reprint.screens", function(require) {
     "use strict";
 

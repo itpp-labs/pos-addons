@@ -2,7 +2,7 @@
     "name": "Product lot in POS",
     "version": "10.0.1.0.3",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "website": "https://twitter.com/yelizariev",
     "images": ["images/screenshot.png"],

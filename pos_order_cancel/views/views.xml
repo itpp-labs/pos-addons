@@ -2,7 +2,7 @@
 <!--Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
     Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+    License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record id="pos_cancelled_reason_form_view" model="ir.ui.view">
         <field name="name">pos.cancelled_reason.form</field>
