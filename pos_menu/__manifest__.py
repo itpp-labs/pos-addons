@@ -3,7 +3,7 @@
     "summary": """Add own set of products per each POS""",
     "category": "Point Of Sale",
     "images": ["images/pos_menu_main.jpg"],
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@itpp.dev",
