@@ -1,8 +1,10 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
    License MIT (https://opensource.org/licenses/MIT). */
+/* global posmodel, qrcode, success, error*/
+/* eslint no-alert: "off"*/
 odoo.define("pos_qr_scan", function(require) {
-    var exports = {};
+    "use strict";
 
     var core = require("web.core");
     var models = require("point_of_sale.models");
@@ -13,7 +15,6 @@ odoo.define("pos_qr_scan", function(require) {
     var QrButton = screens.ActionButtonWidget.extend({
         template: "QrButton",
         button_click: function() {
-            var self = this;
             this.gui.show_popup("qr_scan", {
                 title: "QR Scanning",
                 value: false,
@@ -29,7 +30,6 @@ odoo.define("pos_qr_scan", function(require) {
     var QrScanPopupWidget = PopupWidget.extend({
         template: "QrScanPopupWidget",
         show: function(options) {
-            var self = this;
             this.gUM = false;
             this._super(options);
             this.generate_qr_scanner();
@@ -54,7 +54,7 @@ odoo.define("pos_qr_scan", function(require) {
         },
         add_button_click: function(e) {
             var button = document.createElement("div");
-            active_id = e.target.getAttribute("camera-id");
+            var active_id = e.target.getAttribute("camera-id");
             this.start_webcam({deviceId: {exact: active_id}});
             this.pos.db.save("active_camera_id", active_id);
             return button;
@@ -144,10 +144,8 @@ odoo.define("pos_qr_scan", function(require) {
                     });
                 // Dont know for what this is needed
             } else if (navigator.getUserMedia) {
-                webkit = true;
                 navigator.getUserMedia({video: options, audio: false}, success, error);
             } else if (navigator.webkitGetUserMedia) {
-                webkit = true;
                 navigator.webkitGetUserMedia(
                     {video: options, audio: false},
                     success,
@@ -162,7 +160,6 @@ odoo.define("pos_qr_scan", function(require) {
         },
 
         success: function(stream) {
-            var self = this;
             this.video_element.srcObject = stream;
             this.video_element.play();
             this.gUM = true;
@@ -207,7 +204,6 @@ odoo.define("pos_qr_scan", function(require) {
 
     // Add some helpers:
     // * No need to show Cashregister that is used by scanning QR customer's code
-    var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         hide_cashregister: function(journal_filter) {
             var self = this;

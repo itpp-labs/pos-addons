@@ -41,7 +41,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                                 url += port;
                             }
                         }
-                        item.connection = new Session(void 0, url, {use_cors: true});
+                        item.connection = new Session(undefined, url, {use_cors: true});
                     });
                 }
             });
@@ -130,7 +130,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                 name === "print_xml_receipt" &&
                 this.pos.config.receipt_printer_type === "network_printer"
             ) {
-                var connection = new Session(void 0, this.pos.proxy.host, {
+                var connection = new Session(undefined, this.pos.proxy.host, {
                     use_cors: true,
                 });
                 var callbacks = this.notifications[name] || [];
@@ -343,7 +343,6 @@ odoo.define("pos_restaurant.network_printer", function(require) {
                 i < len;
                 i++
             ) {
-                var printer = network_printers[i];
                 var printerline_html = QWeb.render("NetworkPrinterLine", {
                     widget: this,
                     printer: network_printers[i],
@@ -359,7 +358,6 @@ odoo.define("pos_restaurant.network_printer", function(require) {
             var usb_contents = this.$el[0].querySelector(".usb-printers-list-contents");
             usb_contents.innerHTML = "";
             for (var i = 0, len = Math.min(1, 1000); i < len; i++) {
-                var printer = usb_printers[i];
                 var printerline = this.usb_printer_cache.get_node(1);
                 if (!printerline) {
                     var printerline_html = QWeb.render("USBPrinterLine", {

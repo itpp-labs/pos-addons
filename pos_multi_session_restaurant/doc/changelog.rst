@@ -1,3 +1,8 @@
+`3.3.3`
+-------
+
+**Fix:** possible error in POS with multi-session disabled
+
 `3.3.2`
 -------
 

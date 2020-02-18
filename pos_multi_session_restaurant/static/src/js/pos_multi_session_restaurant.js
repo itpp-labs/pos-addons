@@ -7,14 +7,12 @@
  * License MIT (https://opensource.org/licenses/MIT). */
 
 odoo.define("pos_multi_session_restaurant", function(require) {
+    "use strict";
     var screens = require("pos_restaurant_base.screens");
     var models = require("pos_restaurant_base.models");
-    var multiprint = require("pos_restaurant.multiprint");
     var floors = require("pos_restaurant.floors");
     var core = require("web.core");
     var gui = require("point_of_sale.gui");
-    var chrome = require("point_of_sale.chrome");
-    var multi_session = require("pos_multi_session");
     var rpc = require("web.rpc");
 
     var _t = core._t;
@@ -89,7 +87,7 @@ odoo.define("pos_multi_session_restaurant", function(require) {
             var self = this;
             PosModelSuper.prototype.initialize.apply(this, arguments);
             this.ready.then(function() {
-                if (!self.config.multi_session_id) {
+                if (!self.multi_session_active) {
                     return;
                 }
                 self.multi_session.floor_ids = self.multi_session_floors.floor_ids;
@@ -97,7 +95,6 @@ odoo.define("pos_multi_session_restaurant", function(require) {
             });
         },
         add_new_order: function() {
-            var self = this;
             PosModelSuper.prototype.add_new_order.apply(this, arguments);
             var current_order = this.get_order();
             if (this.multi_session && current_order) {
@@ -374,7 +371,6 @@ odoo.define("pos_multi_session_restaurant", function(require) {
             this.save_changes_data();
         },
         save_changes_data: function() {
-            var self = this;
             var collection = this.get_current_data();
             this.saved_data = JSON.stringify(collection);
         },
@@ -457,7 +453,6 @@ odoo.define("pos_multi_session_restaurant", function(require) {
 
     floors.TableWidget.include({
         click_handler: function() {
-            var self = this;
             var floorplan = this.getParent();
             if (floorplan.editing) {
                 this._super();

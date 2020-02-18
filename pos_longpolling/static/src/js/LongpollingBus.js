@@ -2,7 +2,6 @@ odoo.define("pos_longpolling.LongpollingBus", function(require) {
     "use strict";
 
     var LongpollingBus = require("bus.Longpolling");
-    var BusService = require("bus.BusService");
 
     LongpollingBus.include({
         _poll: function() {

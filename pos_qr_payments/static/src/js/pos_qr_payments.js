@@ -1,6 +1,7 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_qr_payments", function(require) {
+    "use strict";
     var gui = require("point_of_sale.gui");
     var models = require("point_of_sale.models");
     var core = require("web.core");
