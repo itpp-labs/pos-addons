@@ -6,7 +6,6 @@ odoo.define("pos_order_cancel_restaurant.tour", function(require) {
     "use strict";
 
     require("pos_order_cancel.tour");
-    var core = require("web.core");
     var tour = require("web_tour.tour");
     var steps = tour.tours.pos_order_cancel_tour.steps;
 

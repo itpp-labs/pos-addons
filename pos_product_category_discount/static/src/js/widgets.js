@@ -2,12 +2,9 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
     "use strict";
 
     var PopupWidget = require("point_of_sale.popups");
-    var models = require("pos_product_category_discount.models");
     var screens = require("pos_discount_base.screens");
     var gui = require("point_of_sale.gui");
-    var Widget = require("web.Widget");
     var core = require("web.core");
-    var PosDiscountWidget = require("pos_discount.pos_discount");
     var PosBaseWidget = require("point_of_sale.BaseWidget");
 
     var QWeb = core.qweb;
@@ -55,7 +52,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             }
         },
         set_value: function(val) {
-            var self = this;
             var order = this.pos.get_order();
             if (order.get_selected_orderline()) {
                 var mode = this.numpad_state.get("mode");
@@ -93,7 +89,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             this._super(line);
         },
         discount_button_click: function() {
-            var self = this;
             if (this.pos.discount_program && this.pos.discount_program.length) {
                 this.discount_options.disc_program = this.pos.discount_program.slice(
                     0,
@@ -235,7 +230,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
                 ".discount-line",
                 "click",
                 function(event) {
-                    self.line_select(event, $(this), parseInt($(this).data("id")));
+                    self.line_select(event, $(this), parseInt($(this).data("id"), 10));
                 }
             );
         },
@@ -287,7 +282,6 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
             } else {
                 this.$(".discount-list .highlight").removeClass("highlight");
                 $line.addClass("highlight");
-                var y = event.pageY - $line.parent().offset().top;
                 this.show_disc_button = true;
             }
 
@@ -305,7 +299,7 @@ odoo.define("pos_product_category_discount.widgets", function(require) {
         })[0]
         .widget.include({
             save_changes: function() {
-                var order = this.pos.get_order();
+                this.pos.get_order();
                 if (this.new_client) {
                     if (
                         (this.has_client_changed() ||
