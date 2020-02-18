@@ -2,6 +2,7 @@
 # Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
+# pylint: disable=missing-manifest-dependency
 
 import errno
 import glob
