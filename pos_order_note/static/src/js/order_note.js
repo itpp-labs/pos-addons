@@ -1,3 +1,4 @@
+/* eslint complexity: "off"*/
 odoo.define("pos_order_note", function(require) {
     "use strict";
 
@@ -5,10 +6,8 @@ odoo.define("pos_order_note", function(require) {
     var screens = require("point_of_sale.screens");
     var gui = require("point_of_sale.gui");
     var core = require("web.core");
-    var multiprint = require("pos_restaurant.multiprint");
     var PosBaseWidget = require("point_of_sale.BaseWidget");
     var PopupWidget = require("point_of_sale.popups");
-    var splitbill = require("pos_restaurant.splitbill");
 
     var QWeb = core.qweb;
     var _t = core._t;
@@ -112,7 +111,6 @@ odoo.define("pos_order_note", function(require) {
         // TODO: make fast
         computeChanges: function(categories, config) {
             var current_res = this.build_line_resume();
-            var old_res = this.saved_resume || {};
 
             var line_hash = false;
             var res = _super_order.computeChanges.apply(this, arguments);
@@ -169,7 +167,6 @@ odoo.define("pos_order_note", function(require) {
             for (line_hash in current_res) {
                 if (Object.prototype.hasOwnProperty.call(current_res, line_hash)) {
                     var curr = current_res[line_hash];
-                    var old = old_res[line_hash];
                     var current_line_id = curr.line_id;
 
                     var new_exist_change = _.find(res.new, function(r) {
@@ -334,7 +331,6 @@ odoo.define("pos_order_note", function(require) {
 
     PosBaseWidget.include({
         init: function(parent, options) {
-            var self = this;
             this._super(parent, options);
             if (
                 this.gui &&
@@ -569,7 +565,7 @@ odoo.define("pos_order_note", function(require) {
             "click .note-line": function(event) {
                 var id = event.currentTarget.getAttribute("data-id");
                 var line = $(".note-list-contents").find(
-                    ".note-line[data-id='" + parseInt(id) + "']"
+                    ".note-line[data-id='" + parseInt(id, 10) + "']"
                 );
                 this.set_active_note_status(line, Number(id));
             },

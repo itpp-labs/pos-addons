@@ -8,11 +8,11 @@
     "summary": """Forced choose a cashier before switching to payment screen""",
     "category": "Point of Sale",
     "images": ["images/pos_cashier_select.png"],
-    "version": "12.0.1.0.2",
+    "version": "13.0.1.0.2",
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/",
     "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",

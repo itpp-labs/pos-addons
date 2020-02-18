@@ -1,6 +1,6 @@
 {
     "name": "Product lot in POS",
-    "version": "10.0.1.0.3",
+    "version": "13.0.1.0.3",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",

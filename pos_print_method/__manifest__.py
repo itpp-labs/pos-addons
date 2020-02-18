@@ -4,11 +4,11 @@
     "category": "Point of Sale",
     # "live_test_url": "",
     "images": ["images/pm1.png"],
-    "version": "12.0.1.0.1",
+    "version": "13.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_print_method/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_print_method/",
     "license": "Other OSI approved licence",  # MIT
     "price": 17.00,
     "currency": "EUR",

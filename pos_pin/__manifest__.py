@@ -14,7 +14,7 @@
     "website": "https://it-projects.info",
     "depends": ["point_of_sale", "pos_hr"],
     "data": ["data.xml"],
-    "price": 10.00,
+    "price": 13.00,
     "currency": "EUR",
     "installable": True,
 }

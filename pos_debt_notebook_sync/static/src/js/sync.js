@@ -2,6 +2,7 @@
 // # License MIT (https://opensource.org/licenses/MIT).
 
 odoo.define("pos_debt_sync", function(require) {
+    "use strict";
     var models = require("point_of_sale.models");
 
     var PosModelSuper = models.PosModel;
@@ -54,7 +55,6 @@ odoo.define("pos_debt_sync", function(require) {
             this.reload_debts(message.updated_partners);
         },
         _on_load_debts: function(debts) {
-            var self = this;
             var unsent_orders = _.filter(this.db.get_orders(), function(o) {
                 return o.data.updates_debt;
             });

@@ -9,9 +9,7 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
     var screens = require("pos_orders_history.screens");
     var core = require("web.core");
     var rpc = require("web.rpc");
-    var utils = require("web.utils");
 
-    var round_pr = utils.round_precision;
     var QWeb = core.qweb;
     var _t = core._t;
 
@@ -56,7 +54,6 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
 
     screens.OrdersHistoryScreenWidget.include({
         show: function() {
-            var self = this;
             this._super();
             if (this.pos.config.reprint_orders) {
                 this.set_reprint_action();
@@ -68,7 +65,7 @@ odoo.define("pos_orders_history_reprint.screens", function(require) {
             this.$(".button.reprint").unbind("click");
             this.$(".button.reprint").click(function(e) {
                 var parent = $(this).parents(".order-line");
-                var id = parseInt(parent.data("id"));
+                var id = parseInt(parent.data("id"), 10);
                 self.click_reprint_order(id);
             });
         },

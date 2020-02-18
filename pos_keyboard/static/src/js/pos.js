@@ -5,6 +5,7 @@
     Copyright 2019 ssaid <https://github.com/ssaid>
     Copyright 2019 raulovallet <https://github.com/raulovallet>
     License MIT (https://opensource.org/licenses/MIT). */
+/* eslint complexity: "off"*/
 odoo.define("pos_keyboard.pos", function(require) {
     "use strict";
 
@@ -13,158 +14,6 @@ odoo.define("pos_keyboard.pos", function(require) {
     var models = require("point_of_sale.models");
     var screens = require("point_of_sale.screens");
     var PopupWidget = require("point_of_sale.popups");
-
-    var _super_posmodel = models.PosModel.prototype;
-    models.PosModel = models.PosModel.extend({
-        initialize: function(session, attributes) {
-            var self = this;
-            this.keypad = new Keypad({pos: this});
-            _super_posmodel.initialize.call(this, session, attributes);
-            this.ready.then(function() {
-                self.keypad.set_action_callback(function(data) {
-                    var current_popup = self.gui.current_popup;
-                    if (current_popup) {
-                        current_popup.keypad_action(data);
-                    }
-                });
-            });
-        },
-    });
-
-    gui.Gui.include({
-        show_popup: function(name, options) {
-            this._super(name, options);
-            this.remove_keyboard_handler();
-            this.pos.keypad.connect();
-        },
-
-        close_popup: function() {
-            this._super();
-            this.add_keyboard_handler();
-            this.pos.keypad.disconnect();
-        },
-
-        add_keyboard_handler: function() {
-            var current_screen = this.current_screen;
-            if (!current_screen) {
-                return;
-            }
-            if (current_screen.keyboard_handler) {
-                // PaymentScreen
-                $("body").keypress(current_screen.keyboard_handler);
-                $("body").keydown(current_screen.keyboard_keydown_handler);
-            }
-            if (current_screen._onKeypadKeyDown) {
-                // ProductScreen
-                $(document).on(
-                    "keydown.productscreen",
-                    this.screen_instances.products._onKeypadKeyDown
-                );
-            }
-        },
-
-        remove_keyboard_handler: function() {
-            var current_screen = this.current_screen;
-            if (!current_screen) {
-                return;
-            }
-            if (current_screen.keyboard_handler) {
-                // PaymentScreen
-                $("body").off("keypress", current_screen.keyboard_handler);
-                $("body").off("keydown", current_screen.keyboard_keydown_handler);
-            }
-            if (current_screen._onKeypadKeyDown) {
-                // ProductScreen
-                $(document).off(
-                    "keydown.productscreen",
-                    current_screen._onKeypadKeyDown
-                );
-            }
-        },
-    });
-
-    // It's added to show '*' in password pop-up
-    gui.Gui.prototype.popup_classes
-        .filter(function(c) {
-            return c.name === "password";
-        })[0]
-        .widget.include({
-            init: function(parent, args) {
-                this._super(parent, args);
-                this.popup_type = "password";
-            },
-        });
-
-    PopupWidget.include({
-        keypad_action: function(data) {
-            var type = this.pos.keypad.type;
-            if (data.type === type.numchar) {
-                this.click_keyboard(data.val);
-            } else if (data.type === type.backspace) {
-                this.click_keyboard("BACKSPACE");
-            } else if (data.type === type.enter) {
-                // Some pop-ups might throw an error due to lack of some income data
-                try {
-                    return this.click_confirm();
-                } catch (error) {
-                    return;
-                }
-            } else if (data.type === type.escape) {
-                this.click_cancel();
-            }
-        },
-        click_keyboard: function(value) {
-            if (typeof this.inputbuffer === "undefined") {
-                return;
-            }
-            var newbuf = this.gui.numpad_input(this.inputbuffer, value, {
-                firstinput: this.firstinput,
-            });
-
-            this.firstinput = newbuf.length === 0;
-
-            var $value = this.$(".value");
-            if (newbuf !== this.inputbuffer) {
-                this.inputbuffer = newbuf;
-                $value.text(this.inputbuffer);
-            }
-            if (this.popup_type === "password" && newbuf) {
-                $value.text($value.text().replace(/./g, "•"));
-            }
-        },
-        show: function(options) {
-            this._super(options);
-            this.$("input,textarea").focus();
-        },
-    });
-
-    screens.ProductScreenWidget.include({
-        _handleBufferedKeys: function() {
-            // If more than 2 keys are recorded in the buffer, chances are high that the input comes
-            // from a barcode scanner. In this case, we don't do anything.
-            if (this.buffered_key_events.length > 2) {
-                this.buffered_key_events = [];
-                return;
-            }
-
-            for (var i = 0; i < this.buffered_key_events.length; ++i) {
-                var ev = this.buffered_key_events[i];
-
-                switch (ev.key) {
-                    case "q":
-                        this.numpad.state.changeMode("quantity");
-                        break;
-                    case "d":
-                        this.numpad.state.changeMode("discount");
-                        break;
-                    case "p":
-                        this.numpad.state.changeMode("price");
-                        break;
-                }
-            }
-            this._super();
-        },
-    });
 
     // This module mimics a keypad-only cash register. Use connect() and
     // disconnect() to activate and deactivate it.
@@ -353,6 +202,158 @@ odoo.define("pos_keyboard.pos", function(require) {
         disconnect: function() {
             $("body").off("keyup", "");
             this.active = false;
+        },
+    });
+
+    var _super_posmodel = models.PosModel.prototype;
+    models.PosModel = models.PosModel.extend({
+        initialize: function(session, attributes) {
+            var self = this;
+            this.keypad = new Keypad({pos: this});
+            _super_posmodel.initialize.call(this, session, attributes);
+            this.ready.then(function() {
+                self.keypad.set_action_callback(function(data) {
+                    var current_popup = self.gui.current_popup;
+                    if (current_popup) {
+                        current_popup.keypad_action(data);
+                    }
+                });
+            });
+        },
+    });
+
+    gui.Gui.include({
+        show_popup: function(name, options) {
+            this._super(name, options);
+            this.remove_keyboard_handler();
+            this.pos.keypad.connect();
+        },
+
+        close_popup: function() {
+            this._super();
+            this.add_keyboard_handler();
+            this.pos.keypad.disconnect();
+        },
+
+        add_keyboard_handler: function() {
+            var current_screen = this.current_screen;
+            if (!current_screen) {
+                return;
+            }
+            if (current_screen.keyboard_handler) {
+                // PaymentScreen
+                $("body").keypress(current_screen.keyboard_handler);
+                $("body").keydown(current_screen.keyboard_keydown_handler);
+            }
+            if (current_screen._onKeypadKeyDown) {
+                // ProductScreen
+                $(document).on(
+                    "keydown.productscreen",
+                    this.screen_instances.products._onKeypadKeyDown
+                );
+            }
+        },
+
+        remove_keyboard_handler: function() {
+            var current_screen = this.current_screen;
+            if (!current_screen) {
+                return;
+            }
+            if (current_screen.keyboard_handler) {
+                // PaymentScreen
+                $("body").off("keypress", current_screen.keyboard_handler);
+                $("body").off("keydown", current_screen.keyboard_keydown_handler);
+            }
+            if (current_screen._onKeypadKeyDown) {
+                // ProductScreen
+                $(document).off(
+                    "keydown.productscreen",
+                    current_screen._onKeypadKeyDown
+                );
+            }
+        },
+    });
+
+    // It's added to show '*' in password pop-up
+    gui.Gui.prototype.popup_classes
+        .filter(function(c) {
+            return c.name === "password";
+        })[0]
+        .widget.include({
+            init: function(parent, args) {
+                this._super(parent, args);
+                this.popup_type = "password";
+            },
+        });
+
+    PopupWidget.include({
+        keypad_action: function(data) {
+            var type = this.pos.keypad.type;
+            if (data.type === type.numchar) {
+                this.click_keyboard(data.val);
+            } else if (data.type === type.backspace) {
+                this.click_keyboard("BACKSPACE");
+            } else if (data.type === type.enter) {
+                // Some pop-ups might throw an error due to lack of some income data
+                try {
+                    return this.click_confirm();
+                } catch (error) {
+                    return;
+                }
+            } else if (data.type === type.escape) {
+                this.click_cancel();
+            }
+        },
+        click_keyboard: function(value) {
+            if (typeof this.inputbuffer === "undefined") {
+                return;
+            }
+            var newbuf = this.gui.numpad_input(this.inputbuffer, value, {
+                firstinput: this.firstinput,
+            });
+
+            this.firstinput = newbuf.length === 0;
+
+            var $value = this.$(".value");
+            if (newbuf !== this.inputbuffer) {
+                this.inputbuffer = newbuf;
+                $value.text(this.inputbuffer);
+            }
+            if (this.popup_type === "password" && newbuf) {
+                $value.text($value.text().replace(/./g, "•"));
+            }
+        },
+        show: function(options) {
+            this._super(options);
+            this.$("input,textarea").focus();
+        },
+    });
+
+    screens.ProductScreenWidget.include({
+        _handleBufferedKeys: function() {
+            // If more than 2 keys are recorded in the buffer, chances are high that the input comes
+            // from a barcode scanner. In this case, we don't do anything.
+            if (this.buffered_key_events.length > 2) {
+                this.buffered_key_events = [];
+                return;
+            }
+
+            for (var i = 0; i < this.buffered_key_events.length; ++i) {
+                var ev = this.buffered_key_events[i];
+
+                switch (ev.key) {
+                    case "q":
+                        this.numpad.state.changeMode("quantity");
+                        break;
+                    case "d":
+                        this.numpad.state.changeMode("discount");
+                        break;
+                    case "p":
+                        this.numpad.state.changeMode("price");
+                        break;
+                }
+            }
+            this._super();
         },
     });
 

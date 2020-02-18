@@ -3,7 +3,7 @@
     "summary": """Merge POS orders into a single order""",
     "category": "Point of Sale",
     "images": ["images/pos_order_merge_main.jpg"],
-    "version": "11.0.1.0.0",
+    "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov, Alexandr Kolushov",
     "support": "pos@it-projects.info",

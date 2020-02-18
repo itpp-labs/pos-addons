@@ -3,11 +3,11 @@
     "summary": """The time has come. Print POS orders and receipts by using network printers""",
     "category": "Point of Sale",
     "images": ["images/pos_printer_network_main.png"],
-    "version": "12.0.2.1.1",
+    "version": "13.0.2.1.1",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/pos_printer_network/",
+    "website": "https://apps.odoo.com/apps/modules/13.0/pos_printer_network/",
     "license": "Other OSI approved licence",  # MIT
     "price": 340.00,
     "currency": "EUR",
