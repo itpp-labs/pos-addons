@@ -1,9 +1,9 @@
 # Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
-from odoo import models, tools, api, fields
+from odoo import api, fields, models, tools
 
 
 class PosDebtReport(models.Model):
@@ -11,31 +11,44 @@ class PosDebtReport(models.Model):
     _name = "report.pos.debt"
     _description = "POS Debt Statistics"
     _auto = False
-    _order = 'date desc'
+    _order = "date desc"
 
-    order_id = fields.Many2one('pos.order', string='POS Order', readonly=True)
-    invoice_id = fields.Many2one('account.invoice', string='Invoice', readonly=True)
-    payment_id = fields.Many2one('account.payment', string='Payment', readonly=True)
-    update_id = fields.Many2one('pos.credit.update', string='Manual Update', readonly=True)
+    order_id = fields.Many2one("pos.order", string="POS Order", readonly=True)
+    invoice_id = fields.Many2one("account.invoice", string="Invoice", readonly=True)
+    payment_id = fields.Many2one("account.payment", string="Payment", readonly=True)
+    update_id = fields.Many2one(
+        "pos.credit.update", string="Manual Update", readonly=True
+    )
 
-    date = fields.Datetime(string='Date', readonly=True)
-    partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
-    user_id = fields.Many2one('res.users', string='Salesperson', readonly=True)
-    session_id = fields.Many2one('pos.session', string='Session', readonly=True)
-    config_id = fields.Many2one('pos.config', string='POS', readonly=True)
-    company_id = fields.Many2one('res.company', string='Company', readonly=True)
-    currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
-    journal_id = fields.Many2one('account.journal', string='Journals', readonly=True)
+    date = fields.Datetime(string="Date", readonly=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", readonly=True)
+    user_id = fields.Many2one("res.users", string="Salesperson", readonly=True)
+    session_id = fields.Many2one("pos.session", string="Session", readonly=True)
+    config_id = fields.Many2one("pos.config", string="POS", readonly=True)
+    company_id = fields.Many2one("res.company", string="Company", readonly=True)
+    currency_id = fields.Many2one("res.currency", string="Currency", readonly=True)
+    journal_id = fields.Many2one("account.journal", string="Journals", readonly=True)
 
-    state = fields.Selection([('open', 'Open'), ('confirm', 'Validated')], readonly=True)
-    credit_product = fields.Boolean(string='Journal Credit Product', help="Record is registered as Purchasing credit product", readonly=True)
-    balance = fields.Monetary('Balance', help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).", readonly=True)
-    product_list = fields.Text('Product List', readonly=True)
+    state = fields.Selection(
+        [("open", "Open"), ("confirm", "Validated")], readonly=True
+    )
+    credit_product = fields.Boolean(
+        string="Journal Credit Product",
+        help="Record is registered as Purchasing credit product",
+        readonly=True,
+    )
+    balance = fields.Monetary(
+        "Balance",
+        help="Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).",
+        readonly=True,
+    )
+    product_list = fields.Text("Product List", readonly=True)
 
     @api.model_cr
     def init(self):
-        tools.drop_view_if_exists(self._cr, 'report_pos_debt')
-        self._cr.execute("""
+        tools.drop_view_if_exists(self._cr, "report_pos_debt")
+        self._cr.execute(
+            """
             CREATE OR REPLACE VIEW report_pos_debt AS (
                 (
                 --
@@ -214,4 +227,5 @@ class PosDebtReport(models.Model):
                     AND pay.has_invoices = true
                 )
             )
-        """)
+        """
+        )

@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+     License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record id="view_pos_credit_update_reward_type_tree" model="ir.ui.view">
         <field name="name">pos.credit.update.reward.type.tree</field>
         <field name="model">pos.credit.update.reward.type</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="journal_id"/>
-                <field name="amount"/>
+                <field name="name" />
+                <field name="journal_id" />
+                <field name="amount" />
             </tree>
         </field>
     </record>
@@ -21,9 +21,9 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="journal_id"/>
-                        <field name="amount"/>
+                        <field name="name" />
+                        <field name="journal_id" />
+                        <field name="amount" />
                     </group>
                 </sheet>
             </form>
@@ -37,6 +37,13 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_pos_credit_update_reward_type" name="Reward Types" action="action_pos_credit_update_reward_type" parent="base_attendance.menu_hr_attendance_manage_attendances" groups="group_reward_manager" sequence="100"/>
+    <menuitem
+        id="menu_pos_credit_update_reward_type"
+        name="Reward Types"
+        action="action_pos_credit_update_reward_type"
+        parent="base_attendance.menu_hr_attendance_manage_attendances"
+        groups="group_reward_manager"
+        sequence="100"
+    />
 
 </odoo>

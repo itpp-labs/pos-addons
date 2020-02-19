@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+    License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record model="ir.ui.view" id="view_account_journal_pos_user_form">
         <field name="name">account.journal.form.view.inherit</field>
         <field name="model">account.journal</field>
-        <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
+        <field
+            name="inherit_id"
+            ref="point_of_sale.view_account_journal_pos_user_form"
+        />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount_authorized_diff']" position="after">
-                <field name="postponed_invoice"/>
+                <field name="postponed_invoice" />
             </xpath>
         </field>
     </record>
@@ -16,10 +19,10 @@
     <record model="ir.ui.view" id="view_pos_pos_form">
         <field name="name">pos.order.form.view.inherit</field>
         <field name="model">pos.order</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="postponed"/>
+                <field name="postponed" />
             </xpath>
         </field>
     </record>

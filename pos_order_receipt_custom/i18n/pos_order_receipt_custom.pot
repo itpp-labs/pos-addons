@@ -35,8 +35,8 @@ msgstr ""
 
 #. module: pos_order_receipt_custom
 #. openerp-web
-#: code:addons/pos_order_receipt_custom/static/src/js/screens.js:35
-#: code:addons/pos_order_receipt_custom/static/src/js/screens.js:45
+#: code:addons/pos_order_receipt_custom/static/src/js/screens.js:38
+#: code:addons/pos_order_receipt_custom/static/src/js/screens.js:48
 #, python-format
 msgid "Pre-receipt"
 msgstr ""

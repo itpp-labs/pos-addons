@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:21
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:29
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
@@ -109,7 +109,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:249
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:339
 #, python-format
 msgid "Change:"
 msgstr ""
@@ -121,14 +121,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:50
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:69
 #, python-format
 msgid "Click the customer"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:80
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:107
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -187,7 +187,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:149
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:206
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner__credit_balance
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users__credit_balance
 #, python-format
@@ -201,7 +201,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:158
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:215
 #, python-format
 msgid "Credit Payments"
 msgstr ""
@@ -271,7 +271,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:718
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:860
 #: model_terms:ir.ui.view,arch_db:pos_debt_notebook.view_pos_credit_update_search
 #: model_terms:ir.ui.view,arch_db:pos_debt_notebook.view_report_pos_debt_search
 #, python-format
@@ -291,7 +291,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:155
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:212
 #, python-format
 msgid "Date/Time"
 msgstr ""
@@ -304,7 +304,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:148
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:205
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner__debt
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users__debt
 #, python-format
@@ -378,7 +378,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:449
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:544
 #, python-format
 msgid "Don't forget to specify Customer when sell Credits."
 msgstr ""
@@ -401,14 +401,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:455
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:550
 #, python-format
 msgid "Empty Order"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:1067
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:1247
 #, python-format
 msgid "Error: No Debt"
 msgstr ""
@@ -510,7 +510,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:159
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:216
 #: model:ir.model,name:pos_debt_notebook.model_account_journal
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices__journal_id
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update__journal_id
@@ -521,7 +521,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:160
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:217
 #, python-format
 msgid "Journal Balance"
 msgstr ""
@@ -574,14 +574,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:205
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:282
 #, python-format
 msgid "Load More"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:43
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:49
 #, python-format
 msgid "Loading Credits data"
 msgstr ""
@@ -620,7 +620,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:463
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:560
 #, python-format
 msgid "Max Debt exceeded"
 msgstr ""
@@ -654,7 +654,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:220
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:302
 #, python-format
 msgid "New"
 msgstr ""
@@ -732,14 +732,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:47
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:65
 #, python-format
 msgid "Open the customer screen"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:71
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:97
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
@@ -756,7 +756,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:156
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:213
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_update__config_id
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_report_pos_debt__config_id
 #, python-format
@@ -837,8 +837,8 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:123
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:142
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:171
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:199
 #, python-format
 msgid "Pay Full Debt"
 msgstr ""
@@ -876,14 +876,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:254
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:344
 #, python-format
 msgid "Payments by bonuses:"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:471
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:574
 #, python-format
 msgid "Please enter the exact or lower debt amount than the cost of the order."
 msgstr ""
@@ -907,7 +907,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:216
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:296
 #, python-format
 msgid "Prev"
 msgstr ""
@@ -929,15 +929,15 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:157
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:214
 #, python-format
 msgid "Products"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:11
-#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:16
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:13
+#: code:addons/pos_debt_notebook/static/src/js/test_pos_debt.js:21
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
@@ -973,21 +973,21 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:139
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:193
 #, python-format
 msgid "Show Customers"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:136
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:187
 #, python-format
 msgid "Show Debt History"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:442
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:537
 #, python-format
 msgid "Specify Payment Method"
 msgstr ""
@@ -1016,7 +1016,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:1068
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:1248
 #, python-format
 msgid "The selected customer has no debt."
 msgstr ""
@@ -1028,7 +1028,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:456
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:551
 #, python-format
 msgid "There must be at least one product in your order before it can be validated. (Hint: you can use some dummy zero price product)"
 msgstr ""
@@ -1076,14 +1076,14 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:161
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:218
 #, python-format
 msgid "Total Balance"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:65
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:85
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_pos_credit_invoices_company__credit_balance_company
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner__credit_balance_company
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users__credit_balance_company
@@ -1098,7 +1098,7 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:59
+#: code:addons/pos_debt_notebook/static/src/xml/pos.xml:74
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_partner__debt_company
 #: model:ir.model.fields,field_description:pos_debt_notebook.field_res_users__debt_company
 #, python-format
@@ -1122,29 +1122,29 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:470
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:571
 #, python-format
 msgid "Unable to return the change or cash out with the debt payment method"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:441
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:536
 #, python-format
 msgid "Unable to validate return order"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:426
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:433
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:502
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:517
 #, python-format
 msgid "Unable to validate with the  payment method"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:478
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:583
 #, python-format
 msgid "Unable to validate with the debt payment method"
 msgstr ""
@@ -1159,8 +1159,8 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:413
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:448
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:486
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:543
 #, python-format
 msgid "Unknown customer"
 msgstr ""
@@ -1241,34 +1241,34 @@ msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:464
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:561
 #, python-format
 msgid "You cannot sell products on credit journal  to the customer because its max debt value will be exceeded."
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:434
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:522
 #, python-format
 msgid "You cannot use  for credit top-up products. Use an another non-discount payment method"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:427
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:507
 #, python-format
 msgid "You cannot use  for products with taxes. Use an another payment method, or pay the full price with only discount credits"
 msgstr ""
 
 #. module: pos_debt_notebook
 #. openerp-web
-#: code:addons/pos_debt_notebook/static/src/js/pos.js:414
+#: code:addons/pos_debt_notebook/static/src/js/pos.js:487
 #, python-format
 msgid "You cannot use Debt payment. Select customer first."
 msgstr ""
 
 #. module: pos_debt_notebook
-#: code:addons/pos_debt_notebook/__init__.py:15
+#: code:addons/pos_debt_notebook/__init__.py:16
 #, python-format
 msgid "You have open session of Point of Sale. Please close them first."
 msgstr ""

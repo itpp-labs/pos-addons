@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).-->
 <odoo>
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit</field>
         <field name="model">res.config.settings</field>
-        <field name="priority" eval="50"/>
+        <field name="priority" eval="50" />
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@data-key='point_of_sale']" position="inside">
@@ -13,9 +13,9 @@
                 <div class="row mt16 o_settings_container" id="customer_debts">
                     <div class="col-xs-12 col-md-12 o_setting_box">
                         <div>
-                            <label for="sync_field_ids"/>
+                            <label for="sync_field_ids" />
                             <div class="content-group mt16">
-                                <field name='sync_field_ids' class="o_light_label"/>
+                                <field name='sync_field_ids' class="o_light_label" />
                             </div>
                         </div>
                     </div>

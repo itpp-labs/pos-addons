@@ -25,7 +25,7 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:70
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:98
 #, python-format
 msgid "Discount per Unit:"
 msgstr ""
@@ -88,22 +88,22 @@ msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:25
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:44
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:32
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:57
 #, python-format
 msgid "With a"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
-#: code:addons/pos_orderline_absolute_discount/models/pos_order_model.py:49
+#: code:addons/pos_orderline_absolute_discount/models/pos_order_model.py:75
 #, python-format
 msgid "You have to select a pricelist in the sale form !"
 msgstr ""
 
 #. module: pos_orderline_absolute_discount
 #. openerp-web
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:27
-#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:45
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:34
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:60
 #, python-format
 msgid "discount"
 msgstr ""

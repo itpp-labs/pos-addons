@@ -1,7 +1,7 @@
-odoo.define('pos_longpolling.SyncBusService', function (require) {
+odoo.define("pos_longpolling.SyncBusService", function(require) {
     "use strict";
 
-    var BusService = require('bus.BusService');
+    var BusService = require("bus.BusService");
 
     var SyncBusService = BusService.extend({
         _isActive: true,
@@ -9,9 +9,8 @@ odoo.define('pos_longpolling.SyncBusService', function (require) {
             if (url) {
                 this.POLL_ROUTE = url + this.POLL_ROUTE;
             }
-        }
+        },
     });
 
     return SyncBusService;
-
 });

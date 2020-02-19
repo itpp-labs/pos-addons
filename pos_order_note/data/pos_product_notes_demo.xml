@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <record id="predefine_note1" model="pos.product_notes">
         <field name="name">No salt</field>

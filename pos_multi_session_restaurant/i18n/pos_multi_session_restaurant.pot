@@ -15,42 +15,42 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:361
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:402
 #, python-format
 msgid "Are you sure ?"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:430
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:474
 #, python-format
 msgid "Can not open the Table"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:158
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:176
 #, python-format
 msgid "Do you want to reload this page to receive the latest updates?"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:357
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:398
 #, python-format
 msgid "Forbidden to remove the last table on the floor."
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:157
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:175
 #, python-format
 msgid "Got a new table"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:123
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:138
 #, python-format
 msgid "Got unknown table "
 msgstr ""
@@ -68,7 +68,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:124
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:139
 #, python-format
 msgid "Order will be moved to  table"
 msgstr ""
@@ -80,7 +80,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:352
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:391
 #, python-format
 msgid "Please, complete your orders before deleting the table."
 msgstr ""
@@ -97,7 +97,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:362
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:403
 #, python-format
 msgid "Removing a table cannot be undone"
 msgstr ""
@@ -114,7 +114,7 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:431
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:477
 #, python-format
 msgid "The Table is served by another waiter "
 msgstr ""
@@ -127,15 +127,15 @@ msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:363
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:404
 #, python-format
 msgid "The table can be used in other POS"
 msgstr ""
 
 #. module: pos_multi_session_restaurant
 #. openerp-web
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:351
-#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:356
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:390
+#: code:addons/pos_multi_session_restaurant/static/src/js/pos_multi_session_restaurant.js:397
 #, python-format
 msgid "You can not remove the table"
 msgstr ""

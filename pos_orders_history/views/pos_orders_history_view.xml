@@ -1,83 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      Copyright 2018 Artem Losev
      Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='iface_display_categ_images']/../../.." position="after">
+            <xpath
+                expr="//field[@name='iface_display_categ_images']/../../.."
+                position="after"
+            >
                 <h2 name="orders_history">Orders History</h2>
                     <div class="row mt16 o_settings_container">
-                        <field name="is_pos_order_cancel_installed" invisible="1"/>
+                        <field name="is_pos_order_cancel_installed" invisible="1" />
                         <div class="col-xs-12 col-md-6 o_setting_box">
                             <div class="o_setting_left_pane">
-                                <field name="orders_history"/>
+                                <field name="orders_history" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="orders_history"/>
+                                <label for="orders_history" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : [('orders_history', '=', False)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="load_barcode_order_only"/>
+                                <field name="load_barcode_order_only" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="load_barcode_order_only"/>
+                                <label for="load_barcode_order_only" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', ('orders_history', '=', False), ('load_barcode_order_only', '=', True)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : ['|', ('orders_history', '=', False), ('load_barcode_order_only', '=', True)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="load_orders_of_last_n_days"/>
+                                <field name="load_orders_of_last_n_days" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="load_orders_of_last_n_days"/>
+                                <label for="load_orders_of_last_n_days" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', '|', ('orders_history', '=', False), ('load_orders_of_last_n_days', '=', False), ('load_barcode_order_only', '=', True)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : ['|', '|', ('orders_history', '=', False), ('load_orders_of_last_n_days', '=', False), ('load_barcode_order_only', '=', True)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="number_of_days"/>
+                                <field name="number_of_days" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="number_of_days"/>
+                                <label for="number_of_days" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : ['|', ('orders_history', '=', False), ('is_pos_order_cancel_installed', '=', False)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : ['|', ('orders_history', '=', False), ('is_pos_order_cancel_installed', '=', False)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="show_cancelled_orders"/>
+                                <field name="show_cancelled_orders" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="show_cancelled_orders"/>
+                                <label for="show_cancelled_orders" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : [('orders_history', '=', False)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="show_invoiced_orders"/>
+                                <field name="show_invoiced_orders" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="show_invoiced_orders"/>
+                                <label for="show_invoiced_orders" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : [('orders_history', '=', False)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="show_posted_orders"/>
+                                <field name="show_posted_orders" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="show_posted_orders"/>
+                                <label for="show_posted_orders" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" attrs="{'invisible' : [('orders_history', '=', False)]}">
+                        <div
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        attrs="{'invisible' : [('orders_history', '=', False)]}"
+                    >
                             <div class="o_setting_left_pane">
-                                <field name="show_barcode_in_receipt"/>
+                                <field name="show_barcode_in_receipt" />
                             </div>
                             <div class="o_setting_right_pane">
-                                <label for="show_barcode_in_receipt"/>
+                                <label for="show_barcode_in_receipt" />
                             </div>
                         </div>
-                        <div  name="orders_history_actions"/>
+                        <div name="orders_history_actions" />
                     </div>
             </xpath>
         </field>

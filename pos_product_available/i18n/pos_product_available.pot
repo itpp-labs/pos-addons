@@ -15,43 +15,43 @@ msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/xml/pos.xml:21
+#: code:addons/pos_product_available/static/src/xml/pos.xml:25
 #, python-format
 msgid "(of"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:13
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:72
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:14
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:92
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:48
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:61
 #, python-format
 msgid "Click the payment method"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:65
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:68
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:83
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:87
 #, python-format
 msgid "Close POS"
 msgstr ""
 
 #. module: pos_product_available
-#: code:addons/pos_product_available/tests/test_quantities.py:32
+#: code:addons/pos_product_available/tests/test_quantities.py:36
 #, python-format
 msgid "INV: %s"
 msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:42
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:52
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
@@ -63,8 +63,8 @@ msgstr ""
 
 #. module: pos_product_available
 #. openerp-web
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:87
-#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:92
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:117
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:125
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""

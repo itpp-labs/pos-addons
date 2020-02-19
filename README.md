@@ -4,7 +4,7 @@
 Odoo POS addons
 ===============
 
-Odoo POS addons 
+Odoo POS addons
 
 List of repositories:
 ---------------------

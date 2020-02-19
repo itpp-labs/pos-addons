@@ -13,7 +13,7 @@ Configuration
 * Open menu ``[Point of Sale] >> Configuration >> Multi-sessions``
 * Open the existing ``Multi-session`` record or create new one
 * Click ``[Edit]``
-* Select a set(s) in **Available Product Sets** 
+* Select a set(s) in **Available Product Sets**
 * Click ``[Save]``
 
 Usage

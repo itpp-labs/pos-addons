@@ -18,7 +18,7 @@ Max Debt Limit
 * open journal form (e.g. ``Debt Journal``)
 
   * click on ``[Edit]``
-  * On ``Point of Sale`` tab check the box ``Credit Journal`` 
+  * On ``Point of Sale`` tab check the box ``Credit Journal``
   * set ``Max Debt`` value
   * click ``[Save]``
 
@@ -36,7 +36,7 @@ POS Payment
 
   * open POS
   * select ``Available Payment Methods``
-    
+
     * ``Debt Journal`` if POS will operate with credits only
     * e.g. ``Cash`` or ``Bank`` if POS may receive a real money
     * set both if POS is used to operate with credits and real money
@@ -87,4 +87,3 @@ eCommerce sales
 * open POS
 * purchase *Credit Product* via website (``/shop/...``)
 * debt/credit value on POS is updated
-

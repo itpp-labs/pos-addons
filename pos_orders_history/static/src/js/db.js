@@ -1,13 +1,13 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Artem Losev
- * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_orders_history.db', function (require) {
+ * License MIT (https://opensource.org/licenses/MIT). */
+/* eslint-disable no-useless-escape */
+odoo.define("pos_orders_history.db", function(require) {
     "use strict";
-    var PosDB = require('point_of_sale.DB');
-
+    var PosDB = require("point_of_sale.DB");
 
     PosDB.include({
-        init: function (options) {
+        init: function(options) {
             this.order_search_string = "";
             this.sorted_orders = [];
             this.orders_history_by_id = {};
@@ -16,17 +16,20 @@ odoo.define('pos_orders_history.db', function (require) {
             this.pos_orders_history_lines = [];
             this._super.apply(this, arguments);
         },
-        search_order: function(query){
-            var re = '';
+        search_order: function(query) {
+            var re = "";
             try {
-                query = query.replace(/[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,'.');
-                query = query.replace(' ','.+');
-                re = RegExp("([0-9]+):.*?"+query,"gi");
-            }catch(e){
+                query = query.replace(
+                    /[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,
+                    "."
+                );
+                query = query.replace(" ", ".+");
+                re = RegExp("([0-9]+):.*?" + query, "gi");
+            } catch (e) {
                 return [];
             }
             var results = [];
-            for(var i = 0; i < this.limit; i++) {
+            for (var i = 0; i < this.limit; i++) {
                 if (re) {
                     var r = re.exec(this.order_search_string);
                     if (r) {
@@ -42,33 +45,33 @@ odoo.define('pos_orders_history.db', function (require) {
             }
             return results;
         },
-        _order_search_string: function(order){
+        _order_search_string: function(order) {
             var str = order.name;
-            if(order.pos_reference){
-                str += '|' + order.pos_reference;
+            if (order.pos_reference) {
+                str += "|" + order.pos_reference;
             }
-            if(order.partner_id){
-                str += '|' + order.partner_id[1];
+            if (order.partner_id) {
+                str += "|" + order.partner_id[1];
             }
-            if(order.date_order){
-                str += '|' + order.date_order;
+            if (order.date_order) {
+                str += "|" + order.date_order;
             }
-            if(order.user_id){
-                str += '|' + order.user_id[1];
+            if (order.user_id) {
+                str += "|" + order.user_id[1];
             }
-            if(order.amount_total){
-                str += '|' + order.amount_total;
+            if (order.amount_total) {
+                str += "|" + order.amount_total;
             }
-            if(order.state){
-                str += '|' + order.state;
+            if (order.state) {
+                str += "|" + order.state;
             }
-            str = String(order.id) + ':' + str.replace(':','') + '\n';
+            str = String(order.id) + ":" + str.replace(":", "") + "\n";
             return str;
         },
-        get_sorted_orders_history: function (count) {
+        get_sorted_orders_history: function(count) {
             return this.sorted_orders.slice(0, count);
         },
-        sorted_orders_history: function (orders) {
+        sorted_orders_history: function(orders) {
             var self = this;
             var orders_history = orders;
             function compareNumeric(order1, order2) {
@@ -76,7 +79,7 @@ odoo.define('pos_orders_history.db', function (require) {
             }
             this.sorted_orders = orders_history.sort(compareNumeric);
             this.order_search_string = "";
-            this.sorted_orders.forEach(function (order) {
+            this.sorted_orders.forEach(function(order) {
                 self.order_search_string += self._order_search_string(order);
             });
         },
