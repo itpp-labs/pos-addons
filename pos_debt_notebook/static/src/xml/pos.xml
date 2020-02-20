@@ -127,6 +127,7 @@
 
     <t t-name="CreditNote">
         <!--PaymentMethod-->
+        <!-- TODO: rename 'debt' variable to something matching -->
         <t t-if="debt != 0">
             <t t-if="widget.pos.config.debt_type == 'debt'">
                 <span
