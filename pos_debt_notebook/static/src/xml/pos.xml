@@ -126,13 +126,15 @@
     </t>
 
     <t t-name="CreditNote">
+        <!--PaymentMethod-->
+        <!-- TODO: rename 'debt' variable to something matching -->
         <t t-if="debt != 0">
             <t t-if="widget.pos.config.debt_type == 'debt'">
                 <span
                     t-attf-class="client-debt #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''} #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''}"
                 >
                     <t
-                        t-esc="(widget.pos.get_client() ? ' [Debt: ' + widget.format_currency(debt) + ']': '')"
+                        t-esc="(widget.pos.get_client() ? ' [Debt: ' + widget.format_currency(- debt) + ']': '')"
                     />
                 </span>
             </t>
@@ -141,7 +143,7 @@
                     t-attf-class="client-credit #{(widget.pos.get_client() and debt lt 0) ? 'positive' : ''} #{(widget.pos.get_client() and debt gt 0) ? 'negative' : ''}"
                 >
                     <t
-                        t-esc="(widget.pos.get_client() ? ' [Credit: ' + widget.format_currency(debt) + ']': '')"
+                        t-esc="(widget.pos.get_client() ? ' [Credit: ' + widget.format_currency(- debt) + ']': '')"
                     />
                 </span>
             </t>

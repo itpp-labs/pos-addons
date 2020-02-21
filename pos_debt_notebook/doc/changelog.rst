@@ -1,3 +1,7 @@
+`5.3.1`
+-------
+- **Fix:** Wrong debt sign on payment methods
+
 `5.3.0`
 -------
 - **Improvement:** New Balance is amount for selected journal,  not for total Credits.
