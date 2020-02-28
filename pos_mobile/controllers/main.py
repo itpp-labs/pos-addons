@@ -13,8 +13,8 @@ class ControllerPos(PosController):
         response = super(ControllerPos, self).pos_web(debug, **k)
         pos_sessions = request.env['pos.session'].search([
             ('state', '=', 'opened'),
-            ('user_id', '=', request.session.uid),
-            ('rescue', '=', False)])
+            ('user_id', '=', request.session.uid)
+        ])
         if pos_sessions and pos_sessions.config_id.auto_mobile:
             session_info = request.env['ir.http'].session_info()
             session_info['auto_mobile'] = True
