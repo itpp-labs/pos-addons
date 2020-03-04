@@ -19,6 +19,7 @@ on:
       - ".DINAR/**"
       - ".github/workflows/DINAR.yml"
 
+  # Cron works only for defaul branch. See https://github.com/itpp-labs/DINAR/issues/48
   schedule:
     - cron: "5 5 * * 0"
 
