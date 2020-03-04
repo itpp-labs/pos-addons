@@ -143,7 +143,7 @@ jobs:
           ref: master # TODO: use fixed version
       - name: Configure docker
         run: |
-          bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN }}
+          bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
       - name: Install python tools
         run: |
           pip install plumbum PyGithub pyyaml
