@@ -53,7 +53,7 @@ jobs:
         with:
           path: DINAR
           repository: itpp-labs/DINAR
-          ref: master # TODO: use fixed version
+          ref: master
       - uses: actions/setup-python@v1
         with:
           python-version: "3.7.x"
@@ -140,7 +140,7 @@ jobs:
         with:
           path: DINAR
           repository: itpp-labs/DINAR
-          ref: master # TODO: use fixed version
+          ref: master
       - name: Configure docker
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
@@ -217,7 +217,7 @@ jobs:
         with:
           path: DINAR
           repository: itpp-labs/DINAR
-          ref: master # TODO: use fixed version
+          ref: master
       - name: Install python tools
         run: |
           pip install plumbum pyyaml
