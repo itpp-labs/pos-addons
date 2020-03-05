@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: DINAR
-          repository: itpp-labs/DINAR
+          repository: itpp-labs/DINAR-fork
           ref: master
       - uses: actions/setup-python@v1
         with:
@@ -139,7 +139,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: DINAR
-          repository: itpp-labs/DINAR
+          repository: itpp-labs/DINAR-fork
           ref: master
       - name: Configure docker
         run: |
@@ -216,7 +216,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: DINAR
-          repository: itpp-labs/DINAR
+          repository: itpp-labs/DINAR-fork
           ref: master
       - name: Install python tools
         run: |
