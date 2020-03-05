@@ -1,0 +1,32 @@
+name: "Push Updates to REPO-store"
+
+on:
+  push:
+
+jobs:
+  repo2store:
+    runs-on: ubuntu-latest
+    if: "! endsWith(github.repository, '-store')"
+    steps:
+      - name: Checkout REPO
+        uses: actions/checkout@v2-beta
+        with:
+          fetch-depth: 100
+          # custom token is not needed for fetching REPO, 
+          # but the action makes some magic with authentication headers
+          # which are used on pushing to REPO-store
+          token: ${{ secrets.DINAR_TOKEN }}
+      - name: Fetch REPO-store
+        run: |
+          git remote add store https://x-access-token:${{ secrets.DINAR_TOKEN }}@github.com/${GITHUB_REPOSITORY}-store.git
+          git fetch store
+      - name: Merge and Push
+        run: |
+          set -x
+          git config --global user.email "itpp-bot@users.noreply.github.com"
+          git config --global user.name "Mitchell Admin"          
+          BRANCH=${GITHUB_REF##*/}
+          REF=$(git rev-parse HEAD)
+          git checkout -b $BRANCH-store store/$BRANCH
+          git merge origin/$BRANCH $REF
+          git push store $BRANCH-store:$BRANCH
