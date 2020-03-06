@@ -232,7 +232,7 @@ jobs:
           echo "::set-env name=ARTIFACT::0"
       - name: Configure Docker
         run: |
-          bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN }}
+          bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
       - name: Analyze PR
         run: |
           # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
