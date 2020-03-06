@@ -229,7 +229,7 @@ jobs:
       - name: Check artifact
         if: failure()
         run: |
-          echo "::set-env name=ARTIFACT::0"
+          echo "::set-env name=ARTIFACT::failure"
       - name: Configure Docker
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
@@ -245,7 +245,7 @@ jobs:
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
       - name: Apply new-deps artifact
-        if: env.ARTIFACT != '0'
+        if: env.ARTIFACT != 'failure'
         run: |
           bash DINAR/workflow-files/load-docker-layers.sh new-deps/
 
