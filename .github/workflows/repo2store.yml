@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2-beta
         with:
           fetch-depth: 100
-          # custom token is not needed for fetching REPO, 
+          # custom token is not needed for fetching REPO,
           # but the action makes some magic with authentication headers
           # which are used on pushing to REPO-store
           token: ${{ secrets.DINAR_TOKEN }}
@@ -24,7 +24,7 @@ jobs:
         run: |
           set -x
           git config --global user.email "itpp-bot@users.noreply.github.com"
-          git config --global user.name "Mitchell Admin"          
+          git config --global user.name "Mitchell Admin"
           BRANCH=${GITHUB_REF##*/}
           REF=$(git rev-parse HEAD)
           git checkout -b $BRANCH-store store/$BRANCH
