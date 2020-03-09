@@ -33,10 +33,8 @@ class PosConfig(models.Model):
     @api.multi
     def _send_to_channel(self, channel_name, message="PONG"):
         notifications = []
-        for ps in self.env["pos.session"].search(
-            [("state", "!=", "closed"), ("config_id", "in", self.ids)]
-        ):
-            channel = ps.config_id._get_full_channel_name(channel_name)
+        for config in self:
+            channel = config._get_full_channel_name(channel_name)
             notifications.append([channel, message])
         if notifications:
             self.env["bus.bus"].sendmany(notifications)
