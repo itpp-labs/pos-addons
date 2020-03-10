@@ -178,14 +178,18 @@ jobs:
         run: |
           # TODO https://github.com/itpp-labs/DINAR/issues/42
           exit 1
+      - name: Prepare Artifact Folder
+        run: |
+          mkdir new-deps/
+          # create dummy file to be sure that Artifact will be uploaded
+          echo ok > new-deps/.empty
       - name: Prepare DINAR with additional dependencies
         if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         run: |
           # Save artifacts for local run and for integrations Tests
           bash DINAR/workflow-files/save-docker-layers.sh new-deps/
-          echo $MODULES > new-deps/modules.txt
+          echo "${{ env.PR_MODULES_DEPS }}" > new-deps/modules.txt
       - name: Save DINAR with dependencies
-        if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         uses: actions/upload-artifact@v1
         with:
           name: new-deps
@@ -227,9 +231,10 @@ jobs:
           name: new-deps
           path: new-deps/
       - name: Check artifact
-        if: failure()
         run: |
-          echo "::set-env name=ARTIFACT::failure"
+          if [ ! -f new-deps/modules.txt ]; then
+              echo "::set-env name=ARTIFACT::empty"
+          fi
       - name: Configure Docker
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
@@ -245,7 +250,7 @@ jobs:
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
       - name: Apply new-deps artifact
-        if: env.ARTIFACT != 'failure'
+        if: env.ARTIFACT != 'empty'
         run: |
           bash DINAR/workflow-files/load-docker-layers.sh new-deps/
 
