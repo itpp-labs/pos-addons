@@ -6,7 +6,7 @@ on:
 jobs:
   repo2store:
     runs-on: ubuntu-latest
-    if: "! endsWith(github.repository, '-store')"
+    if: "! endsWith(github.repository, '-store') && startsWith(github.repository, 'itpp-labs/')"
     steps:
       - name: Checkout REPO
         uses: actions/checkout@v2-beta
