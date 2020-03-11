@@ -63,7 +63,6 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           buildargs: ODOO_VERSION,AGGREGATE,PIP_INSTALL_ODOO,CLEAN,COMPILE,LOCAL_CUSTOM_DIR
           workdir: REPO/.DINAR/
-          cache: ${{ github.event_name != 'schedule' }}
       - name: Install python tools
         run: |
           pip install plumbum pyyaml
