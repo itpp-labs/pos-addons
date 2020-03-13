@@ -24,8 +24,17 @@ on:
     - cron: "5 5 * * 0"
 
 jobs:
+  check-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that DINAR_TOKEN is set
+        run: |
+          test -z "${{ secrets.DINAR_TOKEN }}" && echo "DINAR_TOKEN is not set" && exit 1
+        
   rebuild-images:
     runs-on: ubuntu-latest
+    needs: 
+      - check-secret
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
