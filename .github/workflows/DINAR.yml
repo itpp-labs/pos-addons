@@ -29,8 +29,11 @@ jobs:
     steps:
       - name: Check that DINAR_TOKEN is set
         run: |
-          test -z "${{ secrets.DINAR_TOKEN }}" && echo "DINAR_TOKEN is not set" && exit 1
-        
+          if [ -z "${{ secrets.DINAR_TOKEN }}" ]
+          then
+              echo "DINAR_TOKEN is not set"
+              exit 1
+          fi        
   rebuild-images:
     runs-on: ubuntu-latest
     needs: 
