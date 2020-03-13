@@ -77,7 +77,7 @@ jobs:
           export PR_NUM=${{ github.event.number }}
           export VERSION=${{ github.event.pull_request.base.ref }}
           export REVISION_PR=${{ github.event.pull_request.head.sha}}
-          export DINAR_REPO="itpp-labs/DINAR-fork"/
+          export DINAR_REPO="itpp-labs/DINAR-fork"
           bash DINAR/workflow-files/how-to-run-locally.sh
       - name: Check Python Version
         run:
@@ -228,7 +228,7 @@ jobs:
           export PR_NUM=${{ github.event.number }}
           export VERSION=${{ github.event.pull_request.base.ref }}
           export REVISION_PR=${{ github.event.pull_request.head.sha}}
-          export DINAR_REPO="itpp-labs/DINAR-fork"/
+          export DINAR_REPO="itpp-labs/DINAR-fork"
           export ODOO_EXTRA_ARG=--test-enable
           bash DINAR/workflow-files/how-to-run-locally.sh ${{ secrets.GITHUB_TOKEN }}
       - name: Download base images
