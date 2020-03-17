@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-=======================================
- Available quantity of products in POS
-=======================================
+=======================
+ POS: show product qty
+=======================
 
 Adds available quantity at products in POS
 
