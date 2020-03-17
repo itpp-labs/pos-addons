@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-===============================
- POS Payments by Manager's PIN
-===============================
+======================
+ POS: Payments by PIN
+======================
 
 The module requires POS manager's permission, which can be attained by entering PIN prior the usage of the journal.
 
