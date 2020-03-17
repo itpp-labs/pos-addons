@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-============================
- Sync Server for POS orders
-============================
+====================
+ Sync Server in POS
+====================
 
 Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 
