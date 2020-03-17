@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-============================
- Reprint POS Orders Receipt 
-============================
+=====================
+ POS: Reprint orders
+=====================
 
 The module allows to reprint payment receipts of paid POS orders.
 
