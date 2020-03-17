@@ -2,7 +2,7 @@
 # Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Creation of Postponed invoices in POS""",
+    "name": """Postponed Invoices in POS""",
     "summary": """This module allows the usage of a regular POS order payment process to create an invoice to be paid later""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",

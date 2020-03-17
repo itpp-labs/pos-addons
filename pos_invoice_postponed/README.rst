@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-=======================================
- Creation of Postponed invoices in POS
-=======================================
+===========================
+ Postponed Invoices in POS
+===========================
 
 This module allows the usage of a regular POS order payment process to create an invoice to be paid later.
 
