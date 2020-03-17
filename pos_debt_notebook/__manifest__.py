@@ -11,7 +11,7 @@
 # License MIT (https://opensource.org/licenses/MIT).
 
 {
-    "name": "POS Debt & Credit notebook",
+    "name": "POS: Prepaid credits",
     "summary": "Comfortable sales for your regular customers. Debt payment method for POS",
     "category": "Point Of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-debt-notebook?version=10.0",
