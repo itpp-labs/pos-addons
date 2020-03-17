@@ -2,7 +2,7 @@
 # Copyright 2019 Kildebekov Anvar  <https://it-projects.info/team/kildebekov>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """POS Payments by Manager's PIN""",
+    "name": """POS: Payments by PIN""",
     "summary": """Ask for manager permission before use the journal""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
