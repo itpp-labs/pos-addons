@@ -3,7 +3,7 @@
 # Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": "Restrict out-of-stock POS Orders",
+    "name": "POS: Out-of-stock orders",
     "summary": "Only supervisor can approve POS Order with out-of-stock product",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
