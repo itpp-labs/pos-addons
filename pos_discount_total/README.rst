@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-========================================
- Discount for total amount of pos order
-========================================
+=====================
+ POS: Total discount
+=====================
 
 Simple way to apply discount for all order items
 
