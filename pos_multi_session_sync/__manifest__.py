@@ -2,7 +2,7 @@
 # Copyright 2017,2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Sync Server for POS orders""",
+    "name": """Sync Server in POS""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
     "category": "Point of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-multi-session?version=12.0',
