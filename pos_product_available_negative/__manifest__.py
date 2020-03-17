@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Restrict out-of-stock POS Orders",
+    "name": "POS: Out-of-stock orders",
     "version": "10.0.1.0.2",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "summary": "Only supervisor can approve POS Order with out-of-stock product",
