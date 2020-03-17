@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-=======================================
- Scan & search a product by ref in POS
-=======================================
+===========================
+ POS: Scan & search by ref
+===========================
 
 The module provides a feature to search a product in POS by its "Internal Reference"
 
