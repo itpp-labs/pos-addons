@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-=====================================
- Pay Sale Orders & Invoices over POS
-=====================================
+========================
+ POS: Pay SO & Invoices
+========================
 
 The module allows to handle the payment process for Sale Orders/Invoices over POS
 
