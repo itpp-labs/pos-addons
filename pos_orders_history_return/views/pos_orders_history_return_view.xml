@@ -23,10 +23,8 @@
                             attrs="{'invisible' : ['|', ('orders_history', '=', False),('return_orders', '=', False)]}"
                         >
                             <div>
-                                <field
-                                    name="show_returned_orders"
-                                    class="oe_inline"
-                                /><label for="show_returned_orders" class="oe_inline" />
+                                <field name="show_returned_orders" class="oe_inline" />
+                                <label for="show_returned_orders" class="oe_inline" />
                             </div>
                         </div>
                     </div>

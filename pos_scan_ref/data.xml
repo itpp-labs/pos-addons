@@ -6,25 +6,17 @@
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
-        <template
-        id="assets_backend"
-        name="pos assets"
-        inherit_id="point_of_sale.assets"
-    >
-            <xpath expr="." position="inside">
-                <script
-                type="text/javascript"
-                src="/pos_scan_ref/static/src/js/pos.js"
-            />
-            </xpath>
-        </template>
-
-        <template id="demo_assets_backend" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script
+    <template id="assets_backend" name="pos assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_scan_ref/static/src/js/pos.js" />
+        </xpath>
+    </template>
+    <template id="demo_assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_scan_ref/static/src/js/test_pos_scan_ref.js"
             />
-            </xpath>
-        </template>
+        </xpath>
+    </template>
 </odoo>
