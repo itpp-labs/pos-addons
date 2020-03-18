@@ -6,6 +6,9 @@ odoo.define('pos_rfid', function(require){
 
     BarcodeReader.include({
         scan: function(code){
+            if (!this.pos.config.pos_rfid) {
+                return this._super(code);
+            }
             try{
                 // hex to dec
                 this.pos.ignored_barcode_errors = 0;
@@ -28,7 +31,7 @@ odoo.define('pos_rfid', function(require){
 
     ScreenWidget.include({
         barcode_error_action: function() {
-            if (this.pos.ignored_barcode_errors === null)
+            if (this.pos.ignored_barcode_errors === null || !this.pos.config.pos_rfid)
                 this._super.apply(this, arguments);
             else
                 this.pos.ignored_barcode_errors += 1;
