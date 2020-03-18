@@ -5,39 +5,26 @@
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
-        <template
+    <template
         id="pos_assets"
         name="pos_logout assets"
         inherit_id="point_of_sale.assets"
     >
-            <xpath expr="." position="inside">
-                <link
-                rel="stylesheet"
-                href="/pos_logout/static/src/css/pos_logout.css"
-            />
-                <script
-                type="text/javascript"
-                src="/pos_logout/static/src/js/chrome.js"
-            />
-                <script
-                type="text/javascript"
-                src="/pos_logout/static/src/js/popups.js"
-            />
-            </xpath>
-        </template>
-            <template
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/pos_logout/static/src/css/pos_logout.css" />
+            <script type="text/javascript" src="/pos_logout/static/src/js/chrome.js" />
+            <script type="text/javascript" src="/pos_logout/static/src/js/popups.js" />
+        </xpath>
+    </template>
+    <template
         id="demo_assets_backend"
         name="pos_logout demo assets"
         inherit_id="web.assets_backend"
     >
-            <xpath expr="." position="inside">
-                <script
-                type="text/javascript"
-                src="/pos_logout/static/src/js/tour.js"
-            />
-            </xpath>
-        </template>
-
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_logout/static/src/js/tour.js" />
+        </xpath>
+    </template>
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
@@ -58,5 +45,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>

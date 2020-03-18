@@ -23,7 +23,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_orders_history demo assets"
@@ -36,5 +35,4 @@
             />
         </xpath>
     </template>
-
 </odoo>

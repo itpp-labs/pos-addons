@@ -2,16 +2,16 @@
 <!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
-        <template
+    <template
         id="assets_backend"
         name="pos_disable_payment_restaurant assets"
         inherit_id="point_of_sale.assets"
     >
-            <xpath expr="." position="inside">
-                <script
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_disable_payment_restaurant/static/src/js/pos_disable_payment_restaurant.js"
             />
-            </xpath>
-        </template>
+        </xpath>
+    </template>
 </odoo>

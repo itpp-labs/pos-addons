@@ -19,7 +19,6 @@
             </form>
         </field>
     </record>
-
     <record id="pos_tag_tree_view" model="ir.ui.view">
         <field name="name">pos.tag.tree</field>
         <field name="model">pos.tag</field>
@@ -31,7 +30,6 @@
             </tree>
         </field>
     </record>
-
     <record id="pos_tag_action" model="ir.actions.act_window">
         <field name="name">Product Sets</field>
         <field name="type">ir.actions.act_window</field>
@@ -45,12 +43,10 @@
             </p>
         </field>
     </record>
-
     <menuitem
         id="menu_pos_tag"
         action="pos_tag_action"
         parent="point_of_sale.menu_point_config_product"
         sequence="25"
     />
-
 </odoo>

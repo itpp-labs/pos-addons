@@ -21,7 +21,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="assets_backend"
         name="pos_multi_session backend_assets"
@@ -34,7 +33,6 @@
             />
         </xpath>
     </template>
-
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
@@ -139,7 +137,6 @@
             </xpath>
         </field>
     </record>
-
     <record model="ir.ui.view" id="view_pos_config_longpolling_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
@@ -150,7 +147,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_pos_config_kanban" model="ir.ui.view">
         <field name="name">pos.config.kanban.view</field>
         <field name="model">pos.config</field>
@@ -159,7 +155,6 @@
             <xpath expr="//field[@name='currency_id']" position="after">
                 <field name="multi_session_id" />
             </xpath>
-
             <xpath expr="//div[hasclass('o_primary')]" position="inside">
                 <t
                     t-esc=" record.multi_session_id.value and ' (' + record.multi_session_id.value + ')' or ''"
@@ -167,7 +162,6 @@
             </xpath>
         </field>
     </record>
-
     <record model="ir.ui.view" id="view_pos_config_search">
         <field name="name">pos.config.search.view.inherit</field>
         <field name="model">pos.config</field>

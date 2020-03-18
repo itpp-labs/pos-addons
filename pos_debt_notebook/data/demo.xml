@@ -3,14 +3,12 @@
     License MIT (https://opensource.org/licenses/MIT). -->
 <openerp>
     <data>
-
         <!--Set field debt to 'credit' in model pos.config.settings via get_default_debt_type-->
         <function
             model="ir.config_parameter"
             name="set_param"
             eval="('pos_debt_notebook.debt_type', 'credit')"
         />
-
         <record id="product_credit_product" model="product.product">
             <field name="name">Credits top-up</field>
             <field name="default_code">POS-DEBT</field>
@@ -23,6 +21,5 @@
                 name="description"
             >This is a product for purchasing "Credits".</field>
         </record>
-
     </data>
 </openerp>

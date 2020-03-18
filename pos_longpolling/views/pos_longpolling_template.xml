@@ -32,7 +32,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="assets_backend"
         name="pos_longpolling backend_assets"

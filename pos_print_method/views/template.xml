@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-        <template
+    <template
         id="assets_backend"
         name="pos_print_method_assets"
         inherit_id="point_of_sale.assets"
     >
-            <xpath expr="." position="inside">
-                <script
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_print_method/static/src/js/print_method.js"
             />
-            </xpath>
-        </template>
-
-        <template
+        </xpath>
+    </template>
+    <template
         id="demo_assets_backend"
         name="pos_print_method demo assets"
         inherit_id="web.assets_backend"
     >
-            <xpath expr="." position="inside">
-                <script
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_print_method/static/src/js/tour.js"
             />
-            </xpath>
-        </template>
+        </xpath>
+    </template>
 </openerp>

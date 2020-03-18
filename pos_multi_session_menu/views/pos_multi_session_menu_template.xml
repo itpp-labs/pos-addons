@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-  <template
+    <template
         id="demo_assets_backend"
         name="pos_multi_session_menu demo assets"
         inherit_id="web.assets_backend"
     >
-    <xpath expr="." position="inside">
-      <script
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_multi_session_menu/static/src/js/tour.js"
             />
-    </xpath>
-  </template>
+        </xpath>
+    </template>
 </odoo>

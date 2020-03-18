@@ -17,7 +17,6 @@
             </form>
         </field>
     </record>
-
     <record id="pos_cancelled_reason_tree_view" model="ir.ui.view">
         <field name="name">pos.cancelled_reason.tree</field>
         <field name="model">pos.cancelled_reason</field>
@@ -28,7 +27,6 @@
             </tree>
         </field>
     </record>
-
     <record id="pos_cancelled_reason_action" model="ir.actions.act_window">
         <field name="name">Refund / Cancellation Reasons</field>
         <field name="type">ir.actions.act_window</field>
@@ -48,7 +46,6 @@
         parent="point_of_sale.menu_point_config_product"
         sequence="25"
     />
-
     <record id="view_pos_pos_form" model="ir.ui.view">
         <field name="name">pos.order.form</field>
         <field name="model">pos.order</field>
@@ -62,7 +59,6 @@
                     statusbar_visible="draft,paid,done"
                 />
             </xpath>
-
             <xpath expr="//button[@name='refund']" position="replace">
                 <button
                     name="refund"
@@ -71,11 +67,9 @@
                     attrs="{'invisible':['|',('computed_state','=','draft'),('computed_state','=','cancel')]}"
                 />
             </xpath>
-
             <xpath expr="//field[@name='state']" position="attributes">
                 <attribute name="invisible">True</attribute>
             </xpath>
-
             <xpath expr="//notebook" position="inside">
                 <page name="cancellations" string="Refunds / Cancellations">
                     <group>
@@ -135,7 +129,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_pos_order_tree" model="ir.ui.view">
         <field name="name">pos.order.tree</field>
         <field name="model">pos.order</field>
@@ -154,7 +147,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_pos_order_filter" model="ir.ui.view">
         <field name="name">pos.order.list.select</field>
         <field name="model">pos.order</field>
@@ -179,7 +171,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_pos_order_line_canceled_graph" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.graph</field>
         <field name="model">pos.order.line.canceled</field>
@@ -192,7 +183,6 @@
             </graph>
         </field>
     </record>
-
     <record id="view_pos_order_line_canceled_pivot" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.pivot</field>
         <field name="model">pos.order.line.canceled</field>
@@ -208,7 +198,6 @@
             </pivot>
         </field>
     </record>
-
     <record id="view_pos_order_line_canceled_form" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.form</field>
         <field name="model">pos.order.line.canceled</field>
@@ -234,7 +223,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_pos_order_line_canceled_tree" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.tree</field>
         <field name="model">pos.order.line.canceled</field>
@@ -262,7 +250,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_report_cancelations_search" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.search</field>
         <field name="model">pos.order.line.canceled</field>
@@ -334,7 +321,6 @@
             </search>
         </field>
     </record>
-
     <record id="action_report_cancelations_details" model="ir.actions.act_window">
         <field name="name">Refund / Cancelation Details</field>
         <field name="res_model">pos.order.line.canceled</field>
@@ -343,7 +329,6 @@
         <field name="search_view_id" ref="view_report_cancelations_search" />
         <field name="context">{'search_default_thismonth':1, 'group_by':[]}</field>
     </record>
-
     <menuitem
         id="menu_report_cancelations_details"
         name="Refunds / Cancellations"
@@ -351,5 +336,4 @@
         parent="point_of_sale.menu_point_rep"
         sequence="5"
     />
-
 </odoo>

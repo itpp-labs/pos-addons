@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-
     <t t-name="QrButton">
         <div class='control-button'>
             <i class='fa fa-qrcode' /> QR Scan
         </div>
     </t>
-
     <t t-name="QrScanPopupWidget">
         <div class="modal-dialog">
             <div class="popup popup-qr_scan">
@@ -34,5 +32,4 @@
             />
         </div>
     </t>
-
 </templates>

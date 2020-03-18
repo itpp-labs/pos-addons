@@ -13,7 +13,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_pos_credit_update_reward_type_form" model="ir.ui.view">
         <field name="name">pos.credit.update.reward.type.form</field>
         <field name="model">pos.credit.update.reward.type</field>
@@ -29,14 +28,12 @@
             </form>
         </field>
     </record>
-
     <record id="action_pos_credit_update_reward_type" model="ir.actions.act_window">
         <field name="name">Reward Types</field>
         <field name="res_model">pos.credit.update.reward.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <menuitem
         id="menu_pos_credit_update_reward_type"
         name="Reward Types"
@@ -45,5 +42,4 @@
         groups="group_reward_manager"
         sequence="100"
     />
-
 </odoo>

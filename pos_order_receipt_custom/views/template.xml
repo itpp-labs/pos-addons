@@ -18,7 +18,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_order_receipt_custom demo assets"
@@ -31,5 +30,4 @@
             />
         </xpath>
     </template>
-
 </odoo>
