@@ -29,8 +29,11 @@ odoo.define("pos_partner_deselection.partner_deselection", function(require) {
             var customer_deselection_interval = this.pos.config
                 .customer_deselection_interval;
             if (customer_deselection_interval && client && !self.finalized) {
-                setTimeout(function() {
-                    self.set_client();
+                self.partner_deselection_interval = setTimeout(function() {
+                    var new_client = self.get_client();
+                    if (self && !self.finalized && new_client.id === client.id) {
+                        self.set_client();
+                    }
                 }, customer_deselection_interval * 1000);
             }
         },
