@@ -15,7 +15,6 @@
             <link rel="stylesheet" href="/pos_order_note/static/src/css/pos.css" />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_order_note demo assets"

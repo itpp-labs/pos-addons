@@ -15,26 +15,29 @@
                     <div class="discount-program-list">
                         <ul>
                             <t t-foreach="widget.disc_program" t-as="program">
-                                <li><div
+                                <li>
+                                    <div
                                         t-attf-id="{{program.id}}"
                                         t-attf-class="button"
-                                    ><t
-                                            t-esc="program.discount_program_name"
-                                        /></div></li>
+                                    >
+                                        <t t-esc="program.discount_program_name" />
+                                    </div>
+                                </li>
                             </t>
                         </ul>
                         <ul>
-                            <li><div
+                            <li>
+                                <div
                                     id="other"
                                     class="button other-discount-program"
-                                >Other</div></li>
+                                >Other</div>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </t>
         </t>
     </t>
-
     <t t-extend="Orderline">
         <t t-jquery='.info-list .info:eq(1)' t-operation="replace">
             <t t-if="line.discount_program_name">
@@ -57,7 +60,6 @@
             </t>
         </t>
     </t>
-
     <t t-extend="PosTicket">
         <t t-jquery='.pos-disc-font' t-operation="replace">
             <t t-if="orderline.discount_program_name">
@@ -74,20 +76,18 @@
             </t>
         </t>
     </t>
-
-
     <t t-extend="OrderWidget">
         <t t-jquery='.subentry' t-operation="after">
             <div class='discount'>Discounts: <span class="value">0.00€</span></div>
         </t>
     </t>
-
     <t t-name="DiscountLine">
         <tr class='discount-line' t-att-data-id='discount.id'>
-            <td><t t-esc='discount.discount_program_name' /></td>
+            <td>
+                <t t-esc='discount.discount_program_name' />
+            </td>
         </tr>
     </t>
-
     <t t-name="DiscountProgramScreenWidget">
         <div class="discountlist-screen screen">
             <div class="screen-content">
@@ -133,13 +133,11 @@
             </div>
         </div>
     </t>
-
     <t t-extend="ClientListScreenWidget">
         <t t-jquery="table.client-list tr" t-operation="append">
             <th>Discount Program</th>
         </t>
     </t>
-
     <t t-extend="ClientLine">
         <t t-jquery="tr.client-line" t-operation="append">
             <td class="discount_program_td">
@@ -149,7 +147,6 @@
             </td>
         </t>
     </t>
-
     <t t-extend="ClientDetails">
         <t t-jquery=".client-details-right" t-operation="append">
             <t t-if="partner.discount_program_id">
@@ -162,7 +159,6 @@
             </t>
         </t>
     </t>
-
     <t t-extend="ClientDetailsEdit">
         <t t-jquery=".client-details-right" t-operation="append">
             <div class='client-detail discount-program-details'>
@@ -184,5 +180,4 @@
             </div>
         </t>
     </t>
-
 </templates>

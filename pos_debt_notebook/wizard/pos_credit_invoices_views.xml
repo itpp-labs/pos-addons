@@ -19,7 +19,6 @@
                             attrs="{'invisible':[('update_type', '=', 'balance_update')]}"
                         />
                         <field name="writeoff_method" />
-
                         <field name="journal_id" />
                         <field
                             name="product_id"
@@ -35,14 +34,12 @@
                     class="btn-primary"
                     attrs="{'invisible':[('update_type', '=', 'balance_update')]}"
                 />
-
                 <field name="partner_ids">
                     <tree>
                         <field name="name" />
                         <field name="credit_balance" />
                     </tree>
                 </field>
-
                 <field name="line_ids">
                     <tree editable="bottom" create="false" delete="false">
                         <field name="partner_id" />
@@ -51,7 +48,6 @@
                         <field name="total_balance" />
                     </tree>
                 </field>
-
                 <group>
                     <group>
                         <field name="partner_credits" />
@@ -59,7 +55,6 @@
                         <field name="total_credit" />
                     </group>
                 </group>
-
                 <footer>
                     <button
                         name="generate_invoices"
@@ -72,7 +67,6 @@
             </form>
         </field>
     </record>
-
     <record id="action_pos_credit_invoices" model="ir.actions.act_window">
         <field name="name">Generate POS Credits Invoices</field>
         <field name="res_model">pos.credit.invoices</field>
@@ -81,8 +75,6 @@
         <field name="target">new</field>
         <field name="context">{}</field>
     </record>
-
-
     <menuitem
         id="menu_pos_credit_invoices"
         name="Write-off Credits"

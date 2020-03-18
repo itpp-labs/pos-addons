@@ -12,7 +12,6 @@
                     type="text/javascript"
                     src="/pos_qr_scan/static/src/js/qr_scan.js"
                 />
-
                 <script
                     type="text/javascript"
                     src="/pos_qr_scan/static/lib/jsqrcode/grid.js"
@@ -83,7 +82,7 @@
                 />
             </xpath>
             <xpath expr="//link[@id='pos-stylesheet']" position="after">
-              <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css" />
+                <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css" />
             </xpath>
         </template>
     </data>

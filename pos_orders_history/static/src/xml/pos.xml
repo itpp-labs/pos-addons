@@ -3,13 +3,11 @@
      Copyright 2018 Artem Losev
      License MIT (https://opensource.org/licenses/MIT). -->
 <templates id="template" xml:space="preserve">
-
     <t t-name="OrdersHistoryButton">
         <div class='control-button orders-history'>
             <i class='fa fa-list-alt ' /> History
         </div>
     </t>
-
     <t t-name="OrdersHistoryScreenWidget">
         <div class="orders-list-screen screen">
             <div class="screen-content">
@@ -81,7 +79,6 @@
             </div>
         </div>
     </t>
-
     <t t-name="OrderHistory">
         <tr class='order-line' t-att-data-id='order.id'>
             <td>
@@ -89,14 +86,19 @@
                     <t t-esc='order.pos_reference' />
                 </span>
             </td>
-
             <td>
                 <t t-if='order.partner_id' t-esc='order.partner_id[1]' />
                 <t t-if='!order.partner_id' t-esc='""' />
             </td>
-            <td><t t-esc='order.pos_name' /></td>
-            <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
-            <td><t t-esc='order.user_id[1]' /></td>
+            <td>
+                <t t-esc='order.pos_name' />
+            </td>
+            <td>
+                <t t-esc='widget.get_datetime_format(order.date_order)' />
+            </td>
+            <td>
+                <t t-esc='order.user_id[1]' />
+            </td>
             <t t-if="!order.computed_state">
                 <td>
                     <t t-if="order.state == 'done'">
@@ -127,7 +129,6 @@
             </td>
         </tr>
     </t>
-
     <t t-name="LinesHeader">
         <tr>
             <th>Image</th>
@@ -140,7 +141,6 @@
             <th>Subtotal</th>
         </tr>
     </t>
-
     <t t-name="LineHistory">
         <tr class='line-line'>
             <td>
@@ -148,16 +148,29 @@
                     <img t-att-src="line.image" />
                 </div>
             </td>
-            <td><t t-esc='line.product_id[1]' /></td>
-            <td><t t-esc='line.qty' /></td>
-            <td><t t-esc='widget.format_currency(line.price_unit)' /></td>
-            <td><t t-esc='line.discount' /></td>
-            <td><t t-esc='line.tax_ids' /></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal)' /></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal_incl)' /></td>
+            <td>
+                <t t-esc='line.product_id[1]' />
+            </td>
+            <td>
+                <t t-esc='line.qty' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_unit)' />
+            </td>
+            <td>
+                <t t-esc='line.discount' />
+            </td>
+            <td>
+                <t t-esc='line.tax_ids' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_subtotal)' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_subtotal_incl)' />
+            </td>
         </tr>
     </t>
-
     <t t-extend="OrderReceipt">
         <t t-jquery="div[t-if*='receipt.footer_html']" t-operation="before">
             <span>
@@ -165,5 +178,4 @@
             </span>
         </t>
     </t>
-
 </templates>

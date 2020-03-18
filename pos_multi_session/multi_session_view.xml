@@ -13,7 +13,9 @@
             <form>
                 <sheet string="Multi-session">
                     <label for="name" class="oe_edit_only" />
-                    <h1><field name="name" /></h1>
+                    <h1>
+                        <field name="name" />
+                    </h1>
                     <group string="Settings">
                         <field
                             name="pos_ids"
@@ -40,14 +42,12 @@
             </form>
         </field>
     </record>
-
     <record id="action_multi_session_form" model="ir.actions.act_window">
         <field name="name">Multi-sessions</field>
         <field name="res_model">pos.multi_session</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <menuitem
         id="menu_pos_ms_settings"
         name="Multi-sessions"
@@ -56,5 +56,4 @@
         action="action_multi_session_form"
         groups="point_of_sale.group_pos_manager"
     />
-
 </odoo>
