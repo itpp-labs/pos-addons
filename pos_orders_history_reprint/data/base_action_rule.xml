@@ -11,7 +11,6 @@
         <field name="state">code</field>
         <field name="code">model.notify_receipt_updates()</field>
     </record>
-
     <record id="rule_new_receipt" model="base.action.rule">
         <field name="name">Notify POS about new receipt.</field>
         <field name="model_id" ref="pos_orders_history_reprint.model_pos_xml_receipt" />

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <template
+    <template
         id="assets_backend"
         name="pos_debt_notebook_sync assets"
         inherit_id="point_of_sale.assets"
     >
-            <xpath expr="." position="inside">
-                <script
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_debt_notebook_sync/static/src/js/sync.js"
             />
-            </xpath>
-        </template>
+        </xpath>
+    </template>
 </odoo>
