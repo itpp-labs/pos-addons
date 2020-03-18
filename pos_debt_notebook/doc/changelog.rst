@@ -3,6 +3,8 @@
 
 - **FIX:** Error in getting customer history when a journal was unset as ``Debt`` one. Or when manual credit update was created with not debt journal
 - **FIX:** "Could not get property 'debt' of undefined" Error after creating a new customer in POS
+- **FIX:** Not working writing-off wizard with 'New Balance' option
+- **Improvement:** Always refreshing paymentlines on paymentscreen opening
 
 `5.3.1`
 -------

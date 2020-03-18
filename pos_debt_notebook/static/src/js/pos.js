@@ -742,9 +742,15 @@ odoo.define('pos_debt_notebook.pos', function (require) {
             var client = this.pos.get_client();
             var order = this.pos.get_order();
             var status = '';
-            if (client && client.debts && order && order.get_orderlines().length !== 0 && !order.has_credit_product()){
+            if (
+                client
+                && client.debts
+                && order
+                && order.get_orderlines().length !== 0
+                && !order.has_credit_product()
+            ){
                 var paymentlines = order.get_paymentlines();
-                if (paymentlines.length && order.get_due() > 0 ) {
+                if (paymentlines.length) {
                     _.each(paymentlines, function(pl){
                         order.remove_paymentline(pl);
                     });
