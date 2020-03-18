@@ -605,9 +605,10 @@ class PosCreditUpdate(models.Model):
                                        help="Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts).")
 
     @api.constrains('journal_id')
-    def validate_email(self):
+    def _check_journal_id(self):
         for obj in self:
-            if not obj.journal_id.debt:
+            # user may not have access to the journal model
+            if not obj.sudo().journal_id.debt:
                 raise ValidationError("Credit Updates may be created only for credit journals !")
         return True
 
@@ -635,7 +636,8 @@ class PosCreditUpdate(models.Model):
         state = vals.get('state', self.state) or 'draft'
         update_type = vals.get('update_type', self.update_type)
         if (state == 'draft' and update_type == 'new_balance'):
-            data = partner._compute_partner_journal_debt(self.journal_id.id)
+            journal_id = self.journal_id.id or vals.get('journal_id', False)
+            data = partner._compute_partner_journal_debt(journal_id)
             credit_balance = data[partner.id].get('balance', 0)
             vals['balance'] = self.get_balance(credit_balance, new_balance)
 
