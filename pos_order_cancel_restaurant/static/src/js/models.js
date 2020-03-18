@@ -1,15 +1,11 @@
 /* Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
- * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_order_cancel_restaurant.models', function (require) {
+ * License MIT (https://opensource.org/licenses/MIT). */
+odoo.define("pos_order_cancel_restaurant.models", function(require) {
     "use strict";
 
-    var models = require('pos_order_cancel.models');
-    var multiprint = require('pos_restaurant_base.models');
-    var Model = require('web.DataModel');
-    var core = require('web.core');
-    var QWeb = core.qweb;
-    var _t = core._t;
+    var models = require("pos_order_cancel.models");
+    require("pos_restaurant_base.models");
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
@@ -40,37 +36,43 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 _super_order.add_cancelled_line.apply(this, arguments);
             }
         },
-        saveChanges: function(){
+        saveChanges: function() {
             _super_order.saveChanges.call(this, arguments);
             var lines = this.get_order_lines_by_dirty_status(false);
-            lines.forEach(function(line){
+            lines.forEach(function(line) {
                 line.was_printed = true;
             });
         },
         get_order_lines_by_dirty_status: function(mp_dirty_status) {
             var lines = this.get_orderlines();
-            lines = lines.filter(function(line){
+            lines = lines.filter(function(line) {
                 return line.mp_dirty === mp_dirty_status;
             });
             var printers = this.pos.printers;
             var categories_ids = [];
-            for(var i = 0; i < printers.length; i++) {
+            for (var i = 0; i < printers.length; i++) {
                 var product_categories_ids = printers[i].config.product_categories_ids;
-                product_categories_ids.forEach(function(id){
+                product_categories_ids.forEach(function(id) {
                     categories_ids.push(id);
                 });
             }
             var unique_categories_ids = [];
-            this.unique(categories_ids).forEach(function(id){
+            this.unique(categories_ids).forEach(function(id) {
                 unique_categories_ids.push(Number(id));
             });
             var new_lines = [];
-            unique_categories_ids.forEach(function(id){
+            unique_categories_ids.forEach(function(id) {
                 lines.forEach(function(line) {
-                    // for compatibility with pos_category_multi
-                    if (line.product.pos_category_ids && line.product.pos_category_ids.indexOf(id) !== -1) {
+                    // For compatibility with pos_category_multi
+                    if (
+                        line.product.pos_category_ids &&
+                        line.product.pos_category_ids.indexOf(id) !== -1
+                    ) {
                         new_lines.push(line);
-                    } else if (line.product.pos_categ_id && line.product.pos_categ_id[0] === id) {
+                    } else if (
+                        line.product.pos_categ_id &&
+                        line.product.pos_categ_id[0] === id
+                    ) {
                         new_lines.push(line);
                     }
                 });
@@ -82,7 +84,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             return new_lines;
         },
-        unique: function(arr){
+        unique: function(arr) {
             var obj = {};
             for (var i = 0; i < arr.length; i++) {
                 var str = arr[i];
@@ -90,15 +92,22 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             }
             return Object.keys(obj);
         },
-        computeChanges: function(categories){
+        computeChanges: function(categories) {
             var self = this;
             var res = _super_order.computeChanges.apply(this, arguments);
             if (res.cancelled && res.cancelled.length) {
                 res.cancelled.forEach(function(product, index) {
                     var line = self.get_orderline(product.line_id);
-                    if (!self.pos.config.send_removed_lines_to_kitchen && product.qty === 0) {
+                    if (
+                        !self.pos.config.send_removed_lines_to_kitchen &&
+                        product.qty === 0
+                    ) {
                         res.cancelled.splice(index, 1);
-                    } else if (line && line.cancelled_line && line.cancelled_line.reason) {
+                    } else if (
+                        line &&
+                        line.cancelled_line &&
+                        line.cancelled_line.reason
+                    ) {
                         product.reason = line.cancelled_line.reason;
                     }
                 });
@@ -113,10 +122,10 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             this.printChanges();
             this.saveChanges();
             if (!this.canceled_lines.length) {
-                this.destroy({'reason':'abandon'});
+                this.destroy({reason: "abandon"});
             }
             //  Read more about this trigger in pos_order_cancel module
-            this.trigger('new_updates_to_send');
+            this.trigger("new_updates_to_send");
         },
         upload_order_as_canceled: function() {
             if (this.canceled_lines.length) {
@@ -139,13 +148,13 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
                 return this.table.floor.name;
             }
             return false;
-        }
+        },
     });
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
-        initialize: function(attr,options){
-            _super_orderline.initialize.apply(this,arguments);
+        initialize: function(attr, options) {
+            _super_orderline.initialize.apply(this, arguments);
             if (this.pos.config.save_canceled_kitchen_orders_only) {
                 this.max_quantity = false;
             }
@@ -160,14 +169,14 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
             _super_orderline.cancel_quantity_changes.apply(this, arguments);
             if (this.was_printed) {
                 this.set_dirty(false);
-                this.trigger('change',this);
+                this.trigger("change", this);
             }
         },
         set_dirty: function(dirty) {
             if (this.mp_dirty !== dirty && dirty === false) {
                 this.max_quantity = this.quantity;
             }
-            _super_orderline.set_dirty.apply(this,arguments);
+            _super_orderline.set_dirty.apply(this, arguments);
         },
         export_as_JSON: function() {
             var data = _super_orderline.export_as_JSON.apply(this, arguments);
@@ -177,7 +186,7 @@ odoo.define('pos_order_cancel_restaurant.models', function (require) {
         init_from_JSON: function(json) {
             this.was_printed = json.was_printed;
             _super_orderline.init_from_JSON.call(this, json);
-        }
+        },
     });
     return models;
 });

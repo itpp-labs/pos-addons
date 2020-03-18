@@ -1,21 +1,27 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <!--Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+    License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="pos_order_cancel.view_pos_config_form"/>
+        <field name="inherit_id" ref="pos_order_cancel.view_pos_config_form" />
         <field name="arch" type="xml">
             <xpath expr="//group[@name='refunds']/group" position="after">
                 <group>
-                    <field name="kitchen_canceled_only" attrs="{'invisible':[('save_canceled_kitchen_orders_only', '=', True)]}"/>
-                    <field name="auto_send_to_kitchen"/>
-                    <field name="save_canceled_kitchen_orders_only"/>
-                    <field name="send_removed_lines_to_kitchen"/>
-                    <field name="ask_managers_pin_kitchen_orders_only" attrs="{'invisible':[('ask_managers_pin', '=', False)]}"/>
+                    <field
+                        name="kitchen_canceled_only"
+                        attrs="{'invisible':[('save_canceled_kitchen_orders_only', '=', True)]}"
+                    />
+                    <field name="auto_send_to_kitchen" />
+                    <field name="save_canceled_kitchen_orders_only" />
+                    <field name="send_removed_lines_to_kitchen" />
+                    <field
+                        name="ask_managers_pin_kitchen_orders_only"
+                        attrs="{'invisible':[('ask_managers_pin', '=', False)]}"
+                    />
                 </group>
             </xpath>
         </field>
@@ -24,16 +30,18 @@
     <record id="view_pos_pos_form" model="ir.ui.view">
         <field name="name">pos.order.form</field>
         <field name="model">pos.order</field>
-        <field name="inherit_id" ref="pos_order_cancel.view_pos_pos_form"/>
+        <field name="inherit_id" ref="pos_order_cancel.view_pos_pos_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='canceled_lines']/tree" position="inside">
-                <field name="was_printed"/>
+                <field name="was_printed" />
             </xpath>
             <xpath expr="//field[@name='session_id']" position="after">
-                <field name="save_canceled_kitchen_orders_only" invisible="1"/>
+                <field name="save_canceled_kitchen_orders_only" invisible="1" />
             </xpath>
             <xpath expr="//page[@name='cancellations']" position="attributes">
-                <attribute name="attrs">{'invisible':[('save_canceled_kitchen_orders_only', '=', False)]}</attribute>
+                <attribute
+                    name="attrs"
+                >{'invisible':[('save_canceled_kitchen_orders_only', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

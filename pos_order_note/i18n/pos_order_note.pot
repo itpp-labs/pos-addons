@@ -15,101 +15,101 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:31
-#: code:addons/pos_order_note/static/src/js/tour.js:47
+#: code:addons/pos_order_note/static/src/js/tour.js:43
+#: code:addons/pos_order_note/static/src/js/tour.js:63
 #, python-format
 msgid "<p>Click on <b>Note</b> button</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:51
+#: code:addons/pos_order_note/static/src/js/tour.js:68
 #, python-format
 msgid "<p>Click on <b>Order Note</b></p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:63
+#: code:addons/pos_order_note/static/src/js/tour.js:83
 #, python-format
 msgid "<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:22
+#: code:addons/pos_order_note/static/src/js/tour.js:33
 #, python-format
 msgid "<p>Click on <b>table</b></p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:43
-#: code:addons/pos_order_note/static/src/js/tour.js:59
+#: code:addons/pos_order_note/static/src/js/tour.js:58
+#: code:addons/pos_order_note/static/src/js/tour.js:78
 #, python-format
 msgid "<p>Click on Confirm button</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:55
+#: code:addons/pos_order_note/static/src/js/tour.js:73
 #, python-format
 msgid "<p>Click on predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:35
+#: code:addons/pos_order_note/static/src/js/tour.js:48
 #, python-format
 msgid "<p>Click on the first predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:39
+#: code:addons/pos_order_note/static/src/js/tour.js:53
 #, python-format
 msgid "<p>Click on the second predefined note</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:18
+#: code:addons/pos_order_note/static/src/js/tour.js:26
 #, python-format
 msgid "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:26
+#: code:addons/pos_order_note/static/src/js/tour.js:38
 #, python-format
 msgid "<p>Select the first product in the product list</p>"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:325
+#: code:addons/pos_order_note/static/src/js/order_note.js:347
 #, python-format
 msgid "Add Note for Order"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/order_note.js:329
+#: code:addons/pos_order_note/static/src/js/order_note.js:351
 #, python-format
 msgid "Add Note for Product"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:309
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:429
 #, python-format
 msgid "Apply"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:284
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:306
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:404
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:426
 #, python-format
 msgid "Cancel"
 msgstr ""
@@ -156,26 +156,26 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:181
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:192
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:202
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:217
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:228
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:238
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:239
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:262
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:278
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:302
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:325
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:341
 #, python-format
 msgid "NOTE"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:322
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:444
 #, python-format
 msgid "Name"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:264
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:373
 #: model:ir.model.fields,field_description:pos_order_note.field_pos_product_notes_name
 #, python-format
 msgid "Note"
@@ -184,8 +184,8 @@ msgstr ""
 #. module: pos_order_note
 #. openerp-web
 #: code:addons/pos_order_note/static/src/xml/order_note.xml:10
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:27
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:37
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:29
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:41
 #, python-format
 msgid "Note:"
 msgstr ""
@@ -199,31 +199,31 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:100
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:118
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:132
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:151
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:107
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:143
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:163
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:200
 #, python-format
 msgid "ORDER NOTE"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:287
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:407
 #, python-format
 msgid "Ok"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:260
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:369
 #, python-format
 msgid "Order Note"
 msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:280
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:400
 #, python-format
 msgid "Other"
 msgstr ""
@@ -237,7 +237,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/xml/order_note.xml:259
+#: code:addons/pos_order_note/static/src/xml/order_note.xml:368
 #, python-format
 msgid "Product Note"
 msgstr ""
@@ -249,7 +249,7 @@ msgstr ""
 
 #. module: pos_order_note
 #. openerp-web
-#: code:addons/pos_order_note/static/src/js/tour.js:14
+#: code:addons/pos_order_note/static/src/js/tour.js:19
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""

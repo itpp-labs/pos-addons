@@ -43,7 +43,7 @@ Pay Sale Orders
 * Close POS session
 * Open ``[[Invoicing]] >> Sales >> Customer Invoices`` menu
 * RESULT: See the corresponding paid invoice
-	
+
 Pay Invoices
 ------------
 

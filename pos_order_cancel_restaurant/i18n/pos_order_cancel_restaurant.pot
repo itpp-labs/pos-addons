@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/tour.js:22
+#: code:addons/pos_order_cancel_restaurant/static/src/js/tour.js:19
 #, python-format
 msgid "<p>Click <b>table</b></p>"
 msgstr ""
@@ -47,7 +47,7 @@ msgstr ""
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:33
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:32
 #, python-format
 msgid "Destroy Current Order ?"
 msgstr ""
@@ -94,8 +94,8 @@ msgstr ""
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:10
-#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:21
+#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:13
+#: code:addons/pos_order_cancel_restaurant/static/src/xml/cancel_order.xml:30
 #, python-format
 msgid "REASON"
 msgstr ""
@@ -134,7 +134,7 @@ msgstr ""
 
 #. module: pos_order_cancel_restaurant
 #. openerp-web
-#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:34
+#: code:addons/pos_order_cancel_restaurant/static/src/js/widgets.js:33
 #, python-format
 msgid "You will lose any data associated with the current order"
 msgstr ""

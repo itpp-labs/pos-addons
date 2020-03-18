@@ -1,10 +1,10 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).*/
+   License MIT (https://opensource.org/licenses/MIT).*/
 
 /*OrdersHistoryScreenWidget*/
 .pos .return-no-receipt {
     left: 214px;
-    font-size: 18px!important;
+    font-size: 18px !important;
 }
 .pos .breadcrumb-order {
     font-size: 18px;

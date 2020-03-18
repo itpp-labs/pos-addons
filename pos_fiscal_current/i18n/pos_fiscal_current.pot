@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: pos_fiscal_current
 #. openerp-web
-#: code:addons/pos_fiscal_current/static/src/xml/pos.xml:5
+#: code:addons/pos_fiscal_current/static/src/xml/pos.xml:8
 #, python-format
 msgid "Fiscal:"
 msgstr ""

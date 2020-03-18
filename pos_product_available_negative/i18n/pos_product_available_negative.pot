@@ -22,7 +22,7 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:56
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:80
 #, python-format
 msgid "Click the payment method"
 msgstr ""
@@ -44,14 +44,14 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:49
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:68
 #, python-format
 msgid "Open the payment screen"
 msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/pos.js:24
+#: code:addons/pos_product_available_negative/static/src/js/pos.js:28
 #, python-format
 msgid "Order has out-of-stock product and must be approved by supervisor"
 msgstr ""
@@ -68,14 +68,14 @@ msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:77
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:108
 #, python-format
 msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
 msgstr ""
 
 #. module: pos_product_available_negative
 #. openerp-web
-#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:71
+#: code:addons/pos_product_available_negative/static/src/js/test_pos_negative_qtys.js:99
 #, python-format
 msgid "check restriction popup"
 msgstr ""

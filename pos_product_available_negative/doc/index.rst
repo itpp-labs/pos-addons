@@ -21,7 +21,7 @@ Usage
 =====
 
 * Go to ``[[Point of Sale]] >> Dashboard``
-  
+
   * Open POS session
   * Select a product with negative qty
   * Click ``Payment``

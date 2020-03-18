@@ -1,1 +1,2 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# -*- coding: utf-8 -*-
+# License MIT (https://opensource.org/licenses/MIT).

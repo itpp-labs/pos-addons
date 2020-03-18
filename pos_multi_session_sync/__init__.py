@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 
 from . import models
 from . import controllers

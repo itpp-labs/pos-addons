@@ -15,22 +15,22 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:143
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:164
 #, python-format
 msgid "All products have been returned."
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:142
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:163
 #, python-format
 msgid "Error"
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:50
 #: code:addons/pos_orders_history_return/static/src/js/screens.js:58
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:67
 #, python-format
 msgid "Error: Could not find the Order"
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:183
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:206
 #, python-format
 msgid "Order Is Empty"
 msgstr ""
@@ -88,21 +88,21 @@ msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:51
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:59
 #, python-format
 msgid "There is no order with this barcode."
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:107
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:123
 #, python-format
 msgid "Warning"
 msgstr ""
 
 #. module: pos_orders_history_return
 #. openerp-web
-#: code:addons/pos_orders_history_return/static/src/js/screens.js:108
+#: code:addons/pos_orders_history_return/static/src/js/screens.js:124
 #, python-format
 msgid "You have an unfinished return of the order. Please complete the return of the order and try again."
 msgstr ""
@@ -113,7 +113,7 @@ msgid "pos.config"
 msgstr ""
 
 #. module: pos_orders_history_return
-#: code:addons/pos_orders_history_return/models/pos_order.py:87
+#: code:addons/pos_orders_history_return/models/pos_order.py:105
 #, python-format
 msgid "return"
 msgstr ""

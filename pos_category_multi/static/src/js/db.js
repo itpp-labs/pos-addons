@@ -1,19 +1,20 @@
-odoo.define('pos_category_multi.DB', function (require) {
+odoo.define("pos_category_multi.DB", function(require) {
     "use strict";
 
-    var PosDB = require('point_of_sale.DB');
+    var PosDB = require("point_of_sale.DB");
 
     PosDB.include({
         category_contains: function(categ_id, product_id) {
             this._super.apply(this, arguments);
+            var product = this.product_by_id[product_id];
             if (product) {
                 var cids = product.pos_category_ids;
-                for (var i = 0; i < cids.length; i++){
+                for (var i = 0; i < cids.length; i++) {
                     var cid = cids[i];
-                    while (cid && cid !== categ_id){
+                    while (cid && cid !== categ_id) {
                         cid = this.category_parent[cid];
                     }
-                    return !!cid;
+                    return Boolean(cid);
                 }
             }
             return false;
@@ -24,7 +25,7 @@ odoo.define('pos_category_multi.DB', function (require) {
                 var cat = cats[j];
                 while (cat) {
                     for (var i = 0; i < category_ids.length; i++) {
-                        if (cat == category_ids[i]) {   // The == is important, ids may be strings
+                        if (parseInt(cat, 10) === parseInt(category_ids[i], 10)) {
                             return true;
                         }
                     }
@@ -33,47 +34,52 @@ odoo.define('pos_category_multi.DB', function (require) {
             }
             return false;
         },
-        add_products: function(products){
+        add_products: function(products) {
+            /* eslint-disable no-param-reassign */
             this._super.apply(this, arguments);
             var stored_categories = this.product_by_category_id;
-            if(!products instanceof Array){
+            if (!products instanceof Array) {
                 products = [products];
             }
-            for(var i = 0, len = products.length; i < len; i++){
+            for (var i = 0, len = products.length; i < len; i++) {
                 var product = products[i];
                 var search_string = this._product_search_string(product);
                 var categ_ids = product.pos_category_ids;
-                if (categ_ids.length == 0) { categ_ids = [this.root_category_id]; }
-                for (var n = 0; n < categ_ids.length; n++){
+                if (categ_ids.length === 0) {
+                    categ_ids = [this.root_category_id];
+                }
+                for (var n = 0; n < categ_ids.length; n++) {
                     var categ_id = categ_ids[n];
-                    // product.product_tmpl_id = product.product_tmpl_id[0];
-                    if(!stored_categories[categ_id]){
+                    // Product.product_tmpl_id = product.product_tmpl_id[0];
+                    if (!stored_categories[categ_id]) {
                         stored_categories[categ_id] = [];
                     }
                     stored_categories[categ_id].push(product.id);
 
-                    if(this.category_search_string[categ_id] === undefined){
-                        this.category_search_string[categ_id] = '';
+                    if (typeof this.category_search_string[categ_id] === "undefined") {
+                        this.category_search_string[categ_id] = "";
                     }
                     this.category_search_string[categ_id] += search_string;
 
                     var ancestors = this.get_category_ancestors_ids(categ_id) || [];
 
-                    for(var j = 0, jlen = ancestors.length; j < jlen; j++){
+                    for (var j = 0, jlen = ancestors.length; j < jlen; j++) {
                         var ancestor = ancestors[j];
-                        if(! stored_categories[ancestor]){
+                        if (!stored_categories[ancestor]) {
                             stored_categories[ancestor] = [];
                         }
                         stored_categories[ancestor].push(product.id);
 
-                        if( this.category_search_string[ancestor] === undefined){
-                            this.category_search_string[ancestor] = '';
+                        if (
+                            typeof this.category_search_string[ancestor] === "undefined"
+                        ) {
+                            this.category_search_string[ancestor] = "";
                         }
                         this.category_search_string[ancestor] += search_string;
                     }
                 }
             }
-        }
+        },
     });
     return PosDB;
 });

@@ -9,29 +9,30 @@
     font-size: 38px;
     padding: 20px;
     border-radius: 6px;
-    box-shadow: 0px 0px 0px 2px rgb(220,220,220) inset;
+    box-shadow: 0px 0px 0px 2px rgb(220, 220, 220) inset;
     resize: none;
 }
 .pos.mobile textarea:focus {
-    box-shadow: 0px 0px 0px 6px #6EC89B;
+    box-shadow: 0px 0px 0px 6px #6ec89b;
 }
 .pos.mobile {
     font-size: 24px;
 }
 /*  ********* The black loading screen ********* */
-.pos.mobile .loader-feedback{
+.pos.mobile .loader-feedback {
     width: 800px;
     height: 320px;
     margin: -120px -400px;
-    left: 50%; top: 50%;
+    left: 50%;
+    top: 50%;
 }
-.pos.mobile .loader-feedback .progressbar{
+.pos.mobile .loader-feedback .progressbar {
     height: 2px;
 }
-.pos.mobile .loader-feedback .progressbar > .progress{
-    box-shadow: 0px 0px 10px rgba(255,255,255,0.35);
+.pos.mobile .loader-feedback .progressbar > .progress {
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.35);
 }
-.pos.mobile .loader-feedback .button{
+.pos.mobile .loader-feedback .button {
     margin: 50px auto;
     line-height: 84px;
     padding: 0px 32px;
@@ -40,20 +41,21 @@
     border-radius: 10px;
 }
 /* ---- Scrollers ----- */
-.pos.mobile .scroller-container ::-webkit-scrollbar{
-    width:  20px;
+.pos.mobile .scroller-container ::-webkit-scrollbar {
+    width: 20px;
     height: 20px;
 }
-.pos.mobile .scroller-container ::-webkit-scrollbar-track{
-    border-left: solid 2px rgb(200,200,200);
+.pos.mobile .scroller-container ::-webkit-scrollbar-track {
+    border-left: solid 2px rgb(200, 200, 200);
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }
-.pos.mobile .scroller-container ::-webkit-scrollbar-thumb{
+.pos.mobile .scroller-container ::-webkit-scrollbar-thumb {
     min-height: 60px;
 }
 /*  ********* Generic element styling  ********* */
-.pos.mobile button, .pos.mobile a.button {
+.pos.mobile button,
+.pos.mobile a.button {
     padding: 8px 20px;
     font-size: 22px;
     border: 2px solid #cacaca;
@@ -74,7 +76,7 @@
 }
 /*  a) The left part of the top-bar */
 
-.pos.mobile .pos-branding{
+.pos.mobile .pos-branding {
     border-right: 0px;
     width: initial;
     position: relative;
@@ -82,7 +84,7 @@
     display: block;
     float: left;
 }
-.pos.mobile .pos-branding .username{
+.pos.mobile .pos-branding .username {
     margin-left: 20px;
     margin-right: 20px;
     line-height: 104px;
@@ -105,7 +107,7 @@
 .pos.mobile .pos-rightheader > * {
     border-right: 0px;
 }
-.pos.mobile .order-button{
+.pos.mobile .order-button {
     height: 92px;
     padding: 8px 16px;
     margin: 6px;
@@ -121,7 +123,7 @@
     background: #e8e8e8;
     color: #555555;
 }
-.pos.mobile .order-button.selected{
+.pos.mobile .order-button.selected {
     height: 100px;
     line-height: 80px;
     background: white;
@@ -133,11 +135,11 @@
     padding-top: 15px;
     font-weight: initial;
 }
-.pos.mobile .order-button .order-sequence{
+.pos.mobile .order-button .order-sequence {
     font-size: 32px;
     font-weight: initial;
 }
-.pos.mobile .order-button.selected .order-sequence{
+.pos.mobile .order-button.selected .order-sequence {
     line-height: 48px;
     min-width: 48px;
     border-radius: 24px;
@@ -145,29 +147,30 @@
     margin-left: -8px;
     margin-bottom: 5px;
 }
-.pos.mobile .order-button.square{
+.pos.mobile .order-button.square {
     display: inline-block;
     float: left;
-    margin-left:2px;
+    margin-left: 2px;
     padding: 20px;
 }
-.pos.mobile .order-button.square img{
+.pos.mobile .order-button.square img {
     width: 50px;
 }
 .pos.mobile .order-button:not(.square) > .fa {
     font-size: 32px;
     margin-right: 8px;
 }
-.pos.mobile .order-button .order-sequence{
+.pos.mobile .order-button .order-sequence {
     font-size: 32px;
 }
-.pos.mobile .neworder-button, .pos.mobile .deleteorder-button {
+.pos.mobile .neworder-button,
+.pos.mobile .deleteorder-button {
     height: 84px;
     border: none;
     border-radius: 8px;
 }
 /*  c) The session buttons */
-.pos.mobile .pos-rightheader .header-button{
+.pos.mobile .pos-rightheader .header-button {
     display: inline-block;
     height: 96px;
     padding-left: 32px;
@@ -181,17 +184,17 @@
     padding: 0px;
     width: 80px;
 }
-.pos.mobile .pos-rightheader .header-button img{
+.pos.mobile .pos-rightheader .header-button img {
     padding: 10px;
     margin-top: 25px;
     width: 30px;
 }
-.pos.mobile .pos-rightheader .header-button:last-child{
-    border-left:  0px;
+.pos.mobile .pos-rightheader .header-button:last-child {
+    border-left: 0px;
     border-right: 0px;
 }
 /*  c) The notifications indicator */
-.pos.mobile .oe_status{
+.pos.mobile .oe_status {
     padding: 28px;
     line-height: 40px;
     font-size: 40px;
@@ -200,9 +203,9 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-.pos.mobile .oe_status .oe_icon{
-    width:40px;
-    height:32px;
+.pos.mobile .oe_status .oe_icon {
+    width: 40px;
+    height: 32px;
     color: #555555;
 }
 .pos.mobile .oe_status .oe_red,
@@ -217,8 +220,8 @@
 .pos.mobile .oe_icon.oe_orange {
     color: rgb(239, 153, 65);
 }
-.pos.mobile .oe_status .oe_icon img{
-    width:40px;
+.pos.mobile .oe_status .oe_icon img {
+    width: 40px;
 }
 /*  ********* Contains everything below the  bar ********* */
 .pos.mobile .pos-content {
@@ -228,9 +231,9 @@
 
 .pos.mobile .leftpane {
     /* Center slide text vertically */
-    width:100%;
+    width: 100%;
     height: 100%;
-    border-right: solid 2px #CECBCB;
+    border-right: solid 2px #cecbcb;
     border-right: solid 6px #787878;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -277,7 +280,7 @@
     font-weight: inherit;
     border: 2px solid #e8e8e8;
 }
-.pos.mobile .control-button .fa{
+.pos.mobile .control-button .fa {
     margin-right: 8px;
 }
 .pos.mobile .control-button .control-button-number {
@@ -296,15 +299,15 @@
 }
 .pos.mobile .control-button.highlight,
 .pos.mobile .button.highlight {
-    border: solid 2px #64AF8A !important;
+    border: solid 2px #64af8a !important;
 }
 .pos.mobile .control-button.altlight,
 .pos.mobile .button.altlight {
-    border: solid 2px #756A99 !important;
+    border: solid 2px #756a99 !important;
 }
 .pos.mobile .control-button.disabled,
-.pos.mobile .control-button.disabled:active{
-    border: solid 2px #BEBEBE;
+.pos.mobile .control-button.disabled:active {
+    border: solid 2px #bebebe;
 }
 /*  ********* The actionpad (payment, set customer) ********* */
 .pos.mobile .actionpad {
@@ -333,7 +336,7 @@
     font-weight: inherit;
 }
 .pos.mobile .actionpad .button:hover {
-    background: #6EC89B;
+    background: #6ec89b;
     color: white;
     border-color: transparent;
 }
@@ -365,7 +368,7 @@
     top: -2px;
     left: 6px;
 }
-.pos.mobile .actionpad .button.set-customer{
+.pos.mobile .actionpad .button.set-customer {
     padding-left: 90px;
     padding-right: 80px;
     height: 98px;
@@ -386,7 +389,7 @@
     line-height: 60px;
     width: 60px;
 }
-.pos.mobile .actionpad .button.set-customer img{
+.pos.mobile .actionpad .button.set-customer img {
     width: 50px;
     position: absolute;
     left: 25px;
@@ -414,7 +417,7 @@
     font-weight: inherit;
 }
 .pos.mobile .mode-button.selected-mode {
-    background: #6EC89B;
+    background: #6ec89b;
     border-color: transparent;
 }
 .pos.mobile .numpad button:nth-child(4) {
@@ -430,7 +433,7 @@
     font-size: 36px;
 }
 .pos.mobile .numpad button:active {
-    background: #6EC89B;
+    background: #6ec89b;
     color: white;
     border-color: transparent;
 }
@@ -491,7 +494,7 @@
     margin-bottom: 5px;
 }
 /*  a) the product list navigation bar */
-.pos.mobile .breadcrumb{
+.pos.mobile .breadcrumb {
     line-height: 96px;
     height: 96px;
     min-width: 96px;
@@ -510,7 +513,7 @@
     width: 100px;
     font-size: 80px;
 }
-.pos.mobile .breadcrumb-arrow{
+.pos.mobile .breadcrumb-arrow {
     width: 56px;
     transform: scale(-1, 1);
 }
@@ -577,12 +580,12 @@
     font-size: 22px;
     margin: 16px !important;
     width: 240px;
-    height:240px;
+    height: 240px;
     border: 2px solid #d7d7d7;
     border-radius: 6px;
     border-bottom-width: 6px;
 }
-.pos.mobile .category-simple-button{
+.pos.mobile .category-simple-button {
     font-size: 28px;
     margin: 15px;
     padding: 10px 24px;
@@ -597,7 +600,7 @@
     border: 2px solid #e8e8e8;
     width: 100%;
 }
-.pos.mobile .category-simple-button:active{
+.pos.mobile .category-simple-button:active {
     color: white;
     background: black;
     border-color: black;
@@ -633,7 +636,7 @@
 }
 .pos.mobile .category-button .category-img img {
     max-height: 200px;
-    max-width:  240px;
+    max-width: 240px;
     margin-top: 10px;
     min-width: 190px;
 }
@@ -658,13 +661,13 @@
     font-size: 22px;
     margin: 16px !important;
     width: 200px;
-    height:188px;
+    height: 188px;
     border-bottom-width: 0px;
     border: 2px solid #e8e8e8;
     border-radius: 6px;
     box-shadow: 0px 5px 30px -14px black;
 }
-.pos.mobile .product .product-count{
+.pos.mobile .product .product-count {
     position: absolute;
     width: 100%;
     top: 0;
@@ -693,33 +696,33 @@
 .pos.mobile .product .product-name {
     line-height: 20px;
     padding: 6px;
-    padding-top:30px;
+    padding-top: 30px;
     text-align: left;
 }
 /*  ********* The Screens  ********* */
 .pos.mobile .screen header h2 {
     padding-top: 14px;
 }
-.pos.mobile .screen p{
+.pos.mobile .screen p {
     font-size: 36px;
 }
-.pos.mobile .dialog{
+.pos.mobile .dialog {
     width: 1000px;
     margin-top: 100px;
 }
-.pos.mobile .dialog p{
+.pos.mobile .dialog p {
     font-size: 50px;
     margin-top: 20px;
 }
 /* a) Generic Screen Layout Constructs */
-.pos.mobile .screen .screen-content{
+.pos.mobile .screen .screen-content {
     max-width: 2048px;
     background: white;
 }
-.pos.mobile .screen .top-content{
+.pos.mobile .screen .top-content {
     background: white;
     height: 128px;
-    border-bottom: dashed 2px rgb(110,110,110);
+    border-bottom: dashed 2px rgb(110, 110, 110);
 }
 .pos.mobile .screen .top-content .button {
     line-height: 64px;
@@ -741,42 +744,41 @@
     color: white;
 }
 .pos.mobile .screen .top-content .button.highlight {
-    border: solid 2px rgb(110,200,155);
+    border: solid 2px rgb(110, 200, 155);
 }
 .pos.mobile .screen .top-content .button.back {
     margin-left: 32px;
 }
-.pos.mobile .screen .top-content .button.next{
+.pos.mobile .screen .top-content .button.next {
     font-size: inherit;
-
 }
-.pos.mobile .screen .left-content{
+.pos.mobile .screen .left-content {
     top: 128px;
-    border-right: dashed 2px rgb(215,215,215);
+    border-right: dashed 2px rgb(215, 215, 215);
 }
-.pos.mobile .screen .left-content.pc40{
+.pos.mobile .screen .left-content.pc40 {
     right: 75%;
     margin-top: 2px;
     background: white;
 }
-.pos.mobile .screen .right-content{
+.pos.mobile .screen .right-content {
     top: 128px;
 }
-.pos.mobile .screen .right-content.pc60{
+.pos.mobile .screen .right-content.pc60 {
     left: 25%;
     background: white;
     margin-top: 2px;
 }
-.pos.mobile .screen .centered-content{
+.pos.mobile .screen .centered-content {
     top: 128px;
-    border-right: dashed 2px rgb(215,215,215);
-    border-left: dashed 2px rgb(215,215,215);
+    border-right: dashed 2px rgb(215, 215, 215);
+    border-left: dashed 2px rgb(215, 215, 215);
     right: 15%;
     left: 15%;
     background: #f7f7f7;
     margin-top: 2px;
 }
-.pos.mobile .screen .full-content{
+.pos.mobile .screen .full-content {
     top: 130px;
 }
 /* b) The payment screen */
@@ -813,14 +815,14 @@
 }
 .pos.mobile .paymentlines-container {
     padding: 0px;
-    border-bottom: dashed 2px rgb(110,110,110);
+    border-bottom: dashed 2px rgb(110, 110, 110);
     max-height: initial;
     height: 562px;
     overflow: hidden !important;
     overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch!important;
+    -webkit-overflow-scrolling: touch !important;
 }
-.pos.mobile .paymentlines-container .delete-button{
+.pos.mobile .paymentlines-container .delete-button {
     padding: 0px;
     line-height: 65px;
 }
@@ -831,10 +833,10 @@
     font-size: 25px;
     padding: 16px;
 }
-.pos.mobile .paymentlines tbody{
+.pos.mobile .paymentlines tbody {
     border-radius: 6px;
 }
-.pos.mobile .paymentline{
+.pos.mobile .paymentline {
     font-size: 35px;
 }
 .pos.mobile .paymentline.selected {
@@ -842,11 +844,11 @@
 }
 .pos.mobile .paymentline.selected .edit {
     outline: 1px blue;
-    box-shadow: 0px 0px 0px 1px #6EC89B;
+    box-shadow: 0px 0px 0px 1px #6ec89b;
     border-radius: 6px;
     color: #555555;
 }
-.pos.mobile .paymentline > *{
+.pos.mobile .paymentline > * {
     padding: 16px 24px;
 }
 .pos.mobile .paymentline .col-due,
@@ -866,26 +868,26 @@
     width: 100%;
     display: block;
 }
-.pos.mobile .payment-screen .left-content{
+.pos.mobile .payment-screen .left-content {
     width: 100%;
     display: block;
     position: relative;
     max-height: 375px;
 }
-.pos.mobile .payment-screen .left-content.pc40{
+.pos.mobile .payment-screen .left-content.pc40 {
     right: initial;
-    border-bottom: dashed 2px rgb(175,175,175);
+    border-bottom: dashed 2px rgb(175, 175, 175);
 }
-.pos.mobile .payment-screen .right-content{
+.pos.mobile .payment-screen .right-content {
     width: 100%;
     display: block;
     position: relative;
 }
-.pos.mobile .payment-screen .right-content.pc60{
+.pos.mobile .payment-screen .right-content.pc60 {
     left: initial;
     height: calc(100% - 128px);
 }
-.pos.mobile .payment-screen .payment-buttons{
+.pos.mobile .payment-screen .payment-buttons {
     padding: 0px;
     display: block;
     max-width: 380px;
@@ -934,7 +936,7 @@
     line-height: 96px;
     margin-top: -50px;
     border-radius: 52px;
-    border: 2px solid rgba(0,0,0,0.2);
+    border: 2px solid rgba(0, 0, 0, 0.2);
     font-size: 40px;
 }
 .pos.mobile .payment-screen .paymentlines-empty .total {
@@ -946,10 +948,10 @@
     margin-bottom: 20px;
 }
 .pos.mobile .paymentmethods-container {
-    border-bottom: dashed 3px rgb(188,188,188);
+    border-bottom: dashed 3px rgb(188, 188, 188);
     max-height: 375px;
     width: 100%;
-    -webkit-overflow-scrolling: auto!important;
+    -webkit-overflow-scrolling: auto !important;
 }
 .pos.mobile .payment-screen .payment-numpad {
     max-width: calc(100% - 380px);
@@ -965,8 +967,8 @@
     padding-bottom: 0;
     padding-top: 0;
 }
-.pos.mobile .payment-screen .touch-scrollable{
-    overflow: hidden!important;
+.pos.mobile .payment-screen .touch-scrollable {
+    overflow: hidden !important;
 }
 /* c) The receipt screen */
 .pos.mobile .receipt-screen .centered-content .button {
@@ -988,44 +990,44 @@
     margin: 40px;
     padding: 30px;
     font-size: 28px;
-    padding-bottom:60px;
-    border: solid 2px rgb(220,220,220);
+    padding-bottom: 60px;
+    border: solid 2px rgb(220, 220, 220);
     border-radius: 6px;
 }
 /* d) The Scale screen */
-.pos.mobile .scale-screen .product-price{
+.pos.mobile .scale-screen .product-price {
     font-size: 50px;
     margin: 32px;
 }
-.pos.mobile .scale-screen .computed-price{
+.pos.mobile .scale-screen .computed-price {
     font-size: 50px;
     margin: 32px;
     padding: 32px;
     border-radius: 6px;
-    text-shadow: 0px 4px 0px rgb(210,210,210);
-    box-shadow: 0px 4px 0px rgb(225,225,225) inset;
+    text-shadow: 0px 4px 0px rgb(210, 210, 210);
+    box-shadow: 0px 4px 0px rgb(225, 225, 225) inset;
 }
-.pos.mobile .scale-screen .buy-product{
+.pos.mobile .scale-screen .buy-product {
     font-size: 64px;
     border-radius: 6px;
     padding: 32px;
     margin: 32px;
 }
-.pos.mobile .scale-screen .weight{
+.pos.mobile .scale-screen .weight {
     margin: 32px;
     padding: 40px;
     padding-right: 60px;
     font-size: 112px;
     border-radius: 6px;
     text-shadow: 0px 4px 0px rgb(210, 210, 210);
-    box-shadow: 0px 4px 0px rgb(225,225,225) inset;
+    box-shadow: 0px 4px 0px rgb(225, 225, 225) inset;
 }
 /* e) The Client List Screen */
-.pos.mobile .clientlist-screen .client-list{
+.pos.mobile .clientlist-screen .client-list {
     font-size: 30px;
     line-height: 50px;
 }
-.pos.mobile .clientlist-screen .top-content{
+.pos.mobile .clientlist-screen .top-content {
     text-align: left;
     margin-left: 15px;
     margin-right: 15px;
@@ -1039,7 +1041,8 @@ pos.mobile .clientlist-screen .top-content .button {
     position: relative;
     display: inline-block;
 }
-.pos.mobile .clientlist-screen .client-details-left, .pos.mobile .clientlist-screen .client-details-right {
+.pos.mobile .clientlist-screen .client-details-left,
+.pos.mobile .clientlist-screen .client-details-right {
     width: 100%;
     float: none;
 }
@@ -1047,15 +1050,15 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .clientlist-screen .client-list td {
     padding: 0px 16px;
 }
-.pos.mobile .clientlist-screen .client-details{
+.pos.mobile .clientlist-screen .client-details {
     padding: 32px;
-    border-bottom: solid 10px rgb(110,200,155);
+    border-bottom: solid 10px rgb(110, 200, 155);
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
     -o-transition: 0.5s;
     transition: 0.5s;
 }
-.pos.mobile .clientlist-screen .client-picture{
+.pos.mobile .clientlist-screen .client-picture {
     height: 128px;
     width: 128px;
     border-radius: 64px;
@@ -1072,29 +1075,28 @@ pos.mobile .clientlist-screen .top-content .button {
 .pos.mobile .clientlist-screen .client-name {
     font-size: 64px;
     line-height: 128px;
-    margin-bottom:32px;
+    margin-bottom: 32px;
 }
 .pos.mobile .clientlist-screen .edit-buttons {
     right: 32px;
     top: 0px;
 }
-.pos.mobile .clientlist-screen .edit-buttons .button{
+.pos.mobile .clientlist-screen .edit-buttons .button {
     margin-left: 32px;
     font-size: 72px;
 }
-.pos.mobile .clientlist-screen .client-details-box{
+.pos.mobile .clientlist-screen .client-details-box {
     font-size: 32px;
 }
-.pos.mobile .clientlist-screen .client-detail{
+.pos.mobile .clientlist-screen .client-detail {
     line-height: 48px;
 }
-.pos.mobile .clientlist-screen .client-detail > .label{
+.pos.mobile .clientlist-screen .client-detail > .label {
     width: 140px;
     margin-right: 16px;
 }
 .pos.mobile .clientlist-screen .client-details input,
-.pos.mobile .clientlist-screen .client-details select
-{
+.pos.mobile .clientlist-screen .client-details select {
     padding: 8px;
     border-radius: 6px;
     border: solid 2px #cecbcb;
@@ -1109,16 +1111,16 @@ pos.mobile .clientlist-screen .top-content .button {
     width: 680px;
     margin-top: 40px;
 }
-.pos.mobile .clientlist-screen .searchbox{
+.pos.mobile .clientlist-screen .searchbox {
     margin-left: 0px;
-    margin-top:0px;
+    margin-top: 0px;
     position: relative;
     display: inline-block;
     right: 0px;
     float: initial;
     left: 0;
 }
-.pos.mobile .clientlist-screen .searchbox input{
+.pos.mobile .clientlist-screen .searchbox input {
     width: 275px;
     margin: 20px;
     padding: 5px 20px;
@@ -1132,24 +1134,24 @@ pos.mobile .clientlist-screen .top-content .button {
     margin-left: 0px;
 }
 .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    border-bottom: 8px solid rgb(110,200,155) !important;
-    overflow: hidden!important;
+    border-bottom: 8px solid rgb(110, 200, 155) !important;
+    overflow: hidden !important;
 }
 .ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
-    overflow: hidden!important;
-    overflow-y: auto!important;
-    -webkit-overflow-scrolling: touch!important;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 .pos.mobile .clientlist-screen .button {
     display: inline-block;
     position: relative;
 }
- .pos.mobile .clientlist-screen .top-content .button.back {
+.pos.mobile .clientlist-screen .top-content .button.back {
     margin-left: 0;
     margin-right: 0;
 }
 /*  ********* The OrderWidget  ********* */
-.pos.mobile .order{
+.pos.mobile .order {
     padding-bottom: 16px;
     padding-top: 16px;
     font-size: 32px;
@@ -1171,34 +1173,34 @@ pos.mobile .clientlist-screen .top-content .button {
     font-weight: bold;
 }
 .pos.mobile .summary .label,
-.pos.mobile .summary .value{
+.pos.mobile .summary .value {
     display: inline-block;
     float: left;
 }
-.pos.mobile .summary .line{
-    margin-right:30px;
+.pos.mobile .summary .line {
+    margin-right: 30px;
     margin-left: 30px;
 }
 .pos.mobile .summary .total {
     text-align: center;
 }
-.pos.mobile .summary .line .subentry{
+.pos.mobile .summary .line .subentry {
     display: inline-block;
 }
-.pos.mobile .summary .line .subentry .value{
+.pos.mobile .summary .line .subentry .value {
     float: none;
 }
 /*If pos product category discount module is installed*/
-.pos.mobile .summary .line .discount{
+.pos.mobile .summary .line .discount {
     display: inline-block;
     float: right;
 }
-.pos.mobile .summary .line .discount .value{
+.pos.mobile .summary .line .discount .value {
     float: none;
 }
-.pos.mobile .summary .line .fiscal{
+.pos.mobile .summary .line .fiscal {
     display: inline-block;
-    margin-left:10px;
+    margin-left: 10px;
 }
 /*______________________________________________________*/
 .pos.mobile .submit-kitchen-button {
@@ -1206,44 +1208,44 @@ pos.mobile .clientlist-screen .top-content .button {
     margin: 0px 30px;
     border-radius: 6px;
 }
-.pos.mobile .order-scroller{
-    height:calc(100% - 72px);
+.pos.mobile .order-scroller {
+    height: calc(100% - 72px);
 }
 /*  ********* The OrderLineWidget  ********* */
-.pos.mobile .order .orderline{
-    padding-top:6px;
-    padding-bottom:20px;
-    padding-left:30px;
-    padding-right:30px;
+.pos.mobile .order .orderline {
+    padding-top: 6px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
-.pos.mobile .order .orderline .info-list{
-    margin-left:20px;
+.pos.mobile .order .orderline .info-list {
+    margin-left: 20px;
 }
 .pos.mobile .order .orderline .product-name,
 .pos.mobile .order .orderline .price {
-    color: #6EC89B;
+    color: #6ec89b;
 }
 /*  ********* SplitBill ********* */
 .pos.mobile .splitbill-screen .order-info {
-    margin-bottom:40px;
+    margin-bottom: 40px;
     padding: 40px 0px;
     font-size: 100px;
     text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
-    border-bottom: dashed 2px rgb(215,215,215);
+    border-bottom: dashed 2px rgb(215, 215, 215);
 }
 .pos.mobile .splitbill-screen .order {
-    padding-bottom:30px;
-    padding-top:30px;
-    margin-left:32px;
-    margin-right:32px;
-    margin-top:32px;
-    margin-bottom:32px;
-    font-size:32px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    font-size: 32px;
     border-radius: 6px;
-    border: solid 2px rgb(220,220,220);
+    border: solid 2px rgb(220, 220, 220);
     max-width: 1000px;
 }
-.pos.mobile .splitbill-screen .order .orderline.selected .info-list em{
+.pos.mobile .splitbill-screen .order .orderline.selected .info-list em {
     font-size: 48px;
 }
 .pos.mobile .paymentmethods {
@@ -1265,7 +1267,7 @@ pos.mobile .clientlist-screen .top-content .button {
     -webkit-flex-grow: 1;
     flex-grow: 1;
     width: 400px;
-    margin-left:30px;
+    margin-left: 30px;
     margin-right: 30px;
 }
 .pos.mobile .paymentmethods .button:first-child {
@@ -1277,56 +1279,56 @@ pos.mobile .clientlist-screen .top-content .button {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-.pos.mobile .splitbill-screen .left-content{
+.pos.mobile .splitbill-screen .left-content {
     border-right: 0px;
 }
 /*  ********* The ActionBarWidget  ********* */
 
-.pos.mobile .pos-actionbar{
+.pos.mobile .pos-actionbar {
     height: 210px;
     border-top: solid 2px #cecece;
 }
-.pos.mobile .pos-actionbar-button-list{
-    padding-left:6px;
-    padding-right:6px;
+.pos.mobile .pos-actionbar-button-list {
+    padding-left: 6px;
+    padding-right: 6px;
 }
-.pos.mobile .pos-actionbar .button{
+.pos.mobile .pos-actionbar .button {
     width: 180px;
     height: 180px;
-    margin:6px;
-    margin-top:12px;
+    margin: 6px;
+    margin-top: 12px;
     font-size: 28px;
     border: 2px solid #cacaca;
     border-radius: 6px;
 }
-.pos.mobile .pos-actionbar .button .label{
+.pos.mobile .pos-actionbar .button .label {
     margin-top: 74px;
 }
-.pos.mobile .pos-actionbar .button .icon{
+.pos.mobile .pos-actionbar .button .icon {
     margin-top: 20px;
 }
-.pos.mobile .pos-actionbar .button:active{
+.pos.mobile .pos-actionbar .button:active {
     border: 1px solid #7f82ac;
 }
-.pos.mobile .pos-actionbar .button.disabled:active{
+.pos.mobile .pos-actionbar .button.disabled:active {
     border: 2px solid #cacaca;
 }
 /*  ********* The PopupWidgets  ********* */
 
-.pos.mobile .modal-dialog .popup{
+.pos.mobile .modal-dialog .popup {
     max-width: 1000px;
-    width:100%;
+    width: 100%;
     max-height: 1000px;
     height: 800px;
-    font-size:40px;
+    font-size: 40px;
     border-radius: 6px;
-    box-shadow: 0px 20px 40px rgba(0,0,0,0.4);
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
     font-weight: inherit;
 }
 .pos.mobile .popup .title {
     padding: 40px;
     border-radius: 6px 6px 0px 0px;
-    border-bottom: solid 2px rgba(60,60,60,0.1);
+    border-bottom: solid 2px rgba(60, 60, 60, 0.1);
     background: white;
 }
 .pos.mobile .popup .body {
@@ -1338,18 +1340,18 @@ pos.mobile .clientlist-screen .top-content .button {
     height: 476px;
     font-size: 28px;
 }
-.pos.mobile .popup .footer{
-    height:120px;
-    border-top: solid 2px rgba(60,60,60,0.1);
+.pos.mobile .popup .footer {
+    height: 120px;
+    border-top: solid 2px rgba(60, 60, 60, 0.1);
     background: white;
 }
-.pos.mobile .popup .button{
+.pos.mobile .popup .button {
     width: 220px;
     height: 80px;
-    line-height:80px;
-    margin-top:20px;
-    margin-right:20px;
-    font-size:   28px;
+    line-height: 80px;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 28px;
     border-radius: 15px;
     box-shadow: 0px 9px 20px -14px black;
     background: #ededed;
@@ -1360,22 +1362,22 @@ pos.mobile .clientlist-screen .top-content .button {
     width: 80px;
     font-size: 40px;
 }
-.pos.mobile .popup .button:active{
+.pos.mobile .popup .button:active {
     border: 2px solid black;
 }
-.pos.mobile .popup .button.big-left{
+.pos.mobile .popup .button.big-left {
     top: 240px;
-    left:80px;
+    left: 80px;
     width: 360px;
     height: 360px;
-    line-height:360px;
+    line-height: 360px;
 }
-.pos.mobile .popup .button.big-right{
+.pos.mobile .popup .button.big-right {
     top: 240px;
-    right:80px;
+    right: 80px;
     width: 360px;
     height: 360px;
-    line-height:360px;
+    line-height: 360px;
 }
 .pos.mobile .popup input,
 .pos.mobile .popup-input {
@@ -1383,9 +1385,9 @@ pos.mobile .clientlist-screen .top-content .button {
     font-size: 40px;
     padding: 20px;
     border-radius: 6px;
-    box-shadow: 0px 0px 0px 2px rgb(220,220,220) inset;
+    box-shadow: 0px 0px 0px 2px rgb(220, 220, 220) inset;
 }
-.pos.mobile .popup .packlot-lines{
+.pos.mobile .popup .packlot-lines {
     height: 500px;
     margin: 20px;
 }
@@ -1394,17 +1396,17 @@ pos.mobile .clientlist-screen .top-content .button {
 }
 .pos.mobile .popup input:focus,
 .pos.mobile .popup-input.active {
-    box-shadow: 0px 0px 0px 6px #6EC89B;
+    box-shadow: 0px 0px 0px 6px #6ec89b;
 }
 .pos.mobile .popup.popup-error {
-    box-shadow: 0px 20px 40px rgba(92,51,51,0.4);
+    box-shadow: 0px 20px 40px rgba(92, 51, 51, 0.4);
 }
 .pos.mobile .popup.popup-selection .selection {
     max-height: 546px;
     font-size: 32px;
     line-height: 100px;
     margin-top: -2px;
-    border-top: solid 6px #6EC89B;
+    border-top: solid 6px #6ec89b;
 }
 .pos.mobile .popup.popup-selection .selection-item {
     padding: 0px 32px;
@@ -1430,8 +1432,7 @@ pos.mobile .clientlist-screen .top-content .button {
     width: 508px;
 }
 .pos.mobile .popup-number .title,
-.pos.mobile .popup-textinput .title
-{
+.pos.mobile .popup-textinput .title {
     margin-bottom: 40px;
 }
 .pos.mobile .popup-numpad .input-button,
@@ -1460,37 +1461,38 @@ pos.mobile .clientlist-screen .top-content .button {
     bottom: 0.4em;
 }
 /*  ********* The Webkit Scrollbar  ********* */
-.pos.mobile *::-webkit-scrollbar{
-    width:  16px;
+.pos.mobile *::-webkit-scrollbar {
+    width: 16px;
     height: 16px;
 }
-.pos.mobile *::-webkit-scrollbar-track{
-    border-left: solid 4px rgb(200,200,200);
+.pos.mobile *::-webkit-scrollbar-track {
+    border-left: solid 4px rgb(200, 200, 200);
 }
-.pos.mobile *::-webkit-scrollbar-thumb{
+.pos.mobile *::-webkit-scrollbar-thumb {
     min-height: 60px;
 }
-.pos.mobile.big-scrollbars *::-webkit-scrollbar{
-    width:  40px;
+.pos.mobile.big-scrollbars *::-webkit-scrollbar {
+    width: 40px;
     height: 40px;
 }
-.pos.mobile.big-scrollbars *::-webkit-scrollbar-thumb{
+.pos.mobile.big-scrollbars *::-webkit-scrollbar-thumb {
     min-height: 40px;
     border-radius: 6px;
 }
-.pos.mobile.big-scrollbars *::-webkit-scrollbar-button{
-    width:  40px;
+.pos.mobile.big-scrollbars *::-webkit-scrollbar-button {
+    width: 40px;
     height: 40px;
     border-radius: 6px;
 }
 /*  ********* Unsupported Browser Page ********* */
-.pos.mobile .not-supported-browser .message{
-    width:1200px;
+.pos.mobile .not-supported-browser .message {
+    width: 1200px;
     margin-top: 200px;
     font-size: 28px;
 }
 /*  ********* Styles for pos with swiper ********* */
-.pos.mobile .mobile-order-container, .pos.mobile .swiper-container-order {
+.pos.mobile .mobile-order-container,
+.pos.mobile .swiper-container-order {
     height: 100%;
 }
 .pos.mobile .order-selector {
@@ -1499,7 +1501,7 @@ pos.mobile .clientlist-screen .top-content .button {
     max-width: 674px;
     white-space: nowrap;
 }
-.pos.mobile .orders.touch-scrollable{
+.pos.mobile .orders.touch-scrollable {
     display: inline-block;
     float: left;
 }
@@ -1521,7 +1523,8 @@ pos.mobile .clientlist-screen .top-content .button {
     width: 100%;
     height: 100%;
 }
-.pos.mobile .slide-numpad-button .minus-square, .pos.mobile .slide-categories-button .category-close-menu {
+.pos.mobile .slide-numpad-button .minus-square,
+.pos.mobile .slide-categories-button .category-close-menu {
     display: none;
 }
 .pos.mobile .slide-numpad-button img,
@@ -1538,7 +1541,7 @@ pos.mobile .clientlist-screen .top-content .button {
     background: white;
     border-bottom: 6px solid white;
 }
-.pos.mobile .rightpane-header .slide-order-button{
+.pos.mobile .rightpane-header .slide-order-button {
     margin-left: 30px;
 }
 .pos.mobile .breadcrumbs {
@@ -1562,15 +1565,15 @@ pos.mobile .clientlist-screen .top-content .button {
     border-bottom: 2px solid #e8e8e8;
 }
 .pos.mobile .mobile-search-bar-menu {
-    max-height:650px;
+    max-height: 650px;
     height: 100%;
 }
 .pos.mobile .slide-buttons {
     background: white;
 }
 /* New size for order-and-products blocks */
-.pos.mobile .swipe-is-open .order-and-products{
-    height: calc(100% - 654px)!important;
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 654px) !important;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
     -o-transition: 0.3s;
@@ -1593,5 +1596,5 @@ pos.mobile .clientlist-screen .top-content .button {
     display: block;
 }
 .pos.mobile .disable {
-    box-shadow: 0px 0px 0px 0px transparent!important;
+    box-shadow: 0px 0px 0px 0px transparent !important;
 }
