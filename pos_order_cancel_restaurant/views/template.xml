@@ -18,7 +18,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_order_cancel_restaurant demo assets"

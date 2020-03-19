@@ -1,50 +1,38 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <template
+    <template
         id="pos_assets"
         name="pos_mobile assets"
         inherit_id="point_of_sale.assets"
     >
-            <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/pos_mobile/static/src/css/swiper.css" />
-                <link
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/pos_mobile/static/src/css/swiper.css" />
+            <link
                 rel="stylesheet"
                 href="/pos_mobile/static/src/css/pos_mobile_styles.css"
             />
-                <script type="text/javascript" src="/pos_mobile/static/lib/swiper.js" />
-                <script
+            <script type="text/javascript" src="/pos_mobile/static/lib/swiper.js" />
+            <script
                 type="text/javascript"
                 src="/pos_mobile/static/lib/jquery.nicescroll.js"
             />
-                <script
-                type="text/javascript"
-                src="/pos_mobile/static/src/js/mobile.js"
-            />
-                <script
-                type="text/javascript"
-                src="/pos_mobile/static/src/js/models.js"
-            />
-                <script type="text/javascript" src="/pos_mobile/static/src/js/gui.js" />
-                <script
-                type="text/javascript"
-                src="/pos_mobile/static/src/js/screens.js"
-            />
-                <script
-                type="text/javascript"
-                src="/pos_mobile/static/src/js/chrome.js"
-            />
-            </xpath>
-        </template>
-        <template
+            <script type="text/javascript" src="/pos_mobile/static/src/js/mobile.js" />
+            <script type="text/javascript" src="/pos_mobile/static/src/js/models.js" />
+            <script type="text/javascript" src="/pos_mobile/static/src/js/gui.js" />
+            <script type="text/javascript" src="/pos_mobile/static/src/js/screens.js" />
+            <script type="text/javascript" src="/pos_mobile/static/src/js/chrome.js" />
+        </xpath>
+    </template>
+    <template
         id="assets_backend"
         name="pos_mobile assets"
         inherit_id="web.assets_backend"
     >
-            <xpath
+        <xpath
             expr="//script[@src='/web/static/src/js/services/session.js']"
             position="before"
         >
-                <script type="text/javascript" charset="utf-8">
+            <script type="text/javascript" charset="utf-8">
 <![CDATA[
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -85,12 +73,9 @@ if (!odoo.is_mobile){
 }
 ]]>
                 </script>
-            </xpath>
-            <xpath expr="." position="inside">
-                <script
-                type="text/javascript"
-                src="/pos_mobile/static/src/js/tour.js"
-            />
-            </xpath>
-        </template>
+        </xpath>
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_mobile/static/src/js/tour.js" />
+        </xpath>
+    </template>
 </odoo>

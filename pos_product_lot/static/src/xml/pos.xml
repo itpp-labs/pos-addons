@@ -11,9 +11,10 @@
         <t t-jquery="span.price" t-operation="after">
             <t t-set='qty_available' t-value='line.get_product().qty_available' />
             <t t-if="qty_available lt line.quantity and line.get_product().lot_id">
-                <div><button class="unpack-lot">Unpack corresponding lot</button></div>
+                <div>
+                    <button class="unpack-lot">Unpack corresponding lot</button>
+                </div>
             </t>
         </t>
     </t>
-
 </templates>

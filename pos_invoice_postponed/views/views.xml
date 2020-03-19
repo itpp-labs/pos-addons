@@ -15,7 +15,6 @@
             </xpath>
         </field>
     </record>
-
     <record model="ir.ui.view" id="view_pos_pos_form">
         <field name="name">pos.order.form.view.inherit</field>
         <field name="model">pos.order</field>

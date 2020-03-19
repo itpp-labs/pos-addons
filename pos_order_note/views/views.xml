@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-        <record id="view_template_property_form" model="ir.ui.view">
-            <field name="name">product.template.common.form.inherit</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_form_view" />
-            <field name="arch" type="xml">
-                <field name="description_sale" position="after">
+    <record id="view_template_property_form" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <field name="description_sale" position="after">
                 <separator string="Notes for POS" colspan="4" />
                 <field
                     name="pos_notes"
@@ -13,51 +13,48 @@
                     nolabel="1"
                     placeholder="This note will be displayed on the POS."
                 />
-                </field>
             </field>
-        </record>
-
-        <record id="pos_product_notes_form_view" model="ir.ui.view">
-            <field name="name">pos.product_notes.form</field>
-            <field name="model">pos.product_notes</field>
-            <field name="arch" type="xml">
-                <form string="POS Product Notes">
-                    <sheet>
-                        <group>
-                            <field name="name" required="1" />
-                            <field name="pos_category_ids" />
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-        <record id="pos_product_notes_tree_view" model="ir.ui.view">
-            <field name="name">pos.product_notes.tree</field>
-            <field name="model">pos.product_notes</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="sequence" widget="handle" />
-                    <field name="name" />
-                    <field name="pos_category_ids" widget="many2many_tags" />
-                </tree>
-            </field>
-        </record>
-
-        <record id="pos_product_notes_action" model="ir.actions.act_window">
-            <field name="name">POS Product Notes</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">pos.product_notes</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" eval="False" />
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
+        </field>
+    </record>
+    <record id="pos_product_notes_form_view" model="ir.ui.view">
+        <field name="name">pos.product_notes.form</field>
+        <field name="model">pos.product_notes</field>
+        <field name="arch" type="xml">
+            <form string="POS Product Notes">
+                <sheet>
+                    <group>
+                        <field name="name" required="1" />
+                        <field name="pos_category_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pos_product_notes_tree_view" model="ir.ui.view">
+        <field name="name">pos.product_notes.tree</field>
+        <field name="model">pos.product_notes</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="pos_category_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+    <record id="pos_product_notes_action" model="ir.actions.act_window">
+        <field name="name">POS Product Notes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.product_notes</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
                     Click to define a new notes.
                 </p>
-            </field>
-        </record>
-        <menuitem
+        </field>
+    </record>
+    <menuitem
         id="menu_pos_product_notes"
         action="pos_product_notes_action"
         parent="point_of_sale.menu_point_config_product"

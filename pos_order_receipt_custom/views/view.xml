@@ -16,7 +16,6 @@
             </xpath>
         </field>
     </record>
-
     <record model="ir.ui.view" id="pos_config_view_form_inherit_restaurant">
         <field name="name">to.pos.config.inherit.form</field>
         <field name="model">pos.config</field>
@@ -26,23 +25,20 @@
         />
         <field name="priority" eval="99" />
         <field name="arch" type="xml">
-                <xpath expr="//field[@name='printer_ids']/../.." position="after">
-                    <div
+            <xpath expr="//field[@name='printer_ids']/../.." position="after">
+                <div
                     class="content-group"
                     attrs="{'invisible': [('is_order_printer', '=', False)]}"
                 >
-                        <div
-                        class="mt16"
-                        attrs="{'invisible':[('printer_ids', '=', [])]}"
-                    >
-                            <label
+                    <div class="mt16" attrs="{'invisible':[('printer_ids', '=', [])]}">
+                        <label
                             for="print_transfer_info_in_kitchen"
                             class="o_light_label"
                         />
-                            <field name="print_transfer_info_in_kitchen" />
-                        </div>
+                        <field name="print_transfer_info_in_kitchen" />
                     </div>
-                </xpath>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

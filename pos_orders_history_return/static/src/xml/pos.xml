@@ -2,7 +2,6 @@
 <!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
      License MIT (https://opensource.org/licenses/MIT). -->
 <templates id="template" xml:space="preserve">
-
     <t t-extend="OrderHistory">
         <t t-jquery=".actions.oe_hidden" t-operation="append">
             <t t-if="!order.returned_order">
@@ -10,13 +9,11 @@
             </t>
         </t>
     </t>
-
     <t t-extend="OrdersHistoryScreenWidget">
         <t t-jquery=".button.back" t-operation="after">
             <span class="button return-no-receipt">No Receipt</span>
         </t>
     </t>
-
     <t t-extend="ProductCategoriesWidget">
         <t t-jquery=".breadcrumbs" t-operation="append">
             <t t-set="order" t-value="widget.pos.get_order()" />
@@ -47,7 +44,6 @@
             </t>
         </t>
     </t>
-
     <t t-extend="Product">
         <t
             t-jquery="t[t-if='!product.to_weight'] t[t-esc*='widget.format_currency']"
@@ -76,5 +72,4 @@
             </t>
         </t>
     </t>
-
 </templates>

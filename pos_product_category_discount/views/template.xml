@@ -20,7 +20,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_disable_payment demo assets"

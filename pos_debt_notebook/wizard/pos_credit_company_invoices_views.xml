@@ -42,7 +42,6 @@
             </form>
         </field>
     </record>
-
     <record id="action_pos_credit_invoices_company" model="ir.actions.act_window">
         <field name="name">Generate POS Credits Invoices</field>
         <field name="res_model">pos.credit.invoices.company</field>
@@ -51,8 +50,6 @@
         <field name="target">new</field>
         <field name="context">{}</field>
     </record>
-
-
     <menuitem
         id="menu_pos_credit_invoices_company"
         name="Pay for company's employees"
