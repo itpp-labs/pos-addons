@@ -18,7 +18,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_receipt_custom_template demo assets"

@@ -3,11 +3,12 @@
     Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
     License MIT (https://opensource.org/licenses/MIT).-->
 <templates id="template" xml:space="preserve">
-
     <t t-name="ConfirmCancellationPopupWidget">
         <div class="modal-dialog">
             <div class="popup popup-confirm-cancellation">
-                <p class="title"><t t-esc=" widget.options.title || '' " /></p>
+                <p class="title">
+                    <t t-esc=" widget.options.title || '' " />
+                </p>
                 <t t-if="widget.pos.config.allow_custom_reason">
                     <textarea rows="1" cols="44" placeholder="Reason" />
                 </t>
@@ -26,16 +27,22 @@
                                 <span class="reason-row">
                                     <t t-foreach="buttons" t-as="button">
                                         <t t-if="!button.other">
-                                            <li class="reason-col"><div
+                                            <li class="reason-col">
+                                                <div
                                                     t-attf-data-id="{{button.id}}"
                                                     class="reason-button"
-                                                ><t t-esc="button.name" /></div></li>
+                                                >
+                                                    <t t-esc="button.name" />
+                                                </div>
+                                            </li>
                                         </t>
                                         <t t-if="button.other">
-                                            <li class="reason-col other"><div
+                                            <li class="reason-col other">
+                                                <div
                                                     data-id="other"
                                                     class="reason-button other-reason"
-                                                >Other</div></li>
+                                                >Other</div>
+                                            </li>
                                         </t>
                                     </t>
                                 </span>
@@ -45,13 +52,13 @@
                     </ul>
                 </div>
                 <div class="footer centered">
-                <t
+                    <t
                         t-if="widget.pos.config.allow_custom_reason || widget.pos.config.allow_cancel_deletion"
                     >
-                    <div class="button cancel">
+                        <div class="button cancel">
                         Cancel
                     </div>
-                </t>
+                    </t>
                     <div class="button confirm">
                         Ok
                     </div>
@@ -59,13 +66,13 @@
             </div>
         </div>
     </t>
-
     <t t-name="CancellationReason">
         <tr class='reason-line' t-attf-data-id='{{reason.id}}'>
-            <td><t t-esc='reason.name' /></td>
+            <td>
+                <t t-esc='reason.name' />
+            </td>
         </tr>
     </t>
-
     <t t-name="ReasonCancellationScreenWidget">
         <div class="reasonlist-screen screen">
             <div class="screen-content">
@@ -107,7 +114,6 @@
             </div>
         </div>
     </t>
-
     <t t-extend="Orderline">
         <t t-jquery="ul[class='info-list']" t-operation="append">
             <t t-if="line.cancelled_line and widget.pos.config.show_cancel_info">
@@ -119,5 +125,4 @@
             </t>
         </t>
     </t>
-
 </templates>

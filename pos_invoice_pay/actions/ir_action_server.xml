@@ -11,7 +11,6 @@
             <field name="state">code</field>
             <field name="code">object.action_updated_invoice()</field>
         </record>
-
         <record id="action_update_pos_sale_orders" model="ir.actions.server">
             <field name="name">Update pos sale_order</field>
             <field name="model_id" ref="sale.model_sale_order" />
@@ -20,7 +19,5 @@
             <field name="state">code</field>
             <field name="code">object.action_updated_sale_order()</field>
         </record>
-
-
     </data>
 </openerp>

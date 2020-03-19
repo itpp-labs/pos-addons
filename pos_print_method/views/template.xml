@@ -13,7 +13,6 @@
                 />
             </xpath>
         </template>
-
         <template
             id="demo_assets_backend"
             name="pos_print_method demo assets"
