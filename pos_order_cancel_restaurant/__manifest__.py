@@ -1,5 +1,5 @@
 {
-    "name": """Analyzing of refunds in Restaurant""",
+    "name": """POS: Refunds analysis""",
     "summary": """Waiter specifies refund reason to avoid serving mistakes in future.""",
     "category": "Point of Sale",
     "images": ["images/pos_order_cancel_restaurant.png"],

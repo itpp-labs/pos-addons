@@ -3,7 +3,7 @@
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": "Find item by ref in POS",
+    "name": "POS: Scan & search by ref",
     "summary": """Adds the ability to searching product by ref in POS""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",

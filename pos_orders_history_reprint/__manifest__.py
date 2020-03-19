@@ -3,7 +3,7 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Reprint POS Orders Receipt""",
+    "name": """POS: Reprint orders""",
     "summary": """Reprint receipts of paid POS orders""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-orders-reprint?version=12.0",

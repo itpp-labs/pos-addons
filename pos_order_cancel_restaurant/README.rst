@@ -1,6 +1,6 @@
-====================================
- Analyzing of refunds in Restaurant
-====================================
+=======================
+ POS: Refunds analysis
+=======================
 
 The module extends ``pos_order_cancel`` for restaurant environment:
 

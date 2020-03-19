@@ -1,7 +1,7 @@
 # Copyright 2014 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Discount for total amount of pos order""",
+    "name": """POS: Total discount""",
     "summary": """Simple way to apply discount for all order items""",
     "category": "Point of Sale",
     "images": [],

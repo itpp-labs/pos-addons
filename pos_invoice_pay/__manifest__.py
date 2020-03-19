@@ -2,7 +2,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Pay Sale Orders & Invoices over POS""",
+    "name": """POS: Pay SO & Invoices""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=12.0",

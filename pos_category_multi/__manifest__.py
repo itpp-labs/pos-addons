@@ -1,6 +1,6 @@
 # License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Multiple categories per product in POS""",
+    "name": """Multi categories in POS""",
     "summary": """Specify as many categories for a product as you need""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=12.0",

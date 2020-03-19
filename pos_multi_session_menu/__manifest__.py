@@ -1,5 +1,5 @@
 {
-    "name": """Product Sets for POS (multisession extension)""",
+    "name": """Product Sets [POS-MS]""",
     "summary": """Synchronize product sets across several POSes""",
     "category": "Point of Sale",
     "images": ["images/pos_multi_session_menu_main.jpg"],
