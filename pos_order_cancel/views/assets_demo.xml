@@ -2,7 +2,6 @@
 <!--Copyright 2017 gaelTorrecillas <https://github.com/gaelTorrecillas>
     License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
-
     <template
         id="demo_assets_backend"
         name="pos_disable_payment demo assets"
@@ -15,5 +14,4 @@
             />
         </xpath>
     </template>
-
 </odoo>

@@ -14,7 +14,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="assets_backend_web"
         name="pos_partner_deselection_assets_backend"

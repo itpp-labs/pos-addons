@@ -25,9 +25,10 @@
                 <t t-set='qty_available' t-value='line.get_product().qty_available' />
                 (of <span
                     t-attf-class="qty-info #{qty_available lt line.quantity ? 'not-available':''}"
-                ><t t-esc="line.get_product().rounded_qty()" /></span>)
+                >
+                    <t t-esc="line.get_product().rounded_qty()" />
+                </span>)
             </t>
         </t>
     </t>
-
 </templates>

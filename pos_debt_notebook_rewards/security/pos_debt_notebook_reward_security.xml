@@ -7,7 +7,6 @@
         <field name="description">Helps you reward the partner for attendances.</field>
         <field name="sequence">16</field>
     </record>
-
     <record id="group_reward_user" model="res.groups">
         <field name="name">Read-Only</field>
         <field name="category_id" ref="module_category_attendance" />
@@ -19,7 +18,6 @@
             name="comment"
         >The user will gain access to see the attendance rewards menu.</field>
     </record>
-
     <record id="group_reward_officer" model="res.groups">
         <field name="name">Officer</field>
         <field name="category_id" ref="module_category_attendance" />
@@ -28,16 +26,13 @@
             eval="[(4, ref('pos_debt_notebook.group_pos_credit_update_manager')),(4, ref('group_reward_user'))]"
         />
     </record>
-
     <record id="group_reward_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="module_category_attendance" />
         <field name="implied_ids" eval="[(4, ref('group_reward_officer'))]" />
         <field name="users" eval="[(4, ref('base.user_root'))]" />
     </record>
-
     <record id="base.default_user" model="res.users">
         <field name="groups_id" eval="[(4,ref('group_reward_manager'))]" />
     </record>
-
 </odoo>
