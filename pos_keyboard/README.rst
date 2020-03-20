@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-===================================
- Keyboard support in Point Of Sale
-===================================
+==============
+ POS Keyboard
+==============
 
 The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale.
 
