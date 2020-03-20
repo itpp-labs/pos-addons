@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Discount for total amount of pos order",
+    "name": "POS: Total discount",
     "version": "10.0.1.0.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "Other OSI approved licence",  # MIT
