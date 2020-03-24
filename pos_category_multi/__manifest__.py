@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """Multiple categories per product in POS""",
+    "name": """Multi categories in POS""",
     "summary": """Specify as many categories for a product as you need""",
     "category": "Point of Sale",
     "images": [],
