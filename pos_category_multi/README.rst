@@ -2,9 +2,9 @@
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
 
-========================================
- Multiple categories per product in POS
-========================================
+=========================
+ Multi categories in POS
+=========================
 
 This module deactivate POS Categories field with many2one type and create new Categories field with many2many type which will be used instead.
 

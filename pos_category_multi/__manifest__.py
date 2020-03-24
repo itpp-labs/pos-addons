@@ -1,5 +1,5 @@
 {
-    "name": """Multiple categories per product in POS""",
+    "name": """Multi categories in POS""",
     "summary": """Specify as many categories for a product as you need""",
     "category": "Point of Sale",
     "version": "11.0.1.0.1",

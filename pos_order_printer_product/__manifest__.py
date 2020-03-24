@@ -1,5 +1,5 @@
 {
-    "name": """Print certain products on Order Printers""",
+    "name": """POS: Selective print""",
     "summary": """Specify certain products to be allowed to print on order printers""",
     "category": "Point of Sale",
     # "live_test_URL": "",
