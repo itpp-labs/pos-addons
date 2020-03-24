@@ -42,7 +42,8 @@ jobs:
         run: |
           REF=${GITHUB_BASE_REF:-${GITHUB_REF}}
           BRANCH=${REF##*/}
-          if ! $( echo "$BRANCH" | grep -E "^(master|[0-9]+\.[0-9]+)(-dev-.+)?$" )
+          CHECK=$( echo "$BRANCH" | grep -E "^(master|[0-9]+\.[0-9]+)(-dev-.+)?$" || true)
+          if [ -z "$CHECK" ]
           then
               echo "This branch is not supposed to be a target of pull requests, so docker image is not needed."
               echo "For information check https://github.com/itpp-labs/DINAR/issues/60"
