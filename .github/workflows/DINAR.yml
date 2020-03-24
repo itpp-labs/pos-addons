@@ -60,6 +60,11 @@ jobs:
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN }}
 
+          cat <<- EOF > REPO/.DINAR/image/.netrc
+          machine github.com
+          login $GITHUB_ACTOR
+          password ${{ secrets.DINAR_TOKEN }}
+          EOF
       - name: dinar-odoo-base
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
