@@ -34,10 +34,26 @@ jobs:
               echo "DINAR_TOKEN is not set"
               exit 1
           fi
+
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that this branch needs docker images
+        run: |
+          REF=${GITHUB_BASE_REF:-${GITHUB_REF}}
+          BRANCH=${REF##*/}
+          if ! $( echo "$BRANCH" | grep -E "^(master|[0-9]+\.[0-9]+)(-dev-.+)?$" )
+          then
+              echo "This branch is not supposed to be a target of pull requests, so docker image is not needed."
+              echo "For information check https://github.com/itpp-labs/DINAR/issues/60"
+              exit 1
+          fi
+
   rebuild-images:
     runs-on: ubuntu-latest
     needs:
       - check-secret
+      - check-branch
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -74,7 +90,7 @@ jobs:
           CLEAN: false
           COMPILE: false
         with:
-          name: ${{ env.IMAGE_ODOO_BASE }}
+          name: ${{ env.IMAGE_ODOO }}-base
           registry: ${{ env.REGISTRY }}
           username: ${{ env.REGISTRY_USERNAME }}
           password: ${{ env.REGISTRY_PASSWORD }}
