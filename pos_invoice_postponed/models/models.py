@@ -72,7 +72,7 @@ class PosOrder(models.Model):
 
         if postponed_payments:
             res.sudo().write(
-                {"state": "invoiced", "invoice_id": invoice.id, "postponed": True}
+                {"invoice_id": invoice.id, "postponed": True}
             )
             invoice._onchange_partner_id()
             invoice.fiscal_position_id = res.fiscal_position_id
@@ -102,6 +102,13 @@ class PosOrder(models.Model):
             ):
                 return False
         return True
+
+    @api.multi
+    def action_pos_order_paid(self):
+        res = super(PosOrder, self).action_pos_order_paid()
+        if self.postponed:
+            self.write({'state': 'invoiced'})
+        return res
 
 
 class AccountJournal(models.Model):
