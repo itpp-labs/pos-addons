@@ -154,17 +154,30 @@ jobs:
           mkdir new-deps/
           # create dummy file to be sure that Artifact will be uploaded
           echo ok > new-deps/.empty
+          echo "::set-env name=ARTIFACT::empty"
       - name: Prepare DINAR with additional dependencies
         if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         run: |
           # Save artifacts for local run and for integrations Tests
           bash DINAR/workflow-files/save-docker-layers.sh new-deps/
           echo "${{ env.PR_MODULES_DEPS }}" > new-deps/modules.txt
+          echo "::set-env name=ARTIFACT::yes"
       - name: Save DINAR with dependencies
         uses: actions/upload-artifact@v1
         with:
           name: new-deps
           path: new-deps/
+      - name: HOW TO RUN QUICK TESTS LOCALLY
+        if: always()
+        run: |
+          export MODULES=${{ env.PR_MODULES }}
+          export LOAD_MODULES=${{ env.PR_MODULES_LOAD }}
+          export PR_NUM=${{ github.event.number }}
+          export VERSION=${{ github.event.pull_request.base.ref }}
+          export REVISION_PR=${{ github.event.pull_request.head.sha}}
+          export DINAR_REPO="itpp-labs/DINAR-fork"
+          export ODOO_EXTRA_ARG=--test-enable
+          bash DINAR/workflow-files/how-to-run-locally.sh ${{ secrets.GITHUB_TOKEN }}
       - name: Test updated modules
         if: env.PR_MODULES != ''
         run: |
@@ -221,7 +234,6 @@ jobs:
           sudo apt-get install jq
       - name: HOW TO RUN TESTS LOCALLY
         if: always()
-        # TODO make similar for Quick Tests
         run: |
           export MODULES=${{ env.ALL_MODULES }}
           export LOAD_MODULES=${{ env.ALL_MODULES_LOAD }}
