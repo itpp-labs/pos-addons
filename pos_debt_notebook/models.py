@@ -14,7 +14,7 @@ from datetime import datetime
 import pytz
 from pytz import timezone
 
-from odoo import SUPERUSER_ID, api, fields, models
+from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_is_zero
 
 import odoo.addons.decimal_precision as dp
@@ -547,12 +547,16 @@ class AccountJournal(models.Model):
         if self.credits_via_discount is True:
             self.pos_cash_out = False
 
-    @api.onchange('debt')
+    @api.onchange("debt")
     def _onchange_debt(self):
         origin = self._origin
         if (not self.debt) and origin.debt:
-            raise ValidationError(_('Some Customers may have debts/credits in this journal.\n '
-                                    'Be sure that it will not harm'))
+            raise ValidationError(
+                _(
+                    "Some Customers may have debts/credits in this journal.\n "
+                    "Be sure that it will not harm"
+                )
+            )
 
 
 class PosConfiguration(models.TransientModel):
@@ -789,12 +793,14 @@ class PosCreditUpdate(models.Model):
         help="Change of balance. Positive value for purchases without money (debt). Negative for credit payments (prepament or payments for debts).",
     )
 
-    @api.constrains('journal_id')
+    @api.constrains("journal_id")
     def _check_journal_id(self):
         for obj in self:
             # user may not have access to the journal model
             if not obj.sudo().journal_id.debt:
-                raise ValidationError("Credit Updates may be created only for credit journals !")
+                raise ValidationError(
+                    _("Credit Updates may be created only for credit journals !")
+                )
         return True
 
     @api.multi
@@ -833,7 +839,7 @@ class PosCreditUpdate(models.Model):
         state = vals.get("state", self.state) or "draft"
         update_type = vals.get("update_type", self.update_type)
         if state == "draft" and update_type == "new_balance":
-            journal_id = self.journal_id.id or vals.get('journal_id', False)
+            journal_id = self.journal_id.id or vals.get("journal_id", False)
             data = partner._compute_partner_journal_debt(journal_id)
             credit_balance = data[partner.id].get("balance", 0)
             vals["balance"] = self.get_balance(credit_balance, new_balance)

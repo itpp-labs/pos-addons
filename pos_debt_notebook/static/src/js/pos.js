@@ -198,7 +198,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             _.each(_.values(debts), function(deb) {
                 var partner = self.db.get_partner_by_id(deb.partner_id);
                 if (!partner) {
-                    // may happen if the credit data update comes earlier than partner creation update
+                    // May happen if the credit data update comes earlier than partner creation update
                     return;
                 }
                 partner.debt = deb.debt;
