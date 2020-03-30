@@ -1,3 +1,8 @@
+`2.2.1`
+-------
+
+- **Fix:** Not working synchronization for rescued session
+
 `2.2.0`
 -------
 
