@@ -5,7 +5,9 @@
     <t t-name="CashierSelectionPopupWidget">
         <div class="modal-dialog cashier">
             <div class="popup popup-selection cashier">
-                <p class="title"><t t-esc=" widget.options.title || 'Select' " /></p>
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'Select' " />
+                </p>
                 <div class='selection scrollable-y touch-scrollable cashier'>
                     <div class="selection cashier">
                         <t t-foreach="widget.list || []" t-as="item">

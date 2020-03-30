@@ -32,9 +32,8 @@
                 <li class="info">
                     With a
                     <em>
-                        <t t-esc='line.pos.currency.symbol' /><t
-                            t-esc="line.get_absolute_discount_str()"
-                        />
+                        <t t-esc='line.pos.currency.symbol' />
+                        <t t-esc="line.get_absolute_discount_str()" />
                     </em>
                     discount
                     <t t-if="!widget.pos.config.include_discount_in_prices">
@@ -48,7 +47,6 @@
             </t>
         </t>
     </t>
-
     <t t-extend="PosTicket">
         <t t-jquery="t[t-if='orderline.get_discount() > 0']" t-operation="after">
             <t
@@ -82,7 +80,6 @@
             </t>
         </t>
     </t>
-
     <t t-extend="XmlReceipt">
         <t t-jquery="t[t-set='simple']" t-operation="replace">
             <t
@@ -95,11 +92,12 @@
             t-operation="after"
         >
             <t t-if='line.absolute_discount and line.absolute_discount !== 0'>
-                <line indent='1'><left>Discount per Unit: <t
-                            t-esc='pos.currency.symbol'
-                        /><t t-esc='line.absolute_discount' /></left></line>
+                <line indent='1'>
+                    <left>Discount per Unit: <t t-esc='pos.currency.symbol' /><t
+                            t-esc='line.absolute_discount'
+                        /></left>
+                </line>
             </t>
         </t>
     </t>
-
 </templates>

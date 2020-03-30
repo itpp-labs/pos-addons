@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": """POS Longpolling""",
-    "summary": """Technical module implement instant updates in POS""",
+    "name": """POS: Longpolling support""",
+    "summary": """Technical module to implement instant updates in POS""",
     "category": "Point of Sale",
     "images": [],
     "version": "10.0.2.2.1",

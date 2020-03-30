@@ -13,7 +13,7 @@
                 />
             </xpath>
             <xpath expr="//link[@id='pos-stylesheet']" position="after">
-              <link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css" />
+                <link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css" />
             </xpath>
         </template>
     </data>

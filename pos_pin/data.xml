@@ -4,7 +4,6 @@
      License MIT (https://opensource.org/licenses/MIT).-->
 <openerp>
     <data>
-
         <template id="assets" inherit_id="point_of_sale.assets">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/pos_pin/static/src/js/pos.js" />
@@ -22,6 +21,5 @@
                 />
             </xpath>
         </template>
-
     </data>
 </openerp>

@@ -24,8 +24,37 @@ on:
     - cron: "5 5 * * 0"
 
 jobs:
+  check-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that DINAR_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.DINAR_TOKEN }}" ]
+          then
+              echo "DINAR_TOKEN is not set"
+              exit 1
+          fi
+
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that this branch needs docker images
+        run: |
+          REF=${GITHUB_BASE_REF:-${GITHUB_REF}}
+          BRANCH=${REF##*/}
+          CHECK=$( echo "$BRANCH" | grep -E "^(master|[0-9]+\.[0-9]+)(-dev-.+)?$" || true)
+          if [ -z "$CHECK" ]
+          then
+              echo "This branch is not supposed to be a target of pull requests, so docker image is not needed."
+              echo "For information check https://github.com/itpp-labs/DINAR/issues/60"
+              exit 1
+          fi
+
   rebuild-images:
     runs-on: ubuntu-latest
+    needs:
+      - check-secret
+      - check-branch
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -48,7 +77,12 @@ jobs:
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN }}
 
-      - name: dinar-odoo-base
+          cat <<- EOF > REPO/.DINAR/image/.netrc
+          machine github.com
+          login $GITHUB_ACTOR
+          password ${{ secrets.DINAR_TOKEN }}
+          EOF
+      - name: Build ${{ env.IMAGE_ODOO_BASE }}
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           LOCAL_CUSTOM_DIR: ./image
@@ -63,7 +97,6 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           buildargs: ODOO_VERSION,AGGREGATE,PIP_INSTALL_ODOO,CLEAN,COMPILE,LOCAL_CUSTOM_DIR
           workdir: REPO/.DINAR/
-          cache: ${{ github.event_name != 'schedule' }}
       - name: Install python tools
         run: |
           pip install plumbum pyyaml

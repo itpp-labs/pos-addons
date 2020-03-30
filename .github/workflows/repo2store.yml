@@ -6,12 +6,14 @@ on:
 jobs:
   repo2store:
     runs-on: ubuntu-latest
-    if: "! endsWith(github.repository, '-store')"
+    if:
+      "! endsWith(github.repository, '-store') && startsWith(github.repository,
+      'itpp-labs/')"
     steps:
       - name: Checkout REPO
         uses: actions/checkout@v2-beta
         with:
-          fetch-depth: 100
+          fetch-depth: 0
           # custom token is not needed for fetching REPO,
           # but the action makes some magic with authentication headers
           # which are used on pushing to REPO-store

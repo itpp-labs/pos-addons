@@ -18,7 +18,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_pos_credit_update_reward_form" model="ir.ui.view">
         <field name="name">pos.credit.update.reward.form</field>
         <field name="model">pos.credit.update.reward</field>
@@ -52,7 +51,6 @@
                         statusbar_visible="draft,confirm,cancel"
                     />
                 </header>
-
                 <sheet>
                     <group>
                         <group>
@@ -89,14 +87,12 @@
                                 widget="barcode_handler"
                                 invisible="1"
                             />
-
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
-
     <record id="view_pos_credit_update_reward_search" model="ir.ui.view">
         <field name="name">pos.credit.update.reward.search</field>
         <field name="model">pos.credit.update.reward</field>
@@ -134,7 +130,6 @@
             </search>
         </field>
     </record>
-
     <record id="action_pos_credit_update_reward" model="ir.actions.act_window">
         <field name="name">Reward Credit Updates</field>
         <field name="res_model">pos.credit.update.reward</field>
@@ -143,14 +138,12 @@
         <field name="search_view_id" ref="view_pos_credit_update_reward_search" />
         <field name="context">{}</field>
     </record>
-
     <record id="server_action_pos_credit_update_reward" model="ir.actions.server">
         <field name="name">Confirm</field>
         <field name="model_id" ref="point_of_sale.menu_point_config_product" />
         <field name="state">code</field>
         <field name="code">env['pos.credit.update.reward'].do_confirm()</field>
     </record>
-
     <record id="option_pos_credit_update_reward" model="ir.values">
         <field name="name">Confirm</field>
         <field name="key2">client_action_multi</field>
@@ -160,7 +153,6 @@
             eval="'ir.actions.server,%d'%server_action_pos_credit_update_reward"
         />
     </record>
-
     <menuitem
         id="menu_pos_credit_update_reward"
         name="Rewards"
@@ -169,6 +161,4 @@
         groups="group_reward_user"
         sequence="100"
     />
-
-
 </odoo>

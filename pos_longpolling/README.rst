@@ -1,6 +1,6 @@
-=================
- POS Longpolling
-=================
+==========================
+ POS: Longpolling support
+==========================
 
 Technical module to implement instant updates in POS
 

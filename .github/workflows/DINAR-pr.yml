@@ -65,51 +65,20 @@ jobs:
           # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
           cd REPO
           python ../DINAR/workflow-files/analyze-modules.py updated ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.number }}
-      - name: HOW TO RUN LOCALLY
-        #if: "env.PR_MODULES != ''"
+      - name: Configure docker
         run: |
-          cat << 'EOF'
-          To test updates run:
-
-              WORKDIR=/tmp/DINAR/${{ github.repository }}-${{ github.event.number }}/
-              mkdir -p $WORKDIR
-              cd $WORKDIR
-              # TODO use fixed version instead of master
-              curl https://raw.githubusercontent.com/itpp-labs/DINAR/master/local-files/docker-compose.yml > docker-compose.yml
-              export REGISTRY=docker.pkg.github.com REPOSITORY=${{ github.repository }} REPO_NAME=$(echo ${{ github.repository }} | sed "s;.*/;;") VERSION=${{ github.event.pull_request.base.ref }}
-              git clone --depth=1 --branch $VERSION git@github.com:${{ github.repository }} pr-files
-              # Version in PR
-              REVISION=${{ github.event.pull_request.head.sha}}
-              # Version after merging
-              REVISION=pull/${{ github.event.number}}/merge
-              git -C pr-files fetch origin $REVISION
-              git -C pr-files checkout FETCH_HEAD
-              docker-compose pull
-              export MODULES=${{ env.PR_MODULES }}
-              export LOAD_MODULES=${{ env.PR_MODULES_LOAD }}
-          EOF
-
-          if [ "${{ github.event.pull_request.base.ref }}" == "10.0" ]; then
-          cat << 'EOF'
-
-              # workaround for odoo 10.0
-              docker-compose up -d odoo
-              docker-compose exec odoo click-odoo -i
-              # EXEC:
-              # env['ir.module.module'].update_list()
-              # env.cr.commit()
-              # exit()
-              docker-compose stop odoo
-
-          EOF
-
-          fi
-
-          cat << 'EOF'
-              docker-compose up
-          EOF
-          # TODO: post this message when Github guys make access to post message in PR
-          #> Sent by [DINAR :construction_worker_man:](https://github.com/itpp-labs/DINAR) via `.github/workflows/DINAR-pr.yml`
+          bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
+          echo "::set-env name=PR_FILES::../../REPO"
+      - name: HOW TO RUN ODOO LOCALLY
+        if: always()
+        run: |
+          export MODULES=${{ env.PR_MODULES }}
+          export LOAD_MODULES=${{ env.PR_MODULES_LOAD }}
+          export PR_NUM=${{ github.event.number }}
+          export VERSION=${{ github.event.pull_request.base.ref }}
+          export REVISION_PR=${{ github.event.pull_request.head.sha}}
+          export DINAR_REPO="itpp-labs/DINAR-fork"
+          bash DINAR/workflow-files/how-to-run-locally.sh
       - name: Check Python Version
         run:
           echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' '
@@ -144,6 +113,7 @@ jobs:
       - name: Configure docker
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
+          echo "::set-env name=PR_FILES::../../REPO"
       - name: Install python tools
         run: |
           pip install plumbum PyGithub pyyaml
@@ -158,6 +128,7 @@ jobs:
           ODOO_BASE_MODULES=$(docker inspect \
           --format '{{ index .Config.Labels "dinar.odoo.modules"}}' \
           dinar_odoo_1)
+          echo "ODOO_BASE_MODULES=$ODOO_BASE_MODULES"
 
           # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
           cd REPO
@@ -178,18 +149,35 @@ jobs:
         run: |
           # TODO https://github.com/itpp-labs/DINAR/issues/42
           exit 1
+      - name: Prepare Artifact Folder
+        run: |
+          mkdir new-deps/
+          # create dummy file to be sure that Artifact will be uploaded
+          echo ok > new-deps/.empty
+          echo "::set-env name=ARTIFACT::empty"
       - name: Prepare DINAR with additional dependencies
         if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         run: |
           # Save artifacts for local run and for integrations Tests
           bash DINAR/workflow-files/save-docker-layers.sh new-deps/
-          echo $MODULES > new-deps/modules.txt
+          echo "${{ env.PR_MODULES_DEPS }}" > new-deps/modules.txt
+          echo "::set-env name=ARTIFACT::yes"
       - name: Save DINAR with dependencies
-        if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         uses: actions/upload-artifact@v1
         with:
           name: new-deps
           path: new-deps/
+      - name: HOW TO RUN QUICK TESTS LOCALLY
+        if: always()
+        run: |
+          export MODULES=${{ env.PR_MODULES }}
+          export LOAD_MODULES=${{ env.PR_MODULES_LOAD }}
+          export PR_NUM=${{ github.event.number }}
+          export VERSION=${{ github.event.pull_request.base.ref }}
+          export REVISION_PR=${{ github.event.pull_request.head.sha}}
+          export DINAR_REPO="itpp-labs/DINAR-fork"
+          export ODOO_EXTRA_ARG=--test-enable
+          bash DINAR/workflow-files/how-to-run-locally.sh ${{ secrets.GITHUB_TOKEN }}
       - name: Test updated modules
         if: env.PR_MODULES != ''
         run: |
@@ -227,28 +215,43 @@ jobs:
           name: new-deps
           path: new-deps/
       - name: Check artifact
-        if: failure()
         run: |
-          echo "::set-env name=ARTIFACT::failure"
+          if [ ! -f new-deps/modules.txt ]; then
+              echo "::set-env name=ARTIFACT::empty"
+          fi
       - name: Configure Docker
         run: |
           bash DINAR/workflow-files/configure-docker.sh ${{ secrets.DINAR_TOKEN || secrets.GITHUB_TOKEN }}
+          echo "::set-env name=PR_FILES::../../REPO"
       - name: Analyze PR
         run: |
           # sets environment variables that available in next steps via $ {{ env.PR_... }} notation
           DEPS_MODULES=$(cat new-deps/modules.txt || true)
           cd REPO
           python ../DINAR/workflow-files/analyze-modules.py all "$DEPS_MODULES"
+      - name: Install json parser
+        run: |
+          sudo apt-get install jq
+      - name: HOW TO RUN TESTS LOCALLY
+        if: always()
+        run: |
+          export MODULES=${{ env.ALL_MODULES }}
+          export LOAD_MODULES=${{ env.ALL_MODULES_LOAD }}
+          export PR_NUM=${{ github.event.number }}
+          export VERSION=${{ github.event.pull_request.base.ref }}
+          export REVISION_PR=${{ github.event.pull_request.head.sha}}
+          export DINAR_REPO="itpp-labs/DINAR-fork"
+          export ODOO_EXTRA_ARG=--test-enable
+          bash DINAR/workflow-files/how-to-run-locally.sh ${{ secrets.GITHUB_TOKEN }}
       - name: Download base images
         run: |
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
           docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
       - name: Apply new-deps artifact
-        if: env.ARTIFACT != 'failure'
+        if: env.ARTIFACT != 'empty'
         run: |
           bash DINAR/workflow-files/load-docker-layers.sh new-deps/
-
       - name: Test all modules
         run: |
           export MODULES="${{ env.ALL_MODULES }}"
