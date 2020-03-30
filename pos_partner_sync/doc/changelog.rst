@@ -1,3 +1,8 @@
+`2.0.2`
+-------
+
+**Fix:** Longpolling Handling Error on archiving a not presented in POS partner
+
 `2.0.1`
 -------
 

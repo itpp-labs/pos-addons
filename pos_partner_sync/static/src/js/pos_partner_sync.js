@@ -101,7 +101,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
             var partner_sorted = this.db.partner_sorted;
             _.each(ids, function(id) {
                 partner = self.db.get_partner_by_id(id);
-                if (partner.barcode) {
+                if (partner && partner.barcode) {
                     delete self.db.partner_by_barcode[partner.barcode];
                 }
                 partner_sorted.splice(_.indexOf(partner_sorted, id), 1);
