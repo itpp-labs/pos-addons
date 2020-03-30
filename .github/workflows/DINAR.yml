@@ -82,7 +82,7 @@ jobs:
           login $GITHUB_ACTOR
           password ${{ secrets.DINAR_TOKEN }}
           EOF
-      - name: dinar-odoo-base
+      - name: Build ${{ env.IMAGE_ODOO_BASE }}
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           LOCAL_CUSTOM_DIR: ./image
@@ -91,7 +91,7 @@ jobs:
           CLEAN: false
           COMPILE: false
         with:
-          name: ${{ env.IMAGE_ODOO }}-base
+          name: ${{ env.IMAGE_ODOO_BASE }}
           registry: ${{ env.REGISTRY }}
           username: ${{ env.REGISTRY_USERNAME }}
           password: ${{ env.REGISTRY_PASSWORD }}
