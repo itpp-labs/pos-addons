@@ -6,6 +6,7 @@ addons:
   # modules to exclude from installation/testing
   exclude:
     - hw_proxy
+    - hw_twitter_printing
 
   server_wide_modules:
     - web

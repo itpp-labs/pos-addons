@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-
     <t t-extend="Chrome">
         <t t-jquery="div[class='pos-content']" t-operation="prepend">
             <div class="mobile-order-container">
@@ -24,7 +23,6 @@
             </div>
         </t>
     </t>
-
     <t t-extend="ProductCategoriesWidget">
         <t t-jquery="header[class='rightpane-header']" t-operation="append">
             <div class="slide-categories-button">
@@ -55,7 +53,6 @@
             <input />
         </t>
     </t>
-
     <t t-extend="PaymentScreenWidget">
         <t t-jquery="div[class='paymentmethods-container']">
             $(this).addClass('touch-scrollable scrollable-y');
@@ -64,9 +61,8 @@
             $(this).addClass('touch-scrollable scrollable-y');
         </t>
     </t>
-
     <t t-extend="PaymentScreen-Paymentlines">
-         <t t-jquery="t[t-if='!paymentlines.length']" t-operation="replace">
+        <t t-jquery="t[t-if='!paymentlines.length']" t-operation="replace">
             <div class='paymentlines-empty'>
                 <div class='total'>
                     <t t-esc="widget.format_currency(order.get_total_with_tax())" />
@@ -75,9 +71,8 @@
                     Please select a payment method.
                 </div>
             </div>
-         </t>
+        </t>
     </t>
-
     <t t-extend="ActionpadWidget">
         <t t-jquery="button[t-attf-class*='button set-customer']" t-operation="replace">
             <button
@@ -99,7 +94,6 @@
             </button>
         </t>
     </t>
-
     <t t-extend="OrderSelectorWidget">
         <t t-jquery="i[class='fa fa-plus']" t-operation="replace">
             <img src="/pos_mobile/static/src/img/svg/plus.svg" />
@@ -111,13 +105,11 @@
             $(this).addClass('touch-scrollable');
         </t>
     </t>
-
     <t t-extend="ClientListScreenWidget">
         <t t-jquery="section[class='top-content']">
             $(this).addClass('touch-scrollable');
         </t>
     </t>
-
     <t t-extend="SynchNotificationWidget">
         <t
             t-jquery="div[class='js_connected oe_icon oe_green'] i[class='fa fa-fw fa-wifi']"
@@ -136,18 +128,15 @@
             </div>
         </t>
     </t>
-
     <t t-extend="HeaderButtonWidget">
         <t t-jquery="t[t-esc='widget.label']" t-operation="replace">
         </t>
     </t>
-
     <t t-extend="SaleDetailsButton">
         <t t-jquery="i[class='fa fa-fw fa-print']" t-operation="replace">
             <img src="/pos_mobile/static/src/img/svg/printer.svg" />
         </t>
     </t>
-
     <t t-extend="NumpadWidget">
         <t
             t-jquery="button[class='input-button numpad-backspace'] img"
@@ -161,7 +150,6 @@
             />
         </t>
     </t>
-
     <t t-extend="PaymentScreen-Numpad">
         <t
             t-jquery="button[class='input-button numpad-backspace'] img"
@@ -175,7 +163,6 @@
             />
         </t>
     </t>
-
     <t t-extend="Product">
         <t t-jquery="div[class='product-name']" t-operation="after">
             <t t-set="order" t-value="widget.pos.get_order()" />
@@ -192,5 +179,4 @@
             </div>
         </t>
     </t>
-
 </templates>

@@ -4,7 +4,7 @@
 # License MIT (https://opensource.org/licenses/MIT).
 
 {
-    "name": """Sync Server for POS orders""",
+    "name": """Sync Server in POS""",
     "summary": """Sync orders via main or separate (e.g. local) server""",
     "category": "Point of Sale",
     # "live_test_URL": "",

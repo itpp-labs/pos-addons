@@ -9,7 +9,6 @@
             <script type="text/javascript" src="/pos_menu/static/src/js/pos.js" />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_menu demo assets"
