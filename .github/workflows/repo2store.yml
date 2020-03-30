@@ -13,7 +13,7 @@ jobs:
       - name: Checkout REPO
         uses: actions/checkout@v2-beta
         with:
-          fetch-depth: 100
+          fetch-depth: 0
           # custom token is not needed for fetching REPO,
           # but the action makes some magic with authentication headers
           # which are used on pushing to REPO-store

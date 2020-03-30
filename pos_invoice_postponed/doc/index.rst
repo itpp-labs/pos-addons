@@ -1,6 +1,6 @@
-=======================================
- Creation of Postponed invoices in POS
-=======================================
+===========================
+ Postponed Invoices in POS
+===========================
 
 
 Configuration

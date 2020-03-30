@@ -15,7 +15,6 @@
             </xpath>
         </field>
     </record>
-
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
@@ -42,7 +41,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="pos_custom_receipt_form_view" model="ir.ui.view">
         <field name="name">pos.custom_receipt.view.form</field>
         <field name="model">pos.custom_receipt</field>
@@ -62,5 +60,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

@@ -20,7 +20,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="tour_assets_backend"
         name="pos_category_multi tour assets"
