@@ -27,7 +27,6 @@
             <link rel="stylesheet" href="/pos_orders_history/static/src/css/pos.css" />
         </xpath>
     </template>
-
     <template
         id="demo_assets_backend"
         name="pos_orders_history demo assets"

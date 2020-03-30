@@ -16,7 +16,6 @@
             />
         </xpath>
     </template>
-
     <template
         id="assets_backend"
         name="pos_multi_session_restaurant assets"
@@ -29,7 +28,6 @@
             />
         </xpath>
     </template>
-
     <record model="ir.ui.view" id="to_restaurant_floor_inherit_form">
         <field name="name">to.restaurant.floor.inherit.form</field>
         <field name="model">restaurant.floor</field>
@@ -41,7 +39,6 @@
             </field>
         </field>
     </record>
-
     <record model="ir.ui.view" id="to_pos_config_inherit_form">
         <field name="name">to.pos.config.inherit.form</field>
         <field name="model">pos.config</field>
@@ -64,7 +61,6 @@
             </data>
         </field>
     </record>
-
     <record id="multi_session_restaurant_form" model="ir.ui.view">
         <field name="name">pos.multi_session.form</field>
         <field name="model">pos.multi_session</field>
@@ -78,5 +74,4 @@
             </data>
         </field>
     </record>
-
 </odoo>
