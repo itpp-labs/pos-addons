@@ -22,6 +22,7 @@
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/assets.xml",
+        "views/views.xml",
     ],
     "demo": [
     ],
