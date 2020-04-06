@@ -1,0 +1,297 @@
+substitutions:
+  # Odoo variables
+  _TEST_BRANCH: "13.0"
+  _RUN_TESTS: "1"
+  _PIP_AUTO_INSTALL: "1"
+  _LOG_LEVEL: test
+  _WITHOUT_DEMO: "False"
+  # Deployment variables
+  _ENVIRONMENT: dev
+  _DEPLOYMENT_BRANCH: master
+  _UPGRADE_ODOO: "1"
+  _STAGING_DB: client
+  # SSH & KMS Key variables
+  _CIPHERED_KEY: git-ci.enc
+  _CIPHER_PROJECT: sec-manager
+  _CIPHER_LOCATION: us-east1
+  _CIPHER_KEYRING: east-ring
+  _CIPHER_KEY: github-key
+  _KEY_BUCKET: cicd-key
+  _GKE_PROJECT: indexa-odoo
+  _GKE_LOCATION: us-east1-c
+  _GKE_CLUSTER: dev-cluster
+# Allow variables without substitutions
+options:
+  substitution_option: "ALLOW_LOOSE"
+  # Use a faster machine for building
+  machineType: "N1_HIGHCPU_32"
+
+steps:
+  # Pull a previous image of dockerdoo, if exists, to use cache for faster builds
+  - name: "gcr.io/cloud-builders/docker"
+    id: pull-dockerdoo
+    waitFor: ["-"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        docker pull gcr.io/iterativo/dockerdoo:${_TEST_BRANCH} || exit 0
+
+  # Pull the key from a Bucket
+  - name: gcr.io/cloud-builders/gsutil
+    id: gsutil
+    waitFor: ["-"]
+    args: ["cp", "-r", "gs://${_KEY_BUCKET}/", "."]
+
+  # Decrypt the file containing the key to clone from github
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: kms
+    waitFor: ["gsutil"]
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=${_KEY_BUCKET}/${_CIPHERED_KEY}
+      - --plaintext-file=/root/.ssh/id_rsa
+      - --project=${_CIPHER_PROJECT}
+      - --location=${_CIPHER_LOCATION}
+      - --keyring=${_CIPHER_KEYRING}
+      - --key=${_CIPHER_KEY}
+    volumes:
+      - name: "ssh"
+        path: /root/.ssh
+
+  # Set up git with key and domain.
+  - name: "gcr.io/cloud-builders/git"
+    id: ssh
+    waitFor: ["kms"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        chmod 600 /root/.ssh/id_rsa
+        cat <<EOF >/root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/id_rsa
+        EOF
+        mv ${_KEY_BUCKET}/known_hosts /root/.ssh/known_hosts
+    volumes:
+      - name: "ssh"
+        path: /root/.ssh
+
+  # Move "cleaned" modules to their own folder and download required dependencies
+  - name: "gcr.io/cloud-builders/git"
+    id: dependencies
+    waitFor: ["ssh"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p ./${REPO_NAME}-ci
+        mv /workspace/*/ ./${REPO_NAME}-ci
+        curl https://raw.githubusercontent.com/iterativo-git/dockerdoo/${_TEST_BRANCH}/resources/getaddons.py -o getaddons.py
+        python -c "from getaddons import get_modules; print(','.join(get_modules('./${REPO_NAME}-ci', depth=3)))" > _MODULES
+        ###### Add other git dependencies here ########
+        git clone --depth 1 --branch ${_TEST_BRANCH} --single-branch git@github.com:camptocamp/odoo-cloud-platform.git
+        git clone --depth 1 --branch ${_TEST_BRANCH} --single-branch git@github.com:odoo/enterprise.git
+        git clone --depth 1 --branch ${_TEST_BRANCH} --single-branch git@github.com:odoo-dominicana/l10n-dominicana.git
+        ###### Do not modify under this line ####
+        chown -R 1000:1000 /builder/home/
+    volumes:
+      - name: "ssh"
+        path: /root/.ssh
+
+  # Clone the GKE repository for deployment
+  - name: "gcr.io/cloud-builders/git"
+    id: gke
+    waitFor: ["dependencies"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        git clone --depth 1 --branch ${_DEPLOYMENT_BRANCH} --single-branch git@github.com:indexa-git/gke-dev-cluster.git
+        ls
+    volumes:
+      - name: "ssh"
+        path: /root/.ssh
+
+  # Build the image with the mounted volume
+  - name: "gcr.io/cloud-builders/docker"
+    id: build
+    waitFor: ["pull-dockerdoo", "dependencies"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        docker build . -t 'gcr.io/$PROJECT_ID/${REPO_NAME}:${BRANCH_NAME}' -f-<<EOF
+        FROM  gcr.io/iterativo/dockerdoo:${_TEST_BRANCH}
+        ENV ODOO_EXTRA_ADDONS $${ODOO_EXTRA_ADDONS}
+        USER root
+        RUN sudo mkdir -p $${ODOO_EXTRA_ADDONS}
+        COPY . $${ODOO_EXTRA_ADDONS}
+        RUN apt-get -qq update && apt-get -qq install -y --no-install-recommends build-essential \
+            && find $${ODOO_EXTRA_ADDONS} -name 'requirements.txt' -exec pip3 --no-cache-dir install -r {} \; \
+            && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+            && rm -rf /var/lib/apt/lists/*
+        RUN sudo chown -R 1000:1000 $${ODOO_EXTRA_ADDONS}
+        USER 1000
+        EOF
+    env:
+      - "ODOO_EXTRA_ADDONS=/var/lib/odoo/extra-addons"
+
+  # Install PostgreSQL
+  - name: gcr.io/cloud-builders/docker
+    id: postgres
+    waitFor: ["-"]
+    args:
+      ["run", "--name=${REPO_NAME}-${BRANCH_NAME}", "-e", "POSTGRES_DB=postgres", "-e", "POSTGRES_USER=odoo", "-e", "POSTGRES_PASSWORD=odoo",
+       "--network=cloudbuild", "-d", "postgres:11"]
+
+  # Run dockerdoo with modules inside the repo
+  - name: "gcr.io/$PROJECT_ID/$REPO_NAME:${BRANCH_NAME}"
+    id: run
+    dir: /
+    waitFor: ["dependencies", "postgres", "build"]
+    args:
+      - "bash"
+      - "-c"
+      - |
+        export EXTRA_MODULES=$(< /workspace/_MODULES)
+        [[ "$_RUN_TESTS" == "0" ]] || exit 0 \
+          && odoo -d ${REPO_NAME}-${BRANCH_NAME} -i $${EXTRA_MODULES} --stop-after-init
+    env:
+      - "DB_PORT_5432_TCP_ADDR=${REPO_NAME}-${BRANCH_NAME}"
+      - "DB_ENV_POSTGRES_USER=odoo"
+      - "DB_ENV_POSTGRES_PASSWORD=odoo"
+      - "LOG_LEVEL=${_LOG_LEVEL}"
+      - "WITHOUT_DEMO=${_WITHOUT_DEMO}"
+
+  # Run dockerdoo with modules inside the repo and run tests if needed
+  - name: "gcr.io/$PROJECT_ID/$REPO_NAME:${BRANCH_NAME}"
+    id: tests
+    dir: /
+    waitFor: ["dependencies", "postgres", "build"]
+    args:
+      - "bash"
+      - "-c"
+      - |
+        export EXTRA_MODULES=$(< /workspace/_MODULES)
+        [[ "$_RUN_TESTS" == "1" && "$_TEST_BRANCH" != "11.0" && -z "$_PR_NUMBER" ]] || exit 0 \
+          && odoo -d ${REPO_NAME}-${BRANCH_NAME} -i $${EXTRA_MODULES} --test-enable --test-tags=$${EXTRA_MODULES} --stop-after-init
+    env:
+      - "DB_PORT_5432_TCP_ADDR=${REPO_NAME}-${BRANCH_NAME}"
+      - "DB_ENV_POSTGRES_USER=odoo"
+      - "DB_ENV_POSTGRES_PASSWORD=odoo"
+      - "LOG_LEVEL=${_LOG_LEVEL}"
+      - "WITHOUT_DEMO=${_WITHOUT_DEMO}"
+
+  # Run dockerdoo with modules inside the repo and run tests if needed
+  - name: "gcr.io/$PROJECT_ID/$REPO_NAME:${BRANCH_NAME}"
+    id: tests-all
+    dir: /
+    waitFor: ["dependencies", "postgres", "build"]
+    args:
+      - "bash"
+      - "-c"
+      - |
+        export EXTRA_MODULES=$(< /workspace/_MODULES)
+        [[ "$_RUN_TESTS" == "1" && "$_BASE_BRANCH" =~ ^[0-9]{1,2}\.[0]$ || "$_RUN_TESTS" == "1" && "$_BASE_BRANCH" =~ ^[0-9]{1,2}\.[0]-staging-.*$ || "$_RUN_TESTS" == "1" && "$_TEST_BRANCH" == "11.0" ]] || exit 0\
+          && odoo -d ${REPO_NAME}-${BRANCH_NAME} -i $${EXTRA_MODULES} --test-enable --stop-after-init
+    env:
+      - "DB_PORT_5432_TCP_ADDR=${REPO_NAME}-${BRANCH_NAME}"
+      - "DB_ENV_POSTGRES_USER=odoo"
+      - "DB_ENV_POSTGRES_PASSWORD=odoo"
+      - "LOG_LEVEL=${_LOG_LEVEL}"
+      - "WITHOUT_DEMO=${_WITHOUT_DEMO}"
+
+  # Push the image to Google Cloud Registry
+  - name: "gcr.io/cloud-builders/docker"
+    id: push
+    waitFor: ["run", "tests", "tests-all"]
+    args: ["push", "gcr.io/$PROJECT_ID/${REPO_NAME}:${BRANCH_NAME}"]
+
+  ################
+  ## Deployment ##
+  ################
+
+  # Create a file from the customized version
+  - name: "gcr.io/$PROJECT_ID/kustomize"
+    id: kustomize
+    waitFor: ["gke"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        kustomize build gke-dev-cluster/deployments/odoo/${_TEST_BRANCH}/${_ENVIRONMENT} -o gke-${REPO_NAME}-${BRANCH_NAME}.yaml
+        ls
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_GKE_LOCATION}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}"
+      - "GCLOUD_PROJECT=$PROJECT_ID"
+
+  - name: gcr.io/${PROJECT_ID}/envsubst
+    id: variables
+    waitFor: ["kustomize"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        export REPO_URL=${REPO_NAME//[[:punct:]]/-}
+        export BRANCH_URL=${BRANCH_NAME//[[:punct:]]/-}
+        export EXTRA_MODULES=$(cat /workspace/_MODULES)
+        cat gke-${REPO_NAME}-${BRANCH_NAME}.yaml | envsubst \
+        '$${ENV} $${REPO_NAME} $${BRANCH_NAME} $${REPO_URL} $${BRANCH_URL} $${_UPGRADE_ODOO} \
+        $${EXTRA_MODULES} $${PROJECT_ID} $${SHORT_SHA} $${GKE_LOCATION} $${_STAGING_DB}' > gke-${REPO_NAME}-${BRANCH_NAME}.yaml.processed
+        mv gke-${REPO_NAME}-${BRANCH_NAME}.yaml.processed gke-${REPO_NAME}-${BRANCH_NAME}.yaml
+        cat gke-${REPO_NAME}-${BRANCH_NAME}.yaml
+    env:
+      [
+        "REPO_NAME=${REPO_NAME}",
+        "BRANCH_NAME=${BRANCH_NAME}",
+        "PROJECT_ID=${PROJECT_ID}",
+        "ENV=${_ENVIRONMENT}",
+        "SHORT_SHA=${SHORT_SHA}",
+        "EXTRA_MODULES=${_EXTRA_MODULES}",
+        "GKE_LOCATION=${_GKE_LOCATION}",
+      ]
+
+  # Deploy the container image to GKE
+  - name: "gcr.io/cloud-builders/gke-deploy:stable"
+    waitFor: ["tests", "push", "variables"]
+    id: deploy
+    args:
+      - run
+      - --image=gcr.io/$PROJECT_ID/${REPO_NAME}:${BRANCH_NAME}
+      - --filename=gke-${REPO_NAME}-${BRANCH_NAME}.yaml
+      - --project=${_GKE_PROJECT}
+      - --location=${_GKE_LOCATION}
+      - --cluster=${_GKE_CLUSTER}
+      - --timeout=1200s
+
+  # Print the resulting URL
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: echo-url
+    waitFor: ["deploy"]
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        export REPO_URL=${REPO_NAME//[[:punct:]]/-}
+        export BRANCH_URL=${BRANCH_NAME//[[:punct:]]/-}
+        echo "*********************************************************************"
+        echo "URL: https://$${REPO_URL}-$${BRANCH_URL}.indexa.do  "
+        echo "*********************************************************************"
+    env:
+      [
+        "REPO_NAME=${REPO_NAME}",
+        "BRANCH_NAME=${BRANCH_NAME}",
+        "REPO_URL=${REPO_NAME}",
+        "BRANCH_URL=${BRANCH_NAME}",
+        "SHORT_SHA=${SHORT_SHA}",
+      ]
+
+# Tag the image for GCR and Cloud Build
+images:
+  - "gcr.io/$PROJECT_ID/${REPO_NAME}:${BRANCH_NAME}"
+
+# Allow Odoo to build when there's no cache
+timeout: 1800s
