@@ -1,12 +1,13 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
-
+     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
     <record id="simple_pos_ticket" model="pos.custom_receipt">
         <field name="name">Simple POS Ticket</field>
         <field name="type">ticket</field>
-        <field name="qweb_template"><![CDATA[<t t-name="SimplePosTicket">
+        <field
+            name="qweb_template"
+        ><![CDATA[<t t-name="SimplePosTicket">
         <div class="pos-sale-ticket" style="line-height: 18px;">
 
             <!-- HEADER -->
@@ -216,11 +217,12 @@
     </t>]]>
         </field>
     </record>
-
-        <record id="simple_pos_receipt" model="pos.custom_receipt">
+    <record id="simple_pos_receipt" model="pos.custom_receipt">
         <field name="name">Simple POS Receipt</field>
         <field name="type">receipt</field>
-        <field name="qweb_template"><![CDATA[<t t-name="SimpleXmlReceipt">
+        <field
+            name="qweb_template"
+        ><![CDATA[<t t-name="SimpleXmlReceipt">
         <receipt align='center' width='45' value-thousands-separator='' >
 
             <!-- HEADER -->
@@ -456,5 +458,4 @@
 ]]>
         </field>
     </record>
-
 </odoo>

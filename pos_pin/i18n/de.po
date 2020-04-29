@@ -6,7 +6,7 @@
 # Ermin Trevisan <trevi@twanda.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-14 10:52+0000\n"
 "PO-Revision-Date: 2017-10-14 10:52+0000\n"

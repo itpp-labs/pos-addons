@@ -7,10 +7,10 @@
     font-size: 30px;
 }
 .pos .modal-dialog.block {
-    background-color: rgba(85,0,0,0.5);
-    cursor: pointer;    
+    background-color: rgba(85, 0, 0, 0.5);
+    cursor: pointer;
 }
-.pos .modal-dialog.block .popup-selection{
+.pos .modal-dialog.block .popup-selection {
     background-color: initial;
     box-shadow: none;
     height: 250px;

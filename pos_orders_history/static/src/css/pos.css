@@ -1,9 +1,9 @@
 /* Copyright 2017-2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
    Copyright 2018 Artem Losev
-   License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).*/
+   License MIT (https://opensource.org/licenses/MIT).*/
 
 /*OrdersHistoryScreenWidget*/
-.pos .orders-list-screen .order-list{
+.pos .orders-list-screen .order-list {
     font-size: 16px;
     width: 100%;
     line-height: 40px;
@@ -12,35 +12,36 @@
 .pos .orders-list-screen .order-list td {
     padding: 0px 8px;
 }
-.pos .orders-list-screen .order-list tr{
+.pos .orders-list-screen .order-list tr {
     transition: all 150ms linear;
-    background: rgb(230,230,230);
+    background: rgb(230, 230, 230);
 }
 .pos .orders-list-screen .order-list thead > tr,
 .pos .orders-list-screen .order-list tr:nth-child(even) {
-    background: rgb(247,247,247);
+    background: rgb(247, 247, 247);
 }
-.pos .orders-list-screen .order-list tr.highlight{
+.pos .orders-list-screen .order-list tr.highlight {
     transition: all 150ms linear;
-    background: rgb(110,200,155) !important;
+    background: rgb(110, 200, 155) !important;
     color: white;
 }
-.pos .orders-list-screen .order-list tr.lowlight{
+.pos .orders-list-screen .order-list tr.lowlight {
     transition: all 150ms linear;
     background: rgb(216, 238, 227);
 }
-.pos .orders-list-screen .order-list tr.lowlight:nth-child(even){
+.pos .orders-list-screen .order-list tr.lowlight:nth-child(even) {
     transition: all 150ms linear;
     background: rgb(227, 246, 237);
 }
 .pos .order-line .details {
     cursor: pointer;
 }
-.pos .order-line .active{
-    color: rgb(120,210,165);
+.pos .order-line .active {
+    color: rgb(120, 210, 165);
 }
-.pos .order-line:active, .pos .order-line:hover {
-    color: rgb(120,210,165);
+.pos .order-line:active,
+.pos .order-line:hover {
+    color: rgb(120, 210, 165);
 }
 /*Search Box*/
 .pos .orders-list-screen .searchbox {
@@ -60,7 +61,7 @@
     background: black;
     border: 1px solid black;
 }
-.pos .orders-list-screen .filters .button{
+.pos .orders-list-screen .filters .button {
     display: inline-block;
     position: initial;
     margin: 12px 0 0;
@@ -74,7 +75,7 @@
     color: #555555;
 }
 .pos .order-line .actions .button:active {
-    background-color: black!important;
+    background-color: black !important;
     border-color: black;
     color: white;
 }
@@ -82,7 +83,7 @@
     background-color: #f0eeee;
 }
 /*LinesHistoryScreenWidget*/
-.pos .orderlines-list-screen .orderline-list{
+.pos .orderlines-list-screen .orderline-list {
     font-size: 16px;
     width: 100%;
     line-height: initial;
@@ -101,24 +102,24 @@
     bottom: 0;
     border-top: 1px solid #e6e6e6;
 }
-.pos .orderlines-list-screen .orderline-list tr{
+.pos .orderlines-list-screen .orderline-list tr {
     transition: all 150ms linear;
-    background: rgb(230,230,230);
+    background: rgb(230, 230, 230);
 }
 .pos .orderlines-list-screen .orderline-list thead > tr,
 .pos .orderlines-list-screen .orderline-list tr:nth-child(even) {
-    background: rgb(247,247,247);
+    background: rgb(247, 247, 247);
 }
-.pos .orderlines-list-screen .orderline-list tr.highlight{
+.pos .orderlines-list-screen .orderline-list tr.highlight {
     transition: all 150ms linear;
-    background: rgb(110,200,155) !important;
+    background: rgb(110, 200, 155) !important;
     color: white;
 }
-.pos .orderlines-list-screen .orderline-list tr.lowlight{
+.pos .orderlines-list-screen .orderline-list tr.lowlight {
     transition: all 150ms linear;
     background: rgb(216, 238, 227);
 }
-.pos .orderlines-list-screen .orderline-list tr.lowlight:nth-child(even){
+.pos .orderlines-list-screen .orderline-list tr.lowlight:nth-child(even) {
     transition: all 150ms linear;
     background: rgb(227, 246, 237);
 }
@@ -163,7 +164,7 @@
 
 .lines-table {
     width: 100%;
-    border: 1px solid rgb(200,200,200);
+    border: 1px solid rgb(200, 200, 200);
     margin-top: 10px;
     margin-bottom: 10px;
     padding-bottom: 10px;
@@ -183,7 +184,7 @@
     width: 48px;
     height: 48px;
     padding: 0;
-    border: 1px solid rgba(125,125,125,0.3);
+    border: 1px solid rgba(125, 125, 125, 0.3);
     text-align: center;
 }
 
@@ -199,8 +200,7 @@
 .popup.popup-textinput.pos_history_edit_popup .pos_history_edit_container {
     padding-left: 1.5em;
     text-align: left;
-    border-bottom: 3px solid #6EC89B;
-
+    border-bottom: 3px solid #6ec89b;
 }
 
 .popup.popup-textinput.pos_history_edit_popup .pos_history_edit_container p {
@@ -208,7 +208,7 @@
 }
 
 tr.order-line {
-    border-bottom:1px dashed rgb(200, 200, 200);
+    border-bottom: 1px dashed rgb(200, 200, 200);
 }
 
 #edit-partner {
@@ -231,7 +231,15 @@ tr.order-line {
     top: -1px;
 }
 
-body > div.o_main_content > div.o_content > div > div.popups > div:nth-child(13) > div > div:nth-child(2) > span{
+body
+    > div.o_main_content
+    > div.o_content
+    > div
+    > div.popups
+    > div:nth-child(13)
+    > div
+    > div:nth-child(2)
+    > span {
     position: relative;
 }
 .popup-textinput input {

@@ -1,6 +1,6 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
 ===========================
  Confirm POS action by PIN
@@ -47,4 +47,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_pin.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_pin.atom>`_
 
-Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b
+Tested on Odoo 13.0 97dbb8c6af4c6af0622497b276bdfb40ee0a3215

@@ -1,30 +1,22 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """WeChat API""",
     "summary": """Technical module to integrate Odoo with WeChat""",
     "category": "Hidden",
     # "live_test_url": "",
     "images": [],
-    "version": "12.0.1.0.1",
+    "version": "13.0.1.0.1",
     "application": False,
-
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/12.0/wechat/",
-    "license": "LGPL-3",
+    "website": "https://apps.odoo.com/apps/modules/13.0/wechat/",
+    "license": "Other OSI approved licence",  # MIT
     "price": 75.00,
     "currency": "EUR",
-
-    "depends": [
-        'product',
-        'account',
-        'qr_payments',
-    ],
-    "external_dependencies": {"python": [
-        'wechatpy',
-    ], "bin": []},
+    "depends": ["product", "account", "qr_payments"],
+    "external_dependencies": {"python": ["wechatpy"], "bin": []},
     "data": [
         "views/account_menuitem.xml",
         "views/wechat_micropay_views.xml",
@@ -35,7 +27,6 @@
         "security/ir.model.access.csv",
     ],
     "qweb": [],
-
     "auto_install": False,
     "installable": False,
 }

@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-===================================
- Keyboard support in Point Of Sale
-===================================
+==============
+ POS Keyboard
+==============
 
 The module allows to apply the usual keyboard (not the virtual one) in the Point of Sale.
 
@@ -42,4 +42,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 12.0 d177e8f53b01f5e09c9b49c945781b69baac7009
+Tested on Odoo 13.0 cdfa415829fa06f2860d65054fd8534180c8526a

@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-==========================================
- Print certain products on Order Printers
-==========================================
+======================
+ POS: Selective print
+======================
 
 By default, you can assign only product categories to be printed on order printers and it is not convenient in some cases, e.g. if you want to print some products on one printer and other products of the same category on another one.
 

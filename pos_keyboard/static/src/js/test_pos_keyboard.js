@@ -1,119 +1,158 @@
 /*  Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
     Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
-    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
-odoo.define('pos_keyboard.tour', function (require) {
+    License MIT (https://opensource.org/licenses/MIT). */
+odoo.define("pos_keyboard.tour", function(require) {
     "use strict";
 
     var tour = require("web_tour.tour");
-    var core = require('web.core');
+    var core = require("web.core");
     var _t = core._t;
 
-    function open_pos_neworder() {
-        return [{
-            trigger: 'ul.o_menu_apps li.dropdown a.full',
-            content: _t("Show Apps Menu"),
-            position: 'bottom',
-        }, {
-            trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
-            position: 'bottom',
-        }, {
-            trigger: ".o_pos_kanban button.oe_kanban_action_button",
-            content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
-            position: "bottom"
-        }, {
-            content: "Switch to table or make dummy action",
-            trigger: '.table:not(.oe_invisible .neworder-button), .order-button.selected',
-            position: "bottom",
-            timeout: 30000,
-        }, {
-            content: 'waiting for loading to finish',
-            trigger: '.order-button.neworder-button',
-        }];
-    }
-
-    function add_product_to_order(product_name) {
-        return [{
-            content: 'buy ' + product_name,
-            trigger: '.product-list .product-name:contains("' + product_name + '")',
-        }, {
-            content: 'the ' + product_name + ' have been added to the order',
-            trigger: '.order .product-name:contains("' + product_name + '")',
-        }];
-    }
-
-    function simulate_keyup_event(number) {
-        var event = $.Event('keyup');
-        event.which = number;
-        event.keyCode = number;
-        $('body').trigger(event);
-    }
-
-    function update_qty_for_product(qty) {
-        return [{
-            content: "Make dummy action and update product qty",
-            trigger: '.order-button.selected',
-            run: function(){
-                simulate_keyup_event(96 + qty);
+    function get_steps_for_hr() {
+        return [
+            {
+                trigger: "ul.o_menu_apps li.dropdown a.full",
+                content: _t("Show Apps Menu"),
+                position: "bottom",
             },
-        }, {
-            content: 'Check the qty',
-            trigger: '.orderline.selected .info em:contains(' + qty + ')',
-        }];
+            {
+                trigger:
+                    '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                content: _t(
+                    "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+                ),
+                position: "bottom",
+            },
+            {
+                trigger: ".o_pos_kanban button.oe_kanban_action_button",
+                content: _t(
+                    "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
+                ),
+                position: "bottom",
+            },
+        ];
     }
 
-    function connect_disconnect_keyboard() {
-        var stps = [{
-            content: "Open Payment-Screen",
-            trigger: '.pay-circle',
-        }];
-
-        if (odoo._modules.indexOf('pos_cashier_select') !== -1) {
-            stps = stps.concat([{
-            trigger: '.modal-dialog.cashier .selection-item:contains("Admin")',
-            content: 'select first cashier',
-        }]);
+    function open_pos() {
+        var steps = [
+            {
+                trigger: "ul.o_menu_apps li.dropdown a.full",
+                content: _t("Show Apps Menu"),
+                position: "bottom",
+            },
+            {
+                trigger:
+                    '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                content: _t(
+                    "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+                ),
+                position: "bottom",
+            },
+            {
+                trigger: ".o_pos_kanban button.oe_kanban_action_button",
+                content: _t(
+                    "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
+                ),
+                position: "bottom",
+            },
+        ];
+        var hr_steps = window.posmodel && window.posmodel.config.module_pos_hr;
+        if (hr_steps) {
+            steps = steps.concat(get_steps_for_hr());
         }
-
-        stps = stps.concat([{
-            content: 'Close Payment-Screen',
-            trigger: '.button:contains(Back)',
-        }]);
-        return stps;
+        steps = steps.concat({
+            content: "New Order",
+            trigger: ".neworder-button",
+        });
+        steps[3].timeout = 30000;
+        return steps;
     }
 
-    function open_cashier_popup_and_close_it() {
-        return [{
-            content: "Open cashier selection popup",
-            trigger: '.username',
-        }, {
-            content: "Make dummy action and simulate escape button clicking",
-            trigger: '.modal-dialog:not(".oe_hidden")',
-            run: function(){
-                simulate_keyup_event(27);
-                setTimeout(function () {
-                    if ($('.modal-dialog:not(".oe_hidden")').length) {
-                        console.log('error');
-                    } else {
-                        console.log('ok');
-                    }
-                }, 50);
+    function simulate_event(ev, key, keyCode) {
+        var event = $.Event(ev);
+        keyCode = keyCode || key;
+        event.key = key;
+        event.which = key;
+        event.keyCode = keyCode;
+        $("body").trigger(event);
+    }
+
+    function change_mode(mode) {
+        var key = false;
+        var keyCode = false;
+        switch (mode) {
+            case "price":
+                key = "p";
+                keyCode = 80;
+                break;
+            case "discount":
+                key = "d";
+                keyCode = 68;
+                break;
+            case "quantity":
+                key = "q";
+                keyCode = 81;
+                break;
+        }
+        return [
+            {
+                content: "Click on the Mode Button" + mode,
+                trigger: ".order-button.selected",
+                run: function() {
+                    simulate_event("keydown", key, keyCode);
+                },
             },
-        }, {
-            content: "Make dummy action in order to properly pass the check for closed popups",
-            trigger: '.order-button.selected',
-        }];
+            {
+                content: "Check it was Selected",
+                trigger: '.mode-button.selected-mode[data-mode="' + mode + '"]',
+            },
+        ];
+    }
+
+    function open_password_popup(value) {
+        window.posmodel.gui.show_popup("password", {
+            confirm: function(val) {
+                if (val !== String(value)) {
+                    console.log("error");
+                }
+            },
+        });
+    }
+
+    function check_popup_behavior(value) {
+        return [
+            {
+                content: "Open Password Pop-up",
+                trigger: ".order-button.selected",
+                run: function() {
+                    open_password_popup(value);
+                },
+            },
+            {
+                content: "Click on Number",
+                trigger: ".popup.popup-number.popup-password:visible .title",
+                run: function() {
+                    simulate_event("keyup", 96 + value);
+                },
+            },
+            {
+                content: "Click Enter",
+                trigger: ".popup.popup-number.popup-password:visible .title",
+                run: function() {
+                    simulate_event("keyup", 13);
+                },
+            },
+        ];
     }
 
     var steps = [];
-    var quantity = 3;
-    steps = steps.concat(open_pos_neworder());
-    steps = steps.concat(add_product_to_order('Miscellaneous'));
-    steps = steps.concat(update_qty_for_product(quantity));
-    steps = steps.concat(connect_disconnect_keyboard());
-    steps = steps.concat(update_qty_for_product(quantity+1));
-    steps = steps.concat(open_cashier_popup_and_close_it());
+    steps = steps.concat(
+        open_pos(),
+        check_popup_behavior(2),
+        change_mode("discount"),
+        change_mode("price"),
+        change_mode("quantity")
+    );
 
-    tour.register('pos_keyboard_tour', { test: true, url: '/web' }, steps);
-
+    tour.register("pos_keyboard_tour", {test: true, url: "/web"}, steps);
 });

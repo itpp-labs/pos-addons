@@ -1,12 +1,11 @@
-odoo.define('pos_order_printer_product', function(require){
+odoo.define("pos_order_printer_product", function(require) {
+    "use strict";
+    var models = require("pos_restaurant_base.models");
 
-    var models = require('pos_restaurant_base.models');
+    models.load_fields("restaurant.printer", ["product_ids"]);
 
-    models.load_fields('restaurant.printer', ['product_ids']);
+    models.load_fields("restaurant.printer", ["product_ids"]);
 
-    models.load_fields('restaurant.printer',['product_ids']);
-
-    var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         is_product_in_product_list: function(id, list) {
             var product_tmpl_id = this.db.get_product_by_id(id).product_tmpl_id;
@@ -19,7 +18,7 @@ odoo.define('pos_order_printer_product', function(require){
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
-        computeChanges: function(categories, config){
+        computeChanges: function(categories, config) {
             var res = _super_order.computeChanges.apply(this, arguments);
 
             if (config && config.product_ids && config.product_ids.length) {
@@ -27,16 +26,26 @@ odoo.define('pos_order_printer_product', function(require){
                 var rem = [];
                 var i = 0;
 
-                // filter the added and removed orders to only contains
+                // Filter the added and removed orders to only contains
                 // products that belong the products list supplied as a parameter
-                for(i = 0; i < res.new_all.length; i++){
-                    if(this.pos.is_product_in_product_list(res.new_all[i].id, config.product_ids)){
+                for (i = 0; i < res.new_all.length; i++) {
+                    if (
+                        this.pos.is_product_in_product_list(
+                            res.new_all[i].id,
+                            config.product_ids
+                        )
+                    ) {
                         add.push(res.new_all[i]);
                     }
                 }
 
-                for(i = 0; i < res.cancelled_all.length; i++){
-                    if(this.pos.is_product_in_product_list(res.cancelled_all[i].id, config.product_ids)){
+                for (i = 0; i < res.cancelled_all.length; i++) {
+                    if (
+                        this.pos.is_product_in_product_list(
+                            res.cancelled_all[i].id,
+                            config.product_ids
+                        )
+                    ) {
                         rem.push(res.cancelled_all[i]);
                     }
                 }
@@ -54,7 +63,9 @@ odoo.define('pos_order_printer_product', function(require){
                     });
 
                     rem.forEach(function(item) {
-                        var exist_cancelled_change = res.cancelled.find(function(element) {
+                        var exist_cancelled_change = res.cancelled.find(function(
+                            element
+                        ) {
                             return item.id === element.id;
                         });
                         if (!exist_cancelled_change) {
@@ -75,15 +86,20 @@ odoo.define('pos_order_printer_product', function(require){
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
-        //  can this orderline be potentially printed ?
+        //  Can this orderline be potentially printed ?
         printable: function() {
             var printers = this.pos.printers;
             var all_printers_product_list = [];
-            printers.forEach(function(printer){
-                all_printers_product_list = all_printers_product_list.concat(printer.config.product_ids);
+            printers.forEach(function(printer) {
+                all_printers_product_list = all_printers_product_list.concat(
+                    printer.config.product_ids
+                );
             });
-            var printable = this.pos.is_product_in_product_list(this.get_product().id, all_printers_product_list);
-            return _super_orderline.printable.apply(this,arguments) || printable;
+            var printable = this.pos.is_product_in_product_list(
+                this.get_product().id,
+                all_printers_product_list
+            );
+            return _super_orderline.printable.apply(this, arguments) || printable;
         },
     });
 

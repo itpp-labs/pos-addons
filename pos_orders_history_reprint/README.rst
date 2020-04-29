@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-============================
- Reprint POS Orders Receipt 
-============================
+=====================
+ POS: Reprint orders
+=====================
 
 The module allows to reprint payment receipts of paid POS orders.
 

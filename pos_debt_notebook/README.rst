@@ -1,6 +1,6 @@
-==============================
- Debt/Credit notebook for POS
-==============================
+======================
+ POS: Prepaid credits
+======================
 
 The module allows to make sale on credit.
 

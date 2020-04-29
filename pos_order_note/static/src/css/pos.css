@@ -14,38 +14,46 @@
     float: none !important;
 }
 .popup-confirm-note {
-    height: 500px!important;
+    height: 500px !important;
 }
-.popup-confirm-note .header{
+.popup-confirm-note .header {
     height: 70px;
 }
-.popup-confirm-note .note_type{
+.popup-confirm-note .note_type {
     display: inline-block;
 }
-.popup-confirm-note .note_type .active{
+.popup-confirm-note .note_type .active {
     color: white;
     background: black;
     border: 1px solid black;
 }
-.popup-confirm-note  textarea:focus::-webkit-input-placeholder {color: transparent}
-.popup-confirm-note  textarea:focus::-moz-placeholder {color: transparent}
-.popup-confirm-note  textarea:focus:-moz-placeholder {color: transparent}
-.popup-confirm-note  textarea:focus:-ms-input-placeholder {color: transparent}
+.popup-confirm-note textarea:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+.popup-confirm-note textarea:focus::-moz-placeholder {
+    color: transparent;
+}
+.popup-confirm-note textarea:focus:-moz-placeholder {
+    color: transparent;
+}
+.popup-confirm-note textarea:focus:-ms-input-placeholder {
+    color: transparent;
+}
 
 /*ScreenWidget*/
 .pos .notelist-screen .window,
-.pos .notelist-screen .full-content .subwindow{
+.pos .notelist-screen .full-content .subwindow {
     display: block;
 }
-.pos .notelist-screen .full-content .subwindow-container{
+.pos .notelist-screen .full-content .subwindow-container {
     display: block;
     height: 100%;
 }
 .pos .notelist-screen .full-content .subwindow.collapsed,
-.pos .notelist-screen .full-content .subwindow-container.collapsed{
+.pos .notelist-screen .full-content .subwindow-container.collapsed {
     height: auto;
 }
-.pos .notelist-screen .note-list{
+.pos .notelist-screen .note-list {
     font-size: 16px;
     width: 100%;
     line-height: 40px;
@@ -54,24 +62,24 @@
 .pos .notelist-screen .note-list td {
     padding: 0px 8px;
 }
-.pos .notelist-screen .note-list tr{
+.pos .notelist-screen .note-list tr {
     transition: all 150ms linear;
-    background: rgb(230,230,230);
+    background: rgb(230, 230, 230);
 }
 .pos .notelist-screen .note-list thead > tr,
 .pos .notelist-screen .note-list tr:nth-child(even) {
-    background: rgb(247,247,247);
+    background: rgb(247, 247, 247);
 }
-.pos .notelist-screen .note-list tr.highlight{
+.pos .notelist-screen .note-list tr.highlight {
     transition: all 150ms linear;
-    background: rgb(110,200,155) !important;
+    background: rgb(110, 200, 155) !important;
     color: white;
 }
-.pos .notelist-screen .note-list tr.lowlight{
+.pos .notelist-screen .note-list tr.lowlight {
     transition: all 150ms linear;
     background: rgb(216, 238, 227);
 }
-.pos .notelist-screen .reason-list tr.lowlight:nth-child(even){
+.pos .notelist-screen .reason-list tr.lowlight:nth-child(even) {
     transition: all 150ms linear;
     background: rgb(227, 246, 237);
 }
@@ -107,7 +115,7 @@
 .pos.mobile .modal-dialog .popup.popup-confirm-note {
     max-width: initial;
     width: 100%;
-    height: 900px!important;
+    height: 900px !important;
     top: initial;
     background: white;
 }
@@ -124,14 +132,14 @@
     display: none;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note .note_type .button {
-     width: 250px!important;
-     margin: 0;
-     margin-right: 100px!important;
-     margin-left: 100px!important;
-     border-radius: 7px;
-     font-size: 40px;
-     background: white;
-     border-color: #dcdcdc;
+    width: 250px !important;
+    margin: 0;
+    margin-right: 100px !important;
+    margin-left: 100px !important;
+    border-radius: 7px;
+    font-size: 40px;
+    background: white;
+    border-color: #dcdcdc;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note .note_type .active {
     color: white;
@@ -145,35 +153,40 @@
     overflow-y: auto;
     padding-bottom: 10px;
 }
-.pos.mobile .modal-dialog .popup.popup-confirm-note .product_note .button.active{
+.pos.mobile .modal-dialog .popup.popup-confirm-note .product_note .button.active {
     background: #555555;
     border: 2px solid #555555;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note .button {
     margin: 0px;
     margin-top: 35px;
-    width: calc(33% - 35px)!important;
+    width: calc(33% - 35px) !important;
     font-size: 40px;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note textarea {
     height: 55px;
 }
-.pos.mobile .modal-dialog .popup.popup-confirm-note .product_note li:nth-child(3n+2) .button {
-    margin-left: 40px!important;
-    margin-right: 30px!important;
+.pos.mobile
+    .modal-dialog
+    .popup.popup-confirm-note
+    .product_note
+    li:nth-child(3n + 2)
+    .button {
+    margin-left: 40px !important;
+    margin-right: 30px !important;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note .footer {
     margin-bottom: 30px;
     text-align: right;
     width: calc(100% - 75px);
-    margin-left: 35px!important;
-    margin-right: 40px!important;
+    margin-left: 35px !important;
+    margin-right: 40px !important;
 }
 .pos.mobile .modal-dialog .popup.popup-confirm-note .footer .cancel {
-    margin-right: 25px!important;
+    margin-right: 25px !important;
 }
 /*Mobile ScreenWidget*/
-.pos.mobile .notelist-screen .note-list{
+.pos.mobile .notelist-screen .note-list {
     font-size: 35px;
     line-height: 60px;
 }
@@ -191,7 +204,7 @@
     padding-bottom: 10px;
     border-top: solid 4px;
 }
-.pos.mobile .order-note-line .entry.note{
+.pos.mobile .order-note-line .entry.note {
     font-size: 30px;
 }
 .pos.mobile .order-note-line .label {

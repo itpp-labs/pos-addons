@@ -1,6 +1,6 @@
-==================================
- Restrict out-of-stock POS Orders
-==================================
+==========================
+ POS: Out-of-stock orders
+==========================
 
 Installation
 ============
@@ -21,7 +21,7 @@ Usage
 =====
 
 * Go to ``[[Point of Sale]] >> Dashboard``
-  
+
   * Open POS session
   * Select a product with negative qty
   * Click ``Payment``

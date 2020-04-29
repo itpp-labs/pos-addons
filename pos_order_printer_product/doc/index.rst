@@ -1,6 +1,6 @@
-==========================================
- Print certain products on Order Printers
-==========================================
+======================
+ POS: Selective print
+======================
 
 Installation
 ============
@@ -13,7 +13,7 @@ Configuration
 * Go to ``Point of Sale >> Configuration >> Order Printers``
 
   * Click on ``[Create]``
-  * Specify **Printer Name** 
+  * Specify **Printer Name**
   * Specify **IP Address** of printer
   * Add items to **Printed Products**
   * Click on ``[Save]``

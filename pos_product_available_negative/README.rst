@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-==================================
- Restrict out-of-stock POS Orders
-==================================
+==========================
+ POS: Out-of-stock orders
+==========================
 
 The module depends on the pos_pin module. Before POS order validation the module checks whether the order contains
 products with no positive quantity. If it does then a cashier gets popup to select users. A sale is take place

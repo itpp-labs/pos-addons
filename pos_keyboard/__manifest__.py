@@ -4,44 +4,32 @@
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
 # Copyright 2019 Anvar Kildebekov https://it-projects.info/team/fedoranvar>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
-    "name": """Keyboard support in Point Of Sale""",
+    "name": """POS Keyboard""",
     "summary": """Module allows to use usual keyboard (not virtual one) in Point of Sale""",
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version={ODOO_BRANCH}",
-    "images": ['images/keyboard.png'],
-    "version": "12.0.1.1.5",
+    "images": ["images/keyboard.png"],
+    "version": "13.0.1.1.5",
     "application": False,
-
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "apps@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/yelizariev",
-    "license": "LGPL-3",
-
+    "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
     "currency": "EUR",
-
-    "depends": [
-        "point_of_sale",
-    ],
+    "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
-    "data": [
-        "data.xml"
-    ],
-    "demo": [
-    ],
-    "qweb": [
-    ],
-
+    "data": ["data.xml"],
+    "demo": [],
+    "qweb": [],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
     "uninstall_hook": None,
-
     "auto_install": False,
-    "installable": False,
-
+    "installable": True,
     # "demo_title": "{MODULE_NAME}",
     # "demo_addons": [
     # ],

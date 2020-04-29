@@ -1,17 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="assets_backend" name="pos_order_note_assets" inherit_id="point_of_sale.assets">
+    <template
+        id="assets_backend"
+        name="pos_order_note_assets"
+        inherit_id="point_of_sale.assets"
+    >
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_order_note/static/src/js/order_note.js"></script>
+            <script
+                type="text/javascript"
+                src="/pos_order_note/static/src/js/order_note.js"
+            />
         </xpath>
         <xpath expr="//link[@id='pos-stylesheet']" position="after">
-            <link rel="stylesheet" href="/pos_order_note/static/src/css/pos.css"/>
+            <link rel="stylesheet" href="/pos_order_note/static/src/css/pos.css" />
         </xpath>
     </template>
-
-    <template id="demo_assets_backend" name="pos_order_note demo assets" inherit_id="web.assets_backend">
+    <template
+        id="demo_assets_backend"
+        name="pos_order_note demo assets"
+        inherit_id="web.assets_backend"
+    >
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_order_note/static/src/js/tour.js"></script>
+            <script
+                type="text/javascript"
+                src="/pos_order_note/static/src/js/tour.js"
+            />
         </xpath>
     </template>
 </odoo>

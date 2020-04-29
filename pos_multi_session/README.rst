@@ -1,9 +1,9 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-Sync POS orders across multiple sessions
-========================================
+Sync POS orders
+===============
 
 The module provides instant orders synchronization between POSes related to a common *multi session*.
 
@@ -16,6 +16,9 @@ When POS becomes offline, i.e. don't have connection to *Sync Server*, it is onl
 Some POSes may be configured to work without synchronization. In such case it will work just like without the module.
 
 We recommend using the module together with the `pos_access_right <https://www.odoo.com/apps/modules/13.0/pos_access_right/>`__ module.
+
+.. note::  To synchronize orders correctly, you need a permanent connection to the server.
+
 
 Modules compatibility
 ---------------------

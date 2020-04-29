@@ -1,11 +1,10 @@
 # Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 import threading
-
 
 from odoo import api
 
-__all__ = ['odoo_async_call']
+__all__ = ["odoo_async_call"]
 
 
 def odoo_async_call(target, args, kwargs, callback=None):
@@ -27,7 +26,7 @@ def get_self(method):
     try:
         # python 3
         return method.__self__
-    except:
+    except Exception:
         # python 2
         return method.im_self
 

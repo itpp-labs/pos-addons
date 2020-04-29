@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-========================================
- Discount for total amount of pos order
-========================================
+=====================
+ POS: Total discount
+=====================
 
 Simple way to apply discount for all order items
 

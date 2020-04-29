@@ -1,10 +1,10 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
-   :target: https://www.gnu.org/licenses/lgpl
-   :alt: License: LGPL-3
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
 
-============================
- Sync Server for POS orders
-============================
+====================
+ Sync Server in POS
+====================
 
 Sync orders via main or separate (e.g. local) server, provides server part of synchronization for POS multi-session.
 

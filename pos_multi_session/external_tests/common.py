@@ -1,17 +1,19 @@
 # Copyright 2016-2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2016 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2017 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
+# pylint: disable=missing-manifest-dependency
 
-from datetime import datetime, timedelta
 import errno
 import glob
 import json
 import logging
 import os
-import requests
 import select
 import subprocess
+from datetime import datetime, timedelta
+
+import requests
 import unittest2
 import xmlrpclib
 
@@ -29,27 +31,29 @@ _logger.addHandler(handler)
 # Base configs
 #
 
-PORT = os.environ.get('ODOO_PORT') or '80'
-DATABASE = os.environ.get('DATABASE')
+PORT = os.environ.get("ODOO_PORT") or "80"
+DATABASE = os.environ.get("DATABASE")
 ADMIN_LOGIN = "admin"
 ADMIN_PASSWORD = "admin"
-MAIN_DOMAIN = os.environ.get('ODOO_DOMAIN') or 'localhost'
-MAIN_URL = 'http://%s:%s' % (MAIN_DOMAIN, PORT)
+MAIN_DOMAIN = os.environ.get("ODOO_DOMAIN") or "localhost"
+MAIN_URL = "http://{}:{}".format(MAIN_DOMAIN, PORT)
 
 
 class ExternalTestCase(unittest2.TestCase):
-    '''Runs external tests.
+    """Runs external tests.
 
        It means that we use xmlrpc instead of usual registry and transactions are not rollbacked.
-    '''
+    """
 
     @classmethod
     def setUpClass(cls):
         super(ExternalTestCase, cls).setUpClass()
         # Authenticate
         admin_uid = cls.login2uid(ADMIN_LOGIN, ADMIN_PASSWORD)
-        models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(MAIN_URL))
-        assert admin_uid, 'Authentication failed %s' % ((DATABASE, ADMIN_LOGIN, ADMIN_PASSWORD),)
+        models = xmlrpclib.ServerProxy("{}/xmlrpc/2/object".format(MAIN_URL))
+        assert admin_uid, "Authentication failed {}".format(
+            (DATABASE, ADMIN_LOGIN, ADMIN_PASSWORD)
+        )
 
         cls.admin_uid = admin_uid
         cls.xmlrpc_models = models
@@ -59,18 +63,22 @@ class ExternalTestCase(unittest2.TestCase):
     #
     @classmethod
     def login2uid(cls, login, password):
-        common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(MAIN_URL))
+        common = xmlrpclib.ServerProxy("{}/xmlrpc/2/common".format(MAIN_URL))
         return common.authenticate(DATABASE, login, password, {})
 
-    def execute_kw(self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None):
+    def execute_kw(
+        self, model, method, rpc_args=None, rpc_kwargs=None, uid=None, password=None
+    ):
         rpc_args = rpc_args or []
         rpc_kwargs = rpc_kwargs or []
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         res = self.xmlrpc_models.execute_kw(
-            DATABASE, uid, password,
-            model, method, rpc_args, rpc_kwargs)
-        _logger.info('RPC Execute: %s\n-> %s', [model, method, rpc_args, rpc_kwargs], res)
+            DATABASE, uid, password, model, method, rpc_args, rpc_kwargs
+        )
+        _logger.info(
+            "RPC Execute: %s\n-> %s", [model, method, rpc_args, rpc_kwargs], res
+        )
 
         return res
 
@@ -78,11 +86,13 @@ class ExternalTestCase(unittest2.TestCase):
         uid = uid or self.admin_uid
         password = password or ADMIN_PASSWORD
         return self.xmlrpc_models.exec_workflow(
-            DATABASE, uid, password,
-            model, signal, rid)
+            DATABASE, uid, password, model, signal, rid
+        )
 
     def xmlid_to_id(self, xmlid, uid=None, password=None):
-        res_id = self.execute_kw('ir.model.data', 'xmlid_to_res_id', [xmlid], uid=uid, password=password)
+        res_id = self.execute_kw(
+            "ir.model.data", "xmlid_to_res_id", [xmlid], uid=uid, password=password
+        )
         return res_id
 
     #
@@ -93,41 +103,45 @@ class ExternalTestCase(unittest2.TestCase):
             password = login
 
         data = {"db": DATABASE, "login": login, "password": password}
-        res = requests.post("http://%s:%s/web/session/authenticate" % (MAIN_DOMAIN, PORT),
-                            data=json.dumps({'params': data}),
-                            headers={"Content-Type": "application/json"})
-        _logger.info('authenticate: %s', res.json())
-        return res.json()['result']['session_id']
+        res = requests.post(
+            "http://{}:{}/web/session/authenticate".format(MAIN_DOMAIN, PORT),
+            data=json.dumps({"params": data}),
+            headers={"Content-Type": "application/json"},
+        )
+        _logger.info("authenticate: %s", res.json())
+        return res.json()["result"]["session_id"]
 
     def phantom_js_multi(self, sessions, commands, timeout=60, **kw):
         """check phantomtest.js for description of sessions and commands"""
-        for sname, sdata in sessions.items():
-            sid = self.authenticate(sdata['login'], sdata.get('password'))
-            sdata.setdefault('session_id', sid)
+        for _sname, sdata in sessions.items():
+            sid = self.authenticate(sdata["login"], sdata.get("password"))
+            sdata.setdefault("session_id", sid)
 
         options = {
             # since 10.0 we use odoo with --workers=1 + nginx,
             # and hence we shall not specify port and proxy requests to nginx
             # 'port': PORT,
-            'db': DATABASE,
-            'sessions': sessions,
-            'commands': commands,
-            'host': MAIN_DOMAIN,
+            "db": DATABASE,
+            "sessions": sessions,
+            "commands": commands,
+            "host": MAIN_DOMAIN,
         }
 
         options.update(kw)
-        phantomtest = os.path.join(os.path.dirname(__file__), 'phantomtest.js')
-        cmd = ['phantomjs', phantomtest, json.dumps(options)]
+        phantomtest = os.path.join(os.path.dirname(__file__), "phantomtest.js")
+        cmd = ["phantomjs", phantomtest, json.dumps(options)]
 
         self.phantom_run(cmd, timeout)
 
-    # Copy-paste from openerp/tests/common.py
+    # Copy-paste from odoo/tests/common.py
     def phantom_run(self, cmd, timeout):
-        _logger.info('phantom_run executing %s', ' '.join(cmd))
+        _logger.info("phantom_run executing %s", " ".join(cmd))
 
-        ls_glob = os.path.expanduser('~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*' % PORT)
+        ls_glob = os.path.expanduser(
+            "~/.qws/share/data/Ofi Labs/PhantomJS/http_localhost_%s.*" % PORT
+        )
         for i in glob.glob(ls_glob):
-            _logger.info('phantomjs unlink localstorage %s', i)
+            _logger.info("phantomjs unlink localstorage %s", i)
             os.unlink(i)
         try:
             phantom = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=None)
@@ -161,7 +175,11 @@ class ExternalTestCase(unittest2.TestCase):
         pid = phantom.stdout.fileno()
         while True:
             # timeout
-            self.assertLess(datetime.now() - t0, td, "PhantomJS tests should take less than %s seconds" % timeout)
+            self.assertLess(
+                datetime.now() - t0,
+                td,
+                "PhantomJS tests should take less than %s seconds" % timeout,
+            )
 
             # read a byte
             try:
@@ -182,8 +200,8 @@ class ExternalTestCase(unittest2.TestCase):
                 buf.append(s)
 
             # process lines
-            if '\n' in buf:
-                line, buf = buf.split('\n', 1)
+            if "\n" in buf:
+                line, buf = buf.split("\n", 1)
                 line = str(line)
 
                 # relay everything from console.log, even 'ok' or 'error...' lines
