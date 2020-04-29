@@ -10,7 +10,6 @@ odoo.define("pos_order_note", function(require) {
     var screens = require("point_of_sale.screens");
     var gui = require("point_of_sale.gui");
     var core = require("web.core");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var PopupWidget = require("point_of_sale.popups");
 
     var QWeb = core.qweb;
@@ -335,7 +334,6 @@ odoo.define("pos_order_note", function(require) {
 
     screens.ProductScreenWidget.include({
         start: function() {
-            var self = this;
             this._super();
             var orderline_note =
                 this.action_buttons && this.action_buttons.orderline_note;
