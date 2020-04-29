@@ -1,4 +1,4 @@
-/*Copyright 2017-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+/* Copyright 2017-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
   Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
   Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
   License MIT (https://opensource.org/licenses/MIT). */
@@ -334,24 +334,25 @@ odoo.define("pos_order_note", function(require) {
     });
 
     screens.ProductScreenWidget.include({
-        start: function(){
+        start: function() {
             var self = this;
             this._super();
-            var orderline_note = this.action_buttons && this.action_buttons.orderline_note;
+            var orderline_note =
+                this.action_buttons && this.action_buttons.orderline_note;
             if (!orderline_note) {
                 return;
             }
             orderline_note.button_click = function() {
                 var order = this.pos.get_order();
                 var line = order.get_selected_orderline();
-                var title = '';
-                var value = '';
+                var title = "";
+                var value = "";
                 if (order.note_type === "Order") {
-                    title = _t('Add Note for Order');
+                    title = _t("Add Note for Order");
                     value = order.get_note();
                 } else if (line) {
                     order.note_type = "Product";
-                    title = _t('Add Note for Product');
+                    title = _t("Add Note for Product");
                     value = line.get_note();
                 }
                 if (!line) {
@@ -362,7 +363,7 @@ odoo.define("pos_order_note", function(require) {
                     old_line_custom_notes = line.get_custom_notes().concat();
                     line.set_old_custom_notes(old_line_custom_notes);
                 }
-                this.gui.show_popup('product_notes',{
+                this.gui.show_popup("product_notes", {
                     title: title,
                     value: value,
                     custom_order_ids: order.get_custom_notes(),
@@ -379,7 +380,7 @@ odoo.define("pos_order_note", function(require) {
                     },
                 });
             };
-        }
+        },
     });
 
     var ProductNotesPopupWidget = PopupWidget.extend({
