@@ -71,9 +71,7 @@ class PosOrder(models.Model):
         res = super(PosOrder, self)._process_order(order)
 
         if postponed_payments:
-            res.sudo().write(
-                {"invoice_id": invoice.id, "postponed": True}
-            )
+            res.sudo().write({"invoice_id": invoice.id, "postponed": True})
             invoice._onchange_partner_id()
             invoice.fiscal_position_id = res.fiscal_position_id
             message = _(
@@ -107,7 +105,7 @@ class PosOrder(models.Model):
     def action_pos_order_paid(self):
         res = super(PosOrder, self).action_pos_order_paid()
         if self.postponed:
-            self.write({'state': 'invoiced'})
+            self.write({"state": "invoiced"})
         return res
 
 
