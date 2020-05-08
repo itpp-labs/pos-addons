@@ -1,6 +1,6 @@
 /* Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar2>
- * License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_mail.pos", function(require) {
     "use strict";
     var screens = require("point_of_sale.screens");

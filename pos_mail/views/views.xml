@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0.html).-->
+     License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record id="pos_config_view_form_inherited" model="ir.ui.view">
         <field name="name">pos.config.form.inherit</field>
