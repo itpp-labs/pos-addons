@@ -106,7 +106,6 @@ odoo.define("pos_mail.pos", function(require) {
 
     screens.ClientListScreenWidget.include({
         save_changes: function() {
-            var order = this.pos.get_order();
             if (
                 this.has_client_changed() &&
                 this.pos.config.send_receipt_by_mail &&
