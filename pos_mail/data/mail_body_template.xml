@@ -3,7 +3,9 @@
 <odoo>
     <record id="pos_mail_body_template" model="mail.template">
         <field name="name">pos_mail demo-template</field>
-        <field name="body_html"><![CDATA[
+        <field
+            name="body_html"
+        ><![CDATA[
             <p>Dear, ${partner.name}</p>
 
             <p>Thanks for purchasing in our shop</p>
@@ -13,9 +15,8 @@
             <p>Best wishes.</p>
             ]]></field>
     </record>
-    
     <record id="mail_message_default" model="ir.config_parameter">
         <field name="key">pos_mail.mail_message</field>
-        <field name="value" ref="pos_mail_body_template"></field>
+        <field name="value" ref="pos_mail_body_template" />
     </record>
 </odoo>
