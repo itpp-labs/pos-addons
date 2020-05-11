@@ -1,0 +1,22 @@
+<!-- Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <record id="pos_mail_body_template" model="mail.template">
+        <field name="name">pos_mail demo-template</field>
+        <field
+            name="body_html"
+        ><![CDATA[
+            <p>Dear, ${partner.name}</p>
+
+            <p>Thanks for purchasing in our shop</p>
+
+            <p>Your order is: ${order.id}</p>
+
+            <p>Best wishes.</p>
+            ]]></field>
+    </record>
+    <record id="mail_message_default" model="ir.config_parameter">
+        <field name="key">pos_mail.mail_message</field>
+        <field name="value" ref="pos_mail_body_template" />
+    </record>
+</odoo>

@@ -1,0 +1,9 @@
+<!-- Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <function
+        id="demo_check_send_via_mail"
+        model="pos.config"
+        name="action_set_true_send_via_mail"
+    />
+</odoo>
