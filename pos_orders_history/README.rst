@@ -7,10 +7,15 @@
 ====================
 
 The module allows to display:
+
 * all paid orders in POS
 * all cancelled orders in POS
 * the order reference barcode on payment receipt  
 
+Roadmap
+=======
+
+* Posibility to repring and modify existing order was implemented, but not merged: https://github.com/it-projects-llc/addons-dev/pull/377
 Credits
 =======
 
