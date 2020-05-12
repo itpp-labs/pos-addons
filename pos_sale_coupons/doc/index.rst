@@ -11,7 +11,7 @@ Installation
 Usage
 =====
 
-* Open ``Sales >> Configuration >> Coupon Program``
+* Open ``Sales >> Products >> Coupon Program``
 
   * Click ``[Create]``
   * Specify the fields:
