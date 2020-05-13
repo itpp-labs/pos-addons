@@ -15,9 +15,9 @@
     "license": "Other OSI approved licence",  # MIT
     "price": 89.00,
     "currency": "EUR",
-    "depends": ["pos_restaurant_base",],
+    "depends": ["pos_restaurant_base"],
     "external_dependencies": {"python": [], "bin": []},
-    "data": ["views/pos_order_print_check_template.xml",],
+    "data": ["views/pos_order_print_check_template.xml"],
     "demo": [],
     "qweb": [],
     "post_load": None,
