@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Web-NFC support in POS""",
     "summary": """Use NFC readers to scan RFID as barcodes""",
@@ -12,7 +12,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",
     "depends": ["point_of_sale"],
