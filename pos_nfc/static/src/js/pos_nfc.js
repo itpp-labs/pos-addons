@@ -1,6 +1,7 @@
 /* Copyright 2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html). */
 odoo.define("pos_nfc", function(require) {
+    "use strict";
     var BarcodeReader = require("point_of_sale.devices").BarcodeReader;
 
     BarcodeReader.include({
@@ -19,7 +20,7 @@ odoo.define("pos_nfc", function(require) {
                             _.each(
                                 message.records,
                                 function(r) {
-                                    if (r.recordType == "text") {
+                                    if (r.recordType === "text") {
                                         this.scan(r.data);
                                     }
                                 },
