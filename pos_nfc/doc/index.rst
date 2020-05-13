@@ -10,7 +10,7 @@ To use the module you need:
 * a device with NFC reader
 * a browser with `Web-NFC <https://w3c.github.io/web-nfc/>`__ support.
 
-  * Chrome: install latest version, open ``chrome://flags``, activate ``WebNFC`` 
+  * Chrome: install latest version, open ``chrome://flags``, activate ``WebNFC``
 
 Usage
 =====
