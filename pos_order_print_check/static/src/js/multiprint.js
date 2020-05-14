@@ -1,7 +1,9 @@
+/* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_order_print_check.multiprint", function(require) {
     "use strict";
 
-    var Printer = require("pos_restaurant.base");
+    var Printer = require("pos_restaurant.multiprint").Printer;
 
     Printer.include({
         check_connection: function() {

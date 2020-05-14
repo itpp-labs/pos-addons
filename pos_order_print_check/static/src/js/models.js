@@ -1,3 +1,5 @@
+/* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_order_print_check.models", function(require) {
     "use strict";
 
