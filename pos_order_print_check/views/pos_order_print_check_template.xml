@@ -20,6 +20,10 @@ License MIT (https://opensource.org/licenses/MIT). -->
                 type="text/javascript"
                 src="/pos_order_print_check/static/src/js/multiprint.js"
             />
+            <script
+                type="text/javascript"
+                src="/pos_order_print_check/static/src/js/tour_pos_order_print_check.js"
+            />
         </xpath>
     </template>
 </odoo>
