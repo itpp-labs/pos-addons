@@ -10,6 +10,11 @@ Check the connection to PosBox before printing POS orders
 
 By default, the orders sent to printers may lost if the connection to PosBox is unexpectively interrupted. The module eliminates this disadvantage because it looks at the connection to PosBox before order printing.
 
+Roadmap
+=======
+
+* TODO: UI test doesn't work probably because it wasn't change since 10.0 version
+
 Credits
 =======
 
