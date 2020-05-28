@@ -199,13 +199,10 @@ odoo.define("pos_choosing_cashier", function(require) {
             });
         },
     });
-<<<<<<< HEAD
-=======
 
     return {
         Gui: Gui,
         CashierSelectionPopupWidget: CashierSelectionPopupWidget
     };
 
->>>>>>> :tada::one::two: pos_sale_coupon module (it-projects-llc/addons-dev#622)
 });

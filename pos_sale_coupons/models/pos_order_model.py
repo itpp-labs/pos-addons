@@ -40,10 +40,23 @@ class PosOrderLine(models.Model):
         current_prog = base_prog.search([('parented_storage_program', '=',  base_prog.id),
                                          ('discount_fixed_amount', '=', float(value))], limit=1)
         if not current_prog:
+            name = base_prog.name + ': ' + str(value)
+            discount_line_product_id = self.env['product.product'].create({
+                'name': name,
+                'type': 'service',
+                'taxes_id': False,
+                'supplier_taxes_id': False,
+                'sale_ok': False,
+                'purchase_ok': False,
+                'invoice_policy': 'order',
+                'lst_price': -1000000,
+                # Prevent pricelist strikethrough as negative value will always be lower then default 1$
+            })
             current_prog = base_prog.copy({
-                'name': base_prog.name + ': ' + str(value),
+                'name': name,
                 'is_code_storage_program': False,
                 'parented_storage_program': base_prog.id,
-                'discount_fixed_amount': float(value)
+                'discount_fixed_amount': float(value),
+                'discount_line_product_id': discount_line_product_id.id
             })
         return current_prog
