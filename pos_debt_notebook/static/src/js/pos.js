@@ -2,6 +2,7 @@
 openerp.pos_debt_notebook = function(instance){
     var module = instance.point_of_sale;
     var _t = instance.web._t;
+    var round_pr = instance.web.round_precision;
 
     var PosModelSuper = module.PosModel;
     module.PosModel = module.PosModel.extend({
@@ -84,7 +85,8 @@ openerp.pos_debt_notebook = function(instance){
                 return;
             }
 
-            if(isDebt && currentOrder.getPaidTotal() > currentOrder.getTotalTaxIncluded()){
+            var rounding = this.pos.currency.rounding;
+            if(isDebt && round_pr(currentOrder.getPaidTotal(), rounding) > round_pr(currentOrder.getTotalTaxIncluded(), rounding)){
                 this.pos_widget.screen_selector.show_popup('error',{
                     'message': _t('Unable to return the change with a debt payment method'),
                     'comment': _t('Please enter the exact or lower debt amount than the cost of the order'),
