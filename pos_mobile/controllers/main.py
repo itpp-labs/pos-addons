@@ -17,7 +17,5 @@ class ControllerPos(PosController):
         if pos_sessions and pos_sessions.config_id.auto_mobile:
             session_info = request.env["ir.http"].session_info()
             session_info["auto_mobile"] = True
-            response.qcontext.update(
-                {"session_info": json.dumps(session_info),}
-            )
+            response.qcontext.update({"session_info": json.dumps(session_info)})
         return response
