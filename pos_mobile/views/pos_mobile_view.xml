@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form_pos_mobile">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+        <field name="arch" type="xml">
+            <field name="iface_big_scrollbars" position="after">
+                <field name="auto_mobile" />
+            </field>
+        </field>
+    </record>
+</odoo>
