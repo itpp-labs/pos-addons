@@ -15,16 +15,9 @@
     "currency": "EUR",
     "depends": ["point_of_sale", "pos_debranding"],
     "external_dependencies": {"python": [], "bin": []},
-    "data": [
-        "views/pos_mobile_template.xml",
-        "views/pos_mobile_view.xml",
-    ],
-    "qweb": [
-        "static/src/xml/pos.xml"
-    ],
-    "demo": [
-    ],
-
+    "data": ["views/pos_mobile_template.xml", "views/pos_mobile_view.xml",],
+    "qweb": ["static/src/xml/pos.xml"],
+    "demo": [],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
