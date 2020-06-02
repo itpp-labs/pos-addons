@@ -130,7 +130,7 @@ class PosMultiSessionSync(models.Model):
         order = json.loads(order.order)
         data = order.get("data")
         lines = data.get("lines")
-        lines_list = {l[2]["uid"]: l[2] for l in lines}
+        lines_list = {line[2]["uid"]: line[2] for line in lines}
 
         for e in message["data"]["lines"]:
             line = lines_list.get(e[2]["uid"])

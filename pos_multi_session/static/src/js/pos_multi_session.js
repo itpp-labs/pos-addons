@@ -1071,7 +1071,7 @@ odoo.define("pos_multi_session", function(require) {
                     self.client_online = true;
 
                     if (res.action === "revision_error") {
-                        if (res.state == "deleted" || res.state == "paid") {
+                        if (res.state === "deleted" || res.state === "paid") {
                             var removed_order = self.pos
                                 .get("orders")
                                 .find(function(order) {
