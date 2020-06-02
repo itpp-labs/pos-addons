@@ -8,6 +8,7 @@ addons:
   exclude:
     - hw_proxy
     - hw_escpos
+    - hw_printer_network
 
   server_wide_modules:
     - web
