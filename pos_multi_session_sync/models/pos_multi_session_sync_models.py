@@ -373,22 +373,35 @@ class PosMultiSessionSyncOrder(models.Model):
     order = fields.Text("Order JSON format")
     nonce = fields.Char("Random nonce")
     order_uid = fields.Char(index=True)
-    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed'),
-                              ('paid', 'Paid')], default='draft', index=True)
-    revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
-    multi_session_ID = fields.Integer(default=0, string='Multi session')
-    pos_session_ID = fields.Integer(index=True, default=0, string='POS session')
-    run_ID = fields.Integer(index=True, string="Running count", default=1,
-                            help="Number of Multi-session starts. "
-                                 "It's incremented each time the last session in Multi-session is closed. "
-                                 "It's used to prevent synchronization of old orders")
+    state = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("deleted", "Deleted"),
+            ("unpaid", "Unpaid and removed"),
+            ("paid", "Paid"),
+        ],
+        default="draft",
+        index=True,
+    )
+    revision_ID = fields.Integer(
+        default=1, string="Revision", help="Number of updates received from clients"
+    )
+    multi_session_ID = fields.Integer(default=0, string="Multi session")
+    pos_session_ID = fields.Integer(index=True, default=0, string="POS session")
+    run_ID = fields.Integer(
+        index=True,
+        string="Running count",
+        default=1,
+        help="Number of Multi-session starts. "
+        "It's incremented each time the last session in Multi-session is closed. "
+        "It's used to prevent synchronization of old orders",
+    )
 
     @api.multi
     def action_pos_multi_session_restore_order(self):
         for r in self:
-            sync_ms = self.env['pos_multi_session_sync.multi_session'].browse(r.multi_session_ID)
-            r.write({
-                'state': 'draft',
-                'run_ID': sync_ms.run_ID
-            })
+            sync_ms = self.env["pos_multi_session_sync.multi_session"].browse(
+                r.multi_session_ID
+            )
+            r.write({"state": "draft", "run_ID": sync_ms.run_ID})
             # TODO: send the order to POSes via bus after restore
