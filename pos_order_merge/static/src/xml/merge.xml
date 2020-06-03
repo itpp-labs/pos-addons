@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-
     <t t-name="OrderMergeButton">
         <span class="control-button order-merge">
             <i class="fa fa-file-o" />
             Join
         </span>
     </t>
-
     <t t-name="OrderMerge">
         <li
             t-attf-class="order #{ selected ? 'selected' : ''}"
             t-att-data-uid="order.uid"
         >
             <span class="order-sequence">
-               <t t-esc="order.sequence_number" />
+                <t t-esc="order.sequence_number" />
             </span>
             <span class="order-name">
                 <t t-esc="order.name" />
@@ -26,7 +24,6 @@
             </span>
         </li>
     </t>
-
     <t t-name="OrderMergeScreenWidget">
         <div class='order-merge-screen screen'>
             <div class='screen-content'>
@@ -78,5 +75,4 @@
             </div>
         </div>
     </t>
-
 </templates>

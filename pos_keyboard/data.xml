@@ -4,23 +4,17 @@
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
     License MIT (https://opensource.org/licenses/MIT). -->
 <openerp>
-
-        <template id="assets" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script
-                type="text/javascript"
-                src="/pos_keyboard/static/src/js/pos.js"
-            />
-            </xpath>
-        </template>
-
-        <template id="demo_assets_backend" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_keyboard/static/src/js/pos.js" />
+        </xpath>
+    </template>
+    <template id="demo_assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
                 type="text/javascript"
                 src="/pos_keyboard/static/src/js/test_pos_keyboard.js"
             />
-            </xpath>
-        </template>
-
+        </xpath>
+    </template>
 </openerp>

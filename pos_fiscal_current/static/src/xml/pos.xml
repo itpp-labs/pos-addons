@@ -5,7 +5,7 @@
             t-jquery=".order-container .summary.clearfix .subentry:first"
             t-operation="after"
         >
-         <div class='fiscal'>Fiscal: <span class="value" /></div>
+            <div class='fiscal'>Fiscal: <span class="value" /></div>
         </t>
     </t>
 </templates>

@@ -16,7 +16,9 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" /></h1>
+                        <h1>
+                            <field name="name" />
+                        </h1>
                     </div>
                     <group>
                         <field name="refund_ref" />
@@ -34,7 +36,6 @@
             </form>
         </field>
     </record>
-
     <record id="refund_list" model="ir.ui.view">
         <field name="name">wechat.refund.list</field>
         <field name="model">wechat.refund</field>
@@ -46,7 +47,6 @@
             </tree>
         </field>
     </record>
-
     <record id="refund_search" model="ir.ui.view">
         <field name="name">wechat.refund.search</field>
         <field name="model">wechat.refund</field>
@@ -59,19 +59,16 @@
             </search>
         </field>
     </record>
-
     <record id="action_wechat_refund" model="ir.actions.act_window">
         <field name="name">Wechat Refund</field>
         <field name="res_model">wechat.refund</field>
         <field name='view_type'>form</field>
         <field name='view_mode'>tree,form</field>
     </record>
-
     <menuitem
         action='action_wechat_refund'
         id='wechat_refund_menu'
         parent='root_wechat_menu'
         sequence='100'
     />
-
 </odoo>
