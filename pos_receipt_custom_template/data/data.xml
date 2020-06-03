@@ -217,8 +217,7 @@
     </t>]]>
         </field>
     </record>
-
-        <record id="simple_pos_receipt" model="pos.custom_receipt">
+    <record id="simple_pos_receipt" model="pos.custom_receipt">
         <field name="name">Simple POS Receipt</field>
         <field name="type">receipt</field>
         <field
@@ -459,5 +458,4 @@
 ]]>
         </field>
     </record>
-
 </odoo>

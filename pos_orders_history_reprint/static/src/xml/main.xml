@@ -4,7 +4,6 @@
      Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License MIT (https://opensource.org/licenses/MIT). -->
 <templates id="template" xml:space="preserve">
-
     <t t-extend="OrderHistory">
         <t t-jquery=".actions.oe_hidden" t-operation="append">
             <span class="button reprint oe_hidden"><i
@@ -12,13 +11,13 @@
                 /> Reprint</span>
         </t>
     </t>
-
     <t t-name="PosTicketReprint">
         <div class="pos-sale-ticket">
 
-            <div class="pos-center-align"><t t-esc="order.create_date" /> <t
-                    t-esc="order.name"
-                /></div>
+            <div class="pos-center-align">
+                <t t-esc="order.create_date" />
+                <t t-esc="order.name" />
+            </div>
             <br />
             <t t-esc="order.company_id[1]" /><br />
             Phone: <t t-esc="widget.pos.company.phone || ''" /><br />
@@ -39,7 +38,7 @@
                 <tr t-foreach="orderlines" t-as="orderline">
                     <td>
                         <t t-esc="orderline.display_name" />
-                         <t t-if="orderline.discount > 0">
+                        <t t-if="orderline.discount > 0">
                             <div class="pos-disc-font">
                                 With a <t t-esc="orderline.discount" />% discount
                             </div>
@@ -65,7 +64,9 @@
                 </tr>
                 <t t-foreach="taxes" t-as="taxdetail">
                     <tr>
-                        <td><t t-esc="taxdetail.name" /></td>
+                        <td>
+                            <t t-esc="taxdetail.name" />
+                        </td>
                         <td class="pos-right-align">
                             <t t-esc="widget.format_currency(taxdetail.amount)" />
                         </td>
@@ -89,21 +90,26 @@
             <br />
             <table class='receipt-paymentlines'>
                 <t t-foreach="paymentlines" t-as="line">
-                  <tr>
-                      <td>
-                          <t t-esc="line.name" />
-                      </td>
-                      <td class="pos-right-align">
-                          <t t-esc="widget.format_currency(line.amount)" />
-                      </td>
-                  </tr>
+                    <tr>
+                        <td>
+                            <t t-esc="line.name" />
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(line.amount)" />
+                        </td>
+                    </tr>
                 </t>
             </table>
             <br />
             <table class='receipt-change'>
-                <tr><td>Change:</td><td class="pos-right-align">
-                    <t t-esc="widget.format_currency(Math.abs(order.amount_return))" />
-                    </td></tr>
+                <tr>
+                    <td>Change:</td>
+                    <td class="pos-right-align">
+                        <t
+                            t-esc="widget.format_currency(Math.abs(order.amount_return))"
+                        />
+                    </td>
+                </tr>
             </table>
             <t t-if="receipt.footer">
                 <br />
@@ -113,7 +119,6 @@
             </t>
         </div>
     </t>
-
     <t t-name="ReprintReceiptScreenWidget">
         <div class='receipt-screen screen'>
             <div class='screen-content'>
@@ -133,6 +138,4 @@
             </div>
         </div>
     </t>
-
-
 </templates>

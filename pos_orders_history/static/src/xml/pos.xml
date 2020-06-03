@@ -4,13 +4,11 @@
      Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
      License MIT (https://opensource.org/licenses/MIT). -->
 <templates id="template" xml:space="preserve">
-
     <t t-name="OrdersHistoryButton">
         <div class='control-button orders-history'>
             <i class='fa fa-list-alt ' /> History
         </div>
     </t>
-
     <t t-name="OrdersHistoryScreenWidget">
         <div class="orders-list-screen screen">
             <div class="screen-content">
@@ -82,7 +80,6 @@
             </div>
         </div>
     </t>
-
     <t t-name="OrderHistory">
         <tr class='order-line' t-att-data-id='order.id'>
             <td>
@@ -90,14 +87,19 @@
                     <t t-esc='order.pos_reference' />
                 </span>
             </td>
-
             <td>
                 <t t-if='order.partner_id' t-esc='order.partner_id[1]' />
                 <t t-if='!order.partner_id' t-esc='""' />
             </td>
-            <td><t t-esc='order.pos_name' /></td>
-            <td><t t-esc='widget.get_datetime_format(order.date_order)' /></td>
-            <td><t t-esc='order.user_id[1]' /></td>
+            <td>
+                <t t-esc='order.pos_name' />
+            </td>
+            <td>
+                <t t-esc='widget.get_datetime_format(order.date_order)' />
+            </td>
+            <td>
+                <t t-esc='order.user_id[1]' />
+            </td>
             <t
                 t-set="state"
                 t-value="order.computed_state &amp;&amp; order.computed_state || order.state"
@@ -120,7 +122,6 @@
             </td>
         </tr>
     </t>
-
     <t t-name="LinesHeader">
         <tr>
             <th>Image</th>
@@ -133,7 +134,6 @@
             <th>Subtotal</th>
         </tr>
     </t>
-
     <t t-name="LineHistory">
         <tr class='line-line'>
             <td>
@@ -141,16 +141,29 @@
                     <img t-att-src="line.image" />
                 </div>
             </td>
-            <td><t t-esc='line.product_id[1]' /></td>
-            <td><t t-esc='line.qty' /></td>
-            <td><t t-esc='widget.format_currency(line.price_unit)' /></td>
-            <td><t t-esc='line.discount' /></td>
-            <td><t t-esc='line.tax_ids' /></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal)' /></td>
-            <td><t t-esc='widget.format_currency(line.price_subtotal_incl)' /></td>
+            <td>
+                <t t-esc='line.product_id[1]' />
+            </td>
+            <td>
+                <t t-esc='line.qty' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_unit)' />
+            </td>
+            <td>
+                <t t-esc='line.discount' />
+            </td>
+            <td>
+                <t t-esc='line.tax_ids' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_subtotal)' />
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(line.price_subtotal_incl)' />
+            </td>
         </tr>
     </t>
-
     <t t-extend="PosTicket">
         <t t-jquery="t[t-if*='receipt.footer']" t-operation="before">
             <span>
@@ -158,15 +171,13 @@
             </span>
         </t>
     </t>
-
     <t t-extend="XmlReceipt">
         <t t-jquery="t[t-if*='receipt.footer_xml']" t-operation="before">
             <img id="barcode" />
             <!-- TODO Print barcode via element tag -->
-<!--            <t t-if="widget.pos.config.show_barcode_in_receipt">
+            <!--            <t t-if="widget.pos.config.show_barcode_in_receipt">
                 <barcode encoding="code39"><t t-esc="widget.pos.get_order().uid"/></barcode>
             </t>-->
         </t>
     </t>
-
 </templates>

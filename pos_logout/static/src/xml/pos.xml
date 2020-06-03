@@ -16,7 +16,6 @@
             </t>
         </t> -->
     </t>
-
     <t t-name="BlockPopupWidget">
         <div class="modal-dialog block">
             <div class="popup popup-selection">
@@ -27,5 +26,4 @@
             </div>
         </div>
     </t>
-
 </templates>
