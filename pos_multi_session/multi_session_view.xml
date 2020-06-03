@@ -17,15 +17,30 @@
                         <field name="name" />
                     </h1>
                     <group string="Settings">
-                        <field name="pos_ids" widget="many2many_tags" domain="[('current_session_state', '!=', 'opened')]" options="{'not_delete': True}"/>
-                        <field name="multi_session_active"/>
-                        <field name="sync_server" placeholder="http://yourhost"/>
-                        <field name="fiscal_position_ids" widget="many2many_tags" options="{'not_delete': True}"/>
-                        <field name="company_id" groups="base.group_multi_company"/>
-                        <field name="order_ID" readonly="1"/>
-                        <field name="load_unpaid_orders"/>
-                        <field name="load_orders_of_last_n_days" attrs="{'invisible':[('load_unpaid_orders', '=', False)]}"/>
-                        <field name="number_of_days" attrs="{'invisible':['|', ('load_unpaid_orders', '=', False), ('load_orders_of_last_n_days', '=', False)]}"/>
+                        <field
+                            name="pos_ids"
+                            widget="many2many_tags"
+                            domain="[('current_session_state', '!=', 'opened')]"
+                            options="{'not_delete': True}"
+                        />
+                        <field name="multi_session_active" />
+                        <field name="sync_server" placeholder="http://yourhost" />
+                        <field
+                            name="fiscal_position_ids"
+                            widget="many2many_tags"
+                            options="{'not_delete': True}"
+                        />
+                        <field name="company_id" groups="base.group_multi_company" />
+                        <field name="order_ID" readonly="1" />
+                        <field name="load_unpaid_orders" />
+                        <field
+                            name="load_orders_of_last_n_days"
+                            attrs="{'invisible':[('load_unpaid_orders', '=', False)]}"
+                        />
+                        <field
+                            name="number_of_days"
+                            attrs="{'invisible':['|', ('load_unpaid_orders', '=', False), ('load_orders_of_last_n_days', '=', False)]}"
+                        />
                     </group>
                     <group>
                         <p
