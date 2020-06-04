@@ -9,6 +9,6 @@
     "images": ["images/product-form.png"],
     "depends": ["product", "stock"],
     "data": ["views.xml"],
-    "installable": False,
+    "installable": True,
     "auto_install": False,
 }

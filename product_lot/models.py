@@ -1,3 +1,9 @@
+# Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
+# Copyright 2014-2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2016 Rafael Manaev <https://github.com/manawi>
+# Copyright 2019 Vildan Safin <https://github.com/Enigma228322>
+# License MIT (https://opensource.org/licenses/MIT).
+
 from odoo import fields, models
 
 
@@ -38,7 +44,7 @@ class ProductProduct(models.Model):
         destination_location_id = source_location_id
         middle_location_id = lot.property_stock_production.id
 
-        cons_move_id = stock_move_obj.create(
+        stock_move_obj.create(
             {
                 "name": "split product (consume)",
                 "product_id": lot.id,
@@ -50,7 +56,7 @@ class ProductProduct(models.Model):
             }
         )
 
-        prod_move_id = stock_move_obj.create(
+        stock_move_obj.create(
             {
                 "name": "split product (produce)",
                 "product_id": lot.lot_product_id.id,
@@ -61,6 +67,21 @@ class ProductProduct(models.Model):
                 "company_id": lot.lot_product_id.company_id.id,
             }
         )
-        cons_move_id.action_done()
-        prod_move_id.action_done()
+
+        # Changing product "On Hand" qty when splitting product
+        prod = self.browse(lot.lot_product_id.id)
+        current_qty = prod.qty_available
+        product_in_box = self.env["stock.change.product.qty"].create(
+            {"product_id": lot.lot_product_id.id, "new_quantity": 0}
+        )
+        product_in_box.change_product_qty()
+
+        # qty_in_other_warehouses - prod.qty_available
+        product_in_box = self.env["stock.change.product.qty"].create(
+            {
+                "product_id": lot.lot_product_id.id,
+                "new_quantity": current_qty + lot.lot_qty - prod.qty_available,
+            }
+        )
+        product_in_box.change_product_qty()
         return True

@@ -23,8 +23,10 @@ Maintainers
 Further information
 ===================
 
-HTML Description: https://apps.odoo.com/apps/modules/8.0/product_lot/
+HTML Description: https://apps.odoo.com/apps/modules/11.0/product_lot/
 
 Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
+
+Tested on Odoo 11.0 6ce2d6efb5b53451f369d544a31c36a024e0faf5
