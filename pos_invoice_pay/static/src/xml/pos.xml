@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+
+<templates id="template" xml:space="preserve">
+
+    <t t-name="SaleOrdersButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt'/> Fetch Orders
+        </div>
+    </t>
+
+        <t t-name="InvoicesButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt'/> Fetch Invoices
+        </div>
+    </t>
+
+    <t t-name="SaleOrder">
+        <tr class='sale-order' t-att-data-id='item.id'>
+            <td><t t-esc='item.name' /></td>
+            <td><t t-esc='item.date_order' /></td>
+            <td><t t-esc='item.partner_id[1]' /></td>
+            <td><t t-esc='item.user_id[1]' /></td>
+            <td><t t-esc='widget.format_currency(item.amount_total)' /></td>
+            <td><t t-esc='item.invoice_status' /></td>
+        </tr>
+    </t>
+
+    <t t-name="SaleOrderLinesHeader">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Delivered</th>
+                <th>Invoiced</th>
+                <th>Unit Price</th>
+                <th>Taxes</th>
+                <th>Discount(%)</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+    </t>
+
+    <t t-name="SaleOrderLine">
+        <tr t-att-data-id='line.id' t-attf-class='sale-order-line #{line.invoiceble ? "invoiceble" : ""}'>
+            <td><t t-esc='line.product'/></td>
+            <td><t t-esc='line.name'/></td>
+            <td><t t-esc='line.uom_qty'/></td>
+            <td><t t-esc='line.qty_delivered'/></td>
+            <td><t t-esc='line.qty_invoiced'/></td>
+            <td><t t-esc='widget.format_currency(line.total)'/></td>
+            <td><t t-esc='line.tax'/></td>
+            <td><t t-esc="line.discount"/></td>
+            <td><t t-esc='widget.format_currency(line.subtotal)'/></td>
+        </tr>
+    </t>
+
+<t t-name="InvoiceLinesHeader">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Account</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Taxes</th>
+                <th>Discount(%)</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+    </t>
+
+    <t t-name="InvoiceLine">
+        <tr class='sale-order-line' t-att-data-id='line.id'>
+            <td><t t-esc='line.product'/></td>
+            <td><t t-esc='line.name'/></td>
+            <td><t t-esc='line.account'/></td>
+            <td><t t-esc='line.qty'/></td>
+            <td><t t-esc='widget.format_currency(line.price_unit)'/></td>
+            <td><t t-esc='line.tax'/></td>
+            <td><t t-esc="line.discount"/></td>
+            <td><t t-esc='widget.format_currency(line.amount)'/></td>
+        </tr>
+    </t>
+
+    <t t-name="SaleOrdersWidget">
+        <div class="sale-orders-list-screen list-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='searchbox'>
+                        <input placeholder='Search Sale Orders' />
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+                    <span class='button next oe_hidden highlight'>
+                        Create Invoice
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Date</th>
+                                                <th>Customer</th>
+                                                <th>Salesperson</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="Invoice">
+        <tr class='invoice' t-att-data-id='item.id'>
+            <td><t t-esc='item.partner_id[1]' /></td>
+            <td><t t-esc='item.date_invoice' /></td>
+            <td><t t-esc='item.number' /></td>
+            <td><t t-esc='item.user_id[1]' /></td>
+            <td><t t-esc='item.date_due' /></td>
+            <td><t t-esc='widget.format_currency(item.amount_total)' /></td>
+            <td><t t-esc='widget.format_currency(item.residual)' /></td>
+            <td><t t-esc='item.state' /></td>
+
+        </tr>
+    </t>
+
+    <t t-name="InvoicesWidget">
+        <div class="invoice-list-screen list-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='searchbox'>
+                        <input placeholder='Search Invoices' />
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+
+                    <span class='button next oe_hidden highlight'>
+
+                        <i class='fa fa-angle-double-right'></i>
+                        Register Payment
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th>Invoice Date</th>
+                                                <th>Number</th>
+                                                <th>Salesperson</th>
+                                                <th>Due Date</th>
+                                                <th>Total</th>
+                                                <th>Amount Due</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="InvoicePaymentScreenWidget">
+        <div class='invoice-payment-screen screen'>
+            <div class='screen-content'>
+                <div class='top-content'>
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Back
+                    </span>
+                    <h1>Payment</h1>
+                    <span class='button next'>
+                        Validate
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
+                <div class='left-content pc40 touch-scrollable scrollable-y'>
+
+                    <div class='paymentmethods-container'>
+                    </div>
+
+                </div>
+                <div class='right-content pc60 touch-scrollable scrollable-y'>
+
+                    <section class='paymentlines-container'>
+                    </section>
+
+                    <section class='payment-numpad invoice'>
+                    </section>
+
+                    <div class='payment-buttons'>
+                        <t t-if='widget.pos.config.iface_invoicing'>
+                            <t t-if='widget.pos.get_order()'>
+                                <div t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '>
+                                    <i class='fa fa-file-text-o' /> Invoice
+                                </div>
+                            </t>
+                        </t>
+                        <t t-if='widget.pos.config.tip_product_id'>
+                            <div class='button js_tip'>
+                                <i class='fa fa-heart' /> Tip 
+                            </div>
+                        </t>
+                        <t t-if='widget.pos.config.iface_cashdrawer'>
+                            <div class='button js_cashdrawer'>
+                                <i class='fa fa-archive' /> Open Cashbox
+                            </div>
+                        </t>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </t>
+
+     <t t-name="InvoicePaymentScreen-Paymentlines">
+        <t t-if="!paymentlines.length">
+            <div class='paymentlines-empty'>
+                <div class='total'>
+                    <t t-esc="widget.format_currency(widget.get_invoice_residual())"/>            
+                </div>
+                <div class='message'>
+                    Please select a payment method. 
+                </div>
+            </div>
+        </t>
+
+        <t t-if="paymentlines.length">
+            <table class='paymentlines'>
+                <colgroup>
+                    <col class='due' />
+                    <col class='tendered' />
+                    <col class='change' />
+                    <col class='method' />
+                    <col class='controls' />
+                </colgroup>
+                <thead>
+                    <tr class='label'>
+                        <th>Due</th>
+                        <th>Tendered</th>
+                        <th>Change</th>
+                        <th>Method</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach='paymentlines' t-as='line'>
+                        <t t-if='line.selected'>
+                            <tr class='paymentline selected'>
+                                <td class='col-due'> <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_due(line))' /> </td>
+                                <td class='col-tendered edit'> 
+                                    <t t-esc='widget.inputbuffer' />
+<!--                                     <t t-esc='line.get_amount()' />
+ -->                                </td>
+                                <t t-if='order.get_change(line)'>
+                                    <td class='col-change highlight' > 
+                                        <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_change(line))' />
+                                    </td>
+                                </t>
+                                <t t-if='!order.get_change(line)'>
+                                    <td class='col-change' ></td>
+                                </t>
+                                    
+                                <td class='col-name' > <t t-esc='line.name' /> </td>
+                                <td class='delete-button' t-att-data-cid='line.cid'> <i class='fa fa-times-circle' /> </td>
+                            </tr>
+                        </t>
+                        <t t-if='!line.selected'>
+                            <tr class='paymentline' t-att-data-cid='line.cid'>
+                                <td class='col-due'> <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_due(line))' /> </td>
+                                <td class='col-tendered'> <t t-esc='widget.format_currency_no_symbol(line.get_amount())' /> </td>
+                                <td class='col-change'> 
+                                    <t t-if='order.invoice_to_pay.get_change(line)'>
+                                        <t t-esc='widget.format_currency_no_symbol(order.invoice_to_pay.get_change(line))' />
+                                     </t>
+                                </td>
+                                <td class='col-name'> <t t-esc='line.name' /> </td>
+                                <td class='delete-button' t-att-data-cid='line.cid'> <i class='fa fa-times-circle' /> </td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-if='extradue'>
+                        <tr class='paymentline extra' t-att-data-cid='0'>
+                            <td class='col-due'> <t t-esc='widget.format_currency_no_symbol(extradue)' /> </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+
+    </t>
+
+    <t t-name="InvoiceReceiptScreenWidget">
+        <div class='invoice-receipt-screen screen'>
+            <div class='screen-content'>
+                <div class='top-content'>
+                    <h1>Change: <span class='change-value'>0.00</span></h1>
+                    <span class='button next'>
+                        Next Order
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
+                <div class="centered-content touch-scrollable">
+                    <div class="button print">
+                        <i class='fa fa-print'></i> Print Receipt
+                    </div>
+                    <div class="pos-receipt-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PosInvoiceTicket">
+        <div class="pos-sale-ticket">
+            
+            <div class="pos-center-align"><t t-esc="moment().format('L LT')"/> <t t-esc="order.name"/></div>
+            <br />
+            <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.number"/>
+                <t t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'>
+                    (<t t-esc="order.invoice_to_pay.origin"/>)
+                </t>
+            </div>
+            <br />
+
+            <t t-esc="widget.pos.company.name"/><br />
+            Phone: <t t-esc="widget.pos.company.phone || ''"/><br />
+            User: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/><br />
+            <br />
+            <t t-if="receipt.header">
+                <div style='text-align:center'>
+                    <t t-esc="receipt.header" />
+                </div>
+                <br />
+            </t>
+            <table class='receipt-total'>
+                <tr>
+                    <td>Subtotal:</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.invoice_to_pay.get_subtotal())"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tax:</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.invoice_to_pay.amount_tax)"/>
+                    </td>
+                </tr>
+                <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                    <tr>
+                        <td><t t-esc="taxdetail.name" /></td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(taxdetail.amount)" />
+                        </td>
+                    </tr>
+                </t>
+                <tr class="emph">
+                    <td>Total:</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.invoice_to_pay.residual)"/>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class='receipt-paymentlines'>
+                <t t-foreach="paymentlines" t-as="line">
+                  <tr>
+                      <td>
+                          <t t-esc="line.name"/>
+                      </td>
+                      <td class="pos-right-align">
+                          <t t-esc="widget.format_currency(line.get_amount())"/>
+                      </td>
+                  </tr>
+                </t>
+            </table>
+            <br />
+            <table class='receipt-change'>
+                <tr><td>Change:</td><td class="pos-right-align">
+                    <t t-esc="widget.format_currency(order.invoice_to_pay.get_change())"/>
+                    </td></tr>
+            </table>
+            <t t-if="receipt.footer">
+                <br />
+                <div style='text-align:center'>
+                    <t t-esc="receipt.footer" />
+                </div>
+            </t>
+        </div>
+    </t>
+
+
+    <t t-name="PosInvoiceReceipt">
+        <receipt align='center' width='40' value-thousands-separator='' >
+            <div>
+                <t t-if='receipt.company.logo'>
+                    <img t-att-src='receipt.company.logo' />
+                </t>
+                <t t-if='!receipt.company.logo'>
+                    <h1><t t-esc='receipt.company.name' /></h1>
+                    <br/>
+                </t>
+
+                <div>
+                    <t t-if='receipt.company.contact_address'>
+                        <div font='b'><t t-esc='receipt.company.contact_address' /></div>
+                    </t>
+                    <t t-if='receipt.company.phone'>
+                        <div font='b'>Tel:<t t-esc='receipt.company.phone' /></div>
+                    </t>
+                    <t t-if='receipt.company.vat'>
+                        <div>VAT:<t t-esc='receipt.company.vat' /></div>
+                    </t>
+                    <t t-if='receipt.company.email'>
+                        <div font='b'><t t-esc='receipt.company.email' /></div>
+                    </t>
+                    <t t-if='receipt.company.website'>
+                        <div font='b'><t t-esc='receipt.company.website' /></div>
+                    </t>
+                    <t t-if='receipt.header_xml'>
+                        <div font='b'><t t-raw='receipt.header_xml' /></div>
+                    </t>
+                    <t t-if='!receipt.header_xml and receipt.header'>
+                        <div font='b'><t t-raw='receipt.header' /></div>
+                    </t>
+                    <div>&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>
+                    <t t-if='receipt.cashier'>
+                        <div font='b' class='cashier'>
+                            <div>User: <t t-esc='receipt.cashier' /></div>
+                        </div>
+                    </t>
+                    <br />
+                    <t t-if='order.invoice_to_pay and order.invoice_to_pay.number and order.invoice_to_pay.origin'>
+                        <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.number"/>
+                            <t t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'>
+                                (<t t-esc="order.invoice_to_pay.origin"/>)
+                            </t>
+                        </div>
+                    </t>
+                </div>
+                <br />
+                <div>
+                    <line>
+                        <left>Subtotal:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.get_subtotal())"/>
+                        </right>
+                    </line>
+                    <line>
+                        <left>Tax:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.amount_tax)"/>
+                        </right>
+                    </line>
+
+                    <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                        <line>
+                            <left><t t-esc="taxdetail.name" /></left>
+                            <right class="pos-right-align">
+                                <t t-esc="widget.format_currency(taxdetail.amount)" />
+                            </right>
+                        </line>
+                    </t>
+
+                    <line size='double-height'>
+                        <left>Total:</left>
+                        <right class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.invoice_to_pay.residual)"/>
+                        </right>
+                    </line>
+                </div>
+                <br />
+                <div class='receipt-paymentlines'>
+                    <t t-foreach="paymentlines" t-as="line">
+                        <line>
+                            <left>
+                                <t t-esc="line.name"/>
+                            </left>
+                            <right class="pos-right-align">
+                                <t t-esc="widget.format_currency(line.get_amount())"/>
+                            </right>
+                        </line>
+                    </t>
+                </div>
+                <br />
+
+                <div class='receipt-change'>
+                    <line><left>Change:</left><right class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.invoice_to_pay.get_change())"/>
+                    </right></line>
+                </div>
+
+                <div class='before-footer' />
+
+                <t t-if='receipt.footer_xml'>
+                    <t t-raw='receipt.footer_xml' />
+                </t>
+
+                <t t-if='!receipt.footer_xml and receipt.footer'>
+                    <br/>
+                    <t t-raw='receipt.footer' />
+                    <br/>
+                    <br/>
+                </t>
+
+                <div class='after-footer' />
+
+                <br/>
+                <div font='b'>
+                    <div><t t-esc='receipt.name' /></div>
+                    <div><t t-esc='receipt.date.localestring' /></div>
+                </div>
+            </div>
+        </receipt>
+    </t>
+
+
+
+</templates>
