@@ -210,8 +210,15 @@ odoo.define("pos_product_available.PosModel", function(require) {
             value = field_utils.format.float(value, {digits: [69, 3]});
             return String(parseFloat(value));
         },
+        /*
+        Commented this code, cause it works incorrect
+        Example: "this.format_float_value(2366) === 2"
         rounded_qty: function() {
             return this.format_float_value(this.qty_available);
+        },
+        */
+        rounded_qty: function() {
+            return Math.round(this.qty_available);
         },
     });
 });
