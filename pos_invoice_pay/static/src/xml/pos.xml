@@ -459,9 +459,11 @@
                 <br />
             </t>
 
-            <t t-esc="widget.pos.company.name"/><br />
-            Phone: <t t-esc="widget.pos.company.phone || ''"/><br />
-            User: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/><br />
+            <t t-esc="widget.pos.company.name" /><br />
+            Phone: <t t-esc="widget.pos.company.phone || ''" /><br />
+            User: <t
+                t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"
+            /><br />
             <br />
             <t t-if="receipt.header">
                 <div style='text-align:center'>
@@ -604,7 +606,6 @@
                     </t>
                 </div>
                 <br />
-
                 <!-- Orderlines -->
                 <t t-if='widget.pos.config.show_invoice_lines_in_receipt'>
                     <div class='orderlines' line-ratio='0.6'>
@@ -633,7 +634,6 @@
                         </t>
                     </div>
                 </t>
-
                 <div>
                     <line>
                         <left>Subtotal:</left>

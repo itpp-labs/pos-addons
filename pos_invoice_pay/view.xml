@@ -40,8 +40,8 @@
                                 <field name="invoice_cashier_selection" />
                             </div>
                             <div attrs="{'invisible':[('show_invoices','=',False)]}">
-                                <label for="show_invoice_lines_in_receipt"/>
-                                <field name="show_invoice_lines_in_receipt"/>
+                                <label for="show_invoice_lines_in_receipt" />
+                                <field name="show_invoice_lines_in_receipt" />
                             </div>
                         </div>
                     </div>

@@ -158,15 +158,26 @@ class PosConfig(models.Model):
         return acc if acc else False
 
     show_invoices = fields.Boolean(help="Show invoices in POS", default=True)
-    show_invoice_lines_in_receipt = fields.Boolean(help="Show invoice lines in receipt", default=False)
+    show_invoice_lines_in_receipt = fields.Boolean(
+        help="Show invoice lines in receipt", default=False
+    )
     show_sale_orders = fields.Boolean(help="Show sale orders in POS", default=True)
-    pos_invoice_pay_writeoff_account_id = fields.Many2one('account.account', string="Difference Account",
-                                                          help="The account is used for the difference between due and paid amount",
-                                                          default=_get_default_writeoff_account)
-    invoice_cashier_selection = fields.Boolean(string='Select Invoice Cashier',
-                                               help='Ask for a cashier when fetch invoices', default=True)
-    sale_order_cashier_selection = fields.Boolean(string='Select Sale Order Cashier',
-                                                  help='Ask for a cashier when fetch orders', default=True)
+    pos_invoice_pay_writeoff_account_id = fields.Many2one(
+        "account.account",
+        string="Difference Account",
+        help="The account is used for the difference between due and paid amount",
+        default=_get_default_writeoff_account,
+    )
+    invoice_cashier_selection = fields.Boolean(
+        string="Select Invoice Cashier",
+        help="Ask for a cashier when fetch invoices",
+        default=True,
+    )
+    sale_order_cashier_selection = fields.Boolean(
+        string="Select Sale Order Cashier",
+        help="Ask for a cashier when fetch orders",
+        default=True,
+    )
 
 
 class PosSession(models.Model):
