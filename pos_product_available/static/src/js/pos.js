@@ -11,42 +11,43 @@ odoo.define("pos_product_available.PosModel", function(require) {
     var models = require("point_of_sale.models");
     var field_utils = require("web.field_utils");
 
-    models.load_fields('product.product',['qty_available', 'type']);
+    models.load_fields("product.product", ["qty_available", "type"]);
 
     var PosModelSuper = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         get_product_model: function() {
-            return _.find(this.models, function(model){
-                return model.model === 'product.product';
+            return _.find(this.models, function(model) {
+                return model.model === "product.product";
             });
         },
         initialize: function(session, attributes) {
-            var self = this;
-            // compatibility with pos_cache module
+            // Compatibility with pos_cache module
             // preserve product.product model data for future request
             this.product_product_model = this.get_product_model(this.models);
             PosModelSuper.initialize.apply(this, arguments);
         },
-        load_server_data: function(){
-            // compatibility with pos_cache module
+        load_server_data: function() {
+            // Compatibility with pos_cache module
             var self = this;
 
             var loaded = PosModelSuper.load_server_data.call(this);
             if (this.get_product_model(this.models)) {
                 return loaded;
             }
-            // if product.product model is not presented in this.models after super was called then pos_cache module installed
-            return loaded.then(function(){
-                return rpc.query({
-                        model: 'product.product',
-                        method: 'search_read',
+            // If product.product model is not presented in this.models after super was called then pos_cache module installed
+            return loaded.then(function() {
+                return rpc
+                    .query({
+                        model: "product.product",
+                        method: "search_read",
                         args: [],
-                        fields: ['qty_available', 'type'],
+                        fields: ["qty_available", "type"],
                         domain: self.product_product_model.domain,
                         context: _.extend(self.product_product_model.context, {
-                            'location': self.config.default_location_src_id[0],
-                        })
-                    }).then(function(products){
+                            location: self.config.default_location_src_id[0],
+                        }),
+                    })
+                    .then(function(products) {
                         self.add_product_qty(products);
                     });
             });
@@ -70,7 +71,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
         },
         add_product_qty: function(products) {
             var self = this;
-            _.each(products, function(p){
+            _.each(products, function(p) {
                 _.extend(self.db.get_product_by_id(p.id), p);
             });
         },
