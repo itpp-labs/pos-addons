@@ -436,6 +436,29 @@
             </div>
             <br />
 
+            <t t-if='widget.pos.config.show_invoice_lines_in_receipt'>
+                <!-- based on https://github.com/odoo/odoo/blob/5235a49a5cd0f79f5590c96afa26dce25465fe06/addons/point_of_sale/static/src/xml/pos.xml#L1466-L1489 -->
+                <table class='receipt-orderlines'>
+                    <colgroup>
+                        <col width='50%' />
+                        <col width='25%' />
+                        <col width='25%' />
+                    </colgroup>
+                    <tr t-foreach="order.invoice_to_pay.lines" t-as="orderline">
+                        <td>
+                            <t t-esc="orderline.name" />
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.qty" />
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(orderline.amount)" />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </t>
+
             <t t-esc="widget.pos.company.name" /><br />
             Phone: <t t-esc="widget.pos.company.phone || ''" /><br />
             User: <t
@@ -583,6 +606,34 @@
                     </t>
                 </div>
                 <br />
+                <!-- Orderlines -->
+                <t t-if='widget.pos.config.show_invoice_lines_in_receipt'>
+                    <div class='orderlines' line-ratio='0.6'>
+                        <t t-foreach='order.invoice_to_pay.lines' t-as='line'>
+                            <line line-ratio='1'>
+                                <left>
+                                    <t t-esc="line.name" />
+                                </left>
+                            </line>
+                            <line indent='1'>
+                                <left>
+                                    <value value-autoint='on'>
+                                        <t t-esc='line.qty' />
+                                    </value>
+                                    x
+                                    <value value-autoint='on'>
+                                        <t t-esc='line.price_unit' />
+                                    </value>
+                                </left>
+                                <right>
+                                    <value>
+                                        <t t-esc='line.amount' />
+                                    </value>
+                                </right>
+                            </line>
+                        </t>
+                    </div>
+                </t>
                 <div>
                     <line>
                         <left>Subtotal:</left>
