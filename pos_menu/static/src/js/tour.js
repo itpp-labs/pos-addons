@@ -10,24 +10,34 @@ odoo.define("pos_menu.tour", function(require) {
 
     var _t = core._t;
 
-    function pos_opening(pos){
-      return [tour.STEPS.SHOW_APPS_MENU_ITEM, {
-        trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-        content: _t("Ready to launch your <b>point of sale</b>? <i>Click here</i>."),
-        position: 'bottom',
-      }, {
-        trigger: ".o_kanban_record:contains("+ pos +") .btn-primary:first",
-        content: _t("<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"),
-        position: "bottom"
-      }, {
-        trigger: '.o_main_content:has(.loader:hidden)',
-        content: 'Wait for loading is finished',
-        timeout: 20000,
-        run: function () {
-            // it's a check
-          },
-      }];
-      }
+    function pos_opening(pos) {
+        return [
+            tour.STEPS.SHOW_APPS_MENU_ITEM,
+            {
+                trigger:
+                    '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                content: _t(
+                    "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+                ),
+                position: "bottom",
+            },
+            {
+                trigger: ".o_kanban_record:contains(" + pos + ") .btn-primary:first",
+                content: _t(
+                    "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>"
+                ),
+                position: "bottom",
+            },
+            {
+                trigger: ".o_main_content:has(.loader:hidden)",
+                content: "Wait for loading is finished",
+                timeout: 20000,
+                run: function() {
+                    // It's a check
+                },
+            },
+        ];
+    }
 
     function check_menu(menu) {
         return [

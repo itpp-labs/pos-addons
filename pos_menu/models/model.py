@@ -46,10 +46,18 @@ class PosConfig(models.Model):
 
 
 class PosTag(models.Model):
-    _name = 'pos.tag'
-    _description = 'POS tag'
+    _name = "pos.tag"
+    _description = "POS tag"
 
-    name = fields.Char(string='Name')
-    product_ids = fields.Many2many('product.template', 'tag_ids_product_ids_rel', 'tag_id', 'product_id',
-                                   domain="[('available_in_pos', '=', True)]", string="Products")
-    pos_ids = fields.Many2many('pos.config', 'tag_ids_pos_ids_rel', 'tag_id', 'pos_id', string="POSes")
+    name = fields.Char(string="Name")
+    product_ids = fields.Many2many(
+        "product.template",
+        "tag_ids_product_ids_rel",
+        "tag_id",
+        "product_id",
+        domain="[('available_in_pos', '=', True)]",
+        string="Products",
+    )
+    pos_ids = fields.Many2many(
+        "pos.config", "tag_ids_pos_ids_rel", "tag_id", "pos_id", string="POSes"
+    )
