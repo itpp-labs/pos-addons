@@ -2,6 +2,8 @@ addons:
   # modules to install before running tests
   include:
     - contacts
+    - stock
+    - point_of_sale
 
   # modules to exclude from installation/testing
   exclude:
