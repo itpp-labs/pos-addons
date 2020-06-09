@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2019 Ilmir Karamov <https://www.it-projects.info/team/ilmir-k>
+     Copyright 2019 Vildan Safin  <https://github.com/Enigma228322>
+     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
     <record id="demo_pos_config_one" model="pos.config">
         <field name="name">Shop1</field>
@@ -10,7 +13,7 @@
         <field name="name">Set 1</field>
         <field
             name="product_ids"
-            eval="[(6, 0, [ref('point_of_sale.boni_orange_product_template'), ref('point_of_sale.carotte_product_template'), ref('point_of_sale.poire_conference_product_template'), ref('point_of_sale.raisins_noir_product_template')])]"
+            eval="[(6, 0, [ref('point_of_sale.newspaper_rack_product_template'), ref('point_of_sale.whiteboard_pen_product_template'), ref('point_of_sale.desk_pad_product_template'), ref('point_of_sale.monitor_stand_product_template')])]"
         />
         <field name="pos_ids" eval="[(6, 0, [ref('demo_pos_config_one')])]" />
     </record>
@@ -18,7 +21,7 @@
         <field name="name">Set 2</field>
         <field
             name="product_ids"
-            eval="[(6, 0, [ref('point_of_sale.partner_product_4_product_template'), ref('point_of_sale.partner_product_5_product_template'), ref('point_of_sale.partner_product_7_product_template'), ref('point_of_sale.partner_product_9_product_template')])]"
+            eval="[(6, 0, [ref('point_of_sale.newspaper_rack_product_template')])]"
         />
         <field name="pos_ids" eval="[(6, 0, [ref('demo_pos_config_two')])]" />
     </record>

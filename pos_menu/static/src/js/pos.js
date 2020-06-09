@@ -1,3 +1,6 @@
+/* Copyright 2019 Anvar Kildebekov <https://www.it-projects.info/team/fedoranvar>
+ * Copyright 2019 Ilmir Karamov <https://www.it-projects.info/team/ilmir-k>
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_menu", function(require) {
     "use strict";
     var models = require("point_of_sale.models");

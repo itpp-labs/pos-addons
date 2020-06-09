@@ -1,3 +1,7 @@
+# Copyright 2019 Anvar Kildebekov <https://www.it-projects.info/team/fedoranvar>
+# Copyright 2019 Ilmir Karamov <https://www.it-projects.info/team/ilmir-k>
+# License MIT (https://opensource.org/licenses/MIT).
+
 from odoo import fields, models
 
 
@@ -43,6 +47,7 @@ class PosConfig(models.Model):
 
 class PosTag(models.Model):
     _name = "pos.tag"
+    _description = "POS tag"
 
     name = fields.Char(string="Name")
     product_ids = fields.Many2many(

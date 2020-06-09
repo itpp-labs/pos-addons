@@ -1,3 +1,7 @@
+/* Copyright 2019 Anvar Kildebekov <https://www.it-projects.info/team/fedoranvar>
+ * Copyright 2019 Ilmir Karamov <https://www.it-projects.info/team/ilmir-k>
+ * Copyright 2019 Vildan Safin  <https://github.com/Enigma228322>
+ * License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_menu.tour", function(require) {
     "use strict";
 
@@ -8,6 +12,7 @@ odoo.define("pos_menu.tour", function(require) {
 
     function pos_opening(pos) {
         return [
+            tour.STEPS.SHOW_APPS_MENU_ITEM,
             {
                 trigger:
                     '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
@@ -66,7 +71,7 @@ odoo.define("pos_menu.tour", function(require) {
     }
 
     var steps = [];
-    var menu = ["Boni Oranges", "Black Grapes", "Carrots", "Conference pears"];
+    var menu = ["Newspaper Rack", "Whiteboard Pen", "Desk Pad", "Monitor Stand"];
     var pos = "Shop1";
     steps = steps.concat(pos_opening(pos));
     steps = steps.concat(check_menu(menu));

@@ -1,3 +1,7 @@
+# Copyright 2019 Anvar Kildebekov <https://www.it-projects.info/team/fedoranvar>
+# Copyright 2019 Ilmir Karamov <https://www.it-projects.info/team/ilmir-k>
+# License MIT (https://opensource.org/licenses/MIT).
+
 {
     "name": """Product Sets for POS""",
     "summary": """Add own set of products per each POS""",
@@ -27,5 +31,5 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
