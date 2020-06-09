@@ -118,7 +118,7 @@ odoo.define("pos_product_available.tour", function(require) {
         open_pos_neworder(),
         add_product_to_order("Office Chair Black"),
         payment("Cash"),
-        check_quantity(2, "Office Chair Black")
+        check_quantity(9, "Office Chair Black")
     );
 
     tour.register("tour_pos_product_available", {test: true, url: "/web"}, steps);
