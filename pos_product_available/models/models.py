@@ -10,3 +10,6 @@ class PosConfig(models.Model):
     show_qtys = fields.Boolean(
         "Show Product Qtys", help="Show Product Qtys in POS", default=True
     )
+    default_location_src_id = fields.Many2one(
+        "stock.location", related="picking_type_id.default_location_src_id"
+    )

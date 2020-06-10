@@ -11,33 +11,30 @@ odoo.define("pos_product_available.PosModel", function(require) {
     var models = require("point_of_sale.models");
     var field_utils = require("web.field_utils");
 
+    models.load_fields("product.product", ["qty_available", "type"]);
+
     var PosModelSuper = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
+        get_product_model: function() {
+            return _.find(this.models, function(model) {
+                return model.model === "product.product";
+            });
+        },
+        initialize: function(session, attributes) {
+            // Compatibility with pos_cache module
+            // preserve product.product model data for future request
+            this.product_product_model = this.get_product_model(this.models);
+            PosModelSuper.initialize.apply(this, arguments);
+        },
         load_server_data: function() {
+            // Compatibility with pos_cache module
             var self = this;
 
             var loaded = PosModelSuper.load_server_data.call(this);
-
-            var prod_model = _.find(this.models, function(model) {
-                return model.model === "product.product";
-            });
-
-            if (prod_model) {
-                prod_model.fields.push("qty_available", "type");
-                var context_super = prod_model.context;
-                prod_model.context = function(that) {
-                    var ret = context_super(that);
-                    ret.location = that.config.stock_location_id[0];
-                    return ret;
-                };
-                var loaded_super = prod_model.loaded;
-                prod_model.loaded = function(that, products) {
-                    loaded_super(that, products);
-                    self.db.product_qtys = products;
-                };
+            if (this.get_product_model(this.models)) {
                 return loaded;
             }
-
+            // If product.product model is not presented in this.models after super was called then pos_cache module installed
             return loaded.then(function() {
                 return rpc
                     .query({
@@ -45,14 +42,13 @@ odoo.define("pos_product_available.PosModel", function(require) {
                         method: "search_read",
                         args: [],
                         fields: ["qty_available", "type"],
-                        domain: [
-                            ["sale_ok", "=", true],
-                            ["available_in_pos", "=", true],
-                        ],
-                        context: {location: self.config.stock_location_id[0]},
+                        domain: self.product_product_model.domain,
+                        context: _.extend(self.product_product_model.context, {
+                            location: self.config.default_location_src_id[0],
+                        }),
                     })
                     .then(function(products) {
-                        self.db.product_qtys = products;
+                        self.add_product_qty(products);
                     });
             });
         },
@@ -73,13 +69,11 @@ odoo.define("pos_product_available.PosModel", function(require) {
             // Compatibility with pos_multi_session
             order.trigger("new_updates_to_send");
         },
-        after_load_server_data: function() {
+        add_product_qty: function(products) {
             var self = this;
-            var res = PosModelSuper.after_load_server_data.apply(this, arguments);
-            _.each(this.db.product_qtys, function(v) {
-                _.extend(self.db.get_product_by_id(v.id), v);
+            _.each(products, function(p) {
+                _.extend(self.db.get_product_by_id(p.id), p);
             });
-            return res;
         },
         refresh_qty_available: function(product) {
             var $elem = $("[data-product-id='" + product.id + "'] .qty-tag");
