@@ -1,3 +1,7 @@
+/* Copyright 2017-2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+  Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+  Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+  License MIT (https://opensource.org/licenses/MIT). */
 /* eslint complexity: "off"*/
 odoo.define("pos_order_note", function(require) {
     "use strict";
@@ -6,7 +10,6 @@ odoo.define("pos_order_note", function(require) {
     var screens = require("point_of_sale.screens");
     var gui = require("point_of_sale.gui");
     var core = require("web.core");
-    var PosBaseWidget = require("point_of_sale.BaseWidget");
     var PopupWidget = require("point_of_sale.popups");
 
     var QWeb = core.qweb;
@@ -329,52 +332,52 @@ odoo.define("pos_order_note", function(require) {
         },
     });
 
-    PosBaseWidget.include({
-        init: function(parent, options) {
-            this._super(parent, options);
-            if (
-                this.gui &&
-                this.gui.screen_instances.products &&
-                this.gui.screen_instances.products.action_buttons.orderline_note
-            ) {
-                this.gui.screen_instances.products.action_buttons.orderline_note.button_click = function() {
-                    var order = this.pos.get_order();
-                    var line = order.get_selected_orderline();
-                    var title = "";
-                    var value = "";
-                    if (order.note_type === "Order") {
-                        title = _t("Add Note for Order");
-                        value = order.get_note();
-                    } else if (line) {
-                        order.note_type = "Product";
-                        title = _t("Add Note for Product");
-                        value = line.get_note();
-                    }
-                    if (line) {
-                        var old_line_custom_notes = false;
-                        if (line.get_custom_notes()) {
-                            old_line_custom_notes = line.get_custom_notes().concat();
-                            line.set_old_custom_notes(old_line_custom_notes);
-                        }
-                        this.gui.show_popup("product_notes", {
-                            title: title,
-                            value: value,
-                            custom_order_ids: order.get_custom_notes(),
-                            custom_product_ids: line.get_custom_notes(),
-                            confirm: function(res) {
-                                if (order.note_type === "Order") {
-                                    order.set_custom_notes(res.custom_order_ids);
-                                    order.set_note(res.note);
-                                }
-                                if (order.note_type === "Product") {
-                                    line.set_custom_notes(res.custom_product_ids);
-                                    line.set_note(res.note);
-                                }
-                            },
-                        });
-                    }
-                };
+    screens.ProductScreenWidget.include({
+        start: function() {
+            this._super();
+            var orderline_note =
+                this.action_buttons && this.action_buttons.orderline_note;
+            if (!orderline_note) {
+                return;
             }
+            orderline_note.button_click = function() {
+                var order = this.pos.get_order();
+                var line = order.get_selected_orderline();
+                var title = "";
+                var value = "";
+                if (order.note_type === "Order") {
+                    title = _t("Add Note for Order");
+                    value = order.get_note();
+                } else if (line) {
+                    order.note_type = "Product";
+                    title = _t("Add Note for Product");
+                    value = line.get_note();
+                }
+                if (!line) {
+                    return;
+                }
+                var old_line_custom_notes = false;
+                if (line.get_custom_notes()) {
+                    old_line_custom_notes = line.get_custom_notes().concat();
+                    line.set_old_custom_notes(old_line_custom_notes);
+                }
+                this.gui.show_popup("product_notes", {
+                    title: title,
+                    value: value,
+                    custom_order_ids: order.get_custom_notes(),
+                    custom_product_ids: line.get_custom_notes(),
+                    confirm: function(res) {
+                        if (order.note_type === "Order") {
+                            order.set_custom_notes(res.custom_order_ids);
+                            order.set_note(res.note);
+                        }
+                        if (order.note_type === "Product") {
+                            line.set_custom_notes(res.custom_product_ids);
+                            line.set_note(res.note);
+                        }
+                    },
+                });
+            };
         },
     });
 

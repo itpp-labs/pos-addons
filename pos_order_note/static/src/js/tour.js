@@ -38,10 +38,10 @@ odoo.define("pos_order_note.tour", function(require) {
                 position: "bottom",
             },
             {
-                trigger: ".tables .table",
-                content: _t("<p>Click on <b>table</b></p>"),
+                trigger: ".tables .table, .order-button.select-order.selected",
+                content: _t("Click on table or make a dummy action"),
                 position: "bottom",
-                timeout: 20000,
+                timeout: 30000,
             },
             {
                 trigger: ".product-list .product",
@@ -86,13 +86,6 @@ odoo.define("pos_order_note.tour", function(require) {
             {
                 trigger: ".popup-confirm-note .confirm",
                 content: _t("<p>Click on Confirm button</p>"),
-                position: "bottom",
-            },
-            {
-                trigger: ".control-buttons .order-submit",
-                content: _t(
-                    "<p>Click on <b>Order</b> button to send order to <b>Order printer</b></p>"
-                ),
                 position: "bottom",
             },
         ]

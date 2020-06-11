@@ -21,7 +21,7 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     "demo_title": "POS Advanced Order Notes",
     "demo_addons": [],
     "demo_addons_hidden": [],
