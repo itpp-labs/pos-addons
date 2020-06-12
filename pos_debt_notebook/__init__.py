@@ -21,7 +21,5 @@ def pre_uninstall(cr, registry):
     for journal in debt_journals:
         value.append((3, journal.id))
 
-    for config in env['pos.config'].search([]):
-        config.write({
-            'payment_method_ids': value,
-        })
+    for config in env["pos.config"].search([]):
+        config.write({"payment_method_ids": value})

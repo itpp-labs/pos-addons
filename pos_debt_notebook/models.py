@@ -140,23 +140,42 @@ class ResPartner(models.Model):
         return data
 
     debt = fields.Float(
-        compute='_compute_debt', string='Debt', readonly=True,
-        digits='Account', help='Debt of this partner only.')
+        compute="_compute_debt",
+        string="Debt",
+        readonly=True,
+        digits="Account",
+        help="Debt of this partner only.",
+    )
     credit_balance = fields.Float(
-        compute='_compute_debt', string='Credit', readonly=True,
-        digits='Account', help='Credit balance of this partner only.')
+        compute="_compute_debt",
+        string="Credit",
+        readonly=True,
+        digits="Account",
+        help="Credit balance of this partner only.",
+    )
     debt_company = fields.Float(
-        compute='_compute_debt_company', string='Total Debt', readonly=True,
-        digits='Account', help='Debt value of this company (including its contacts)')
+        compute="_compute_debt_company",
+        string="Total Debt",
+        readonly=True,
+        digits="Account",
+        help="Debt value of this company (including its contacts)",
+    )
     credit_balance_company = fields.Float(
-        compute='_compute_debt_company', string='Total Credit', readonly=True,
-        digits='Account', help='Credit balance of this company (including its contacts)')
-    debt_type = fields.Selection(compute='_compute_debt_type', selection=[
-        ('debt', 'Display Debt'),
-        ('credit', 'Display Credit')
-    ])
-    report_pos_debt_ids = fields.One2many('pos.credit.update', 'partner_id',
-                                          help='Technical field for proper recomputations of computed fields')
+        compute="_compute_debt_company",
+        string="Total Credit",
+        readonly=True,
+        digits="Account",
+        help="Credit balance of this company (including its contacts)",
+    )
+    debt_type = fields.Selection(
+        compute="_compute_debt_type",
+        selection=[("debt", "Display Debt"), ("credit", "Display Credit")],
+    )
+    report_pos_debt_ids = fields.One2many(
+        "pos.credit.update",
+        "partner_id",
+        help="Technical field for proper recomputations of computed fields",
+    )
 
     def _get_date_formats(self, date):
 
@@ -220,7 +239,9 @@ class ResConfigSettings(models.TransientModel):
         res = super(ResConfigSettings, self).get_values()
         config_parameters = self.env["ir.config_parameter"].sudo()
         res.update(
-            debt_type=config_parameters.get_param("pos_debt_notebook.debt_type", default='debt'),
+            debt_type=config_parameters.get_param(
+                "pos_debt_notebook.debt_type", default="debt"
+            ),
         )
         return res
 
@@ -323,28 +344,44 @@ class PosConfig(models.Model):
             )
             debt_journal = debt_journal_inactive
         else:
-            debt_journal = self.create_journal({'sequence_name': 'Account Default Credit Journal ',
-                                                'prefix': 'CRED ',
-                                                'user': user,
-                                                'noupdate': True,
-                                                'journal_name': 'Credits',
-                                                'code': 'TCRED',
-                                                'type': 'cash',
-                                                'debt': True,
-                                                # 'journal_user': True,
-                                                'debt_account': debt_account,
-                                                'credits_via_discount': False,
-                                                'category_ids': False,
-                                                'write_statement': False,
-                                                'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
-                                                'debt_limit': default_debt_limit,
-                                                'pos_cash_out': True,
-                                                'credits_autopay': True,
-                                                })
-        self.write({
-            'payment_method_ids': [(4, self.env['pos.payment.method'].search([('name', '=', 'Credits')]).id)],
-            'debt_dummy_product_id': self.env.ref('pos_debt_notebook.product_pay_debt').id,
-        })
+            debt_journal = self.create_journal(
+                {
+                    "sequence_name": "Account Default Credit Journal ",
+                    "prefix": "CRED ",
+                    "user": user,
+                    "noupdate": True,
+                    "journal_name": "Credits",
+                    "code": "TCRED",
+                    "type": "cash",
+                    "debt": True,
+                    # 'journal_user': True,
+                    "debt_account": debt_account,
+                    "credits_via_discount": False,
+                    "category_ids": False,
+                    "write_statement": False,
+                    "debt_dummy_product_id": self.env.ref(
+                        "pos_debt_notebook.product_pay_debt"
+                    ).id,
+                    "debt_limit": default_debt_limit,
+                    "pos_cash_out": True,
+                    "credits_autopay": True,
+                }
+            )
+        self.write(
+            {
+                "payment_method_ids": [
+                    (
+                        4,
+                        self.env["pos.payment.method"]
+                        .search([("name", "=", "Credits")])
+                        .id,
+                    )
+                ],
+                "debt_dummy_product_id": self.env.ref(
+                    "pos_debt_notebook.product_pay_debt"
+                ).id,
+            }
+        )
         current_session = self.current_session_id
         statement = [
             (
@@ -369,145 +406,156 @@ class PosConfig(models.Model):
     def create_journal(self, vals):
         if self.env["account.journal"].search([("code", "=", vals["code"])]):
             return
-        _logger.info("Creating '" + vals['journal_name'] + "' journal")
-        user = vals['user']
-        debt_account = vals['debt_account']
-        new_sequence = self.env['ir.sequence'].create({
-            'name': vals['sequence_name'] + str(user.company_id.id),
-            'padding': 3,
-            'prefix': vals['prefix'] + str(user.company_id.id),
-        })
-        self.env['ir.model.data'].create({
-            'name': 'journal_sequence' + str(new_sequence.id),
-            'model': 'ir.sequence',
-            'module': 'pos_debt_notebook',
-            'res_id': new_sequence.id,
-            'noupdate': vals['noupdate'],  # If it's False, target record (res_id) will be removed while module update
-        })
-        debt_payment_method = self.env['pos.payment.method'].create({
-            'name': vals['journal_name'],
-            'receivable_account_id': debt_account.id,
-        })
+        _logger.info("Creating '" + vals["journal_name"] + "' journal")
+        user = vals["user"]
+        debt_account = vals["debt_account"]
+        new_sequence = self.env["ir.sequence"].create(
+            {
+                "name": vals["sequence_name"] + str(user.company_id.id),
+                "padding": 3,
+                "prefix": vals["prefix"] + str(user.company_id.id),
+            }
+        )
+        self.env["ir.model.data"].create(
+            {
+                "name": "journal_sequence" + str(new_sequence.id),
+                "model": "ir.sequence",
+                "module": "pos_debt_notebook",
+                "res_id": new_sequence.id,
+                "noupdate": vals[
+                    "noupdate"
+                ],  # If it's False, target record (res_id) will be removed while module update
+            }
+        )
+        debt_payment_method = self.env["pos.payment.method"].create(
+            {"name": vals["journal_name"], "receivable_account_id": debt_account.id}
+        )
         debt_dict = {
-            'name': vals['journal_name'],
-            'code': vals['code'],
-            'type': vals['type'],
-            'debt': vals['debt'],
+            "name": vals["journal_name"],
+            "code": vals["code"],
+            "type": vals["type"],
+            "debt": vals["debt"],
             # 'journal_user': vals['journal_user'],
-            'sequence_id': new_sequence.id,
-            'company_id': user.company_id.id,
-            'default_debit_account_id': debt_account.id,
-            'default_credit_account_id': debt_account.id,
-            'debt_limit': vals['debt_limit'],
-            'category_ids': vals['category_ids'],
-            'pos_cash_out': vals['pos_cash_out'],
-            'pos_payment_method_ids': [(4, debt_payment_method.id)],
-            'credits_via_discount': vals['credits_via_discount'],
-            'credits_autopay': vals['credits_autopay'],
+            "sequence_id": new_sequence.id,
+            "company_id": user.company_id.id,
+            "default_debit_account_id": debt_account.id,
+            "default_credit_account_id": debt_account.id,
+            "debt_limit": vals["debt_limit"],
+            "category_ids": vals["category_ids"],
+            "pos_cash_out": vals["pos_cash_out"],
+            "pos_payment_method_ids": [(4, debt_payment_method.id)],
+            "credits_via_discount": vals["credits_via_discount"],
+            "credits_autopay": vals["credits_autopay"],
+        }
+        debt_journal = self.env["account.journal"].create(debt_dict)
+        self.env["ir.model.data"].create(
+            {
+                "name": "debt_journal_" + str(debt_journal.id),
+                "model": "account.journal",
+                "module": "pos_debt_notebook",
+                "res_id": int(debt_journal.id),
+                "noupdate": True,  # If it's False, target record (res_id) will be removed while module update
+            }
+        )
+        if vals["write_statement"]:
+            self.write(
+                {
+                    "payment_method_ids": [(4, debt_payment_method.id)],
+                    "debt_dummy_product_id": vals["debt_dummy_product_id"],
                 }
-        debt_journal = self.env['account.journal'].create(debt_dict)
-        '''
-        debt_journal = self.env['account.journal'].create({
-            'name': vals['journal_name'],
-            'code': vals['code'],
-            'type': vals['type'],
-            'debt': vals['debt'],
-            # 'journal_user': vals['journal_user'],
-            'sequence_id': new_sequence.id,
-            'company_id': user.company_id.id,
-            'default_debit_account_id': debt_account.id,
-            'default_credit_account_id': debt_account.id,
-            'debt_limit': vals['debt_limit'],
-            'category_ids': vals['category_ids'],
-            'pos_cash_out': vals['pos_cash_out'],
-            'pos_payment_method_ids': [(4, debt_payment_method.id)],
-            'credits_via_discount': vals['credits_via_discount'],
-            'credits_autopay': vals['credits_autopay'],
-        })'''
-        self.env['ir.model.data'].create({
-            'name': 'debt_journal_' + str(debt_journal.id),
-            'model': 'account.journal',
-            'module': 'pos_debt_notebook',
-            'res_id': int(debt_journal.id),
-            'noupdate': True,  # If it's False, target record (res_id) will be removed while module update
-        })
-        if vals['write_statement']:
-            self.write({
-                'payment_method_ids': [(4, debt_payment_method.id)],
-                'debt_dummy_product_id': vals['debt_dummy_product_id'],
-            })
+            )
             current_session = self.current_session_id
-            statement = [(0, 0, {
-                'name': current_session.name,
-                'journal_id': debt_journal.id,
-                'user_id': user.id,
-                'company_id': user.company_id.id
-            })]
-            current_session.write({
-                'statement_ids': statement,
-            })
+            statement = [
+                (
+                    0,
+                    0,
+                    {
+                        "name": current_session.name,
+                        "journal_id": debt_journal.id,
+                        "user_id": user.id,
+                        "company_id": user.company_id.id,
+                    },
+                )
+            ]
+            current_session.write({"statement_ids": statement})
 
         return debt_journal
 
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
         current_session = self.current_session_id
-        current_session.write({'state': 'closed'})
+        current_session.write({"state": "closed"})
         self.init_debt_journal()
-        current_session.write({'state': 'opened'})
+        current_session.write({"state": "opened"})
         return res
 
     def create_demo_debt_journals(self, user, debt_account):
-        self.create_journal({'sequence_name': 'Account Default Credit via Discounts Journal ',
-                             'prefix': 'CRD ',
-                             'user': user,
-                             'noupdate': True,
-                             'journal_name': 'Credits (via discounts)',
-                             'code': 'DCRD',
-                             'type': 'cash',
-                             'debt': True,
-                            #  'journal_user': True,
-                             'debt_account': debt_account,
-                             'credits_via_discount': True,
-                             'category_ids': False,
-                             'write_statement': True,
-                             'debt_dummy_product_id': False,
-                             'debt_limit': 1000,
-                             'pos_cash_out': False,
-                             'credits_autopay': True,
-                             })
-        allowed_category = self.env.ref('point_of_sale.pos_category_desks').id
-        self.create_journal({'sequence_name': 'Account Default Credit Journal F&V',
-                             'prefix': 'CRD ',
-                             'user': user,
-                             'noupdate': True,
-                             'journal_name': 'Credits (Desks only)',
-                             'code': 'FCRD',
-                             'type': 'cash',
-                             'debt': True,
-                            #  'journal_user': True,
-                             'debt_account': debt_account,
-                             'credits_via_discount': False,
-                             'category_ids': [(6, 0, [allowed_category])],
-                             'write_statement': True,
-                             'debt_dummy_product_id': False,
-                             'debt_limit': 1000,
-                             'pos_cash_out': False,
-                             'credits_autopay': True,
-                             })
+        self.create_journal(
+            {
+                "sequence_name": "Account Default Credit via Discounts Journal ",
+                "prefix": "CRD ",
+                "user": user,
+                "noupdate": True,
+                "journal_name": "Credits (via discounts)",
+                "code": "DCRD",
+                "type": "cash",
+                "debt": True,
+                #  'journal_user': True,
+                "debt_account": debt_account,
+                "credits_via_discount": True,
+                "category_ids": False,
+                "write_statement": True,
+                "debt_dummy_product_id": False,
+                "debt_limit": 1000,
+                "pos_cash_out": False,
+                "credits_autopay": True,
+            }
+        )
+        allowed_category = self.env.ref("point_of_sale.pos_category_desks").id
+        self.create_journal(
+            {
+                "sequence_name": "Account Default Credit Journal F&V",
+                "prefix": "CRD ",
+                "user": user,
+                "noupdate": True,
+                "journal_name": "Credits (Desks only)",
+                "code": "FCRD",
+                "type": "cash",
+                "debt": True,
+                #  'journal_user': True,
+                "debt_account": debt_account,
+                "credits_via_discount": False,
+                "category_ids": [(6, 0, [allowed_category])],
+                "write_statement": True,
+                "debt_dummy_product_id": False,
+                "debt_limit": 1000,
+                "pos_cash_out": False,
+                "credits_autopay": True,
+            }
+        )
 
 
 class AccountJournal(models.Model):
-    _inherit = 'account.journal'
+    _inherit = "account.journal"
 
-    debt = fields.Boolean(string='Credit Journal')
-    pos_cash_out = fields.Boolean(string='Allow to cash out credits', default=False,
-                                  help='Partner can exchange credits to cash in POS')
-    category_ids = fields.Many2many('pos.category', string='POS product categories',
-                                    help='POS product categories that can be paid with this credits.'
-                                         'If the field is empty then all categories may be purchased with this journal')
-    debt_limit = fields.Float(string='Max Debt', digits='Account', default=0,
-                              help='Partners is not allowed to have a debt more than this value')
+    debt = fields.Boolean(string="Credit Journal")
+    pos_cash_out = fields.Boolean(
+        string="Allow to cash out credits",
+        default=False,
+        help="Partner can exchange credits to cash in POS",
+    )
+    category_ids = fields.Many2many(
+        "pos.category",
+        string="POS product categories",
+        help="POS product categories that can be paid with this credits."
+        "If the field is empty then all categories may be purchased with this journal",
+    )
+    debt_limit = fields.Float(
+        string="Max Debt",
+        digits="Account",
+        default=0,
+        help="Partners is not allowed to have a debt more than this value",
+    )
     credits_via_discount = fields.Boolean(
         default=False,
         string="Zero transactions on credit payments",

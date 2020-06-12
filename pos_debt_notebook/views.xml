@@ -121,9 +121,7 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook[last()]/page[last()]" position="inside">
                 <group string="Credits">
-                    <field
-                        name="debt"
-                    />
+                    <field name="debt" />
                     <field
                         name="pos_cash_out"
                         attrs="{'invisible': ['|',('debt', '!=', True),('credits_via_discount', '=', True)]}"
@@ -230,10 +228,7 @@
         <field name="model">pos.session</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//notebook"
-                position="after"
-            >
+            <xpath expr="//notebook" position="after">
 <!--                <field name="pos_credit_update_balance" />-->
             </xpath>
         </field>
