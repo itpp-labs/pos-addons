@@ -9,13 +9,22 @@ odoo.define("pos_partner_deselection.tour", function(require) {
 
     function pos_opening() {
         return [
+            tour.STEPS.SHOW_APPS_MENU_ITEM,
             {
-                trigger:
-                    '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                content: _t(
+                    "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+                ),
+                position: "right",
+                edition: "community",
+            },
+            {
+                trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
                 content: _t(
                     "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
                 ),
                 position: "bottom",
+                edition: "enterprise",
             },
             {
                 trigger: ".o_pos_kanban button.oe_kanban_action_button",

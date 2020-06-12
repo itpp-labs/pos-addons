@@ -2,7 +2,6 @@
 # License MIT (https://opensource.org/licenses/MIT).
 
 import odoo.tests
-from odoo.api import Environment
 
 
 @odoo.tests.common.at_install(True)
@@ -13,9 +12,11 @@ class TestUi(odoo.tests.HttpCase):
         # installed. In js web will only load qweb coming from modules
         # that are returned by the backend in module_boot. Without
         # this you end up with js, css but no qweb.
-        cr = self.registry.cursor()
-        env = Environment(cr, self.uid, {})
-        cr.release()
+        env = self.env
+
+        env["ir.module.module"].search(
+            [("name", "=", "pos_partner_deselection")], limit=1
+        ).state = "installed"
 
         env["pos.config"].search([]).write({"customer_deselection_interval": 1})
 

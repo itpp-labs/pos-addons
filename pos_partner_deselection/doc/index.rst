@@ -13,8 +13,8 @@ Configuration
 * Open menu ``[[ Point of Sale ]]``
 
   * Select a Point of Sale (POS)
-  * Click on ``[More]`` at the right corner of this POS and then select  ``[Settings]`` inside a POS
-  * Go to the ``Features`` section
+  * Click on dropdown menu icon at the right corner of this POS and then select  ``[Settings]`` inside a POS
+  * Go to the ``Customer deselection interval`` section
   * Specify a **Customer Deselection Interval** in seconds
   * Click ``[Save]``
 
