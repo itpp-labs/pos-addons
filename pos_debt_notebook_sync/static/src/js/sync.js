@@ -9,7 +9,6 @@ odoo.define("pos_debt_sync", function(require) {
     models.PosModel = models.PosModel.extend({
         initialize: function() {
             PosModelSuper.prototype.initialize.apply(this, arguments);
-            var self = this;
             this.bus.add_channel_callback(
                 "pos_debt_notebook_sync",
                 this.on_debt_updates,
@@ -55,6 +54,7 @@ odoo.define("pos_debt_sync", function(require) {
             this.reload_debts(message.updated_partners);
         },
         _on_load_debts: function(debts) {
+            var self = this;
             var unsent_orders = _.filter(this.db.get_orders(), function(o) {
                 return o.data.updates_debt;
             });

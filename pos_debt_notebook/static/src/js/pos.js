@@ -5,6 +5,7 @@
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License MIT (https://opensource.org/licenses/MIT). */
 /* eslint complexity: "off"*/
+
 odoo.define("pos_debt_notebook.pos", function(require) {
     "use strict";
 
@@ -25,14 +26,37 @@ odoo.define("pos_debt_notebook.pos", function(require) {
         initialize: function(session, attributes) {
             this.reload_debts_partner_ids = [];
             this.reload_debts_timer = $.when();
-            models.load_fields("account.journal", [
-                "debt",
-                "debt_limit",
-                "credits_via_discount",
-                "pos_cash_out",
-                "category_ids",
-                "credits_autopay",
-            ]);
+            models.load_models({
+                model: "account.journal",
+                fields: [
+                    "id",
+                    "name",
+                    "debt",
+                    "debt_limit",
+                    "credits_via_discount",
+                    "pos_cash_out",
+                    "category_ids",
+                    "credits_autopay",
+                ],
+                ids: function(self) {
+                    return _.chain(self.payment_methods)
+                        .filter(function(pm) {
+                            return pm.cash_journal_id;
+                        })
+                        .map("cash_journal_id")
+                        .map("0")
+                        .uniq()
+                        .value();
+                },
+                loaded: function(self, journals) {
+                    _.each(self.payment_methods, function(pm) {
+                        pm.journal = _.find(journals, function(j) {
+                            return j.id == pm.cash_journal_id[0];
+                        });
+                    });
+                },
+            });
+            models.load_fields("pos.payment.method", ["cash_journal_id"]);
             models.load_fields("product.product", ["credit_product"]);
             _super_posmodel.initialize.apply(this, arguments);
         },
@@ -156,25 +180,24 @@ odoo.define("pos_debt_notebook.pos", function(require) {
                     return def.then(function() {
                         var request_finished = $.Deferred();
 
-                        self._load_debts(load_partner_ids, limit, options)
-                            .done(function(data) {
+                        self._load_debts(load_partner_ids, limit, options).then(
+                            function(data) {
                                 // Success
                                 download_debts_ready.resolve();
-                                self._on_load_debts(data);
-                            })
-                            .always(function() {
-                                // Allow to do next call
                                 request_finished.resolve();
-                            })
-                            .fail(function() {
+                                self._on_load_debts(data);
+                            },
+                            function() {
                                 // Make request again, Timeout is set to allow properly work in offline mode
+                                request_finished.resolve();
                                 self.reload_debts(load_partner_ids, 0, {
                                     postpone: 4000,
                                     shadow: false,
                                     deferred: download_debts_ready,
                                 });
                                 self.trigger("updateDebtHistoryFail");
-                            });
+                            }
+                        );
                         return request_finished;
                     });
                 }
@@ -184,11 +207,14 @@ odoo.define("pos_debt_notebook.pos", function(require) {
         },
         _load_debts: function(partner_ids, limit, options) {
             return rpc
-                .query({
-                    model: "res.partner",
-                    method: "debt_history",
-                    args: [partner_ids, limit, options],
-                })
+                .query(
+                    {
+                        model: "res.partner",
+                        method: "debt_history",
+                        args: [partner_ids, limit],
+                    },
+                    options
+                )
                 .then(function(res) {
                     return res;
                 });
@@ -241,12 +267,12 @@ odoo.define("pos_debt_notebook.pos", function(require) {
         },
         has_debt_journal: function() {
             return this.paymentlines.any(function(line) {
-                return line.cashregister.journal.debt;
+                return line.payment_method.journal.debt;
             });
         },
         has_paymentlines_with_credits_via_discounts: function() {
             return _.filter(this.get_paymentlines(), function(pl) {
-                return pl.cashregister.journal.credits_via_discount;
+                return pl.payment_method.journal.credits_via_discount;
             });
         },
         has_credit_product: function() {
@@ -263,7 +289,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             var debt_amount = 0;
             var plines = this.get_paymentlines();
             for (var i = 0; i < plines.length; i++) {
-                if (plines[i].cashregister.journal.debt) {
+                if (plines[i].payment_method.journal.debt) {
                     debt_amount += plines[i].amount;
                 }
             }
@@ -329,7 +355,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             return _.reduce(
                 this.paymentlines.models,
                 function(memo, pl) {
-                    if (pl.cashregister.journal_id[0] === cashregister.journal.id) {
+                    if (pl.payment_method.journal.id === cashregister.journal.id) {
                         return memo + pl.amount;
                     }
                     return memo;
@@ -398,6 +424,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
                     order: this,
                     cashregister: cashregister,
                     pos: this.pos,
+                    payment_method: cashregister,
                 }
             );
             if (cashregister.journal.debt && this.get_client()) {
@@ -581,7 +608,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
                 });
                 return;
             }
-            if (client)
+            client &&
                 this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(
                     client.id
                 );
@@ -591,16 +618,17 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             var self = this;
             var order = this.pos.get_order(),
                 paymentlines = order.get_paymentlines(),
+                order_total = order.get_total_with_tax(),
                 partner = this.pos.get_client();
             var debt_pl = _.filter(paymentlines, function(pl) {
-                return pl.cashregister.journal.debt;
+                return pl.payment_method.journal.debt;
             });
             if (debt_pl && partner) {
-                order.has_paymentlines_with_credits_via_discounts();
+                var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
                 this._super();
                 // Offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function(pl) {
-                    partner.debts[pl.cashregister.journal.id].balance -= pl.amount;
+                    partner.debts[pl.payment_method.journal.id].balance -= pl.amount;
                     partner.debt += pl.amount;
                 });
             } else {
@@ -625,7 +653,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             paymentlines = paymentlines || this.pos.get_order().get_paymentlines();
             var cashregisters = _.uniq(
                 _.map(paymentlines, function(pl) {
-                    return pl.cashregister;
+                    return pl.payment_method;
                 })
             );
             return _.filter(cashregisters, function(cr) {
@@ -751,7 +779,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
             var order = this.pos.get_order(),
                 paymentlines = order.get_paymentlines();
             for (var i = 0; i < paymentlines.length; i++) {
-                var journal = paymentlines[i].cashregister.journal;
+                var journal = paymentlines[i].payment_method.journal;
                 if (
                     journal.debt &&
                     !journal.pos_cash_out &&

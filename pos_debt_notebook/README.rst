@@ -20,19 +20,19 @@ Installation \ Deinstallation
 
 * Debt data are still available after the module will be re-installed.
 * When new (first after install) POS session is opened, a debt payment method would added in a POS config.
-* If the module was install and uninstall immediately (without created POS sessions) then it keeps no data.   
-* If a user deleted debt journal from POS config manually then after the module is upgraded 
-  POS config would not be changed. 
+* If the module was install and uninstall immediately (without created POS sessions) then it keeps no data.
+* If a user deleted debt journal from POS config manually then after the module is upgraded
+  POS config would not be changed.
 * Multicompany mode is supported
 
 Roadmap
 =======
 
-* TODO. New option for **Zero transactions** feature: allow to create extra order line with negative amount instead of applying discounts. 
+* TODO. New option for **Zero transactions** feature: allow to create extra order line with negative amount instead of applying discounts.
 
   * It creates extra record in accounting system (pos.order.line). It can be used as a backup for *Manual Updates*
   * It works with following problem case:
-  
+
     In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
 
 * TODO. Improvements on heavy usage (Many POSes, Many Partners)
@@ -40,7 +40,7 @@ Roadmap
   * Num of users with cached Debt History must be limited
   * Limit issue in ``reload_debts`` (check FIXME note there)
   * Many POSes do the same requests on getting updates from longpolling. Solution:
-  
+
     * Customizable timeout in ``on_debt_updates`` method in ``pos_debt_notebook_sync`` module.
     * ``reload_debts`` called with ``"postpone": false`` must ignore existing timer
 
@@ -69,4 +69,4 @@ Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545
+Tested on Odoo 13.0 db2e6bc600364c00e8a1d528d4b17ae052ecd41e

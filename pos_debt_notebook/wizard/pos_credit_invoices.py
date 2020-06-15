@@ -174,7 +174,9 @@ class PosCreditInvoices(models.TransientModel):
             self.update_lines()
 
             # prevents closing of the wizard
-            return {"type": "ir.actions.do_nothing"}
+            return {
+                "type": "ir.actions.do_nothing",
+            }
 
 
 class PosCreditInvoicesLine(models.TransientModel):
