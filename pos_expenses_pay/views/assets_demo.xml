@@ -1,11 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2019 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
-
 <odoo>
-    <template id="demo_assets_backend" name="pos_expenses_pay demo assets" inherit_id="web.assets_backend">
+    <template
+        id="demo_assets_backend"
+        name="pos_expenses_pay demo assets"
+        inherit_id="web.assets_backend"
+    >
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/pos_expenses_pay/static/src/js/tour_pos_expenses_pay.js"></script>
+            <script
+                type="text/javascript"
+                src="/pos_expenses_pay/static/src/js/tour_pos_expenses_pay.js"
+            />
         </xpath>
     </template>
 </odoo>
