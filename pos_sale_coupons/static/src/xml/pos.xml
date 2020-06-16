@@ -1,28 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-
     <t t-name="SellCouponButton">
         <div class='control-button'>
-            <i class='fa fa-tags'/> Sell Coupon
+            <i class='fa fa-tags' /> Sell Coupon
         </div>
     </t>
-
     <t t-name="ConsumeCouponButton">
         <div class='control-button'>
-            <i class='fa fa-tags'/> Consume Coupon
+            <i class='fa fa-tags' /> Consume Coupon
         </div>
     </t>
-
-
     <t t-name="CouponInputPopupWidget">
         <div role="dialog" class="modal-dialog">
             <div class="popup popup-textinput">
-                <header class="title"><t t-esc=" widget.options.title || '' " /></header>
-                <input type='text' t-att-value="widget.options.value || ''"></input>
+                <header class="title">
+                    <t t-esc=" widget.options.title || '' " />
+                </header>
+                <input type='text' t-att-value="widget.options.value || ''" />
                 <p class="coupon_value_specification">
                     Please Specify Coupon Amount
                 </p>
-                <input class="coupon_value_specification" value="" type="text" name="coupon_value"/>
+                <input
+                    class="coupon_value_specification"
+                    value=""
+                    type="text"
+                    name="coupon_value"
+                />
                 <div class="footer">
                     <div class="button confirm">
                         Ok
@@ -34,5 +37,4 @@
             </div>
         </div>
     </t>
-
 </templates>

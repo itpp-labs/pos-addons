@@ -163,9 +163,9 @@ odoo.define("pos_choosing_cashier", function(require) {
                 var user = this.pos.users[i];
                 if (!options.only_managers || user.role === "manager") {
                     list.push({
-                        'label': user.name,
-                        'item':  user,
-                        'selected': this.pos.get_cashier().id === user.id,
+                        label: user.name,
+                        item: user,
+                        selected: this.pos.get_cashier().id === user.id,
                     });
                 }
             }
@@ -202,7 +202,6 @@ odoo.define("pos_choosing_cashier", function(require) {
 
     return {
         Gui: Gui,
-        CashierSelectionPopupWidget: CashierSelectionPopupWidget
+        CashierSelectionPopupWidget: CashierSelectionPopupWidget,
     };
-
 });

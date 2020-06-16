@@ -1,12 +1,12 @@
 //  Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 //  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-odoo.define('pos_sale_coupons.db', function (require) {
-    'use_strict';
+odoo.define("pos_sale_coupons.db", function(require) {
+    "use_strict";
 
-    var PosDb = require('point_of_sale.DB');
+    var PosDb = require("point_of_sale.DB");
 
     PosDb.include({
-        init: function (options) {
+        init: function(options) {
             this._super(options);
             this.sale_coupons = [];
             this.sale_coupons_by_id = {};
@@ -14,16 +14,16 @@ odoo.define('pos_sale_coupons.db', function (require) {
             this.sale_coupon_programs_by_id = {};
             this.sale_old_coupons_list = [];
         },
-        add_sale_coupons: function (coupons) {
+        add_sale_coupons: function(coupons) {
             var self = this;
-            _.each(coupons, function (coupon) {
+            _.each(coupons, function(coupon) {
                 self.sale_coupons.push(coupon);
                 self.sale_coupons_by_id[coupon.id] = coupon;
             });
         },
         update_sale_coupons: function(coupons) {
             var self = this;
-            _.each(coupons, function (coupon) {
+            _.each(coupons, function(coupon) {
                 self.sale_coupons_by_id[coupon.id] = coupon;
                 // Search old coupon by id
                 var old_coupon = self.sale_coupons.find(function(record) {
@@ -59,7 +59,7 @@ odoo.define('pos_sale_coupons.db', function (require) {
         },
         add_sale_coupon_programs: function(programs) {
             var self = this;
-            _.each(programs, function (program) {
+            _.each(programs, function(program) {
                 self.sale_coupon_programs.push(program);
                 self.sale_coupon_programs_by_id[program.id] = program;
             });
@@ -70,10 +70,12 @@ odoo.define('pos_sale_coupons.db', function (require) {
 
         update_sale_coupon_programs: function(coupon_programs) {
             var self = this;
-            _.each(coupon_programs, function (coupon_program) {
+            _.each(coupon_programs, function(coupon_program) {
                 self.sale_coupon_programs_by_id[coupon_program.id] = coupon_program;
                 // Search old coupon_program by id
-                var old_coupon_program = self.sale_coupon_programs.find(function(record) {
+                var old_coupon_program = self.sale_coupon_programs.find(function(
+                    record
+                ) {
                     return record.id === coupon_program.id;
                 });
                 var index = self.sale_coupon_programs.indexOf(old_coupon_program);
