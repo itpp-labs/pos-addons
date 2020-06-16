@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<templates id="template" xml:space="preserve">
+    <t t-name="ExpensesButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt ' /> Expenses
+        </div>
+    </t>
+    <t t-name="ExpensesScreenWidget">
+        <div class="orders-list-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left' />
+                        Back
+                    </span>
+                    <!-- <span class='searchbox'>
+                        <input placeholder='Search Orders' />
+                        <span class='search-clear'></span>
+                    </span> -->
+                    <span class='searchbox' />
+                    <span class='button next line-element-hidden' id="hw_button">
+                        Select
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div
+                                    class='subwindow-container-fix orders-details-contents'
+                                >
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div
+                                    class='subwindow-container-fix touch-scrollable scrollable-y'
+                                >
+                                    <table class='order-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Expense Description</th>
+                                                <th>Employee</th>
+                                                <th>Payment By</th>
+                                                <th>Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='expenses-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+    <t t-name="ExpensesList">
+        <tr class='order-line' t-att-data-id='order.id'>
+            <td>
+                <t t-esc='order.name' />
+            </td>
+            <td>
+                <t t-esc='order.employee_id[1]' />
+            </td>
+            <td>
+                <t
+                    t-if="order.payment_mode == 'own_account'"
+                >Employee (to reimburse)</t>
+                <t t-if="order.payment_mode == 'company_account'">Company</t>
+            </td>
+            <td>
+                <t t-esc='widget.format_currency(order.total_amount)' />
+            </td>
+        </tr>
+    </t>
+    <t t-name="ExpensesLinesTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>Expense Date</th>
+                    <th>Expense Description</th>
+                    <th>Employee</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="order.expense_lines" t-as="line" class='line-line'>
+                    <td>
+                        <t t-esc='line.date' />
+                    </td>
+                    <td>
+                        <t t-esc='line.name' />
+                    </td>
+                    <td>
+                        <t t-esc='line.employee_id[1]' />
+                    </td>
+                    <td>
+                        <t t-esc='widget.format_currency(line.total_amount)' />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+    <t t-name="ExpensesWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-alert">
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'Alert' " />
+                    <br />
+                    <span style="font-size: 16px">
+                        <t t-esc="widget.options.payment_mode" />
+                    </span>
+                </p>
+                <p class="body">
+                    <t t-esc=" widget.options.body || '' " />
+                </p>
+                <div class="footer">
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
