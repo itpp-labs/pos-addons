@@ -16,8 +16,8 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
-    "price": 89.00,
-    "currency": "EUR",
+    # "price": 89.00,
+    # "currency": "EUR",
     "depends": ["hr_expense", "base_automation", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
