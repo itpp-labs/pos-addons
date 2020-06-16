@@ -93,6 +93,4 @@ class HrExpenseSheet(models.Model):
     @api.multi
     def set_to_paid(self):
         super(HrExpenseSheet, self).set_to_paid()
-        self.write(
-            {"payment_datetime": fields.Datetime.now(),}
-        )
+        self.write({"payment_datetime": fields.Datetime.now()})

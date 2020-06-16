@@ -222,7 +222,7 @@ odoo.define("pos_expenses_pay.pos", function(require) {
                 event
             ) {
                 event.stopImmediatePropagation();
-                self.line_select(event, $(this), parseInt($(this).data("id")));
+                self.line_select(event, $(this), parseInt($(this).data("id"), 10));
             });
 
             this.$(".next").click(function() {
@@ -241,12 +241,10 @@ odoo.define("pos_expenses_pay.pos", function(require) {
         },
 
         render_list: function(expenses) {
-            var self = this,
-                contents = this.$el[0].querySelector(".expenses-list-contents");
+            var contents = this.$el[0].querySelector(".expenses-list-contents");
             contents.innerHTML = "";
             for (var i = 0, len = Math.min(expenses.length, 1000); i < len; i++) {
-                var expense = expenses[i],
-                    expenseline = false;
+                var expenseline = false;
                 var expenseline_html = QWeb.render("ExpensesList", {
                     widget: this,
                     order: expenses[i],
@@ -303,7 +301,6 @@ odoo.define("pos_expenses_pay.pos", function(require) {
                 $line.addClass("highlight");
                 this.show_select_button();
                 this.show_order_details($line);
-                var y = event.pageY - $line.parent().offset().top;
                 this.selected_expense = this.pos.get_expense_by_id(id);
             }
         },

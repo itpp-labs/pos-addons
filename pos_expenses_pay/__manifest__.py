@@ -18,7 +18,7 @@
     "license": "LGPL-3",
     "price": 89.00,
     "currency": "EUR",
-    "depends": ["hr_expense", "base_automation", "pos_longpolling",],
+    "depends": ["hr_expense", "base_automation", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_expenses_view.xml",
@@ -26,7 +26,7 @@
         "views/report.xml",
         "data/base_action_rule.xml",
     ],
-    "qweb": ["static/src/xml/pos.xml",],
+    "qweb": ["static/src/xml/pos.xml"],
     "demo": [],
     "post_load": None,
     "pre_init_hook": None,
