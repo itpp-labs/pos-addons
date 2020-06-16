@@ -12,19 +12,13 @@
     "images": ["images/pos_expenses_pay.jpg"],
     "version": "12.0.1.0.0",
     "application": False,
-
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
     "price": 89.00,
     "currency": "EUR",
-
-    "depends": [
-        "hr_expense",
-        "base_automation",
-        "pos_longpolling",
-    ],
+    "depends": ["hr_expense", "base_automation", "pos_longpolling",],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
         "views/pos_expenses_view.xml",
@@ -32,17 +26,12 @@
         "views/report.xml",
         "data/base_action_rule.xml",
     ],
-    "qweb": [
-        "static/src/xml/pos.xml",
-    ],
-    "demo": [
-    ],
-
+    "qweb": ["static/src/xml/pos.xml",],
+    "demo": [],
     "post_load": None,
     "pre_init_hook": None,
     "post_init_hook": None,
     "uninstall_hook": None,
-
     "auto_install": False,
     "installable": True,
 }
