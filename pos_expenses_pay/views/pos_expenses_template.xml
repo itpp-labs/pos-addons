@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2018 Artyom Losev
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
+    <template
+        id="assets_backend"
+        name="pos_expenses assets"
+        inherit_id="point_of_sale.assets"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_expenses_pay/static/src/js/pos_expenses.js"
+            />
+            <link rel="stylesheet" href="/pos_expenses_pay/static/src/css/pos.css" />
+        </xpath>
+    </template>
+</odoo>

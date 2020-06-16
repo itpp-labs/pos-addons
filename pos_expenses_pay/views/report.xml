@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).-->
+<odoo>
+    <template id="pos_expense_pay_report" inherit_id="point_of_sale.report_saledetails">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <br />
+            <h3>Expenses</h3>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Expense Date</th>
+                        <th>Description</th>
+                        <th>Employee</th>
+                        <th>Cashier</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach='expenses' t-as='exp'>
+                        <td>
+                            <t t-esc="exp['date']" />
+                        </td>
+                        <td>
+                            <t t-esc="exp['name']" />
+                        </td>
+                        <td>
+                            <t t-esc="exp['partner']" />
+                        </td>
+                        <td>
+                            <t t-esc="exp['cashier']" />
+                        </td>
+                        <td>
+                            <t t-esc="exp['amount']" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <strong>Total:</strong>
+                            <span t-esc="expenses_total" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+    </template>
+</odoo>

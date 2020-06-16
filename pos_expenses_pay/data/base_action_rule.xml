@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!--Copyright 2018 Artyom Losev
+    License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <record id="expense_update_pos_action" model="base.automation">
+        <field name="name">Update Expenses</field>
+        <field name="model_id" ref="hr_expense.model_hr_expense_sheet" />
+        <field name="state">code</field>
+        <field name="code">
+                 record.action_updated_expense()
+             </field>
+        <field name="trigger">on_create_or_write</field>
+        <field name="active" eval="True" />
+    </record>
+</odoo>
