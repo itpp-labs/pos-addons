@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<odoo>
+    <!-- Alipay menu in settings -->
+    <menuitem
+        name='Alipay'
+        id='root_alipay_menu'
+        parent='account.menu_finance_configuration'
+    />
+    <record id="order_form" model="ir.ui.view">
+        <field name="name">alipay.order.form</field>
+        <field name="model">alipay.order</field>
+        <field name="arch" type="xml">
+            <form string="Alipay Order">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,done"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="order_ref" />
+                        <field name="total_amount" />
+                        <field name="debug" />
+                    </group>
+                    <notebook>
+                        <page string="Raw Response">
+                            <field name="result_raw" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="order_list" model="ir.ui.view">
+        <field name="name">alipay.order.list</field>
+        <field name="model">alipay.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="order_ref" />
+                <field name="total_amount" />
+            </tree>
+        </field>
+    </record>
+    <record id="order_search" model="ir.ui.view">
+        <field name="name">alipay.order.search</field>
+        <field name="model">alipay.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="order_ref" />
+                <filter string="Sandbox" domain="[('debug','=',True)]" />
+                <filter string="Non-Sandbox" domain="[('debug','=',False)]" />
+            </search>
+        </field>
+    </record>
+    <record id="action_alipay_order" model="ir.actions.act_window">
+        <field name="name">Alipay Order</field>
+        <field name="res_model">alipay.order</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,form</field>
+    </record>
+    <menuitem
+        action='action_alipay_order'
+        id='alipay_order_menu'
+        parent='root_alipay_menu'
+        sequence='10'
+    />
+</odoo>
