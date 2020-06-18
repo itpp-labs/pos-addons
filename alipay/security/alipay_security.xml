@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="group_miniprogram_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="alipay.module_category_miniprogram_management" />
+    </record>
+</odoo>
