@@ -1,0 +1,19 @@
+.popup.popup-selection.cashier .selection.scrollable-y.touch-scrollable.cashier {
+    width: 100%;
+    padding-bottom: 0;
+}
+
+.popup.popup-selection.cashier .selection-item {
+    margin: 0 2px;
+}
+.pos .popup.popup-selection .employee .selection-item.selected,
+.pos .popup.popup-selection.employee .title,
+.pos .popup.popup-selection.employee .footer {
+    background: #596fb2;
+    color: white;
+}
+.pos .popup.popup-selection .employee-cashier-table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
