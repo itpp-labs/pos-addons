@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="CashierSelectionPopupWidget">
+        <t t-jquery=".selection.cashier:eq(1)" t-operation="replace">
+            <t t-if="widget.get_grouped_list">
+                <div class="employee-cashier-table">
+                    <t t-set="get_grouped_list" t-value="widget.get_grouped_list()" />
+                    <t t-foreach="get_grouped_list" t-as="list">
+                        <div
+                            t-attf-class="selection cashier {{widget.options.employee ? 'employee': ''}}"
+                            t-attf-style="display:table-cell;"
+                        >
+                            <t t-foreach="list || []" t-as="item">
+                                <div
+                                    t-attf-class="selection-item {{ item.selected ? 'selected' : '' }}"
+                                    t-att-data-item-id="item.item.id"
+                                >
+                                    <t t-esc='item.label' />
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </t>
+</templates>
