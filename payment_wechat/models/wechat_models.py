@@ -44,7 +44,7 @@ class WechatConfiguration(models.Model):
                 "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s"
                 % (appId, appSecret)
             )
-            response = requests.get(url)
+            response = requests.get(url, timeout=30)
             access_token = json.loads(response.text)["access_token"]
             self.write(
                 {"token_validity": time.time() + 7000, "access_token": access_token}
@@ -56,7 +56,7 @@ class WechatConfiguration(models.Model):
     def getIpList(self):
         token = self.getAccessToken()
         url = "https://api.wechat.com/cgi-bin/getcallbackip?access_token=%s" % token
-        response = requests.get(url)
+        response = requests.get(url, timeout=30)
         return json.loads(response.text)["ip_list"]
 
     def sortData(self, message):

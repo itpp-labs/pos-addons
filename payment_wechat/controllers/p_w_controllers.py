@@ -32,7 +32,7 @@ class Controller(BusController):
         )[:32]
         post = wcc.makeXmlPost(data)
         url = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey"
-        r1 = requests.post(url, data=post)
+        r1 = requests.post(url, data=post, timeout=30)
         message = {}
         message["resp1"] = r1.text
         return message
@@ -82,7 +82,9 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data)
         r1 = requests.post(
-            "https://api.mch.weixin.qq.com/sandboxnew/pay/micropay", data=post,
+            "https://api.mch.weixin.qq.com/sandboxnew/pay/micropay",
+            data=post,
+            timeout=30,
         )
         message = {}
         message["resp1"] = r1
@@ -106,7 +108,9 @@ class Controller(BusController):
 
         post = wcc.makeXmlPost(data_qa)
         r2 = requests.post(
-            "https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery", data=post,
+            "https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery",
+            data=post,
+            timeout=30,
         )
         message["resp2"] = r2
         message["resp_text2"] = r2.text
