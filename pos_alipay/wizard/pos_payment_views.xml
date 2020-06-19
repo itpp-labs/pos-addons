@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_pos_payment" model="ir.ui.view">
+        <field name="name">pos.make.payment.form</field>
+        <field name="model">pos.make.payment</field>
+        <field name="inherit_id" ref="pos_qr_payments.view_pos_payment" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="journal_alipay" invisible="1" />
+                <field
+                    name="alipay_order_id"
+                    attrs="{'invisible': [('journal_alipay', '=', False)]}"
+                    domain="[('order_ref', '=', order_ref)]"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
