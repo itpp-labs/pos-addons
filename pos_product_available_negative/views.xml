@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <field name="currency_id" position="after">
                     <field name="negative_order_group_id" />
+                    <field name="hide_out_of_stock_products" />
                 </field>
             </field>
         </record>

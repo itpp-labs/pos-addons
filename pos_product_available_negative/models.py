@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
 # Copyright 2016 manawi <https://github.com/manawi>
-# Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2019-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
 from odoo import api, fields, models
 
@@ -18,6 +18,9 @@ class PosConfig(models.Model):
         string="Negative Order Group",
         default=_default_negative_stock_user,
         help="Group allows to sell products which are out of a stock.",
+    )
+    hide_out_of_stock_products = fields.Boolean(
+        string="Hide Out of Stock Products",
     )
 
 
