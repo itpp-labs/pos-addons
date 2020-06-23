@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo noupdate="1">
+    <!-- Rules -->
+    <record model="ir.rule" id="miniprogram_user_rule">
+        <field
+            name="name"
+        >Mini-Program: mini-program user: read POS products only</field>
+        <field name="model_id" ref="product.model_product_product" />
+        <field
+            name="domain_force"
+        >[('sale_ok', '=', True), ('available_in_pos', '=', True)]</field>
+        <field name="perm_unlink" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="groups" eval="[(4,ref('alipay.group_miniprogram_user'))]" />
+    </record>
+</odoo>
