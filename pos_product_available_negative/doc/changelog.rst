@@ -1,3 +1,8 @@
+`1.1.0`
+-------
+
+- **NEW:** Option to hide out of stock products in POS
+
 `1.0.2`
 -------
 
