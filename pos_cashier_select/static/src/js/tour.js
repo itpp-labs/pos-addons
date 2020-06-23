@@ -26,7 +26,12 @@ odoo.define("pos_cashier_select.tour", function(require) {
             {
                 trigger:
                     '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
-                content: "select first cashier",
+                content: "select first sale person",
+            },
+            {
+                trigger:
+                    ".modal-dialog.cashier .selection-item:eq('0'), .paymentlines-container .total",
+                content: "select first cashier or do nothing",
             },
         ];
     }
