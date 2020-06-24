@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="qcloud_sms_view_tree" model="ir.ui.view">
+        <field name="name">qcloud.sms.tree</field>
+        <field name="model">qcloud.sms</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="false" delete="false">
+                <field name="partner_ids" widget="many2many_tags" />
+                <field name="send_datetime" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <record id="qcloud_sms_view_form" model="ir.ui.view">
+        <field name="name">qcloud.sms.form</field>
+        <field name="model">qcloud.sms</field>
+        <field name="arch" type="xml">
+            <form editable="bottom" create="false" delete="false">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,sent,done"
+                        nolabel="1"
+                        readonly="1"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags" />
+                        <field name="send_datetime" />
+                    </group>
+                    <group>
+                        <field name="message" />
+                        <field name="sms_type" required="True" />
+                        <field name="template_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="qcloud_sms_template_view_tree" model="ir.ui.view">
+        <field name="name">qcloud.sms.template.tree</field>
+        <field name="model">qcloud.sms.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="qcloud_sms_template_view_form" model="ir.ui.view">
+        <field name="name">qcloud.sms.template.form</field>
+        <field name="model">qcloud.sms.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="True" />
+                    </group>
+                    <group>
+                        <field name="domestic_sms_template_ID" />
+                        <field name="domestic_template_params" />
+                        <field name="domestic_sms_sign" />
+                    </group>
+                    <group>
+                        <field name="international_sms_template_ID" />
+                        <field name="international_template_params" />
+                        <field name="international_sms_sign" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="qcloud_sms_action" model="ir.actions.act_window">
+        <field name="name">Messages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">qcloud.sms</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="qcloud_sms_template_action" model="ir.actions.act_window">
+        <field name="name">Templates</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">qcloud.sms.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="main_menu"
+        name="Tencent Cloud SMS"
+        parent="base.menu_administration"
+        sequence="1"
+        groups="base.group_no_one"
+    />
+    <menuitem
+        id="message_menu"
+        name="Messages"
+        parent="main_menu"
+        sequence="1"
+        action="qcloud_sms_action"
+    />
+    <menuitem
+        id="template_menu"
+        name="Templates"
+        parent="main_menu"
+        sequence="2"
+        action="qcloud_sms_template_action"
+    />
+</odoo>
