@@ -4,8 +4,6 @@ odoo.define("pos_wechat_miniprogram.models", function(require) {
     "use strict";
 
     var models = require("point_of_sale.models");
-    var multi_session = require("pos_multi_session");
-    var rpc = require("web.rpc");
     var core = require("web.core");
     var _t = core._t;
 
@@ -118,7 +116,6 @@ odoo.define("pos_wechat_miniprogram.models", function(require) {
             }
         },
         update_miniprogram_order: function(order, data) {
-            var self = this;
             var not_found = order.orderlines.map(function(r) {
                 return r.miniprogram_line.id;
             });
@@ -148,7 +145,6 @@ odoo.define("pos_wechat_miniprogram.models", function(require) {
             order.apply_updates_miniprogram_order(data);
         },
         create_miniprogram_order: function(data) {
-            var self = this;
             // Get current order
             var current_order = this.get_order();
             // Create new order

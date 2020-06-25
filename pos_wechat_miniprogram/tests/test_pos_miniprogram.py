@@ -11,7 +11,6 @@ except ImportError:
     from mock import patch
 
 
-
 _logger = logging.getLogger(__name__)
 
 
@@ -31,12 +30,8 @@ class TestPOSMiniProgram(HttpCase):
 
         self.Order = self.phantom_env["pos.miniprogram.order"]
 
-        self.product1 = self.phantom_env["product.product"].create(
-            {"name": "Product1",}
-        )
-        self.product2 = self.phantom_env["product.product"].create(
-            {"name": "Product2",}
-        )
+        self.product1 = self.phantom_env["product.product"].create({"name": "Product1"})
+        self.product2 = self.phantom_env["product.product"].create({"name": "Product2"})
 
         self.lines = [
             {

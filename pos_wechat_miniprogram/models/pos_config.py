@@ -32,7 +32,7 @@ class PosConfig(models.Model):
         journal_obj = self.env["account.journal"]
         user = self.env.user
         wechat_jsapi_journal_active = journal_obj.search(
-            [("company_id", "=", user.company_id.id), ("wechat", "=", "jsapi"),]
+            [("company_id", "=", user.company_id.id), ("wechat", "=", "jsapi")]
         )
         if wechat_jsapi_journal_active:
             return
@@ -55,6 +55,4 @@ class PosConfig(models.Model):
         )
 
         if demo_is_on:
-            self.write(
-                {"journal_ids": [(4, wechat_jsapi_journal.id),],}
-            )
+            self.write({"journal_ids": [(4, wechat_jsapi_journal.id)]})

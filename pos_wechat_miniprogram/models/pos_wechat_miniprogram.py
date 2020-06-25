@@ -179,14 +179,14 @@ class PosWeChatMiniProgramOrder(models.Model):
         return line
 
     @api.model
-    def remove_orderline(self, id):
-        line = self.env["pos.miniprogram.order.line"].browse(id)
+    def remove_orderline(self, res_id):
+        line = self.env["pos.miniprogram.order.line"].browse(res_id)
         # TODO: send remove information about the line to other mini-programs
         return line.unlink()
 
     @api.model
-    def change_orderline(self, id, vals):
-        line = self.env["pos.miniprogram.order.line"].browse(id)
+    def change_orderline(self, res_id, vals):
+        line = self.env["pos.miniprogram.order.line"].browse(res_id)
         # TODO: send update information about the line to other mini-programs
         return line.write(vals)
 
@@ -227,6 +227,4 @@ class PosWeChatMiniProgramOrderLine(models.Model):
         for line in self:
             price = line.price * (1 - (line.discount or 0.0) / 100.0)
             amount_total = price * line.quantity
-            line.update(
-                {"amount_total": amount_total,}
-            )
+            line.update({"amount_total": amount_total})

@@ -24,7 +24,9 @@ class RestaurantTable(models.Model):
             "table_id": self.id,
         }
         data = {
-            "path": "{}?{}".format("pages/index/index", werkzeug.urls.url_encode(param)),
+            "path": "{}?{}".format(
+                "pages/index/index", werkzeug.urls.url_encode(param)
+            ),
             "width": 430,
         }
         qr = self.env["ir.config_parameter"].sudo().get_qr_code(data, access_token)
