@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="multi_session_form" model="ir.ui.view">
+        <field name="name">pos.multi_session.form</field>
+        <field name="model">pos.multi_session</field>
+        <field name="inherit_id" ref="pos_multi_session.multi_session_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_ID']/.." position="after">
+                <group string="Mini-Program Settings">
+                    <field name="allow_instant_payment" />
+                    <field name="allow_deffered_payment" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

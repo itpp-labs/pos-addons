@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_pos_payment" model="ir.ui.view">
+        <field name="name">pos.make.payment.form</field>
+        <field name="model">pos.make.payment</field>
+        <field name="inherit_id" ref="pos_wechat.view_pos_payment" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='wechat_order_id']" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'invisible': [('journal_wechat', 'not in', ['native', 'jsapi'])]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

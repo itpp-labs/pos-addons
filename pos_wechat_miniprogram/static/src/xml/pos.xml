@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Product">
+        <t t-jquery=".product-img" t-operation="append">
+            <span t-if="product.available_pos_product_qty > 0" t-attf-class="available-pos-product">
+                <t t-esc="product.available_pos_product_qty"/>
+            </span>
+            <span t-if="product.available_pos_product_qty <= 0" t-attf-class="available-pos-product">
+                Sold out
+            </span>
+        </t>
+    </t>
+
+</templates>
