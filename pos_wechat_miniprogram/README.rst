@@ -40,6 +40,12 @@ Pay via POS
 
 TODO
 
+Roadmap
+=======
+
+* TODO: need to do something with warnings like this: ``pos.miniprogram.order.line.create() includes unknown fields: category, description``
+* TODO: uncomment test_create_without_pay_from_miniprogram_ui and make it work. It fails for some reason.
+
 Credits
 =======
 
