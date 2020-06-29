@@ -7,8 +7,8 @@ from openerp import http
 
 try:
     from openerp.addons.hw_escpos.escpos.escpos import Escpos
-    from openerp.addons.hw_escpos.escpos.printer import *
-    from openerp.addons.hw_escpos.escpos.exceptions import *
+    from openerp.addons.hw_escpos.escpos.printer import *  # noqa: F403
+    from openerp.addons.hw_escpos.escpos.exceptions import *  # noqa: F403
     from openerp.addons.hw_escpos.controllers.main import EscposProxy
     from openerp.addons.hw_escpos.controllers.main import EscposDriver
 except ImportError:
@@ -41,7 +41,7 @@ class EscposCashboxProxy(EscposProxy):
         driver.push_task("cashbox5")
 
     @http.route("/hw_proxy/get_stat", type="json", auth="none", cors="*")
-    def open_cashbox_pin5(self):
+    def get_stat(self):
         _logger.info("EscposProxyCashbox")
         driver = EscposCashboxDriver()
         status = driver.get_status()
@@ -57,7 +57,7 @@ class EscposCashboxDriver(EscposDriver):
 
     def run(self):
         printer = None
-        if not escpos:
+        if not escpos:  # noqa: F405
             _logger.error(
                 "ESC/POS cannot initialize, please verify system dependencies."
             )
@@ -72,7 +72,7 @@ class EscposCashboxDriver(EscposDriver):
                     "===========================printer==============================="
                 )
                 _logger.error(printer)
-                if printer == None:
+                if printer is None:
                     if task != "status":
                         self.queue.put((timestamp, task, data))
                     error = False
@@ -100,17 +100,17 @@ class EscposCashboxDriver(EscposDriver):
                     pass
                 error = False
 
-            except NoDeviceError as e:
+            except NoDeviceError as e:  # noqa: F405
                 _logger.error("No device found %s", e)
-            except HandleDeviceError as e:
+            except HandleDeviceError as e:  # noqa: F405
                 _logger.error(
                     "Impossible to handle the device due to previous error %s", e
                 )
-            except TicketNotPrinted as e:
+            except TicketNotPrinted as e:  # noqa: F405
                 _logger.error(
                     "The ticket does not seems to have been fully printed %s", e
                 )
-            except NoStatusError as e:
+            except NoStatusError as e:  # noqa: F405
                 _logger.error("Impossible to get the status of the printer %s", e)
             except Exception as e:
                 self.set_status("error", e)

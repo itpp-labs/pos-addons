@@ -14,7 +14,7 @@
     "license": "LGPL-3",
     # "price": 9.00,
     # "currency": "EUR",
-    "depends": ["hw_escpos",],
+    "depends": ["hw_escpos"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [],
     "qweb": [],
