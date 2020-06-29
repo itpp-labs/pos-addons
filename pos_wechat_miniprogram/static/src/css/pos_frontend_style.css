@@ -1,0 +1,104 @@
+/* Order Selector widget*/
+.pos .pos-rightheader .paid .deleteorder-button {
+    background: #a7a7a7 !important;
+    pointer-events: none;
+    color: #393939;
+    box-shadow: initial;
+}
+/* Product Screen */
+.pos .product-screen.paid .leftpane .numpad {
+    display: none !important;
+}
+.pos .product-screen.paid .leftpane .control-buttons {
+    padding: 8px 16px 0px 10px;
+}
+.pos .product-screen.paid .leftpane .control-buttons .control-button {
+    display: none;
+}
+.pos .product-screen .leftpane .control-buttons .control-button {
+    transition: initial;
+}
+.pos .product-screen.paid .leftpane .control-buttons .order-submit {
+    display: inline-block;
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 52px;
+    font-weight: bold;
+    vertical-align: middle;
+    line-height: 52px;
+}
+.pos .product-screen.paid .leftpane .actionpad {
+    display: flex;
+    width: initial;
+    float: initial;
+    flex-flow: row wrap;
+    margin-right: 16px;
+    margin-top: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.pos .product-screen.paid .leftpane .actionpad .pay {
+    display: none;
+}
+.pos .disable-products {
+    background: #00000036 !important;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.pos .product-screen.paid .rightpane .layout-table {
+    z-index: 1;
+    pointer-events: none;
+}
+.pos .product-screen.paid .actionpad .button.validate {
+    height: 162px;
+    font-size: 26px;
+}
+.pos .product-screen.paid .actionpad .button.validate .pay-circle {
+    display: block;
+    font-size: 32px;
+    line-height: 54px;
+    padding-top: 6px;
+    background: rgb(86, 86, 86);
+    color: white;
+    width: 60px;
+    margin: auto;
+    border-radius: 30px;
+    margin-bottom: 10px;
+}
+.pos .product-screen.paid .actionpad .button.validate .pay-circle .fa {
+    position: relative;
+    top: -2px;
+}
+.pos .product-screen.paid .set-customer {
+    font-size: 18px;
+}
+/* Client Screen */
+.pos .clientlist-screen.paid .client-list {
+    display: none;
+}
+.pos .clientlist-screen.paid .top-content span {
+    display: none;
+}
+.pos .clientlist-screen.paid .top-content .back {
+    display: initial;
+}
+.pos .clientlist-screen.paid .edit-buttons {
+    display: none;
+}
+.pos .product .available-pos-product {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    vertical-align: top;
+    color: white;
+    line-height: 13px;
+    background: #7f82ac;
+    padding: 2px 5px;
+    border-radius: 2px;
+    font-weight: bold;
+}

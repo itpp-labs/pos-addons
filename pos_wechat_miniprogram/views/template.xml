@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <template id="assets_backend" name="backend assets" inherit_id="web.assets_backend">
+        <xpath expr="//link[last()]" position="after">
+            <link
+                rel="stylesheet"
+                type="text/css"
+                href="/pos_wechat_miniprogram/static/src/css/pos_backend_style.css"
+            />
+        </xpath>
+    </template>
+    <template id="pos_assets" name="POS assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_wechat_miniprogram/static/src/js/models.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_wechat_miniprogram/static/src/js/screens.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_wechat_miniprogram/static/src/js/chrome.js"
+            />
+        </xpath>
+        <xpath expr="//link[last()]" position="after">
+            <link
+                rel="stylesheet"
+                type="text/css"
+                href="/pos_wechat_miniprogram/static/src/css/pos_frontend_style.css"
+            />
+        </xpath>
+    </template>
+</odoo>

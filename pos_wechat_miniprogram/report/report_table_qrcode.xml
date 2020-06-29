@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <report
+        id="generate_qr_code_report"
+        model="pos.table.qrcode.wizard"
+        string="WeChatn mini-program QR Codes"
+        report_type="qweb-pdf"
+        name="pos_wechat_miniprogram.report_generate_qr_code"
+        menu="False"
+    />
+    <template id="report_generate_qr_code">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="text-center">
+                    <h2>Floor: <t t-esc="floor" /></h2>
+                </div>
+                <t t-foreach="docs" t-as="doc">
+                    <t t-foreach="range(0, quantity)" t-as="i">
+                        <div class="col-xs-4" style="padding:0; display:inline-block;">
+                            <img
+                                t-att-src="'data:image/png;base64,%s' % to_text(doc['qr_code'])"
+                                style="width:300px; height: 300px;"
+                            />
+                            <h3
+                                style="text-align:center; padding:0;"
+                                t-esc="doc['name']"
+                            />
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

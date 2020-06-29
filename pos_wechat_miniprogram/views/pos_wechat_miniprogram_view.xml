@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_pos_miniprogram_order_form" model="ir.ui.view">
+        <field name="name">pos.miniprogram.order.form</field>
+        <field name="model">pos.miniprogram.order</field>
+        <field name="arch" type="xml">
+            <form string="WeChat mini-program Orders" create="0" edit="0" delete="0">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,done"
+                    />
+                </header>
+                <sheet>
+                    <group col="4" colspan="4" name="order_fields">
+                        <field name="name" />
+                        <field name="date_order" />
+                        <field name="partner_id" />
+                        <field name="customer_count" />
+                        <field name="confirmed_from_pos" />
+                        <field name="multi_session_id" />
+                        <field name="table_id" />
+                        <field name="floor_id" />
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Products">
+                            <field name="lines_ids" colspan="4" nolabel="1">
+                                <tree>
+                                    <field name="product_id" />
+                                    <field name="quantity" />
+                                    <field name="price" widget="monetary" />
+                                    <field name="discount" widget="monetary" />
+                                    <field name="amount_total" widget="monetary" />
+                                    <field name="note" />
+                                </tree>
+                                <form string="Order lines">
+                                    <group col="4">
+                                        <field name="product_id" />
+                                        <field name="quantity" />
+                                        <field name="discount" widget="monetary" />
+                                        <field name="price" widget="monetary" />
+                                        <field name="create_date" />
+                                        <field name="note" />
+                                    </group>
+                                </form>
+                            </field>
+                            <group
+                                class="oe_subtotal_footer oe_right"
+                                colspan="2"
+                                name="order_total"
+                            >
+                                <field
+                                    name="amount_total"
+                                    nolabel="1"
+                                    class="oe_subtotal_footer_separator"
+                                    widget="monetary"
+                                />
+                            </group>
+                            <div class="oe_clear" />
+                        </page>
+                        <page name="extra" string="Extra Info">
+                            <group string="General Information">
+                                <field
+                                    name="company_id"
+                                    groups="base.group_multi_company"
+                                />
+                                <field name="user_id" />
+                                <field name="to_invoice" />
+                                <field name="payment_method" />
+                                <field name="packing_methods" />
+                            </group>
+                            <group string="POS Order">
+                                <group>
+                                    <field name="order_id" />
+                                </group>
+                            </group>
+                            <group string="WeChat Order">
+                                <group>
+                                    <field name="wechat_order_id" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_pos_miniprogram_order_tree" model="ir.ui.view">
+        <field name="name">pos.miniprogram.order.tree</field>
+        <field name="model">pos.miniprogram.order</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-info="state == 'draft'"
+                decoration-muted="state in ('done')"
+                create="false"
+                delete="false"
+            >
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="date_order" />
+                <field name="user_id" />
+                <field name="multi_session_id" />
+                <field name="amount_total" sum="Amount total" widget="monetary" />
+                <field name="state" />
+                <field name="confirmed_from_pos" />
+            </tree>
+        </field>
+    </record>
+    <record id="action_pos_wechat_miniprogram_form" model="ir.actions.act_window">
+        <field name="name">Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.miniprogram.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False" />
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Use a WeChat mini-program to create a new order.
+            </p>
+        </field>
+    </record>
+    <menuitem
+        id="menu_pos_miniprogram_order"
+        name="WeChat mini-program"
+        parent="point_of_sale.menu_point_root"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_point_ofsale"
+        parent="menu_pos_miniprogram_order"
+        action="action_pos_wechat_miniprogram_form"
+        sequence="1"
+        groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"
+    />
+</odoo>

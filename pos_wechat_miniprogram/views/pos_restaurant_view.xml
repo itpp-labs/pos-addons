@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_restaurant_table_form" model="ir.ui.view">
+        <field name="name">Restaurant Table</field>
+        <field name="model">restaurant.table</field>
+        <field name="inherit_id" ref="pos_restaurant.view_restaurant_table_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field
+                    name="wechat_miniprogram_qr"
+                    widget="image"
+                    options="{'size': [200, 200]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

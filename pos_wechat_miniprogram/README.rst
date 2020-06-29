@@ -8,6 +8,44 @@
 
 Integrate POS with WeChat mini-program
 
+Verification mobile number
+==========================
+
+Use the mobile phone number specified in your WeChat account.::
+
+    authByWeChat: function (e) {
+        var detail = e.detail;
+        var params = {
+            model: 'res.users',
+            method: 'wechat_mobile_number_verification',
+            args: [detail],
+            context: {},
+            kwargs: {}
+        };
+        odooRpc(params).then(function (res) {
+            wx.setStorageSync('telephoneNumberVerified', res.result);
+        })
+    }
+
+Payments
+========
+
+Pay via WeChat mini-program
+---------------------------
+
+TODO
+
+Pay via POS
+-----------
+
+TODO
+
+Roadmap
+=======
+
+* TODO: need to do something with warnings like this: ``pos.miniprogram.order.line.create() includes unknown fields: category, description``
+* TODO: uncomment test_create_without_pay_from_miniprogram_ui and make it work. It fails for some reason.
+
 Credits
 =======
 

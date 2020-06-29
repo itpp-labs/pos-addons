@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record model="ir.ui.view" id="pos_config_view_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//h2[@name='order']" position="before">
+                <h2 name="wechat">WeChat mini-program</h2>
+                <div class="row mt16 o_settings_container" id="wechat">
+                    <div
+                        id="allow_message_from_miniprogram"
+                        class="col-xs-12 col-md-6 o_setting_box"
+                    >
+                        <div class="o_setting_left_pane">
+                            <field name="allow_message_from_miniprogram" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="allow_message_from_miniprogram" />
+                        </div>
+                    </div>
+                    <div
+                        id="auto_print_miniprogram_orders"
+                        class="col-xs-12 col-md-6 o_setting_box"
+                    >
+                        <div class="o_setting_left_pane">
+                            <field name="auto_print_miniprogram_orders" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="auto_print_miniprogram_orders" />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
