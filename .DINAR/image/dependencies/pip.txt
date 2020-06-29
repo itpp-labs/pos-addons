@@ -3,3 +3,4 @@ requests-mock
 python-alipay-sdk
 qcloudsms_py
 phonenumbers
+netifaces
