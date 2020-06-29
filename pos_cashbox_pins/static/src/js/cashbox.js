@@ -4,12 +4,8 @@ odoo.define("pos_cashbox_pins.open", function(require) {
     "use strict";
 
     var Session = require("web.Session");
-    var core = require("web.core");
-    var CrashManager = require("web.CrashManager");
     var screens = require("point_of_sale.screens");
     var rpc = require("web.rpc");
-
-    var _t = core._t;
 
     screens.PaymentScreenWidget.include({
         init: function(parent, options) {
@@ -28,7 +24,7 @@ odoo.define("pos_cashbox_pins.open", function(require) {
                 url += port;
             }
             console.log(url);
-            this.connection = new Session(void 0, url, {use_cors: true});
+            this.connection = new Session(undefined, url, {use_cors: true});
         },
         renderElement: function() {
             var self = this;
