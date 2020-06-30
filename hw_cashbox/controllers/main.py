@@ -7,7 +7,7 @@ from openerp import http
 
 try:
     from openerp.addons.hw_escpos.escpos.escpos import Escpos
-    from openerp.addons.hw_escpos.escpos.printer import *  # noqa: F403
+    from openerp.addons.hw_escpos.escpos.printer import *  # noqa: F403 TODO: uncomment and fix
     from openerp.addons.hw_escpos.escpos.exceptions import *  # noqa: F403
     from openerp.addons.hw_escpos.controllers.main import EscposProxy
     from openerp.addons.hw_escpos.controllers.main import EscposDriver
@@ -57,7 +57,7 @@ class EscposCashboxDriver(EscposDriver):
 
     def run(self):
         printer = None
-        if not escpos:  # noqa: F405
+        if not escpos:  # noqa: F405 TODO: uncomment and fix
             _logger.error(
                 "ESC/POS cannot initialize, please verify system dependencies."
             )

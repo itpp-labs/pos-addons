@@ -8,6 +8,11 @@
 
 The module allows to open Cashbox/Cashdrawer from POS
 
+Roadmap
+=======
+
+* TODO: Remove unnecessary log messages
+
 Credits
 =======
 
