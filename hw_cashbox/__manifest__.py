@@ -1,5 +1,5 @@
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Hardware Cashbox""",
     "summary": """The module allows you to open the cashbox through input pin""",
@@ -11,7 +11,7 @@
     "author": "IT-Projects LLC, Artem Rafailov",
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/Ommo73",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",
     "depends": ["hw_escpos"],
