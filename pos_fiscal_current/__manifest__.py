@@ -4,7 +4,7 @@
     "author": "IT-Projects LLC",
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://yelizariev.github.io",
     "depends": ["point_of_sale"],
     "data": ["templates.xml"],

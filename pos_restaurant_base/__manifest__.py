@@ -7,7 +7,7 @@
     "version": "11.0.2.0.4",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "Other OSI approved licence",  # MIT
     "price": 35.00,
