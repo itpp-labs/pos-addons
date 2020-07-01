@@ -17,7 +17,7 @@
     "images": ["images/debt_notebook.png"],
     "version": "11.0.5.3.1",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info",
     "license": "Other OSI approved licence",  # MIT
     "price": 280.00,

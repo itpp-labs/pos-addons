@@ -5,7 +5,7 @@
     "version": "11.0.1.0.1",
     "images": [],
     "author": "IT-Projects LLC, Pavel Romanchenko",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info",
     "license": "AGPL-3",
     "price": 15.00,

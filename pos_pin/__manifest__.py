@@ -10,7 +10,7 @@
     "license": "Other OSI approved licence",  # MIT
     "category": "Hidden",
     "images": ["images/pos_pin.jpg"],
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info",
     "depends": ["point_of_sale"],
     "data": ["data.xml"],

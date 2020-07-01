@@ -4,7 +4,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "Other OSI approved licence",  # MIT
     "category": "Debranding",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://twitter.com/yelizariev",
     "depends": ["point_of_sale"],
     # 'price': 30.00,
