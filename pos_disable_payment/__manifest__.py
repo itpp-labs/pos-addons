@@ -6,7 +6,7 @@
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "live_test_url": "http://apps.it-projects.info/shop/product/pos-multi-session?version=11.0",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://yelizariev.github.io",
     "depends": ["point_of_sale"],
     "images": ["images/pos_payment_access.png"],
