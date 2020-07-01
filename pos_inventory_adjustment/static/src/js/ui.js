@@ -1,5 +1,6 @@
 /* Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). */
+/* global posmodel*/
 odoo.define("pos_inventory_adjustment.ui", function(require) {
     "use strict";
 
@@ -72,13 +73,13 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
                         if (order) {
                             return pos.set_order(order);
                         }
-                        var lines = pos
-                            .get_inventory_stage_lines(inv.line_ids)
-                            .then(function(lines) {
-                                pos.create_inventory_order(inv, {
-                                    inv_adj_lines: lines,
-                                });
+                        pos.get_inventory_stage_lines(inv.line_ids).then(function(
+                            lines
+                        ) {
+                            pos.create_inventory_order(inv, {
+                                inv_adj_lines: lines,
                             });
+                        });
                     },
                     cancel: function() {
                         pos.gui.close_popup();
@@ -87,7 +88,9 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
             });
         },
 
-        check_order_presence: function(inv_id) {},
+        check_order_presence: function(inv_id) {
+            // Do nothing
+        },
     });
     screens.define_action_button({
         name: "update_stage_button",
@@ -101,7 +104,6 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
         template: "InventorySelectionPopupWidget",
         show: function(options) {
             options = options || {};
-            var self = this;
             this._super(options);
 
             this.list = options.list || [];
@@ -111,7 +113,7 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
         click_item: function(event) {
             this.gui.close_popup();
             if (this.options.confirm) {
-                var item = this.list[parseInt($(event.target).data("item-index"))];
+                var item = this.list[parseInt($(event.target).data("item-index"), 10)];
                 this.options.confirm.call(self, item);
             }
         },
@@ -141,8 +143,8 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
 
         click_confirm: function(event) {
             var data = {
-                inventory_id: parseInt(this.$el.find("select.inventory").val()),
-                user_id: parseInt(this.$el.find("select.user").val()),
+                inventory_id: parseInt(this.$el.find("select.inventory").val(), 10),
+                user_id: parseInt(this.$el.find("select.user").val(), 10),
                 name: this.$el.find("input.name").val(),
                 note: this.$el.find("input.note").val(),
             };
@@ -233,7 +235,6 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
 
     screens.NumpadWidget.include({
         clickDeleteLastChar: function() {
-            var self = this;
             var user_is_admin = _.contains(
                 this.pos.get_cashier().groups_id,
                 this.pos.config.group_system_id[0]
@@ -250,7 +251,6 @@ odoo.define("pos_inventory_adjustment.ui", function(require) {
 
     screens.OrderWidget.include({
         init: function(parent, options) {
-            var self = this;
             this._super(parent, options);
             if (this.pos.config.inventory_adjustment) {
                 $(this.chrome.el).addClass("inventory");

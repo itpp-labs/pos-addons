@@ -5,7 +5,6 @@ odoo.define("pos_inventory_adjustment.models", function(require) {
 
     var models = require("point_of_sale.models");
     var Model = require("web.DataModel");
-    var core = require("web.core");
 
     models.load_models({
         model: "stock.inventory",
@@ -41,20 +40,20 @@ odoo.define("pos_inventory_adjustment.models", function(require) {
                 var inv_id = self.config.inventory_adjustment_temporary_inv_id;
                 if (inv_id) {
                     var inv_order = _.find(self.get_order_list(), function(o) {
-                        return o.inventory_adjustment_stage_id == inv_id[0];
+                        return o.inventory_adjustment_stage_id === inv_id[0];
                     });
                     if (inv_order) {
                         self.set_order(inv_order);
                     } else {
                         self.get_inventory_stages([inv_id[0]]).then(function(inv) {
                             inv = inv[0];
-                            var lines = self
-                                .get_inventory_stage_lines(inv.line_ids)
-                                .then(function(lines) {
-                                    self.create_inventory_order(inv, {
-                                        inv_adj_lines: lines,
-                                    });
+                            self.get_inventory_stage_lines(inv.line_ids).then(function(
+                                lines
+                            ) {
+                                self.create_inventory_order(inv, {
+                                    inv_adj_lines: lines,
                                 });
+                            });
                         });
                     }
                 }
@@ -62,7 +61,6 @@ odoo.define("pos_inventory_adjustment.models", function(require) {
         },
 
         get_inventory_stages: function(ids) {
-            var self = this;
             if (ids) {
                 return new Model("stock.inventory.stage")
                     .call("search_read", [[["id", "in", ids]]], {
@@ -92,7 +90,6 @@ odoo.define("pos_inventory_adjustment.models", function(require) {
         },
 
         get_inventory_stage_lines: function(ids) {
-            var self = this;
             return new Model("stock.inventory.stage.line").call("read", [ids]).then(
                 function(lines) {
                     return lines;
@@ -131,7 +128,6 @@ odoo.define("pos_inventory_adjustment.models", function(require) {
         },
 
         send_inventory_stage: function() {
-            var self = this;
             var order = this.get_order();
             var order_to_send = {
                 inventory_adjustment_stage_id: order.inventory_adjustment_stage_id,
