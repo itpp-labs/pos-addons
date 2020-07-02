@@ -11,8 +11,11 @@ INV_CHANNEL = "pos_invoices"
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
+    paid_invoice = fields.Boolean('Order Pays Invoice')
+
     @api.model
-    def create_from_ui(self, orders):
+    def create_from_ui(self, pos_orders):
+        orders = copy.deepcopy(pos_orders)
         invoices_to_pay = [o for o in orders if o.get("data").get("invoice_to_pay")]
         original_orders = [o for o in orders if o not in invoices_to_pay]
         res = super(PosOrder, self).create_from_ui(
@@ -44,15 +47,26 @@ class PosOrder(models.Model):
                 'amount_return': 0
             })
             data.update(invoice_data)
+            name = data.get('origin', '') + ' - ' + data.get('number', '')
+            qty = self.search_count([('pos_reference', 'ilike', name)])
             data.update({
                 'user_id': 'user_id' in data and data['user_id'][0],
                 'partner_id': 'partner_id' in data and data['partner_id'][0],
-                'name': data.get('origin', '') + ' - ' + data.get('number', '')
+                'name': data.get('origin', '') + ' - ' + data.get('number', '') + ' - ' + str(qty + 1),
+                'paid_invoice': True,
             })
             if 'invoice_id' in data:
                 del data['invoice_id']
             order['data'] = data
             res.append(order)
+        return res
+
+    @api.model
+    def _order_fields(self, ui_order):
+        res = super(PosOrder, self)._order_fields(ui_order)
+        res.update({
+            'paid_invoice': 'paid_invoice' in ui_order and ui_order['paid_invoice'],
+        })
         return res
 
     @api.model
@@ -95,6 +109,12 @@ class PosOrder(models.Model):
         inv_id = order.action_invoice_create()
         self.env["account.invoice"].browse(inv_id).action_invoice_open()
         return inv_id
+
+    def test_paid(self):
+        for order in self:
+            if not order.paid_invoice and not super(PosOrder, order).test_paid():
+                return False
+        return True
 
 
 class AccountPayment(models.Model):
