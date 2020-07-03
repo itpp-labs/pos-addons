@@ -64,7 +64,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
             var self = this;
             order.orderlines.each(function(line) {
                 var product = line.get_product();
-                product.qty_available = product.format_float_value(
+                product.qty_available = Math.round(
                     product.qty_available - line.get_quantity(),
                     {digits: [69, 3]}
                 );
@@ -128,6 +128,14 @@ odoo.define("pos_product_available.PosModel", function(require) {
                 category = category.parent;
             }
 
+            /*
+            There was an error in string 137-138.
+            So, with pos_product_available it doesnt work correctly, cause
+            'item.product_tmpl_id || item.product_tmpl_id[0] === self.product_tmpl_id'
+            in this string are comparing integer with an array.
+            By the way, here's comparing products ids.
+            IMPORTANT: Changed lines are 137 and 138.
+            */
             var pricelist_items = _.filter(pricelist.items, function(item) {
                 return (
                     (!item.product_tmpl_id ||
