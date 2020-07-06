@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <template
+        id="demo_pos_assets"
+        name="pos_order_print_check_assets_demo"
+        inherit_id="point_of_sale.assets"
+    >
+        <xpath expr="//link[last()]" position="after">
+            <script
+                type="text/javascript"
+                src="/pos_order_print_check/static/src/js/tour_pos_order_print_check.js"
+            />
+        </xpath>
+    </template>
+</odoo>
