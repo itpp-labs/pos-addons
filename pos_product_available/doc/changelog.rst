@@ -1,3 +1,8 @@
+`1.1.1`
+-------
+
+- [FIX] product qty available wrong rounding and overrided 'get_price' method in pos.js
+
 `1.1.0`
 -------
 

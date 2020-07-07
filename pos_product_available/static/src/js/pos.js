@@ -129,12 +129,13 @@ odoo.define("pos_product_available.PosModel", function(require) {
             }
 
             /*
-            There was an error in string 137-138.
             So, with pos_product_available it doesnt work correctly, cause
             'item.product_tmpl_id || item.product_tmpl_id[0] === self.product_tmpl_id'
-            in this string are comparing integer with an array.
+            in this string are comparing integer with an array of two elements.
+            Changed: 'self.product_tmpl_id -> self.product_tmpl_id[0]',
+            where 'self.product_tmpl_id[0]' product template id.
             By the way, here's comparing products ids.
-            IMPORTANT: Changed lines are 137 and 138.
+            IMPORTANT: Changed line - (!item.product_tmpl_id || item.product_tmpl_id[0] === self.product_tmpl_id[0]).
             */
             var pricelist_items = _.filter(pricelist.items, function(item) {
                 return (
