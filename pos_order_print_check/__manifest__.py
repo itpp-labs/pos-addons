@@ -18,7 +18,7 @@
     "depends": ["pos_restaurant_base"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/pos_order_print_check_template.xml"],
-    "demo": [],
+    "demo": ["demo/demo.xml"],
     "qweb": [],
     "post_load": None,
     "pre_init_hook": None,
