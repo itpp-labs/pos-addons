@@ -8,7 +8,7 @@
 
 Adds available quantity at products in POS
 
-Module potentialy isn't compatible with modules that overrides 'get_price' method in JS
+Module potentialy isn't compatible with modules that overrides `get_price` method in JS
 
 Credits
 =======
