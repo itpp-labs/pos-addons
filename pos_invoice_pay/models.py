@@ -83,18 +83,18 @@ class AccountInvoice(models.Model):
         invoice_lines = self.env["account.invoice.line"].search(
             [("invoice_id", "in", invoice_ids)]
         )
-        for l in invoice_lines:
+        for i in invoice_lines:
             line = {
-                "invoice_id": l.invoice_id.id,
-                "id": l.id,
-                "name": l.name,
-                "account": l.account_id.name,
-                "product": l.product_id.name,
-                "price_unit": l.price_unit,
-                "qty": l.quantity,
-                "tax": l.invoice_line_tax_ids.name or " ",
-                "discount": l.discount,
-                "amount": l.price_subtotal,
+                "invoice_id": i.invoice_id.id,
+                "id": i.id,
+                "name": i.name,
+                "account": i.account_id.name,
+                "product": i.product_id.name,
+                "price_unit": i.price_unit,
+                "qty": i.quantity,
+                "tax": i.invoice_line_tax_ids.name or " ",
+                "discount": i.discount,
+                "amount": i.price_subtotal,
             }
             res.append(line)
         return res
@@ -129,21 +129,21 @@ class SaleOrder(models.Model):
         order_lines = self.env["sale.order.line"].search(
             [("order_id", "in", sale_order_ids)]
         )
-        for l in order_lines:
+        for i in order_lines:
             line = {
-                "order_id": l.order_id.id,
-                "id": l.id,
-                "name": l.name,
-                "product": l.product_id.name,
-                "uom_qty": l.product_uom_qty,
-                "qty_delivered": l.qty_delivered,
-                "qty_invoiced": l.qty_invoiced,
-                "tax": l.tax_id.name or " ",
-                "discount": l.discount,
-                "subtotal": l.price_subtotal,
-                "total": l.price_total,
+                "order_id": i.order_id.id,
+                "id": i.id,
+                "name": i.name,
+                "product": i.product_id.name,
+                "uom_qty": i.product_uom_qty,
+                "qty_delivered": i.qty_delivered,
+                "qty_invoiced": i.qty_invoiced,
+                "tax": i.tax_id.name or " ",
+                "discount": i.discount,
+                "subtotal": i.price_subtotal,
+                "total": i.price_total,
                 "invoiceble": (
-                    (l.qty_delivered > 0) or (l.product_id.invoice_policy == "order")
+                    (i.qty_delivered > 0) or (i.product_id.invoice_policy == "order")
                 ),
             }
             res.append(line)
