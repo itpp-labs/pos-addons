@@ -10,7 +10,7 @@
     "version": "12.0.2.0.1",
     "application": False,
     "author": "IT-Projects LLC, Kolushov Alexandr",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_barcode_sync/",
     "license": "Other OSI approved licence",  # MIT
     "price": 49.00,

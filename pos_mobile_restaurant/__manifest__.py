@@ -7,7 +7,7 @@
     "version": "12.0.1.3.8",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_mobile_restaurant/",
     "license": "Other OSI approved licence",  # MIT
     "price": 100.00,

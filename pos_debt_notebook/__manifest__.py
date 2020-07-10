@@ -17,7 +17,7 @@
     "images": ["images/debt_notebook.png"],
     "version": "12.0.5.3.2",
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook/",
     "license": "Other OSI approved licence",  # MIT
     "price": 280.00,

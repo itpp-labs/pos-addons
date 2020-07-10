@@ -9,7 +9,7 @@
     "version": "12.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_qr_show/",
     "license": "Other OSI approved licence",  # MIT
     "price": 40.00,

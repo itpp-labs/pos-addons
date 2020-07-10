@@ -4,7 +4,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "Other OSI approved licence",  # MIT
     "category": "Debranding",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://www.odoo.com/apps/modules/12.0/pos_debranding/",
     "depends": ["point_of_sale"],
     # 'price': 30.00,

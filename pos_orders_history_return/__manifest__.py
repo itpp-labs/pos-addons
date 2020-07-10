@@ -11,7 +11,7 @@
     "version": "12.0.1.1.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orders_history_return/",
     "license": "Other OSI approved licence",  # MIT
     "price": 39.00,
