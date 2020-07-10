@@ -64,7 +64,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
             var self = this;
             order.orderlines.each(function(line) {
                 var product = line.get_product();
-                product.qty_available = product.format_float_value(
+                product.qty_available = Math.round(
                     product.qty_available - line.get_quantity(),
                     {digits: [69, 3]}
                 );
@@ -106,6 +106,94 @@ odoo.define("pos_product_available.PosModel", function(require) {
         },
     });
 
+    models.Product = models.Product.extend({
+        get_price: function(pricelist, quantity) {
+            var self = this;
+            var date = moment().startOf("day");
+
+            // In case of nested pricelists, it is necessary that all pricelists are made available in
+            // the POS. Display a basic alert to the user in this case.
+            if (pricelist === undefined) {
+                // eslint-disable-next-line
+                alert(
+                    "An error occurred when loading product prices. " +
+                        "Make sure all pricelists are available in the POS."
+                );
+            }
+
+            var category_ids = [];
+            var category = this.categ;
+            while (category) {
+                category_ids.push(category.id);
+                category = category.parent;
+            }
+
+            /*
+            So, with pos_product_available it doesnt work correctly, cause
+            'item.product_tmpl_id || item.product_tmpl_id[0] === self.product_tmpl_id'
+            in this string are comparing integer with an array of two elements.
+            Changed: 'self.product_tmpl_id -> self.product_tmpl_id[0]',
+            where 'self.product_tmpl_id[0]' product template id.
+            By the way, here's comparing products ids.
+            IMPORTANT: Changed line - (!item.product_tmpl_id || item.product_tmpl_id[0] === self.product_tmpl_id[0]).
+            */
+            var pricelist_items = _.filter(pricelist.items, function(item) {
+                return (
+                    (!item.product_tmpl_id ||
+                        item.product_tmpl_id[0] === self.product_tmpl_id[0]) &&
+                    (!item.product_id || item.product_id[0] === self.id) &&
+                    (!item.categ_id || _.contains(category_ids, item.categ_id[0])) &&
+                    (!item.date_start ||
+                        moment(item.date_start).isSameOrBefore(date)) &&
+                    (!item.date_end || moment(item.date_end).isSameOrAfter(date))
+                );
+            });
+
+            var price = self.lst_price;
+            _.find(pricelist_items, function(rule) {
+                if (rule.min_quantity && quantity < rule.min_quantity) {
+                    return false;
+                }
+
+                if (rule.base === "pricelist") {
+                    price = self.get_price(rule.base_pricelist, quantity);
+                } else if (rule.base === "standard_price") {
+                    price = self.standard_price;
+                }
+
+                if (rule.compute_price === "fixed") {
+                    price = rule.fixed_price;
+                    return true;
+                } else if (rule.compute_price === "percentage") {
+                    price -= price * (rule.percent_price / 100);
+                    return true;
+                }
+                var price_limit = price;
+                price -= price * (rule.price_discount / 100);
+                if (rule.price_round) {
+                    // eslint-disable-next-line
+                    price = round_pr(price, rule.price_round);
+                }
+                if (rule.price_surcharge) {
+                    price += rule.price_surcharge;
+                }
+                if (rule.price_min_margin) {
+                    price = Math.max(price, price_limit + rule.price_min_margin);
+                }
+                if (rule.price_max_margin) {
+                    price = Math.min(price, price_limit + rule.price_max_margin);
+                }
+                return true;
+            });
+
+            // This return value has to be rounded with round_di before
+            // being used further. Note that this cannot happen here,
+            // because it would cause inconsistencies with the backend for
+            // pricelist that have base == 'pricelist'.
+            return price;
+        },
+    });
+
     var OrderlineSuper = models.Orderline;
     models.Orderline = models.Orderline.extend({
         export_as_JSON: function() {
@@ -131,8 +219,15 @@ odoo.define("pos_product_available.PosModel", function(require) {
             value = field_utils.format.float(value, {digits: [69, 3]});
             return String(parseFloat(value));
         },
+        /*
+        Commented this code, cause it works incorrect
+        Example: "this.format_float_value(2366) === 2"
         rounded_qty: function() {
             return this.format_float_value(this.qty_available);
+        },
+        */
+        rounded_qty: function() {
+            return Math.round(this.qty_available);
         },
     });
 });
