@@ -6,7 +6,7 @@
     "version": "12.0.2.1.1",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_printer_network/",
     "license": "Other OSI approved licence",  # MIT
     "price": 340.00,

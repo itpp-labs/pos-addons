@@ -6,7 +6,7 @@
     "version": "12.0.1.5.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_order_cancel_restaurant/",
     "license": "Other OSI approved licence",  # MIT
     "price": 50.00,

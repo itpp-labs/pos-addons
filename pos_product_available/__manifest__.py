@@ -12,7 +12,7 @@
     "version": "12.0.1.1.1",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_product_available/",
     "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,

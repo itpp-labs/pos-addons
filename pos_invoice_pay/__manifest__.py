@@ -10,7 +10,7 @@
     "version": "12.0.1.2.5",
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/",
     "license": "Other OSI approved licence",  # MIT
     "price": 89.00,

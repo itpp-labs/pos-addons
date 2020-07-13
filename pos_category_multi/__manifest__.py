@@ -8,7 +8,7 @@
     "version": "12.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Pavel Romanchenko",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://www.odoo.com/apps/modules/12.0/pos_category_multi/",
     "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
