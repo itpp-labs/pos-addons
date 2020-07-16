@@ -1,5 +1,5 @@
 # Copyright 2017 Artyom Losev
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018,2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
 from odoo import _, api, fields, models
 import copy
@@ -37,6 +37,9 @@ class PosOrder(models.Model):
             lines = invoice_data.get("lines")
             new_lines = []
             for l in lines:
+                if l.get('display_type', False):
+                    # means it's either note or section
+                    continue
                 l['price_subtotal'] = l.get('amount', 0) or l.get('subtotal', 0)
                 l['price_subtotal_incl'] = l.get('total', 0) or l.get('price_subtotal', 0)
                 if 'invoice_id' in l:
@@ -152,6 +155,7 @@ class AccountInvoice(models.Model):
                 "amount": l.quantity * l.price_unit * (1 - (l.discount or 0.0) / 100.0),
                 "total": l.price_subtotal,
                 "product_id": l.product_id.id,
+                "display_type": l.display_type,
             }
             res.append(line)
         return res

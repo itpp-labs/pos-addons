@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--Copyright 2018 Artyom Losev
-    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2018,2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT).-->
 <templates id="template" xml:space="preserve">
     <t t-name="SaleOrdersButton">
@@ -103,9 +103,9 @@
         </thead>
     </t>
     <t t-name="InvoiceLine">
-        <tr class='sale-order-line' t-att-data-id='line.id'>
+        <tr t-if="!line.display_type" class='sale-order-line' t-att-data-id='line.id'>
             <td>
-                <t t-esc='line.product' />
+                <t t-esc="line.product" />
             </td>
             <td>
                 <t t-esc='line.name' />
@@ -120,7 +120,7 @@
                 <t t-esc='widget.format_currency(line.price_unit)' />
             </td>
             <td>
-                <t t-foreach="line.tax" t-as="tax">
+                <t t-if="!type" t-foreach="line.tax" t-as="tax">
                     <t t-esc='tax' />
                 </t>
             </td>
@@ -129,6 +129,14 @@
             </td>
             <td>
                 <t t-esc='widget.format_currency(line.amount)' />
+            </td>
+        </tr>
+        <tr t-if="line.display_type" class='sale-order-line' t-att-data-id='line.id'>
+            <td>
+                <t t-esc="(line.display_type === 'line_section' and 'Section') or (line.display_type === 'line_note' and 'Note')" />
+            </td>
+            <td colspan="7">
+                <t t-esc='line.name' />
             </td>
         </tr>
     </t>
