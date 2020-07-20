@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+<!--Copyright 2020 Vildan Safin <https://www.it-projects.info/team/Enigma228322>
+    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
-    <record id="view_pos_config_form" model="ir.ui.view">
+    <record id="pos_config_view_form" model="ir.ui.view">
         <field name="name">pos.config.form</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
         <field name="arch" type="xml">
-            <field name="iface_display_categ_images" position="after">
-                <field name="customer_deselection_interval" />
-            </field>
+            <xpath
+                expr="//h2[@name='order']/following::div[hasclass('row','mt16','o_settings_container')]/div[3]"
+                position="after"
+            >
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="customer_deselection_interval" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label string="Customer deselection interval (sec)" />
+                        <div class="text-muted">
+                            Deselect customers after a set time
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

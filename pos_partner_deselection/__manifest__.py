@@ -4,7 +4,7 @@
     "name": """Partner Deselection""",
     "summary": """The module deselects a partner in opened POS on expiry the predefined time interval after the customer was set.""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
+    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
     "images": ["images/pos_partner_deselection.jpg"],
     "version": "11.0.1.0.0",
     "application": False,
@@ -24,7 +24,7 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     # "demo_title": "Deselect Partner",
     # "demo_addons": [
     # ],
