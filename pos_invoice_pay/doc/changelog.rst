@@ -1,3 +1,9 @@
+`1.3.0`
+-------
+
+**New:** Possibility to create a POS order after paid invoice
+**Fix:** Issues related to displaying sections/notes as invoice lines
+
 `1.2.5`
 -------
 
