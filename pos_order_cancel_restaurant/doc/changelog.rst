@@ -1,10 +1,15 @@
+`1.5.1`
+-------
+
+- **Fix:** Errors related to incorrect js files attaching
+
 `1.5.0`
-------
+-------
 
 **New:** Ask manager for kitchen orders only
 
 `1.4.2`
-------
+-------
 
 **Improvement:** Compatibility with pos_category_multi module
 

@@ -1,3 +1,8 @@
+`1.3.1`
+-------
+
+- **Fix:** Errors related to incorrect js files attaching
+
 `1.3.0`
 -------
 
