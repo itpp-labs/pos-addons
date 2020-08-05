@@ -1,3 +1,8 @@
+`1.3.9`
+-------
+
+**Fix:** Hide unused menu button
+
 `1.3.8`
 -------
 
