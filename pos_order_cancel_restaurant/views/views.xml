@@ -86,11 +86,13 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_pos_order_line_canceled_tree_restaurant" model="ir.ui.view">
         <field name="name">pos.order.line.canceled.tree.restaurant</field>
         <field name="model">pos.order.line.canceled</field>
-        <field name="inherit_id" ref="pos_order_cancel.view_pos_order_line_canceled_tree"/>
+        <field
+            name="inherit_id"
+            ref="pos_order_cancel.view_pos_order_line_canceled_tree"
+        />
         <field name="arch" type="xml">
             <field name="order_id" position="after">
                 <field name="was_printed" />
