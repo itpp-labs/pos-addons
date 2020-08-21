@@ -12,9 +12,20 @@ Configuration
 
 * Go to ``[[Point of Sale]] >> Configuration >> Point of Sale`` menu
 
+  * Select POS
   * Click ``[Edit]``
   * Activate ``Show Sale Orders`` option
   * Activate ``Show Invoices`` option
+  * Click ``[Save]``
+
+Enable the ability to give change to the client
+-----------------------------------------------
+
+* Go to ``[[Point of Sale]] >> Configuration >> Point of Sale`` menu
+
+  * Select POS
+  * Click ``[Edit]``
+  * Set ``Difference Account`` field
   * Click ``[Save]``
 
 Usage
@@ -23,31 +34,31 @@ Usage
 Pay Sale Orders
 ---------------
 
-* Open ``[[Sales]] >> Sale Orders`` menu
+* Open ``[[Sales]] >> Orders >> Orders`` menu
 
   * Click ``[Create]``
   * Select a customer
   * Add products
   * Click ``[Save]``
-  * Click ``[Confirm Sale]``
+  * Click ``[Confirm]``
 
 * Go to ``[[Point of Sale]]`` menu
 * Open POS session
 
-  * Click ``[Sale Orders]``
+  * Click ``[Fetch Orders]``
   * Select Sale Order
   * Click ``[Create Invoice]``
   * Select payment method on Payment screen
   * Click ``[Validate]``
 
 * Close POS session
-* Open ``[[Invoicing]] >> Sales >> Customer Invoices`` menu
+* Open ``[[Invoicing]] >> Customers >> Invoices`` menu
 * RESULT: See the corresponding paid invoice
 
 Pay Invoices
 ------------
 
-* Open ``[[Invoicing]] >> Sales >> Customer Invoices`` menu
+* Open ``[[Invoicing]] >> Customers >> Invoices`` menu
 
   * Click ``[Create]``
   * Select a customer
@@ -58,12 +69,12 @@ Pay Invoices
 * Go to ``[[Point of Sale]]`` menu
 * Open POS session
 
-  * Click ``[Invoices]``
+  * Click ``[Fetch Invoices]``
   * Select the invoice
-  * Click ``[Create Invoice]``
+  * Click ``[Register Payment]``
   * Select payment method on Payment screen
   * Click ``[Validate]``
 
 * Close POS session
-* Open ``[[Invoicing]] >> Sales >> Customer Invoices`` menu
+* Open ``[[Invoicing]] >> Customers >> Invoices`` menu
 * RESULT: See the corresponding paid invoice
