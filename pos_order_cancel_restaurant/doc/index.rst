@@ -10,7 +10,7 @@ Installation
 Configuration
 =============
 
-* Go to ``Point of Sale >> POS Product Cancellation Reason``
+* Go to ``Point of Sale >> Configuration >> Refund / Cancellation Reasons``
 
   * Click on ``[Create]``
   * Specify a cancellation reason
