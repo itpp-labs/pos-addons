@@ -10,7 +10,7 @@ Installation
 Configuration
 =============
 
-* Go to ``Point of Sale >> POS Product Cancellation Reason``
+* Go to ``Point of Sale >> Configuration >> Refund / Cancellation Reasons``
 
   * Click on ``[Create]``
   * Specify a cancellation reason
@@ -44,7 +44,7 @@ Usage
   * Specify cancellation reason or set custom one
   * Click ``[Ok]``
 
-* At backend go to ``Point of Sale >> Reports >> Refunds / Cancellations``
+* At backend go to ``Point of Sale >> Reporting >> Refunds / Cancellations``
 
   * Switch to list view
   * You can see all information about canceled products
