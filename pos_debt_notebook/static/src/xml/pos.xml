@@ -165,7 +165,7 @@
         </t>
         <t t-jquery=".js_set_customer" t-operation="after">
             <div class="button pay-full-debt oe_hidden">
-                <i class='fa fa-money' /> Pay Full Debt
+                <i class='fas money-bill-alt' /> Pay Full Debt
             </div>
         </t>
         <!--<t t-jquery=".screen-content" t-operation="after">-->
