@@ -41,7 +41,7 @@ odoo.define("pos_discount_total.tour", function(require) {
         }
         steps = steps.concat([
             {
-                trigger: '.paymentmethod:contains("Cash (USD)")',
+                trigger: '.paymentmethod:contains("Cash")',
                 content: "pay with cash",
             },
         ]);
@@ -122,7 +122,7 @@ odoo.define("pos_discount_total.tour", function(require) {
     ];
 
     steps = steps.concat({
-        trigger: ".o_main_content:has(.loader:hidden)",
+        trigger: ".pos:has(.loader:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
         run: function() {
@@ -136,8 +136,8 @@ odoo.define("pos_discount_total.tour", function(require) {
         position: "bottom",
     });
 
-    steps = steps.concat(add_product_to_order("LED Lamp"));
-    steps = steps.concat(add_product_to_order("Desk Pad"));
+    steps = steps.concat(add_product_to_order("Office Chair Black"));
+    steps = steps.concat(add_product_to_order("Office Chair"));
     steps = steps.concat({
         trigger: ".order .summary",
         content: "click total summary",
@@ -145,7 +145,7 @@ odoo.define("pos_discount_total.tour", function(require) {
     });
     steps = steps.concat(generate_keypad_steps("50", ".pads"));
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
-    steps = steps.concat(generate_payment_screen_keypad_steps("1.44"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("30.44"));
     steps = steps.concat(finish_order());
 
     steps = steps.concat([
