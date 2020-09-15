@@ -24,6 +24,7 @@ odoo.define("pos_debt_notebook.pos", function(require) {
     models.PosModel = models.PosModel.extend({
         initialize: function(session, attributes) {
             this.reload_debts_partner_ids = [];
+            // TODO: should be replaced with native Promise
             this.reload_debts_timer = $.when();
             models.load_fields("account.journal", [
                 "debt",
