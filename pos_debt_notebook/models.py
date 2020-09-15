@@ -6,6 +6,7 @@
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
+# License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work.
 
 import copy
 import logging
@@ -39,8 +40,13 @@ class ResPartner(models.Model):
     @api.depends("report_pos_debt_ids")
     def _compute_debt_company(self):
         partners = self.filtered(lambda r: len(r.child_ids))
+        for r in (self - partners):
+            r.debt_company = None
+            r.credit_balance_company = None
+
         if not partners:
             return
+
         domain = [("partner_id", "in", partners.ids + partners.mapped("child_ids").ids)]
         fields = ["partner_id", "balance"]
         res = self.env["report.pos.debt"].read_group(domain, fields, "partner_id")
