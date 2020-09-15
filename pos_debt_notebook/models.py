@@ -1,4 +1,4 @@
-# Copyright 2014-2019 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2014-2020 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
 # Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
 # Copyright 2016 Florent Thomas <https://it-projects.info/team/flotho>
@@ -16,7 +16,6 @@ from pytz import timezone
 
 from odoo import api, fields, models
 from odoo.tools import float_is_zero
-
 
 _logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class ResPartner(models.Model):
     @api.depends("report_pos_debt_ids")
     def _compute_debt_company(self):
         partners = self.filtered(lambda r: len(r.child_ids))
-        for r in (self - partners):
+        for r in self - partners:
             r.debt_company = None
             r.credit_balance_company = None
 
