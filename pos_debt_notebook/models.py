@@ -17,7 +17,6 @@ from pytz import timezone
 from odoo import api, fields, models
 from odoo.tools import float_is_zero
 
-import odoo.addons.decimal_precision as dp
 
 _logger = logging.getLogger(__name__)
 
@@ -151,28 +150,28 @@ class ResPartner(models.Model):
         compute="_compute_debt",
         string="Debt",
         readonly=True,
-        digits=dp.get_precision("Account"),
+        digits="Account",
         help="Debt of this partner only.",
     )
     credit_balance = fields.Float(
         compute="_compute_debt",
         string="Credit",
         readonly=True,
-        digits=dp.get_precision("Account"),
+        digits="Account",
         help="Credit balance of this partner only.",
     )
     debt_company = fields.Float(
         compute="_compute_debt_company",
         string="Total Debt",
         readonly=True,
-        digits=dp.get_precision("Account"),
+        digits="Account",
         help="Debt value of this company (including its contacts)",
     )
     credit_balance_company = fields.Float(
         compute="_compute_debt_company",
         string="Total Credit",
         readonly=True,
-        digits=dp.get_precision("Account"),
+        digits="Account",
         help="Credit balance of this company (including its contacts)",
     )
     debt_type = fields.Selection(
@@ -548,7 +547,7 @@ class AccountJournal(models.Model):
     )
     debt_limit = fields.Float(
         string="Max Debt",
-        digits=dp.get_precision("Account"),
+        digits="Account",
         default=0,
         help="Partners is not allowed to have a debt more than this value",
     )
