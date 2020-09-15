@@ -729,7 +729,7 @@ class PosCreditUpdate(models.Model):
     _order = "id desc"
 
     partner_id = fields.Many2one(
-        "res.partner", string="Partner", required=True, track_visibility="always"
+        "res.partner", string="Partner", required=True, tracking=True
     )
     user_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda s: s.env.user, readonly=True
@@ -747,7 +747,7 @@ class PosCreditUpdate(models.Model):
     )
     balance = fields.Monetary(
         "Balance Update",
-        track_visibility="always",
+        tracking=True,
         help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).",
     )
     new_balance = fields.Monetary(
@@ -760,7 +760,7 @@ class PosCreditUpdate(models.Model):
         [("draft", "Draft"), ("confirm", "Confirmed"), ("cancel", "Canceled")],
         default="draft",
         required=True,
-        track_visibility="always",
+        tracking=True,
     )
     update_type = fields.Selection(
         [("balance_update", "Balance Update"), ("new_balance", "New Balance")],
