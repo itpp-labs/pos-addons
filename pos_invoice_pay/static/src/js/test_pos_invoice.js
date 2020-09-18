@@ -57,7 +57,8 @@ odoo.define("pos_invoice_pay.tour", function(require) {
     function max_payment(pay_method) {
         return [
             {
-                extra_trigger: '.button.paymentmethod:contains("' + pay_method + '")',
+                extra_trigger:
+                    '.button.paymentmethod:contains("' + pay_method + '"):last',
                 trigger: '.button.paymentmethod:contains("' + pay_method + '")',
                 content: _t("Click the payment method"),
             },
@@ -82,7 +83,7 @@ odoo.define("pos_invoice_pay.tour", function(require) {
                 content: "Set payment amount",
             },
             {
-                extra_trigger: '.button.next.highlight:contains("Validate")',
+                extra_trigger: '.button.next:contains("Validate"):last',
                 trigger: '.button.next.highlight:contains("Validate")',
                 content: "Validate payment",
             },
@@ -116,7 +117,7 @@ odoo.define("pos_invoice_pay.tour", function(require) {
 
     steps = steps.concat(open_pos_neworder());
     steps = steps.concat(select_invoice());
-    steps = steps.concat(max_payment("Cash (USD)"));
+    steps = steps.concat(max_payment("Cash"));
 
     tour.register("tour_pos_invoice_pay", {test: true, url: "/web"}, steps);
 });

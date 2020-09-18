@@ -83,17 +83,16 @@ class TestModel(odoo.tests.SingleTransactionCase):
                         "amount_tax": 0,
                         "amount_total": total,
                         "amount_untaxed": total,
-                        "date_due": "2019-09-06",
-                        "date_invoice": "2019-09-06",
+                        "invoice_date_due": "2019-09-06",
+                        "invoice_date": "2019-09-06",
                         "id": 9,
                         "lines": [],  # values are taken away
-                        "name": "",
-                        "number": "INV/2019/0005",
-                        "origin": "SO004",
+                        "name": "INV/2019/0005",
+                        "invoice_origin": "SO004",
                         "partner_id": [35, "China Export, Jacob Taylor"],
-                        "residual": due,
-                        "state": "Open",
-                        "user_id": [1, "Administrator"],
+                        "amount_residual": due,
+                        "state": "posted",
+                        "invoice_user_id": [1, "Administrator"],
                     },
                     "lines": [],
                     "name": "Order 00001-005-0001",
@@ -107,7 +106,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
                             {
                                 "account_id": 27,
                                 "amount": tendered,
-                                "journal_id": 7,
+                                "payment_method_id": 7,
                                 "name": "2019-09-06 09:32:55",
                                 "statement_id": 2,
                             },
@@ -126,7 +125,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
             self.env,
             {
                 "account.payment": mocked_account_payment,
-                "account.invoice": MagicMock(),
+                "account.move": MagicMock(),
                 "account.journal": MagicMock(),
                 "pos.session": MagicMock(),
             },
@@ -141,7 +140,7 @@ class TestModel(odoo.tests.SingleTransactionCase):
         # tendered is less than due, so we must store payment with tendered value
         expected_amount = tendered
 
-        sample.env["account.invoice"] = MockedAccountInvoice(due)
+        sample.env["account.move"] = MockedAccountInvoice(due)
         sample.process_invoice_payment(make_payment(due, tendered, total))
         self.assertEqual(mocked_account_payment.param["amount"], expected_amount)
 
@@ -151,6 +150,6 @@ class TestModel(odoo.tests.SingleTransactionCase):
         # tendered is greater than due, so we must store payment with due value, 'cos we give change back
         expected_amount = due
 
-        sample.env["account.invoice"] = MockedAccountInvoice(due)
+        sample.env["account.move"] = MockedAccountInvoice(due)
         sample.process_invoice_payment(make_payment(due, tendered, total))
         self.assertEqual(mocked_account_payment.param["amount"], expected_amount)
