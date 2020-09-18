@@ -16,6 +16,7 @@ Roadmap
 =======
 
 * Posibility to repring and modify existing order was implemented, but not merged: https://github.com/it-projects-llc/addons-dev/pull/377
+
 Credits
 =======
 

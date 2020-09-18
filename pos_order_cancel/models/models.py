@@ -93,7 +93,7 @@ class PosOrder(models.Model):
             self.env["pos.order.line.canceled"]._order_cancel_line_fields
         )
         order["canceled_lines"] = [
-            process_canceled_line(l) for l in ui_order.get("canceled_lines", [])
+            process_canceled_line(i) for i in ui_order.get("canceled_lines", [])
         ]
         return order
 
