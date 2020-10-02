@@ -22,12 +22,12 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Demo: http://runbot.it-projects.info/demo/pos-addons/13.0
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/
+HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/
 
 Usage instructions: `<doc/index.rst>`__
 
 Changelog: `<doc/changelog.rst>`__
 
-Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b
+Tested on Odoo 13.0 2d46a08a989f4c7e005ee2ead7c342c72019e63f
