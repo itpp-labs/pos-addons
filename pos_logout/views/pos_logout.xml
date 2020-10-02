@@ -3,6 +3,7 @@
     Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
     Copyright 2017 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2020 Almas Giniatullin <https://it-projects.info/team/almas50>
     License MIT (https://opensource.org/licenses/MIT). -->
 <odoo>
     <template
@@ -13,7 +14,6 @@
         <xpath expr="." position="inside">
             <link rel="stylesheet" href="/pos_logout/static/src/css/pos_logout.css" />
             <script type="text/javascript" src="/pos_logout/static/src/js/chrome.js" />
-            <script type="text/javascript" src="/pos_logout/static/src/js/popups.js" />
         </xpath>
     </template>
     <template
@@ -30,7 +30,7 @@
         <field name="model">pos.config</field>
         <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='iface_big_scrollbars']/../.." position="after">
+            <xpath expr="//field[@name='module_pos_restaurant']/../.." position="after">
                 <div class="col-xs-12 col-md-6 o_setting_box">
                     <div class="o_setting_right_pane">
                         <label for="logout_interval" />

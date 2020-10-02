@@ -9,14 +9,4 @@
             </t>
         </t>
     </t>
-    <t t-name="BlockPopupWidget">
-        <div class="modal-dialog block">
-            <div class="popup popup-selection">
-                <span>
-                    <i class="fa fa-lock" />
-                    <p>Tap to unlock...</p>
-                </span>
-            </div>
-        </div>
-    </t>
 </templates>

@@ -1,6 +1,7 @@
 # Copyright 2017 Artyom Losev <https://github.com/ArtyomLosev>
 # Copyright 2017-2018 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2020 Almas Giniatullin <https://it-projects.info/team/almas50>
 # License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Lock POS Screen""",
@@ -25,7 +26,7 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     "demo_title": "Lock POS Screen",
     "demo_addons": [],
     "demo_addons_hidden": [],
