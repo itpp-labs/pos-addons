@@ -18,12 +18,7 @@ class TestUi(odoo.tests.HttpCase):
         # this you end up with js, css but no qweb.
 
         env["res.users"].create(
-            {
-                "name": "test",
-                "login": "test",
-                "password": "test",
-                "pos_security_pin": "0000",
-            }
+            {"name": "test", "login": "test", "password": "test", }
         )
         env["ir.module.module"].search(
             [("name", "=", "pos_logout")], limit=1
