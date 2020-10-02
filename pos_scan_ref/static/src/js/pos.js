@@ -1,10 +1,11 @@
 /*  Copyright 2014 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
     Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73>
+    Copyright 2020 Denis Mudarisov <https://github.com/trojikman>
     License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_scan_ref.pos", function(require) {
     "use strict";
 
-    var devices = require("point_of_sale.devices");
+    var BarcodeReader = require("point_of_sale.BarcodeReader");
     var PosDb = require("point_of_sale.DB");
     var models = require("point_of_sale.models");
 
@@ -38,7 +39,7 @@ odoo.define("pos_scan_ref.pos", function(require) {
         },
     });
 
-    devices.BarcodeReader.include({
+    BarcodeReader.include({
         scan: function(code) {
             var parsed_result = {};
             if (this.pos.db.get_product_by_reference(code)) {
