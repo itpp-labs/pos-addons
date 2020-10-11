@@ -1,3 +1,8 @@
+POS addons
+==========
+
+Odoo addons for Point of Sale
+
 List of repositories
 ====================
 
