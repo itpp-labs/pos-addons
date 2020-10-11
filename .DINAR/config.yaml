@@ -1,0 +1,13 @@
+addons:
+  # modules to install before running tests
+  include:
+    - contacts
+    - stock
+    - point_of_sale
+
+  # modules to exclude from installation/testing
+  exclude:
+    - hw_proxy
+
+  server_wide_modules:
+    - web
