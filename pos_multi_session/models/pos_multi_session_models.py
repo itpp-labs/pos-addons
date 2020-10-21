@@ -128,7 +128,7 @@ class PosMultiSession(models.Model):
                                                                     ('state', '=', 'unpaid'),
                                                                     ('write_date', '>=', limit_date_str)])
 
-        return self.env['pos_multi_session_sync.order'].search([('multi_session_ID', 'in', pos_multi_session_sync.ids),
+        return self.env['pos_multi_session_sync.order'].search([("multi_session_ID", "=", pos_multi_session_sync.multi_session_ID),
                                                                 ('state', '=', 'unpaid')])
 
     @api.multi
@@ -175,7 +175,7 @@ class PosSession(models.Model):
             self.config_id.multi_session_id.sudo().write({'run_ID': run_ID})
             pos_multi_session_sync = self.env['pos_multi_session_sync.multi_session'].search(
                 [('multi_session_ID', '=', self.config_id.multi_session_id.id)])
-            orders = self.env['pos_multi_session_sync.order'].search([('multi_session_ID', 'in', pos_multi_session_sync.ids),
+            orders = self.env['pos_multi_session_sync.order'].search([('multi_session_ID', '=', pos_multi_session_sync.multi_session_ID),
                                                                       ('state', '=', 'draft')])
             orders.write({'state': 'unpaid'})
         return res
