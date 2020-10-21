@@ -63,18 +63,11 @@ class PosMultiSessionSync(models.Model):
     @api.multi
     def prepare_new_session(self, message):
         self.ensure_one()
-        run_ID = message["data"]["run_ID"]
-        self.write({"run_ID": run_ID})
-        old_orders = self.env["pos_multi_session_sync.order"].search(
-            [
-                ("multi_session_ID", "=", self.multi_session_ID),
-                ("state", "=", "draft"),
-                ("run_ID", "<", run_ID),
-            ]
-        )
-        if old_orders:
-            old_orders.write({"state": "unpaid"})
-            self.write({"order_ID": 0})
+        run_ID = message['data']['run_ID']
+        self.write({
+            'run_ID': run_ID,
+            'order_ID': 0
+        })
 
     @api.multi
     def check_order_revision(self, message, order):
@@ -168,17 +161,10 @@ class PosMultiSessionSync(models.Model):
         run_ID = order.run_ID or message["data"]["run_ID"] or False
 
         if revision == "nonce":
-            return (False, {"action": ""})
-        elif not revision or (order and order.state == "deleted"):
-            _logger.debug("Revision error %s %s", order_uid, order.state)
-            return (
-                False,
-                {
-                    "action": "revision_error",
-                    "order_uid": order_uid,
-                    "state": order.state,
-                },
-            )
+            return (False, {'action': ''})
+        elif not revision or (order and (order.state == 'deleted' or order.state == 'paid')):
+            _logger.debug('Revision error %s %s', order_uid, order.state)
+            return (False, {'action': 'revision_error', 'order_uid': order_uid, 'state': order.state})
 
         if order:  # order already exists
             message = self.set_changes(message, order)
@@ -297,18 +283,16 @@ class PosMultiSessionSync(models.Model):
             order, order_data = self.set_order(order_data)
             order_uid = order.order_uid
 
-        if order.state != "deleted":
+        if order.state not in ['deleted', 'paid']:
             revision = self.check_order_revision(message, order)
             if not revision:
-                return {"action": "revision_error", "order_uid": order_uid}
+                return {'action': 'revision_error', 'order_uid': order_uid}
+
+        state = 'paid' if message['data']['finalized'] else 'deleted'
         if order:
-            order.state = "deleted"
-        _logger.debug(
-            "Remove Order: %s Finalized: %s Revision: %s",
-            order_uid,
-            message["data"]["finalized"],
-            message["data"]["revision_ID"],
-        )
+            order.state = state
+        _logger.debug('Remove Order: %s Finalized: %s Revision: %s',
+                      order_uid, message['data']['finalized'], message['data']['revision_ID'])
         self.broadcast_message(message)
         return {"order_ID": self.order_ID}
 
@@ -365,26 +349,29 @@ class PosMultiSessionSync(models.Model):
 
 
 class PosMultiSessionSyncOrder(models.Model):
-    _name = "pos_multi_session_sync.order"
+    _name = 'pos_multi_session_sync.order'
+    _order = 'write_date desc'
+    _rec_name = 'order_uid'
 
     order = fields.Text("Order JSON format")
     nonce = fields.Char("Random nonce")
     order_uid = fields.Char(index=True)
-    state = fields.Selection(
-        [("draft", "Draft"), ("deleted", "Deleted"), ("unpaid", "Unpaid and removed")],
-        default="draft",
-        index=True,
-    )
-    revision_ID = fields.Integer(
-        default=1, string="Revision", help="Number of updates received from clients"
-    )
-    multi_session_ID = fields.Integer(default=0, string="Multi session")
-    pos_session_ID = fields.Integer(index=True, default=0, string="POS session")
-    run_ID = fields.Integer(
-        index=True,
-        string="Running count",
-        default=1,
-        help="Number of Multi-session starts. "
-        "It's incremented each time the last session in Multi-session is closed. "
-        "It's used to prevent synchronization of old orders",
-    )
+    state = fields.Selection([('draft', 'Draft'), ('deleted', 'Deleted'), ('unpaid', 'Unpaid and removed'),
+                              ('paid', 'Paid')], default='draft', index=True)
+    revision_ID = fields.Integer(default=1, string="Revision", help="Number of updates received from clients")
+    multi_session_ID = fields.Integer(default=0, string='Multi session')
+    pos_session_ID = fields.Integer(index=True, default=0, string='POS session')
+    run_ID = fields.Integer(index=True, string="Running count", default=1,
+                            help="Number of Multi-session starts. "
+                                 "It's incremented each time the last session in Multi-session is closed. "
+                                 "It's used to prevent synchronization of old orders")
+
+    @api.multi
+    def action_pos_multi_session_restore_order(self):
+        for r in self:
+            sync_ms = self.env['pos_multi_session_sync.multi_session'].browse(r.multi_session_ID)
+            r.write({
+                'state': 'draft',
+                'run_ID': sync_ms.run_ID
+            })
+            # TODO: send the order to POSes via bus after restore
