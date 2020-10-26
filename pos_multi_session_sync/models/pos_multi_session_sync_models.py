@@ -369,7 +369,8 @@ class PosMultiSessionSyncOrder(models.Model):
     @api.multi
     def action_pos_multi_session_restore_order(self):
         for r in self:
-            sync_ms = self.env['pos_multi_session_sync.multi_session'].browse(r.multi_session_ID)
+            # sync_ms = self.env['pos_multi_session_sync.multi_session'].browse(r.multi_session_ID)
+            sync_ms = self.env['pos_multi_session_sync.multi_session'].search([('multi_session_ID', '=', r.multi_session_ID)])
             r.write({
                 'state': 'draft',
                 'run_ID': sync_ms.run_ID
