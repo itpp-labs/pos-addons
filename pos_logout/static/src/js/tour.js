@@ -55,8 +55,8 @@ odoo.define("pos_logout.tour", function(require) {
                 content: "close the Point of Sale frontend",
             },
             {
-                trigger: ".login-button.close-session",
-                content: "confirm closing the frontend",
+                trigger: ".header-button, .close_button, .confirm",
+                content: "close the Point of Sale",
             },
             {
                 content: "wait until backend is opened",
