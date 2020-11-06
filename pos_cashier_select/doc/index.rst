@@ -9,7 +9,8 @@ Installation
 Configuration
 =============
 
-The module doesn't need a special configuration.
+* Go to ``Point of Sale`` >> POS parameters (upper right corner) >> ``Settings``
+* Check that `Login with Employees` enabled and `Allowed Employees` are set
 
 Usage
 =====
