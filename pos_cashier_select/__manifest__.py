@@ -2,6 +2,7 @@
 # Copyright 2018 Ruslan Ronzhin <https://it-projects.info/team/rusllan/>
 # Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
+# Copyright 2020 Almas Giniatullin <https://it-projects.info/team/almas50>
 # License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS Cashier Select""",
@@ -24,5 +25,5 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

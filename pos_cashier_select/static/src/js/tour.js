@@ -41,7 +41,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
         steps = steps.concat(cashier_select());
         steps = steps.concat([
             {
-                trigger: '.paymentmethod:contains("Cash (USD)")',
+                trigger: '.paymentmethod:contains("Cash")',
                 content: "pay with cash",
             },
         ]);
@@ -122,7 +122,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
     ];
 
     steps = steps.concat({
-        trigger: ".o_main_content:has(.loader:hidden)",
+        trigger: ".pos:has(.loader:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
         run: function() {
@@ -136,11 +136,11 @@ odoo.define("pos_cashier_select.tour", function(require) {
         position: "bottom",
     });
 
-    steps = steps.concat(add_product_to_order("LED Lamp"));
+    steps = steps.concat(add_product_to_order("Office Chair"));
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("0.90"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("500.90"));
 
     steps = steps.concat(finish_order());
 

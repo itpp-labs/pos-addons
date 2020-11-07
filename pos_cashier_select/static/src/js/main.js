@@ -1,26 +1,59 @@
 /*  Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
     Copyright 2019 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
     Copyright 2019 Artem Rafailov <https://it-projects.info/team/Ommo73/>
+    Copyright 2020 Almas Giniatullin <https://it-projects.info/team/almas50>
     License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_choosing_cashier", function(require) {
     "use strict";
-
     var ActionpadWidget = require("point_of_sale.screens").ActionpadWidget;
     var core = require("web.core");
-    var BarcodeReader = require("point_of_sale.devices").BarcodeReader;
+    var BarcodeReader = require("point_of_sale.BarcodeReader");
     var PopupWidget = require("point_of_sale.popups");
-    var ScreenWidget = require("point_of_sale.screens").ScreenWidget;
     var Gui = require("point_of_sale.gui").Gui;
     var gui = require("point_of_sale.gui");
-
     var _t = core._t;
-
+    var CustomErrorBarcodePopupWidget = PopupWidget.extend({
+        template: "ErrorBarcodePopupWidget",
+        show: function(options) {
+            this._super(options || {});
+            this.gui.play_sound("error");
+        },
+    });
+    gui.define_popup({
+        name: "custom-error-barcode",
+        widget: CustomErrorBarcodePopupWidget,
+    });
     var CashierSelectionPopupWidget = PopupWidget.extend({
         template: "CashierSelectionPopupWidget",
+        barcode_cashier_action: function(code) {
+            var employees = this.pos.employees;
+            for (var i = 0, len = employees.length; i < len; i++) {
+                if (employees[i].barcode === Sha1.hash(code.code)) {
+                    this.pos.set_cashier(employees[i]);
+                    this.chrome.widget.username.renderElement();
+                    if (this.pos.barcode_reader.on_cashier_screen) {
+                        this.pos.barcode_reader.on_cashier_screen = false;
+                        this.gui.show_screen("payment");
+                    }
+                    return true;
+                }
+            }
+            var show_code;
+            if (code.code.length > 32) {
+                show_code = code.code.substring(0, 29) + "...";
+            } else {
+                show_code = code.code;
+            }
+            this.gui.show_popup("error-barcode", show_code);
+            return false;
+        },
         show: function(options) {
             options = options || {};
             this._super(options);
-
+            this.pos.barcode_reader.set_action_callback(
+                "cashier",
+                _.bind(this.barcode_cashier_action, this)
+            );
             this.list = options.list || [];
             this.renderElement();
         },
@@ -130,25 +163,6 @@ odoo.define("pos_choosing_cashier", function(require) {
         },
     });
 
-    ScreenWidget.include({
-        barcode_cashier_action: function(code) {
-            var users = this.pos.users;
-            for (var i = 0, len = users.length; i < len; i++) {
-                if (users[i].barcode === code.code) {
-                    this.pos.set_cashier(users[i]);
-                    this.chrome.widget.username.renderElement();
-                    if (this.pos.barcode_reader.on_cashier_screen) {
-                        this.pos.barcode_reader.on_cashier_screen = false;
-                        this.gui.show_screen("payment");
-                    }
-                    return true;
-                }
-            }
-            this.barcode_error_action(code);
-            return false;
-        },
-    });
-
     Gui.include({
         /* This method has been redefined in order to add a trigger that allows to determine
      whether the cashiers's selection screen is active. Used to block the redirect to the payment window.
@@ -157,16 +171,22 @@ odoo.define("pos_choosing_cashier", function(require) {
             options = options || {};
             var self = this;
             var def = new $.Deferred();
-
             var list = [];
-            for (var i = 0; i < this.pos.users.length; i++) {
-                var user = this.pos.users[i];
-                if (!options.only_managers || user.role === "manager") {
-                    list.push({
-                        label: user.name,
-                        item: user,
-                    });
+            if (this.pos.config.module_pos_hr) {
+                for (var i = 0; i < this.pos.employees.length; i++) {
+                    var employe = this.pos.employees[i];
+                    if (!options.only_managers || employe.role === "manager") {
+                        list.push({
+                            label: employe.name,
+                            item: employe,
+                        });
+                    }
                 }
+            } else {
+                list.push({
+                    label: options.current_user.name,
+                    item: options.current_user,
+                });
             }
             var popup_type = options.cashier_window ? "cashier" : "selection";
             this.show_popup(popup_type, {
@@ -185,12 +205,8 @@ odoo.define("pos_choosing_cashier", function(require) {
             });
 
             return def.then(function(_user) {
-                if (
-                    options.security &&
-                    _user !== options.current_user &&
-                    _user.pos_security_pin
-                ) {
-                    return self.ask_password(_user.pos_security_pin).then(function() {
+                if (options.security && _user !== options.current_user && _user.pin) {
+                    return self.ask_password(_user.pin).then(function() {
                         return _user;
                     });
                 }
