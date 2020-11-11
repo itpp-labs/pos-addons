@@ -7,21 +7,6 @@ odoo.define("pos_logout.chrome", function(require) {
     "use strict";
     var chrome = require("point_of_sale.chrome");
 
-    chrome.UsernameWidget.include({
-        click_username: function(block) {
-            this._super();
-            var self = this;
-            if (self.pos.config.module_pos_hr) {
-                this.gui.current_popup.cashiers = true;
-                this.gui.current_popup.renderElement();
-                this.gui.current_popup.$(".exit").click(function() {
-                    self.gui.show_screen("login");
-                });
-                this.gui.current_popup.cashiers = false;
-            }
-        },
-    });
-
     chrome.Chrome.include({
         loading_hide: function() {
             this._super();
