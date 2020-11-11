@@ -7,10 +7,10 @@
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=10.0",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.4",
+    "version": "10.0.1.0.5",
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "Other OSI approved licence",  # MIT
     "price": 89.00,
