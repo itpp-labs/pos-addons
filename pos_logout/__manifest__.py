@@ -26,7 +26,7 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": False,
-    "installable": True,
+    "installable": False,
     "demo_title": "Lock POS Screen",
     "demo_addons": [],
     "demo_addons_hidden": [],
