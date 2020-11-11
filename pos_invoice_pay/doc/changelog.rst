@@ -1,4 +1,10 @@
+`1.0.5`
+-------
+
+**Fix:** extra elements when printing a receipt through a browser
+
 `1.0.4`
+-------
 
 **Fix:** The change value is not saved on the invoice after payment
 
