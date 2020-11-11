@@ -22,8 +22,6 @@ Maintainers
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/13.0
-
 HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/
 
 Usage instructions: `<doc/index.rst>`__
