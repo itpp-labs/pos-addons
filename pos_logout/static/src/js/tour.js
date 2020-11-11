@@ -31,7 +31,7 @@ odoo.define("pos_logout.tour", function(require) {
                     "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, laptops, or industrial hardware.</p><p>Once the session launched, the system continues to run without an internet connection.</p>",
             },
             {
-                trigger: ".o_main_content:has(.loader:hidden)",
+                trigger: ".pos:has(.loader:hidden)",
                 content: "waiting for loading to finish",
                 timeout: 20000,
                 run: function() {
@@ -46,65 +46,7 @@ odoo.define("pos_logout.tour", function(require) {
         ];
     }
 
-    function password_prompt(cashier, password) {
-        return [
-            {
-                trigger: ".pos-branding .username",
-                content: "Open Cashier popup",
-            },
-            {
-                trigger: ".popup .exit",
-                content: "Block POS Screen",
-            },
-            {
-                trigger: ".popups .block",
-                content: "Click to unlock the screen",
-            },
-            {
-                trigger:
-                    ".modal-dialog:visible .selection-item:contains(" + cashier + ")",
-                content: "Change current cashier to tour-cashier",
-            },
-            {
-                trigger: "div.button.cancel",
-                content: "Cancel password-prompt",
-            },
-            {
-                trigger: ".popups .block",
-                content: "Click to unlock the screen",
-            },
-            {
-                trigger:
-                    ".modal-dialog:visible .selection-item:contains(" + cashier + ")",
-                content: "Change current cashier to tour-cashier",
-            },
-            {
-                trigger: "div.button.confirm",
-                content: "Confirm empty (incorrect) password",
-            },
-            {
-                trigger: "div.popup.popup-error div.button.cancel",
-                content: "Close error popup",
-            },
-            {
-                trigger: "div.button.confirm",
-                content: "Input password",
-                run: function() {
-                    for (var i = 0; i < password.length; i++) {
-                        $(
-                            "div.popup.popup-number.popup-password div.popup-numpad button.input-button.number-char:contains(" +
-                                password.charAt(i) +
-                                ")"
-                        ).click();
-                    }
-                },
-            },
-            {
-                trigger: "div.button.confirm",
-                content: "confirm password",
-            },
-        ];
-    }
+
 
     function pos_closing() {
         return [
@@ -113,8 +55,8 @@ odoo.define("pos_logout.tour", function(require) {
                 content: "close the Point of Sale frontend",
             },
             {
-                trigger: ".header-button.confirm",
-                content: "confirm closing the frontend",
+                trigger: ".header-button, .close_button, .confirm",
+                content: "close the Point of Sale",
             },
             {
                 content: "wait until backend is opened",
@@ -127,11 +69,8 @@ odoo.define("pos_logout.tour", function(require) {
     }
 
     var steps = [];
-    var username = "test";
-    var userpassword = "0000";
     steps = steps.concat(
         pos_opening(),
-        password_prompt(username, userpassword),
         pos_closing()
     );
 

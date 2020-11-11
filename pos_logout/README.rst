@@ -38,4 +38,4 @@ Usage instructions: `<doc/index.rst>`_
 
 Changelog: `<doc/changelog.rst>`_
 
-Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b
+Tested on Odoo 13.0 2d46a08a989f4c7e005ee2ead7c342c72019e63f
