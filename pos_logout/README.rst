@@ -2,7 +2,7 @@
  Lock POS Screen
 =================
 
-Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN
+Automatically lock pos on inactivity
 
 Credits
 =======
@@ -29,8 +29,6 @@ Maintainers
 
 Further information
 ===================
-
-Demo: http://runbot.it-projects.info/demo/pos-addons/13.0
 
 HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_logout/
 

@@ -5,14 +5,14 @@
 # License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """Lock POS Screen""",
-    "summary": """Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN""",
+    "summary": """Automatically lock pos on inactivity""",
     "category": "Point of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/pos-logout?version=13.0",
     "images": ["images/pos_logout_main.png"],
     "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
@@ -26,11 +26,5 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": False,
-    "installable": False,
-    "demo_title": "Lock POS Screen",
-    "demo_addons": [],
-    "demo_addons_hidden": [],
-    "demo_url": "pos-logout",
-    "demo_summary": "Users/Cashiers can unlock POS screen by scanning their barcode or using security PIN",
-    "demo_images": ["images/pos_logout_main.png"],
+    "installable": True,
 }
