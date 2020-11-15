@@ -1,5 +1,5 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
-# [13.0] Odoo POS addons 
+# [13.0] Odoo POS Addons 
 
 <br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/)
 <br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/13.0/pos_keyboard/)
