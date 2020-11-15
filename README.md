@@ -1,5 +1,5 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
-# [10.0] Odoo POS addons 
+# [10.0] Odoo POS Addons 
 
 <br/>:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/10.0/hw_printer_network/)
 <br/>:heavy_check_mark: [hw_twitter_printing](https://apps.odoo.com/apps/modules/10.0/hw_twitter_printing/)
