@@ -1,17 +1,18 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
-# [13.0] Odoo POS Addons 
+# [13.0-trojikman-patch-2] Odoo POS Addons 
 
-<br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/)
-<br/>:heavy_check_mark: [pos_invoice_pay](https://apps.odoo.com/apps/modules/13.0/pos_invoice_pay/)
-<br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/13.0/pos_keyboard/)
-<br/>:heavy_check_mark: [pos_logout](https://apps.odoo.com/apps/modules/13.0/pos_logout/)
-<br/>:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/13.0/pos_longpolling/)
-<br/>:heavy_check_mark: [pos_order_cancel](https://apps.odoo.com/apps/modules/13.0/pos_order_cancel/)
-<br/>:heavy_check_mark: [pos_order_note](https://apps.odoo.com/apps/modules/13.0/pos_order_note/)
-<br/>:heavy_check_mark: [pos_orders_history](https://apps.odoo.com/apps/modules/13.0/pos_orders_history/)
-<br/>:heavy_check_mark: [pos_pin](https://apps.odoo.com/apps/modules/13.0/pos_pin/)
-<br/>:heavy_check_mark: [pos_product_available](https://apps.odoo.com/apps/modules/13.0/pos_product_available/)
-<br/>:heavy_check_mark: [pos_restaurant_base](https://apps.odoo.com/apps/modules/13.0/pos_restaurant_base/)
+<br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_cashier_select/)
+<br/>:heavy_check_mark: [pos_debranding](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_debranding/)
+<br/>:heavy_check_mark: [pos_invoice_pay](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_invoice_pay/)
+<br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_keyboard/)
+<br/>:heavy_check_mark: [pos_logout](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_logout/)
+<br/>:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_longpolling/)
+<br/>:heavy_check_mark: [pos_order_cancel](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_order_cancel/)
+<br/>:heavy_check_mark: [pos_order_note](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_order_note/)
+<br/>:heavy_check_mark: [pos_orders_history](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_orders_history/)
+<br/>:heavy_check_mark: [pos_pin](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_pin/)
+<br/>:heavy_check_mark: [pos_product_available](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_product_available/)
+<br/>:heavy_check_mark: [pos_restaurant_base](https://apps.odoo.com/apps/modules/13.0-trojikman-patch-2/pos_restaurant_base/)
 
 Other Addons
 ============
