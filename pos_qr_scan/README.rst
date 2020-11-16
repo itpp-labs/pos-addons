@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 =========================
  QR Code Scanning in POS
 =========================
@@ -15,30 +19,20 @@ To subscribe to scanning event use following code in js::
     })
 
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_qr_scan/
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_qr_scan/
 
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
-
-Tested on Odoo 12.0 db8787d82da68f7cb207c914cd525d188029cbdc
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/db8787d82da68f7cb207c914cd525d188029cbdc>`_

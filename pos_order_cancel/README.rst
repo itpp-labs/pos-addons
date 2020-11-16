@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 =========================
  POS: reason for removal
 =========================
@@ -10,30 +14,20 @@ Besides,
 * Canceled order is saved at database
 * Canceled order line is saved at database
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * Dinar Gabbasov <gabbasov@it-projects.info>
 
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_order_cancel/
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_cancel/
 
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
-
-Tested on Odoo 12.0 53dcdd5a9e22429a9638f68674264436ce21e42b
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/53dcdd5a9e22429a9638f68674264436ce21e42b>`_
