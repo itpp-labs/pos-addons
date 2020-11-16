@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 ========================
  WeChat Payments in POS
 ========================
@@ -53,40 +57,21 @@ Roadmap
 
 * TODO: In sake of UX, we need to add ``micropay_id`` reference to ``account.bank.statement.line``
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/13.0/pos_payment_wechat/>`__.
-
-      Thank you for understanding!
-
-      `IT-Projects Team <https://www.it-projects.info/team>`__
-
-Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos_addons/13.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_wechat/
 
-HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_wechat/
-
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_wechat.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_wechat.atom>`_
 
-
-Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b05e34a0d9b13a1c6971b99ed3e5fa20199f3545>`_

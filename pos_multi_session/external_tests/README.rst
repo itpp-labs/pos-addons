@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 ================
  External tests
 ================
@@ -42,7 +46,6 @@ Docker
 
     docker run --network=multi_session_test_network -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db_ms_test postgres:9.5
 
-
     docker run \
     -e DB_PORT_5432_TCP_ADDR=db_ms_test \
     --network=multi_session_test_network \
@@ -53,7 +56,6 @@ Docker
     -v /PATH/TO/odoo/:/mnt/odoo-source/ \
     --name odoo \
     -t itprojectsllc/install-odoo:$ODOO_BRANCH-dev -- --workers=1 -d test_database --db-filter test_database
-
 
     docker run \
     -p 8080:80 \
@@ -163,7 +165,6 @@ To run tests on separated servers do what is written in previous paragraphs and 
     -v /PATH/TO/odoo/:/mnt/odoo-source/ \
     --name odoo-main \
     -t itprojectsllc/install-odoo:10.0-dev -- --workers=1 -d db_odoo_main --db-filter db_odoo_main
-
 
     docker run \
     -p 8888:80 \
