@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 Disable payments in POS
 =======================
 
@@ -10,4 +14,4 @@ Also, module allows:
 * disable edit price button
 * disable remove order line
 
-Tested on Odoo 8.0 eed09ba4105ae8f47a37c5071217cea2ef2e153e
+Tested on `Odoo 8.0 <https://github.com/odoo/odoo/commit/eed09ba4105ae8f47a37c5071217cea2ef2e153e>`_
