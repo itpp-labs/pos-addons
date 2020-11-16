@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 =======================
  Debt notebook for POS
 =======================
@@ -15,26 +19,19 @@ The module has the following behavior:
   POS config would not be changed. 
 * Upgrading from old versions is well.
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * krotov@it-projects.info
-
-Sponsors
---------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/9.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
 
-HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
 
-Usage instructions: `<doc/index.rst>`__
-
-Changelog: `<doc/changelog.rst>`__
-
-Tested on Odoo 9.0 9cdc40e3edf2e497c4660c7bb8d544f750b3ef60
+Tested on `Odoo 9.0 <https://github.com/odoo/odoo/commit/9cdc40e3edf2e497c4660c7bb8d544f750b3ef60>`_
