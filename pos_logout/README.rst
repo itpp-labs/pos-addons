@@ -1,39 +1,27 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 =================
  Lock POS Screen
 =================
 
 Automatically lock pos on inactivity
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 * `Kildebekov Anvar <https://it-projects.info/team/kildebekov>`__
 
-Sponsors
---------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_qr_login/>`__.
-
-      Thank you for understanding!
-
-      `IT-Projects Team <https://www.it-projects.info/team>`__
-
-Further information
 ===================
 
-HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_logout/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_logout/
 
-Usage instructions: `<doc/index.rst>`_
 
-Changelog: `<doc/changelog.rst>`_
-
-Tested on Odoo 13.0 2d46a08a989f4c7e005ee2ead7c342c72019e63f
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/2d46a08a989f4c7e005ee2ead7c342c72019e63f>`_
