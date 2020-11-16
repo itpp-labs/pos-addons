@@ -56,13 +56,13 @@
             t-attf-class='sale-order-line #{line.invoiceble ? "invoiceble" : ""}'
         >
             <td>
-                <t t-esc='line.product' />
+                <t t-esc='line.product_id[1]' />
             </td>
             <td>
                 <t t-esc='line.name' />
             </td>
             <td>
-                <t t-esc='line.uom_qty' />
+                <t t-esc='line.product_uom_qty' />
             </td>
             <td>
                 <t t-esc='line.qty_delivered' />
@@ -71,18 +71,18 @@
                 <t t-esc='line.qty_invoiced' />
             </td>
             <td>
-                <t t-esc='widget.format_currency(line.total)' />
+                <t t-esc='widget.format_currency(line.price_total)' />
             </td>
             <td>
-                <t t-foreach="line.tax" t-as="tax">
-                    <t t-esc='tax' />
+                <t t-foreach="line.tax_id" t-as="tax">
+                    <t t-esc='tax &amp;&amp; tax[1] || ""' />
                 </t>
             </td>
             <td>
                 <t t-esc="line.discount" />
             </td>
             <td>
-                <t t-esc='widget.format_currency(line.subtotal)' />
+                <t t-esc='widget.format_currency(line.price_subtotal)' />
             </td>
         </tr>
     </t>
@@ -103,22 +103,22 @@
     <t t-name="InvoiceLine">
         <tr class='sale-order-line' t-att-data-id='line.id'>
             <td>
-                <t t-esc='line.product' />
+                <t t-esc='line.product_id[1]' />
             </td>
             <td>
                 <t t-esc='line.name' />
             </td>
             <td>
-                <t t-esc='line.account' />
+                <t t-esc='line.account_id[1]' />
             </td>
             <td>
-                <t t-esc='line.qty' />
+                <t t-esc='line.quantity' />
             </td>
             <td>
                 <t t-esc='widget.format_currency(line.price_unit)' />
             </td>
             <td>
-                <t t-foreach="line.tax" t-as="tax">
+                <t t-foreach="line.tax_ids" t-as="tax">
                     <t t-esc='tax' />
                 </t>
             </td>
@@ -126,7 +126,7 @@
                 <t t-esc="line.discount" />
             </td>
             <td>
-                <t t-esc='widget.format_currency(line.amount)' />
+                <t t-esc='widget.format_currency(line.amount_currency)' />
             </td>
         </tr>
     </t>
@@ -183,22 +183,22 @@
                 <t t-esc='item.partner_id[1]' />
             </td>
             <td>
-                <t t-esc='item.date_invoice' />
+                <t t-esc='item.invoice_date' />
             </td>
             <td>
-                <t t-esc='item.number' />
+                <t t-esc='item.name' />
             </td>
             <td>
-                <t t-esc='item.user_id[1]' />
+                <t t-esc='item.invoice_user_id[1]' />
             </td>
             <td>
-                <t t-esc='item.date_due' />
+                <t t-esc='item.invoice_date_due' />
             </td>
             <td>
                 <t t-esc='widget.format_currency(item.amount_total)' />
             </td>
             <td>
-                <t t-esc='widget.format_currency(item.residual)' />
+                <t t-esc='widget.format_currency(item.amount_residual)' />
             </td>
             <td>
                 <t t-esc='item.state' />
@@ -263,7 +263,7 @@
                         <i class='fa fa-angle-double-left' />
                         Back
                     </span>
-                    <h1>Payment</h1>
+                    <h1>Invoice Payment</h1>
                     <span class='button next'>
                         Validate
                         <i class='fa fa-angle-double-right' />
@@ -431,7 +431,7 @@
                 <t t-esc="order.name" />
             </div>
             <br />
-            <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.number" />
+            <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.name" />
                 <t
                     t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'
                 >
@@ -483,7 +483,7 @@
                     <td>Total:</td>
                     <td class="pos-right-align">
                         <t
-                            t-esc="widget.format_currency(order.invoice_to_pay.residual)"
+                            t-esc="widget.format_currency(order.invoice_to_pay.amount_residual)"
                         />
                     </td>
                 </tr>
@@ -575,9 +575,7 @@
                     <t
                         t-if='order.invoice_to_pay and order.invoice_to_pay.number and order.invoice_to_pay.origin'
                     >
-                        <div>Payment of Invoice: <t
-                                t-esc="order.invoice_to_pay.number"
-                            />
+                        <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.name" />
                             <t
                                 t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'
                             >
@@ -618,7 +616,7 @@
                         <left>Total:</left>
                         <right class="pos-right-align">
                             <t
-                                t-esc="widget.format_currency(order.invoice_to_pay.residual)"
+                                t-esc="widget.format_currency(order.invoice_to_pay.amount_residual)"
                             />
                         </right>
                     </line>

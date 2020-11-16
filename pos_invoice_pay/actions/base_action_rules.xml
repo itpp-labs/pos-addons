@@ -4,7 +4,7 @@
 <odoo>
     <record id="invoice_update_pos_action" model="base.automation">
         <field name="name">Update Invoices</field>
-        <field name="model_id" ref="account.model_account_invoice" />
+        <field name="model_id" ref="account.model_account_move" />
         <field name="state">code</field>
         <field name="code">
                 record.action_updated_invoice()
