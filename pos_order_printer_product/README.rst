@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
@@ -10,40 +14,22 @@ By default, you can assign only product categories to be printed on order printe
 
 The module eliminates this disadvantage and allows to specify certain products, which should be printed on order printers. Note that in this case the product categories are not required to be given.
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-      To get a guaranteed support
-      you are kindly requested to purchase the module
-      at `odoo apps store <https://apps.odoo.com/apps/modules/12.0/pos_order_printer_product/>`__.
-
-      Thank you for understanding!
-
-      `IT-Projects Team <https://www.it-projects.info/team>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/12.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_order_printer_product/
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/pos_order_printer_product/
-
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_order_printer_product.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_order_printer_product.atom>`_
 
-Tested on Odoo 12.0 4919c5d9c31005bfa913cb92b187feeb308a0b95
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/4919c5d9c31005bfa913cb92b187feeb308a0b95>`_

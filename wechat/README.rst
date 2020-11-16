@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 ============
  WeChat API
 ============
@@ -66,30 +70,20 @@ Native Payments debugging
 
 * It seems that in sandbox mode it's allowed to use only prices ``1.01`` and ``1.02``.
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/misc-addons/12.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/wechat/
 
-HTML Description: https://apps.odoo.com/apps/modules/12.0/wechat/
 
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
-
-Tested on Odoo 12.0 b05e34a0d9b13a1c6971b99ed3e5fa20199f3545
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b05e34a0d9b13a1c6971b99ed3e5fa20199f3545>`_
