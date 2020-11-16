@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: REPO
-          # token is required to bypass pushing without checks/reviews.
+          # token is required to bypass pushing without checks/reviews
           token: ${{ secrets.DINAR_TOKEN }}
       - name: Checkout DINAR
         uses: actions/checkout@v2
