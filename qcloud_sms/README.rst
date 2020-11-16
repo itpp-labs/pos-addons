@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
@@ -17,7 +21,7 @@ Tencent SMS service
 Tencent Cloud SMS currently supports the following operations:
 
 Domestic SMS
-------------
+============
 
 * Single text message
 * Specify a template to send a text message
@@ -65,31 +69,20 @@ Application template
 
 The template for text or voice message must be applied and reviewed in the corresponding service module of the `SMS console <https://console.cloud.tencent.com/sms>`__
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
-
-Sponsors
---------
-* `Sinomate <http://sinomate.net/>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/misc-addons/11.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/11.0/wechat/
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/wechat/
 
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
-
-Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
+Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06>`_

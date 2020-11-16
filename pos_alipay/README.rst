@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
@@ -57,38 +61,20 @@ Roadmap
 
 * TODO: In sake of UX, we need to add ``alipay_order_id`` reference to ``account.bank.statement.line``
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
-Sponsors
---------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-      To get a guaranteed support you are kindly requested to purchase the module at `odoo apps store <https://apps.odoo.com/apps/modules/11.0/pos_alipay/>`__.
-
-      Thank you for understanding!
-
-      `IT-Projects Team <https://www.it-projects.info/team>`__
-
-Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos_addons/11.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/11.0/pos_payment_alipay/
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_payment_alipay/
-
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_alipay.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_alipay.atom>`_
 
-Tested on Odoo 11.0 ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06
+Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/ee2b9fae3519c2494f34dacf15d0a3b5bd8fbd06>`_
