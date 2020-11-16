@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 Sync POS orders across multiple sessions (restaurant extension)
 ===============================================================
 
@@ -16,7 +20,7 @@ If you use dbfilter, don't forget to specify correct proxy on printers
 Further information
 -------------------
 
-Tested on Odoo 9 4f7d0da94204dc6685c87cbfc675a7c38039aee5
+Tested on `Odoo 9 <https://github.com/odoo/odoo/commit/4f7d0da94204dc6685c87cbfc675a7c38039aee5>`_
 
 Need our service?
 -----------------
