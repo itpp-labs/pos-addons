@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 ======================
  POS: Prepaid credits
 ======================
@@ -36,29 +40,22 @@ Roadmap
         In case of purchasing products with taxes not included in the price, such journals cannot be used along with normal payments
 
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Stanislav Krotov <https://it-projects.info/team/ufaks>`__
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 
-Sponsors
---------
-* `IT-Projects LLC <https://it-projects.info>`__
-
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/9.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
 
-HTML Description: https://apps.odoo.com/apps/modules/9.0/pos_debt_notebook/
 
-Usage instructions: `<doc/index.rst>`__
-
-Changelog: `<doc/changelog.rst>`__
-
-Tested on Odoo 11.0 e7eb3eeba11111e7b1424aa3edfbe20a59755cba
+Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/e7eb3eeba11111e7b1424aa3edfbe20a59755cba>`_

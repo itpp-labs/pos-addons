@@ -1,3 +1,7 @@
+.. image:: https://itpp.dev/images/infinity-readme.png
+   :alt: Tested and maintained by IT Projects Labs
+   :target: https://itpp.dev
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License: MIT
@@ -136,34 +140,24 @@ Also it's possible to trigger ``new_updates_to_send`` event on data changes to f
 
     },
 
-Credits
-=======
+Questions?
+==========
+
+To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
 Contributors
-------------
+============
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
 * `Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>`__
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
 
-Sponsors
---------
-* `IT-Projects LLC <https://it-projects.info>`__
-
-Maintainers
------------
-* `IT-Projects LLC <https://it-projects.info>`__
 
 Further information
 ===================
 
-Demo: http://runbot.it-projects.info/demo/pos-addons/11.0
+Odoo Apps Store: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
 
-HTML Description: https://apps.odoo.com/apps/modules/11.0/pos_multi_session/
-
-Usage instructions: `<doc/index.rst>`_
-
-Changelog: `<doc/changelog.rst>`_
 
 Tests: `<external_tests/README.rst>`__
 
-Tested on Odoo 11.0 88ccc406035297210cadd5c6278f6f813899001e
+Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/88ccc406035297210cadd5c6278f6f813899001e>`_
