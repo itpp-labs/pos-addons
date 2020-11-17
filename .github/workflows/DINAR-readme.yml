@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-name: "DINAR: update repos readme"
+name: "DINAR: update repo's readme"
 
 on:
   push:
@@ -24,8 +24,8 @@ jobs:
   repo_readme:
     runs-on: ubuntu-latest
     if:
-      "! endsWith(github.repository, -store) && startsWith(github.repository,
-      itpp-labs/)"
+      "! endsWith(github.repository, '-store') && startsWith(github.repository,
+      'itpp-labs/')"
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -57,7 +57,8 @@ jobs:
           repository: REPO
           commit_user_name: Mitchell Admin
           commit_user_email: itpp-bot@users.noreply.github.com
-          # Commit may contain other updates, but in usual flow its only module list
+          # Commit may contain other updates, but in usual flow it's only module list
           commit_message: |
             :construction_worker_man: Update module list
+
             Sent from Github Actions (see .github/workflows/DINAR-readme.yml )
