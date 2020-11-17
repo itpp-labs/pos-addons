@@ -32,8 +32,8 @@ jobs:
           python-version: "3.7.x"
       - name: Check Python Version
         run:
-          echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' '
-          -f1)"
+          echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
+          $GITHUB_ENV
       - uses: actions/cache@v1
         with:
           path: ~/.cache/pre-commit
@@ -81,8 +81,8 @@ jobs:
           bash DINAR/workflow-files/how-to-run-locally.sh
       - name: Check Python Version
         run:
-          echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' '
-          -f1)"
+          echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
+          $GITHUB_ENV
       - uses: actions/cache@v1
         with:
           path: ~/.cache/pre-commit
@@ -154,14 +154,14 @@ jobs:
           mkdir new-deps/
           # create dummy file to be sure that Artifact will be uploaded
           echo ok > new-deps/.empty
-          echo "::set-env name=ARTIFACT::empty"
+          echo "ARTIFACT=empty" >> $GITHUB_ENV
       - name: Prepare DINAR with additional dependencies
         if: env.PR_MODULES_DEPS != '' || env.PR_DEPS != ''
         run: |
           # Save artifacts for local run and for integrations Tests
           bash DINAR/workflow-files/save-docker-layers.sh new-deps/
           echo "${{ env.PR_MODULES_DEPS }}" > new-deps/modules.txt
-          echo "::set-env name=ARTIFACT::yes"
+          echo "ARTIFACT=yes" >> $GITHUB_ENV
       - name: Save DINAR with dependencies
         uses: actions/upload-artifact@v1
         with:
@@ -217,7 +217,7 @@ jobs:
       - name: Check artifact
         run: |
           if [ ! -f new-deps/modules.txt ]; then
-              echo "::set-env name=ARTIFACT::empty"
+              echo "ARTIFACT=empty" >> $GITHUB_ENV
           fi
       - name: Configure Docker
         run: |
