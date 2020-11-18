@@ -20,3 +20,4 @@ class Controller(BusController):
         channel_name = "pos.longpolling"
         res = request.env["pos.config"].browse(int(pos_id))._send_to_channel(channel_name, message)
         return res
+test
