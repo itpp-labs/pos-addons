@@ -1,7 +1,7 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
 # [12.0] Odoo POS Addons 
 
-<br/>:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/12.0/hw_printer_network/)
+:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/12.0/hw_printer_network/)
 <br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/)
 <br/>:heavy_check_mark: [pos_category_multi](https://apps.odoo.com/apps/modules/12.0/pos_category_multi/)
 <br/>:heavy_check_mark: [pos_debranding](https://apps.odoo.com/apps/modules/12.0/pos_debranding/)
