@@ -1,7 +1,7 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
 # [11.0] Odoo POS Addons 
 
-<br/>:heavy_check_mark: [alipay](https://apps.odoo.com/apps/modules/11.0/alipay/)
+:heavy_check_mark: [alipay](https://apps.odoo.com/apps/modules/11.0/alipay/)
 <br/>:heavy_check_mark: [hw_cashbox](https://apps.odoo.com/apps/modules/11.0/hw_cashbox/)
 <br/>:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/11.0/hw_printer_network/)
 <br/>:heavy_check_mark: [pos_alipay](https://apps.odoo.com/apps/modules/11.0/pos_alipay/)
