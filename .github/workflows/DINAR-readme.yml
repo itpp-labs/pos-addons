@@ -57,7 +57,7 @@ jobs:
           repository: REPO
           commit_user_name: Mitchell Admin
           commit_user_email: itpp-bot@users.noreply.github.com
-          # Commit may contain other updates, but in usual flow it's only module list
+          # Commit may contain other updates, but in usual flow it's only module list.
           commit_message: |
             :construction_worker_man: Update module list
 
