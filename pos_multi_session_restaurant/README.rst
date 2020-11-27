@@ -37,6 +37,6 @@ Further information
 Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_multi_session_restaurant/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_
+Notifications on updates: `via Atom <https://github.com/itpp-labs/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/itpp-labs/pos-addons/commits/12.0/pos_multi_session_restaurant.atom>`_
 
 Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b05e34a0d9b13a1c6971b99ed3e5fa20199f3545>`_
