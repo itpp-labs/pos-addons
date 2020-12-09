@@ -24,7 +24,7 @@ Maintainers
 * `IT-Projects LLC <https://it-projects.info>`__
 
       To get a guaranteed support
-      you are kindly requested to purchase the module 
+      you are kindly requested to purchase the module
       at `odoo apps store <https://apps.odoo.com/apps/modules/13.0/pos_receipt_custom_template/>`__.
 
       Thank you for understanding!
@@ -44,4 +44,4 @@ Changelog: `<doc/changelog.rst>`_
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_receipt_custom_template.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_receipt_custom_template.atom>`_
 
-Tested on Odoo 12.0 b4c3268e38db273b1a750050e342aa4a1fd2b850
+Tested on Odoo 13.0 2d46a08a989f4c7e005ee2ead7c342c72019e63f
