@@ -3,17 +3,17 @@
     <record id="view_template_property_form" model="ir.ui.view">
         <field name="name">product.template.common.form.inherit</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="inherit_id" ref="point_of_sale.product_template_form_view" />
         <field name="arch" type="xml">
-            <field name="description_sale" position="after">
-                <separator string="Notes for POS" colspan="4" />
-                <field
-                    name="pos_notes"
-                    colspan="4"
-                    nolabel="1"
-                    placeholder="This note will be displayed on the POS."
-                />
-            </field>
+            <xpath expr="//group[@name='pos']" position="inside">
+                <group string="Notes for POS">
+                    <field
+                        name="pos_notes"
+                        nolabel="1"
+                        placeholder="This note will be displayed on the POS."
+                    />
+                </group>
+            </xpath>
         </field>
     </record>
     <record id="pos_product_notes_form_view" model="ir.ui.view">

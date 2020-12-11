@@ -1,3 +1,8 @@
+`1.3.3`
+-------
+
+- **FIX:** make the Notes for POS field visible on the product form
+
 `1.3.2`
 -------
 
