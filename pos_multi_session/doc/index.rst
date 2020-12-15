@@ -10,7 +10,7 @@ Installation
 Longpolling
 -----------
 
-Follow instruction of https://www.odoo.com/apps/modules/10.0/pos_longpolling/
+Follow instruction of https://www.odoo.com/apps/modules/12.0/pos_longpolling/
 
 Configuration
 =============
@@ -21,6 +21,7 @@ To create a multi-session follow the steps:
 * Click ``[Create]``
 * Specify a name for multi-session in the **Name** field
 * Choose POSes you want to add in the multi-session. Their previous sessions have to be closed before adding.
+* Make it active
 * Click ``[Save]``
 
 Domain switching
@@ -31,7 +32,7 @@ There is a rare case, when you need to clear browser data after installation: if
 Modules compatibility
 =====================
 
-The ``pos_multi_session`` is compatible with all IT-Projects` modules. It may not be compatible with other third-party modules that add additional data to Order or Orderline js model. For such cases we provide developer instruction how to add compatibility (available in README.rst file).
+The ``pos_multi_session`` is compatible with all IT-Projects' modules. It may not be compatible with other third-party modules that add additional data to Order or Orderline js model. For such cases we provide developer instruction how to add compatibility (available in README.rst file).
 
 Usage
 =====
