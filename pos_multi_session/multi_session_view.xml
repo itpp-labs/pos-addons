@@ -31,7 +31,6 @@
                             options="{'not_delete': True}"
                         />
                         <field name="company_id" groups="base.group_multi_company" />
-                        <field name="order_ID" readonly="1" />
                     </group>
                     <group>
                         <p
