@@ -1,0 +1,66 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_cashbox
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_cashbox
+#: model:ir.model.fields,help:pos_cashbox.field_pos_session_iface_cashdrawer
+msgid "Automatically open the cashdrawer"
+msgstr ""
+
+#. module: pos_cashbox
+#: model:ir.model.fields,field_description:pos_cashbox.field_pos_session_iface_cashdrawer
+msgid "Cashdrawer"
+msgstr ""
+
+#. module: pos_cashbox
+#. openerp-web
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:20
+#, python-format
+msgid "Connection Refused. Please check the IP address to PosBox"
+msgstr ""
+
+#. module: pos_cashbox
+#. openerp-web
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:33
+#, python-format
+msgid "Connection Refused. Please check the connection to CashBox"
+msgstr ""
+
+#. module: pos_cashbox
+#: model:ir.model.fields,field_description:pos_cashbox.field_pos_session_proxy_ip
+msgid "IP Address"
+msgstr ""
+
+#. module: pos_cashbox
+#. openerp-web
+#: code:addons/pos_cashbox/static/src/js/cashbox.js:45
+#, python-format
+msgid "Incorrect Operation"
+msgstr ""
+
+#. module: pos_cashbox
+#: model:ir.ui.view,arch_db:pos_cashbox.view_pos_session_form
+msgid "Open CashBox"
+msgstr ""
+
+#. module: pos_cashbox
+#: model:ir.model.fields,help:pos_cashbox.field_pos_session_proxy_ip
+msgid "The hostname or ip address of the hardware proxy, Will be autodetected if left empty"
+msgstr ""
+
+#. module: pos_cashbox
+#: model:ir.model,name:pos_cashbox.model_pos_session
+msgid "pos.session"
+msgstr ""
+

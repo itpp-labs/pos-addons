@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_pos_session_form" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//form/header/button[@name='action_pos_session_open']"
+                position="before"
+            >
+                <field name="iface_cashdrawer" invisible="1" />
+                <field name="proxy_ip" invisible="1" />
+                <button
+                    name="open_backend_cashbox"
+                    type="object"
+                    string="Open CashBox"
+                    attrs="{'invisible':['|','|', ('iface_cashdrawer', '=', False), ('cash_control', '=', False), ('state', 'not in', ['opening_control', 'closing_control'])]}"
+                    class="oe_highlight o_wow"
+                    special="open_backend_cashbox"
+                >
+                    <i class='fa fa-archive' />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
