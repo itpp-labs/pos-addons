@@ -46,6 +46,10 @@ jobs:
         run:
           echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
           $GITHUB_ENV
+      - name: Analyze request
+        run: |
+          # sets environment variables that available in next steps via $ {{ env.PORT_... }} notation
+          python DINAR/workflow-files/analyze_port_trigger.py "${{ github.event.issue.title }}"
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
@@ -56,10 +60,6 @@ jobs:
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.PY }}|${{ hashFiles('REPO/.pre-commit-config.yaml') }}
-      - name: Analyze request
-        run: |
-          # sets environment variables that available in next steps via $ {{ env.PORT_... }} notation
-          python DINAR/workflow-files/analyze_port_trigger.py "${{ github.event.issue.title }}"
       - name: Copy module to new branch
         run: |
           git config --global user.email "itpp-bot@users.noreply.github.com"
