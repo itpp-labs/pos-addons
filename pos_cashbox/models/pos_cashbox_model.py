@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 # License MIT (https://opensource.org/licenses/MIT).
 from odoo import api, fields, models
