@@ -96,7 +96,7 @@ jobs:
           --no-commit \
           2> $LOG_FILE || true
           cat $LOG_FILE
- 
+
           # remove colors
           sed -r -i "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" $LOG_FILE
           # escape character
@@ -104,9 +104,9 @@ jobs:
           body=$(cat $LOG_FILE)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}" 
+          body="${body//$'\r'/'%0D'}"
           echo "MIGRATOR_LOGS=$body" >> $GITHUB_ENV
-          
+
           git add -A
           git commit -m ":arrow_up:${{ env.PORT_TO_BRANCH_TAGS }} OCA/odoo-module-migrator
 
@@ -137,7 +137,7 @@ jobs:
           number: ${{ steps.cpr.outputs.pull-request-number }}
           comment: |
             [Migrator](https://github.com/OCA/odoo-module-migrator/)'s logs:
-            
+
             ```
             ${{ env.MIGRATOR_LOGS }}
             ```
