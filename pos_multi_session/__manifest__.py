@@ -15,8 +15,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_multi_session/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 360.00,
-    "currency": "EUR",
     "depends": ["pos_multi_session_sync"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
