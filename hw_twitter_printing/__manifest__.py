@@ -11,8 +11,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    # "price": 0.00,
-    # "currency": "EUR",
     "depends": [],
     "external_dependencies": {"python": ["twython", "escpos"], "bin": []},
     "data": [],

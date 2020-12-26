@@ -21,8 +21,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
     "license": "Other OSI approved licence",  # MIT
-    "price": 280.00,
-    "currency": "EUR",
     "external_dependencies": {"python": [], "bin": []},
     "depends": ["point_of_sale", "base_groupby_extra"],
     "data": [

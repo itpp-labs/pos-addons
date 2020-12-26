@@ -16,8 +16,6 @@
     "support": "pos@it-projects.info",
     "website": "https://yelizariev.github.io",
     "license": "Other OSI approved licence",  # MIT
-    "price": 140.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant_base", "pos_multi_session"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/views.xml"],

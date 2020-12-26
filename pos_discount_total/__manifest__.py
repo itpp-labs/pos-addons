@@ -7,8 +7,6 @@
     "category": "Point Of Sale",
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/yelizariev",
-    "price": 15.00,
-    "currency": "EUR",
     "depends": ["point_of_sale"],
     "data": ["data.xml"],
     "installable": True,

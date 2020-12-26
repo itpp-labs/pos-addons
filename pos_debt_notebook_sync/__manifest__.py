@@ -11,8 +11,6 @@
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 510.00,
-    "currency": "EUR",
     "depends": ["base_action_rule", "pos_longpolling", "pos_debt_notebook"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml", "data/base_action_rule.xml"],

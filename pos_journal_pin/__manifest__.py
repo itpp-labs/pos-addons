@@ -14,8 +14,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "Other OSI approved licence",  # MIT
-    "price": 80.00,
-    "currency": "EUR",
     "depends": ["pos_pin"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/assets.xml", "views/views.xml"],

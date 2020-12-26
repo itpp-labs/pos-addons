@@ -13,8 +13,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "Other OSI approved licence",  # MIT
-    # "price": 9.00,
-    # "currency": "EUR",
     "depends": ["pos_debt_notebook", "base_attendance", "barcodes"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

@@ -9,8 +9,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info",
     "license": "AGPL-3",
-    "price": 15.00,
-    "currency": "EUR",
     "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["template.xml", "view.xml"],
