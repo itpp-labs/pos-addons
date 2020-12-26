@@ -10,8 +10,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_orderline_absolute_discount/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 79.00,
-    "currency": "EUR",
     "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
