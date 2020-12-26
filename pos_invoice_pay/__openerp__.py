@@ -14,8 +14,6 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "LGPL-3",
-    "price": 89.00,
-    "currency": "EUR",
 
     "depends": [
         "pos_longpolling",

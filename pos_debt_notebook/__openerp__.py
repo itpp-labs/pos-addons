@@ -13,8 +13,6 @@
     'author': 'IT-Projects LLC, Ivan Yelizariev',
     'website': 'https://it-projects.info',
     'license': 'LGPL-3',
-    "price": 280.00,
-    "currency": "EUR",
 
     "external_dependencies": {"python": [], "bin": []},
     'depends': [
