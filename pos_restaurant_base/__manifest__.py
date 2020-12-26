@@ -10,8 +10,6 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_restaurant_base/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 35.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml"],

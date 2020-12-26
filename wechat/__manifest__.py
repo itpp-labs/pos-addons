@@ -13,8 +13,6 @@
     "support": "pos@it-projects.info",
     "website": "https://apps.odoo.com/apps/modules/13.0/wechat/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 75.00,
-    "currency": "EUR",
     "depends": ["product", "account", "qr_payments"],
     "external_dependencies": {"python": ["wechatpy"], "bin": []},
     "data": [
