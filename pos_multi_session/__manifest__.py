@@ -15,8 +15,6 @@
     "support": "apps@itpp.dev",
     "website": "https://yelizariev.github.io",
     "license": "Other OSI approved licence",  # MIT
-    "price": 360.00,
-    "currency": "EUR",
     "depends": ["pos_disable_payment", "pos_multi_session_sync"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
