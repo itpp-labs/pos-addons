@@ -13,8 +13,6 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/yelizariev",
     "license": "Other OSI approved licence",  # MIT
-    # "price": 9.00,
-    # "currency": "EUR",
     "depends": ["product", "account", "qr_payments"],
     "external_dependencies": {"python": ["alipay"], "bin": []},
     "data": [

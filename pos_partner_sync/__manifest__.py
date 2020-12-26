@@ -13,8 +13,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "Other OSI approved licence",  # MIT
-    "price": 49.00,
-    "currency": "EUR",
     "depends": ["point_of_sale", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/assets.xml", "views/pos_config.xml"],

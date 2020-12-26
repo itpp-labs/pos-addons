@@ -12,8 +12,6 @@
     "support": "apps@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    # "price": 9.00,
-    # "currency": "EUR",
     "depends": ["wechat"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
