@@ -10,8 +10,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_restaurant_base/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 35.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml"],

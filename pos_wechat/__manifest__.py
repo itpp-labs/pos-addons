@@ -12,8 +12,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_payment_wechat/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 330.00,
-    "currency": "EUR",
     "depends": [
         "wechat",
         "pos_qr_scan",
