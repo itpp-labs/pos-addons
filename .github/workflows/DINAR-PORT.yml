@@ -136,7 +136,8 @@ jobs:
         with:
           number: ${{ steps.cpr.outputs.pull-request-number }}
           comment: |
-            [Migrator](https://github.com/OCA/odoo-module-migrator/)'s logs:
+            [Migrator](https://github.com/OCA/odoo-module-migrator/)'s [logs](https://github.com/${{ github.repository
+            }}/actions/runs/${{ github.run_id }}):
 
             ```
             ${{ env.MIGRATOR_LOGS }}
