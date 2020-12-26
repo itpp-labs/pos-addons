@@ -7,8 +7,6 @@
     'category': 'Point Of Sale',
     'website': 'https://yelizariev.github.io',
     'depends': ['point_of_sale'],
-    "price": 40.00,
-    "currency": "EUR",
     'data': [
         'views.xml',
     ],

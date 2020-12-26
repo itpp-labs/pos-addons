@@ -8,8 +8,6 @@
     'category': 'Point Of Sale',
     'website': 'https://it-projects.info',
     'depends': ['point_of_sale'],
-    "price": 280.00,
-    "currency": "EUR",
     'images': [
         'images/screenshot-2.png',
         'images/screenshot-3.png',
