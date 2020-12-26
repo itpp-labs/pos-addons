@@ -9,8 +9,6 @@
     'license': 'LGPL-3',
     'version': '1.0.2',
     'depends': ['point_of_sale'],
-    "price": 15.00,
-    "currency": "EUR",
     'data': [
         'data.xml',
     ],
