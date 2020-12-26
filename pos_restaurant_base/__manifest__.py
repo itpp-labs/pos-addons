@@ -10,8 +10,6 @@
     "support": "apps@itpp.dev",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 35.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml"],

@@ -12,8 +12,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/yelizariev",
     "license": "Other OSI approved licence",  # MIT
-    "price": 330.00,
-    "currency": "EUR",
     "depends": [
         "wechat",
         "pos_qr_scan",
