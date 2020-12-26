@@ -14,8 +14,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_multi_session_restaurant/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 30.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant_base", "pos_multi_session"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/views.xml"],
