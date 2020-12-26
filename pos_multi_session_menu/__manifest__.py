@@ -9,8 +9,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 29.00,
-    "currency": "EUR",
     "depends": ["pos_multi_session", "pos_menu"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/pos_menu_view.xml", "views/pos_multi_session_menu_template.xml"],
