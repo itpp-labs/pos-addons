@@ -10,8 +10,6 @@
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "Other OSI approved licence",  # MIT
-    # "price": 0.00,
-    # "currency": "EUR",
     "depends": ["bus", "point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/pos_longpolling_template.xml", "views/pos_longpolling_view.xml"],

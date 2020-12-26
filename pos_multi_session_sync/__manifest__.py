@@ -15,8 +15,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/KolushovAlexandr",
     "license": "Other OSI approved licence",  # MIT
-    "price": 60.00,
-    "currency": "EUR",
     "depends": ["pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["security/ir.model.access.csv"],

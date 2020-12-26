@@ -14,8 +14,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 89.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant_base", "web_tour"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/pos_order_print_check_template.xml", "views/assets_demo.xml"],

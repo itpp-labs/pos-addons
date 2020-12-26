@@ -13,8 +13,6 @@
     "support": "apps@itpp.dev",
     "website": "https://it-projects.info/team/ArtyomLosev",
     "license": "Other OSI approved licence",  # MIT
-    "price": 89.00,
-    "currency": "EUR",
     "depends": ["sale", "pos_longpolling", "base_action_rule"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [

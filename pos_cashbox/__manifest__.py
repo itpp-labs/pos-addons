@@ -13,8 +13,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 49.00,
-    "currency": "EUR",
     "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/pos_cashbox_template.xml", "views/pos_cashbox_view.xml"],

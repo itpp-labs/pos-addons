@@ -10,7 +10,5 @@
     "website": "https://it-projects.info",
     "depends": ["pos_pin", "pos_product_available"],
     "data": ["data.xml", "views.xml"],
-    "price": 50.00,
-    "currency": "EUR",
     "installable": True,
 }

@@ -11,8 +11,6 @@
     "support": "pos@it-projects.info",
     "website": "https://it-projects.info/team/GabbasovDinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 39.00,
-    "currency": "EUR",
     "depends": ["pos_discount_base"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml", "views/view.xml", "security/ir.model.access.csv"],

@@ -10,8 +10,6 @@
     "support": "pos@it-projects.info",
     "website": "https://twitter.com/gabbasov_dinar",
     "license": "Other OSI approved licence",  # MIT
-    "price": 340.00,
-    "currency": "EUR",
     "depends": ["pos_restaurant_base"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
