@@ -26,4 +26,4 @@ Further information
 Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_printer_network/
 
 
-Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/7bc849c3a698665d6f2379aa2b8d870c14a6c849>`_
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/422f7f4a9c4d5ad60c63c6d20c9bf8ddda9a3966>`_
