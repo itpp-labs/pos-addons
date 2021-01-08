@@ -6,7 +6,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
     var core = require("web.core");
     var Session = require("web.Session");
     var gui = require("point_of_sale.gui");
-    var Printer = require("pos_restaurant.multiprint").Printer;
+    var Printer = require("point_of_sale.Printer").Printer;
     var devices = require("point_of_sale.devices");
     var chrome = require("point_of_sale.chrome");
     var PopupWidget = require("point_of_sale.popups");
@@ -171,7 +171,7 @@ odoo.define("pos_restaurant.network_printer", function(require) {
             if (this.pos.config.receipt_printer_type === "network_printer") {
                 this.pos.receipt_printer_is_usb = false;
             }
-            return this._super(url, options).done(function() {
+            return this._super(url, options).then(function() {
                 self.send_network_printers_to_pos_box(url, self.network_printers);
             });
         },
