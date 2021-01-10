@@ -104,11 +104,9 @@ jobs:
           sed -r -i "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" $LOG_FILE
           # escape character
           # TODO: update KeisukeYamashita/create-comment to support reading comment's body from file
-          body=$(cat $LOG_FILE)
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          echo "MIGRATOR_LOGS=$body" >> $GITHUB_ENV
+          echo 'MIGRATOR_LOGS<<EOF' >> $GITHUB_ENV
+          cat $LOG_FILE >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
           git add -A
           git commit -m ":arrow_up:${{ env.PORT_TO_BRANCH_TAGS }} OCA/odoo-module-migrator
