@@ -1,6 +1,6 @@
 /*  Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_product_available.tour", function(require) {
+odoo.define("pos_product_available.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -38,7 +38,7 @@ odoo.define("pos_product_available.tour", function(require) {
             {
                 content: "the " + product_name + " have been added to the order",
                 trigger: '.orderline:contains("' + product_name + '")',
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
