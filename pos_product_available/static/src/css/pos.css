@@ -1,0 +1,24 @@
+.pos .product .qty-tag {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    vertical-align: top;
+    color: white;
+    line-height: 13px;
+    background: #7f82ac;
+    padding: 2px 5px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+.pos .product .qty-tag.not-available {
+    background: #d882ac;
+}
+
+.pos .order .orderline .qty-info {
+    color: #777;
+    font-weight: bold;
+    font-style: normal;
+}
+.pos .order .orderline .qty-info.not-available {
+    color: red;
+}

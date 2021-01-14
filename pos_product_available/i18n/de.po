@@ -1,0 +1,72 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_product_available
+#
+# Translators:
+# Translation Bot <i18n-bot@it-projects.info>, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-27 23:49+0000\n"
+"PO-Revision-Date: 2018-04-27 23:49+0000\n"
+"Last-Translator: Ermin Trevisan <trevi@twanda.com>, 2018\n"
+"Language-Team: German (https://www.transifex.com/it-projects-llc/teams/76080/"
+"de/)\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/xml/pos.xml:21
+#, python-format
+msgid "(of"
+msgstr "(von "
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:13
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:72
+#, python-format
+msgid ""
+"<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+"laptops, or industrial hardware.</p><p>Once the session launched, the system "
+"continues to run without an internet connection.</p>"
+msgstr ""
+"<p>Anklicken, um das POS-System zu starten. Es <b>läuft auf Tablets</b>, "
+"Laptops, oder industrieller Hardware.</p><p>Sobald eine Sitzung gestartet "
+"wurde, funktioniert das System auch ohne Internet-Verbindung.</p>"
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:48
+#, python-format
+msgid "Click the payment method"
+msgstr ""
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:65
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:68
+#, python-format
+msgid "Close POS"
+msgstr ""
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:42
+#, python-format
+msgid "Open the payment screen"
+msgstr ""
+
+#. module: pos_product_available
+#. openerp-web
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:87
+#: code:addons/pos_product_available/static/src/js/test_pos_quantities.js:92
+#, python-format
+msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+msgstr "Bereit, Ihren <b>Point of Sale</b>zu starten? <i>Klicken Sie hier</i>."
