@@ -96,7 +96,7 @@ odoo.define("pos_product_available.tour", function(require) {
     }
 
     var steps = [
-        tour.STEPS.SHOW_APPS_MENU_ITEM,
+        tour.stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: _t(

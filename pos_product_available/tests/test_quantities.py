@@ -44,7 +44,7 @@ class TestUi(HttpCase):
         )
 
         # without a delay there might be problems caused by a not yet loaded button's action
-        self.phantom_js(
+        self.browser_js(
             "/web",
             "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_product_available', 500)",
             "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_product_available.ready",
