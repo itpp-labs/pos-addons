@@ -78,6 +78,7 @@ repos:
     rev: v1.26.2
     hooks:
       - id: pyupgrade
+        args: ["--keep-percent-format"]
   - repo: https://github.com/acsone/setuptools-odoo
     rev: 2.6.0
     hooks:
