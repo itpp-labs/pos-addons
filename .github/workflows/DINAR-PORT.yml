@@ -47,9 +47,11 @@ jobs:
           echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
           $GITHUB_ENV
       - name: Analyze request
+        env:
+          TITLE: ${{ github.event.issue.title }}
         run: |
           # sets environment variables that available in next steps via $ {{ env.PORT_... }} notation
-          python DINAR/workflow-files/analyze_port_trigger.py "${{ github.event.issue.title }}"
+          python DINAR/workflow-files/analyze_port_trigger.py "$TITLE"
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
