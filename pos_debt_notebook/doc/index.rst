@@ -11,6 +11,20 @@ After this a debt payment method will appear in the POS.
 Usage
 =====
 
+Manual Credit Updates
+---------------------
+
+It can be used for different purposes:
+
+* to setup initial debt / credit values
+* for periodic import from another system
+* to remove test debts
+
+To use it
+
+* open ``Point of sale >> Configuration >> Manual Credit Updates``
+* create record or import csv, Excel file
+
 Debt Journal
 ------------
 
@@ -34,8 +48,8 @@ Credit Products
 
 * Instead of using Debt Journal, customer can purchase *Credits* via *Credit Products*
 * When you create *Credit product*, don't forget to set **Credit Product** field
-* *Credit products* can be sold via POS and via invoices (including eCommerce). The later requires `another module <https://apps.odoo.com/apps/modules/10.0/pos_debt_notebook_sync/>`_ to notify POS about eCommerce sales, otherwise POS will get updates about invoices only after POS reloading.
-* We recommend a module that force user to login before making purchase on website, e.g. `website_sale_require_login <https://www.odoo.com/apps/modules/10.0/website_sale_require_login/>`_
+* *Credit products* can be sold via POS and via invoices (including eCommerce). The later requires `another module <https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook_sync/>`_ to notify POS about eCommerce sales, otherwise POS will get updates about invoices only after POS reloading.
+* We recommend a module that force user to login before making purchase on website, e.g. `website_sale_require_login <https://www.odoo.com/apps/modules/13.0/website_sale_require_login/>`_
 * Note. Taxes on purchasing *Credit Products* are supported for purchasing via invoices (including eCommerce), but not for sales via POS. For taxed Credit Products in invoices only untaxed amount is added to credit amount.
 
 Allow to cash out credits
@@ -70,20 +84,6 @@ Zero transactions
   * On ``Pont of Sale`` tab check the box ``Zero transactions``
 
 RESULT: Discount the order (mostly 100%) when a user pay via such type of journal in POS
-
-Manual Credit Updates
----------------------
-
-It can be used for different purposes:
-
-* to setup initial debt / credit values
-* for periodic import from another system
-* to remove test debts
-
-To use it
-
-* open ``Point of sale >> Configuration >> Manual Credit Updates``
-* create record or import csv, Excel file
 
 Zero transactions
 -----------------
