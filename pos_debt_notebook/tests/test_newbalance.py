@@ -1,6 +1,7 @@
 # Copyright 2017-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 # License MIT (https://opensource.org/licenses/MIT).
 
 from odoo.tests.common import TransactionCase
@@ -22,7 +23,7 @@ class TestPosCreditUpdate(TransactionCase):
                 "note": 'code "TST" is used for tests',
             }
         )
-        self.journal = self.env["pos.config"].create_journal(
+        self.journal = self.env["pos.config"].create_pos_payment_method(
             {
                 "sequence_name": "Test Credit Journal",
                 "prefix": "TST ",

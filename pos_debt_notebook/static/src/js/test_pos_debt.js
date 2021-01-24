@@ -1,3 +1,5 @@
+/* Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
+   License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_debt_notebook.tour", function(require) {
     "use strict";
 
@@ -112,7 +114,6 @@ odoo.define("pos_debt_notebook.tour", function(require) {
                 content: "Validate payment",
             },
             {
-                extra_trigger: ".pos-sale-ticket",
                 trigger: '.button.next.highlight:contains("Next Order")',
                 content: "Check proceeded validation",
             },
