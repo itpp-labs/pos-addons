@@ -3,7 +3,8 @@
     Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
     Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
     Copyright 2018-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License MIT (https://opensource.org/licenses/MIT). -->
+    License MIT (https://opensource.org/licenses/MIT).
+    License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work. -->
 <odoo>
     <!-- RES PARTNER -->
     <record id="view_partner_form_debt" model="ir.ui.view">
