@@ -3,7 +3,7 @@
     Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
     Copyright 2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
-    License MIT (https://opensource.org/licenses/MIT). 
+    License MIT (https://opensource.org/licenses/MIT).
     License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work. -->
 <templates id="template" xml:space="preserve">
     <t t-name="PaypadButtonWidget">
@@ -166,7 +166,8 @@
         </t>
         <t t-jquery=".js_set_customer" t-operation="after">
             <div class="button pay-full-debt oe_hidden">
-                <i class='fas money-bill-alt' /> Pay Full Debt
+                <i class='fas money-bill-alt' />
+                Pay Full Debt
             </div>
         </t>
         <!--<t t-jquery=".screen-content" t-operation="after">-->
@@ -214,6 +215,7 @@
                     </tr>
                 </thead>
                 <tbody id='debt_history_contents'>
+
                 </tbody>
             </table>
         </t>
@@ -292,7 +294,10 @@
                 />
                 <t t-set="debt_sign" t-value="receipt.debt_type=='debt' and 1 or -1" />
                 <line>
-                    <left>Prev <t t-esc="debt_label" /></left>
+                    <left>
+                        Prev
+                        <t t-esc="debt_label" />
+                    </left>
                     <right>
                         <value>
                             <t t-esc='debt_sign * receipt.debt_before' />
@@ -300,7 +305,10 @@
                     </right>
                 </line>
                 <line>
-                    <left>New <t t-esc="debt_label" /></left>
+                    <left>
+                        New
+                        <t t-esc="debt_label" />
+                    </left>
                     <right>
                         <value>
                             <t t-esc='debt_sign * receipt.debt_after' />

@@ -24,5 +24,7 @@ def pre_uninstall(cr, registry):
 
     for config in env["pos.config"].search([]):
         config.write(
-            {"payment_method_ids": value,}
+            {
+                "payment_method_ids": value,
+            }
         )

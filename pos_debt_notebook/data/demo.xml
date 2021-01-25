@@ -17,9 +17,9 @@
             <field name="list_price">1</field>
             <field name="type">service</field>
             <field name="uom_id" ref="uom.product_uom_unit" />
-            <field
-                name="description"
-            >This is a product for purchasing "Credits".</field>
+            <field name="description">
+                This is a product for purchasing "Credits".
+            </field>
         </record>
     </data>
 </openerp>

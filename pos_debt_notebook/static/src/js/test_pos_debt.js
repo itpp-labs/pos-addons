@@ -1,6 +1,6 @@
 /* Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
    License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_debt_notebook.tour", function(require) {
+odoo.define("pos_debt_notebook.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
