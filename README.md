@@ -3,6 +3,7 @@
 
 :heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/)
 <br/>:heavy_check_mark: [pos_debranding](https://apps.odoo.com/apps/modules/13.0/pos_debranding/)
+<br/>:heavy_check_mark: [pos_debt_notebook](https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook/)
 <br/>:heavy_check_mark: [pos_invoice_pay](https://apps.odoo.com/apps/modules/13.0/pos_invoice_pay/)
 <br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/13.0/pos_keyboard/)
 <br/>:heavy_check_mark: [pos_logout](https://apps.odoo.com/apps/modules/13.0/pos_logout/)
