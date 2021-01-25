@@ -17,3 +17,4 @@ repo_readme:
     - pos_debranding
     - pos_mobile
     - pos_scan_ref
+    - pos_debt_notebook
