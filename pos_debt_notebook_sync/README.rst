@@ -27,4 +27,4 @@ Contributors
 Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook_sync/
 
 
-Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b05e34a0d9b13a1c6971b99ed3e5fa20199f3545>`_
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/2d46a08a989f4c7e005ee2ead7c342c72019e63f>`_
