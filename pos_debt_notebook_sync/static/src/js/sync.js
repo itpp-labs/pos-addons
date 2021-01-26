@@ -4,8 +4,6 @@
 odoo.define("pos_debt_sync", function(require) {
     "use strict";
     var models = require("point_of_sale.models");
-    var core = require('web.core');
-    var longpolling = require('pos_longpolling.pos');
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function() {
