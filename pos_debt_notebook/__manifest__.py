@@ -20,7 +20,7 @@
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook/",
-    "license": "Other OSI approved licence",  # MIT
+    "license": "OPL-1",
     "price": 280.00,
     "currency": "EUR",
     "external_dependencies": {"python": [], "bin": []},
