@@ -99,9 +99,6 @@ jobs:
           2> $LOG_FILE || true
           cat $LOG_FILE
 
-          # TMP: run pre-commit agains xml files only. See https://github.com/OCA/odoo-module-migrator/pull/38#pullrequestreview-558886327
-          pre-commit run --files $(find ${{ env.PORT_MODULE }} -type f -iname "*.xml") || true
-
           # remove colors
           sed -r -i "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" $LOG_FILE
           # escape character
