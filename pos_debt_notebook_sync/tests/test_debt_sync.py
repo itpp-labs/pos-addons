@@ -1,12 +1,12 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 # License MIT (https://opensource.org/licenses/MIT).
 
-import odoo.tests
+from odoo.tests import HttpCase, tagged
 
 
-@odoo.tests.common.at_install(True)
-@odoo.tests.common.post_install(True)
-class TestUi(odoo.tests.HttpCase):
+@tagged("post_install", "-at_install")
+class TestUi(HttpCase):
     def test_pos_debt(self):
         # without a delay there might be problems caused by a not yet loaded button's action
         self.phantom_js(
