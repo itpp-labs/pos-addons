@@ -1,10 +1,10 @@
-odoo.define("pos_longpolling.LongpollingBus", function(require) {
+odoo.define("pos_longpolling.LongpollingBus", function (require) {
     "use strict";
 
     var LongpollingBus = require("bus.Longpolling");
 
     LongpollingBus.include({
-        _poll: function() {
+        _poll: function () {
             // Function is copy-pasted from longpolling_bus.js
             var self = this;
             if (!this._isActive) {
@@ -33,7 +33,7 @@ odoo.define("pos_longpolling.LongpollingBus", function(require) {
                 {shadow: true, timeout: 60000}
             );
             this._pollRpc.then(
-                function(result) {
+                function (result) {
                     self._pollRpc = false;
                     self._onPoll(result);
                     self._poll();
@@ -43,7 +43,7 @@ odoo.define("pos_longpolling.LongpollingBus", function(require) {
                     poll_connection.set_waiting_poll_response(false);
                     poll_connection.network_is_on();
                 },
-                function(error, ev) {
+                function (error, ev) {
                     ev = ev || error.event;
                     self._pollRpc = false;
                     // DIFFERENCES FROM ORIGINAL:

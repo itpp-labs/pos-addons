@@ -46,12 +46,12 @@ var pages = [];
 for (var i = 0; i < pages_num; i++) {
     var page = require("webpage").create();
 
-    page.open(pos_url, function(status) {
+    page.open(pos_url, function (status) {
         console.log("Page #" + i + ": " + status);
     });
     pages.push(page);
 }
 
-setTimeout(function() {
+setTimeout(function () {
     phantom.exit();
 }, timeout * 1000);

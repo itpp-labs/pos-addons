@@ -1,4 +1,4 @@
-odoo.define("pos_longpolling.PosConnection", function(require) {
+odoo.define("pos_longpolling.PosConnection", function (require) {
     "use strict";
 
     var LongpollingModel = require("pos_longpolling.LongpollingModel");
@@ -12,7 +12,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
 
     var PosConnection = core.Class.extend({
         service: "bus_service",
-        init: function(options) {
+        init: function (options) {
             options = options || {};
             this.channel_callbacks = {};
             this.route = "";
@@ -35,7 +35,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
             // Fake value (don't start a polling request)
             this.bus._isActive = true;
         },
-        init_bus: function(pos) {
+        init_bus: function (pos) {
             this.pos = pos;
             // New longpolling connection widget
             this.longpolling_connection = new LongpollingModel(this.pos, this);
@@ -51,7 +51,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
                 this.longpolling_connection
             );
         },
-        start: function() {
+        start: function () {
             if (this.bus._isActive) {
                 return;
             }
@@ -68,7 +68,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
                 this,
                 this.on_notification_callback
             );
-            _.each(self.channel_callbacks, function(value, key) {
+            _.each(self.channel_callbacks, function (value, key) {
                 self.activate_channel(key);
             });
             var is_master = this.bus._isMasterTab;
@@ -84,7 +84,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
             // 10 seconds
             this.bus.TAB_HEARTBEAT_PERIOD = 10000;
         },
-        add_channel_callback: function(channel_name, callback, thisArg) {
+        add_channel_callback: function (channel_name, callback, thisArg) {
             if (thisArg) {
                 callback = _.bind(callback, thisArg);
             }
@@ -96,12 +96,12 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
                 this.activate_channel(channel_name);
             }
         },
-        activate_channel: function(channel_name) {
+        activate_channel: function (channel_name) {
             var channel = this.get_full_channel_name(channel_name);
             // Add new longpolling chanel
             this.pos.chrome.call(this.service, "addChannel", channel);
         },
-        on_notification_callback: function(notification) {
+        on_notification_callback: function (notification) {
             for (var i = 0; i < notification.length; i++) {
                 var channel = notification[i][0];
                 var message = notification[i][1];
@@ -109,7 +109,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
             }
             this.pos.db.save(this.bus_id_last(), this.bus._lastNotificationID);
         },
-        on_notification_do: function(channel, message) {
+        on_notification_do: function (channel, message) {
             var self = this;
             if (_.isString(channel)) {
                 channel = JSON.parse(channel);
@@ -138,7 +138,7 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
                 }
             }
         },
-        check_sleep_mode: function() {
+        check_sleep_mode: function () {
             var visibilityChange = "";
             var self = this;
             function onVisibilityChange() {
@@ -157,17 +157,17 @@ odoo.define("pos_longpolling.PosConnection", function(require) {
                 document.addEventListener(visibilityChange, onVisibilityChange, false);
             }
         },
-        get_full_channel_name: function(channel_name) {
+        get_full_channel_name: function (channel_name) {
             return JSON.stringify([
                 session.db,
                 channel_name,
                 String(this.pos.config.id),
             ]);
         },
-        bus_id_last: function() {
+        bus_id_last: function () {
             return "bus_" + this.bus._id + "last";
         },
-        set_activated: function(is_online) {
+        set_activated: function (is_online) {
             if (this.bus._isActive === is_online) {
                 return;
             }

@@ -1,4 +1,4 @@
-odoo.define("pos_longpolling.tour", function(require) {
+odoo.define("pos_longpolling.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
