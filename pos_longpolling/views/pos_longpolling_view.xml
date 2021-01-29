@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//h2[@name='order']" position="before">
+                <h2 name="refunds">Longpolling</h2>
+                <div class="row mt16 o_settings_container" id="longpolling">
+                    <div
+                        id="longpolling_max_silence_timeout"
+                        class="col-xs-12 col-md-6 o_setting_box"
+                    >
+                        <div class="o_setting_right_pane">
+                            <label for="longpolling_max_silence_timeout" />
+                            <div class="content-group">
+                                <div class="mt16 row">
+                                    <field
+                                        name="longpolling_max_silence_timeout"
+                                        class="col-xs-3 col-md-3"
+                                        widget="integer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        id="longpolling_pong_timeout"
+                        class="col-xs-12 col-md-6 o_setting_box"
+                    >
+                        <div class="o_setting_right_pane">
+                            <label for="longpolling_pong_timeout" />
+                            <div class="content-group">
+                                <div class="mt16 row">
+                                    <field
+                                        name="longpolling_pong_timeout"
+                                        class="col-xs-3 col-md-3"
+                                        widget="integer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        id="autostart_longpolling"
+                        class="col-xs-12 col-md-6 o_setting_box"
+                        invisible="1"
+                    >
+                        <div class="o_setting_left_pane">
+                            <field name="autostart_longpolling" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="autostart_longpolling" />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

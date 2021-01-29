@@ -1,0 +1,90 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_longpolling
+#
+# Translators:
+# Translation Bot <i18n-bot@it-projects.info>, 2018
+# Luis Guzman <ark@switnet.org>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
+"Last-Translator: Luis Guzman <ark@switnet.org>, 2018\n"
+"Language-Team: Spanish (https://www.transifex.com/it-projects-llc/"
+"teams/76080/es/)\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_longpolling
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config__autostart_longpolling
+msgid "Autostart longpolling"
+msgstr ""
+
+#. module: pos_longpolling
+#: model_terms:ir.ui.view,arch_db:pos_longpolling.view_pos_config_form
+msgid "Longpolling"
+msgstr ""
+
+#. module: pos_longpolling
+#. openerp-web
+#: code:addons/pos_longpolling/static/src/js/longpolling.js:115
+#: code:addons/pos_longpolling/static/src/js/longpolling.js:116
+#, python-format
+msgid "Longpolling Handling Error"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config__longpolling_max_silence_timeout
+msgid "Max Silence timeout (sec)"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model,name:pos_longpolling.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,field_description:pos_longpolling.field_pos_config__longpolling_pong_timeout
+msgid "Pong timeout (sec)"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config__longpolling_max_silence_timeout
+msgid ""
+"Waiting period for any message from poll (if we have not received a message "
+"at this period, poll will send message ('PING') to check the connection)"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config__longpolling_pong_timeout
+msgid ""
+"Waiting period to receive PONG message after sending PING request.When this "
+"timeout occurs, the icon turns color to red. Once the connection is "
+"restored, the icon changes its color back to green)"
+msgstr ""
+
+#. module: pos_longpolling
+#: model:ir.model.fields,help:pos_longpolling.field_pos_config__autostart_longpolling
+msgid "When switched off longpoling will start only when other module start it"
+msgstr ""
+
+#~ msgid ""
+#~ "<p>Click to start the point of sale interface. It <b>runs on tablets</b>, "
+#~ "laptops, or industrial hardware.</p><p>Once the session launched, the "
+#~ "system continues to run without an internet connection.</p>"
+#~ msgstr ""
+#~ "<p>Haga click para iniciar la interfaz de venta del punto de venta. Este "
+#~ "<b>opera en tabletas</b>, laptops, o hardware industrial.</p><p>Una vez "
+#~ "que la sesión ha iniciado, el sistema puede continuar a ejecutarse sin "
+#~ "necesidad de una conexión a internet.</p>"
+
+#~ msgid "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+#~ msgstr "¿Listo para iniciar su <b>punto de venta</b>? <i>Click aquí</i>."
+
+#~ msgid "pos.config"
+#~ msgstr "pos.config"

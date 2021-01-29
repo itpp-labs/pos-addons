@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="point_of_sale_assets"
+        name="pos_longpolling assets"
+        inherit_id="point_of_sale.assets"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/chrome.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/LongpollingBus.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/LongpollingModel.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/SyncBusService.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/PosConnection.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/pos.js"
+            />
+        </xpath>
+    </template>
+    <template
+        id="assets_backend"
+        name="pos_longpolling backend_assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/test_longpoll_pos.js"
+            />
+        </xpath>
+    </template>
+</odoo>
