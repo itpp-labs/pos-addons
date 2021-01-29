@@ -4,7 +4,7 @@ odoo.define("pos_longpolling.tour", function(require) {
     var tour = require("web_tour.tour");
 
     var steps = [
-        tour.STEPS.SHOW_APPS_MENU_ITEM,
+        tour.stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
