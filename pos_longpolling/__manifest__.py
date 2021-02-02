@@ -6,7 +6,7 @@
     "version": "14.0.2.3.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
-    "support": "pos@it-projects.info",
+    "support": "help@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_longpolling/",
     "license": "Other OSI approved licence",  # MIT
     # "price": 0.00,
