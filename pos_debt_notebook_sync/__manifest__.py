@@ -6,7 +6,6 @@
     "name": """Internal Credit System""",
     "summary": """Credit payment system for festivals, food courts, etc.""",
     "category": "Point of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/internal-credit-system?version=12.0",
     "images": ["images/credit.png"],
     "version": "12.0.1.1.2",
     "application": False,

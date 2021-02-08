@@ -48,19 +48,27 @@
                         <span
                             attrs="{'invisible': ['|', ('debt', '&lt;', 0),('debt_type', '!=', 'debt')]}"
                             class="o_stat_text text-danger"
-                        >Debts </span>
+                        >
+                            Debts
+                        </span>
                         <span
                             attrs="{'invisible': ['|', ('debt', '&gt;=', 0),('debt_type', '!=', 'debt')]}"
                             class="o_stat_text text-success"
-                        >Debts </span>
+                        >
+                            Debts
+                        </span>
                         <span
                             attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'credit')]}"
                             class="o_stat_text text-success"
-                        >Credits </span>
+                        >
+                            Credits
+                        </span>
                         <span
                             attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'credit')]}"
                             class="o_stat_text text-danger"
-                        >Credits </span>
+                        >
+                            Credits
+                        </span>
                     </div>
                 </button>
             </xpath>
@@ -103,10 +111,16 @@
             <xpath expr="//div[hasclass('oe_kanban_details')]/ul" position="inside">
                 <li
                     t-if="record.debt_type.raw_value == 'debt' and record.debt.raw_value"
-                >Debt: <field name="debt" /></li>
+                >
+                    Debt:
+                    <field name="debt" />
+                </li>
                 <li
                     t-if="record.debt_type.raw_value == 'credit' and record.credit_balance.raw_value"
-                >Credit: <field name="credit_balance" /></li>
+                >
+                    Credit:
+                    <field name="credit_balance" />
+                </li>
             </xpath>
         </field>
     </record>
