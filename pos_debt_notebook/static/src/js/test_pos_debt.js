@@ -1,4 +1,4 @@
-odoo.define("pos_debt_notebook.tour", function(require) {
+odoo.define("pos_debt_notebook.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");

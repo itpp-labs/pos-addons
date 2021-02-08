@@ -11,9 +11,11 @@
             <field name="list_price">0</field>
             <field name="type">service</field>
             <field name="uom_id" ref="uom.product_uom_unit" />
-            <field
-                name="description"
-            >This is a dummy product used when a customer pays his debt without ordering new products. This is a workaround to the fact that Odoo needs to have at least one product on the order to validate the transaction.</field>
+            <field name="description">
+                This is a dummy product used when a customer pays his debt without
+                ordering new products. This is a workaround to the fact that Odoo needs
+                to have at least one product on the order to validate the transaction.
+            </field>
         </record>
     </data>
 </openerp>

@@ -5,9 +5,9 @@
     <record id="group_pos_credit_update_manager" model="res.groups">
         <field name="name">Credit Updates Manager</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
-        <field
-            name="comment"
-        >The user will gain access to update partner credits.</field>
+        <field name="comment">
+            The user will gain access to update partner credits.
+        </field>
     </record>
     <record id="point_of_sale.group_pos_manager" model="res.groups">
         <field

@@ -165,7 +165,8 @@
         </t>
         <t t-jquery=".js_set_customer" t-operation="after">
             <div class="button pay-full-debt oe_hidden">
-                <i class='fa fa-money' /> Pay Full Debt
+                <i class='fa fa-money' />
+                Pay Full Debt
             </div>
         </t>
         <!--<t t-jquery=".screen-content" t-operation="after">-->
@@ -213,6 +214,7 @@
                     </tr>
                 </thead>
                 <tbody id='debt_history_contents'>
+
                 </tbody>
             </table>
         </t>
@@ -291,7 +293,10 @@
                 />
                 <t t-set="debt_sign" t-value="receipt.debt_type=='debt' and 1 or -1" />
                 <line>
-                    <left>Prev <t t-esc="debt_label" /></left>
+                    <left>
+                        Prev
+                        <t t-esc="debt_label" />
+                    </left>
                     <right>
                         <value>
                             <t t-esc='debt_sign * receipt.debt_before' />
@@ -299,7 +304,10 @@
                     </right>
                 </line>
                 <line>
-                    <left>New <t t-esc="debt_label" /></left>
+                    <left>
+                        New
+                        <t t-esc="debt_label" />
+                    </left>
                     <right>
                         <value>
                             <t t-esc='debt_sign * receipt.debt_after' />
