@@ -13,7 +13,6 @@
     "name": "POS: Prepaid credits",
     "summary": "Comfortable sales for your regular customers. Debt payment method for POS",
     "category": "Point Of Sale",
-    "live_test_url": "http://apps.it-projects.info/shop/product/pos-debt-notebook?version=12.0",
     "images": ["images/debt_notebook.png"],
     "version": "12.0.5.3.2",
     "author": "IT-Projects LLC, Ivan Yelizariev",
