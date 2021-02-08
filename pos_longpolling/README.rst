@@ -21,10 +21,12 @@ To get an assistance on this module contact us by email :arrow_right: help@itpp.
 Contributors
 ============
 * `Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>`__
+* `Alexandr Kolushov <https://it-projects.info/team/KolushovAlexandr>`__
+* `Eugene Molotov <https://it-projects.info/team/em230418>`__
 
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_longpolling/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_longpolling/
 
 
-Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/cdfa415829fa06f2860d65054fd8534180c8526a>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/05c373a99a6064f08fc9eb0662ab2ccdb1978cd7>`_

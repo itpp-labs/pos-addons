@@ -13,6 +13,7 @@ odoo.define("pos_longpolling.pos", function (require) {
             var options = {
                 name: "bus_service",
                 lonpolling_activated: false,
+                env: this.env,
             };
             this.bus = new PosConnection(options);
             this.ready.then(function () {
@@ -26,6 +27,7 @@ odoo.define("pos_longpolling.pos", function (require) {
             var options = {
                 name: key,
                 route: sync_server,
+                env: this.env,
             };
             this.buses[key] = new PosConnection(options);
             this.buses[key].init_bus(this);

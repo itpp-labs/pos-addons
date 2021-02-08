@@ -8,10 +8,6 @@
         <xpath expr="." position="inside">
             <script
                 type="text/javascript"
-                src="/pos_longpolling/static/src/js/chrome.js"
-            />
-            <script
-                type="text/javascript"
                 src="/pos_longpolling/static/src/js/LongpollingBus.js"
             />
             <script
@@ -21,6 +17,10 @@
             <script
                 type="text/javascript"
                 src="/pos_longpolling/static/src/js/SyncBusService.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_longpolling/static/src/js/SyncNotification.js"
             />
             <script
                 type="text/javascript"

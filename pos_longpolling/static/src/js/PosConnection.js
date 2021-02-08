@@ -3,7 +3,6 @@ odoo.define("pos_longpolling.PosConnection", function (require) {
 
     var LongpollingModel = require("pos_longpolling.LongpollingModel");
     var SyncBusService = require("pos_longpolling.SyncBusService");
-    var ServiceProviderMixin = require("web.ServiceProviderMixin");
     var session = require("web.session");
     var CrashManager = require("web.CrashManager");
     var crash_manager = new CrashManager.CrashManager();
@@ -16,6 +15,7 @@ odoo.define("pos_longpolling.PosConnection", function (require) {
             options = options || {};
             this.channel_callbacks = {};
             this.route = "";
+            this.env = options.env;
             if (options.name) {
                 this.service = options.name;
             }
@@ -27,9 +27,9 @@ odoo.define("pos_longpolling.PosConnection", function (require) {
                 this.service = options.name || "sync_bus_service";
                 this.route = options.route;
                 core.serviceRegistry.add(this.service, SyncBusService);
-                ServiceProviderMixin.services[this.service].addPollRoute(this.route);
+                this.env.services[this.service].addPollRoute(this.route);
             }
-            this.bus = ServiceProviderMixin.services[this.service];
+            this.bus = this.env.services[this.service];
             // 1.5 seconds
             this.bus.TAB_HEARTBEAT_PERIOD = 1500;
             // Fake value (don't start a polling request)
@@ -56,24 +56,17 @@ odoo.define("pos_longpolling.PosConnection", function (require) {
                 return;
             }
             var self = this;
-            this.pos.chrome.call(
-                this.service,
-                "onNotification",
+            this.env.services[this.service].onNotification(
                 this,
                 this.on_notification_callback
             );
-            this.pos.chrome.call(
-                this.service,
-                "stopPolling",
-                this,
-                this.on_notification_callback
-            );
+            this.env.services[this.service].stopPolling();
             _.each(self.channel_callbacks, function (value, key) {
                 self.activate_channel(key);
             });
             var is_master = this.bus._isMasterTab;
             this.bus._isMasterTab = true;
-            this.pos.chrome.call(this.service, "startPolling");
+            this.env.services[this.service].startPolling();
             this.bus._isMasterTab = is_master;
             // Send PING request to check connection
             this.lonpolling_activated = true;
@@ -99,7 +92,7 @@ odoo.define("pos_longpolling.PosConnection", function (require) {
         activate_channel: function (channel_name) {
             var channel = this.get_full_channel_name(channel_name);
             // Add new longpolling chanel
-            this.pos.chrome.call(this.service, "addChannel", channel);
+            this.env.services[this.service].addChannel(channel);
         },
         on_notification_callback: function (notification) {
             for (var i = 0; i < notification.length; i++) {
