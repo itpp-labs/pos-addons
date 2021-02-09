@@ -24,6 +24,11 @@ Contributors
 * `Alexandr Kolushov <https://it-projects.info/team/KolushovAlexandr>`__
 * `Eugene Molotov <https://it-projects.info/team/em230418>`__
 
+Sponsors
+========
+
+* `EST-POS OÜ <https://www.estpos.ee>`__
+
 ===================
 
 Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_longpolling/
