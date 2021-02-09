@@ -1,7 +1,7 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
 # [14.0] Odoo POS Addons 
 
-
+:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/14.0/pos_longpolling/)
 
 Other Addons
 ============
