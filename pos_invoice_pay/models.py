@@ -93,7 +93,7 @@ class AccountInvoice(models.Model):
                 "product": l.product_id.name,
                 "price_unit": l.price_unit,
                 "qty": l.quantity,
-                "tax": l.invoice_line_tax_ids.name or " ",
+                "tax": ", ".join(l.invoice_line_tax_ids.mapped("name")),
                 "discount": l.discount,
                 "amount": l.price_subtotal,
             }

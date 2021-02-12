@@ -1,3 +1,8 @@
+`1.0.6`
+-------
+
+**Fix:** error when using several taxes
+
 `1.0.5`
 -------
 
