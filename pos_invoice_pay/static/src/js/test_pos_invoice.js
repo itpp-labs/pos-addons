@@ -1,6 +1,6 @@
 //  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 //  License MIT (https://opensource.org/licenses/MIT).
-odoo.define("pos_invoice_pay.tour", function(require) {
+odoo.define("pos_invoice_pay.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");

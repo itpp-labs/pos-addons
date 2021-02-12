@@ -17,9 +17,7 @@
                         </div>
                         <div class="o_setting_right_pane">
                             <label for="show_sale_orders" />
-                            <div class="text-muted">
-                                    Fetch and pay sale orders
-                                </div>
+                            <div class="text-muted">Fetch and pay sale orders</div>
                             <div attrs="{'invisible':[('show_sale_orders','=',False)]}">
                                 <label for="sale_order_cashier_selection" />
                                 <field name="sale_order_cashier_selection" />
@@ -32,9 +30,7 @@
                         </div>
                         <div class="o_setting_right_pane">
                             <label for="show_invoices" />
-                            <div class="text-muted">
-                                    Fetch and pay regular invoices
-                                </div>
+                            <div class="text-muted">Fetch and pay regular invoices</div>
                             <div attrs="{'invisible':[('show_invoices','=',False)]}">
                                 <label for="invoice_cashier_selection" />
                                 <field name="invoice_cashier_selection" />
