@@ -1,3 +1,8 @@
+`1.2.4`
+-------
+
+**Fix:** error when using several taxes
+
 `1.2.3`
 -------
 
