@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Artyom Losev
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
@@ -93,7 +92,7 @@ class AccountInvoice(models.Model):
                 "product": l.product_id.name,
                 "price_unit": l.price_unit,
                 "qty": l.quantity,
-                "tax": l.invoice_line_tax_ids.name or " ",
+                "tax": ", ".join(l.invoice_line_tax_ids.mapped("name")),
                 "discount": l.discount,
                 "amount": l.price_subtotal,
             }

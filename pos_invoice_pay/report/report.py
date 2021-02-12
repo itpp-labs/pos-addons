@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Artyom Losev
 # License MIT (https://opensource.org/licenses/MIT).
 
