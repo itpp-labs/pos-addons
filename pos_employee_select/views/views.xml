@@ -15,8 +15,9 @@
                                 widget="many2many_tags"
                             />
                             <div class="text-muted">
-                              Use employee credentials to log in to the PoS session and switch cashier
-                          </div>
+                                Use employee credentials to log in to the PoS session
+                                and switch cashier
+                            </div>
                         </div>
                     </div>
                 </div>

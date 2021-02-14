@@ -1,4 +1,4 @@
-odoo.define("pos_employee_select.screens", function(require) {
+odoo.define("pos_employee_select.screens", function (require) {
     "use strict";
 
     var screens = require("point_of_sale.screens");
@@ -8,7 +8,7 @@ odoo.define("pos_employee_select.screens", function(require) {
     var _t = core._t;
 
     screens.ActionpadWidget.include({
-        show_cashier_window: function() {
+        show_cashier_window: function () {
             var self = this;
             var done = $.Deferred();
             this.pos.barcode_reader.on_cashier_screen = true;
@@ -19,18 +19,18 @@ odoo.define("pos_employee_select.screens", function(require) {
                     title: _t("Change Salesperson"),
                     cashier_window: true,
                 })
-                .then(function(user) {
+                .then(function (user) {
                     if (user) {
                         self.pos.set_cashier(user);
                         self.gui.chrome.widget.username.renderElement();
                     }
-                    self.show_employee_cashier_window().then(function() {
+                    self.show_employee_cashier_window().then(function () {
                         done.resolve();
                     });
                 });
             return done;
         },
-        show_employee_cashier_window: function() {
+        show_employee_cashier_window: function () {
             var self = this;
             // This.pos.barcode_reader.on_employee_cashier_screen = true;
             return this.gui
@@ -40,7 +40,7 @@ odoo.define("pos_employee_select.screens", function(require) {
                     title: _t("Change Cashier"),
                     employee_cashier_window: true,
                 })
-                .then(function(user) {
+                .then(function (user) {
                     if (user) {
                         self.pos.get_order().set_employee_cashier(user);
                         self.gui.chrome.widget.username.renderElement();
@@ -51,13 +51,13 @@ odoo.define("pos_employee_select.screens", function(require) {
     });
 
     CashierSelectionPopupWidget.include({
-        show: function(options) {
+        show: function (options) {
             this._super(options);
             if (options.employee) {
                 this.$(".popup-selection").addClass("employee");
             }
         },
-        get_grouped_list: function() {
+        get_grouped_list: function () {
             var grouped_list = [];
             // Height of selection item
             var height = 50;
@@ -82,10 +82,10 @@ odoo.define("pos_employee_select.screens", function(require) {
             }
             return [[]];
         },
-        click_item: function(event) {
+        click_item: function (event) {
             this.gui.close_popup();
             var id = parseInt($(event.target).data("item-id"), 10);
-            var item = this.list.find(function(user) {
+            var item = this.list.find(function (user) {
                 return user.item.id === id;
             });
             if (this.options.confirm) {
