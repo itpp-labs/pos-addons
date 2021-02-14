@@ -21,9 +21,7 @@
                     </div>
                 </div>
                 <div class="footer cashier">
-                    <div class="button cancel">
-                        Cancel
-                    </div>
+                    <div class="button cancel">Cancel</div>
                 </div>
             </div>
         </div>

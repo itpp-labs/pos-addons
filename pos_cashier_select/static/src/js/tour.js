@@ -1,6 +1,6 @@
 /*  Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
     License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_cashier_select.tour", function(require) {
+odoo.define("pos_cashier_select.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -14,7 +14,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
             {
                 trigger: '.order .product-name:contains("' + product_name + '")',
                 content: "the " + product_name + " have been added to the order",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -80,7 +80,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
             {
                 trigger: ".js_connecting:visible",
                 content: "verify that the order is being sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -88,7 +88,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
                 trigger: ".js_connected:visible",
                 content:
                     "verify that the order has been succesfully sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -125,7 +125,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
         trigger: ".pos:has(.loader:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
-        run: function() {
+        run: function () {
             // It's a check
         },
     });
@@ -156,7 +156,7 @@ odoo.define("pos_cashier_select.tour", function(require) {
         {
             content: "wait until backend is opened",
             trigger: ".o_pos_kanban button.oe_kanban_action_button",
-            run: function() {
+            run: function () {
                 // No need to click on trigger
             },
         },
