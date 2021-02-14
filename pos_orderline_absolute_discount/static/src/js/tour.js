@@ -123,7 +123,7 @@ odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
     }
 
     var steps = [
-        tour.STEPS.SHOW_APPS_MENU_ITEM,
+        tour.stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
             content: "Ready to launch your <b>point of sale</b>? <i>Click here</i>.",
