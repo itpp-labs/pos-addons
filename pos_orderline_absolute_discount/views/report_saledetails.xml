@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_saledetails" inherit_id="point_of_sale.report_saledetails">
+        <xpath expr="//tr[@t-foreach='products']/td[3]" position="replace">
+            <td>
+                <t t-esc='line["price_unit"]' />
+                <t t-if='line["discount"] != 0'>
+                    Disc:
+                    <t t-esc='line["discount"]' />
+                    %
+                </t>
+                <t t-if='line["absolute_discount"] != 0'>
+                    Disc:
+                    <t t-esc='line["absolute_discount"]' />
+                </t>
+            </td>
+        </xpath>
+    </template>
+</odoo>
