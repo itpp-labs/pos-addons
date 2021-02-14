@@ -1,7 +1,3 @@
-/* Copyright 2021 Ivan Yelizariev <https://twitter.com/yelizariev>
-   License MIT (https://opensource.org/licenses/MIT).
-*/
-
 odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
     "use strict";
 
@@ -78,12 +74,12 @@ odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
     function set_absolute_discount_button() {
         return [
             {
-                trigger: "button[data-mode='discount']",
+                trigger: "button:contains('Disc')",
                 content: "<p>Click Percent Discount</p>",
                 position: "bottom",
             },
             {
-                trigger: "button[data-mode='discount']",
+                trigger: "button:contains('Disc')",
                 content: "<p>Click Absolute Discount</p>",
                 position: "bottom",
             },
@@ -145,7 +141,7 @@ odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
     ];
 
     steps = steps.concat({
-        trigger: ".pos:has(.loader:hidden)",
+        trigger: "body:has(.o_loading:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
         run: function () {
@@ -155,7 +151,7 @@ odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
 
     steps = steps.concat({
         content: "Switch to table or make dummy action",
-        trigger: ".table:not(.oe_invisible .neworder-button), .order-button.selected",
+        trigger: ".product-list-container",
         position: "bottom",
     });
 
@@ -163,11 +159,11 @@ odoo.define("pos_orderline_absolute_discount_tour.tour", function (require) {
 
     steps = steps.concat(set_absolute_discount_button());
 
-    steps = steps.concat(set_discount("100"));
+    steps = steps.concat(set_discount("0.10"));
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("400"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("500.90"));
     steps = steps.concat(finish_order());
 
     steps = steps.concat([
