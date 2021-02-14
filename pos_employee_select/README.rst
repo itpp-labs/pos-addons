@@ -17,6 +17,11 @@ Questions?
 
 To get an assistance on this module contact us by email :arrow_right: help@itpp.dev
 
+v13.0+
+======
+
+Since Odoo v13.0 the feature is provided by built-in module `pos_hr <https://github.com/odoo/odoo/tree/13.0/addons/pos_hr>`__.
+
 Contributors
 ============
 * `Dinar Gabbasov <https://github.com/GabbasovDinar>`__
