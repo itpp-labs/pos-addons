@@ -25,9 +25,9 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_orderline_absolute_discount/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_orderline_absolute_discount/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_orderline_absolute_discount.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_orderline_absolute_discount.atom>`_
+Notifications on updates: `via Atom <https://github.com/itpp-labs/pos-addons/commits/14.0/pos_orderline_absolute_discount.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/itpp-labs/pos-addons/commits/14.0/pos_orderline_absolute_discount.atom>`_
 
-Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/0a64adc987b32d8edb032ffd96c9aa81541145c2>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/8bd81014f317c693b915a38d1d4dec0c5e490f90>`_

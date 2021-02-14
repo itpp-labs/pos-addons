@@ -3,6 +3,7 @@ odoo.define("pos_absolute_discount.models", function (require) {
     var models = require("point_of_sale.models");
     var utils = require("web.utils");
     var core = require("web.core");
+    const {Gui} = require("point_of_sale.Gui");
 
     var _t = core._t;
     var round_pr = utils.round_precision;
@@ -30,10 +31,7 @@ odoo.define("pos_absolute_discount.models", function (require) {
         set_absolute_discount: function (discount) {
             var self = this;
             if (this.price < discount) {
-                this.pos.gui.screen_instances.products.numpad.state.set({
-                    buffer: this.get_absolute_discount_str() || String(0),
-                });
-                return this.pos.gui.show_popup("error", {
+                Gui.showPopup("ErrorPopup", {
                     title: _t("Warning"),
                     body: _t(
                         "It is not allowed to create a credit by discount: " +
@@ -45,6 +43,7 @@ odoo.define("pos_absolute_discount.models", function (require) {
                             self.pos.currency.symbol
                     ),
                 });
+                return false;
             }
             if (this.get_discount()) {
                 this.set_discount(0);
@@ -222,14 +221,6 @@ odoo.define("pos_absolute_discount.models", function (require) {
             );
         },
     });
-    var _super_numpad = models.NumpadState.prototype;
-    models.NumpadState = models.NumpadState.extend({
-        changeMode: function (newMode) {
-            if (newMode === "discount") {
-                this.trigger("change:discount", this);
-            }
-            _super_numpad.changeMode.apply(this, arguments);
-        },
-    });
+
     return models;
 });

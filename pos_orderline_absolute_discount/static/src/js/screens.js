@@ -1,58 +1,88 @@
 odoo.define("pos_absolute_discount.screens", function (require) {
     "use strict";
-    var screens = require("point_of_sale.screens");
+    const NumpadWidget = require("point_of_sale.NumpadWidget");
+    const Registries = require("point_of_sale.Registries");
+    const ProductScreen = require("point_of_sale.ProductScreen");
+    const OrderReceipt = require("point_of_sale.OrderReceipt");
 
-    screens.OrderWidget.include({
-        init: function (parent, options) {
-            var self = this;
-            this._super(parent, options);
-            this.absolute_discount_active = true;
-            this.numpad_state.bind("change:discount", function () {
-                self.change_discount_type();
-            });
-        },
-        change_discount_type: function () {
-            if (this.absolute_discount_active) {
-                this.absolute_discount_active = false;
-                $(".discount-mode").removeClass("selected-absolute-discount-mode");
-            } else {
+    const PosOrderReceipt = (_OrderReceipt) =>
+        class extends _OrderReceipt {
+            isSimple(line) {
+                return (
+                    line.discount === 0 &&
+                    line.unit_name === "Units" &&
+                    line.absolute_discount === 0 &&
+                    line.quantity === 1 &&
+                    !(
+                        line.display_discount_policy === "without_discount" &&
+                        line.price !== line.price_lst
+                    )
+                );
+            }
+        };
+
+    const PosProductScreen = (_ProductScreen) =>
+        class extends _ProductScreen {
+            constructor() {
+                super(...arguments);
                 this.absolute_discount_active = true;
-                $(".discount-mode").addClass("selected-absolute-discount-mode");
             }
-        },
-        set_value: function (val) {
-            var order = this.pos.get_order();
-            var mode = this.numpad_state.get("mode");
-            if (order.get_selected_orderline() && mode === "discount") {
-                if (this.absolute_discount_active) {
-                    order.get_selected_orderline().set_absolute_discount(Number(val));
+
+            _setValue(val) {
+                if (
+                    this.currentOrder.get_selected_orderline() &&
+                    this.state.numpadMode === "discount"
+                ) {
+                    if (this.absolute_discount_active) {
+                        this.currentOrder
+                            .get_selected_orderline()
+                            .set_absolute_discount(Number(val));
+                    } else {
+                        this.currentOrder.get_selected_orderline().set_discount(val);
+                    }
                 } else {
-                    order.get_selected_orderline().set_discount(val);
+                    super._setValue(val);
                 }
-            } else {
-                this._super(val);
             }
-        },
-    });
 
-    screens.NumpadWidget.include({
-        changedMode: function () {
-            this._super();
-            var mode = this.state.get("mode");
-            if (mode === "discount") {
-                $(
-                    _.str.sprintf('.mode-button[data-mode="%s"]', mode),
-                    this.$el
-                ).addClass("discount-mode");
-            } else {
-                $(".discount-mode").removeClass("selected-absolute-discount-mode");
-                $(".discount-mode").removeClass("discount-mode");
+            change_discount_type() {
+                if (this.absolute_discount_active) {
+                    this.absolute_discount_active = false;
+                    $(".mode-button:eq(1)").removeClass(
+                        "selected-absolute-discount-mode"
+                    );
+                } else {
+                    this.absolute_discount_active = true;
+                    $(".mode-button:eq(1)").addClass("selected-absolute-discount-mode");
+                }
             }
-            if (this.gui.screen_instances.products) {
-                this.gui.screen_instances.products.order_widget.absolute_discount_active = false;
-            }
-        },
-    });
 
-    return screens;
+            _setNumpadMode(event) {
+                super._setNumpadMode(event);
+                const {mode} = event.detail;
+                if (mode === "discount") {
+                    this.change_discount_type();
+                }
+            }
+        };
+
+    const PosNumpadWidget = (_NumpadWidget) =>
+        class extends _NumpadWidget {
+            changeMode(mode) {
+                super.changeMode(mode);
+                if (mode === "discount") {
+                    $(".mode-button:eq(1)").addClass("selected-mode");
+                } else {
+                    $(".mode-button:eq(1)").removeClass(
+                        "selected-absolute-discount-mode"
+                    );
+                    $(".mode-button:eq(1)").removeClass("selected-mode");
+                }
+            }
+        };
+
+    Registries.Component.extend(ProductScreen, PosProductScreen);
+    Registries.Component.extend(NumpadWidget, PosNumpadWidget);
+    Registries.Component.extend(OrderReceipt, PosOrderReceipt);
+    return {ProductScreen, NumpadWidget, OrderReceipt};
 });
