@@ -7,7 +7,7 @@
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "help@itpp.dev",
-    "website": "https://apps.odoo.com/apps/modules/14.0/pos_longpolling/",
+    "website": "https://github.com/itpp-labs/pos-addons",
     "license": "Other OSI approved licence",  # MIT
     # "price": 0.00,
     # "currency": "EUR",
