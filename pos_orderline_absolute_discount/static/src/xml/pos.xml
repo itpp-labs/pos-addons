@@ -53,9 +53,10 @@
                 t-if="orderline.get_absolute_discount_str() and orderline.get_absolute_discount_str() !== '0'"
             >
                 <div class="pos-disc-font">
-                    With a <t t-esc='orderline.pos.currency.symbol' /><t
-                        t-esc="orderline.get_absolute_discount_str()"
-                    /> discount
+                    With a
+                    <t t-esc='orderline.pos.currency.symbol' />
+                    <t t-esc="orderline.get_absolute_discount_str()" />
+                    discount
                 </div>
             </t>
         </t>
@@ -93,9 +94,11 @@
         >
             <t t-if='line.absolute_discount and line.absolute_discount !== 0'>
                 <line indent='1'>
-                    <left>Discount per Unit: <t t-esc='pos.currency.symbol' /><t
-                            t-esc='line.absolute_discount'
-                        /></left>
+                    <left>
+                        Discount per Unit:
+                        <t t-esc='pos.currency.symbol' />
+                        <t t-esc='line.absolute_discount' />
+                    </left>
                 </line>
             </t>
         </t>

@@ -1,3 +1,5 @@
+# Copyright 2021 Ivan Yelizariev <https://twitter.com/yelizariev>
+# License MIT (https://opensource.org/licenses/MIT).
 from odoo import models
 
 
@@ -30,5 +32,5 @@ class PosOrderReport(models.Model):
                 pt.pos_categ_id,
                 s.pricelist_id,
                 s.session_id,
-                s.invoice_id IS NOT NULL AS invoiced
+                s.account_move IS NOT NULL AS invoiced
         """

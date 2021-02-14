@@ -5,11 +5,14 @@
             <td>
                 <t t-esc='line["price_unit"]' />
                 <t t-if='line["discount"] != 0'>
-                        Disc: <t t-esc='line["discount"]' />%
-                    </t>
+                    Disc:
+                    <t t-esc='line["discount"]' />
+                    %
+                </t>
                 <t t-if='line["absolute_discount"] != 0'>
-                        Disc: <t t-esc='line["absolute_discount"]' />
-                    </t>
+                    Disc:
+                    <t t-esc='line["absolute_discount"]' />
+                </t>
             </td>
         </xpath>
     </template>
