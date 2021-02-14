@@ -6,7 +6,7 @@
     "category": "Point of Sale",
     # "live_test_url": 'http://apps.it-projects.info/shop/product/pos-orderline-absolute-discount?version=13.0',
     "images": ["images/pos_orderline_abs_disc_main.png"],
-    "version": "13.0.1.0.0",
+    "version": "14.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "help@itpp.dev",
