@@ -18,7 +18,7 @@ class TestUi(odoo.tests.HttpCase):
             [("name", "=", "pos_cashier_select")], limit=1
         ).state = "installed"
 
-        self.phantom_js(
+        self.browser_js(
             "/web",
             "odoo.__DEBUG__.services['web_tour.tour']"
             ".run('pos_cashier_select_tour')",
