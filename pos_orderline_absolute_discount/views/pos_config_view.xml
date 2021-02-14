@@ -19,9 +19,7 @@
                             for="include_discount_in_prices"
                             string="Include Discount"
                         />
-                        <div class="text-muted">
-                            Include Discount in Prices
-                        </div>
+                        <div class="text-muted">Include Discount in Prices</div>
                     </div>
                 </div>
             </xpath>

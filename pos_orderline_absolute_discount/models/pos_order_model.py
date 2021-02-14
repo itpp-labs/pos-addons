@@ -94,7 +94,7 @@ class ReportSaleDetails(models.AbstractModel):
 
     @api.model
     def get_sale_details(self, date_start=False, date_stop=False, configs=False):
-        """ Serialise the orders of the day information
+        """Serialise the orders of the day information
 
         params: date_start, date_stop string representing the datetime of order
         """

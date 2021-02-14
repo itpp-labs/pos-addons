@@ -1,17 +1,17 @@
-odoo.define("pos_absolute_discount.screens", function(require) {
+odoo.define("pos_absolute_discount.screens", function (require) {
     "use strict";
     var screens = require("point_of_sale.screens");
 
     screens.OrderWidget.include({
-        init: function(parent, options) {
+        init: function (parent, options) {
             var self = this;
             this._super(parent, options);
             this.absolute_discount_active = true;
-            this.numpad_state.bind("change:discount", function() {
+            this.numpad_state.bind("change:discount", function () {
                 self.change_discount_type();
             });
         },
-        change_discount_type: function() {
+        change_discount_type: function () {
             if (this.absolute_discount_active) {
                 this.absolute_discount_active = false;
                 $(".discount-mode").removeClass("selected-absolute-discount-mode");
@@ -20,7 +20,7 @@ odoo.define("pos_absolute_discount.screens", function(require) {
                 $(".discount-mode").addClass("selected-absolute-discount-mode");
             }
         },
-        set_value: function(val) {
+        set_value: function (val) {
             var order = this.pos.get_order();
             var mode = this.numpad_state.get("mode");
             if (order.get_selected_orderline() && mode === "discount") {
@@ -36,7 +36,7 @@ odoo.define("pos_absolute_discount.screens", function(require) {
     });
 
     screens.NumpadWidget.include({
-        changedMode: function() {
+        changedMode: function () {
             this._super();
             var mode = this.state.get("mode");
             if (mode === "discount") {
