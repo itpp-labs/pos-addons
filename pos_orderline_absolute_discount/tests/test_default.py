@@ -1,9 +1,8 @@
-import odoo.tests
+from odoo.tests import tagged, HttpCase
 
 
-@odoo.tests.common.at_install(False)
-@odoo.tests.common.post_install(True)
-class TestUi(odoo.tests.HttpCase):
+@tagged("-at_install", "post_install")
+class TestUi(HttpCase):
     def test_01_pos_is_loaded(self):
         self.browser_js(
             "/web",
