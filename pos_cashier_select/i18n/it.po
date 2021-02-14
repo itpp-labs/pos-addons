@@ -1,0 +1,55 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * pos_cashier_select
+#
+# Translators:
+# Sergio Zanchetta <primes2h@gmail.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-27 23:55+0000\n"
+"PO-Revision-Date: 2018-04-27 23:55+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2018\n"
+"Language-Team: Italian (https://www.transifex.com/it-projects-llc/"
+"teams/76080/it/)\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_cashier_select
+#. openerp-web
+#: code:addons/pos_cashier_select/static/src/xml/pos.xml:17
+#, python-format
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: pos_cashier_select
+#. openerp-web
+#: code:addons/pos_cashier_select/static/src/js/main.js:107
+#, python-format
+msgid "Change Cashier"
+msgstr "Cambio cassiere"
+
+#. module: pos_cashier_select
+#. openerp-web
+#: code:addons/pos_cashier_select/static/src/js/main.js:92
+#, python-format
+msgid "Empty Serial/Lot Number"
+msgstr "Numero di serie/lotto mancante"
+
+#. module: pos_cashier_select
+#. openerp-web
+#: code:addons/pos_cashier_select/static/src/js/main.js:93
+#, python-format
+msgid "One or more product(s) required serial/lot number."
+msgstr "Uno o più prodotti richiedono un numero di serie/lotto."
+
+#. module: pos_cashier_select
+#. openerp-web
+#: code:addons/pos_cashier_select/static/src/js/main.js:179
+#, python-format
+msgid "Select User"
+msgstr "Selezionare utente"
