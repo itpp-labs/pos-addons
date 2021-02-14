@@ -24,8 +24,7 @@ odoo.define("pos_cashier_select.tour", function (require) {
     function cashier_select() {
         return [
             {
-                trigger:
-                    '.modal-dialog.cashier .selection-item:contains("Mitchell Admin")',
+                trigger: '.selection-item:contains("Mitchell Admin")',
                 content: "select first cashier",
             },
         ];
@@ -122,7 +121,7 @@ odoo.define("pos_cashier_select.tour", function (require) {
     ];
 
     steps = steps.concat({
-        trigger: ".pos:has(.loader:hidden)",
+        trigger: "body:has(.o_loading:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
         run: function () {
@@ -132,7 +131,7 @@ odoo.define("pos_cashier_select.tour", function (require) {
 
     steps = steps.concat({
         content: "Switch to table or make dummy action",
-        trigger: ".table:not(.oe_invisible .neworder-button), .order-button.selected",
+        trigger: ".product-list-container",
         position: "bottom",
     });
 

@@ -21,7 +21,6 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_cashier_select/
 
-
-Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/2d46a08a989f4c7e005ee2ead7c342c72019e63f>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/8bd81014f317c693b915a38d1d4dec0c5e490f90>`_

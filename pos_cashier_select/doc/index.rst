@@ -10,7 +10,7 @@ Configuration
 =============
 
 * Go to ``Point of Sale`` >> POS parameters (upper right corner) >> ``Settings``
-* Check that `Login with Employees` enabled and `Allowed Employees` are set
+* Check that `Authorized Employees` is enabled
 
 Usage
 =====
