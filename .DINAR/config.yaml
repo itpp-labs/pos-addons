@@ -11,3 +11,7 @@ addons:
 
   server_wide_modules:
     - web
+
+repo_readme:
+  addons:
+    - pos_product_available
