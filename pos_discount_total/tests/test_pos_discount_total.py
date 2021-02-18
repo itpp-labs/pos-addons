@@ -1,8 +1,8 @@
+# Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 import odoo.tests
 
 
-@odoo.tests.common.at_install(True)
-@odoo.tests.common.post_install(True)
+@odoo.tests.tagged("post_install", "-at_install")
 class TestUi(odoo.tests.HttpCase):
     def test_01_pos_is_loaded_and_set_discount(self):
         self.phantom_js(
