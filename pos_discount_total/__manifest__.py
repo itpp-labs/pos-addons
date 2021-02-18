@@ -8,7 +8,7 @@
     "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_discount_total/",
     "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
