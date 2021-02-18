@@ -3,7 +3,7 @@
 //  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 //  License MIT (https://opensource.org/licenses/MIT).
 /* eslint no-useless-escape: "off"*/
-odoo.define("pos_invoices", function(require) {
+odoo.define("pos_invoices", function (require) {
     "use strict";
 
     var core = require("web.core");
@@ -20,7 +20,7 @@ odoo.define("pos_invoices", function(require) {
     var round_pr = utils.round_precision;
 
     chrome.Chrome.include({
-        build_widgets: function() {
+        build_widgets: function () {
             this._super();
             // For compatibility with https://www.odoo.com/apps/modules/12.0/pos_mobile/
             if (odoo.is_mobile) {
@@ -52,7 +52,7 @@ odoo.define("pos_invoices", function(require) {
             ["invoice_status", "=", "to invoice"],
             ["state", "=", "sale"],
         ],
-        loaded: function(self, sale_orders) {
+        loaded: function (self, sale_orders) {
             var so_ids = _.pluck(sale_orders, "id");
             self.prepare_so_data(sale_orders);
             self.sale_orders = sale_orders;
@@ -81,7 +81,7 @@ odoo.define("pos_invoices", function(require) {
             ["state", "=", "open"],
             ["type", "=", "out_invoice"],
         ],
-        loaded: function(self, invoices) {
+        loaded: function (self, invoices) {
             var invoices_ids = _.pluck(invoices, "id");
             self.prepare_invoices_data(invoices);
             self.invoices = invoices;
@@ -92,7 +92,7 @@ odoo.define("pos_invoices", function(require) {
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
-        initialize: function(session, attributes) {
+        initialize: function (session, attributes) {
             _super_posmodel.initialize.apply(this, arguments);
             this.bus.add_channel_callback(
                 "pos_sale_orders",
@@ -102,7 +102,7 @@ odoo.define("pos_invoices", function(require) {
             this.bus.add_channel_callback("pos_invoices", this.on_notification, this);
         },
 
-        get_lines: function(ids, model_name, method_name) {
+        get_lines: function (ids, model_name, method_name) {
             return rpc.query({
                 model: model_name,
                 method: method_name,
@@ -110,11 +110,11 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        get_sale_order_lines: function(ids) {
+        get_sale_order_lines: function (ids) {
             var self = this,
                 def = $.Deferred();
             this.get_lines(ids, "sale.order", "get_order_lines_for_pos").then(
-                function(lines) {
+                function (lines) {
                     var max = lines.length,
                         i = 0,
                         so_id = 0,
@@ -135,18 +135,18 @@ odoo.define("pos_invoices", function(require) {
                         def.resolve();
                     }
                 },
-                function(err) {
+                function (err) {
                     console.log(err);
                 }
             );
             return def.promise();
         },
 
-        get_invoice_lines: function(data) {
+        get_invoice_lines: function (data) {
             var self = this,
                 def = $.Deferred();
             this.get_lines(data, "account.invoice", "get_invoice_lines_for_pos").then(
-                function(lines) {
+                function (lines) {
                     var inv = {},
                         inv_id = 0,
                         max = lines.length,
@@ -173,7 +173,7 @@ odoo.define("pos_invoices", function(require) {
             return def.promise();
         },
 
-        on_notification: function(notification) {
+        on_notification: function (notification) {
             var invoices_to_update = [];
             var sale_orders_to_update = [];
             var channel = notification.channel;
@@ -192,10 +192,10 @@ odoo.define("pos_invoices", function(require) {
             }
         },
 
-        update_invoices_from_poll: function(ids) {
+        update_invoices_from_poll: function (ids) {
             var self = this;
-            _.each(ids, function(id) {
-                self.update_or_fetch_invoice(id).then(function() {
+            _.each(ids, function (id) {
+                self.update_or_fetch_invoice(id).then(function () {
                     var current_screen = self.gui.current_screen;
                     if (current_screen.invoice_screen) {
                         current_screen.show();
@@ -204,17 +204,17 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        update_sale_orders_from_poll: function(ids) {
+        update_sale_orders_from_poll: function (ids) {
             var self = this;
-            _.each(ids, function(id) {
-                self.update_or_fetch_sale_order(id).then(function() {
+            _.each(ids, function (id) {
+                self.update_or_fetch_sale_order(id).then(function () {
                     self.gui.current_screen.show();
                 });
             });
         },
 
-        prepare_invoices_data: function(data) {
-            _.each(data, function(item) {
+        prepare_invoices_data: function (data) {
+            _.each(data, function (item) {
                 for (var property in item) {
                     if (Object.prototype.hasOwnProperty.call(item, property)) {
                         if (item[property] === false) {
@@ -227,8 +227,8 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        prepare_so_data: function(data) {
-            _.each(data, function(item) {
+        prepare_so_data: function (data) {
+            _.each(data, function (item) {
                 switch (item.invoice_status) {
                     case "to invoice":
                         item.invoice_status = "To invoice";
@@ -240,8 +240,8 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        get_res: function(model_name, id) {
-            var fields = _.find(this.models, function(model) {
+        get_res: function (model_name, id) {
+            var fields = _.find(this.models, function (model) {
                     return model.model === model_name;
                 }).fields,
                 domain = [["id", "=", id]];
@@ -252,33 +252,33 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        update_or_fetch_invoice: function(id) {
+        update_or_fetch_invoice: function (id) {
             var self = this,
                 def = $.Deferred();
-            this.get_res("account.invoice", id).then(function(res) {
+            this.get_res("account.invoice", id).then(function (res) {
                 self.prepare_invoices_data(res);
                 self.db.update_invoice_db(res[0]);
-                self.get_invoice_lines([res[0].id]).then(function() {
+                self.get_invoice_lines([res[0].id]).then(function () {
                     def.resolve(id);
                 });
             });
             return def.promise();
         },
 
-        update_or_fetch_sale_order: function(id) {
+        update_or_fetch_sale_order: function (id) {
             var def = $.Deferred(),
                 self = this;
-            this.get_res("sale.order", id).then(function(res) {
+            this.get_res("sale.order", id).then(function (res) {
                 self.prepare_so_data(res);
                 self.db.update_so_db(res[0]);
-                self.get_sale_order_lines([res[0].id]).then(function() {
+                self.get_sale_order_lines([res[0].id]).then(function () {
                     def.resolve(id);
                 });
             });
             return def.promise();
         },
 
-        validate_invoice: function(id) {
+        validate_invoice: function (id) {
             return rpc.query({
                 model: "account.invoice",
                 method: "action_invoice_open",
@@ -286,13 +286,13 @@ odoo.define("pos_invoices", function(require) {
             });
         },
 
-        get_invoices_to_render: function(invoices) {
+        get_invoices_to_render: function (invoices) {
             var muted_invoices_ids = [],
                 order = {},
                 id = 0,
                 i = 0,
                 client = this.get_client(),
-                orders_to_mute = _.filter(this.db.get_orders(), function(mtd_order) {
+                orders_to_mute = _.filter(this.db.get_orders(), function (mtd_order) {
                     return mtd_order.data.invoice_to_pay;
                 });
             if (orders_to_mute) {
@@ -303,26 +303,26 @@ odoo.define("pos_invoices", function(require) {
                 }
             }
             if (muted_invoices_ids && muted_invoices_ids.length) {
-                invoices = _.filter(invoices, function(inv) {
+                invoices = _.filter(invoices, function (inv) {
                     return !_.contains(muted_invoices_ids, inv.id);
                 });
             }
             if (client) {
-                invoices = _.filter(invoices, function(inv) {
+                invoices = _.filter(invoices, function (inv) {
                     return inv.partner_id[0] === client.id;
                 });
                 return invoices;
             }
-            invoices = _.filter(invoices, function(inv) {
+            invoices = _.filter(invoices, function (inv) {
                 return inv.state === "Open";
             });
             return invoices;
         },
 
-        get_sale_order_to_render: function(sale_orders) {
+        get_sale_order_to_render: function (sale_orders) {
             var client = this.get_client();
             if (client) {
-                sale_orders = _.filter(sale_orders, function(so) {
+                sale_orders = _.filter(sale_orders, function (so) {
                     return so.partner_id[0] === client.id;
                 });
                 return sale_orders;
@@ -330,11 +330,11 @@ odoo.define("pos_invoices", function(require) {
             return sale_orders;
         },
 
-        start_invoice_processing: function() {
+        start_invoice_processing: function () {
             this.add_itp_data = true;
         },
 
-        stop_invoice_processing: function() {
+        stop_invoice_processing: function () {
             this.add_itp_data = false;
             // Remove order paymentlines
             var order = this.get_order();
@@ -347,7 +347,7 @@ odoo.define("pos_invoices", function(require) {
 
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
-        export_as_JSON: function() {
+        export_as_JSON: function () {
             if (this.pos.add_itp_data && this.invoice_to_pay) {
                 var data = _super_order.export_as_JSON.apply(this, arguments);
                 data.invoice_to_pay = this.invoice_to_pay;
@@ -356,7 +356,7 @@ odoo.define("pos_invoices", function(require) {
             return _super_order.export_as_JSON.call(this, arguments);
         },
 
-        add_paymentline: function(cashregister, mode) {
+        add_paymentline: function (cashregister, mode) {
             if (!mode) {
                 return _super_order.add_paymentline.call(this, cashregister);
             }
@@ -377,7 +377,7 @@ odoo.define("pos_invoices", function(require) {
     });
 
     PosDb.include({
-        init: function(options) {
+        init: function (options) {
             this._super(options);
             this.sale_orders = [];
             this.sale_orders_by_id = {};
@@ -387,32 +387,32 @@ odoo.define("pos_invoices", function(require) {
             this.invoices_search_string = "";
         },
 
-        add_sale_orders: function(sale_orders) {
+        add_sale_orders: function (sale_orders) {
             var self = this;
-            _.each(sale_orders, function(order) {
+            _.each(sale_orders, function (order) {
                 self.sale_orders.push(order);
                 self.sale_orders_by_id[order.id] = order;
                 self.sale_orders_search_string += self._sale_order_search_string(order);
             });
         },
 
-        update_so_search_string: function(sale_orders) {
+        update_so_search_string: function (sale_orders) {
             var self = this;
             self.sale_orders_search_string = "";
-            _.each(sale_orders, function(order) {
+            _.each(sale_orders, function (order) {
                 self.sale_orders_search_string += self._sale_order_search_string(order);
             });
         },
 
-        update_invoices_search_string: function(invoices) {
+        update_invoices_search_string: function (invoices) {
             var self = this;
             self.invoices_search_string = "";
-            _.each(invoices, function(inv) {
+            _.each(invoices, function (inv) {
                 self.invoices_search_string += self._invoice_search_string(inv);
             });
         },
 
-        _sale_order_search_string: function(sale_order) {
+        _sale_order_search_string: function (sale_order) {
             var str = sale_order.name;
             if (sale_order.date_order) {
                 str += "|" + sale_order.date_order;
@@ -431,7 +431,7 @@ odoo.define("pos_invoices", function(require) {
             return str;
         },
 
-        search_sale_orders: function(query) {
+        search_sale_orders: function (query) {
             try {
                 query = query.replace(
                     /[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,
@@ -452,16 +452,16 @@ odoo.define("pos_invoices", function(require) {
                     break;
                 }
             }
-            return results.filter(function(res) {
+            return results.filter(function (res) {
                 return typeof res === "object";
             });
         },
 
-        get_sale_order_by_id: function(id) {
+        get_sale_order_by_id: function (id) {
             return this.sale_orders_by_id[id];
         },
 
-        update_so_db: function(updated_so) {
+        update_so_db: function (updated_so) {
             for (var i = 0; i < this.sale_orders.length; i++) {
                 if (this.sale_orders[i].id === updated_so.id) {
                     this.sale_orders.splice(i, 1);
@@ -476,16 +476,16 @@ odoo.define("pos_invoices", function(require) {
             this.update_so_search_string(this.sale_orders);
         },
 
-        add_invoices: function(invoices) {
+        add_invoices: function (invoices) {
             var self = this;
-            _.each(invoices, function(invoice) {
+            _.each(invoices, function (invoice) {
                 self.invoices.push(invoice);
                 self.invoices_by_id[invoice.id] = invoice;
                 self.invoices_search_string += self._invoice_search_string(invoice);
             });
         },
 
-        update_invoice_db: function(updated_invoice) {
+        update_invoice_db: function (updated_invoice) {
             for (var i = 0; i < this.invoices.length; i++) {
                 if (this.invoices[i].id === updated_invoice.id) {
                     this.invoices.splice(i, 1);
@@ -501,7 +501,7 @@ odoo.define("pos_invoices", function(require) {
             this.update_invoices_search_string(this.invoices);
         },
 
-        _invoice_search_string: function(invoice) {
+        _invoice_search_string: function (invoice) {
             var str = invoice.partner_id[1];
             if (invoice.number) {
                 str += "|" + invoice.number;
@@ -522,7 +522,7 @@ odoo.define("pos_invoices", function(require) {
             return str;
         },
 
-        search_invoices: function(query) {
+        search_invoices: function (query) {
             try {
                 query = query.replace(
                     /[\[\]\(\)\+\*\?\.\-\!\&\^\$\|\~\_\{\}\:\,\\\/]/g,
@@ -543,19 +543,19 @@ odoo.define("pos_invoices", function(require) {
                     break;
                 }
             }
-            return results.filter(function(res) {
+            return results.filter(function (res) {
                 return typeof res === "object";
             });
         },
 
-        get_invoice_by_id: function(id) {
+        get_invoice_by_id: function (id) {
             return this.invoices_by_id[id];
         },
     });
 
     var InvoicesButton = screens.ActionButtonWidget.extend({
         template: "InvoicesButton",
-        button_click: function() {
+        button_click: function () {
             if (!this.pos.config.invoice_cashier_selection) {
                 this.gui.show_screen("invoices_list");
                 return;
@@ -567,7 +567,7 @@ odoo.define("pos_invoices", function(require) {
                     current_user: self.pos.get_cashier(),
                     title: _t("Change Cashier"),
                 })
-                .then(function(user) {
+                .then(function (user) {
                     self.pos.set_cashier(user);
                     self.gui.chrome.widget.username.renderElement();
                     self.gui.show_screen("invoices_list");
@@ -578,14 +578,14 @@ odoo.define("pos_invoices", function(require) {
     screens.define_action_button({
         name: "invoices_button",
         widget: InvoicesButton,
-        condition: function() {
+        condition: function () {
             return this.pos.config.show_invoices;
         },
     });
 
     var SaleOrdersButton = screens.ActionButtonWidget.extend({
         template: "SaleOrdersButton",
-        button_click: function() {
+        button_click: function () {
             if (!this.pos.config.sale_order_cashier_selection) {
                 this.gui.show_screen("sale_orders_list");
                 return;
@@ -597,7 +597,7 @@ odoo.define("pos_invoices", function(require) {
                     current_user: self.pos.get_cashier(),
                     title: _t("Change Cashier"),
                 })
-                .then(function(user) {
+                .then(function (user) {
                     self.pos.set_cashier(user);
                     self.gui.chrome.widget.username.renderElement();
                     self.gui.show_screen("sale_orders_list");
@@ -608,24 +608,24 @@ odoo.define("pos_invoices", function(require) {
     screens.define_action_button({
         name: "so_button",
         widget: SaleOrdersButton,
-        condition: function() {
+        condition: function () {
             return this.pos.config.show_sale_orders;
         },
     });
     var InvoicesAndOrdersBaseWidget = screens.ScreenWidget.extend({
-        show: function() {
+        show: function () {
             var self = this;
             this._super();
             this.renderElement();
 
-            this.$(".next").click(function(e) {
+            this.$(".next").click(function (e) {
                 e.preventDefault();
                 self.click_next(e);
             });
 
             this.render_data(this.get_data());
 
-            this.$(".list-contents").delegate(this.$listEl, "click", function(event) {
+            this.$(".list-contents").delegate(this.$listEl, "click", function (event) {
                 self.select_line(event, $(this), parseInt($(this).data("id"), 10));
             });
 
@@ -634,21 +634,21 @@ odoo.define("pos_invoices", function(require) {
             }
 
             var search_timeout = null;
-            this.$(".searchbox input").on("keypress", function(event) {
+            this.$(".searchbox input").on("keypress", function (event) {
                 var query = this.value;
                 clearTimeout(search_timeout);
-                search_timeout = setTimeout(function() {
+                search_timeout = setTimeout(function () {
                     self._search(query);
                 }, 70);
             });
 
-            this.$(".searchbox .search-clear").click(function() {
+            this.$(".searchbox .search-clear").click(function () {
                 self._clear_search();
             });
 
             if (odoo.is_mobile) {
                 // For compatibility with https://www.odoo.com/apps/modules/12.0/pos_mobile/
-                setTimeout(function() {
+                setTimeout(function () {
                     var width = self.$(".screen-content").width();
                     var height = self.$("table.list").height();
                     var max_height = self.$(".full-content").height();
@@ -665,7 +665,7 @@ odoo.define("pos_invoices", function(require) {
                 }, 0);
             }
         },
-        render_data: function(data) {
+        render_data: function (data) {
             var contents = this.$el[0].querySelector(".list-contents");
             contents.innerHTML = "";
             for (var i = 0, len = Math.min(data.length, 1000); i < len; i++) {
@@ -695,7 +695,7 @@ odoo.define("pos_invoices", function(require) {
                 contents.appendChild($tr);
             }
         },
-        render_lines_table: function(data_lines) {
+        render_lines_table: function (data_lines) {
             var $table = document.createElement("table"),
                 $header = this.render_header(),
                 $tableData = this.render_product_lines(data_lines);
@@ -704,12 +704,12 @@ odoo.define("pos_invoices", function(require) {
             $table.appendChild($tableData);
             return $table;
         },
-        render_header: function() {
+        render_header: function () {
             var $header = document.createElement("thead");
             $header.innerHTML = QWeb.render(this.linesHeaderTemplate);
             return $header;
         },
-        render_product_lines: function(data_lines) {
+        render_product_lines: function (data_lines) {
             var $body = document.createElement("tbody"),
                 lines = "",
                 line_html = "";
@@ -727,7 +727,7 @@ odoo.define("pos_invoices", function(require) {
 
     var SaleOrdersWidget = InvoicesAndOrdersBaseWidget.extend({
         template: "SaleOrdersWidget",
-        init: function() {
+        init: function () {
             this._super.apply(this, arguments);
             this.$listEl = ".sale-order";
             this.itemTemplate = "SaleOrder";
@@ -736,18 +736,18 @@ odoo.define("pos_invoices", function(require) {
             this.num_columns = 6;
             this.selected_SO = false;
         },
-        show: function() {
+        show: function () {
             var self = this;
             this._super();
 
-            this.$(".back").click(function() {
+            this.$(".back").click(function () {
                 self.gui.show_screen("products");
             });
         },
-        get_data: function() {
+        get_data: function () {
             return this.pos.get_sale_order_to_render(this.pos.db.sale_orders);
         },
-        select_line: function(event, $line, id) {
+        select_line: function (event, $line, id) {
             var sale_order = this.pos.db.get_sale_order_by_id(id);
             this.$(".list .lowlight").removeClass("lowlight");
             this.$(".line-element-container").addClass("line-element-hidden");
@@ -778,7 +778,7 @@ odoo.define("pos_invoices", function(require) {
                     .resize();
             }
         },
-        toggle_save_button: function(selected_invoice) {
+        toggle_save_button: function (selected_invoice) {
             var $button = this.$(".button.next");
             if (selected_invoice) {
                 $button.removeClass("oe_hidden");
@@ -786,7 +786,7 @@ odoo.define("pos_invoices", function(require) {
                 $button.addClass("oe_hidden");
             }
         },
-        click_next: function() {
+        click_next: function () {
             if (this.selected_SO) {
                 this.create_invoice(this.selected_SO);
             } else {
@@ -797,18 +797,18 @@ odoo.define("pos_invoices", function(require) {
                 return false;
             }
         },
-        create_invoice: function(sale_order) {
+        create_invoice: function (sale_order) {
             var self = this;
             rpc.query({
                 model: "pos.order",
                 method: "process_invoices_creation",
                 args: [sale_order.id],
             })
-                .then(function(created_invoice_id) {
+                .then(function (created_invoice_id) {
                     // Explicitly update the db to avoid race condition.
                     self.pos
                         .update_or_fetch_invoice(created_invoice_id)
-                        .then(function(res) {
+                        .then(function (res) {
                             self.pos.selected_invoice = self.pos.db.get_invoice_by_id(
                                 res
                             );
@@ -816,7 +816,7 @@ odoo.define("pos_invoices", function(require) {
                             self.gui.show_screen("invoice_payment", {type: "orders"});
                         });
                 })
-                .fail(function(err, errorEvent) {
+                .fail(function (err, errorEvent) {
                     self.gui.show_popup("error", {
                         title: _t(err.message),
                         body: _t(err.data.arguments[0]),
@@ -824,7 +824,7 @@ odoo.define("pos_invoices", function(require) {
                     errorEvent.preventDefault();
                 });
         },
-        _search: function(query) {
+        _search: function (query) {
             var sale_orders = [];
             if (query) {
                 sale_orders = this.pos.db.search_sale_orders(query);
@@ -836,7 +836,7 @@ odoo.define("pos_invoices", function(require) {
                 this.render_data(sale_orders);
             }
         },
-        _clear_search: function() {
+        _clear_search: function () {
             var sale_orders = this.pos.db.sale_orders;
             this.render_data(sale_orders);
             this.$(".searchbox input")[0].value = "";
@@ -849,7 +849,7 @@ odoo.define("pos_invoices", function(require) {
     var InvoicesWidget = InvoicesAndOrdersBaseWidget.extend({
         template: "InvoicesWidget",
         invoice_screen: true,
-        init: function() {
+        init: function () {
             this._super.apply(this, arguments);
             this.$listEl = ".invoice";
             this.itemTemplate = "Invoice";
@@ -859,20 +859,20 @@ odoo.define("pos_invoices", function(require) {
             this.selected_invoice = false;
         },
 
-        get_data: function() {
+        get_data: function () {
             return this.pos.get_invoices_to_render(this.pos.db.invoices);
         },
 
-        show: function() {
+        show: function () {
             var self = this;
             this._super();
 
-            this.$(".back").click(function() {
+            this.$(".back").click(function () {
                 self.gui.back();
             });
         },
 
-        select_line: function(event, $line, id) {
+        select_line: function (event, $line, id) {
             var invoice = this.pos.db.get_invoice_by_id(id);
             this.$(".list .lowlight").removeClass("lowlight");
             this.$(".line-element-container").addClass("line-element-hidden");
@@ -904,7 +904,7 @@ odoo.define("pos_invoices", function(require) {
             }
         },
 
-        toggle_save_button: function(selected_invoice) {
+        toggle_save_button: function (selected_invoice) {
             var $button = this.$(".button.next");
             if (selected_invoice) {
                 $button.removeClass("oe_hidden");
@@ -913,7 +913,7 @@ odoo.define("pos_invoices", function(require) {
             }
         },
 
-        _search: function(query) {
+        _search: function (query) {
             var invoices = [];
             if (query) {
                 invoices = this.pos.db.search_invoices(query);
@@ -926,14 +926,14 @@ odoo.define("pos_invoices", function(require) {
             }
         },
 
-        _clear_search: function() {
+        _clear_search: function () {
             var invoices = this.pos.db.invoices;
             this.render_data(invoices);
             this.$(".searchbox input")[0].value = "";
             this.$(".searchbox input").focus();
         },
 
-        click_next: function() {
+        click_next: function () {
             var self = this;
             if (this.selected_invoice) {
                 this.pos.selected_invoice = this.selected_invoice;
@@ -941,8 +941,8 @@ odoo.define("pos_invoices", function(require) {
                     case "Draft":
                         this.pos
                             .validate_invoice(this.selected_invoice.id)
-                            .then(function(id) {
-                                self.pos.update_or_fetch_invoice(id).then(function() {
+                            .then(function (id) {
+                                self.pos.update_or_fetch_invoice(id).then(function () {
                                     self.render_data(
                                         self.pos.get_invoices_to_render(
                                             self.pos.db.invoices
@@ -957,7 +957,7 @@ odoo.define("pos_invoices", function(require) {
                                     });
                                 });
                             })
-                            .fail(function() {
+                            .fail(function () {
                                 this.gui.show_popup("error", {
                                     title: _t("Error"),
                                     body: _t("Can't validate selected invoice."),
@@ -981,7 +981,7 @@ odoo.define("pos_invoices", function(require) {
 
     var InvoicePayment = screens.PaymentScreenWidget.extend({
         template: "InvoicePaymentScreenWidget",
-        get_invoice_residual: function() {
+        get_invoice_residual: function () {
             if (this.pos.selected_invoice) {
                 return round_pr(
                     this.pos.selected_invoice.residual,
@@ -991,7 +991,7 @@ odoo.define("pos_invoices", function(require) {
             return 0;
         },
 
-        render_paymentlines: function() {
+        render_paymentlines: function () {
             var self = this;
             var order = this.pos.get_order();
             if (!order || typeof order !== "object") {
@@ -1003,7 +1003,7 @@ odoo.define("pos_invoices", function(require) {
             }
             order.invoice_to_pay = this.pos.selected_invoice;
 
-            order.invoice_to_pay.get_due = function(paymentline) {
+            order.invoice_to_pay.get_due = function (paymentline) {
                 var total = self.pos.selected_invoice.residual,
                     due = 0,
                     plines = order.paymentlines.models;
@@ -1022,7 +1022,7 @@ odoo.define("pos_invoices", function(require) {
                 return round_pr(Math.max(0, due), self.pos.currency.rounding);
             };
 
-            order.invoice_to_pay.get_change = function(paymentline) {
+            order.invoice_to_pay.get_change = function (paymentline) {
                 var due = self.pos.selected_invoice.residual,
                     change = 0,
                     plines = order.paymentlines.models,
@@ -1041,7 +1041,7 @@ odoo.define("pos_invoices", function(require) {
                 return round_pr(Math.max(0, change), self.pos.currency.rounding);
             };
 
-            order.invoice_to_pay.get_subtotal = function() {
+            order.invoice_to_pay.get_subtotal = function () {
                 var tax = self.pos.selected_invoice.amount_tax,
                     due = self.pos.selected_invoice.residual,
                     subtotal = due - tax;
@@ -1057,18 +1057,18 @@ odoo.define("pos_invoices", function(require) {
                 })
             );
 
-            lines.on("click", ".delete-button", function() {
+            lines.on("click", ".delete-button", function () {
                 self.click_delete_paymentline($(this).data("cid"));
             });
 
-            lines.on("click", ".paymentline", function() {
+            lines.on("click", ".paymentline", function () {
                 self.click_paymentline($(this).data("cid"));
             });
 
             lines.appendTo(this.$(".paymentlines-container"));
         },
 
-        click_paymentmethods: function(id) {
+        click_paymentmethods: function (id) {
             var cashregister = null;
             for (var i = 0; i < this.pos.cashregisters.length; i++) {
                 if (this.pos.cashregisters[i].journal_id[0] === id) {
@@ -1081,7 +1081,7 @@ odoo.define("pos_invoices", function(require) {
             this.render_paymentlines();
         },
 
-        finalize_validation: function() {
+        finalize_validation: function () {
             var self = this,
                 order = this.pos.get_order();
             order.invoice_to_pay = this.pos.selected_invoice;
@@ -1091,20 +1091,20 @@ odoo.define("pos_invoices", function(require) {
             }
             order.initialize_validation_date();
             if (order.is_to_invoice()) {
-                this.pos.push_order(order).then(function() {
+                this.pos.push_order(order).then(function () {
                     self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
                     self.gui.show_screen("invoice_receipt");
                     rpc.query({
                         model: "account.invoice",
                         method: "invoice_print",
                         args: [order.invoice_to_pay.id],
-                    }).then(function(action) {
+                    }).then(function (action) {
                         self.chrome.do_action(action);
                         self.pos.stop_invoice_processing();
                     });
                 });
             } else {
-                this.pos.push_order(order).then(function(res) {
+                this.pos.push_order(order).then(function (res) {
                     self.pos.update_or_fetch_invoice(self.pos.selected_invoice.id);
                     self.gui.show_screen("invoice_receipt");
                     self.pos.stop_invoice_processing();
@@ -1112,7 +1112,7 @@ odoo.define("pos_invoices", function(require) {
             }
         },
 
-        validate_order: function(force_validation) {
+        validate_order: function (force_validation) {
             var order = this.pos.get_order();
             if (
                 !this.pos.config.pos_invoice_pay_writeoff_account_id &&
@@ -1130,7 +1130,7 @@ odoo.define("pos_invoices", function(require) {
             this._super();
         },
 
-        order_is_valid: function() {
+        order_is_valid: function () {
             var order = this.pos.get_order(),
                 plines = order.get_paymentlines(),
                 i = 0;
@@ -1154,10 +1154,10 @@ odoo.define("pos_invoices", function(require) {
             }
             return true;
         },
-        get_type: function() {
+        get_type: function () {
             return this.gui.get_current_screen_param("type");
         },
-        show: function() {
+        show: function () {
             this._super();
             if (this.pos.config.module_account) {
                 var order = this.pos.get_order();
@@ -1174,7 +1174,7 @@ odoo.define("pos_invoices", function(require) {
 
     var InvoiceReceiptScreenWidget = screens.ReceiptScreenWidget.extend({
         template: "InvoiceReceiptScreenWidget",
-        render_invoice_ticket: function() {
+        render_invoice_ticket: function () {
             var order = this.pos.get_order();
             return QWeb.render("PosInvoiceTicket", {
                 widget: this,
@@ -1184,7 +1184,7 @@ odoo.define("pos_invoices", function(require) {
                 paymentlines: order.get_paymentlines(),
             });
         },
-        render_invoice_receipt: function() {
+        render_invoice_receipt: function () {
             var order = this.pos.get_order();
             return QWeb.render("PosInvoiceReceipt", {
                 widget: this,
@@ -1194,7 +1194,7 @@ odoo.define("pos_invoices", function(require) {
                 paymentlines: order.get_paymentlines(),
             });
         },
-        render_receipt: function() {
+        render_receipt: function () {
             var order = this.pos.get_order();
             if (order.invoice_to_pay) {
                 var receipt = this.render_invoice_ticket();
@@ -1203,7 +1203,7 @@ odoo.define("pos_invoices", function(require) {
                 this._super();
             }
         },
-        print_xml: function() {
+        print_xml: function () {
             var order = this.pos.get_order();
             if (order.invoice_to_pay) {
                 var receipt = this.render_invoice_receipt();
@@ -1213,13 +1213,13 @@ odoo.define("pos_invoices", function(require) {
                 this._super();
             }
         },
-        render_change: function() {
+        render_change: function () {
             var order = this.pos.get_order();
             this.$(".change-value").html(
                 this.format_currency(order.invoice_to_pay.get_change())
             );
         },
-        click_next: function() {
+        click_next: function () {
             this.gui.show_screen("products");
         },
     });
