@@ -5,16 +5,13 @@
     "name": """POS: Pay SO & Invoices""",
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/pos-invoice-pay?version=12.0",
     "images": ["images/pos_invoice_pay_main.png"],
     "version": "12.0.1.2.5",
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
-    "support": "apps@itpp.dev",
+    "support": "help@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 89.00,
-    "currency": "EUR",
     "depends": ["base_automation", "sale_management", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [
