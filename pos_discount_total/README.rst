@@ -28,6 +28,6 @@ Further information
 Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_discount_total/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_discount_total.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_discount_total.atom>`_
+Notifications on updates: `via Atom <https://github.com/itpp-labs/pos-addons/commits/13.0/pos_discount_total.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/itpp-labs/pos-addons/commits/13.0/pos_discount_total.atom>`_
 
-Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b0844a4882e7ed089a861da357fed96dfc4abe55>`_
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/1c04ab0f84de805dc6e97c4810f5034ca153a98a>`_

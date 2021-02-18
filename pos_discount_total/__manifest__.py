@@ -1,4 +1,5 @@
 # Copyright 2014 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+# Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 # License MIT (https://opensource.org/licenses/MIT).
 {
     "name": """POS: Total discount""",
@@ -8,7 +9,7 @@
     "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
+    "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_discount_total/",
     "license": "Other OSI approved licence",  # MIT
     "price": 15.00,
@@ -23,5 +24,5 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }

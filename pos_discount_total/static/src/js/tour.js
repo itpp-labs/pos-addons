@@ -1,4 +1,4 @@
-odoo.define("pos_discount_total.tour", function(require) {
+odoo.define("pos_discount_total.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -12,7 +12,7 @@ odoo.define("pos_discount_total.tour", function(require) {
             {
                 trigger: '.order .product-name:contains("' + product_name + '")',
                 content: "the " + product_name + " have been added to the order",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -41,7 +41,7 @@ odoo.define("pos_discount_total.tour", function(require) {
         }
         steps = steps.concat([
             {
-                trigger: '.paymentmethod:contains("Cash (USD)")',
+                trigger: '.paymentmethod:contains("Cash")',
                 content: "pay with cash",
             },
         ]);
@@ -80,7 +80,7 @@ odoo.define("pos_discount_total.tour", function(require) {
             {
                 trigger: ".js_connecting:visible",
                 content: "verify that the order is being sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -88,7 +88,7 @@ odoo.define("pos_discount_total.tour", function(require) {
                 trigger: ".js_connected:visible",
                 content:
                     "verify that the order has been succesfully sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -122,10 +122,10 @@ odoo.define("pos_discount_total.tour", function(require) {
     ];
 
     steps = steps.concat({
-        trigger: ".o_main_content:has(.loader:hidden)",
+        trigger: ".pos:has(.loader:hidden)",
         content: "waiting for loading to finish",
         timeout: 20000,
-        run: function() {
+        run: function () {
             // It's a check
         },
     });
@@ -136,8 +136,8 @@ odoo.define("pos_discount_total.tour", function(require) {
         position: "bottom",
     });
 
-    steps = steps.concat(add_product_to_order("LED Lamp"));
-    steps = steps.concat(add_product_to_order("Desk Pad"));
+    steps = steps.concat(add_product_to_order("Office Chair Black"));
+    steps = steps.concat(add_product_to_order("Office Chair"));
     steps = steps.concat({
         trigger: ".order .summary",
         content: "click total summary",
@@ -145,7 +145,7 @@ odoo.define("pos_discount_total.tour", function(require) {
     });
     steps = steps.concat(generate_keypad_steps("50", ".pads"));
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
-    steps = steps.concat(generate_payment_screen_keypad_steps("1.44"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("30.44"));
     steps = steps.concat(finish_order());
 
     steps = steps.concat([
@@ -160,7 +160,7 @@ odoo.define("pos_discount_total.tour", function(require) {
         {
             content: "wait until backend is opened",
             trigger: ".o_pos_kanban button.oe_kanban_action_button",
-            run: function() {
+            run: function () {
                 // No need to click on trigger
             },
         },
