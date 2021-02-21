@@ -13,7 +13,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@itpp.dev",
-    "website": "https://apps.odoo.com/apps/modules/13.0/pos_cashier_select/",
+    "website": "https://github.com/itpp-labs/pos-addons",
     "license": "Other OSI approved licence",  # MIT
     "price": 20.00,
     "currency": "EUR",
