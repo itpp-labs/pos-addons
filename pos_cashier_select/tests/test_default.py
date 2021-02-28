@@ -2,7 +2,7 @@
 # Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>3>
 # Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
-from odoo.tests import tagged, HttpCase
+from odoo.tests import HttpCase, tagged
 
 
 @tagged("-at_install", "post_install")
