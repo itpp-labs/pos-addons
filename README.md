@@ -14,7 +14,6 @@
 <br/>:heavy_check_mark: [pos_order_note](https://apps.odoo.com/apps/modules/13.0/pos_order_note/)
 <br/>:heavy_check_mark: [pos_orderline_absolute_discount](https://apps.odoo.com/apps/modules/13.0/pos_orderline_absolute_discount/)
 <br/>:heavy_check_mark: [pos_orders_history](https://apps.odoo.com/apps/modules/13.0/pos_orders_history/)
-<br/>:heavy_check_mark: [pos_pin](https://apps.odoo.com/apps/modules/13.0/pos_pin/)
 <br/>:heavy_check_mark: [pos_product_available](https://apps.odoo.com/apps/modules/13.0/pos_product_available/)
 <br/>:heavy_check_mark: [pos_restaurant_base](https://apps.odoo.com/apps/modules/13.0/pos_restaurant_base/)
 <br/>:heavy_check_mark: [pos_scan_ref](https://apps.odoo.com/apps/modules/13.0/pos_scan_ref/)
