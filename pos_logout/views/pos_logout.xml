@@ -35,7 +35,8 @@
                     <div class="o_setting_right_pane">
                         <label for="logout_interval" />
                         <div class="text-muted">
-                            The last activity interval to activate the automatic screen lock. Zero if auto-locking is not needed
+                            The last activity interval to activate the automatic screen
+                            lock. Zero if auto-locking is not needed
                         </div>
                         <div>
                             <field name="logout_interval" />

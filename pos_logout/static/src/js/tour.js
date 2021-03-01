@@ -2,7 +2,7 @@
  * Copyright 2019 Kildebekov Anvar <https://it-projects.info/team/kildebekov>
  * License MIT (https://opensource.org/licenses/MIT). */
 
-odoo.define("pos_logout.tour", function(require) {
+odoo.define("pos_logout.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -34,7 +34,7 @@ odoo.define("pos_logout.tour", function(require) {
                 trigger: ".pos:has(.loader:hidden)",
                 content: "waiting for loading to finish",
                 timeout: 20000,
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -45,8 +45,6 @@ odoo.define("pos_logout.tour", function(require) {
             },
         ];
     }
-
-
 
     function pos_closing() {
         return [
@@ -61,7 +59,7 @@ odoo.define("pos_logout.tour", function(require) {
             {
                 content: "wait until backend is opened",
                 trigger: ".o_pos_kanban button.oe_kanban_action_button",
-                run: function() {
+                run: function () {
                     // No need to click on trigger
                 },
             },
@@ -69,10 +67,7 @@ odoo.define("pos_logout.tour", function(require) {
     }
 
     var steps = [];
-    steps = steps.concat(
-        pos_opening(),
-        pos_closing()
-    );
+    steps = steps.concat(pos_opening(), pos_closing());
 
     tour.register("pos_logout_tour", {test: true, url: "/web"}, steps);
 });
