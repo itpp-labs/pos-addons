@@ -11,7 +11,8 @@ Configuration
 =============
 
 * Open menu ``[[ Point of Sale ]] >> Configuration >> Point of Sale``
-* Enable `Login with Employees` and set `Allowed Employees`
+* Choose the POS where you need the ability to lock the screen
+* Enable `Login with Employees` and set `Allowed Employees` or you can leave this field blank
 
 Setting auto-locking interval
 -----------------------------
