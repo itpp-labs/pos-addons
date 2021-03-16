@@ -223,9 +223,6 @@ odoo.define("pos_invoices", function(require) {
                         }
                     }
                 }
-                var stateAttr = item.invoice_payment_state;
-                item.invoice_payment_state =
-                    stateAttr.charAt(0).toUpperCase() + stateAttr.slice(1);
             });
         },
 
@@ -317,7 +314,7 @@ odoo.define("pos_invoices", function(require) {
             }
             invoices = _.filter(invoices, function(inv) {
                 return (
-                    inv.state === "posted" && inv.invoice_payment_state === "Not_paid"
+                    inv.state === "posted" && inv.invoice_payment_state === "not_paid"
                 );
             });
             return invoices;

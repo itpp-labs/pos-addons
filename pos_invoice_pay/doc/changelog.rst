@@ -1,3 +1,8 @@
+`1.2.6`
+-------
+
+**Improvement:** Clean js code
+
 `1.2.5`
 -------
 
