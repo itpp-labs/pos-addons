@@ -11,7 +11,9 @@
             </t>
             <t t-if="env.pos.config.include_discount_in_prices">
                 <span class="price">
-                    <t t-esc="env.pos.format_currency(props.line.get_display_price())" />
+                    <t
+                        t-esc="env.pos.format_currency(props.line.get_display_price())"
+                    />
                 </span>
             </t>
         </xpath>
