@@ -126,7 +126,7 @@ class PosConfig(models.Model):
 
     def init_postponed_journal(self):
         """Init demo Journals for current company
-            sudo() - is for creating sessions by 'non-administrator' users"""
+        sudo() - is for creating sessions by 'non-administrator' users"""
         demo_is_on = (
             self.env["ir.module.module"].sudo().search([("name", "=", MODULE)]).demo
         )

@@ -1,7 +1,7 @@
 /* Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
    Copyright 2019 Anvar Kildebekov <https://it-projects.info/team/fedoranvar>
  * License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_invoice_postponed.pos", function(require) {
+odoo.define("pos_invoice_postponed.pos", function (require) {
     "use strict";
 
     var models = require("point_of_sale.models");
@@ -13,14 +13,14 @@ odoo.define("pos_invoice_postponed.pos", function(require) {
     models.load_fields("account.journal", ["postponed_invoice"]);
 
     screens.PaymentScreenWidget.include({
-        init: function(parent, options) {
+        init: function (parent, options) {
             this._super(parent, options);
         },
-        validate_order: function(options) {
+        validate_order: function (options) {
             var order = this.pos.get_order();
             var paymentlines = order.get_paymentlines();
             var client = order.get_client();
-            var postponed_invoice_paymentlines = _.filter(paymentlines, function(pl) {
+            var postponed_invoice_paymentlines = _.filter(paymentlines, function (pl) {
                 return pl.cashregister.journal.postponed_invoice;
             });
             if (
