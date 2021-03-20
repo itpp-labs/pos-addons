@@ -6,12 +6,11 @@
     "name": """Postponed Invoices in POS""",
     "summary": """This module allows the usage of a regular POS order payment process to create an invoice to be paid later""",
     "category": "Point of Sale",
-    # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=10.0",
     "images": ["images/postponed2.jpg"],
     "version": "12.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Kolushov Alexandr",
-    "support": "apps@itpp.dev",
+    "support": "help@itpp.dev",
     "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["point_of_sale"],
@@ -25,14 +24,4 @@
     "uninstall_hook": None,
     "auto_install": False,
     "installable": True,
-    # "demo_title": "Creation of Postponed invoices in POS",
-    # "demo_addons": [
-    # ],
-    # "demo_addons_hidden": [
-    # ],
-    # "demo_url": "DEMO-URL",
-    # "demo_summary": "This module allows the usage of a regular POS order payment process to create an invoice to be paid later",
-    # "demo_images": [
-    #    "images/MAIN_IMAGE",
-    # ]
 }
