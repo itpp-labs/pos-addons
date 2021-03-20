@@ -6,6 +6,7 @@
 Configuration
 =============
 
+* `Activate developer mode <https://odoo-development.readthedocs.io/en/latest/odoo/usage/debug-mode.html>`__
 * Open ``[[Point of Sale]] >> Payment Methods`` menu
 * Choose a journal or create one, make sure the journal is active in POS
 * Activate **Create Postponed Invoice** field
