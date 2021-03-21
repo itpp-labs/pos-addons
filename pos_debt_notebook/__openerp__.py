@@ -11,7 +11,7 @@
     'version': '9.0.4.0.3',
 
     'author': 'IT-Projects LLC, Ivan Yelizariev',
-    'website': 'https://it-projects.info',
+    'website': 'https://github.com/itpp-labs/pos-addons#readme',
     'license': 'LGPL-3',
 
     "external_dependencies": {"python": [], "bin": []},

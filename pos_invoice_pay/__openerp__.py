@@ -12,7 +12,7 @@
 
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/ArtyomLosev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "LGPL-3",
 
     "depends": [

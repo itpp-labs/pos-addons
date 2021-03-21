@@ -6,7 +6,7 @@
     'summary': 'Only supervisor can approve POS Order with out-of-stock product',
     'license': 'LGPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://it-projects.info',
+    'website': 'https://github.com/itpp-labs/pos-addons#readme',
     'depends': [
         'pos_pin',
         'pos_product_available',

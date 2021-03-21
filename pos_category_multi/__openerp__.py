@@ -7,7 +7,7 @@
     "version": "1.0.0",
 
     "author": "IT-Projects LLC, Pavel Romanchenko",
-    "website": "https://it-projects.info",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "AGPL-3",
 
     "depends": [
