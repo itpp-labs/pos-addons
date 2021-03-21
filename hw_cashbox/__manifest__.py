@@ -10,7 +10,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artem Rafailov",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info/team/Ommo73",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",
