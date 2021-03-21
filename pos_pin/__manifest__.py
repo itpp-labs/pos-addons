@@ -12,7 +12,7 @@
     "category": "Hidden",
     "images": ["images/pos_pin.jpg"],
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "depends": ["point_of_sale"],
     "data": ["data.xml"],
     "installable": True,

@@ -8,7 +8,7 @@
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["pos_multi_session", "pos_menu"],
     "external_dependencies": {"python": [], "bin": []},

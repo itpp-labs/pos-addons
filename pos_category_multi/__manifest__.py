@@ -7,7 +7,7 @@
     "version": "10.0.1.0.2",
     "author": "IT-Projects LLC, Pavel Romanchenko",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "AGPL-3",
     "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},

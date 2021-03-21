@@ -7,7 +7,7 @@
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "depends": ["pos_pin", "pos_product_available"],
     "data": ["data.xml", "views.xml"],
     "installable": True,

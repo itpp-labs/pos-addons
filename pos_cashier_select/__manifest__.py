@@ -13,7 +13,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["point_of_sale"],
     "external_dependencies": {"python": [], "bin": []},

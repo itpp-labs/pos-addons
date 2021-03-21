@@ -9,7 +9,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info/team/ArtyomLosev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["sale", "pos_longpolling", "base_action_rule"],
     "external_dependencies": {"python": [], "bin": []},

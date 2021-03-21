@@ -8,7 +8,7 @@
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov, Alexandr Kolushov",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["pos_restaurant"],
     "external_dependencies": {"python": [], "bin": []},

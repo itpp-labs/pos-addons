@@ -12,7 +12,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev, Dinar Gabbasov",
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info/",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["pos_orders_history"],
     "external_dependencies": {"python": [], "bin": []},
