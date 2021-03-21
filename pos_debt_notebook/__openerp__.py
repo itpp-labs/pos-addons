@@ -6,7 +6,7 @@
     'summary': 'Comfortable sales for your regular customers. Debt payment method for POS',
     'license': 'GPL-3',
     'category': 'Point Of Sale',
-    'website': 'https://it-projects.info',
+    'website': 'https://twitter.com/OdooFree',
     'depends': ['point_of_sale'],
     'images': [
         'images/screenshot-2.png',
