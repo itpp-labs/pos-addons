@@ -6,7 +6,7 @@
     'summary': 'Technical module for confirmation any action by user of specific group',
     'license': 'LGPL-3',
     'category': 'Hidden',
-    'website': 'https://it-projects.info',
+    'website': 'https://github.com/itpp-labs/pos-addons#readme',
     'depends': ['point_of_sale'],
     'data': [
         'data.xml',
