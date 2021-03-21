@@ -3,7 +3,7 @@
     'version' : '1.0.0',
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
-    'website' : 'https://it-projects.info',
+    'website' : 'https://github.com/itpp-labs/pos-addons',
     'description': """
 POS interface for debt notebook. Addon is based on **tg_pos_enhanced** and **pos_debt_notebook** addons
 
