@@ -3,7 +3,7 @@
     'version' : '1.0.0',
     'author' : 'Ivan Yelizariev',
     'category' : 'Point Of Sale',
-    'website' : 'https://it-projects.info',
+    'website' : 'https://github.com/itpp-labs/pos-addons#readme',
     'description': """
 This addon add debt payment method for POS (debt notebook).
 
