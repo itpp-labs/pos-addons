@@ -10,7 +10,7 @@
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/GabbasovDinar",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     # "price": 9.00,
     # "currency": "EUR",

@@ -12,7 +12,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info",
+    "website": "https://itpp.dev",
     "license": "Other OSI approved licence",  # MIT
     "price": 39.00,
     "currency": "EUR",

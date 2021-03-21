@@ -11,7 +11,7 @@
     "application": False,
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/KolushovAlexandr",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "LGPL-3",
     "depends": [
         "alipay",

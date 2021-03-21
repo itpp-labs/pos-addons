@@ -11,7 +11,7 @@
     "application": False,
     "author": "IT-Projects LLC, Kolushov Alexandr",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info/team/KolushovAlexandr",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "price": 80.00,
     "currency": "EUR",

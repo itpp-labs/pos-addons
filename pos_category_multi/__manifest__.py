@@ -6,7 +6,7 @@
     "images": [],
     "author": "IT-Projects LLC, Pavel Romanchenko",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info",
+    "website": "https://itpp.dev",
     "license": "AGPL-3",
     "price": 15.00,
     "currency": "EUR",

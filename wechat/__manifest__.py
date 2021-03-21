@@ -11,7 +11,7 @@
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
-    "website": "https://it-projects.info/team/yelizariev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["product", "account", "qr_payments"],
     "external_dependencies": {"python": ["wechatpy"], "bin": []},
