@@ -14,7 +14,7 @@
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@it-projects.info",
-    "website": "https://it-projects.info/team/ArtyomLosev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     # "price": 89.00,
     # "currency": "EUR",
