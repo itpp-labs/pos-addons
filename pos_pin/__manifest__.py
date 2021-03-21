@@ -11,7 +11,7 @@
     "category": "Hidden",
     "images": ["images/pos_pin.jpg"],
     "support": "pos@it-projects.info",
-    "website": "https://it-projects.info",
+    "website": "https://itpp.dev",
     "depends": ["point_of_sale", "pos_hr"],
     "data": ["data.xml"],
     "price": 13.00,
