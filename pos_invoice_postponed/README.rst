@@ -28,9 +28,9 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/11.0/pos_invoice_postponed/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/12.0/pos_invoice_postponed/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/.atom>`_
+Notifications on updates: `via Atom <https://github.com/itpp-labs/pos-addons/commits/12.0/.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/itpp-labs/pos-addons/commits/12.0/.atom>`_
 
-Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/fb0d84b24a4f105e4f6caad207ade653ce63e07d>`_
+Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/1335d16c8dddb0f89d90d2f71e50250dc0b395ff>`_
