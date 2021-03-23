@@ -12,6 +12,7 @@
 <br/>:heavy_check_mark: [pos_employee_select](https://apps.odoo.com/apps/modules/12.0/pos_employee_select/)
 <br/>:heavy_check_mark: [pos_expenses_pay](https://apps.odoo.com/apps/modules/12.0/pos_expenses_pay/)
 <br/>:heavy_check_mark: [pos_invoice_pay](https://apps.odoo.com/apps/modules/12.0/pos_invoice_pay/)
+<br/>:heavy_check_mark: [pos_invoice_postponed](https://apps.odoo.com/apps/modules/12.0/pos_invoice_postponed/)
 <br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/12.0/pos_keyboard/)
 <br/>:heavy_check_mark: [pos_logout](https://apps.odoo.com/apps/modules/12.0/pos_logout/)
 <br/>:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/12.0/pos_longpolling/)
