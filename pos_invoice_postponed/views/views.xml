@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
     License MIT (https://opensource.org/licenses/MIT).-->
 <odoo>
     <record model="ir.ui.view" id="view_account_journal_pos_user_form">
@@ -10,8 +11,10 @@
             ref="point_of_sale.view_account_journal_pos_user_form"
         />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='amount_authorized_diff']" position="after">
-                <field name="postponed_invoice" />
+            <xpath expr="//group[@name='amount_authorized']" position="after">
+                <group>
+                    <field name="postponed_invoice" />
+                </group>
             </xpath>
         </field>
     </record>

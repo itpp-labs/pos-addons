@@ -1,6 +1,7 @@
 /*  Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
     License MIT (https://opensource.org/licenses/MIT).*/
-odoo.define("pos_invoice_postponed.tour", function(require) {
+odoo.define("pos_invoice_postponed.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -9,13 +10,22 @@ odoo.define("pos_invoice_postponed.tour", function(require) {
 
     function pos_opening() {
         return [
+            tour.STEPS.SHOW_APPS_MENU_ITEM,
             {
-                trigger:
-                    '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
+                content: _t(
+                    "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
+                ),
+                position: "right",
+                edition: "community",
+            },
+            {
+                trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
                 content: _t(
                     "Ready to launch your <b>point of sale</b>? <i>Click here</i>."
                 ),
                 position: "bottom",
+                edition: "enterprise",
             },
             {
                 trigger: ".o_pos_kanban button.oe_kanban_action_button",
@@ -105,7 +115,7 @@ odoo.define("pos_invoice_postponed.tour", function(require) {
 
     var steps = [];
     steps = steps.concat(pos_opening());
-    steps = steps.concat(set_customer("Agrolait"));
+    steps = steps.concat(set_customer("Azure Interior"));
     steps = steps.concat(add_product_to_order("Miscellaneous"));
     steps = steps.concat(payment("Postponed"));
 

@@ -71,9 +71,7 @@ class PosOrder(models.Model):
         res = super(PosOrder, self)._process_order(order)
 
         if postponed_payments:
-            res.sudo().write(
-                {"state": "invoiced", "invoice_id": invoice.id, "postponed": True}
-            )
+            res.sudo().write({"invoice_id": invoice.id, "postponed": True})
             invoice._onchange_partner_id()
             invoice.fiscal_position_id = res.fiscal_position_id
             message = _(
@@ -103,6 +101,13 @@ class PosOrder(models.Model):
                 return False
         return True
 
+    @api.multi
+    def action_pos_order_paid(self):
+        res = super(PosOrder, self).action_pos_order_paid()
+        if self.postponed:
+            self.write({"state": "invoiced"})
+        return res
+
 
 class AccountJournal(models.Model):
     _inherit = "account.journal"
@@ -121,7 +126,7 @@ class PosConfig(models.Model):
 
     def init_postponed_journal(self):
         """Init demo Journals for current company
-            sudo() - is for creating sessions by 'non-administrator' users"""
+        sudo() - is for creating sessions by 'non-administrator' users"""
         demo_is_on = (
             self.env["ir.module.module"].sudo().search([("name", "=", MODULE)]).demo
         )
