@@ -25,9 +25,9 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/10.0/pos_nfc/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/11.0/pos_nfc/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_nfc.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/10.0/pos_nfc.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_nfc.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/11.0/pos_nfc.atom>`_
 
-Tested on `Odoo 10.0 <https://github.com/odoo/odoo/commit/be689c53c13330832510c8cef332ac862d4ed5e8>`_
+Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/85c421d2c7b399cf3c754ccf1bb26e196ceb39b2>`_
