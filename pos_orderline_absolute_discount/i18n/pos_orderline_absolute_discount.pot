@@ -1,0 +1,110 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_orderline_absolute_discount
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_orderline_absolute_discount
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.report_saledetails
+msgid "Disc:"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_order_line__absolute_discount
+msgid "Discount per Unit (abs)"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#. openerp-web
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:98
+#, python-format
+msgid "Discount per Unit:"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model.fields,help:pos_orderline_absolute_discount.field_pos_config__include_discount_in_prices
+msgid "If box is unchecked the displayed prices will not include discounts"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
+msgid "Include Discount"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model.fields,field_description:pos_orderline_absolute_discount.field_pos_config__include_discount_in_prices
+#: model_terms:ir.ui.view,arch_db:pos_orderline_absolute_discount.pos_config_view_form
+msgid "Include Discount in Prices"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#. openerp-web
+#: code:addons/pos_orderline_absolute_discount/static/src/js/models.js:38
+#, python-format
+msgid "It is not allowed to create a credit by discount: . \n"
+"The discount value should not be higher than unit price "
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_report_point_of_sale_report_saledetails
+msgid "Point of Sale Details"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_pos_order_line
+msgid "Point of Sale Order Lines"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: model:ir.model,name:pos_orderline_absolute_discount.model_report_pos_order
+msgid "Point of Sale Orders Report"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#. openerp-web
+#: code:addons/pos_orderline_absolute_discount/static/src/js/models.js:37
+#, python-format
+msgid "Warning"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#. openerp-web
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:32
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:57
+#, python-format
+msgid "With a"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#: code:addons/pos_orderline_absolute_discount/models/pos_order_model.py:75
+#, python-format
+msgid "You have to select a pricelist in the sale form !"
+msgstr ""
+
+#. module: pos_orderline_absolute_discount
+#. openerp-web
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:34
+#: code:addons/pos_orderline_absolute_discount/static/src/xml/pos.xml:60
+#, python-format
+msgid "discount"
+msgstr ""
+
