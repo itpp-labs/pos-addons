@@ -714,7 +714,7 @@ class PosOrder(models.Model):
 
     def _is_pos_order_paid(self):
         return super(PosOrder, self)._is_pos_order_paid() or (
-            not self.statement_ids and self.amount_via_discount
+            not self.payment_ids and self.amount_via_discount
         )
 
 

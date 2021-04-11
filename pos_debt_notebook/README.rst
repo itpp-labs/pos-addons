@@ -32,6 +32,8 @@ Installation \ Deinstallation
 Roadmap
 =======
 
+* TODO. Field ``journal_id`` in ``pos.credit.update`` model should be replaced with ``pos_payment_method_id = fields.Many2on('pos.payment.method')``
+
 * TODO. New option for **Zero transactions** feature: allow to create extra order line with negative amount instead of applying discounts. 
 
   * It creates extra record in accounting system (pos.order.line). It can be used as a backup for *Manual Updates*

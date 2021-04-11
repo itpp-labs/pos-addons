@@ -1,3 +1,8 @@
+`5.3.4`
+-------
+
+- **Fix:** pos session didn't close after using Credits
+
 `5.3.3`
 -------
 
