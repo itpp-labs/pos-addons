@@ -30,4 +30,4 @@ Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_receipt_custom_temp
 
 Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_receipt_custom_template.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_receipt_custom_template.atom>`_
 
-Tested on `Odoo 12.0 <https://github.com/odoo/odoo/commit/b4c3268e38db273b1a750050e342aa4a1fd2b850>`_
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/2d46a08a989f4c7e005ee2ead7c342c72019e63f>`_

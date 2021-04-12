@@ -1,4 +1,4 @@
-odoo.define("pos_receipt_custom_template.tour", function(require) {
+odoo.define("pos_receipt_custom_template.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -12,7 +12,7 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
             {
                 trigger: '.order .product-name:contains("' + product_name + '")',
                 content: "the " + product_name + " have been added to the order",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -41,7 +41,7 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
         }
         steps = steps.concat([
             {
-                trigger: '.paymentmethod:contains("Cash (USD)")',
+                trigger: '.paymentmethod:contains("Cash")',
                 content: "pay with cash",
             },
         ]);
@@ -80,7 +80,7 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
             {
                 trigger: ".js_connecting:visible",
                 content: "verify that the order is being sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -88,7 +88,7 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
                 trigger: ".js_connected:visible",
                 content:
                     "verify that the order has been succesfully sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -120,10 +120,10 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
             position: "bottom",
         },
         {
-            trigger: ".o_main_content:has(.loader:hidden)",
+            trigger: ".pos:has(.loader:hidden)",
             content: "waiting for loading to finish",
             timeout: 20000,
-            run: function() {
+            run: function () {
                 // It's a check
             },
         },
@@ -135,11 +135,11 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
         position: "bottom",
     });
 
-    steps = steps.concat(add_product_to_order("LED Lamp"));
+    steps = steps.concat(add_product_to_order("Conference Chair"));
 
     steps = steps.concat(goto_payment_screen_and_select_payment_method());
 
-    steps = steps.concat(generate_payment_screen_keypad_steps("0.9"));
+    steps = steps.concat(generate_payment_screen_keypad_steps("33.9"));
 
     steps = steps.concat(finish_order());
 
@@ -155,7 +155,7 @@ odoo.define("pos_receipt_custom_template.tour", function(require) {
         {
             content: "wait until backend is opened",
             trigger: ".o_pos_kanban button.oe_kanban_action_button",
-            run: function() {
+            run: function () {
                 // No need to click on trigger
             },
         },

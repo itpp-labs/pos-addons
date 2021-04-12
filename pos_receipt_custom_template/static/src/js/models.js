@@ -1,7 +1,7 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License MIT (https://opensource.org/licenses/MIT). */
 
-odoo.define("pos_receipt_custom_template.models", function(require) {
+odoo.define("pos_receipt_custom_template.models", function (require) {
     "use strict";
     var models = require("point_of_sale.models");
     var core = require("web.core");
@@ -12,7 +12,7 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
     models.load_models({
         model: "pos.custom_receipt",
         fields: ["name", "qweb_template", "type"],
-        domain: function(self) {
+        domain: function (self) {
             var domain = [];
             var type = [];
             if (self.config.custom_ticket) {
@@ -25,10 +25,10 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
             domain.push(["type", "in", type]);
             return domain;
         },
-        condition: function(self) {
+        condition: function (self) {
             return self.config.custom_ticket || self.config.custom_xml_receipt;
         },
-        loaded: function(self, templates) {
+        loaded: function (self, templates) {
             self.custom_receipt_templates = templates;
         },
     });
@@ -39,7 +39,7 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         // Changes the current table.
-        set_table: function(table) {
+        set_table: function (table) {
             var old_table = this.table;
             if (table && !this.order_to_transfer_to_different_table) {
                 this.table = table;
@@ -52,7 +52,7 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
             this.table = old_table;
             _super_posmodel.set_table.apply(this, arguments);
         },
-        get_current_datetime: function() {
+        get_current_datetime: function () {
             var d = new Date();
 
             var date = d.getDate();
@@ -82,17 +82,17 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
     });
 
     models.Order = models.Order.extend({
-        custom_qweb_render: function(template, options) {
+        custom_qweb_render: function (template, options) {
             var template_name = $(template).attr("t-name");
             Qweb.templates[template_name] = template;
             return Qweb._render(template_name, options);
         },
-        get_receipt_template_by_id: function(id, type) {
-            return _.find(this.pos.custom_receipt_templates, function(receipt) {
+        get_receipt_template_by_id: function (id, type) {
+            return _.find(this.pos.custom_receipt_templates, function (receipt) {
                 return receipt.id === id && receipt.type === type;
             });
         },
-        get_last_orderline_user_name: function() {
+        get_last_orderline_user_name: function () {
             var lastorderline = this.get_last_orderline();
             var name = this.pos.get_cashier().name;
             if (
@@ -104,10 +104,10 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
             }
             return name;
         },
-        get_receipt_type: function(type) {
+        get_receipt_type: function (type) {
             return this.receipt_type || _t("Receipt");
         },
-        set_receipt_type: function(type) {
+        set_receipt_type: function (type) {
             this.receipt_type = type;
         },
     });
@@ -115,7 +115,7 @@ odoo.define("pos_receipt_custom_template.models", function(require) {
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
         // Used to create a json of the ticket, to be sent to the printer
-        export_for_printing: function() {
+        export_for_printing: function () {
             var res = _super_orderline.export_for_printing.apply(this, arguments);
             res.second_product_name = this.get_product().second_product_name;
             return res;
