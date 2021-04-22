@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <template id="index" inherit_id="point_of_sale.index">
+        <xpath expr="//title" position="replace">
+            <title>POS</title>
+        </xpath>
+    </template>
+</openerp>
