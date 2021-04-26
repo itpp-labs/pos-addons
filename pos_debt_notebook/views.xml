@@ -18,7 +18,7 @@
                     type="action"
                     name="%(pos_debt_notebook.action_report_pos_debt_partner)d"
                     context="{'group_by':'journal_id'}"
-                    icon="money-bill-alt"
+                    icon="fa-money"
                 >
                     <div class="o_form_field o_stat_info">
                         <field name="debt_type" invisible="1" />
