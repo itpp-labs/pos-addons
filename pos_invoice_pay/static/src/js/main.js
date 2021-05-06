@@ -1,6 +1,7 @@
 //  Copyright 2018 Artyom Losev
 //  Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
 //  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+//  Copyright 2021 Ilya Ilchenko <https://github.com/mentalko>
 //  License MIT (https://opensource.org/licenses/MIT).
 /* eslint no-useless-escape: "off"*/
 odoo.define("pos_invoices", function(require) {
@@ -223,9 +224,6 @@ odoo.define("pos_invoices", function(require) {
                         }
                     }
                 }
-                var stateAttr = item.invoice_payment_state;
-                item.invoice_payment_state =
-                    stateAttr.charAt(0).toUpperCase() + stateAttr.slice(1);
             });
         },
 
@@ -317,7 +315,7 @@ odoo.define("pos_invoices", function(require) {
             }
             invoices = _.filter(invoices, function(inv) {
                 return (
-                    inv.state === "posted" && inv.invoice_payment_state === "Not_paid"
+                    inv.state === "posted" && inv.invoice_payment_state === "not_paid"
                 );
             });
             return invoices;
