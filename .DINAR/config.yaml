@@ -14,7 +14,6 @@ addons:
 
 repo_readme:
   addons:
-    - pos_debranding
     - pos_mobile
     - pos_scan_ref
     - pos_debt_notebook
