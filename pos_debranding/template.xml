@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="demo_assets_backend"
+        name="pos_debranding_backend_assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_debranding/static/src/js/tour.js"
+            />
+        </xpath>
+    </template>
+</odoo>
