@@ -7,7 +7,7 @@
     "license": "Other OSI approved licence",  # MIT
     "category": "Debranding",
     "support": "help@itpp.dev",
-    "website": "https://www.odoo.com/apps/modules/13.0/pos_debranding/",
+    "website": "https://odoo-debranding.com",
     "depends": ["point_of_sale"],
     "data": ["template.xml"],
     "qweb": ["static/src/xml/pos_debranding.xml"],
