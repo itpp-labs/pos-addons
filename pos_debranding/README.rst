@@ -8,7 +8,17 @@
 
 Removes references to odoo.com:
 
-1. Deletes odoo logo
-2. Replaces POS title
+* Deletes odoo logo
 
-Tested on `Odoo 9.0 <https://github.com/odoo/odoo/commit/04c6ee54d86013bc2995778f62074115c1bd9ed3>`_
+Further information
+===================
+
+HTML Description: https://apps.odoo.com/apps/modules/13.0/pos_debranding
+
+Usage instructions: `<doc/index.rst>`_
+
+Changelog: `<doc/changelog.rst>`_
+
+Notifications on updates: `via Atom <https://github.com/itpp-labs/pos-addons/commits/13.0/pos_debranding.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/itpp-labs/pos-addons/commits/13.0/pos_debranding.atom>`_
+
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/38e90e09239eb75bd25001c7870758b380159ad0>`_

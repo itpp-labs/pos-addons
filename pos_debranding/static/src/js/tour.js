@@ -1,4 +1,4 @@
-odoo.define("pos_debranding.tour", function(require) {
+odoo.define("pos_debranding.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -27,7 +27,7 @@ odoo.define("pos_debranding.tour", function(require) {
             trigger: ".pos:has(.loader:hidden)",
             content: "waiting for loading to finish",
             timeout: 20000,
-            run: function() {
+            run: function () {
                 // It's a check
             },
         },
@@ -40,7 +40,7 @@ odoo.define("pos_debranding.tour", function(require) {
         {
             trigger: ".pos-branding:not(:has(>.pos-logo))",
             content: "Check logo",
-            run: function() {
+            run: function () {
                 // It's a check
             },
         },
