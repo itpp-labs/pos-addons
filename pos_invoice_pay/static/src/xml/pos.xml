@@ -5,12 +5,14 @@
 <templates id="template" xml:space="preserve">
     <t t-name="SaleOrdersButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt' /> Fetch Orders
+            <i class='fa fa-list-alt' />
+            Fetch Orders
         </div>
     </t>
     <t t-name="InvoicesButton">
         <div class='control-button'>
-            <i class='fa fa-list-alt' /> Fetch Invoices
+            <i class='fa fa-list-alt' />
+            Fetch Invoices
         </div>
     </t>
     <t t-name="SaleOrder">
@@ -167,6 +169,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class='list-contents'>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -219,7 +222,6 @@
                     </span>
                     <span class='searchbox' />
                     <span class='button next oe_hidden highlight'>
-
                         <i class='fa fa-angle-double-right' />
                         Register Payment
                     </span>
@@ -245,6 +247,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class='list-contents'>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -271,12 +274,15 @@
                 </div>
                 <div class='left-content pc40 touch-scrollable scrollable-y'>
                     <div class='paymentmethods-container'>
+
                     </div>
                 </div>
                 <div class='right-content pc60 touch-scrollable scrollable-y'>
                     <section class='paymentlines-container'>
+
                     </section>
                     <section class='payment-numpad invoice'>
+
                     </section>
                     <div class='payment-buttons'>
                         <t t-if='widget.pos.config.module_account'>
@@ -284,18 +290,21 @@
                                 <div
                                     t-attf-class='button js_invoice #{ widget.pos.get_order().is_to_invoice() ? "highlight" : ""} '
                                 >
-                                    <i class='fa fa-file-text-o' /> Invoice
+                                    <i class='fa fa-file-text-o' />
+                                    Invoice
                                 </div>
                             </t>
                         </t>
                         <t t-if='widget.pos.config.tip_product_id'>
                             <div class='button js_tip'>
-                                <i class='fa fa-heart' /> Tip
+                                <i class='fa fa-heart' />
+                                Tip
                             </div>
                         </t>
                         <t t-if='widget.pos.config.iface_cashdrawer'>
                             <div class='button js_cashdrawer'>
-                                <i class='fa fa-archive' /> Open Cashbox
+                                <i class='fa fa-archive' />
+                                Open Cashbox
                             </div>
                         </t>
                     </div>
@@ -309,9 +318,7 @@
                 <div class='total'>
                     <t t-esc="widget.format_currency(widget.get_invoice_residual())" />
                 </div>
-                <div class='message'>
-                    Please select a payment method.
-                </div>
+                <div class='message'>Please select a payment method.</div>
             </div>
         </t>
         <t t-if="paymentlines.length">
@@ -407,7 +414,10 @@
         <div class='invoice-receipt-screen screen'>
             <div class='screen-content'>
                 <div class='top-content'>
-                    <h1>Change: <span class='change-value'>0.00</span></h1>
+                    <h1>
+                        Change:
+                        <span class='change-value'>0.00</span>
+                    </h1>
                     <span class='button next'>
                         Next Order
                         <i class='fa fa-angle-double-right' />
@@ -415,9 +425,11 @@
                 </div>
                 <div class="centered-content touch-scrollable">
                     <div class="button print">
-                        <i class='fa fa-print' /> Print Receipt
+                        <i class='fa fa-print' />
+                        Print Receipt
                     </div>
                     <div class="pos-receipt-container">
+
                     </div>
                 </div>
             </div>
@@ -425,26 +437,33 @@
     </t>
     <t t-name="PosInvoiceTicket">
         <div class="pos-sale-ticket">
-
             <div class="pos-center-align">
                 <t t-esc="moment().format('L LT')" />
                 <t t-esc="order.name" />
             </div>
             <br />
-            <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.name" />
+            <div>
+                Payment of Invoice:
+                <t t-esc="order.invoice_to_pay.name" />
                 <t
                     t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'
                 >
-                    (<t t-esc="order.invoice_to_pay.origin" />)
+                    (
+                    <t t-esc="order.invoice_to_pay.origin" />
+                    )
                 </t>
             </div>
             <br />
-
-            <t t-esc="widget.pos.company.name" /><br />
-            Phone: <t t-esc="widget.pos.company.phone || ''" /><br />
-            User: <t
+            <t t-esc="widget.pos.company.name" />
+            <br />
+            Phone:
+            <t t-esc="widget.pos.company.phone || ''" />
+            <br />
+            User:
+            <t
                 t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"
-            /><br />
+            />
+            <br />
             <br />
             <t t-if="receipt.header">
                 <div style='text-align:center'>
@@ -539,10 +558,16 @@
                         </div>
                     </t>
                     <t t-if='receipt.company.phone'>
-                        <div font='b'>Tel:<t t-esc='receipt.company.phone' /></div>
+                        <div font='b'>
+                            Tel:
+                            <t t-esc='receipt.company.phone' />
+                        </div>
                     </t>
                     <t t-if='receipt.company.vat'>
-                        <div>VAT:<t t-esc='receipt.company.vat' /></div>
+                        <div>
+                            VAT:
+                            <t t-esc='receipt.company.vat' />
+                        </div>
                     </t>
                     <t t-if='receipt.company.email'>
                         <div font='b'>
@@ -568,18 +593,25 @@
                     >&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>
                     <t t-if='receipt.cashier'>
                         <div font='b' class='cashier'>
-                            <div>User: <t t-esc='receipt.cashier' /></div>
+                            <div>
+                                User:
+                                <t t-esc='receipt.cashier' />
+                            </div>
                         </div>
                     </t>
                     <br />
                     <t
                         t-if='order.invoice_to_pay and order.invoice_to_pay.number and order.invoice_to_pay.origin'
                     >
-                        <div>Payment of Invoice: <t t-esc="order.invoice_to_pay.name" />
+                        <div>
+                            Payment of Invoice:
+                            <t t-esc="order.invoice_to_pay.name" />
                             <t
                                 t-if='order.invoice_to_pay.origin &amp;&amp; order.invoice_to_pay.origin !== " "'
                             >
-                                (<t t-esc="order.invoice_to_pay.origin" />)
+                                (
+                                <t t-esc="order.invoice_to_pay.origin" />
+                                )
                             </t>
                         </div>
                     </t>
