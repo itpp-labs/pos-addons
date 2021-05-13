@@ -13,7 +13,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_invoice_pay/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 89.00,
     "currency": "EUR",
     "depends": ["base_automation", "sale_management", "pos_longpolling"],
     "external_dependencies": {"python": [], "bin": []},
