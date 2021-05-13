@@ -102,6 +102,7 @@ rules:
   no-obj-calls: warn
   no-octal-escape: warn
   no-octal: warn
+  no-param-reassign: off  
   no-path-concat: warn
   no-process-env: warn
   no-process-exit: warn
