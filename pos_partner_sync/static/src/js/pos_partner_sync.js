@@ -1,7 +1,7 @@
 /* Copyright (c) 2004-2015 Odoo S.A.
  * Copyright 2018-2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_partner_sync.pos", function(require) {
+odoo.define("pos_partner_sync.pos", function (require) {
     "use strict";
     var core = require("web.core");
     var screens = require("point_of_sale.screens");
@@ -12,10 +12,10 @@ odoo.define("pos_partner_sync.pos", function(require) {
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        initialize: function() {
+        initialize: function () {
             PosModelSuper.prototype.initialize.apply(this, arguments);
             var self = this;
-            this.ready.then(function() {
+            this.ready.then(function () {
                 self.bus.add_channel_callback(
                     "pos_partner_sync",
                     self.on_barcode_updates,
@@ -23,7 +23,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
                 );
             });
         },
-        on_barcode_updates: function(data) {
+        on_barcode_updates: function (data) {
             var self = this;
             if (
                 data.message === "update_partner_fields" &&
@@ -35,7 +35,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
                     this.update_templates_with_partner(data.partner_ids);
                 } else {
                     this.load_new_partners_force_update(data.partner_ids).then(
-                        function() {
+                        function () {
                             self.update_templates_with_partner(data.partner_ids);
                         }
                     );
@@ -43,7 +43,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
             }
         },
 
-        update_templates_with_partner: function(partner_ids) {
+        update_templates_with_partner: function (partner_ids) {
             if (!partner_ids) {
                 return;
             }
@@ -63,7 +63,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
             }
         },
 
-        load_new_partners_force_update: function(ids) {
+        load_new_partners_force_update: function (ids) {
             // Quite similar to load_new_partners but loads only required partners and do it forcibly (see the comment below)
             var def = new $.Deferred();
             if (!ids) {
@@ -71,7 +71,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
             }
             var self = this;
             var model_name = "res.partner";
-            var fields = _.find(this.models, function(model) {
+            var fields = _.find(this.models, function (model) {
                 return model.model === model_name;
             }).fields;
             ids = Array.isArray(ids) ? ids : [ids];
@@ -85,7 +85,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
                     shadow: true,
                 }
             ).then(
-                function(partners) {
+                function (partners) {
                     // Check if the partners we got were real updates
 
                     // we add this trick with get_partner_write_date to be able to process several updates within the second
@@ -99,7 +99,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
                         def.reject();
                     }
                 },
-                function(err, event) {
+                function (err, event) {
                     if (err) {
                         console.log(err.stack);
                     }
@@ -110,11 +110,11 @@ odoo.define("pos_partner_sync.pos", function(require) {
             return def;
         },
 
-        remove_unlinked_partners: function(ids) {
+        remove_unlinked_partners: function (ids) {
             var self = this;
             var partner = false;
             var partner_sorted = this.db.partner_sorted;
-            _.each(ids, function(id) {
+            _.each(ids, function (id) {
                 partner = self.db.get_partner_by_id(id);
                 if (partner.barcode) {
                     delete self.db.partner_by_barcode[partner.barcode];
@@ -126,10 +126,10 @@ odoo.define("pos_partner_sync.pos", function(require) {
     });
 
     screens.ClientListScreenWidget.include({
-        update_partner_cache: function(partner_ids) {
+        update_partner_cache: function (partner_ids) {
             var self = this;
             var partner = {};
-            _.each(partner_ids, function(pid) {
+            _.each(partner_ids, function (pid) {
                 partner = self.pos.db.get_partner_by_id(pid);
                 if (!partner) {
                     return;
@@ -148,7 +148,7 @@ odoo.define("pos_partner_sync.pos", function(require) {
                 }
             });
         },
-        update_client_list_screen: function(partner_ids) {
+        update_client_list_screen: function (partner_ids) {
             var partner = this.new_client || this.old_client;
             if (partner) {
                 if (_.contains(partner_ids, partner.id)) {

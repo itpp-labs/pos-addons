@@ -26,7 +26,7 @@ Contributors
 
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/10.0/pos_partner_sync/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_partner_sync/
 
 
-Tested on `Odoo 10.0 <https://github.com/odoo/odoo/commit/d89f4d6ec26806389922351eb8e575754b3f60e0>`_
+Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/b80321acd5553466862b5c2c56cff014765ecf99>`_
