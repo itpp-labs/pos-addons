@@ -5,7 +5,7 @@
     "summary": """Handle the payment process for Sale Orders/Invoices over Point of Sale""",
     "category": "Point of Sale",
     "images": ["images/pos_invoice_pay_main.png"],
-    "version": "10.0.1.0.6",
+    "version": "10.0.1.0.7",
     "application": False,
     "author": "IT-Projects LLC, Artyom Losev",
     "support": "apps@itpp.dev",
