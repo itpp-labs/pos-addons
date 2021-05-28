@@ -133,7 +133,9 @@
         </tr>
         <tr t-if="line.display_type" class='sale-order-line' t-att-data-id='line.id'>
             <td>
-                <t t-esc="(line.display_type === 'line_section' and 'Section') or (line.display_type === 'line_note' and 'Note')" />
+                <t
+                    t-esc="(line.display_type === 'line_section' and 'Section') or (line.display_type === 'line_note' and 'Note')"
+                />
             </td>
             <td colspan="7">
                 <t t-esc='line.name' />
