@@ -76,6 +76,7 @@ odoo.define("pos_invoices", function (require) {
             "state",
             "amount_untaxed",
             "amount_tax",
+            "product_id",
         ],
         domain: [
             ["state", "=", "open"],
@@ -351,6 +352,7 @@ odoo.define("pos_invoices", function (require) {
             if (this.pos.add_itp_data && this.invoice_to_pay) {
                 var data = _super_order.export_as_JSON.apply(this, arguments);
                 data.invoice_to_pay = this.invoice_to_pay;
+                data.invoice_to_pay.amount_return = this.invoice_to_pay.get_change();
                 return data;
             }
             return _super_order.export_as_JSON.call(this, arguments);
@@ -1117,7 +1119,8 @@ odoo.define("pos_invoices", function (require) {
             if (
                 !this.pos.config.pos_invoice_pay_writeoff_account_id &&
                 order.invoice_to_pay &&
-                order.get_total_paid() > this.get_invoice_residual()
+                order.get_total_paid() > this.get_invoice_residual() &&
+                !this.pos.config.invoice_pos_order
             ) {
                 this.gui.show_popup("error", {
                     title: _t("Excessive payment amount."),
