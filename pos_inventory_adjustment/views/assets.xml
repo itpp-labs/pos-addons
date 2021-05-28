@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_inventory_adjustment/static/src/js/models.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_inventory_adjustment/static/src/js/ui.js"
+            />
+            <link
+                rel="stylesheet"
+                href="/pos_inventory_adjustment/static/src/css/pos.css"
+            />
+        </xpath>
+    </template>
+    <!--    <template id="assets_backend_pos_invoice_postponed" name="pos_inventory_adjustment_assets" inherit_id="web.assets_backend">-->
+    <!--        <xpath expr="." position="inside">-->
+    <!--            <script type="text/javascript" src="/pos_inventory_adjustment/static/src/js/tour.js"></script>-->
+    <!--        </xpath>-->
+    <!--    </template>-->
+</odoo>

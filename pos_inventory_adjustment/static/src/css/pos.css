@@ -1,0 +1,150 @@
+.pos.inventory .disable {
+    background: #00000036 !important;
+    pointer-events: none;
+}
+.pos .disable.inventory {
+    display: none;
+}
+
+.pos.inventory .actionpad .button.pay {
+    display: none;
+}
+.pos.inventory .actionpad .button.pay.inventory {
+    height: 216px;
+    display: block;
+}
+.pos .actionpad .button.pay.inventory {
+    display: none;
+}
+
+.pos.inventory .popup .popup_selection {
+    text-align: left;
+    display: inline-block;
+    overflow: hidden;
+    background: white;
+    min-height: 44px;
+    font-family: "Lato";
+    font-size: 20px;
+    color: #444;
+    padding: 10px;
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0px 0px 0px 1px rgb(220, 220, 220) inset;
+    box-sizing: border-box;
+    width: 80%;
+}
+
+.pos.inventory .modal-dialog .popup {
+    height: 450px;
+}
+
+.pos.inventory .popup.popup-selection .selection {
+    max-height: 323px;
+}
+
+.pos.inventory .breadcrumbs.inventory_name .breadcrumb-button.breadcrumb-home {
+    width: 100%;
+}
+
+.pos.inventory .actionpad {
+    width: 386px;
+}
+
+.pos.inventory .leftpane {
+    width: 666px;
+}
+
+.pos.inventory .rightpane {
+    left: 666px;
+}
+
+.pos.inventory .order {
+    max-width: 666px;
+}
+
+.pos.inventory .product {
+    height: 50px;
+}
+
+.pos.inventory .product .product-img {
+    display: none;
+}
+
+.pos.inventory .order .orderline .price {
+    display: none;
+}
+
+.pos.inventory .order .orderline .info-list {
+    display: none;
+}
+.pos.inventory .order .orderline .info-list.inventory {
+    display: block;
+}
+.pos .order .orderline .info-list.inventory {
+    display: none;
+}
+
+.pos .order .orderline .price.inventory {
+    display: none;
+}
+.pos.inventory .order .orderline .price.inventory {
+    display: block;
+}
+
+.pos.inventory .order .orderline .info-list.inventory {
+    display: none;
+}
+.pos.inventory .order .orderline .info-list.inventory {
+    display: block;
+}
+
+.pos.inventory .order .summary .line {
+    display: none;
+}
+
+.pos.inventory .order .summary.inventory .line {
+    display: block;
+}
+.pos .order .summary.inventory .line {
+    display: none;
+}
+
+.pos.inventory .numpad button[data-mode="price"] {
+    display: none;
+}
+.pos.inventory .numpad button.inventory[data-mode="price"] {
+    display: block;
+}
+.pos.inventory .numpad button[data-mode="discount"] {
+    display: none;
+}
+.pos.inventory .numpad button.inventory[data-mode="discount"] {
+    display: block;
+}
+.pos.inventory .numpad .input-button.numpad-minus {
+    display: none;
+}
+.pos.inventory .numpad .input-button.numpad-minus.inventory {
+    display: block;
+}
+
+.pos.inventory .order-button.square {
+    display: none;
+}
+
+.pos.inventory .orders {
+    display: none;
+}
+
+.pos .order .orderline .line-index {
+    display: none;
+}
+
+.pos.inventory .order .orderline .line-index {
+    padding: 0;
+    display: inline-block;
+    font-weight: bold;
+    width: 3%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

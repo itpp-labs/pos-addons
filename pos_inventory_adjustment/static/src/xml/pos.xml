@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<templates id="template" xml:space="preserve">
+    <t t-name="NewStageButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt' /> New Stage
+        </div>
+    </t>
+    <t t-name="UpdateStageButton">
+        <div class='control-button'>
+            <i class='fa fa-list-alt' /> Update Stage
+        </div>
+    </t>
+    <t t-name="InventorySelectionPopupWidget">
+        <div class="modal-dialog inventory">
+            <div class="popup popup-selection inventory">
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'Select' " />
+                </p>
+                <div class='selection scrollable-y touch-scrollable inventory'>
+                    <div class="selection inventory">
+                        <t t-foreach="widget.list || []" t-as="item">
+                            <div
+                                class='selection-item'
+                                t-att-data-item-index='item_index'
+                            >
+                                <t t-esc='item.name' />
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <div class="footer inventory">
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-extend="ActionpadWidget">
+        <t t-jquery='button.button.pay' t-operation='after'>
+            <button class='button pay inventory'>
+                <div class='pay-circle'>
+                    <i class='fa fa-chevron-right' />
+                </div>
+                Validate
+            </button>
+        </t>
+    </t>
+    <t t-extend="OrderWidget">
+        <t t-jquery='.summary.clearfix' t-operation='after'>
+            <div class="summary clearfix inventory">
+                <div class="line">
+                    <div class='entry total'>
+                        <span class="label">Quantity: </span>
+                        <span class="value">
+                            <t t-esc='orderlines[0].order.get_total_qty()' />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+    <t t-extend="NumpadWidget">
+        <t t-jquery="button.mode-button[data-mode='discount']" t-operation='after'>
+            <button class="mode-button disable inventory" data-mode='discount' />
+        </t>
+        <t t-jquery="button.mode-button[data-mode='price']" t-operation='after'>
+            <button class="mode-button disable inventory" data-mode='price' />
+        </t>
+        <t t-jquery="button.numpad-minus" t-operation='after'>
+            <button class="input-button disable numpad-minus inventory" />
+        </t>
+    </t>
+    <t t-name="NewInventoryPopupWidget">
+        <div class="modal-dialog inventory">
+            <div class="popup popup-selection inventory">
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'New Inventory Stage' " />
+                </p>
+                <div class='selection scrollable-y touch-scrollable inventory'>
+                    <t t-if="widget.pos.db.inventories &amp;&amp; widget.pos.users">
+                        <div class="selection inventory">
+                            <div>
+                                Select an Inventory
+                                <select
+                                    class='popup_selection inventory'
+                                    name='inventoriy_ids'
+                                >
+                                    <option value=''>None</option>
+                                    <t t-foreach='widget.pos.db.inventories' t-as='l'>
+                                        <option t-att-value='l.id'>
+                                            <t t-esc='l.name' />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            Select a User
+                            <div>
+                                <select class='popup_selection user' name='user_ids'>
+                                    <!--                                <option value=''>None</option>-->
+                                    <t
+                                        t-set="current_user"
+                                        t-value="widget.pos.get_cashier()"
+                                    />
+                                    <option t-att-value='current_user.id'>
+                                        <t t-esc='current_user.name' />
+                                    </option>
+                                    <t t-foreach='widget.pos.users' t-as='u'>
+                                        <t t-if="u.id != current_user.id">
+                                            <option t-att-value='u.id'>
+                                                <t t-esc='u.name' />
+                                            </option>
+                                        </t>
+                                    </t>
+                                </select>
+                            </div>
+                            Type a Name
+                            <div>
+                                <input
+                                    class="name"
+                                    type='text'
+                                    t-att-value="widget.options.value || ''"
+                                />
+                            </div>
+                            Note
+                            <div>
+                                <input
+                                    class="note"
+                                    type='text'
+                                    t-att-value="widget.options.value || ''"
+                                />
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="footer inventory">
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="div.breadcrumbs" t-operation='after'>
+            <div class="breadcrumbs inventory_name">
+                <t t-if="widget.pos.get_order().inventory_adjustment_stage_name">
+                    <span class="breadcrumb">
+                        <span
+                            class=" breadcrumb-button breadcrumb-home js-category-switch"
+                        >
+                            <t
+                                t-esc="widget.pos.get_order().inventory_adjustment_stage_name"
+                            />
+                        </span>
+                    </span>
+                </t>
+            </div>
+        </t>
+    </t>
+    <t t-extend="Orderline">
+        <t t-jquery="span.product-name" t-operation='before'>
+            <span class="line-index">
+                <t t-esc="_.indexOf(line.order.get_orderlines(), line) + 1" />
+            </span>
+        </t>
+        <t t-jquery=".price" t-operation='after'>
+            <span class="price inventory">
+                <em>
+                    <t t-esc="line.get_quantity_str()" />
+                </em>
+                <t t-esc="line.get_unit().name" />
+            </span>
+        </t>
+        <t t-jquery=".info-list" t-operation='after'>
+            <ul class="info-list inventory">
+                <t t-esc="line.product.barcode || ''" />
+            </ul>
+        </t>
+    </t>
+    <!--    <t t-extend="Product">-->
+    <!--        <t t-jquery=".product-img" t-operation='replace'>-->
+    <!--        </t>-->
+    <!--    </t>-->
+</templates>
