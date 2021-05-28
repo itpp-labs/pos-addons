@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "POS: Out-of-stock orders",
     "version": "10.0.1.1.0",
@@ -6,8 +5,8 @@
     "summary": "Only supervisor can approve POS Order with out-of-stock product",
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
-    "support": "pos@it-projects.info",
-    "website": "https://github.com/itpp-labs/pos-addons#readme",
+    "support": "help@itpp.dev",
+    "website": "https://twitter.com/OdooFree",
     "depends": ["pos_pin", "pos_product_available"],
     "data": ["data.xml", "views.xml"],
     "installable": True,

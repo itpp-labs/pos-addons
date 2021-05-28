@@ -17,6 +17,16 @@ Configuration
   * Set **Negative Order Group**
   * Click ``[Save]``
 
+Hiding out-of-stock products
+----------------------------
+
+* Go to ``[[Point of Sale]] >> Configuration >> Point of Sale``
+
+  * Open POS config form
+  * Click ``[Edit]``
+  * Mark **Hide Out of Stock Products**
+  * Click ``[Save]``
+
 Usage
 =====
 
