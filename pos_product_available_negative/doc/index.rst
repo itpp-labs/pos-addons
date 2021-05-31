@@ -14,6 +14,7 @@ Configuration
 
   * Open POS config form
   * Click ``[Edit]``
+  * Check ``Show Warning``
   * Set **Negative Order Group**
   * Click ``[Save]``
 

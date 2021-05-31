@@ -8,7 +8,7 @@
     "category": "Point Of Sale",
     # "live_test_url": "http://apps.it-projects.info/shop/product/DEMO-URL?version=11.0",
     "images": [],
-    "version": "11.0.1.1.1",
+    "version": "11.0.1.1.2",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
@@ -16,7 +16,7 @@
     "license": "Other OSI approved licence",  # MIT
     "price": 50.00,
     "currency": "EUR",
-    "depends": ["pos_pin", "pos_product_available"],
+    "depends": ["pos_pin", "pos_product_available", "web_tour"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["data.xml", "views.xml"],
     "demo": [],
