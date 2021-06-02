@@ -18,7 +18,7 @@ class TestUi(odoo.tests.HttpCase):
         env["ir.module.module"].search(
             [("name", "=", "pos_logout")], limit=1
         ).state = "installed"
-        self.phantom_js(
+        self.browser_js(
             "/web",
             "odoo.__DEBUG__.services['web_tour.tour']" ".run('pos_logout_tour')",
             "odoo.__DEBUG__.services['web_tour.tour']" ".tours.pos_logout_tour.ready",
