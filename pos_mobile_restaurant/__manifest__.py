@@ -24,5 +24,5 @@
     "pre_init_hook": None,
     "post_init_hook": None,
     "auto_install": True,
-    "installable": False,
+    "installable": True,
 }
