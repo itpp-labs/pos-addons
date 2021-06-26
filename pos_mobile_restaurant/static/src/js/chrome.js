@@ -1,4 +1,4 @@
-odoo.define("pos_mobile_restaurant.chrome", function(require) {
+odoo.define("pos_mobile_restaurant.chrome", function (require) {
     "use strict";
     if (!odoo.is_mobile) {
         return;
@@ -8,7 +8,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
 
     chrome.Chrome.include({
         // This method instantiates all the screens, widgets, etc.
-        build_widgets: function() {
+        build_widgets: function () {
             var self = this;
             // Floors swiper (you can to use the 'resistanceRatio': 1 parameter)
             // read more about it http://idangero.us/swiper/api/#parameters
@@ -17,7 +17,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
             });
 
             // Event will be fired after transition to another slide
-            this.swiper_floors.on("transitionEnd", function() {
+            this.swiper_floors.on("transitionEnd", function () {
                 self.change_current_floor();
             });
 
@@ -45,7 +45,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
 
             // Floors
             if (this.pos.floors) {
-                _.each(this.pos.floors, function(floor, index) {
+                _.each(this.pos.floors, function (floor, index) {
                     self.render_all_floors(floor.id, index);
                 });
             }
@@ -67,7 +67,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
             }
 
             // For compatibility with pos_multi_session_restaurant
-            this.pos.bind("change:orders-count-on-floor-screen", function() {
+            this.pos.bind("change:orders-count-on-floor-screen", function () {
                 self.change_current_floor();
             });
 
@@ -90,7 +90,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
             var printbill = $(".slide-buttons .control-button.order-printbill");
             printbill.remove();
         },
-        menu_button_click: function() {
+        menu_button_click: function () {
             var slider = this.swiper_floor_screen;
             if (this.menu_is_opened) {
                 slider.slideNext();
@@ -102,13 +102,13 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
                 this.menu_is_opened = true;
             }
         },
-        render_all_floors: function(id, index) {
+        render_all_floors: function (id, index) {
             var floor_widget = this.gui.screen_instances.floors;
             floor_widget.floor = this.pos.floors_by_id[id];
             floor_widget.renderElement();
         },
         // Set or change current order
-        change_current_floor: function(id) {
+        change_current_floor: function (id) {
             if (!this.pos.floors || !this.pos.floors.length) {
                 return false;
             }
@@ -131,7 +131,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
             this.menuButton = $(".slide-floor-content .menu-button");
             this.menu_is_opened = false;
 
-            this.menuButton.click(function() {
+            this.menuButton.click(function () {
                 self.menu_button_click();
             });
 
@@ -146,10 +146,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
             $(".mobile-floor-selector")
                 .find(".button-floor[data-id=" + floor_id + "]")
                 .addClass("active");
-            active_floor
-                .find(".tables")
-                .getNiceScroll()
-                .doScrollPos(0, 0);
+            active_floor.find(".tables").getNiceScroll().doScrollPos(0, 0);
 
             if (!this.pos.iOS) {
                 active_floor.find(".tables").niceScroll({
@@ -161,7 +158,7 @@ odoo.define("pos_mobile_restaurant.chrome", function(require) {
     });
 
     chrome.OrderSelectorWidget.include({
-        scroll_to_selected_order: function() {
+        scroll_to_selected_order: function () {
             if (this.pos.table) {
                 var orders = this.pos.get_table_orders(this.pos.table);
                 var selected_order = this.pos.get_order();

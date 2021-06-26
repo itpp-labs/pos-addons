@@ -1,4 +1,4 @@
-odoo.define("pos_mobile_restaurant.tour", function(require) {
+odoo.define("pos_mobile_restaurant.tour", function (require) {
     "use strict";
 
     require("pos_mobile.tour");

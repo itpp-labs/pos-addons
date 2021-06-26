@@ -13,8 +13,8 @@
                     <div class="o_setting_right_pane">
                         <label for="show_number_guests" />
                         <div class="text-muted">
-                                Show the number of guests in popup for empty table
-                            </div>
+                            Show the number of guests in popup for empty table
+                        </div>
                     </div>
                 </div>
             </xpath>

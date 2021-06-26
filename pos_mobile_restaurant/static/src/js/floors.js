@@ -1,4 +1,4 @@
-odoo.define("pos_mobile_restaurant.floors", function(require) {
+odoo.define("pos_mobile_restaurant.floors", function (require) {
     "use strict";
 
     if (!odoo.is_mobile) {
@@ -11,20 +11,20 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
     var _t = core._t;
 
     floors.FloorScreenWidget.include({
-        click_floor_button: function(event, $el) {
+        click_floor_button: function (event, $el) {
             this._super(event, $el);
             var id = $el.data("id");
             // Var floor = this.pos.floors_by_id[id];
             var slide = $("div[data-id=" + id + "][id=slide-floor]").index();
             this.chrome.swiper_floors.slideTo(slide);
         },
-        save_current_floor_changes_data: function() {
+        save_current_floor_changes_data: function () {
             if (this.get_current_data) {
                 var collection = this.get_current_data();
                 this.pos.saved_floors_data[this.floor.id] = JSON.stringify(collection);
             }
         },
-        compare_current_floor_data: function() {
+        compare_current_floor_data: function () {
             if (this.get_current_data) {
                 var collection = this.get_current_data();
                 return (
@@ -34,7 +34,7 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
             }
             return false;
         },
-        renderElement: function() {
+        renderElement: function () {
             if (this.compare_current_floor_data()) {
                 return false;
             }
@@ -56,14 +56,14 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
             }
             this.save_current_floor_changes_data();
         },
-        get_floor_slide_by_id: function(id) {
+        get_floor_slide_by_id: function (id) {
             return $(".swiper-slide.slide-floor[data-id=" + id + "]");
         },
     });
 
     floors.TableWidget.include({
         //  Different from Original: remove all styles specific for each table
-        table_style: function() {
+        table_style: function () {
             var table = this.table;
             var style = {};
             if (table.color) {
@@ -74,13 +74,13 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
             }
             return style;
         },
-        destroy: function() {
+        destroy: function () {
             if (this.$el && this.$el.hasClass("table")) {
                 return;
             }
             this._super();
         },
-        renderElement: function() {
+        renderElement: function () {
             /*
                 The 'drag' events in original code was added because on touch devices it is sometimes
                 not easy to click, especially on small elements. You have to touch and
@@ -99,7 +99,7 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
     });
 
     floors.TableGuestsButton.include({
-        button_click: function() {
+        button_click: function () {
             var self = this;
             if (this.pos.get_order()) {
                 this._super();
@@ -108,13 +108,13 @@ odoo.define("pos_mobile_restaurant.floors", function(require) {
                     title: _t("Guests ?"),
                     cheap: true,
                     value: 0,
-                    confirm: function(value) {
+                    confirm: function (value) {
                         value = Math.max(1, Number(value));
                         self.pos.add_new_order();
                         self.pos.get_order().set_customer_count(value);
                         self.renderElement();
                     },
-                    cancel: function() {
+                    cancel: function () {
                         self.pos.table = null;
                     },
                 });
