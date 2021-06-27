@@ -4,6 +4,7 @@
 :open_file_folder: Get a **.zip** file with all needed dependencies:
 
 :heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/14.0/pos_cashier_select/)
+<br/>:heavy_check_mark: [pos_debranding](https://apps.odoo.com/apps/modules/14.0/pos_debranding/)
 <br/>:heavy_check_mark: [pos_invoice_pay](https://apps.odoo.com/apps/modules/14.0/pos_invoice_pay/)
 <br/>:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/14.0/pos_longpolling/)
 <br/>:heavy_check_mark: [pos_orderline_absolute_discount](https://apps.odoo.com/apps/modules/14.0/pos_orderline_absolute_discount/)
