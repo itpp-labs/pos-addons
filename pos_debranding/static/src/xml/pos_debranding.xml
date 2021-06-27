@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-    <t t-extend="Chrome">
-        <t t-jquery=".pos-logo" t-operation="replace">
-            <!--
-            <img class="pos-logo" src="/your_custom_module/static/src/img/logo.png" />
-            -->
-        </t>
+    <t
+        t-name="Chrome"
+        t-inherit="point_of_sale.Chrome"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('pos-branding')]/img" position="attributes">
+            <attribute name="src">/logo.png</attribute>
+        </xpath>
     </t>
 </templates>

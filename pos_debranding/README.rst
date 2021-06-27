@@ -8,7 +8,12 @@
 
 Removes references to odoo.com:
 
-* Deletes odoo logo
+* Replaces Odoo logo with company logo, i.e. ``/logo.png``
+
+Roadmap
+=======
+
+*  ``/logo.png`` should be used with ``?company_id=123`` to avoid cache issues on multi-company environment
 
 Further information
 ===================
