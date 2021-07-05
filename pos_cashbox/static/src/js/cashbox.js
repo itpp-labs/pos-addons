@@ -1,6 +1,6 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_cashbox.open", function(require) {
+odoo.define("pos_cashbox.open", function (require) {
     "use strict";
 
     var WidgetButton = require("web.form_widgets").WidgetButton;
@@ -11,7 +11,7 @@ odoo.define("pos_cashbox.open", function(require) {
     var _t = core._t;
 
     WidgetButton.include({
-        on_click: function() {
+        on_click: function () {
             var self = this;
             if (this.node.attrs.special === "open_backend_cashbox") {
                 var proxy_ip = this.view.datarecord.proxy_ip;
@@ -23,12 +23,12 @@ odoo.define("pos_cashbox.open", function(require) {
                 var url = this.get_full_url(proxy_ip);
                 this.connect(url);
                 this.open_cashbox()
-                    .done(function() {
+                    .done(function () {
                         if (self.$el.hasClass("o_wow")) {
                             self.show_wow();
                         }
                     })
-                    .fail(function() {
+                    .fail(function () {
                         return self.show_warning_message(
                             _t(
                                 "Connection Refused. Please check the connection to CashBox"
@@ -39,7 +39,7 @@ odoo.define("pos_cashbox.open", function(require) {
                 this._super.apply(this, arguments);
             }
         },
-        show_warning_message: function(message) {
+        show_warning_message: function (message) {
             new CrashManager().show_warning({
                 data: {
                     exception_type: _t("Incorrect Operation"),
@@ -47,7 +47,7 @@ odoo.define("pos_cashbox.open", function(require) {
                 },
             });
         },
-        get_full_url: function(current_url) {
+        get_full_url: function (current_url) {
             var port = ":8069";
             var url = current_url;
             if (url.indexOf("//") < 0) {
@@ -58,19 +58,19 @@ odoo.define("pos_cashbox.open", function(require) {
             }
             return url;
         },
-        connect: function(url) {
+        connect: function (url) {
             this.connection = new Session(undefined, url, {use_cors: true});
         },
-        open_cashbox: function() {
+        open_cashbox: function () {
             var self = this;
             function send_opening_job(retries, done) {
                 done = done || new $.Deferred();
                 self.connection
                     .rpc("/hw_proxy/open_cashbox")
-                    .done(function() {
+                    .done(function () {
                         done.resolve();
                     })
-                    .fail(function() {
+                    .fail(function () {
                         if (retries > 0) {
                             send_opening_job(retries - 1, done);
                         } else {
