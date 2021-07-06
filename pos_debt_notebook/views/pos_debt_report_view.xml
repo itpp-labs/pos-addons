@@ -4,7 +4,7 @@
     Copyright 2017 Ilmir Karamov <https://it-projects.info/team/ilmir-k>
     Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT).
-    License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work. -->
+ -->
 <odoo>
     <record id="view_report_pos_debt_pivot" model="ir.ui.view">
         <field name="name">report.pos.debt.pivot</field>

@@ -4,7 +4,7 @@
  * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
  * License MIT (https://opensource.org/licenses/MIT).
- * License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work. */
+ */
 /* eslint complexity: "off"*/
 odoo.define("pos_debt_notebook.pos", function (require) {
     "use strict";

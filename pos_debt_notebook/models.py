@@ -6,8 +6,6 @@
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
-# License OPL-1 (https://www.odoo.com/documentation/user/13.0/legal/licenses/licenses.html#odoo-apps) for derivative work.
-
 import copy
 import logging
 
