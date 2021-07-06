@@ -52,7 +52,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                 loaded: function (self, journals) {
                     _.each(self.payment_methods, function (pm) {
                         pm.journal = _.find(journals, function (j) {
-                            return j.id == pm.cash_journal_id[0];
+                            return j.id === pm.cash_journal_id[0];
                         });
                     });
                 },
@@ -609,23 +609,24 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                 });
                 return;
             }
-            client &&
+            if (client) {
                 this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(
                     client.id
                 );
+            }
             this._super(options);
         },
         finalize_validation: function () {
             var self = this;
             var order = this.pos.get_order(),
                 paymentlines = order.get_paymentlines(),
-                order_total = order.get_total_with_tax(),
                 partner = this.pos.get_client();
             var debt_pl = _.filter(paymentlines, function (pl) {
                 return pl.payment_method.journal.debt;
             });
             if (debt_pl && partner) {
-                var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
+                // TODO: delete?
+                // var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
                 this._super();
                 // Offline updating of credits, on a restored network this data will be replaced by the servers one
                 _.each(debt_pl, function (pl) {
