@@ -16,4 +16,3 @@ repo_readme:
   addons:
     - pos_mobile
     - pos_scan_ref
-    - pos_debt_notebook
