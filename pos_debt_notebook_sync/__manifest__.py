@@ -13,8 +13,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook_sync/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 255.00,
-    "currency": "EUR",
     "depends": ["base_automation", "pos_longpolling", "pos_debt_notebook"],
     "external_dependencies": {"python": [], "bin": []},
     "data": ["views/template.xml", "data/base_action_rule.xml"],
