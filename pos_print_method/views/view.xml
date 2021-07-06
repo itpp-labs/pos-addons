@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<openerp>
+<odoo>
     <record id="view_restaurant_printer" model="ir.ui.view">
         <field name="name">Order Printers</field>
         <field name="model">restaurant.printer</field>
@@ -20,4 +20,4 @@
             </xpath>
         </field>
     </record>
-</openerp>
+</odoo>

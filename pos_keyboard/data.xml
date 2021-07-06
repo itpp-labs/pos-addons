@@ -3,7 +3,7 @@
     Copyright 2016 ufaks <https://github.com/ufaks>
     Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/kolushovalexandr>
     License MIT (https://opensource.org/licenses/MIT). -->
-<openerp>
+<odoo>
     <template id="assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_keyboard/static/src/js/pos.js" />
@@ -17,4 +17,4 @@
             />
         </xpath>
     </template>
-</openerp>
+</odoo>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!--Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
     License MIT (https://opensource.org/licenses/MIT). -->
-<openerp>
+<odoo>
     <data>
         <!--Set field debt to 'credit' in model pos.config.settings via get_default_debt_type-->
         <function
@@ -22,4 +22,4 @@
             </field>
         </record>
     </data>
-</openerp>
+</odoo>

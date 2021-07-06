@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<openerp>
+<odoo>
     <template
         id="assets_backend"
         name="debt pos assets"
@@ -15,4 +15,4 @@
             <link rel="stylesheet" href="/pos_product_lot/static/src/css/pos.css" />
         </xpath>
     </template>
-</openerp>
+</odoo>
