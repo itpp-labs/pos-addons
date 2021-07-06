@@ -14,7 +14,7 @@
     "summary": "Comfortable sales for your regular customers. Debt payment method for POS",
     "category": "Point Of Sale",
     "images": ["images/debt_notebook.png"],
-    "version": "13.0.5.3.4",
+    "version": "14.0.5.3.4",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook/",

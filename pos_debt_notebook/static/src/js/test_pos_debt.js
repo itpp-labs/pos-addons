@@ -9,7 +9,7 @@ odoo.define("pos_debt_notebook.tour", function (require) {
 
     function open_pos_neworder() {
         return [
-            tour.STEPS.SHOW_APPS_MENU_ITEM,
+            tour.stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
                 content: _t(
