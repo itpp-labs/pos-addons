@@ -65,7 +65,7 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_debt_notebook/
 
 
-Tested on `Odoo 13.0 <https://github.com/odoo/odoo/commit/db2e6bc600364c00e8a1d528d4b17ae052ecd41e>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/c28a32daa56193d97f0d91dac1fe560603b8837b>`_

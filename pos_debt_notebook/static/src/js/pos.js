@@ -3,29 +3,29 @@
  * Copyright 2017 Artyom Losev
  * Copyright 2017-2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
  * Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
- * License MIT (https://opensource.org/licenses/MIT).
- */
+ * License MIT (https://opensource.org/licenses/MIT). */
 /* eslint complexity: "off"*/
+
 odoo.define("pos_debt_notebook.pos", function (require) {
     "use strict";
 
     var models = require("point_of_sale.models");
-    var screens = require("point_of_sale.screens");
     var core = require("web.core");
-    var gui = require("point_of_sale.gui");
     var utils = require("web.utils");
     var rpc = require("web.rpc");
-    var PopupWidget = require("point_of_sale.popups");
 
-    var QWeb = core.qweb;
     var _t = core._t;
     var round_pr = utils.round_precision;
+
+    const AbstractAwaitablePopup = require("point_of_sale.AbstractAwaitablePopup");
+    const ClientListScreen = require("point_of_sale.ClientListScreen");
+    const PaymentScreen = require("point_of_sale.PaymentScreen");
+    const Registries = require("point_of_sale.Registries");
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
         initialize: function (session, attributes) {
             this.reload_debts_partner_ids = [];
-            // TODO: should be replaced with native Promise
             this.reload_debts_timer = $.when();
             models.load_models({
                 model: "account.journal",
@@ -51,9 +51,10 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                 },
                 loaded: function (self, journals) {
                     _.each(self.payment_methods, function (pm) {
-                        pm.journal = _.find(journals, function (j) {
-                            return j.id === pm.cash_journal_id[0];
-                        });
+                        pm.journal =
+                            _.find(journals, function (j) {
+                                return j.id === pm.cash_journal_id[0];
+                            }) || {};
                     });
                 },
             });
@@ -70,7 +71,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             var done = new $.Deferred();
 
             var progress = (this.models.length - 0.5) / this.models.length;
-            this.chrome.loading_message(_t("Loading Credits data"), progress);
+            this.setLoadingMessage(_t("Loading Credits data"), progress);
             this.reload_debts(partner_ids, 0, {postpone: false}).then(function () {
                 var result = _super_posmodel.after_load_server_data.apply(
                     self,
@@ -126,15 +127,18 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             if (partner_ids.length === 1 && !limit) {
                 // Incoming data about balance updates not contains limit
                 // this block changes limit only in case of opened debt history for a partner who have got an update
-                var client_list_screen = this.gui.screen_instances.clientlist;
-                if (client_list_screen && client_list_screen.debt_history_is_opened()) {
-                    var partner = client_list_screen.new_client || this.get_client();
-                    if (partner && partner_ids[0] === partner.id) {
-                        limit =
-                            client_list_screen.history_length ||
-                            client_list_screen.debt_history_limit_initial;
-                    }
-                }
+                // TODO: rewrite this:
+                // ---------------------
+                // var client_list_screen = this.gui.screen_instances.clientlist;
+                // if (client_list_screen && client_list_screen.debt_history_is_opened()) {
+                //     var partner = client_list_screen.new_client || this.get_client();
+                //     if (partner && partner_ids[0] === partner.id) {
+                //         limit =
+                //             client_list_screen.history_length ||
+                //             client_list_screen.debt_history_limit_initial;
+                //     }
+                // }
+                // ---------------------
             }
             options = options || {};
             if (typeof options.postpone === "undefined") {
@@ -237,9 +241,6 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             });
             this.trigger("updateDebtHistory", partner_ids);
         },
-        thumb_up_animation: function () {
-            this.gui.show_popup("thumb-up");
-        },
     });
 
     var _super_order = models.Order.prototype;
@@ -315,6 +316,11 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                 data.debt_after = round_pr(this.debt_after, rounding);
                 data.debt_type = this.pos.config.debt_type;
             }
+            data.paymentlines_without_credits_via_discount = this.get_paymentlines()
+                .filter((line) => {
+                    return !line.payment_method.journal.credits_via_discount;
+                })
+                .map((line) => line.export_for_printing());
             return data;
         },
         get_payment_limits: function (cashregister, limit_code) {
@@ -401,7 +407,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             return _.reduce(
                 paymentlines,
                 function (memo, pl) {
-                    if (pl.cashregister.journal.credits_via_discount) {
+                    if (pl.payment_method.journal.credits_via_discount) {
                         return memo + pl.get_amount();
                     }
                     return memo;
@@ -411,11 +417,10 @@ odoo.define("pos_debt_notebook.pos", function (require) {
         },
         add_paymentline: function (cashregister) {
             this.assert_editable();
-            var self = this;
             var journal = cashregister.journal;
             if (!this.get_client() && (this.has_credit_product() || journal.debt)) {
-                setTimeout(function () {
-                    self.pos.gui.show_screen("clientlist");
+                setTimeout(() => {
+                    this.set_screen_data({name: "ClientListScreen"});
                 }, 30);
             }
             var due = this.get_due_debt();
@@ -467,939 +472,634 @@ odoo.define("pos_debt_notebook.pos", function (require) {
         },
     });
 
-    screens.PaymentScreenWidget.include({
-        init: function (parent, options) {
-            this._super(parent, options);
-            this.pos.on(
-                "updateDebtHistory",
-                function (partner_ids) {
-                    this.update_debt_history(partner_ids);
-                },
-                this
-            );
-        },
-        update_debt_history: function (partner_ids) {
-            var client = this.pos.get_client();
-            if (client && $.inArray(client.id, partner_ids) !== -1) {
-                this.gui.screen_instances.products.actionpad.renderElement();
-                this.customer_changed();
-            }
-        },
-        validate_order: function (options) {
-            var currentOrder = this.pos.get_order();
-            var zero_paymentlines = _.filter(currentOrder.get_paymentlines(), function (
-                p
-            ) {
-                return p.amount === 0;
-            });
-            _.each(zero_paymentlines, function (p) {
-                currentOrder.remove_paymentline(p);
-            });
-            var isDebt = currentOrder.updates_debt();
-            var debt_amount = currentOrder.get_debt_delta();
-            var client = currentOrder.get_client();
-            if (client) {
-                currentOrder.debt_before = client.debt;
-                currentOrder.debt_after = currentOrder.debt_before + debt_amount;
-            } else {
-                currentOrder.debt_before = false;
-                currentOrder.debt_after = false;
-            }
-            if (isDebt && !client) {
-                this.gui.show_popup("error", {
-                    title: _t("Unknown customer"),
-                    body: _t("You cannot use Debt payment. Select customer first."),
-                });
-                return;
-            }
-            var paymentlines_with_credits_via_discounts = currentOrder.has_paymentlines_with_credits_via_discounts();
-            if (paymentlines_with_credits_via_discounts.length) {
-                var paymentlines_with_credits_via_discounts_text = _.map(
-                    paymentlines_with_credits_via_discounts,
-                    function (pl) {
-                        return pl.name;
-                    }
-                ).join(", ");
-
-                if (this.check_discount_credits_for_taxed_products()) {
-                    this.gui.show_popup("error", {
-                        title: _t(
-                            "Unable to validate with the " +
-                                paymentlines_with_credits_via_discounts_text +
-                                " payment method"
-                        ),
-                        body: _t(
-                            "You cannot use " +
-                                paymentlines_with_credits_via_discounts_text +
-                                " for products with taxes. Use an another payment method, or pay the full price with only discount credits"
-                        ),
-                    });
-                    return;
-                }
-                if (currentOrder.has_credit_product()) {
-                    this.gui.show_popup("error", {
-                        title: _t(
-                            "Unable to validate with the " +
-                                paymentlines_with_credits_via_discounts_text +
-                                " payment method"
-                        ),
-                        body: _t(
-                            "You cannot use " +
-                                paymentlines_with_credits_via_discounts_text +
-                                " for credit top-up products. Use an another non-discount payment method"
-                        ),
-                    });
-                    return;
-                }
-            }
-            if (
-                !currentOrder.get_paymentlines().length &&
-                currentOrder.has_return_product()
-            ) {
-                this.gui.show_popup("error", {
-                    title: _t("Unable to validate return order"),
-                    body: _t("Specify Payment Method"),
-                });
-                return;
-            }
-            if (currentOrder.has_credit_product() && !client) {
-                this.gui.show_popup("error", {
-                    title: _t("Unknown customer"),
-                    body: _t("Don't forget to specify Customer when sell Credits."),
-                });
-                return;
-            }
-            if (isDebt && currentOrder.get_orderlines().length === 0) {
-                this.gui.show_popup("error", {
-                    title: _t("Empty Order"),
-                    body: _t(
-                        "There must be at least one product in your order before it can be validated. (Hint: you can use some dummy zero price product)"
-                    ),
-                });
-                return;
-            }
-            var exceeding_debts = this.exceeding_debts_check();
-            if (client && exceeding_debts) {
-                this.gui.show_popup("error", {
-                    title: _t("Max Debt exceeded"),
-                    body: _t(
-                        "You cannot sell products on credit journal " +
-                            exceeding_debts +
-                            " to the customer because its max debt value will be exceeded."
-                    ),
-                });
-                return;
-            }
-            if (this.debt_change_check()) {
-                this.gui.show_popup("error", {
-                    title: _t(
-                        "Unable to return the change or cash out with the debt payment method"
-                    ),
-                    body: _t(
-                        "Please enter the exact or lower debt amount than the cost of the order."
-                    ),
-                });
-                return;
-            }
-            var violations = this.debt_journal_restricted_categories_check();
-            if (violations.length) {
-                this.gui.show_popup("error", {
-                    title: _t("Unable to validate with the debt payment method"),
-                    body: _t(this.restricted_categories_message(violations)),
-                });
-                return;
-            }
-            if (client) {
-                this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(
-                    client.id
-                );
-            }
-            this._super(options);
-        },
-        finalize_validation: function () {
-            var self = this;
-            var order = this.pos.get_order(),
-                paymentlines = order.get_paymentlines(),
-                partner = this.pos.get_client();
-            var debt_pl = _.filter(paymentlines, function (pl) {
-                return pl.payment_method.journal.debt;
-            });
-            if (debt_pl && partner) {
-                // TODO: delete?
-                // var disc_credits_pl = order.has_paymentlines_with_credits_via_discounts();
-                this._super();
-                // Offline updating of credits, on a restored network this data will be replaced by the servers one
-                _.each(debt_pl, function (pl) {
-                    partner.debts[pl.payment_method.journal.id].balance -= pl.amount;
-                    partner.debt += pl.amount;
-                });
-            } else {
-                this._super();
-            }
-            var debt_prod = _.filter(order.get_orderlines(), function (ol) {
-                return ol.product.credit_product;
-            });
-            if (debt_prod) {
-                var value = 0;
-                _.each(debt_prod, function (dp) {
-                    value = round_pr(
-                        dp.quantity * dp.price,
-                        self.pos.currency.rounding
-                    );
-                    partner.debts[dp.product.credit_product[0]].balance += value;
-                    partner.debt -= value;
-                });
-            }
-        },
-        get_used_debt_cashregisters: function (paymentlines) {
-            paymentlines = paymentlines || this.pos.get_order().get_paymentlines();
-            var cashregisters = _.uniq(
-                _.map(paymentlines, function (pl) {
-                    return pl.payment_method;
-                })
-            );
-            return _.filter(cashregisters, function (cr) {
-                return cr.journal.debt;
-            });
-        },
-        restricted_categories_message: function (cashregisters) {
-            var self = this;
-            var body = [];
-            var categ_names = [];
-            _.each(cashregisters, function (cr) {
-                var journal = cr.journal;
-                _.each(journal.category_ids, function (categ) {
-                    categ_names.push(self.pos.db.get_category_by_id(categ).name);
-                });
-                body.push(categ_names.join(", ") + " with " + cr.journal_id[1] + " ");
-            });
-            // TODO we can make a better formatting here
-            return "You may only buy " + body.toString();
-        },
-        debt_journal_restricted_categories_check: function () {
-            var self = this;
-            var cashregisters = this.get_used_debt_cashregisters();
-            cashregisters = _.filter(cashregisters, function (cr) {
-                return cr.journal.category_ids.length > 0;
-            });
-            var violations = [];
-            _.each(cashregisters, function (cr) {
-                if (self.restricted_products_check(cr)) {
-                    violations.push(cr);
-                }
-            });
-            return violations;
-        },
-        check_discount_credits_for_taxed_products: function () {
-            var order = this.pos.get_order(),
-                discount_pl = order.has_paymentlines_with_credits_via_discounts();
-            if (
-                !discount_pl.length ||
-                discount_pl.length === order.get_paymentlines().length
-            ) {
-                return false;
-            }
-            var taxes_id = false;
-            var taxed_orderlines = _.find(order.orderlines.models, function (ol) {
-                // Returns only a found orderline with a tax that is not included in the price
-                taxes_id = ol.product.taxes_id;
-                if (taxes_id && taxes_id.length) {
-                    return _.find(taxes_id, function (t) {
-                        return !order.pos.taxes_by_id[t].price_include;
-                    });
-                }
-                return false;
-            });
-            if (!taxed_orderlines) {
-                return false;
-            }
-            return true;
-        },
-        restricted_products_check: function (cr) {
-            var order = this.pos.get_order();
-            var sum_pl = round_pr(
-                order.get_summary_for_cashregister(cr),
-                this.pos.currency.rounding
-            );
-            var limits = order.get_payment_limits(cr, "products_restriction");
-            var allowed_lines = _.filter(order.get_orderlines(), function (ol) {
-                var categories = [];
-                if (ol.product.pos_categ_id) {
-                    categories = [ol.product.pos_categ_id[0]];
-                } else {
-                    categories = ol.product.pos_category_ids;
-                }
-                if (_.intersection(cr.journal.category_ids, categories).length) {
-                    return true;
-                }
-                return false;
-            });
-            if (
-                allowed_lines.length === order.get_orderlines().length ||
-                this.cash_out_check()
-            ) {
-                // If all products are allowed or it is a cash out case
-                // we don't need to check max debt exceeding, because it was checked earlier
-                return false;
-            }
-            if (
-                _.has(limits, "products_restriction") &&
-                sum_pl > limits.products_restriction
-            ) {
-                return cr;
-            }
-            return false;
-        },
-        cash_out_check: function () {
-            var order = this.pos.get_order();
-            if (
-                order.get_orderlines().length === 1 &&
-                this.pos.config.debt_dummy_product_id &&
-                order.get_orderlines()[0].product.id ===
-                    this.pos.config.debt_dummy_product_id[0]
-            ) {
-                return true;
-            }
-            return false;
-        },
-        exceeding_debts_check: function () {
-            var order = this.pos.get_order(),
-                flag = false;
-            if (this.pos.get_client()) {
-                _.each(this.get_used_debt_cashregisters(), function (cr) {
-                    var limits = order.get_payment_limits(cr, "debt_limit");
-                    var sum_pl = order.get_summary_for_cashregister(cr);
-                    // No need to check that debt_limit is in limits by the reason of get_payment_limits definition
-                    if (sum_pl > limits.debt_limit) {
-                        flag = cr.cash_journal_id[1];
-                    }
-                });
-                return flag;
-            }
-        },
-        debt_change_check: function () {
-            var order = this.pos.get_order(),
-                paymentlines = order.get_paymentlines();
-            for (var i = 0; i < paymentlines.length; i++) {
-                var journal = paymentlines[i].payment_method.journal;
-                if (
-                    journal.debt &&
-                    !journal.pos_cash_out &&
-                    order.get_change(paymentlines[i]) > 0
-                ) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        pay_full_debt: function () {
-            var self = this;
-            var order = this.pos.get_order();
-            if (
-                order &&
-                !order.orderlines.length &&
-                this.pos.config.debt_dummy_product_id
-            ) {
-                order.add_product(
-                    this.pos.db.get_product_by_id(
-                        this.pos.config.debt_dummy_product_id[0]
-                    ),
-                    {price: 0}
-                );
-            }
-
-            var paymentLines = order.get_paymentlines();
-            if (paymentLines.length) {
-                _.each(paymentLines, function (paymentLine) {
-                    if (paymentLine.cashregister.journal.debt) {
-                        paymentLine.destroy();
-                    }
-                });
-            }
-
-            var debts = order.get_client().debts;
-            _.each(debts, function (debt) {
-                if (debt.balance < 0) {
-                    var newDebtPaymentline = new models.Paymentline(
-                        {},
-                        {
-                            pos: self.pos,
-                            order: order,
-                            cashregister: _.find(self.pos.cashregisters, function (cr) {
-                                return cr.journal_id[0] === debt.journal_id[0];
-                            }),
-                        }
-                    );
-                    newDebtPaymentline.set_amount(debt.balance);
-                    order.paymentlines.add(newDebtPaymentline);
-                }
-            });
-
-            this.render_paymentlines();
-        },
-
-        /* I inherit the native is_paid() method below for the following reason:
-        without this inherit, if you have a customer with a debt and he comes
-        to pay his debt without buying new items:
-        1) cashier selects "debt journal"
-        2) cashier selects the customer and clicks on "Select Customer and Pay Full Debt"
-        3) a dummy product is automatically added to the pos order and
-           the debt journal is selected with a negative amount corresponding
-           to the debt.
-           AT THAT MOMENT, the "Validate" button is active...
-           so the cashier can click on it by accident !
-           He should not, because he still has to select the payment method used
-           to pay the debt.
-        This problem is linked to the fact that the native is_paid() method
-        returns with the following code:
-        return (currentOrder.getTotalTaxIncluded() < 0.000001
-                            || currentOrder.getPaidTotal() + 0.000001 >= currentOrder.getTotalTaxIncluded());
-        (cf odoo/addons/point_of_sale/static/src/js/screens.js line 1256)
-        So is_paid() always returns True when
-        "currentOrder.getTotalTaxIncluded() < 0.000001" which is the case
-        in this scenario with a pos.order with the dummy product with price = 0
-        I must say that I don't understand what is the use case behind the
-        "currentOrder.getTotalTaxIncluded() < 0.000001" */
-        is_paid: function () {
-            var currentOrder = this.pos.get_order();
-            return (
-                currentOrder.getPaidTotal() + 0.000001 >=
-                currentOrder.getTotalTaxIncluded()
-            );
-        },
-        customer_changed: function () {
-            var self = this;
-            var client = this.pos.get_client();
-            var debt = 0;
-            var deb_type = 1;
-            var debt_type = this.pos.config.debt_type;
-            if (client) {
-                debt = Math.round(client.debt * 100) / 100;
-                if (debt_type === "credit") {
-                    debt = -debt;
-                    deb_type = -1;
-                }
-            }
-            var $js_customer_name = this.$(".js_customer_name");
-            var $pay_full_debt = this.$(".pay-full-debt");
-            $js_customer_name.text(client ? client.name : _t("Customer"));
-            $pay_full_debt.unbind().on("click", function () {
-                self.pay_full_debt();
-            });
-            $pay_full_debt.addClass("oe_hidden");
-            if (client && debt) {
-                if (debt_type === "debt") {
-                    if (debt > 0) {
-                        $pay_full_debt.removeClass("oe_hidden");
-                        $js_customer_name.append(
-                            '<span class="client-debt positive"> [Debt: ' +
-                                this.format_currency(debt) +
-                                "]</span>"
-                        );
-                    } else if (debt < 0) {
-                        $js_customer_name.append(
-                            '<span class="client-debt negative"> [Debt: ' +
-                                this.format_currency(debt) +
-                                "]</span>"
-                        );
-                    }
-                } else if (debt_type === "credit") {
-                    if (debt > 0) {
-                        $js_customer_name.append(
-                            '<span class="client-credit positive"> [Credit: ' +
-                                this.format_currency(debt) +
-                                "]</span>"
-                        );
-                    } else if (debt < 0) {
-                        $pay_full_debt.removeClass("oe_hidden");
-                        $js_customer_name.append(
-                            '<span class="client-credit negative"> [Credit: ' +
-                                this.format_currency(debt) +
-                                "]</span>"
-                        );
-                    }
-                }
-            }
-            var debt_cashregisters = _.filter(this.pos.cashregisters, function (cr) {
-                return cr.journal.debt;
-            });
-            _.each(debt_cashregisters, function (cr) {
-                var journal_id = cr.journal.id;
-                var pm_button = self.$el.find("div[data-id=" + journal_id + "]");
-                pm_button.find("span").remove();
-                if (client && client.debts && client.debts[journal_id]) {
-                    var credit_line_html = QWeb.render("CreditNote", {
-                        debt: deb_type * client.debts[journal_id].balance,
-                        widget: self,
-                    });
-                    pm_button.append(credit_line_html);
-                }
-            });
-            this.change_autopay_button();
-        },
-        add_autopay_paymentlines: function () {
-            var client = this.pos.get_client();
-            var order = this.pos.get_order();
-            var status = "";
-            if (
-                client &&
-                client.debts &&
-                order &&
-                order.get_orderlines().length !== 0 &&
-                !order.has_credit_product()
-            ) {
-                var paymentlines = order.get_paymentlines();
-                if (paymentlines.length && order.get_due() > 0) {
-                    _.each(paymentlines, function (pl) {
-                        order.remove_paymentline(pl);
-                    });
-                }
-                var autopay_cashregisters = _.filter(this.pos.cashregisters, function (
-                    cr
-                ) {
-                    return (
-                        cr.journal.debt &&
-                        cr.journal.credits_autopay &&
-                        client.debts[cr.journal.id].balance > 0
-                    );
-                });
-                if (autopay_cashregisters) {
-                    _.each(autopay_cashregisters, function (cr) {
-                        if (order.get_due()) {
-                            order.add_paymentline(cr);
-                        }
-                    });
-                    status = "validate";
-                }
-                if (order.get_due() > 0) {
-                    status = "alert";
-                }
-            }
-            return status;
-        },
-        renderElement: function () {
-            this._super();
-            this.autopay_html = this.render_validation_button();
-            this.$el.append(this.autopay_html);
-        },
-        render_validation_button: function () {
-            var self = this;
-            var validation_button = $(QWeb.render("ValidationButton", {widget: this}));
-            validation_button.find(".autopay").click(function () {
-                self.click_autopay_validation();
-            });
-            return validation_button;
-        },
-        change_autopay_button: function (status) {
-            var content = $(this.autopay_html);
-            var button_autopay = content.find(".autopay");
-            if (status === "validate") {
-                content.show();
-                button_autopay.removeClass("alert");
-                button_autopay.addClass("validate");
-                button_autopay.find(".title").text("Validate");
-            } else if (status === "alert") {
-                content.show();
-                button_autopay.removeClass("validate");
-                button_autopay.addClass("alert");
-                button_autopay.find(".title").text("Not enough credits to autopay");
-            }
-        },
-        click_autopay_validation: function () {
-            this.pos.get_order().autopay_validated = true;
-            this.validate_order();
-        },
-        show: function () {
-            var autopay_status = this.add_autopay_paymentlines();
-            this._super();
-            this.change_autopay_button(autopay_status);
-        },
-        render_paymentlines: function () {
-            var order = this.pos.get_order();
-            if (!order) {
-                return;
-            }
-            this._super();
-            if (order.get_due()) {
-                // Red if not fully paid, green if payment cover up the due
-                this.change_autopay_button("alert");
-            } else {
-                this.change_autopay_button("validate");
-            }
-            if (!order.get_paymentlines().length || order.has_credit_product()) {
-                $(this.autopay_html).hide();
-            }
-        },
-    });
-
-    screens.ReceiptScreenWidget.include({
-        show: function () {
-            this._super();
-            var order = this.pos.get_order();
-            $(this.next_button_html).hide();
-            if (order && order.autopay_validated) {
-                $(this.next_button_html).show();
-                var button_next = this.next_button_html.find(".autopay");
-                button_next.addClass("validate");
-                button_next.find(".title").text("Next");
-            }
-        },
-        click_next: function () {
-            if (this.pos.get_order().autopay_validated) {
-                this._super();
-                this.pos.thumb_up_animation();
-            } else {
-                this._super();
-            }
-        },
-        render_validation_button: function () {
-            var self = this;
-            var validation_button = $(QWeb.render("ValidationButton", {widget: this}));
-            validation_button.find(".autopay").click(function () {
-                self.click_next();
-            });
-            return validation_button;
-        },
-        renderElement: function () {
-            this._super();
-            this.next_button_html = this.render_validation_button();
-            this.$el.append(this.next_button_html);
-        },
-        render_change: function () {
-            // Deduct the number of discount credits, because they were spent on discounts, but still presence like unspent
-            var order = this.pos.get_order();
-            this.$(".change-value").html(this.format_currency(order.get_change()));
-        },
-    });
-
-    gui.Gui.prototype.screen_classes
-        .filter(function (el) {
-            return el.name === "clientlist";
-        })[0]
-        .widget.include({
-            init: function (parent, options) {
-                this._super(parent, options);
-                this.round = function (value) {
-                    return Math.round(value * 100) / 100;
-                };
-                this.check_user_in_group = function (group_id, groups) {
-                    return $.inArray(group_id, groups) !== -1;
-                };
-                this.pos.on(
+    const MyPaymentScreen = (_PaymentScreen) =>
+        class extends _PaymentScreen {
+            constructor() {
+                super(...arguments);
+                this.env.pos.on(
                     "updateDebtHistory",
                     function (partner_ids) {
                         this.update_debt_history(partner_ids);
                     },
                     this
                 );
-                this.debt_history_limit_initial = 10;
-                this.debt_history_limit_increment = 10;
-            },
-            line_select: function (event, $line, id) {
-                this._super(event, $line, id);
-                this.selected_line = arguments;
-                this.pos.reload_debts(id, 0, {postpone: false});
-            },
-            update_debt_history: function (partner_ids) {
-                var self = this;
-                var customers = this.pos.db.get_partners_sorted(1000);
-                var partner = this.new_client || this.pos.get_client();
-                if (partner && this.clientlist_screen_is_opened()) {
-                    var debt = partner.debt;
-                    if (this.pos.config.debt_type === "credit") {
-                        debt = -debt;
-                    }
-                    debt = this.format_currency(debt);
+            }
 
-                    if (partner_ids.length && _.contains(partner_ids, partner.id)) {
-                        // Updating only opened partner profile and debt history
-                        $(".client-detail .detail.client-debt").text(debt);
-                        var debts = _.values(partner.debts);
-                        if (partner.debts) {
-                            var credit_lines_html = "";
-                            credit_lines_html = QWeb.render("CreditList", {
-                                partner: partner,
-                                debts: debts,
-                                widget: self,
-                            });
-                            $("div.credit_list").html(credit_lines_html);
-                        }
-                        if (this.debt_history_is_opened()) {
-                            this.render_debt_history(partner);
-                        }
-                    } else {
-                        this.render_list(customers);
-                        $(
-                            "tr.client-line[data-id=" + partner.id + "] td.client-debt"
-                        ).text(debt);
-                    }
+            update_debt_history(partner_ids) {
+                // TODO: зачем это и что оно делает?
+                var client = this.env.pos.get_client();
+                if (client && $.inArray(client.id, partner_ids) !== -1) {
+                    console.log("TODO: something must happen here");
+                    // This.gui.screen_instances.products.actionpad.renderElement();
+                    // this.customer_changed();
                 }
-                _.each(partner_ids, function (id) {
-                    self.partner_cache.clear_node(id);
+            }
+
+            async validateOrder(isForceValidate) {
+                var currentOrder = this.currentOrder;
+                var zero_paymentlines = _.filter(
+                    currentOrder.get_paymentlines(),
+                    function (p) {
+                        return p.amount === 0;
+                    }
+                );
+                _.each(zero_paymentlines, function (p) {
+                    currentOrder.remove_paymentline(p);
                 });
-                this.render_list(customers);
-            },
-            render_list: function (partners) {
-                var debt_type = this.pos.config.debt_type;
-                if (debt_type === "debt") {
-                    this.$("#client-list-credit").remove();
-                } else if (debt_type === "credit") {
-                    this.$("#client-list-debt").remove();
+                var isDebt = currentOrder.updates_debt();
+                var debt_amount = currentOrder.get_debt_delta();
+                var client = currentOrder.get_client();
+                if (client) {
+                    currentOrder.debt_before = client.debt;
+                    currentOrder.debt_after = currentOrder.debt_before + debt_amount;
+                } else {
+                    currentOrder.debt_before = false;
+                    currentOrder.debt_after = false;
                 }
-                var selected_partner = this.selected_line
-                    ? this.pos.db.get_partner_by_id(this.selected_line[2])
-                    : this.new_client;
-                if (selected_partner) {
-                    this.old_client = selected_partner;
-                }
-                this._super(partners);
-                this.old_client = this.pos.get_client();
-                this.selected_line = false;
-            },
-            render_debt_history: function (partner) {
-                var self = this;
-                var contents = this.$el[0].querySelector("#debt_history_contents");
-                contents.innerHTML = "";
-                var debt_type = this.pos.config.debt_type;
-                var debt_history = partner.history;
-                var sign = debt_type === "credit" ? -1 : 1;
-                this.history_length = debt_history ? debt_history.length : 0;
-                if (debt_type === "debt") {
-                    this.$el.find("th:contains(Total Balance)").text("Total Debt");
-                }
-                if (this.history_length) {
-                    var total_balance = partner.debt;
-                    for (var i = 0; i < debt_history.length; i++) {
-                        debt_history[i].total_balance =
-                            (sign * Math.round(total_balance * 100)) / 100;
-                        total_balance += debt_history[i].balance;
-                    }
-                    var cashregisters = _.filter(self.pos.cashregisters, function (cr) {
-                        return cr.journal.debt;
+                if (isDebt && !client) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Unknown customer"),
+                        body: _t("You cannot use Debt payment. Select customer first."),
                     });
-                    _.each(cashregisters, function (cr) {
-                        var journal_id = cr.journal.id;
-                        var total_journal = partner.debts[journal_id].balance;
-                        for (i = 0; i < debt_history.length; i++) {
-                            if (debt_history[i].journal_id[0] === journal_id) {
-                                debt_history[i].total_journal =
-                                    Math.round(total_journal * 100) / 100;
-                                total_journal -= debt_history[i].balance;
-                            }
+                    return;
+                }
+                var paymentlines_with_credits_via_discounts = currentOrder.has_paymentlines_with_credits_via_discounts();
+                if (paymentlines_with_credits_via_discounts.length) {
+                    var paymentlines_with_credits_via_discounts_text = _.map(
+                        paymentlines_with_credits_via_discounts,
+                        function (pl) {
+                            return pl.name;
                         }
-                    });
-                    for (var y = 0; y < debt_history.length; y++) {
-                        var debt_history_line_html = QWeb.render("DebtHistoryLine", {
-                            partner: partner,
-                            line: debt_history[y],
-                            widget: self,
-                            debt_type: debt_type,
-                        });
-                        var debt_history_line = document.createElement("tbody");
-                        debt_history_line.innerHTML = debt_history_line_html;
-                        debt_history_line = debt_history_line.childNodes[1];
-                        contents.appendChild(debt_history_line);
-                    }
-                    if (debt_history.length !== partner.records_count) {
-                        var debt_history_load_more_html = QWeb.render(
-                            "DebtHistoryLoadMore"
-                        );
-                        var debt_history_load_more = document.createElement("tbody");
-                        debt_history_load_more.innerHTML = debt_history_load_more_html;
-                        debt_history_load_more = debt_history_load_more.childNodes[1];
-                        contents.appendChild(debt_history_load_more);
-                        this.$("#load_more").on("click", function () {
-                            self.pos
-                                .reload_debts(
-                                    partner.id,
-                                    debt_history.length +
-                                        self.debt_history_limit_increment,
-                                    {postpone: false}
-                                )
-                                .then(function () {
-                                    self.render_debt_history(partner);
-                                });
-                        });
-                    }
-                }
-            },
-            toggle_save_button: function () {
-                this._super();
-                var $pay_full_debt = this.$("#set-customer-pay-full-debt");
-                var $show_customers = this.$("#show_customers");
-                var $show_debt_history = this.$("#show_debt_history");
-                var curr_client = this.pos.get_order().get_client();
-                var client = this.new_client || curr_client;
-                if (this.editing_client) {
-                    $pay_full_debt.addClass("oe_hidden");
-                    $show_debt_history.addClass("oe_hidden");
-                    $show_customers.addClass("oe_hidden");
-                } else if (this.debt_history_is_opened()) {
-                    $show_customers.removeClass("oe_hidden");
-                } else {
-                    if (
-                        (this.new_client && this.new_client.debt > 0) ||
-                        (curr_client && curr_client.debt > 0 && !this.new_client)
-                    ) {
-                        $pay_full_debt.removeClass("oe_hidden");
-                    } else {
-                        $pay_full_debt.addClass("oe_hidden");
-                    }
-                    if (client) {
-                        $show_debt_history.removeClass("oe_hidden");
-                    } else {
-                        $show_debt_history.addClass("oe_hidden");
-                    }
-                }
+                    ).join(", ");
 
-                if (this.debt_history_is_opened() && !this.editing_client) {
-                    this.$el.find(".client-details").addClass("debt-history");
-                } else {
-                    this.$el.find(".client-details").removeClass("debt-history");
-                }
-            },
-            show: function () {
-                this._super();
-                var self = this;
-                this.$("#set-customer-pay-full-debt").click(function () {
-                    var client = self.new_client || self.pos.get_order().get_client();
-                    self.save_changes();
-                    if (client.debt <= 0) {
-                        self.gui.show_popup("error", {
-                            title: _t("Error: No Debt"),
-                            body: _t("The selected customer has no debt."),
+                    if (this.check_discount_credits_for_taxed_products()) {
+                        this.showPopup("ErrorPopup", {
+                            title: _t(
+                                "Unable to validate with the " +
+                                    paymentlines_with_credits_via_discounts_text +
+                                    " payment method"
+                            ),
+                            body: _t(
+                                "You cannot use " +
+                                    paymentlines_with_credits_via_discounts_text +
+                                    " for products with taxes. Use an another payment method, or pay the full price with only discount credits"
+                            ),
                         });
                         return;
                     }
-                    // If the order is empty, add a dummy product with price = 0
-                    var order = self.pos.get_order();
-                    if (order) {
-                        var lastorderline = order.get_last_orderline();
-                        if (
-                            lastorderline === null &&
-                            self.pos.config.debt_dummy_product_id
-                        ) {
-                            var dummy_product = self.pos.db.get_product_by_id(
-                                self.pos.config.debt_dummy_product_id[0]
-                            );
-                            order.add_product(dummy_product, {price: 0});
-                        }
+                    if (currentOrder.has_credit_product()) {
+                        this.showPopup("ErrorPopup", {
+                            title: _t(
+                                "Unable to validate with the " +
+                                    paymentlines_with_credits_via_discounts_text +
+                                    " payment method"
+                            ),
+                            body: _t(
+                                "You cannot use " +
+                                    paymentlines_with_credits_via_discounts_text +
+                                    " for credit top-up products. Use an another non-discount payment method"
+                            ),
+                        });
+                        return;
                     }
+                }
+                if (
+                    !currentOrder.get_paymentlines().length &&
+                    currentOrder.has_return_product()
+                ) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Unable to validate return order"),
+                        body: _t("Specify Payment Method"),
+                    });
+                    return;
+                }
+                if (currentOrder.has_credit_product() && !client) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Unknown customer"),
+                        body: _t("Don't forget to specify Customer when sell Credits."),
+                    });
+                    return;
+                }
+                if (isDebt && currentOrder.get_orderlines().length === 0) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Empty Order"),
+                        body: _t(
+                            "There must be at least one product in your order before it can be validated. (Hint: you can use some dummy zero price product)"
+                        ),
+                    });
+                    return;
+                }
+                var exceeding_debts = this.exceeding_debts_check();
+                if (client && exceeding_debts) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Max Debt exceeded"),
+                        body: _t(
+                            "You cannot sell products on credit journal " +
+                                exceeding_debts +
+                                " to the customer because its max debt value will be exceeded."
+                        ),
+                    });
+                    return;
+                }
+                if (this.debt_change_check()) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t(
+                            "Unable to return the change or cash out with the debt payment method"
+                        ),
+                        body: _t(
+                            "Please enter the exact or lower debt amount than the cost of the order."
+                        ),
+                    });
+                    return;
+                }
+                var violations = this.debt_journal_restricted_categories_check();
+                if (violations.length) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Unable to validate with the debt payment method"),
+                        body: _t(this.restricted_categories_message(violations)),
+                    });
+                    return;
+                }
+                await super.validateOrder(isForceValidate);
+            }
 
-                    // Select debt journal
-                    var debtjournal = false;
-                    _.each(self.pos.cashregisters, function (cashregister) {
-                        if (cashregister.journal.debt) {
-                            debtjournal = cashregister;
+            async _finalizeValidation() {
+                var self = this;
+                var order = this.currentOrder,
+                    paymentlines = order.get_paymentlines(),
+                    partner = this.currentOrder.get_client();
+                var debt_pl = _.filter(paymentlines, function (pl) {
+                    return pl.payment_method.journal.debt;
+                });
+                if (debt_pl.length && partner) {
+                    await super._finalizeValidation();
+                    // Offline updating of credits, on a restored network this data will be replaced by the servers one
+                    _.each(debt_pl, function (pl) {
+                        partner.debts[pl.payment_method.journal.id].balance -=
+                            pl.amount;
+                        partner.debt += pl.amount;
+                    });
+                } else {
+                    await super._finalizeValidation();
+                }
+                var debt_prod = _.filter(order.get_orderlines(), function (ol) {
+                    return ol.product.credit_product;
+                });
+                if (debt_prod) {
+                    var value = 0;
+                    _.each(debt_prod, function (dp) {
+                        value = round_pr(
+                            dp.quantity * dp.price,
+                            self.pos.currency.rounding
+                        );
+                        partner.debts[dp.product.credit_product[0]].balance += value;
+                        partner.debt -= value;
+                    });
+                }
+            }
+
+            get_used_debt_cashregisters(paymentlines) {
+                paymentlines = paymentlines || this.currentOrder.get_paymentlines();
+                var cashregisters = _.uniq(
+                    _.map(paymentlines, function (pl) {
+                        return pl.payment_method;
+                    })
+                );
+                return _.filter(cashregisters, function (cr) {
+                    return cr.journal.debt;
+                });
+            }
+
+            restricted_categories_message(cashregisters) {
+                var self = this;
+                var body = [];
+                var categ_names = [];
+                _.each(cashregisters, function (cr) {
+                    var journal = cr.journal;
+                    _.each(journal.category_ids, function (categ) {
+                        categ_names.push(self.pos.db.get_category_by_id(categ).name);
+                    });
+                    body.push(
+                        categ_names.join(", ") + " with " + cr.journal_id[1] + " "
+                    );
+                });
+                // TODO we can make a better formatting here
+                return "You may only buy " + body.toString();
+            }
+
+            debt_journal_restricted_categories_check() {
+                var self = this;
+                var cashregisters = this.get_used_debt_cashregisters();
+                cashregisters = _.filter(cashregisters, function (cr) {
+                    return cr.journal.category_ids.length > 0;
+                });
+                var violations = [];
+                _.each(cashregisters, function (cr) {
+                    if (self.restricted_products_check(cr)) {
+                        violations.push(cr);
+                    }
+                });
+                return violations;
+            }
+
+            check_discount_credits_for_taxed_products() {
+                var order = this.currentOrder,
+                    discount_pl = order.has_paymentlines_with_credits_via_discounts();
+                if (
+                    !discount_pl.length ||
+                    discount_pl.length === order.get_paymentlines().length
+                ) {
+                    return false;
+                }
+                var taxes_id = false;
+                var taxed_orderlines = _.find(order.orderlines.models, function (ol) {
+                    // Returns only a found orderline with a tax that is not included in the price
+                    taxes_id = ol.product.taxes_id;
+                    if (taxes_id && taxes_id.length) {
+                        return _.find(taxes_id, function (t) {
+                            return !order.pos.taxes_by_id[t].price_include;
+                        });
+                    }
+                    return false;
+                });
+                if (!taxed_orderlines) {
+                    return false;
+                }
+                return true;
+            }
+
+            restricted_products_check(cr) {
+                var order = this.pos.get_order();
+                var sum_pl = round_pr(
+                    order.get_summary_for_cashregister(cr),
+                    this.pos.currency.rounding
+                );
+                var limits = order.get_payment_limits(cr, "products_restriction");
+                var allowed_lines = _.filter(order.get_orderlines(), function (ol) {
+                    var categories = [];
+                    if (ol.product.pos_categ_id) {
+                        categories = [ol.product.pos_categ_id[0]];
+                    } else {
+                        categories = ol.product.pos_category_ids;
+                    }
+                    if (_.intersection(cr.journal.category_ids, categories).length) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (
+                    allowed_lines.length === order.get_orderlines().length ||
+                    this.cash_out_check()
+                ) {
+                    // If all products are allowed or it is a cash out case
+                    // we don't need to check max debt exceeding, because it was checked earlier
+                    return false;
+                }
+                if (
+                    _.has(limits, "products_restriction") &&
+                    sum_pl > limits.products_restriction
+                ) {
+                    return cr;
+                }
+                return false;
+            }
+
+            cash_out_check() {
+                var order = this.pos.get_order();
+                if (
+                    order.get_orderlines().length === 1 &&
+                    this.pos.config.debt_dummy_product_id &&
+                    order.get_orderlines()[0].product.id ===
+                        this.pos.config.debt_dummy_product_id[0]
+                ) {
+                    return true;
+                }
+                return false;
+            }
+
+            exceeding_debts_check() {
+                var order = this.currentOrder,
+                    flag = false;
+                if (this.env.pos.get_client()) {
+                    _.each(this.get_used_debt_cashregisters(), function (cr) {
+                        var limits = order.get_payment_limits(cr, "debt_limit");
+                        var sum_pl = order.get_summary_for_cashregister(cr);
+                        // No need to check that debt_limit is in limits by the reason of get_payment_limits definition
+                        if (sum_pl > limits.debt_limit) {
+                            flag = cr.cash_journal_id[1];
                         }
                     });
+                    return flag;
+                }
+            }
 
-                    // Add payment line with amount = debt *-1
-                    var paymentLines = order.get_paymentlines();
-                    if (paymentLines.length) {
-                        /* Delete existing debt line
+            debt_change_check() {
+                var order = this.currentOrder,
+                    paymentlines = order.get_paymentlines();
+                for (var i = 0; i < paymentlines.length; i++) {
+                    var journal = paymentlines[i].payment_method.journal;
+                    if (
+                        journal.debt &&
+                        !journal.pos_cash_out &&
+                        order.get_change(paymentlines[i]) > 0
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            payFullDebt() {
+                var order = this.currentOrder;
+                if (
+                    order &&
+                    !order.orderlines.length &&
+                    this.env.pos.config.debt_dummy_product_id
+                ) {
+                    order.add_product(
+                        this.env.pos.db.get_product_by_id(
+                            this.env.pos.config.debt_dummy_product_id[0]
+                        ),
+                        {price: 0}
+                    );
+                }
+
+                var paymentLines = order.get_paymentlines();
+                if (paymentLines.length) {
+                    _.each(paymentLines, function (paymentLine) {
+                        if (paymentLine.payment_method.journal.debt) {
+                            paymentLine.destroy();
+                        }
+                    });
+                }
+
+                var debts = order.get_client().debts;
+                _.each(debts, (debt) => {
+                    if (debt.balance < 0) {
+                        var newDebtPaymentline = new models.Paymentline(
+                            {},
+                            {
+                                pos: this.env.pos,
+                                order: order,
+                                payment_method: _.find(
+                                    this.env.pos.payment_methods,
+                                    function (cr) {
+                                        return cr.journal.id === debt.journal_id[0];
+                                    }
+                                ),
+                            }
+                        );
+                        newDebtPaymentline.set_amount(debt.balance);
+                        order.paymentlines.add(newDebtPaymentline);
+                    }
+                });
+
+                this.render();
+            }
+
+            get isPayFullDebtButtonVisible() {
+                var debt = 0;
+                var client = this.env.pos.get_client();
+                // Var debt_type = this.env.pos.config.debt_type;
+                if (client) {
+                    debt = Math.round(client.debt * 100) / 100;
+                    return debt > 0;
+                }
+                return false;
+            }
+
+            customer_changed_() {
+                // Продолжение с isPayFullDebtButtonVisible()
+                this.change_autopay_button();
+            }
+
+            add_autopay_paymentlines() {
+                var client = this.pos.get_client();
+                var order = this.pos.get_order();
+                var status = "";
+                if (
+                    client &&
+                    client.debts &&
+                    order &&
+                    order.get_orderlines().length !== 0 &&
+                    !order.has_credit_product()
+                ) {
+                    var paymentlines = order.get_paymentlines();
+                    if (paymentlines.length && order.get_due() > 0) {
+                        _.each(paymentlines, function (pl) {
+                            order.remove_paymentline(pl);
+                        });
+                    }
+                    var autopay_cashregisters = _.filter(
+                        this.pos.payment_methods,
+                        function (cr) {
+                            return (
+                                cr.journal.debt &&
+                                cr.journal.credits_autopay &&
+                                client.debts[cr.journal.id].balance > 0
+                            );
+                        }
+                    );
+                    if (autopay_cashregisters) {
+                        _.each(autopay_cashregisters, function (cr) {
+                            if (order.get_due()) {
+                                order.add_paymentline(cr);
+                            }
+                        });
+                        status = "validate";
+                    }
+                    if (order.get_due() > 0) {
+                        status = "alert";
+                    }
+                }
+                return status;
+            }
+
+            async click_autopay_validation() {
+                this.currentOrder.isAutopayValidated = true;
+                await this.validateOrder();
+            }
+
+            showScreen(name, props) {
+                props = props || {};
+                props.isAutopayValidated = this.currentOrder.isAutopayValidated;
+                return super.showScreen(name, props);
+            }
+
+            show() {
+                var autopay_status = this.add_autopay_paymentlines();
+                this._super();
+                this.change_autopay_button(autopay_status);
+            }
+        };
+
+    Registries.Component.extend(PaymentScreen, MyPaymentScreen);
+
+    const MyClientListScreen = (_ClientListScreen) =>
+        class extends _ClientListScreen {
+            constructor() {
+                super(...arguments);
+                this.env.pos.on(
+                    "updateDebtHistory",
+                    (partner_ids) => this.render(),
+                    this
+                );
+                this.debt_history_limit_initial = 10;
+                this.debt_history_limit_increment = 10;
+                this.state.isShowingDebtHistory = false;
+                this.state.isLoadingDebtHistory = false;
+                // TODO: надо следить, если поменяли клиента, то массив ниже должен быть обнулен, как срок Путина
+                this.state.selectedClientDebtHistory = [];
+            }
+
+            clickClient(event) {
+                super.clickClient(event);
+                if (this.state.selectedClient) {
+                    this.env.pos.reload_debts(this.state.selectedClient.id, 0, {
+                        postpone: false,
+                    });
+                }
+            }
+
+            clickLoadMoreDebtHistory() {
+                this.loadDebtHistory(
+                    this.state.selectedClientDebtHistory.length +
+                        this.debt_history_limit_increment
+                );
+            }
+
+            showDebtHistory(event) {
+                this.state.isShowingDebtHistory = true;
+                this.loadDebtHistory(this.debt_history_limit_initial);
+            }
+
+            showCustomers(event) {
+                this.state.isShowingDebtHistory = false;
+                this.render();
+            }
+
+            loadDebtHistory(limit) {
+                this.state.isLoadingDebtHistory = true;
+                this.env.pos
+                    .reload_debts(this.state.selectedClient.id, limit, {
+                        postpone: false,
+                    })
+                    .then(() => {
+                        // TODO: check if this.state.selectedClient.id is the same as before executing reload_debts
+                        var partner = this.state.selectedClient;
+                        var sign = this.env.pos.config.debt_type === "credit" ? -1 : 1;
+                        var debt_history = partner.history || [];
+
+                        var total_balance = partner.debt;
+                        for (var i = 0; i < debt_history.length; i++) {
+                            debt_history[i].total_balance =
+                                (sign * Math.round(total_balance * 100)) / 100;
+                            total_balance += debt_history[i].balance;
+                        }
+
+                        var cashregisters = _.filter(
+                            this.env.pos.payment_methods,
+                            function (cr) {
+                                return cr.journal.debt;
+                            }
+                        );
+
+                        _.each(cashregisters, function (cr) {
+                            var journal_id = cr.journal.id;
+                            var total_journal = partner.debts[journal_id].balance;
+                            for (i = 0; i < debt_history.length; i++) {
+                                if (debt_history[i].journal_id[0] === journal_id) {
+                                    debt_history[i].total_journal =
+                                        Math.round(total_journal * 100) / 100;
+                                    total_journal -= debt_history[i].balance;
+                                }
+                            }
+                        });
+
+                        this.state.selectedClientDebtHistory = debt_history;
+                        this.state.isLoadingDebtHistory = false;
+                        this.render();
+                    });
+                // TODO: перенеси эту логику:
+                // if (this.debt_history_is_opened() && !this.editing_client) {
+                //     this.$el.find(".client-details").addClass("debt-history");
+                // } else {
+                //     this.$el.find(".client-details").removeClass("debt-history");
+                // }
+                this.render();
+            }
+
+            payFullDebt() {
+                var client = this.state.selectedClient;
+                if (client.debt <= 0) {
+                    this.showPopup("ErrorPopup", {
+                        title: _t("Error: No Debt"),
+                        body: _t("The selected customer has no debt."),
+                    });
+                    return;
+                }
+                // If the order is empty, add a dummy product with price = 0
+                var order = this.env.pos.get_order();
+                if (order) {
+                    var lastorderline = order.get_last_orderline();
+                    if (
+                        lastorderline === null &&
+                        this.env.pos.config.debt_dummy_product_id
+                    ) {
+                        var dummy_product = this.env.pos.db.get_product_by_id(
+                            this.env.pos.config.debt_dummy_product_id[0]
+                        );
+                        order.add_product(dummy_product, {price: 0});
+                    }
+                }
+
+                // Select debt journal
+                var debtjournal = false;
+                _.each(this.env.pos.payment_methods, function (cashregister) {
+                    if (cashregister.journal.debt) {
+                        debtjournal = cashregister;
+                    }
+                });
+
+                // Add payment line with amount = debt *-1
+                var paymentLines = order.get_paymentlines();
+                if (paymentLines.length) {
+                    /* Delete existing debt line
                     Usefull for the scenario where a customer comes to
                     pay his debt and the user clicks on the "Debt journal"
                     which opens the partner list and then selects partner
                     and clicks on "Select Customer and Pay Full Debt" */
-                        _.each(paymentLines.models, function (paymentLine) {
-                            if (paymentLine.cashregister.journal.debt) {
-                                paymentLine.destroy();
-                            }
-                        });
-                    }
-
-                    var newDebtPaymentline = new models.Paymentline(
-                        {},
-                        {order: order, cashregister: debtjournal, pos: self.pos}
-                    );
-                    newDebtPaymentline.set_amount(client.debt * -1);
-                    order.paymentlines.add(newDebtPaymentline);
-                    self.gui.show_screen("payment");
-                });
-                var $show_debt_history = $("#show_debt_history");
-                var client = this.pos.get_order().get_client();
-                if (client || this.new_client) {
-                    $show_debt_history.removeClass("oe_hidden");
-                    self.$el.find(".client-details").removeClass("debt-history");
-                    this.pos.reload_debts(client.id, 0, {postpone: false});
+                    _.each(paymentLines.models, function (paymentLine) {
+                        if (paymentLine.payment_method.journal.debt) {
+                            paymentLine.destroy();
+                        }
+                    });
                 }
-            },
-            renderElement: function () {
-                var self = this;
-                this._super();
-                var parent = self.$(".client-list").parent();
 
-                var $show_debt_history = this.$el.find("#show_debt_history"),
-                    $show_customers = this.$el.find("#show_customers"),
-                    $debt_history = this.$el.find("#debt_history");
-
-                $show_debt_history.off().on("click", function () {
-                    var client = self.new_client || self.pos.get_order().get_client();
-                    var $loading_history = $("#loading_history");
-                    $loading_history.removeClass("oe_hidden");
-                    self.render_debt_history(client);
-                    $(".client-list").addClass("oe_hidden");
-                    $debt_history.removeClass("oe_hidden");
-                    $show_debt_history.addClass("oe_hidden");
-                    $show_customers.removeClass("oe_hidden");
-
-                    var old_size = self.$el.find(".client-details").height();
-                    self.$el.find(".client-details").addClass("debt-history");
-                    var new_size = self.$el.find(".client-details").height();
-                    var resize = old_size - new_size;
-                    // Set new height for debt history list
-                    parent.height(parent.height() + resize);
-
-                    self.pos
-                        .reload_debts(client.id, self.debt_history_limit_initial, {
-                            postpone: false,
-                        })
-                        .then(function () {
-                            self.render_debt_history(client);
-                            $loading_history.addClass("oe_hidden");
-                        });
-                });
-
-                $show_customers.off().on("click", function () {
-                    $(".client-list").removeClass("oe_hidden");
-                    $debt_history.addClass("oe_hidden");
-                    $show_customers.addClass("oe_hidden");
-                    $show_debt_history.removeClass("oe_hidden");
-                    var old_details_size = self.$el.find(".client-details").height();
-                    self.$el.find(".client-details").removeClass("debt-history");
-                    var new_details_size = self.$el.find(".client-details").height();
-                    var new_resize = old_details_size - new_details_size;
-                    // Set new height for client list
-                    parent.height(parent.height() + new_resize);
-                });
-            },
-            saved_client_details: function (partner_id) {
-                this.pos.gui.screen_instances.clientlist.partner_cache.clear_node(
-                    partner_id
+                var newDebtPaymentline = new models.Paymentline(
+                    {},
+                    {order: order, payment_method: debtjournal, pos: this.env.pos}
                 );
-                this._super(partner_id);
-                this.pos.reload_debts([partner_id], 0, {postpone: false});
-            },
-            reload_partners: function () {
-                var self = this;
-                return this._super().then(function () {
-                    self.render_list(self.pos.db.get_partners_sorted(1000));
-                });
-            },
-            clientlist_screen_is_opened: function () {
-                return $(".clientlist-screen.screen").not(".oe_hidden")[0] || false;
-            },
-            debt_history_is_opened: function () {
-                return $("#debt_history").not(".oe_hidden")[0] || false;
-            },
-        });
+                newDebtPaymentline.set_amount(client.debt * -1);
+                order.paymentlines.add(newDebtPaymentline);
 
-    var ThumbUpPopupWidget = PopupWidget.extend({
-        template: "ThumbUpPopupWidget",
-        show: function (options) {
-            this._super(options);
-            var self = this;
+                this.props.resolve({confirmed: true, payload: client});
+                this.showScreen("PaymentScreen");
+                this.trigger("close-temp-screen");
+            }
+
+            async saveChanges(event) {
+                await super.saveChanges(event);
+                this.env.pos.reload_debts([this.state.selectedClient.id], 0, {
+                    postpone: false,
+                });
+            }
+        };
+
+    Registries.Component.extend(ClientListScreen, MyClientListScreen);
+
+    class ThumbUpPopup extends AbstractAwaitablePopup {
+        mounted() {
             var random = Math.random();
             var element = $(".icon-wrapper");
             if (random <= 0.01) {
@@ -1423,12 +1123,16 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             element.show();
             element.addClass("anim");
 
-            setTimeout(function () {
+            setTimeout(() => {
                 element.removeClass("anim");
                 element.hide();
-                self.gui.close_popup();
+                this.cancel();
             }, 1000);
-        },
-    });
-    gui.define_popup({name: "thumb-up", widget: ThumbUpPopupWidget});
+        }
+    }
+
+    ThumbUpPopup.template = "ThumbUpPopupWidget";
+    ThumbUpPopup.defaultProps = {};
+
+    Registries.Component.add(ThumbUpPopup);
 });
