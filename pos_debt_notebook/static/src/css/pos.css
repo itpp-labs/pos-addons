@@ -132,16 +132,7 @@
 }
 
 .screen .left-content {
-    position: absolute;
-    left: 0px;
-    top: 64px;
-    bottom: 0px;
-    right: 50%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-right: dashed 1px rgb(215, 215, 215);
-    border-bottom: dashed 1px rgb(215, 215, 215);
-    margin-bottom: 190px;
+    width: 25%;
 }
 
 .screen .button.autopay .button-content {

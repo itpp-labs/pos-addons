@@ -10,6 +10,26 @@
                 type="text/javascript"
                 src="/pos_debt_notebook/static/src/js/pos.js"
             />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/CreditNote.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/OrderReceipt.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/ReceiptScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/ValidationButton.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/DebtHistoryLine.js"
+            />
             <link
                 rel="stylesheet"
                 href="/pos_debt_notebook/static/src/css/pos.css"

@@ -4,15 +4,24 @@
 from odoo.tests import HttpCase, tagged
 
 
-@tagged("post_install", "-at_install")
+@tagged("at_install", "post_install")
 class TestUi(HttpCase):
     def test_pos_debt(self):
+        # needed because tests are run before the module is marked as
+        # installed. In js web will only load qweb coming from modules
+        # that are returned by the backend in module_boot. Without
+        # this you end up with js, css but no qweb.
+        env = self.env
+        env["ir.module.module"].search(
+            [("name", "=", "pos_debt_notebook")], limit=1
+        ).state = "installed"
+
         # without a delay there might be problems on the steps whilst opening a POS
         # caused by a not yet loaded button's action
-        self.browser_js(
+        self.start_tour(
             "/web",
-            "odoo.__DEBUG__.services['web_tour.tour'].run('tour_pos_debt_notebook', 1500)",
-            "odoo.__DEBUG__.services['web_tour.tour'].tours.tour_pos_debt_notebook.ready",
+            "tour_pos_debt_notebook",
+            500,
             login="admin",
             timeout=1000,
         )

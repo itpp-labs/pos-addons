@@ -114,6 +114,7 @@ odoo.define("pos_debt_notebook.tour", function (require) {
                 content: "Validate payment",
             },
             {
+                extra_trigger: ".pos-receipt-container",
                 trigger: '.button.next.highlight:contains("Next Order")',
                 content: "Check proceeded validation",
             },

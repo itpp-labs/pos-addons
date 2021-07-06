@@ -3,6 +3,7 @@
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 # License MIT (https://opensource.org/licenses/MIT).
+
 from odoo import fields, models, tools
 
 
@@ -161,7 +162,7 @@ class PosDebtReport(models.Model):
                     LEFT JOIN account_journal journal ON (journal.id=pt.credit_product)
                 WHERE
                     journal.debt=true
-                    AND move.invoice_payment_state in ('paid')
+                    AND move.state in ('paid')
                 )
                 UNION ALL
                 (
@@ -207,23 +208,24 @@ class PosDebtReport(models.Model):
                     'confirm' as state,
                     false as credit_product,
 
-                    pay.payment_date as date,
+                    move.date as date,
                     pay.partner_id as partner_id,
                     NULL::integer as user_id,
                     NULL::integer as session_id,
                     NULL::integer as config_id,
-                    pay.company_id as company_id,
+                    move.company_id as company_id,
                     pay.currency_id as currency_id,
                     '' as product_list,
 
-                    pay.journal_id as journal_id
+                    move.journal_id as journal_id
 
                 FROM account_payment as pay
-                    LEFT JOIN account_journal journal ON (journal.id=pay.journal_id)
+                    LEFT JOIN account_move move ON (move.id = pay.move_id)
+                    LEFT JOIN account_journal journal ON (journal.id=move.journal_id)
                 WHERE
                     journal.debt=true
-                    AND pay.state != 'cancelled'
-                    AND pay.has_invoices = true
+                    AND move.state != 'cancelled'
+--                    AND pay.has_invoices = true
                 )
             )
         """

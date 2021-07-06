@@ -6,6 +6,7 @@
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
+
 import copy
 import logging
 
@@ -36,16 +37,11 @@ class ResPartner(models.Model):
     @api.depends("report_pos_debt_ids")
     def _compute_debt_company(self):
         partners = self.filtered(lambda r: len(r.child_ids))
-        for r in self - partners:
-            r.debt_company = None
-            r.credit_balance_company = None
-
         if not partners:
             for record in self:
                 record.debt_company = 0.0
                 record.credit_balance_company = 0.0
             return
-
         domain = [("partner_id", "in", partners.ids + partners.mapped("child_ids").ids)]
         fields = ["partner_id", "balance"]
         res = self.env["report.pos.debt"].read_group(domain, fields, "partner_id")
@@ -354,8 +350,7 @@ class PosConfig(models.Model):
         if payment_methods_with_inactive_debt_journals:
             common_debt_dict.update(
                 {
-                    "default_debit_account_id": debt_account.id,
-                    "default_credit_account_id": debt_account.id,
+                    "default_account_id": debt_account.id,
                 }
             )
             payment_methods_with_inactive_debt_journals.mapped("cash_journal_id").write(
@@ -365,10 +360,8 @@ class PosConfig(models.Model):
         else:
             common_debt_dict.update(
                 {
-                    "sequence_name": "Account Default Credit Journal ",
                     "prefix": "CRED ",
                     "user": user,
-                    "noupdate": True,
                     "journal_name": "Credits",
                     "code": "TCRED",
                     "type": "cash",
@@ -376,22 +369,23 @@ class PosConfig(models.Model):
                     "credits_autopay": True,
                 }
             )
-            pos_payment_method_id = self.create_pos_payment_method(common_debt_dict)
+            debt_journal = self.create_journal(common_debt_dict)
         self.write(
             {
-                "payment_method_ids": [(4, pos_payment_method_id.id, False)],
+                "payment_method_ids": debt_journal.pos_payment_method_ids.mapped(
+                    lambda x: (4, x.id, False)
+                ),
                 "debt_dummy_product_id": debt_dummy_product_id,
             }
         )
         current_session = self.current_session_id
-        journal_id = pos_payment_method_id.cash_journal_id
         statement = [
             (
                 0,
                 0,
                 {
                     "name": current_session.name,
-                    "journal_id": journal_id.id,
+                    "journal_id": debt_journal.id,
                     "user_id": user.id,
                     "company_id": user.company_id.id,
                 },
@@ -400,12 +394,12 @@ class PosConfig(models.Model):
         current_session.write({"statement_ids": statement})
         if demo_is_on:
             self.env.ref("pos_debt_notebook.product_credit_product").write(
-                {"credit_product": journal_id.id}
+                {"credit_product": debt_journal.id}
             )
 
         return
 
-    def create_pos_payment_method(self, vals):
+    def create_journal(self, vals):
         debt_journal = self.env["account.journal"].search(
             [("code", "=", vals["code"])], limit=1
         )
@@ -414,34 +408,14 @@ class PosConfig(models.Model):
         _logger.info("Creating '" + vals["journal_name"] + "' journal")
         user = vals["user"]
         debt_account = vals["debt_account"]
-        new_sequence = self.env["ir.sequence"].create(
-            {
-                "name": vals["sequence_name"] + str(user.company_id.id),
-                "padding": 3,
-                "prefix": vals["prefix"] + str(user.company_id.id),
-            }
-        )
-        self.env["ir.model.data"].create(
-            {
-                "name": "journal_sequence" + str(new_sequence.id),
-                "model": "ir.sequence",
-                "module": "pos_debt_notebook",
-                "res_id": new_sequence.id,
-                "noupdate": vals[
-                    "noupdate"
-                ],  # If it's False, target record (res_id) will be removed while module update
-            }
-        )
         debt_journal = self.env["account.journal"].create(
             {
                 "name": vals["journal_name"],
                 "code": vals["code"],
                 "type": vals["type"],
                 "debt": vals["debt"],
-                "sequence_id": new_sequence.id,
                 "company_id": user.company_id.id,
-                "default_debit_account_id": debt_account.id,
-                "default_credit_account_id": debt_account.id,
+                "default_account_id": debt_account.id,
                 "debt_limit": vals["debt_limit"],
                 "category_ids": vals["category_ids"],
                 "pos_cash_out": vals["pos_cash_out"],
@@ -489,7 +463,7 @@ class PosConfig(models.Model):
             ]
             current_session.write({"statement_ids": statement})
 
-        return debt_payment_method
+        return debt_journal
 
     def open_session_cb(self):
         res = super(PosConfig, self).open_session_cb()
@@ -500,18 +474,32 @@ class PosConfig(models.Model):
         return res
 
     def create_demo_pos_payment_method(self, user, debt_account):
-        self.create_pos_payment_method(
+        # https://github.com/odoo/odoo/commit/caeb782841fc5a7ad71a196e2c9ee67644ef9074
+        # Since commit above, you can't make journals with shared shared accounts
+        # so we make cloned debt accounts from given one
+        debt_account1 = debt_account.copy(
             {
-                "sequence_name": "Account Default Credit via Discounts Journal ",
+                "name": debt_account.name + "1",
+                "code": debt_account.code + "1",
+            }
+        )
+        debt_account2 = debt_account.copy(
+            {
+                "name": debt_account.name + "2",
+                "code": debt_account.code + "2",
+            }
+        )
+
+        self.create_journal(
+            {
                 "prefix": "CRD ",
                 "user": user,
-                "noupdate": True,
                 "journal_name": "Credits (via discounts)",
                 "code": "DCRD",
                 "type": "cash",
                 "debt": True,
                 #  "journal_user": True,
-                "debt_account": debt_account,
+                "debt_account": debt_account1,
                 "credits_via_discount": True,
                 "category_ids": False,
                 "write_statement": True,
@@ -522,18 +510,16 @@ class PosConfig(models.Model):
             }
         )
         allowed_category = self.env.ref("point_of_sale.pos_category_desks").id
-        self.create_pos_payment_method(
+        self.create_journal(
             {
-                "sequence_name": "Account Default Credit Journal F&V",
                 "prefix": "CRD ",
                 "user": user,
-                "noupdate": True,
                 "journal_name": "Credits (Desks only)",
                 "code": "FCRD",
                 "type": "cash",
                 "debt": True,
                 #  "journal_user": True,
-                "debt_account": debt_account,
+                "debt_account": debt_account2,
                 "credits_via_discount": False,
                 "category_ids": [(6, 0, [allowed_category])],
                 "write_statement": True,
@@ -743,7 +729,7 @@ class PosCreditUpdate(models.Model):
     _order = "id desc"
 
     partner_id = fields.Many2one(
-        "res.partner", string="Partner", required=True, tracking=True
+        "res.partner", string="Partner", required=True, track_visibility="always"
     )
     user_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda s: s.env.user, readonly=True
@@ -761,7 +747,7 @@ class PosCreditUpdate(models.Model):
     )
     balance = fields.Monetary(
         "Balance Update",
-        tracking=True,
+        track_visibility="always",
         help="Change of balance. Negative value for purchases without money (debt). Positive for credit payments (prepament or payments for debts).",
     )
     new_balance = fields.Monetary(
@@ -774,7 +760,7 @@ class PosCreditUpdate(models.Model):
         [("draft", "Draft"), ("confirm", "Confirmed"), ("cancel", "Canceled")],
         default="draft",
         required=True,
-        tracking=True,
+        track_visibility="always",
     )
     update_type = fields.Selection(
         [("balance_update", "Balance Update"), ("new_balance", "New Balance")],
@@ -863,8 +849,8 @@ class PosCreditUpdate(models.Model):
             r.switch_to_confirm()
 
 
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
-
-    has_invoices = fields.Boolean(store=True, compute_sudo=False)
-    company_id = fields.Many2one(store=True, compute_sudo=False)
+# class AccountPayment(models.Model):
+#     _inherit = "account.payment"
+#
+#     has_invoices = fields.Boolean(store=True, compute_sudo=False)
+#     company_id = fields.Many2one(store=True, compute_sudo=False)
