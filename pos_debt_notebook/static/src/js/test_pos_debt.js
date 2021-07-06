@@ -34,15 +34,14 @@ odoo.define("pos_debt_notebook.tour", function (require) {
                 position: "bottom",
             },
             {
-                content: "Switch to table or make dummy action",
-                trigger:
-                    ".table:not(.oe_invisible .neworder-button), .order-button.selected",
-                position: "bottom",
-                timeout: 20000,
+                content: "waiting for loading to finish",
+                trigger: ".pos-branding",
             },
             {
-                content: "waiting for loading to finish",
-                trigger: ".order-button.neworder-button",
+                content: "Switch to table or make dummy action",
+                trigger: ".table, .pos-branding",
+                position: "bottom",
+                timeout: 30000,
             },
         ];
     }
@@ -91,8 +90,8 @@ odoo.define("pos_debt_notebook.tour", function (require) {
     function debt_method_paying(pay_method) {
         var steps = [
             {
-                content: "Make a dummy action",
-                trigger: ".order-button.selected",
+                content: "waiting for loading to finish",
+                trigger: ".pos-branding",
             },
             {
                 trigger: ".product-screen .actionpad .pay",
@@ -114,8 +113,8 @@ odoo.define("pos_debt_notebook.tour", function (require) {
                 content: "Validate payment",
             },
             {
-                extra_trigger: ".pos-receipt-container",
-                trigger: '.button.next.highlight:contains("Next Order")',
+                extra_trigger: ".pos-receipt",
+                trigger: ".receipt-screen .button.next.highlight",
                 content: "Check proceeded validation",
             },
         ]);
