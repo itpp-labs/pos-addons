@@ -158,7 +158,9 @@
         <field name="res_model">report.pos.debt</field>
         <field name="view_mode">pivot,graph,tree,form</field>
         <field name="search_view_id" ref="view_report_pos_debt_search" />
-        <field name="context">{'search_default_partner_id': active_id}</field>
+        <field name="context">
+            {'search_default_partner_id': active_id, 'group_by':'journal_id'}
+        </field>
     </record>
     <menuitem
         id="menu_report_pos_debt_all"
