@@ -4,7 +4,7 @@
 from odoo.tests import HttpCase, tagged
 
 
-@tagged("at_install", "post_install")
+@tagged("-at_install", "post_install")
 class TestUi(HttpCase):
     def test_pos_debt(self):
         # needed because tests are run before the module is marked as
