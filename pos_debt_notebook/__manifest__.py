@@ -19,8 +19,6 @@
     "support": "apps@itpp.dev",
     "website": "https://apps.odoo.com/apps/modules/12.0/pos_debt_notebook/",
     "license": "Other OSI approved licence",  # MIT
-    "price": 280.00,
-    "currency": "EUR",
     "external_dependencies": {"python": [], "bin": []},
     "depends": ["point_of_sale"],
     "data": [
