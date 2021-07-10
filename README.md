@@ -1,6 +1,8 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
 # [11.0] Odoo POS Addons 
 
+:open_file_folder: Get a **.zip** file with all needed dependencies:
+
 :heavy_check_mark: [alipay](https://apps.odoo.com/apps/modules/11.0/alipay/)
 <br/>:heavy_check_mark: [hw_cashbox](https://apps.odoo.com/apps/modules/11.0/hw_cashbox/)
 <br/>:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/11.0/hw_printer_network/)
@@ -60,6 +62,10 @@
 <br/>:heavy_check_mark: [qr_payments](https://apps.odoo.com/apps/modules/11.0/qr_payments/)
 <br/>:heavy_check_mark: [wechat](https://apps.odoo.com/apps/modules/11.0/wechat/)
 <br/>:heavy_check_mark: [wechat_miniprogram](https://apps.odoo.com/apps/modules/11.0/wechat_miniprogram/)
+
+:star: Star this repo if you **like** it!
+
+:heart: [Sponsor us](https://patreon.com/itpp) if you **love** it!
 
 Other Addons
 ============
