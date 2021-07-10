@@ -1,6 +1,8 @@
 [![help@itpp.dev](https://itpp.dev/images/infinity-readme.png)](mailto:help@itpp.dev)
 # [12.0] Odoo POS Addons 
 
+:open_file_folder: Get a **.zip** file with all needed dependencies:
+
 :heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/12.0/hw_printer_network/)
 <br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/12.0/pos_cashier_select/)
 <br/>:heavy_check_mark: [pos_category_multi](https://apps.odoo.com/apps/modules/12.0/pos_category_multi/)
@@ -50,6 +52,10 @@
 <br/>:heavy_check_mark: [pos_wechat](https://apps.odoo.com/apps/modules/12.0/pos_wechat/)
 <br/>:heavy_check_mark: [qr_payments](https://apps.odoo.com/apps/modules/12.0/qr_payments/)
 <br/>:heavy_check_mark: [wechat](https://apps.odoo.com/apps/modules/12.0/wechat/)
+
+:star: Star this repo if you **like** it!
+
+:heart: [Sponsor us](https://patreon.com/itpp) if you **love** it!
 
 Other Addons
 ============
