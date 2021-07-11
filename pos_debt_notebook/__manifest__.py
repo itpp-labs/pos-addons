@@ -17,7 +17,7 @@
     "version": "13.0.5.3.4",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
-    "website": "https://apps.odoo.com/apps/modules/13.0/pos_debt_notebook/",
+    "website": "https://github.com/itpp-labs/pos-addons",
     "license": "Other OSI approved licence",  # MIT
     "external_dependencies": {"python": [], "bin": []},
     "depends": ["point_of_sale"],
