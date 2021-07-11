@@ -18,7 +18,7 @@
     "version": "11.0.5.3.1",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "apps@itpp.dev",
-    "website": "https://itpp.dev",
+    "website": "https://github.com/itpp-labs/pos-addons",
     "license": "Other OSI approved licence",  # MIT
     "external_dependencies": {"python": [], "bin": []},
     "depends": ["point_of_sale", "base_groupby_extra"],
