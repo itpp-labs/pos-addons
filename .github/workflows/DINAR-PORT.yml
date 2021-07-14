@@ -96,6 +96,7 @@ jobs:
           --init-version-name ${{ env.PORT_FROM_BRANCH }} \
           --target-version-name ${{ env.PORT_TO_BRANCH }} \
           --no-commit \
+          --no-pre-commit \
           2> $LOG_FILE || true
           cat $LOG_FILE
 
