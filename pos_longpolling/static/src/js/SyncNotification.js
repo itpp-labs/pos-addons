@@ -5,8 +5,8 @@ odoo.define("pos_longpolling.SyncNotification", function (require) {
     const Registries = require("point_of_sale.Registries");
     const SyncNotification = require("point_of_sale.SyncNotification");
 
-    const MySyncNotification = (SyncNotification) =>
-        class extends SyncNotification {
+    const MySyncNotification = (_SyncNotification) =>
+        class extends _SyncNotification {
             constructor() {
                 super(...arguments);
 

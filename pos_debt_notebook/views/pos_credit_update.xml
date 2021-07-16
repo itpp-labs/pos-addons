@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2017 gnidorah <https://github.com/gnidorah>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="view_pos_credit_update_tree" model="ir.ui.view">
+        <field name="name">pos.credit.update.tree</field>
+        <field name="model">pos.credit.update</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id" />
+                <field name="date" />
+                <field name="balance" />
+                <field name="journal_id" />
+                <field name="note" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_pos_credit_update_form" model="ir.ui.view">
+        <field name="name">pos.credit.update.form</field>
+        <field name="model">pos.credit.update</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Confirm"
+                        type="object"
+                        name="switch_to_confirm"
+                        attrs="{'invisible': [('state', '==', 'confirm')]}"
+                    />
+                    <button
+                        string="Cancel"
+                        type="object"
+                        name="switch_to_cancel"
+                        attrs="{'invisible': [('state', '==', 'cancel')]}"
+                    />
+                    <button
+                        string="Draft"
+                        type="object"
+                        name="switch_to_draft"
+                        attrs="{'invisible': [('state', '==', 'draft')]}"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,confirm,cancel"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field
+                                name="partner_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="date"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="update_type"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="journal_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="balance"
+                                attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('update_type', '!=', 'balance_update')]}"
+                            />
+                            <field
+                                name="new_balance"
+                                attrs="{'invisible': [('update_type', '!=', 'new_balance')], 'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="currency_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field name="order_id" readonly="1" />
+                            <field
+                                name="note"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_pos_credit_update_search" model="ir.ui.view">
+        <field name="name">pos.credit.update.search</field>
+        <field name="model">pos.credit.update</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date" />
+                <filter
+                    string="This Year"
+                    name="year"
+                    domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]"
+                    help="POS ordered created during current year"
+                />
+                <filter
+                    string="Today"
+                    name="today"
+                    domain="[('date', '&gt;=',  datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"
+                />
+                <separator />
+                <field name="partner_id" />
+                <field name="user_id" />
+                <group expand="1" string="Group By">
+                    <filter
+                        string="Salesperson"
+                        name="User"
+                        context="{'group_by':'user_id'}"
+                    />
+                    <filter
+                        string="Customer"
+                        name="customer"
+                        context="{'group_by':'partner_id'}"
+                    />
+                    <separator />
+                    <filter
+                        string="Month"
+                        name="month"
+                        context="{'group_by':'date:month'}"
+                    />
+                    <filter
+                        string="Week"
+                        name="week"
+                        context="{'group_by':'date:week'}"
+                    />
+                    <filter string="Day" name="day" context="{'group_by':'date:day'}" />
+                    <filter
+                        string="Hour"
+                        name="hour"
+                        context="{'group_by':'date:hour'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_pos_credit_update" model="ir.actions.act_window">
+        <field name="name">Manual Credit Updates</field>
+        <field name="res_model">pos.credit.update</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_pos_credit_update_search" />
+        <field name="context">{}</field>
+    </record>
+    <record id="server_action_pos_credit_update" model="ir.actions.server">
+        <field name="name">Confirm</field>
+        <field name="model_id" ref="pos_debt_notebook.model_pos_credit_update" />
+        <field name="state">code</field>
+        <field name="code">env['pos.credit.update'].do_confirm()</field>
+        <field
+            name="binding_model_id"
+            ref="pos_debt_notebook.model_pos_credit_update"
+        />
+    </record>
+    <menuitem
+        id="menu_pos_credit_update"
+        name="Manual Credit Updates"
+        action="action_pos_credit_update"
+        parent="point_of_sale.menu_point_config_product"
+        groups="point_of_sale.group_pos_manager"
+        sequence="100"
+    />
+</odoo>

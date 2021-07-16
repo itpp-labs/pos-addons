@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2014-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
+    Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/pos.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/CreditNote.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/OrderReceipt.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/ReceiptScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/ValidationButton.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/DebtHistoryLine.js"
+            />
+            <link
+                rel="stylesheet"
+                href="/pos_debt_notebook/static/src/css/pos.css"
+                id="pos_debt_notebook-stylesheet"
+            />
+        </xpath>
+    </template>
+    <template id="demo_assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook/static/src/js/test_pos_debt.js"
+            />
+        </xpath>
+    </template>
+</odoo>

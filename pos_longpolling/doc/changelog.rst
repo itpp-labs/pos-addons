@@ -1,3 +1,8 @@
+`2.3.1`
+-------
+
+ - **FIX:** properly handling longpolling error
+
 `2.3.0`
 -------
 

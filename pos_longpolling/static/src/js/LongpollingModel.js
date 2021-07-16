@@ -103,7 +103,10 @@ odoo.define("pos_longpolling.LongpollingModel", function (require) {
                         }
                     },
                     function (error, e) {
-                        e.preventDefault();
+                        if (e) {
+                            // TODO: is it really used?
+                            e.preventDefault();
+                        }
                         if (self.pos.debug) {
                             console.log(
                                 "POS LONGPOLLING send error",

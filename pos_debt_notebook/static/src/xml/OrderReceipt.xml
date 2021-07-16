@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t
+        t-name="OrderReceipt"
+        t-inherit="point_of_sale.OrderReceipt"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//t[@t-foreach='receipt.paymentlines']" position="attributes">
+            <attribute name="t-foreach">
+                receipt.paymentlines_without_credits_via_discount
+            </attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('receipt-change')]" position="after">
+            <t t-if="paymentlines_with_credits_via_discount.length">
+                <br />
+                <!-- copy-paste from v13. start -->
+                <left>
+                    <pre>Payments by bonuses:</pre>
+                </left>
+                <!-- copy-paste from v13. end -->
+                <t t-foreach="receipt.paymentlines" t-as="line" t-key="line.cid">
+                    <div>
+                        <t t-log="line" />
+                        <t t-esc="line.name" />
+                        <span
+                            t-esc="env.pos.format_currency_no_symbol(line.amount)"
+                            class="pos-receipt-right-align"
+                        />
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </t>
+</templates>
