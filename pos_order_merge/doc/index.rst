@@ -14,7 +14,7 @@ Configuration
 
   * Open POS configuration form
   * Click on ``[Edit]``
-  * Check **[x] Order Merge** box under ``Bar & Restaurant`` section
+  * Check **[x] Order Merge** box under ``Order Interface`` section
 
 Usage
 =====

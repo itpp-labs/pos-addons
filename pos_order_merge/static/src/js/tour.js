@@ -1,4 +1,4 @@
-odoo.define("pos_order_merge.tour", function(require) {
+odoo.define("pos_order_merge.tour", function (require) {
     "use strict";
 
     var tour = require("web_tour.tour");
@@ -12,7 +12,7 @@ odoo.define("pos_order_merge.tour", function(require) {
             {
                 trigger: '.order .product-name:contains("' + product_name + '")',
                 content: "the " + product_name + " have been added to the order",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -101,7 +101,7 @@ odoo.define("pos_order_merge.tour", function(require) {
             {
                 trigger: ".js_connecting:visible",
                 content: "verify that the order is being sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -109,7 +109,7 @@ odoo.define("pos_order_merge.tour", function(require) {
                 trigger: ".js_connected:visible",
                 content:
                     "verify that the order has been succesfully sent to the backend",
-                run: function() {
+                run: function () {
                     // It's a check
                 },
             },
@@ -138,7 +138,7 @@ odoo.define("pos_order_merge.tour", function(require) {
     steps = steps.concat({
         trigger: ".o_main_content:has(.loader:hidden)",
         content: "waiting for loading to finish",
-        run: function() {
+        run: function () {
             // It's a check
         },
     });
@@ -178,7 +178,7 @@ odoo.define("pos_order_merge.tour", function(require) {
             content: "wait until backend is opened",
             trigger:
                 '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"], .oe_menu_toggler[data-menu-xmlid="point_of_sale.menu_point_root"]',
-            run: function() {
+            run: function () {
                 // No need to click on trigger
             },
         },

@@ -1,4 +1,4 @@
-odoo.define("pos_order_merge.merge", function(require) {
+odoo.define("pos_order_merge.merge", function (require) {
     "use strict";
 
     var gui = require("point_of_sale.gui");
@@ -11,12 +11,12 @@ odoo.define("pos_order_merge.merge", function(require) {
 
     var _super_posmodel = models.PosModel.prototype;
     models.PosModel = models.PosModel.extend({
-        order_merge: function() {
+        order_merge: function () {
             this.order_merge_status = true;
             this.set_table(null);
         },
         // Changes the current table.
-        set_table: function(table) {
+        set_table: function (table) {
             if (!table) {
                 // No table ? go back to the floor plan, see ScreenSelector
                 this.set_order(null);
@@ -36,7 +36,7 @@ odoo.define("pos_order_merge.merge", function(require) {
             }
         },
         // This is called when an order is removed from the order collection.
-        on_removed_order: function(removed_order, index, reason) {
+        on_removed_order: function (removed_order, index, reason) {
             if (this.order_merge_status) {
                 return;
             }
@@ -49,7 +49,7 @@ odoo.define("pos_order_merge.merge", function(require) {
 
         previous_screen: "floors",
 
-        renderElement: function() {
+        renderElement: function () {
             var self = this;
             this._super();
 
@@ -73,12 +73,12 @@ odoo.define("pos_order_merge.merge", function(require) {
             }
 
             // Change the table for merge
-            this.$(".change_table").click(function() {
+            this.$(".change_table").click(function () {
                 self.gui.show_screen(self.previous_screen);
             });
 
             // Back to current order
-            this.$(".back").click(function() {
+            this.$(".back").click(function () {
                 self.pos.order_merge_status = false;
                 var current_order = self.get_order_by_uid(self.pos.main_order_uid);
                 if (current_order) {
@@ -87,13 +87,13 @@ odoo.define("pos_order_merge.merge", function(require) {
                 }
             });
         },
-        order_was_selected: function(uid) {
-            var res = _.find(this.mergeorders, function(id) {
+        order_was_selected: function (uid) {
+            var res = _.find(this.mergeorders, function (id) {
                 return id === uid;
             });
             return res || false;
         },
-        orderselect: function($el, uid) {
+        orderselect: function ($el, uid) {
             var merge = this.order_was_selected(uid);
             var selected = true;
             if (merge) {
@@ -117,7 +117,7 @@ odoo.define("pos_order_merge.merge", function(require) {
             );
             this.change_button();
         },
-        show: function() {
+        show: function () {
             var self = this;
             this._super();
             this.renderElement();
@@ -128,7 +128,7 @@ odoo.define("pos_order_merge.merge", function(require) {
             $mergemethods.children().hide();
             var $merge_buttons = $mergemethods.find(".button");
 
-            this.$(".merge-orders").on("click", ".order", function() {
+            this.$(".merge-orders").on("click", ".order", function () {
                 var uid = $(this).data("uid");
                 var $el = $(this);
                 self.orderselect($el, uid);
@@ -139,22 +139,22 @@ odoo.define("pos_order_merge.merge", function(require) {
                 }
             });
 
-            $merge_buttons.click(function() {
+            $merge_buttons.click(function () {
                 self.merge();
             });
         },
-        merge: function() {
+        merge: function () {
             var self = this;
             var main_order = this.get_order_by_uid(this.pos.main_order_uid);
 
             this.gui.show_screen("products");
             this.pos.set_order(main_order);
 
-            this.mergeorders.forEach(function(uid) {
+            this.mergeorders.forEach(function (uid) {
                 var order = self.get_order_by_uid(uid);
                 var orderlines = order.get_orderlines();
                 if (orderlines && orderlines.length) {
-                    orderlines.forEach(function(line) {
+                    orderlines.forEach(function (line) {
                         var temp_line = line.export_as_JSON();
                         main_order.add_orderline(
                             new models.Orderline(
@@ -171,7 +171,7 @@ odoo.define("pos_order_merge.merge", function(require) {
 
             this.pos.order_merge_status = false;
         },
-        get_order_by_uid: function(uid) {
+        get_order_by_uid: function (uid) {
             var orders = this.pos.get("orders").models;
             for (var i = 0; i < orders.length; i++) {
                 if (orders[i].uid === uid) {
@@ -180,7 +180,7 @@ odoo.define("pos_order_merge.merge", function(require) {
             }
             return false;
         },
-        change_button: function() {
+        change_button: function () {
             if (this.mergeorders.length) {
                 this.$(".mergemethods .button").addClass("highlight");
             } else {
@@ -192,14 +192,14 @@ odoo.define("pos_order_merge.merge", function(require) {
     gui.define_screen({
         name: "order_merge",
         widget: OrderMergeScreenWidget,
-        condition: function() {
+        condition: function () {
             return this.pos.config.iface_order_merge;
         },
     });
 
     var OrderMergeButton = screens.ActionButtonWidget.extend({
         template: "OrderMergeButton",
-        button_click: function() {
+        button_click: function () {
             if (this.pos.get("orders").models.length > 1) {
                 // The main order where other orders will be merged
                 this.pos.main_order_uid = this.pos.get_order().uid;
@@ -212,7 +212,7 @@ odoo.define("pos_order_merge.merge", function(require) {
     screens.define_action_button({
         name: "order_merge",
         widget: OrderMergeButton,
-        condition: function() {
+        condition: function () {
             return this.pos.config.iface_order_merge;
         },
     });
