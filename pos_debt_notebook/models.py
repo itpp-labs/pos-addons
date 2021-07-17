@@ -5,6 +5,7 @@
 # Copyright 2017 iceship <https://github.com/iceship>
 # Copyright 2017 gnidorah <https://github.com/gnidorah>
 # Copyright 2018-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
 # License MIT (https://opensource.org/licenses/MIT).
 import copy
 import logging
@@ -346,7 +347,6 @@ class PosConfig(models.Model):
             "debt": True,
             "credits_via_discount": False,
             "category_ids": False,
-            "write_statement": False,
             "debt_dummy_product_id": debt_dummy_product_id,
             "debt_limit": default_debt_limit,
             "pos_cash_out": True,
@@ -467,7 +467,7 @@ class PosConfig(models.Model):
                 "noupdate": True,  # If it's False, target record (res_id) will be removed while module update
             }
         )
-        if vals["write_statement"]:
+        if vals.get("write_statement"):
             self.write(
                 {
                     "payment_method_ids": [(4, debt_payment_method.id)],
