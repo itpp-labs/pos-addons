@@ -10,9 +10,9 @@
  Hardware Network Printer
 ==========================
 
-Hardware Driver for Network pinters.
+Hardware Driver for Network printers.
 
-When print an order, the PosBox receives the network printer IP address and the receipt from client's POS.
+While printing an order, the PosBox receives the network printer IP address and the receipt from client's POS.
 If the IP address is not empty, it will be connected to the network printer by using this address, which in turn prints the receipt.
 
 Questions?
