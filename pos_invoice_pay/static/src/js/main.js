@@ -1215,4 +1215,9 @@ odoo.define("pos_invoices", function (require) {
     });
 
     gui.define_screen({name: "invoice_receipt", widget: InvoiceReceiptScreenWidget});
+
+    return {
+        InvoicePaymentScreenWidget: InvoicePayment,
+        InvoiceReceiptScreenWidget: InvoiceReceiptScreenWidget,
+    };
 });
