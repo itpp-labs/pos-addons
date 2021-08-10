@@ -24,7 +24,7 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
     "demo_title": "Open CashBox from Backend",
     "demo_addons": [],
     "demo_addons_hidden": [],
