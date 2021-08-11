@@ -2,7 +2,8 @@
 <templates id="template" xml:space="preserve">
     <t t-name="QrButton">
         <div class='control-button'>
-            <i class='fa fa-qrcode' /> QR Scan
+            <i class='fa fa-qrcode' />
+            QR Scan
         </div>
     </t>
     <t t-name="QrScanPopupWidget">
@@ -21,7 +22,7 @@
                     </div>
                 </div>
                 <div class="note">
-                    <p> Tap on the video to quit </p>
+                    <p>Tap on the video to quit</p>
                 </div>
             </div>
             <canvas
