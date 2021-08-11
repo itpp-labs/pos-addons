@@ -72,7 +72,6 @@
     <record id="action_wechat_micropay" model="ir.actions.act_window">
         <field name="name">Wechat Micropay</field>
         <field name="res_model">wechat.micropay</field>
-        <field name='view_type'>form</field>
         <field name='view_mode'>tree,form</field>
     </record>
     <menuitem
