@@ -4,13 +4,12 @@
     "name": """WeChat Payments in POS""",
     "summary": """Support WeChat QR-based payments (scan and show)""",
     "category": "Point of Sale",
-    # "live_test_url": "",
     "images": ["images/main.jpg"],
     "version": "13.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/13.0/pos_payment_wechat/",
+    "support": "help@itpp.dev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": [
         "wechat",
