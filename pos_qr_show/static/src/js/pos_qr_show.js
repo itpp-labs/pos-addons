@@ -1,13 +1,13 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_qr_show", function(require) {
+odoo.define("pos_qr_show", function (require) {
     "use strict";
 
     var models = require("point_of_sale.models");
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        on_payment_qr: function(order, payment_qr) {
+        on_payment_qr: function (order, payment_qr) {
             // TODO shall we save type of qr too?
             // TODO check that order is current order
             order.payment_qr = payment_qr;
@@ -16,7 +16,7 @@ odoo.define("pos_qr_show", function(require) {
                 this.send_current_order_to_customer_facing_display();
             }
         },
-        show_payment_qr_on_payment_screen: function(payment_qr) {
+        show_payment_qr_on_payment_screen: function (payment_qr) {
             this.hide_payment_qr_on_payment_screen();
             /* EcLevel -- Error Correction Level
                L - Low (7%)
@@ -32,10 +32,10 @@ odoo.define("pos_qr_show", function(require) {
                 size: 400,
             });
         },
-        hide_payment_qr_on_payment_screen: function() {
+        hide_payment_qr_on_payment_screen: function () {
             $(".qr-container").empty();
         },
-        render_html_for_customer_facing_display: function() {
+        render_html_for_customer_facing_display: function () {
             var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(
                 this,
                 arguments
@@ -44,7 +44,7 @@ odoo.define("pos_qr_show", function(require) {
             if (!order || !order.payment_qr) {
                 return res;
             }
-            return res.then(function(rendered_html) {
+            return res.then(function (rendered_html) {
                 var $rendered_html = $(rendered_html);
 
                 var $elem = $rendered_html.find(".pos-adv");
@@ -67,7 +67,7 @@ odoo.define("pos_qr_show", function(require) {
                 // root element.
                 rendered_html = _.reduce(
                     $rendered_html,
-                    function(memory, current_element) {
+                    function (memory, current_element) {
                         return memory + $(current_element).prop("outerHTML");
                     },
                     ""
