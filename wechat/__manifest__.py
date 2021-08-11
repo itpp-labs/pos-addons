@@ -6,7 +6,7 @@
     "summary": """Technical module to integrate Odoo with WeChat""",
     "category": "Hidden",
     "images": [],
-    "version": "13.0.1.0.1",
+    "version": "14.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "help@itpp.dev",
@@ -25,5 +25,5 @@
     ],
     "qweb": [],
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
