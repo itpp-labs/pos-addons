@@ -5,7 +5,7 @@
     "summary": """Show QR for qr-based payment systems in POS or Customer Screen""",
     "category": "Hidden",
     "images": [],
-    "version": "13.0.1.0.0",
+    "version": "14.0.1.0.0",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "help@itpp.dev",
@@ -21,5 +21,5 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
