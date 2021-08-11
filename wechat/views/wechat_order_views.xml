@@ -64,7 +64,6 @@
     <record id="action_wechat_order" model="ir.actions.act_window">
         <field name="name">Wechat Order</field>
         <field name="res_model">wechat.order</field>
-        <field name='view_type'>form</field>
         <field name='view_mode'>tree,form</field>
     </record>
     <menuitem
