@@ -1,6 +1,6 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    License MIT (https://opensource.org/licenses/MIT). */
-odoo.define("pos_qr_payments", function(require) {
+odoo.define("pos_qr_payments", function (require) {
     "use strict";
     var gui = require("point_of_sale.gui");
     var models = require("point_of_sale.models");
@@ -9,15 +9,15 @@ odoo.define("pos_qr_payments", function(require) {
     var _t = core._t;
 
     gui.Gui.prototype.screen_classes
-        .filter(function(el) {
+        .filter(function (el) {
             return el.name === "payment";
         })[0]
         .widget.include({
-            init: function(parent, options) {
+            init: function (parent, options) {
                 this._super(parent, options);
                 this.pos.bind(
                     "validate_order",
-                    function() {
+                    function () {
                         this.validate_order();
                     },
                     this
@@ -27,31 +27,31 @@ odoo.define("pos_qr_payments", function(require) {
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        initialize: function() {
+        initialize: function () {
             this.hidden_cashregisters = [];
             return PosModelSuper.prototype.initialize.apply(this, arguments);
         },
-        show_warning: function(warning_message) {
+        show_warning: function (warning_message) {
             console.info("error", warning_message);
             this.chrome.gui.show_popup("error", {
                 title: _t("Warning"),
                 body: warning_message,
             });
         },
-        add_qr_payment: function(
+        add_qr_payment: function (
             order_uid,
             journal_id,
             amount,
             payment_vals,
             validate
         ) {
-            var order = this.get("orders").find(function(item) {
+            var order = this.get("orders").find(function (item) {
                 return item.uid === order_uid;
             });
             if (order) {
                 var creg = _.filter(
                     this.hidden_cashregisters.concat(this.cashregisters),
-                    function(r) {
+                    function (r) {
                         return r.journal_id[0] === journal_id;
                     }
                 )[0];
