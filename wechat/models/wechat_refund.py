@@ -13,7 +13,7 @@ SUCCESS = "SUCCESS"
 class WeChatRefund(models.Model):
     """Records with refund information and payment status.
 
-    Can be used for different types of Payments. See description of trade_type field. """
+    Can be used for different types of Payments. See description of trade_type field."""
 
     _name = "wechat.refund"
     _description = "Unified Refund"
