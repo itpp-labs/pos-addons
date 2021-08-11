@@ -5,13 +5,12 @@
     "name": """WeChat API""",
     "summary": """Technical module to integrate Odoo with WeChat""",
     "category": "Hidden",
-    # "live_test_url": "",
     "images": [],
     "version": "13.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
-    "support": "pos@it-projects.info",
-    "website": "https://apps.odoo.com/apps/modules/13.0/wechat/",
+    "support": "help@itpp.dev",
+    "website": "https://github.com/itpp-labs/pos-addons#readme",
     "license": "Other OSI approved licence",  # MIT
     "depends": ["product", "account", "qr_payments"],
     "external_dependencies": {"python": ["wechatpy"], "bin": []},
@@ -26,5 +25,5 @@
     ],
     "qweb": [],
     "auto_install": False,
-    "installable": True,
+    "installable": False,
 }
