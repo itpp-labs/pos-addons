@@ -7,34 +7,6 @@ odoo.define("pos_qr_show", function (require) {
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
-        on_payment_qr: function (order, payment_qr) {
-            // TODO shall we save type of qr too?
-            // TODO check that order is current order
-            order.payment_qr = payment_qr;
-            this.show_payment_qr_on_payment_screen(payment_qr);
-            if (this.config.iface_customer_facing_display) {
-                this.send_current_order_to_customer_facing_display();
-            }
-        },
-        show_payment_qr_on_payment_screen: function (payment_qr) {
-            this.hide_payment_qr_on_payment_screen();
-            /* EcLevel -- Error Correction Level
-               L - Low (7%)
-               M - Medium (15%)
-               Q - Quartile (25%)
-               H - High (30%)
-
-               For more options see https://larsjung.de/jquery-qrcode/
-            */
-            $(".qr-container").qrcode({
-                text: payment_qr,
-                ecLevel: "H",
-                size: 400,
-            });
-        },
-        hide_payment_qr_on_payment_screen: function () {
-            $(".qr-container").empty();
-        },
         render_html_for_customer_facing_display: function () {
             var res = PosModelSuper.prototype.render_html_for_customer_facing_display.apply(
                 this,

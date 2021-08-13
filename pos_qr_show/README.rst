@@ -25,14 +25,15 @@ To get an assistance on this module contact us by email :arrow_right: help@itpp.
 Contributors
 ============
 * `Ivan Yelizariev <https://it-projects.info/team/yelizariev>`__
+* `Eugene Molotov <https://github.com/em230418>`__
 
 
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_qr_show/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_qr_show/
 
 
-Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_qr_show.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/13.0/pos_qr_show.atom>`_
+Notifications on updates: `via Atom <https://github.com/it-projects-llc/pos-addons/commits/14.0/pos_qr_show.atom>`_, `by Email <https://blogtrottr.com/?subscribe=https://github.com/it-projects-llc/pos-addons/commits/14.0/pos_qr_show.atom>`_
 
-Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/4d0a1330e05bd688265bea14df4ad12838f9f2d7>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/8ca3ea063050f2ab2d19cce8a68116489872a734>`_
