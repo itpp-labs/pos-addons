@@ -52,16 +52,16 @@ odoo.define("pos_product_available.PosModel", function(require) {
                     });
             });
         },
-        set_product_qty_available: function(product, qty) {
-            product.qty_available = qty;
+        set_product_qty_available: function(product, qty) { // Set_product_qty 
+            product.qty = qty;
             this.refresh_qty_available(product);
         },
         update_product_qty_from_order_lines: function(order) {
             var self = this;
             order.orderlines.each(function(line) {
                 var product = line.get_product();
-                product.qty_available = product.format_float_value(
-                    product.qty_available - line.get_quantity(),
+                product.qty = product.format_float_value(
+                    product.qty - line.get_quantity(),
                     {digits: [69, 3]}
                 );
                 self.refresh_qty_available(product);
@@ -78,7 +78,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
         refresh_qty_available: function(product) {
             var $elem = $("[data-product-id='" + product.id + "'] .qty-tag");
             $elem.html(product.rounded_qty());
-            if (product.qty_available <= 0 && !$elem.hasClass("not-available")) {
+            if (product.qty <= 0 && !$elem.hasClass("not-available")) {
                 $elem.addClass("not-available");
             }
         },
@@ -104,7 +104,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
     models.Orderline = models.Orderline.extend({
         export_as_JSON: function() {
             var data = OrderlineSuper.prototype.export_as_JSON.apply(this, arguments);
-            data.qty_available = this.product.qty_available;
+            data.qty_available = this.product.qty;
             return data;
         },
         // Compatibility with pos_multi_session
@@ -113,7 +113,7 @@ odoo.define("pos_product_available.PosModel", function(require) {
                 OrderlineSuper.prototype.apply_ms_data.apply(this, arguments);
             }
             var product = this.pos.db.get_product_by_id(data.product_id);
-            if (product.qty_available !== data.qty_available) {
+            if (product.qty !== data.qty_available) {
                 this.pos.set_product_qty_available(product, data.qty_available);
             }
         },

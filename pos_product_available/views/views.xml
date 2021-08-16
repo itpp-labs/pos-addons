@@ -14,6 +14,8 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="show_qtys" />
+                        <div class="text-muted">Set Quantity Type</div> 
+                        <field name="product_quantity_type" />
                     </div>
                 </div>
             </xpath>
