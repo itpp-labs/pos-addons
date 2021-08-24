@@ -1,12 +1,12 @@
 /* Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
  * License MIT (https://opensource.org/licenses/MIT). */
 
-odoo.define("pos_receipt_custom_template.screens", function(require) {
+odoo.define("pos_receipt_custom_template.screens", function (require) {
     "use strict";
     var screens = require("point_of_sale.screens");
 
     screens.ReceiptScreenWidget.include({
-        get_custom_receipt: function() {
+        get_custom_receipt: function () {
             var display_time = false;
             if (this.pos.table) {
                 var open_time =
@@ -39,7 +39,7 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
             var receipt = order.custom_qweb_render(template, env);
             return receipt;
         },
-        get_custom_ticket: function() {
+        get_custom_ticket: function () {
             var display_time = false;
             if (this.pos.table) {
                 var open_time =
@@ -71,7 +71,7 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
             });
             return ticket;
         },
-        render_receipt: function() {
+        render_receipt: function () {
             if (this.pos.config.custom_ticket) {
                 var order = this.pos.get_order();
                 var ticket = this.get_custom_ticket();
@@ -89,9 +89,7 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
                 if (this.save_order_receipt) {
                     // For compatibility with pos_orders_history_reprint
                     var template = this.convert_to_xml(ticket);
-                    $(template)
-                        .find(".receipt-type")
-                        .html("(Supplement)");
+                    $(template).find(".receipt-type").html("(Supplement)");
                     ticket = template.outerHTML;
                     this.save_order_receipt(order, ticket, "ticket");
                 }
@@ -99,16 +97,13 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
                 this._super();
             }
         },
-        print_xml: function() {
+        print_xml: function () {
             if (this.pos.config.custom_xml_receipt) {
                 var order = this.pos.get_order();
                 var receipt = this.get_custom_receipt();
                 if (this.pos.config.show_barcode_in_receipt) {
                     // For compatibility with pos_orders_history
-                    var barcode = this.$el
-                        .find("#barcode")
-                        .parent()
-                        .html();
+                    var barcode = this.$el.find("#barcode").parent().html();
                     if (barcode && receipt.indexOf('<img id="barcode"/>') !== -1) {
                         receipt = receipt.split('<img id="barcode"/>');
                         receipt[0] = receipt[0] + barcode + "</img>";
@@ -121,9 +116,7 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
                 if (this.save_order_receipt) {
                     // For compatibility with pos_orders_history_reprint
                     var template = this.convert_to_xml(receipt);
-                    $(template)
-                        .find(".receipt-type")
-                        .html("(Supplement)");
+                    $(template).find(".receipt-type").html("(Supplement)");
                     receipt = template.outerHTML;
                     this.save_order_receipt(order, receipt, "xml");
                 }
@@ -132,7 +125,7 @@ odoo.define("pos_receipt_custom_template.screens", function(require) {
                 this._super();
             }
         },
-        convert_to_xml: function(template) {
+        convert_to_xml: function (template) {
             var parser = new DOMParser();
             var xmlDoc = parser.parseFromString(template, "text/xml");
             return xmlDoc.documentElement;
