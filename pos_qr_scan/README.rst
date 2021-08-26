@@ -32,7 +32,7 @@ Contributors
 Further information
 ===================
 
-Odoo Apps Store: https://apps.odoo.com/apps/modules/13.0/pos_qr_scan/
+Odoo Apps Store: https://apps.odoo.com/apps/modules/14.0/pos_qr_scan/
 
 
-Tested on `Odoo 11.0 <https://github.com/odoo/odoo/commit/c7171795f891335e8a8b6d5a6b796c28cea77fea>`_
+Tested on `Odoo 14.0 <https://github.com/odoo/odoo/commit/8ca3ea063050f2ab2d19cce8a68116489872a734>`_

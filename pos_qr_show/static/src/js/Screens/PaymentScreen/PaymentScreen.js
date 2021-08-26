@@ -42,5 +42,5 @@ odoo.define("pos_qr_show.PaymentScreen", function (require) {
 
     Registries.Component.extend(PaymentScreen, PosQRShowPaymentScreen);
 
-    return PosQRShowPaymentScreen;
+    return PaymentScreen;
 });

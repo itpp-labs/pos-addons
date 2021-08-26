@@ -10,6 +10,14 @@
             <xpath expr="." position="inside">
                 <script
                     type="text/javascript"
+                    src="/pos_qr_scan/static/src/js/Screens/ProductScreen/ControlButtons/QRButton.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/src/js/Popups/QRScanPopup.js"
+                />
+                <script
+                    type="text/javascript"
                     src="/pos_qr_scan/static/src/js/qr_scan.js"
                 />
                 <script
