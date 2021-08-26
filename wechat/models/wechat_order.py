@@ -3,16 +3,12 @@
 import json
 import logging
 
+from wechatpy.exceptions import WeChatPayException
+
 from odoo import api, fields, models
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
-
-try:
-    from wechatpy.exceptions import WeChatPayException
-except ImportError as err:
-    _logger.debug(err)
-
 
 PAYMENT_RESULT_NOTIFICATION_URL = "wechat/callback"
 SUCCESS = "SUCCESS"
@@ -277,7 +273,9 @@ class WeChatOrderLine(models.Model):
     price = fields.Monetary(
         "Price", required=True, help="Price in currency units (not cents)"
     )
-    currency_id = fields.Many2one("res.currency", related="order_id", string="Currency")
+    currency_id = fields.Many2one(
+        "res.currency", related="order_id.currency_id", string="Currency"
+    )
     quantity = fields.Integer(
         "Quantity", default=1, help="Quantity as Integer (WeChat limitation)"
     )

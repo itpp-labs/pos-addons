@@ -2,7 +2,7 @@
 # License MIT (https://opensource.org/licenses/MIT).
 import logging
 
-from odoo import api
+from odoo.tests import tagged
 from odoo.tests.common import HttpCase
 
 try:
@@ -14,18 +14,15 @@ except ImportError:
 _logger = logging.getLogger(__name__)
 
 
+@tagged("at_install", "post_install")
 class TestWeChatOrder(HttpCase):
-    at_install = True
-    post_install = True
-
     def setUp(self):
         super(TestWeChatOrder, self).setUp()
-        self.phantom_env = api.Environment(self.registry.test_cr, self.uid, {})
 
-        self.Order = self.phantom_env["wechat.order"]
-        self.Refund = self.phantom_env["wechat.refund"]
-        self.product1 = self.phantom_env["product.product"].create({"name": "Product1"})
-        self.product2 = self.phantom_env["product.product"].create({"name": "Product2"})
+        self.Order = self.env["wechat.order"]
+        self.Refund = self.env["wechat.refund"]
+        self.product1 = self.env["product.product"].create({"name": "Product1"})
+        self.product2 = self.env["product.product"].create({"name": "Product2"})
 
         patcher = patch("wechatpy.WeChatPay.check_signature", wraps=lambda *args: True)
         patcher.start()
@@ -104,7 +101,6 @@ class TestWeChatOrder(HttpCase):
         refund_fee = 100
         refund_vals = {
             "order_id": order.id,
-            "total_fee": order.total_fee,
             "refund_fee": refund_fee,
         }
         refund = self.Refund.create(refund_vals)
