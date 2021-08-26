@@ -1,5 +1,6 @@
 /* Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
    Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+   Copyright 2021 Eugene Molotov <https://github.com/em230418>
    License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_wechat", function (require) {
     "use strict";
@@ -10,8 +11,10 @@ odoo.define("pos_wechat", function (require) {
     var core = require("web.core");
     var models = require("point_of_sale.models");
     var Backbone = window.Backbone;
+    const PaymentScreen = require("pos_qr_show.PaymentScreen");
+    const Registries = require("point_of_sale.Registries");
 
-    models.load_fields("account.journal", ["wechat"]);
+    models.load_fields("pos.payment.method", ["wechat_method", "wechat_journal_id"]);
 
     var Wechat = Backbone.Model.extend({
         initialize: function (pos) {
@@ -71,7 +74,7 @@ odoo.define("pos_wechat", function (require) {
                         pay_amount: order.get_due(),
                         order_ref: order.uid,
                         terminal_ref: terminal_ref,
-                        journal_id: self.pos.micropay_journal.id,
+                        journal_id: self.pos.micropay_journal_id,
                         pos_id: pos_id,
                     },
                 });
@@ -103,9 +106,12 @@ odoo.define("pos_wechat", function (require) {
             this.ready.then(function () {
                 // Take out wechat micropay cashregister from cashregisters to avoid
                 // rendering in payment screent
-                self.micropay_journal = self.hide_cashregister(function (r) {
-                    return r.wechat === "micropay";
+                const pm = self.hide_payment_method(function (r) {
+                    return r.wechat_method === "micropay";
                 });
+                if (pm) {
+                    self.micropay_journal_id = pm.wechat_journal_id[0];
+                }
             });
         },
         scan_product: function (parsed_code) {
@@ -129,7 +135,7 @@ odoo.define("pos_wechat", function (require) {
                 true
             );
         },
-        wechat_qr_payment: function (order, creg) {
+        wechat_qr_payment: function (order, pm) {
             /* Send request asynchronously */
             var self = this;
 
@@ -158,7 +164,7 @@ odoo.define("pos_wechat", function (require) {
                         pay_amount: order.get_due(),
                         terminal_ref: terminal_ref,
                         pos_id: pos_id,
-                        journal_id: creg.journal.id,
+                        journal_id: pm.wechat_journal_id[0],
                     },
                 })
                 .then(function (data) {
@@ -173,16 +179,18 @@ odoo.define("pos_wechat", function (require) {
         },
     });
 
-    var OrderSuper = models.Order;
-    models.Order = models.Order.extend({
-        add_paymentline: function (cashregister) {
-            if (cashregister.journal.wechat === "native") {
-                this.pos.wechat_qr_payment(this, cashregister);
-                return;
+    const PosWeChatPaymentScreen = (PaymentScreen) =>
+        class extends PaymentScreen {
+            addNewPaymentLine({detail: paymentMethod}) {
+                if (paymentMethod.wechat_method === "native") {
+                    this.env.pos.wechat_qr_payment(this.currentOrder, paymentMethod);
+                    return true;
+                }
+                return super.addNewPaymentLine.apply(this, arguments);
             }
-            return OrderSuper.prototype.add_paymentline.apply(this, arguments);
-        },
-    });
+        };
+
+    Registries.Component.extend(PaymentScreen, PosWeChatPaymentScreen);
 
     var PaymentlineSuper = models.Paymentline;
     models.Paymentline = models.Paymentline.extend({

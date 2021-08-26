@@ -8,10 +8,25 @@ MODULE = "pos_wechat"
 class PosConfig(models.Model):
     _inherit = "pos.config"
 
-    def open_session_cb(self):
-        res = super(PosConfig, self).open_session_cb()
-        self.init_pos_wechat_journals()
-        return res
+    def open_session_cb(self, check_coa=True):
+        payment_methods_to_write_demo_statements = self.init_pos_wechat_journals()
+        for pm in payment_methods_to_write_demo_statements:
+            user = self.env.user
+            current_session = self.current_session_id
+            statement = [
+                (
+                    0,
+                    0,
+                    {
+                        "name": current_session.name,
+                        "payment_method_id": pm.id,
+                        "user_id": user.id,
+                        "company_id": user.company_id.id,
+                    },
+                )
+            ]
+            current_session.write({"statement_ids": statement})
+        return super(PosConfig, self).open_session_cb(check_coa)
 
     def init_pos_wechat_journals(self):
         """Init demo Journals for current company"""
@@ -23,12 +38,12 @@ class PosConfig(models.Model):
             [("company_id", "=", user.company_id.id), ("wechat", "!=", False)]
         )
         if wechat_journal_active:
-            return
+            return []
 
         demo_is_on = self.env["ir.module.module"].search([("name", "=", MODULE)]).demo
 
         options = {"noupdate": True, "type": "cash", "write_statement": demo_is_on}
-        wechat_native_journal = self._create_wechat_journal(
+        wechat_native_pm = self._create_wechat_payment_method(
             dict(
                 sequence_name="Wechat Native Payment",
                 prefix="WNATIVE-- ",
@@ -38,7 +53,7 @@ class PosConfig(models.Model):
                 **options
             )
         )
-        micropay_journal = self._create_wechat_journal(
+        micropay_pm = self._create_wechat_payment_method(
             dict(
                 sequence_name="Wechat Micropay",
                 prefix="WMICRO- ",
@@ -51,39 +66,33 @@ class PosConfig(models.Model):
         if demo_is_on:
             self.write(
                 {
-                    "journal_ids": [
-                        (4, wechat_native_journal.id),
-                        (4, micropay_journal.id),
+                    "payment_method_ids": [
+                        (4, wechat_native_pm.id),
+                        (4, micropay_pm.id),
                     ]
                 }
             )
+        return [wechat_native_pm, micropay_pm] if demo_is_on else []
+
+    def _create_wechat_payment_method(self, vals):
+        journal = self._create_wechat_journal(vals)
+        pm = self.env["pos.payment.method"].create(
+            {
+                "name": vals["journal_name"],
+                "wechat_enabled": True,
+                "wechat_journal_id": journal.id,
+            }
+        )
+
+        return pm
 
     def _create_wechat_journal(self, vals):
-        user = self.env.user
-        new_sequence = self.env["ir.sequence"].create(
-            {
-                "name": vals["sequence_name"] + str(user.company_id.id),
-                "padding": 3,
-                "prefix": vals["prefix"] + str(user.company_id.id),
-            }
-        )
-        self.env["ir.model.data"].create(
-            {
-                "name": "journal_sequence" + str(new_sequence.id),
-                "model": "ir.sequence",
-                "module": MODULE,
-                "res_id": new_sequence.id,
-                "noupdate": True,  # If it's False, target record (res_id) will be removed while module update
-            }
-        )
         wechat_journal = self.env["account.journal"].create(
             {
                 "name": vals["journal_name"],
                 "code": vals["code"],
                 "type": vals["type"],
                 "wechat": vals["wechat"],
-                "journal_user": True,
-                "sequence_id": new_sequence.id,
             }
         )
         self.env["ir.model.data"].create(
@@ -95,20 +104,4 @@ class PosConfig(models.Model):
                 "noupdate": True,  # If it's False, target record (res_id) will be removed while module update
             }
         )
-        if vals["write_statement"]:
-            self.write({"journal_ids": [(4, wechat_journal.id)]})
-            current_session = self.current_session_id
-            statement = [
-                (
-                    0,
-                    0,
-                    {
-                        "name": current_session.name,
-                        "journal_id": wechat_journal.id,
-                        "user_id": user.id,
-                        "company_id": user.company_id.id,
-                    },
-                )
-            ]
-            current_session.write({"statement_ids": statement})
         return wechat_journal
