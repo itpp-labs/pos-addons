@@ -2,38 +2,40 @@
    License MIT (https://opensource.org/licenses/MIT). */
 odoo.define("pos_qr_payments", function (require) {
     "use strict";
-    var gui = require("point_of_sale.gui");
     var models = require("point_of_sale.models");
     var core = require("web.core");
+    const {Gui} = require("point_of_sale.Gui");
 
     var _t = core._t;
 
-    gui.Gui.prototype.screen_classes
-        .filter(function (el) {
-            return el.name === "payment";
-        })[0]
-        .widget.include({
-            init: function (parent, options) {
-                this._super(parent, options);
-                this.pos.bind(
+    const PaymentScreen = require("point_of_sale.PaymentScreen");
+    const Registries = require("point_of_sale.Registries");
+
+    const MyPaymentScreen = (PaymentScreen) =>
+        class extends PaymentScreen {
+            constructor() {
+                super(...arguments);
+                this.env.pos.bind(
                     "validate_order",
-                    function () {
-                        this.validate_order();
+                    async function () {
+                        await this.validateOrder();
                     },
                     this
                 );
-            },
-        });
+            }
+        };
+
+    Registries.Component.extend(PaymentScreen, MyPaymentScreen);
 
     var PosModelSuper = models.PosModel;
     models.PosModel = models.PosModel.extend({
         initialize: function () {
-            this.hidden_cashregisters = [];
+            this.hidden_payment_methods = [];
             return PosModelSuper.prototype.initialize.apply(this, arguments);
         },
         show_warning: function (warning_message) {
             console.info("error", warning_message);
-            this.chrome.gui.show_popup("error", {
+            Gui.showPopup("ErrorPopup", {
                 title: _t("Warning"),
                 body: warning_message,
             });
@@ -50,7 +52,7 @@ odoo.define("pos_qr_payments", function (require) {
             });
             if (order) {
                 var creg = _.filter(
-                    this.hidden_cashregisters.concat(this.cashregisters),
+                    this.hidden_payment_methods.concat(this.payment_methods),
                     function (r) {
                         return r.journal_id[0] === journal_id;
                     }

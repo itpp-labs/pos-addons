@@ -5,7 +5,7 @@
     "summary": """Technical module to support qr-based payments like Alipay, WeChat""",
     "category": "Hidden",
     "images": [],
-    "version": "13.0.1.0.1",
+    "version": "14.0.1.0.1",
     "application": False,
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "support": "help@itpp.dev",
@@ -21,5 +21,5 @@
     "post_init_hook": None,
     "uninstall_hook": None,
     "auto_install": False,
-    "installable": False,
+    "installable": True,
 }
