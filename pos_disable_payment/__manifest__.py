@@ -1,7 +1,7 @@
 {
     "name": "Disable payments in POS",
     "summary": "Control access to the POS payments",
-    "version": "11.0.3.7.0",
+    "version": "12.0.1.0.0",
     "author": "IT-Projects LLC, Ivan Yelizariev",
     "license": "Other OSI approved licence",  # MIT
     "category": "Point Of Sale",
