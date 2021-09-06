@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2014-2016 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2015 Alexis de Lattre <https://github.com/alexis-via>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018-2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).
+ -->
+<odoo>
+    <!-- RES PARTNER -->
+    <record id="view_partner_form_debt" model="ir.ui.view">
+        <field name="name">res.partner.form.debt</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="point_of_sale.view_partner_property_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[hasclass('oe_stat_button')]" position="after">
+                <button
+                    class="oe_stat_button"
+                    type="action"
+                    name="%(pos_debt_notebook.action_report_pos_debt_partner)d"
+                    icon="fa-money"
+                >
+                    <div class="o_form_field o_stat_info">
+                        <field name="debt_type" invisible="1" />
+                        <field
+                            name="debt"
+                            widget='monetary'
+                            options="{'currency_field': 'currency_id'}"
+                            attrs="{'invisible': ['|', ('debt_type', '!=', 'debt'),('is_company', '=', True)]}"
+                        />
+                        <field
+                            name="credit_balance"
+                            widget='monetary'
+                            options="{'currency_field': 'currency_id'}"
+                            attrs="{'invisible': ['|', ('debt_type', '!=', 'credit'),('is_company', '=', True)]}"
+                        />
+                        <field
+                            name="debt_company"
+                            widget='monetary'
+                            options="{'currency_field': 'currency_id'}"
+                            attrs="{'invisible': ['|',('debt_type', '!=', 'debt'),('is_company', '=', False)]}"
+                        />
+                        <field
+                            name="credit_balance_company"
+                            widget='monetary'
+                            options="{'currency_field': 'currency_id'}"
+                            attrs="{'invisible': ['|',('debt_type', '!=', 'credit'),('is_company', '=', False)]}"
+                        />
+                        <span
+                            attrs="{'invisible': ['|', ('debt', '&lt;', 0),('debt_type', '!=', 'debt')]}"
+                            class="o_stat_text text-danger"
+                        >
+                            Debts
+                        </span>
+                        <span
+                            attrs="{'invisible': ['|', ('debt', '&gt;=', 0),('debt_type', '!=', 'debt')]}"
+                            class="o_stat_text text-success"
+                        >
+                            Debts
+                        </span>
+                        <span
+                            attrs="{'invisible': ['|', ('credit_balance', '&lt;', 0),('debt_type', '!=', 'credit')]}"
+                            class="o_stat_text text-success"
+                        >
+                            Credits
+                        </span>
+                        <span
+                            attrs="{'invisible': ['|', ('credit_balance', '&gt;=', 0),('debt_type', '!=', 'credit')]}"
+                            class="o_stat_text text-danger"
+                        >
+                            Credits
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_debt_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree.debt</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="debt_type" invisible="1" />
+                <field
+                    name="debt"
+                    attrs="{'invisible': [('debt_type', '!=', 'debt')]}"
+                />
+                <field
+                    name="credit_balance"
+                    attrs="{'invisible': [('debt_type', '!=', 'credit')]}"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_kanban_view" model="ir.ui.view">
+        <field name="name">pos_debt_notebook.res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="after">
+                <field name="debt_type" invisible="1" />
+                <field
+                    name="debt"
+                    attrs="{'invisible': [('debt_type', '!=', 'debt')]}"
+                />
+                <field
+                    name="credit_balance"
+                    attrs="{'invisible': [('debt_type', '!=', 'credit')]}"
+                />
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_details')]/ul" position="inside">
+                <li
+                    t-if="record.debt_type.raw_value == 'debt' and record.debt.raw_value"
+                >
+                    Debt:
+                    <field name="debt" />
+                </li>
+                <li
+                    t-if="record.debt_type.raw_value == 'credit' and record.credit_balance.raw_value"
+                >
+                    Credit:
+                    <field name="credit_balance" />
+                </li>
+            </xpath>
+        </field>
+    </record>
+    <!-- ACCOUNT JOURNAL -->
+    <record id="view_account_journal_pos_user_form" model="ir.ui.view">
+        <field name="name">pos_debt_notebook.account_journal_form</field>
+        <field name="model">account.journal</field>
+        <field
+            name="inherit_id"
+            ref="point_of_sale.view_account_journal_pos_user_form"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='point_of_sale']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook[last()]/page[@name='point_of_sale']"
+                position="inside"
+            >
+                <group string="Credits">
+                    <field name="debt" />
+                    <field
+                        name="pos_cash_out"
+                        attrs="{'invisible': ['|',('debt', '!=', True),('credits_via_discount', '=', True)]}"
+                    />
+                    <field
+                        name="category_ids"
+                        attrs="{'invisible': [('debt', '!=', True)]}"
+                        widget="many2many_tags"
+                    />
+                    <field
+                        name="debt_limit"
+                        attrs="{'invisible': [('debt', '!=', True)]}"
+                    />
+                    <field
+                        name="credits_autopay"
+                        attrs="{'invisible': [('debt', '!=', True)]}"
+                    />
+                    <field
+                        name="credits_via_discount"
+                        attrs="{'invisible': [('debt', '!=', True)]}"
+                        string="Zero transactions"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="pos_config_view_form" model="ir.ui.view">
+        <field name="name">pos.config.form.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='payment_methods_new']" position="after">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="debt_dummy_product_id" />
+                        <div class="content-group mt16">
+                            <field name='debt_dummy_product_id' />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.debt</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="point_of_sale.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='pos']">
+                <group>
+                    <field name="credit_product" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <!-- RES CONFIG SETTINGS -->
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50" />
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='point_of_sale']" position="inside">
+                <h2>Customer Debts</h2>
+                <div class="row mt16 o_settings_container" id="customer_debts">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="debt_type" />
+                            <div class="content-group mt16">
+                                <field
+                                    name='debt_type'
+                                    class="o_light_label"
+                                    widget="radio"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <!--POS ORDER-->
+    <record id="pos_debt_notebook_order_form" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra']" position="before">
+                <page name="non_accounting_payments" string="Non-Accounting Payments">
+                    <field name="pos_credit_update_ids" colspan="4" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="journal_id" />
+                            <field name="reversed_balance" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <!--POS SESSION-->
+    <record id="pos_debt_notebook_session_form" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="after">
+                <!-- <field name="pos_credit_update_balance"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>
