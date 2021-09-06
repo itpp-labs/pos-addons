@@ -32,7 +32,7 @@ odoo.define("pos_printer_network.tour", function(require) {
                 position: "bottom",
             },
             {
-                trigger: ".o_main_content:has(.loader:hidden)",
+                trigger: "body:has(.loader:hidden)",
                 content: "waiting for loading to finish",
                 timeout: 20000,
                 run: function() {

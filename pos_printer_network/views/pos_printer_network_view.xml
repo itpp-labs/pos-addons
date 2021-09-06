@@ -37,7 +37,7 @@
                     <label
                         string="Printer Type"
                         for="receipt_printer_type"
-                        class="col-md-3 o_light_label"
+                        class="col-lg-4 o_light_label"
                     />
                     <field name="receipt_printer_type" widget="radio" />
                 </div>
@@ -48,7 +48,7 @@
                     <label
                         string="Network Printer IP"
                         for="receipt_network_printer_ip"
-                        class="col-md-3 o_light_label"
+                        class="col-lg-4 o_light_label"
                     />
                     <field name="receipt_network_printer_ip" />
                 </div>
