@@ -1,6 +1,8 @@
 # Copyright 2017 Artyom Losev
-# Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2018,2020 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 # License MIT (https://opensource.org/licenses/MIT).
+import copy
+
 from odoo import _, api, fields, models
 
 SO_CHANNEL = "pos_sale_orders"
@@ -10,14 +12,75 @@ INV_CHANNEL = "pos_invoices"
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
+    paid_invoice = fields.Boolean("Order Pays Invoice")
+
     @api.model
-    def create_from_ui(self, orders):
+    def create_from_ui(self, pos_orders):
+        orders = copy.deepcopy(pos_orders)
         invoices_to_pay = [o for o in orders if o.get("data").get("invoice_to_pay")]
         original_orders = [o for o in orders if o not in invoices_to_pay]
-        res = super(PosOrder, self).create_from_ui(original_orders)
+        res = super(PosOrder, self).create_from_ui(
+            original_orders + self.update_orders_after_invoices(invoices_to_pay)
+        )
         if invoices_to_pay:
             for inv in invoices_to_pay:
                 self.process_invoice_payment(inv)
+        return res
+
+    def update_orders_after_invoices(self, orders):
+        res = []
+        PosSession = self.env["pos.session"]
+        for order in orders:
+            data = copy.deepcopy(order.get("data", {}))
+            if not PosSession.browse(
+                data["pos_session_id"]
+            ).config_id.invoice_pos_order:
+                continue
+            invoice_data = data.get("invoice_to_pay")
+            lines = invoice_data.get("lines")
+            new_lines = []
+            for l in lines:
+                if l.get("display_type", False):
+                    # means it's either note or section
+                    continue
+                l["price_subtotal"] = l.get("amount", 0) or l.get("subtotal", 0)
+                l["price_subtotal_incl"] = l.get("total", 0) or l.get(
+                    "price_subtotal", 0
+                )
+                if "invoice_id" in l:
+                    del l["invoice_id"]
+                new_lines.append([0, 0, l])
+            invoice_data["lines"] = new_lines
+            data.update({"amount_return": 0})
+            data.update(invoice_data)
+            name = data.get("origin", "") + " - " + data.get("number", "")
+            qty = self.search_count([("pos_reference", "ilike", name)])
+            data.update(
+                {
+                    "user_id": "user_id" in data and data["user_id"][0],
+                    "partner_id": "partner_id" in data and data["partner_id"][0],
+                    "name": data.get("origin", "")
+                    + " - "
+                    + data.get("number", "")
+                    + " - "
+                    + str(qty + 1),
+                    "paid_invoice": True,
+                }
+            )
+            if "invoice_id" in data:
+                del data["invoice_id"]
+            order["data"] = data
+            res.append(order)
+        return res
+
+    @api.model
+    def _order_fields(self, ui_order):
+        res = super(PosOrder, self)._order_fields(ui_order)
+        res.update(
+            {
+                "paid_invoice": "paid_invoice" in ui_order and ui_order["paid_invoice"],
+            }
+        )
         return res
 
     @api.model
@@ -61,6 +124,12 @@ class PosOrder(models.Model):
         self.env["account.invoice"].browse(inv_id).action_invoice_open()
         return inv_id
 
+    def test_paid(self):
+        for order in self:
+            if not order.paid_invoice and not super(PosOrder, order).test_paid():
+                return False
+        return True
+
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
@@ -92,9 +161,13 @@ class AccountInvoice(models.Model):
                 "product": l.product_id.name,
                 "price_unit": l.price_unit,
                 "qty": l.quantity,
-                "tax": [tax.name or " " for tax in l.invoice_line_tax_ids],
+                "tax": l.invoice_line_tax_ids.mapped("name"),
+                "tax_ids": [(4, t_id, None) for t_id in l.invoice_line_tax_ids.ids],
                 "discount": l.discount,
-                "amount": l.price_subtotal,
+                "amount": l.quantity * l.price_unit * (1 - (l.discount or 0.0) / 100.0),
+                "total": l.price_subtotal,
+                "product_id": l.product_id.id,
+                "display_type": l.display_type,
             }
             res.append(line)
         return res
@@ -137,6 +210,7 @@ class SaleOrder(models.Model):
                 "id": l.id,
                 "name": l.name,
                 "product": l.product_id.name,
+                "product_id": l.product_id.id,
                 "uom_qty": l.product_uom_qty,
                 "qty_delivered": l.qty_delivered,
                 "qty_invoiced": l.qty_invoiced,
@@ -176,6 +250,11 @@ class PosConfig(models.Model):
         string="Select Sale Order Cashier",
         help="Ask for a cashier when fetch orders",
         defaul=True,
+    )
+    invoice_pos_order = fields.Boolean(
+        string="Create POS Order after Invoices",
+        help="When you pay an invoice via POS a pos order will be created",
+        defaul=False,
     )
 
 
