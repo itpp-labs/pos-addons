@@ -11,19 +11,8 @@ odoo.define("pos_qr_show.PaymentScreen", function (require) {
                 // TODO shall we save type of qr too?
 
                 this.currentOrder.payment_qr = payment_qr;
-                /* EcLevel -- Error Correction Level
-                     L - Low (7%)
-                     M - Medium (15%)
-                     Q - Quartile (25%)
-                     H - High (30%)
 
-                     For more options see https://larsjung.de/jquery-qrcode/
-                  */
-                $(".qr-container").qrcode({
-                    text: payment_qr,
-                    ecLevel: "H",
-                    size: 400,
-                });
+                this.showPopup("QRPopup", {qrcode: payment_qr});
 
                 if (this.env.pos.config.iface_customer_facing_display) {
                     this.env.pos.send_current_order_to_customer_facing_display();

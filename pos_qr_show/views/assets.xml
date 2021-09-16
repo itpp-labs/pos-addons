@@ -11,6 +11,10 @@
             />
             <script
                 type="text/javascript"
+                src="/pos_qr_show/static/src/js/Popups/QRPopup.js"
+            />
+            <script
+                type="text/javascript"
                 src="/pos_qr_show/static/src/js/Screens/PaymentScreen/PaymentScreen.js"
             />
             <script
