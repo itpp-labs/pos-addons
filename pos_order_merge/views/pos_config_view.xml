@@ -3,10 +3,25 @@
     <record id="view_pos_config_form" model="ir.ui.view">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field
+            name="inherit_id"
+            ref="pos_restaurant.pos_config_view_form_inherit_restaurant"
+        />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='iface_orderline_notes']" position="after">
-                <field name="iface_order_merge" />
+            <xpath expr="//div[@id='iface_orderline_notes']" position="after">
+                <div
+                    class="col-12 col-lg-6 o_setting_box"
+                    id="iface_order_merge"
+                    attrs="{'invisible': [('module_pos_restaurant', '=', False)]}"
+                >
+                    <div class="o_setting_left_pane">
+                        <field name="iface_order_merge" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="iface_order_merge" />
+                        <div class="text-muted">Merge orders</div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
