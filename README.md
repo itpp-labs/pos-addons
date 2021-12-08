@@ -3,10 +3,8 @@
 
 :open_file_folder: Get a **.zip** file with all needed dependencies:
 
-:heavy_check_mark: [alipay](https://apps.odoo.com/apps/modules/11.0/alipay/)
-<br/>:heavy_check_mark: [hw_cashbox](https://apps.odoo.com/apps/modules/11.0/hw_cashbox/)
+:heavy_check_mark: [hw_cashbox](https://apps.odoo.com/apps/modules/11.0/hw_cashbox/)
 <br/>:heavy_check_mark: [hw_printer_network](https://apps.odoo.com/apps/modules/11.0/hw_printer_network/)
-<br/>:heavy_check_mark: [pos_alipay](https://apps.odoo.com/apps/modules/11.0/pos_alipay/)
 <br/>:heavy_check_mark: [pos_cashbox_pins](https://apps.odoo.com/apps/modules/11.0/pos_cashbox_pins/)
 <br/>:heavy_check_mark: [pos_cashier_select](https://apps.odoo.com/apps/modules/11.0/pos_cashier_select/)
 <br/>:heavy_check_mark: [pos_category_multi](https://apps.odoo.com/apps/modules/11.0/pos_category_multi/)
@@ -23,7 +21,6 @@
 <br/>:heavy_check_mark: [pos_journal_pin](https://apps.odoo.com/apps/modules/11.0/pos_journal_pin/)
 <br/>:heavy_check_mark: [pos_keyboard](https://apps.odoo.com/apps/modules/11.0/pos_keyboard/)
 <br/>:heavy_check_mark: [pos_logout](https://apps.odoo.com/apps/modules/11.0/pos_logout/)
-<br/>:heavy_check_mark: [pos_longpolling](https://apps.odoo.com/apps/modules/11.0/pos_longpolling/)
 <br/>:heavy_check_mark: [pos_menu](https://apps.odoo.com/apps/modules/11.0/pos_menu/)
 <br/>:heavy_check_mark: [pos_mobile](https://apps.odoo.com/apps/modules/11.0/pos_mobile/)
 <br/>:heavy_check_mark: [pos_mobile_restaurant](https://apps.odoo.com/apps/modules/11.0/pos_mobile_restaurant/)
@@ -49,18 +46,11 @@
 <br/>:heavy_check_mark: [pos_product_available](https://apps.odoo.com/apps/modules/11.0/pos_product_available/)
 <br/>:heavy_check_mark: [pos_product_available_negative](https://apps.odoo.com/apps/modules/11.0/pos_product_available_negative/)
 <br/>:heavy_check_mark: [pos_product_category_discount](https://apps.odoo.com/apps/modules/11.0/pos_product_category_discount/)
-<br/>:heavy_check_mark: [pos_qr_payments](https://apps.odoo.com/apps/modules/11.0/pos_qr_payments/)
-<br/>:heavy_check_mark: [pos_qr_scan](https://apps.odoo.com/apps/modules/11.0/pos_qr_scan/)
-<br/>:heavy_check_mark: [pos_qr_show](https://apps.odoo.com/apps/modules/11.0/pos_qr_show/)
 <br/>:heavy_check_mark: [pos_receipt_custom_template](https://apps.odoo.com/apps/modules/11.0/pos_receipt_custom_template/)
 <br/>:heavy_check_mark: [pos_restaurant_base](https://apps.odoo.com/apps/modules/11.0/pos_restaurant_base/)
 <br/>:heavy_check_mark: [pos_scan_ref](https://apps.odoo.com/apps/modules/11.0/pos_scan_ref/)
-<br/>:heavy_check_mark: [pos_wechat](https://apps.odoo.com/apps/modules/11.0/pos_wechat/)
 <br/>:heavy_check_mark: [pos_wechat_miniprogram](https://apps.odoo.com/apps/modules/11.0/pos_wechat_miniprogram/)
 <br/>:heavy_check_mark: [product_lot](https://apps.odoo.com/apps/modules/11.0/product_lot/)
-<br/>:heavy_check_mark: [qcloud_sms](https://apps.odoo.com/apps/modules/11.0/qcloud_sms/)
-<br/>:heavy_check_mark: [qr_payments](https://apps.odoo.com/apps/modules/11.0/qr_payments/)
-<br/>:heavy_check_mark: [wechat](https://apps.odoo.com/apps/modules/11.0/wechat/)
 <br/>:heavy_check_mark: [wechat_miniprogram](https://apps.odoo.com/apps/modules/11.0/wechat_miniprogram/)
 
 :star: Star this repo if you **like** it!
@@ -72,9 +62,9 @@ Other Addons
 
 | Repository | Versions |
 |------------|----------|
-| [itpp-labs/**pos-addons**](https://github.com/itpp-labs/pos-addons) | [[14.0]](https://github.com/itpp-labs/pos-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/pos-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/pos-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/pos-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/pos-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/pos-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/pos-addons/tree/8.0#readme) [[7.0]](https://github.com/itpp-labs/pos-addons/tree/7.0#readme) |
-| [itpp-labs/**mail-addons**](https://github.com/itpp-labs/mail-addons) | [[14.0]](https://github.com/itpp-labs/mail-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/mail-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/mail-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/mail-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/mail-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/mail-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/mail-addons/tree/8.0#readme) |
-| [itpp-labs/**misc-addons**](https://github.com/itpp-labs/misc-addons) | [[14.0]](https://github.com/itpp-labs/misc-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/misc-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/misc-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/misc-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/misc-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/misc-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/misc-addons/tree/8.0#readme) [[7.0]](https://github.com/itpp-labs/misc-addons/tree/7.0#readme) |
-| [itpp-labs/**sync-addons**](https://github.com/itpp-labs/sync-addons) | [[14.0]](https://github.com/itpp-labs/sync-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/sync-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/sync-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/sync-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/sync-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/sync-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/sync-addons/tree/8.0#readme) |
-| [itpp-labs/**access-addons**](https://github.com/itpp-labs/access-addons) | [[14.0]](https://github.com/itpp-labs/access-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/access-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/access-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/access-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/access-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/access-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/access-addons/tree/8.0#readme) |
-| [itpp-labs/**website-addons**](https://github.com/itpp-labs/website-addons) | [[14.0]](https://github.com/itpp-labs/website-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/website-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/website-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/website-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/website-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/website-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/website-addons/tree/8.0#readme) |
+| [itpp-labs/**pos-addons**](https://github.com/itpp-labs/pos-addons) | [[15.0]](https://github.com/itpp-labs/pos-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/pos-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/pos-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/pos-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/pos-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/pos-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/pos-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/pos-addons/tree/8.0#readme) [[7.0]](https://github.com/itpp-labs/pos-addons/tree/7.0#readme) |
+| [itpp-labs/**mail-addons**](https://github.com/itpp-labs/mail-addons) | [[15.0]](https://github.com/itpp-labs/mail-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/mail-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/mail-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/mail-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/mail-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/mail-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/mail-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/mail-addons/tree/8.0#readme) |
+| [itpp-labs/**misc-addons**](https://github.com/itpp-labs/misc-addons) | [[15.0]](https://github.com/itpp-labs/misc-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/misc-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/misc-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/misc-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/misc-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/misc-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/misc-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/misc-addons/tree/8.0#readme) [[7.0]](https://github.com/itpp-labs/misc-addons/tree/7.0#readme) |
+| [itpp-labs/**sync-addons**](https://github.com/itpp-labs/sync-addons) | [[15.0]](https://github.com/itpp-labs/sync-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/sync-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/sync-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/sync-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/sync-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/sync-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/sync-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/sync-addons/tree/8.0#readme) |
+| [itpp-labs/**access-addons**](https://github.com/itpp-labs/access-addons) | [[15.0]](https://github.com/itpp-labs/access-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/access-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/access-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/access-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/access-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/access-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/access-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/access-addons/tree/8.0#readme) |
+| [itpp-labs/**website-addons**](https://github.com/itpp-labs/website-addons) | [[15.0]](https://github.com/itpp-labs/website-addons/tree/15.0#readme) [[14.0]](https://github.com/itpp-labs/website-addons/tree/14.0#readme) [[13.0]](https://github.com/itpp-labs/website-addons/tree/13.0#readme) [[12.0]](https://github.com/itpp-labs/website-addons/tree/12.0#readme) [[11.0]](https://github.com/itpp-labs/website-addons/tree/11.0#readme) [[10.0]](https://github.com/itpp-labs/website-addons/tree/10.0#readme) [[9.0]](https://github.com/itpp-labs/website-addons/tree/9.0#readme) [[8.0]](https://github.com/itpp-labs/website-addons/tree/8.0#readme) |
