@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pos_category_discount,access_pos_category_discount,model_pos_category_discount,point_of_sale.group_pos_user,1,1,1,1
-access_pos_discount_program,access_pos_discount_program,model_pos_discount_program,point_of_sale.group_pos_user,1,1,1,1
