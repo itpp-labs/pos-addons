@@ -1,0 +1,401 @@
+/* ------ FLOOR SELECTOR ------- */
+
+.pos.mobile .floor-selector {
+    line-height: 80px;
+    font-size: 30px;
+}
+.pos.mobile .slide-floor-menu {
+    z-index: 10;
+}
+.pos.mobile .slide-floor-menu .title {
+    display: block;
+    font-size: 50px;
+    line-height: 80px;
+    text-align: center;
+}
+
+/* ------ FLOOR MAP ------- */
+
+.pos.mobile .floor-map {
+    box-shadow: initial;
+    position: relative;
+}
+.pos.mobile .floor-map .tables {
+    max-width: 900px;
+    margin: initial;
+    margin-left: 88px;
+
+    max-height: 90%;
+    max-height: -webkit-calc(100% - 150px);
+    max-height: -moz-calc(100% - 150px);
+    max-height: calc(100% - 150px);
+
+    border-radius: initial;
+    border: initial;
+    height: 100%;
+    float: none;
+
+    margin-top: 15px;
+}
+.pos.mobile .scrollable-y {
+    position: relative;
+}
+.pos.mobile .floor-map .table {
+    font-size: 36px;
+    border-radius: 6px;
+    box-shadow: 0px 6px rgba(0, 0, 0, 0.07);
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
+}
+.pos.mobile .floor-map .table .table-cover {
+    border-radius: 0px 0px 6px 6px;
+}
+.pos.mobile .floor-map .table .table-cover.full {
+    border-radius: 6px 6px 6px 6px;
+}
+.pos.mobile .floor-map .table .table-seats {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 32px;
+    border-radius: 50%;
+    margin-left: -20px;
+    margin-bottom: 8px;
+}
+.pos.mobile .floor-map .table .label {
+    bottom: 10px;
+}
+.pos.mobile .floor-map .edit-button.editing {
+    display: none;
+}
+.pos.mobile .floor-map .edit-bar {
+    right: 80px;
+    margin: 16px;
+    line-height: 68px;
+    border-radius: 10px;
+    font-size: 40px;
+}
+.pos.mobile .floor-map .edit-bar .edit-button {
+    width: 64px;
+    margin-right: -8px;
+    border-right: solid 2px rgba(0, 0, 0, 0.2);
+}
+.pos.mobile .floor-map .edit-bar .color-picker {
+    left: -212px;
+    top: 80px;
+    width: 360px;
+    height: 360px;
+    border-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color {
+    width: 120px;
+    height: 120px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.tl {
+    border-top-left-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.tr {
+    border-top-right-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.bl {
+    border-bottom-left-radius: 6px;
+}
+.pos.mobile .floor-map .edit-bar .color-picker .color.br {
+    border-bottom-right-radius: 6px;
+}
+
+.pos.mobile .floor-map .edit-bar .close-picker {
+    margin-left: -32px;
+    margin-bottom: -32px;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    font-size: 40px;
+    border-radius: 32px;
+}
+.pos.mobile .floor-map .table.selected .table-handle {
+    width: 96px;
+    height: 96px;
+    border-radius: 48px;
+    margin-left: -48px;
+    margin-top: -48px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.pos.mobile .floor-map .table.selected .table-handle:hover {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    margin-left: -60px;
+    margin-top: -60px;
+}
+.pos.mobile .floor-map .table .order-count {
+    width: 40px;
+    margin-top: 2px;
+    margin-left: -20px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    font-size: 32px;
+}
+.pos.mobile .floor-map .empty-floor {
+    width: 800px;
+    height: 80px;
+    font-size: 36px;
+}
+.pos.mobile .floor-map .empty-floor i {
+    padding: 12px 14px 6px;
+    margin: 0px 6px;
+    border-radius: 6px;
+}
+
+/* ------ FLOOR BUTTON IN THE ORDER SELECTOR ------- */
+
+.pos.mobile .order-button.floor-button {
+    background: white;
+    word-wrap: break-word;
+    white-space: normal;
+    width: 150px;
+    line-height: initial;
+    font-size: smaller;
+}
+.pos.mobile .order-button.floor-button .fa {
+    font-size: 48px;
+}
+/* ------ ORDER LINE STATUS ------- */
+
+.pos.mobile .order .orderline.dirty {
+    border-left: solid 12px #6ec89b;
+    padding-left: 18px;
+}
+.pos.mobile .order .orderline.skip {
+    border-left: solid 12px #7f82ac;
+    padding-left: 18px;
+}
+
+/* ------ ORDER NOTES ------- */
+
+.pos.mobile .order .orderline-note {
+    margin: 16px;
+}
+.pos.mobile .orderline-note .fa {
+    margin-right: 8px;
+}
+
+/* ------ FLOOR SWIPER ------- */
+.pos.mobile .swiper-container-floor-screen {
+    height: 100%;
+}
+.pos.mobile .slide-floor-menu {
+    min-width: 100px;
+    width: 70%;
+    max-width: 641px;
+    background-color: #2c8dfb;
+    color: #fff;
+    overflow-y: auto;
+}
+/* ------ FLOR MAP BUTTON MENU ------- */
+.pos.mobile .swiper-container-floor-screen .menu-button {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 9px;
+    cursor: pointer;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    background-color: #2c8dfb;
+    z-index: 1;
+    margin-bottom: -1px;
+    width: 80px;
+}
+.pos.mobile .floor-selector .menu-button {
+    position: initial;
+}
+.pos.mobile .swiper-container-floor-screen .bar {
+    position: relative;
+    display: block;
+    width: 80px;
+    height: 7px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 20px;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(1) {
+    margin-top: 0px;
+}
+.pos.mobile .swiper-container-floor-screen .menu-button .bar:nth-of-type(3) {
+    margin-bottom: 0px;
+}
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(1) {
+    -webkit-transform: translateY(30px) rotate(-45deg);
+    -ms-transform: translateY(30px) rotate(-45deg);
+    transform: translateY(30px) rotate(-45deg);
+}
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(2) {
+    opacity: 0;
+}
+.pos.mobile .swiper-container-floor-screen .cross .bar:nth-of-type(3) {
+    -webkit-transform: translateY(-26px) rotate(45deg);
+    -ms-transform: translateY(-26px) rotate(45deg);
+    transform: translateY(-26px) rotate(45deg);
+}
+/* ---- SPLITBILL ---- */
+.pos.mobile .splitbill-screen .orderline.selected .product-name,
+.pos.mobile .splitbill-screen .orderline.selected .price {
+    color: white;
+}
+.pos.mobile .splitbill-screen .left-content {
+    width: 60%;
+    height: calc(100% - 120px);
+    float: left;
+}
+.pos.mobile .splitbill-screen .right-content {
+    width: 40%;
+    float: right;
+    left: 0%;
+}
+/*Order Button*/
+.pos.mobile .control-button.order-submit {
+    padding: initial;
+    width: initial;
+    height: initial;
+    border-radius: initial;
+    box-shadow: none;
+    background: initial;
+    font-weight: initial;
+    border: none;
+}
+.pos.mobile .rightpane-header .order-submit {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    line-height: 150px;
+    font-size: 115px;
+    cursor: pointer;
+    margin: 0 10px;
+    color: #808080;
+}
+.pos.mobile .order-submit img {
+    width: 86px;
+}
+.pos.mobile .rightpane-header .order-submit {
+    margin-left: 30px;
+}
+.pos.mobile .control-button.order-submit.highlight {
+    border: initial !important;
+    background: initial !important;
+}
+.pos.mobile .control-button.order-submit .not-active {
+    display: inline-block;
+}
+.pos.mobile .control-button.order-submit .active {
+    display: none;
+}
+.pos.mobile .control-button.order-submit.highlight .not-active {
+    display: none;
+}
+.pos.mobile .control-button.order-submit.highlight .active {
+    display: inline-block;
+}
+.pos.mobile .control-button.order-printbill {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+    height: 93px;
+    line-height: 93px;
+    max-width: calc(100% - 5px);
+}
+.pos.mobile .control-button.order-note {
+    position: relative;
+}
+.pos.mobile .control-button.order-note img {
+    width: 40px;
+}
+/* --------------------- Numpad ------------------------ */
+.pos.mobile .subwindow-container-fix.pads {
+    width: 100%;
+}
+.pos.mobile .actionpad .button.pay {
+    height: 210px;
+}
+.pos.mobile .top-control-buttons {
+    margin: 0px;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    max-width: initial;
+    width: 100%;
+}
+.pos.mobile .top-control-buttons .control-button {
+    width: calc(100% / 3 - 15px);
+    margin: 5px;
+    flex-grow: 3;
+    height: 93px;
+    line-height: 93px;
+}
+.pos.mobile .actionpad,
+.pos.mobile .numpad {
+    margin-top: 0px;
+}
+.pos.mobile .actionpad {
+    max-width: initial;
+    width: calc(100% / 3 - 10px);
+}
+.pos.mobile .slide-numpad .numpad {
+    width: 66%;
+    max-width: initial;
+}
+.pos.mobile .slide-numpad .numpad button {
+    width: calc(25% - 10px);
+}
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 705px) !important;
+}
+.pos.mobile .under-search {
+    max-height: 705px;
+}
+.pos.mobile .top-control-buttons .control-button:active,
+.pos.mobile .control-button.order-printbill:active {
+    background: black;
+    color: white;
+    border-color: transparent;
+}
+
+/* --- Restaurant for Mobile Specific CSS --- */
+.pos.mobile .screen-content-flexbox {
+    margin: 0px auto;
+    text-align: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    display: -webkit-flex;
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+}
+.pos.mobile .swiper-container-map {
+    height: 100%;
+}
+/*  ********* The Webkit Scrollbar  ********* */
+.pos.mobile .floor-map *::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-track {
+    border-left: solid 4px transparent;
+    background: transparent;
+}
+.pos.mobile .floor-map *::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+.pos.mobile .floor-map.scrolling *::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #393939;
+}
