@@ -1,0 +1,1596 @@
+/*===================Common styles for mobile version=============================*/
+.ios {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    margin: 0;
+}
+.pos.mobile textarea {
+    font-size: 38px;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 0px 2px rgb(220, 220, 220) inset;
+    resize: none;
+}
+.pos.mobile textarea:focus {
+    box-shadow: 0px 0px 0px 6px #6ec89b;
+}
+.pos.mobile {
+    font-size: 24px;
+}
+/*  ********* The black loading screen ********* */
+.pos.mobile .loader-feedback {
+    width: 800px;
+    height: 320px;
+    margin: -120px -400px;
+    left: 50%;
+    top: 50%;
+}
+.pos.mobile .loader-feedback .progressbar {
+    height: 2px;
+}
+.pos.mobile .loader-feedback .progressbar > .progress {
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.35);
+}
+.pos.mobile .loader-feedback .button {
+    margin: 50px auto;
+    line-height: 84px;
+    padding: 0px 32px;
+    font-size: 90px;
+    border: solid 2px;
+    border-radius: 10px;
+}
+/* ---- Scrollers ----- */
+.pos.mobile .scroller-container ::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+}
+.pos.mobile .scroller-container ::-webkit-scrollbar-track {
+    border-left: solid 2px rgb(200, 200, 200);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.pos.mobile .scroller-container ::-webkit-scrollbar-thumb {
+    min-height: 60px;
+}
+/*  ********* Generic element styling  ********* */
+.pos.mobile button,
+.pos.mobile a.button {
+    padding: 8px 20px;
+    font-size: 22px;
+    border: 2px solid #cacaca;
+    border-radius: 6px;
+}
+.pos.mobile .pos-disc-font {
+    font-size: 24px;
+}
+/*  ********* The white header bar ********* */
+.pos.mobile .pos-topheader {
+    height: 96px;
+    background: white;
+    border-bottom: solid 3px rgb(196, 196, 196);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+/*  a) The left part of the top-bar */
+
+.pos.mobile .pos-branding {
+    border-right: 0px;
+    width: initial;
+    position: relative;
+    vertical-align: top;
+    display: block;
+    float: left;
+}
+.pos.mobile .pos-branding .username {
+    margin-left: 20px;
+    margin-right: 20px;
+    line-height: 104px;
+    float: left;
+    color: #555555;
+    /*word-wrap: break-word;*/
+    width: initial;
+    font-size: 20px;
+    white-space: nowrap;
+}
+/*  b) The right part of the top-bar */
+.pos.mobile .pos-rightheader {
+    display: block;
+    position: relative;
+    left: 0px;
+    right: 0px;
+    float: right;
+    width: 100%;
+}
+.pos.mobile .pos-rightheader > * {
+    border-right: 0px;
+}
+.pos.mobile .order-button {
+    height: 92px;
+    padding: 8px 16px;
+    margin: 6px;
+    margin-right: 4px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    line-height: 84px;
+    box-shadow: none;
+    min-width: 90px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom: 2px solid rgb(196, 196, 196);
+    background: #e8e8e8;
+    color: #555555;
+}
+.pos.mobile .order-button.selected {
+    height: 100px;
+    line-height: 80px;
+    background: white;
+    border: solid 3px rgb(196, 196, 196);
+    border-bottom: 3px solid white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-top: 0px;
+    padding-top: 15px;
+    font-weight: initial;
+}
+.pos.mobile .order-button .order-sequence {
+    font-size: 32px;
+    font-weight: initial;
+}
+.pos.mobile .order-button.selected .order-sequence {
+    line-height: 48px;
+    min-width: 48px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
+}
+.pos.mobile .order-button.square {
+    display: inline-block;
+    float: left;
+    margin-left: 2px;
+    padding: 20px;
+}
+.pos.mobile .order-button.square img {
+    width: 50px;
+}
+.pos.mobile .order-button:not(.square) > .fa {
+    font-size: 32px;
+    margin-right: 8px;
+}
+.pos.mobile .order-button .order-sequence {
+    font-size: 32px;
+}
+.pos.mobile .neworder-button,
+.pos.mobile .deleteorder-button {
+    height: 84px;
+    border: none;
+    border-radius: 8px;
+}
+/*  c) The session buttons */
+.pos.mobile .pos-rightheader .header-button {
+    display: inline-block;
+    height: 96px;
+    padding-left: 32px;
+    padding-right: 32px;
+    border-right: 2px solid #292929;
+    border-left: 2px solid #292929;
+    line-height: 96px;
+    color: #555555;
+    position: absolute;
+    right: 0;
+    padding: 0px;
+    width: 80px;
+}
+.pos.mobile .pos-rightheader .header-button img {
+    padding: 10px;
+    margin-top: 25px;
+    width: 30px;
+}
+.pos.mobile .pos-rightheader .header-button:last-child {
+    border-left: 0px;
+    border-right: 0px;
+}
+/*  c) The notifications indicator */
+.pos.mobile .oe_status {
+    padding: 28px;
+    line-height: 40px;
+    font-size: 40px;
+    float: right;
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.pos.mobile .oe_status .oe_icon {
+    width: 40px;
+    height: 32px;
+    color: #555555;
+}
+.pos.mobile .oe_status .oe_red,
+.pos.mobile .oe_icon.oe_red {
+    color: rgb(197, 52, 0);
+}
+.pos.mobile .oe_statu .oe_green,
+.pos.mobile .oe_icon.oe_green {
+    color: rgb(94, 185, 55);
+}
+.pos.mobile .oe_status .oe_orange,
+.pos.mobile .oe_icon.oe_orange {
+    color: rgb(239, 153, 65);
+}
+.pos.mobile .oe_status .oe_icon img {
+    width: 40px;
+}
+/*  ********* Contains everything below the  bar ********* */
+.pos.mobile .pos-content {
+    top: 99px;
+}
+/*  ********* The leftpane contains the order, numpad and paypad ********* */
+
+.pos.mobile .leftpane {
+    /* Center slide text vertically */
+    width: 100%;
+    height: 100%;
+    border-right: solid 2px #cecbcb;
+    border-right: solid 6px #787878;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    left: 0px;
+    float: left;
+    position: relative;
+}
+.pos.mobile .leftpane .pads {
+    border-top: solid 6px rgb(110, 200, 155);
+}
+.pos.mobile .subwindow-container-fix.pads {
+    width: 922px;
+    margin: 0 auto;
+}
+/*  ********* The control buttons ********* */
+.pos.mobile .control-buttons {
+    padding: 16px 32px 0px 22px;
+    margin-bottom: -12px;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.pos.mobile .control-button {
+    font-size: 48px;
+    margin: 15px;
+    padding: 10px 24px;
+    line-height: 80px;
+    padding: 0px;
+    width: 380px;
+    height: 80px;
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    border: 2px solid #e8e8e8;
+}
+.pos.mobile .control-button .fa {
+    margin-right: 8px;
+}
+.pos.mobile .control-button .control-button-number {
+    height: 48px;
+    line-height: 48px;
+    width: 48px;
+    margin-left: 0px;
+    margin-right: 8px;
+    margin-bottom: 13px;
+    border-radius: 10px;
+    border: 3px solid rgb(85, 85, 85);
+    background: initial;
+    color: rgb(85, 85, 85);
+    font-size: 40px;
+    font-weight: initial;
+}
+.pos.mobile .control-button.highlight,
+.pos.mobile .button.highlight {
+    border: solid 2px #64af8a !important;
+}
+.pos.mobile .control-button.altlight,
+.pos.mobile .button.altlight {
+    border: solid 2px #756a99 !important;
+}
+.pos.mobile .control-button.disabled,
+.pos.mobile .control-button.disabled:active {
+    border: solid 2px #bebebe;
+}
+/*  ********* The actionpad (payment, set customer) ********* */
+.pos.mobile .actionpad {
+    margin: 0px;
+    margin-top: 16px;
+    border-top: 0px;
+    border-left: 0px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    margin-right: 0px;
+    max-width: 400px;
+    width: 100%;
+    margin-bottom: 160px;
+    border-color: #e8e8e8;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+.pos.mobile .actionpad .button {
+    height: 118px;
+    font-size: 28px;
+    border: 2px solid #e8e8e8;
+    border-radius: 15px;
+    margin: 5px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+}
+.pos.mobile .actionpad .button:hover {
+    background: #6ec89b;
+    color: white;
+    border-color: transparent;
+}
+.pos.mobile .actionpad .button:active {
+    background: black;
+    color: white;
+    border-color: transparent;
+}
+.pos.mobile .actionpad .button:first-child {
+    border-top-left-radius: 15px;
+}
+.pos.mobile .actionpad .button:last-child {
+    border-bottom-left-radius: 15px;
+}
+.pos.mobile .actionpad .button.pay {
+    height: 315px;
+    font-size: 48px;
+}
+.pos.mobile .actionpad .button.pay .pay-circle {
+    font-size: 47px;
+    line-height: 84px;
+    padding-top: 12px;
+    width: 96px;
+    border-radius: 50%;
+    background: #dbdbdb;
+    color: #555555;
+}
+.pos.mobile .actionpad .button.pay .pay-circle .fa {
+    top: -2px;
+    left: 6px;
+}
+.pos.mobile .actionpad .button.set-customer {
+    padding-left: 90px;
+    padding-right: 80px;
+    height: 98px;
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 48px;
+}
+.pos.mobile .actionpad .button.set-customer.decentered {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 35px;
+}
+.pos.mobile .actionpad .button .fa-user {
+    left: 26px;
+    top: 26px;
+    margin-right: 16px;
+    font-size: 36px;
+    line-height: 60px;
+    width: 60px;
+}
+.pos.mobile .actionpad .button.set-customer img {
+    width: 50px;
+    position: absolute;
+    left: 25px;
+    top: 20px;
+}
+/*  ********* The Numpad ********* */
+.pos.mobile .numpad {
+    width: 512px;
+    margin: 0px;
+    margin-top: 16px;
+    border-top: none;
+    border-top-right-radius: 8px;
+    float: left;
+    margin-left: 0px;
+    max-width: 550px;
+}
+.pos.mobile .numpad button {
+    height: 98px;
+    width: 118px;
+    border: 2px solid #e8e8e8;
+    border-radius: 15px;
+    margin: 5px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+}
+.pos.mobile .mode-button.selected-mode {
+    background: #6ec89b;
+    border-color: transparent;
+}
+.pos.mobile .numpad button:nth-child(4) {
+    border-top-right-radius: 15px;
+}
+.pos.mobile .numpad button:last-child {
+    border-bottom-right-radius: 15px;
+}
+.pos.mobile .input-button {
+    font-size: 48px;
+}
+.pos.mobile .mode-button {
+    font-size: 36px;
+}
+.pos.mobile .numpad button:active {
+    background: #6ec89b;
+    color: white;
+    border-color: transparent;
+}
+.pos.mobile .numpad button:active {
+    background: black;
+    color: white;
+    border-color: transparent;
+}
+/*  ********* The right pane contains the screens and headers ********* */
+.pos.mobile .rightpane {
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    left: 0px;
+    float: left;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.pos.mobile .rightpane-header {
+    background: #ededed;
+    height: 150px;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+    width: max-content;
+    margin: 0 auto;
+    border: none;
+}
+/*  ********* The product list  ********* */
+.pos.mobile .product-list-container {
+    background: white;
+}
+.pos.mobile .product-list {
+    padding: 20px;
+    text-align: center;
+}
+.pos.mobile .current-order-qty {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: red;
+    color: white;
+    line-height: 30px;
+    min-width: 30px;
+    border-radius: 24px;
+    margin-right: 8px;
+    margin-left: -8px;
+    margin-bottom: 5px;
+}
+/*  a) the product list navigation bar */
+.pos.mobile .breadcrumb {
+    line-height: 96px;
+    height: 96px;
+    min-width: 96px;
+    float: right;
+}
+.pos.mobile .breadcrumb:last-child {
+    padding-right: 6px;
+    border-right: none;
+}
+.pos.mobile .breadcrumb-button {
+    padding: 0 18px;
+    font-size: 28px;
+}
+.pos.mobile .breadcrumb-button.breadcrumb-home {
+    line-height: 100px;
+    width: 100px;
+    font-size: 80px;
+}
+.pos.mobile .breadcrumb-arrow {
+    width: 56px;
+    transform: scale(-1, 1);
+}
+.pos.mobile .breadcrumb-homeimg {
+    width: 54px;
+    margin: 24px 12px;
+}
+/*  b) the search box */
+.pos.mobile .searchbox {
+    right: 4px;
+    float: left;
+    position: relative;
+}
+.pos.mobile .searchbox input {
+    width: 400px;
+    border: 2px solid #e8e8e8;
+    padding: 20px 30px;
+    margin: 15px;
+    border-radius: initial;
+    font-size: 50px;
+    background: inherit;
+    padding-right: 100px;
+    height: 75px;
+    border-radius: 15px;
+    background: white;
+}
+.pos.mobile .searchbox input:focus {
+    box-shadow: 0px 0px 0px 4px rgb(153, 153, 255) inset;
+}
+.pos.mobile .search-clear {
+    width: 100px;
+    height: 100px;
+    top: 24px;
+    right: 16px;
+    font-size: 70px;
+    margin: 0 10px;
+    color: #e8e8e8;
+    left: auto;
+    padding: 7px;
+}
+/*  c) the categories list */
+.pos.mobile .categories {
+    height: 100%;
+    border-bottom: none;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    width: 100%;
+}
+.pos.mobile .categories h4 {
+    margin: 18px 10px;
+}
+.pos.mobile .category-list {
+    padding: 20px;
+    border-bottom: none;
+    background: white;
+    text-align: center;
+}
+.pos.mobile .category-list-scroller {
+    max-height: 342px;
+}
+/*  d) the category button */
+.pos.mobile .category-button {
+    font-size: 22px;
+    margin: 16px !important;
+    width: 240px;
+    height: 240px;
+    border: 2px solid #d7d7d7;
+    border-radius: 6px;
+    border-bottom-width: 6px;
+}
+.pos.mobile .category-simple-button {
+    font-size: 28px;
+    margin: 15px;
+    padding: 10px 24px;
+    line-height: 80px;
+    padding: 0px;
+    max-width: 300px;
+    height: 80px;
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    border: 2px solid #e8e8e8;
+    width: 100%;
+}
+.pos.mobile .category-simple-button:active {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
+}
+.pos.mobile .category-simple-button:hover {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
+}
+.pos.mobile .category-simple-button.active {
+    color: white;
+    background: black;
+    border-color: black;
+
+    -webkit-transition-property: background, border;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    transition: 0.2s;
+}
+.pos.mobile .category-button .category-img {
+    width: 240px;
+    height: 200px;
+}
+.pos.mobile .category-button .category-img img {
+    max-height: 200px;
+    max-width: 240px;
+    margin-top: 10px;
+    min-width: 190px;
+}
+.pos.mobile .category-button .category-name {
+    line-height: 28px;
+    padding: 6px;
+    padding-top: 30px;
+}
+.pos.mobile .category-list.simple {
+    display: inline-block;
+    -webkit-flex-flow: initial;
+    flex-flow: initial;
+    border-bottom: none;
+    background-color: white;
+    text-align: center;
+    width: 100%;
+    padding: 0px;
+}
+/*  e) the product */
+.pos.mobile .product {
+    line-height: 200px;
+    font-size: 22px;
+    margin: 16px !important;
+    width: 200px;
+    height: 188px;
+    border-bottom-width: 0px;
+    border: 2px solid #e8e8e8;
+    border-radius: 6px;
+    box-shadow: 0px 5px 30px -14px black;
+}
+.pos.mobile .product .product-count {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 10px;
+    color: black !important;
+}
+.pos.mobile .product .product-img {
+    width: 200px;
+    height: 188px;
+}
+.pos.mobile .product .product-img img {
+    max-height: 200px;
+    max-width: 220px;
+    width: 185px;
+    height: 185px;
+    vertical-align: top;
+}
+.pos.mobile .product .price-tag {
+    top: 0px;
+    right: 0px;
+    line-height: 26px;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+.pos.mobile .product .product-name {
+    line-height: 20px;
+    padding: 6px;
+    padding-top: 30px;
+    text-align: left;
+}
+/*  ********* The Screens  ********* */
+.pos.mobile .screen header h2 {
+    padding-top: 14px;
+}
+.pos.mobile .screen p {
+    font-size: 36px;
+}
+.pos.mobile .dialog {
+    width: 1000px;
+    margin-top: 100px;
+}
+.pos.mobile .dialog p {
+    font-size: 50px;
+    margin-top: 20px;
+}
+/* a) Generic Screen Layout Constructs */
+.pos.mobile .screen .screen-content {
+    max-width: 2048px;
+    background: white;
+}
+.pos.mobile .screen .top-content {
+    background: white;
+    height: 128px;
+    border-bottom: dashed 2px rgb(110, 110, 110);
+}
+.pos.mobile .screen .top-content .button {
+    line-height: 64px;
+    padding: 6px 26px;
+    font-size: 35px !important;
+    margin: 24px;
+    border: 2px solid #e8e8e8;
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+}
+.pos.mobile .screen .top-content .button:hover {
+    background: #efefef;
+}
+.pos.mobile .screen .top-content .button:active {
+    background: black;
+    border-color: black;
+    color: white;
+}
+.pos.mobile .screen .top-content .button.highlight {
+    border: solid 2px rgb(110, 200, 155);
+}
+.pos.mobile .screen .top-content .button.back {
+    margin-left: 32px;
+}
+.pos.mobile .screen .top-content .button.next {
+    font-size: inherit;
+}
+.pos.mobile .screen .left-content {
+    top: 128px;
+    border-right: dashed 2px rgb(215, 215, 215);
+}
+.pos.mobile .screen .left-content.pc40 {
+    right: 75%;
+    margin-top: 2px;
+    background: white;
+}
+.pos.mobile .screen .right-content {
+    top: 128px;
+}
+.pos.mobile .screen .right-content.pc60 {
+    left: 25%;
+    background: white;
+    margin-top: 2px;
+}
+.pos.mobile .screen .centered-content {
+    top: 128px;
+    border-right: dashed 2px rgb(215, 215, 215);
+    border-left: dashed 2px rgb(215, 215, 215);
+    right: 15%;
+    left: 15%;
+    background: #f7f7f7;
+    margin-top: 2px;
+}
+.pos.mobile .screen .full-content {
+    top: 130px;
+}
+/* b) The payment screen */
+.pos.mobile .payment-numpad {
+    width: 100%;
+    max-width: 635px;
+    padding: 0px;
+    margin: 0px;
+    float: right;
+}
+.pos.mobile .payment-numpad .numpad {
+    border: none;
+    border-radius: 8px;
+    width: 100% !important;
+    max-width: initial;
+    margin: 0px;
+    margin-top: 15px;
+}
+.pos.mobile .payment-numpad .numpad button {
+    width: 145px;
+    height: 135px;
+    font-size: 50px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 22px -14px black;
+}
+.pos.mobile .payment-numpad .numpad button:first-child {
+    border-top-left-radius: 8px;
+}
+.pos.mobile .payment-numpad .numpad button:nth-child(16) {
+    border-bottom-left-radius: 8px;
+}
+.pos.mobile .paymentlines {
+    margin-bottom: 20px;
+}
+.pos.mobile .paymentlines-container {
+    padding: 0px;
+    border-bottom: dashed 2px rgb(110, 110, 110);
+    max-height: initial;
+    height: 562px;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+.pos.mobile .paymentlines-container .delete-button {
+    padding: 0px;
+    line-height: 65px;
+}
+.pos.mobile .paymentlines .controls {
+    width: 80px;
+}
+.pos.mobile .paymentlines .label > * {
+    font-size: 25px;
+    padding: 16px;
+}
+.pos.mobile .paymentlines tbody {
+    border-radius: 6px;
+}
+.pos.mobile .paymentline {
+    font-size: 35px;
+}
+.pos.mobile .paymentline.selected {
+    font-size: 35px;
+}
+.pos.mobile .paymentline.selected .edit {
+    outline: 1px blue;
+    box-shadow: 0px 0px 0px 1px #6ec89b;
+    border-radius: 6px;
+    color: #555555;
+}
+.pos.mobile .paymentline > * {
+    padding: 16px 24px;
+}
+.pos.mobile .paymentline .col-due,
+.pos.mobile .paymentline .col-tendered,
+.pos.mobile .paymentline .col-change {
+    min-width: 100px;
+}
+.pos.mobile .paymentline.extra .col-due {
+    border-radius: 0 0 12px 12px;
+    border-top: solid 2px rgb(230, 230, 230);
+}
+.pos.mobile .paymentline .col-name {
+    font-size: 32px;
+}
+.pos.mobile .payment-buttons {
+    padding: 32px;
+    width: 100%;
+    display: block;
+}
+.pos.mobile .payment-screen .left-content {
+    width: 100%;
+    display: block;
+    position: relative;
+    max-height: 375px;
+}
+.pos.mobile .payment-screen .left-content.pc40 {
+    right: initial;
+    border-bottom: dashed 2px rgb(175, 175, 175);
+}
+.pos.mobile .payment-screen .right-content {
+    width: 100%;
+    display: block;
+    position: relative;
+}
+.pos.mobile .payment-screen .right-content.pc60 {
+    left: initial;
+    height: calc(100% - 128px);
+}
+.pos.mobile .payment-screen .payment-buttons {
+    padding: 0px;
+    display: block;
+    max-width: 380px;
+    width: 100%;
+    padding-right: 5px;
+}
+.pos.mobile .payment-screen .payment-buttons .button {
+    line-height: 130px;
+    font-size: 32px;
+    padding: 0px 16px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    text-align: left;
+    padding-left: 135px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+.pos.mobile .payment-screen .payment-buttons i {
+    text-align: center;
+}
+.pos.mobile .payment-screen .payment-buttons .button:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-top-width: 2px;
+    margin-top: 20px;
+}
+.pos.mobile .payment-screen .payment-buttons .button:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.pos.mobile .payment-screen .payment-buttons .button.highlight:not(:first-child) {
+    margin-top: -2px;
+    border-top: solid 2px;
+}
+.pos.mobile .payment-screen .payment-buttons .button .fa {
+    left: 22px;
+    width: 96px;
+    height: 96px;
+    line-height: 96px;
+    margin-top: -50px;
+    border-radius: 52px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    font-size: 40px;
+}
+.pos.mobile .payment-screen .paymentlines-empty .total {
+    padding: 48px 0px 36px;
+    font-size: 128px;
+    text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
+}
+.pos.mobile .payment-screen .paymentlines-empty {
+    margin-bottom: 20px;
+}
+.pos.mobile .paymentmethods-container {
+    border-bottom: dashed 3px rgb(188, 188, 188);
+    max-height: 375px;
+    width: 100%;
+    -webkit-overflow-scrolling: auto !important;
+}
+.pos.mobile .payment-screen .payment-numpad {
+    max-width: calc(100% - 380px);
+}
+.pos.mobile .payment-screen .left-content {
+    display: none;
+}
+.pos.mobile .payment-screen .paymentlines-empty .message {
+    font-weight: bold;
+    font-size: 30px;
+}
+.pos.mobile .payment-screen .paymentlines-empty .total {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.pos.mobile .payment-screen .touch-scrollable {
+    overflow: hidden !important;
+}
+/* c) The receipt screen */
+.pos.mobile .receipt-screen .centered-content .button {
+    line-height: 80px;
+    padding: 6px 26px;
+    font-size: 40px;
+    margin: 32px;
+    border: 2px solid #e8e8e8;
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+}
+.pos.mobile .pos-receipt-container {
+    font-size: 1.5em;
+}
+.pos.mobile .pos-sale-ticket {
+    width: 550px;
+    margin: 40px;
+    padding: 30px;
+    font-size: 28px;
+    padding-bottom: 60px;
+    border: solid 2px rgb(220, 220, 220);
+    border-radius: 6px;
+}
+/* d) The Scale screen */
+.pos.mobile .scale-screen .product-price {
+    font-size: 50px;
+    margin: 32px;
+}
+.pos.mobile .scale-screen .computed-price {
+    font-size: 50px;
+    margin: 32px;
+    padding: 32px;
+    border-radius: 6px;
+    text-shadow: 0px 4px 0px rgb(210, 210, 210);
+    box-shadow: 0px 4px 0px rgb(225, 225, 225) inset;
+}
+.pos.mobile .scale-screen .buy-product {
+    font-size: 64px;
+    border-radius: 6px;
+    padding: 32px;
+    margin: 32px;
+}
+.pos.mobile .scale-screen .weight {
+    margin: 32px;
+    padding: 40px;
+    padding-right: 60px;
+    font-size: 112px;
+    border-radius: 6px;
+    text-shadow: 0px 4px 0px rgb(210, 210, 210);
+    box-shadow: 0px 4px 0px rgb(225, 225, 225) inset;
+}
+/* e) The Client List Screen */
+.pos.mobile .clientlist-screen .client-list {
+    font-size: 30px;
+    line-height: 50px;
+}
+.pos.mobile .clientlist-screen .top-content {
+    text-align: left;
+    margin-left: 15px;
+    margin-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch !important;
+}
+pos.mobile .clientlist-screen .top-content .button {
+    margin: 0px;
+    position: relative;
+    display: inline-block;
+}
+.pos.mobile .clientlist-screen .client-details-left,
+.pos.mobile .clientlist-screen .client-details-right {
+    width: 100%;
+    float: none;
+}
+.pos.mobile .clientlist-screen .client-list th,
+.pos.mobile .clientlist-screen .client-list td {
+    padding: 0px 16px;
+}
+.pos.mobile .clientlist-screen .client-details {
+    padding: 32px;
+    border-bottom: solid 10px rgb(110, 200, 155);
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+.pos.mobile .clientlist-screen .client-picture {
+    height: 128px;
+    width: 128px;
+    border-radius: 64px;
+    margin-right: 32px;
+}
+.pos.mobile .clientlist-screen .client-picture > img {
+    max-height: 180px;
+    min-height: 128px;
+}
+.pos.mobile .clientlist-screen .client-picture > .fa {
+    line-height: 128px;
+    font-size: 64px;
+}
+.pos.mobile .clientlist-screen .client-name {
+    font-size: 64px;
+    line-height: 128px;
+    margin-bottom: 32px;
+}
+.pos.mobile .clientlist-screen .edit-buttons {
+    right: 32px;
+    top: 0px;
+}
+.pos.mobile .clientlist-screen .edit-buttons .button {
+    margin-left: 32px;
+    font-size: 72px;
+}
+.pos.mobile .clientlist-screen .client-details-box {
+    font-size: 32px;
+}
+.pos.mobile .clientlist-screen .client-detail {
+    line-height: 48px;
+}
+.pos.mobile .clientlist-screen .client-detail > .label {
+    width: 140px;
+    margin-right: 16px;
+}
+.pos.mobile .clientlist-screen .client-details input,
+.pos.mobile .clientlist-screen .client-details select {
+    padding: 8px;
+    border-radius: 6px;
+    border: solid 2px #cecbcb;
+    margin-bottom: 8px;
+    width: 680px;
+    font-size: 28px;
+}
+.pos.mobile .clientlist-screen .client-details input.client-name {
+    font-size: 48px;
+    line-height: 48px;
+    margin: 36px 12px;
+    width: 680px;
+    margin-top: 40px;
+}
+.pos.mobile .clientlist-screen .searchbox {
+    margin-left: 0px;
+    margin-top: 0px;
+    position: relative;
+    display: inline-block;
+    right: 0px;
+    float: initial;
+    left: 0;
+}
+.pos.mobile .clientlist-screen .searchbox input {
+    width: 275px;
+    margin: 20px;
+    padding: 5px 20px;
+    font-size: 35px;
+}
+.pos.mobile .clientlist-screen .button.new-customer {
+    margin-left: 0px;
+    left: 0;
+}
+.pos.mobile .clientlist-screen .button.next {
+    margin-left: 0px;
+}
+.pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
+    border-bottom: 8px solid rgb(110, 200, 155) !important;
+}
+.ios .pos.mobile .clientlist-screen .subwindow:nth-child(2) .subwindow-container-fix {
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+.pos.mobile .clientlist-screen .button {
+    display: inline-block;
+    position: relative;
+}
+.pos.mobile .clientlist-screen .top-content .button.back {
+    margin-left: 0;
+    margin-right: 0;
+}
+/*  ********* The OrderWidget  ********* */
+.pos.mobile .order {
+    padding-bottom: 16px;
+    padding-top: 16px;
+    font-size: 32px;
+    max-width: initial;
+}
+.pos.mobile .order .order-empty {
+    margin: 96px;
+}
+.pos.mobile .order .order-empty .fa {
+    font-size: 128px;
+}
+.pos.mobile .order .order-empty h1 {
+    font-size: 40px;
+}
+.pos.mobile .summary {
+    border-top: 3px solid #e8e8e8;
+    padding: 15px;
+    font-size: 35px;
+    font-weight: bold;
+}
+.pos.mobile .summary .label,
+.pos.mobile .summary .value {
+    display: inline-block;
+    float: left;
+}
+.pos.mobile .summary .line {
+    margin-right: 30px;
+    margin-left: 30px;
+}
+.pos.mobile .summary .total {
+    text-align: center;
+}
+.pos.mobile .summary .line .subentry {
+    display: inline-block;
+}
+.pos.mobile .summary .line .subentry .value {
+    float: none;
+}
+/*If pos product category discount module is installed*/
+.pos.mobile .summary .line .discount {
+    display: inline-block;
+    float: right;
+}
+.pos.mobile .summary .line .discount .value {
+    float: none;
+}
+.pos.mobile .summary .line .fiscal {
+    display: inline-block;
+    margin-left: 10px;
+}
+/*______________________________________________________*/
+.pos.mobile .submit-kitchen-button {
+    padding: 24px 40px;
+    margin: 0px 30px;
+    border-radius: 6px;
+}
+.pos.mobile .order-scroller {
+    height: calc(100% - 72px);
+}
+/*  ********* The OrderLineWidget  ********* */
+.pos.mobile .order .orderline {
+    padding-top: 6px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.pos.mobile .order .orderline .info-list {
+    margin-left: 20px;
+}
+.pos.mobile .order .orderline .product-name,
+.pos.mobile .order .orderline .price {
+    color: #6ec89b;
+}
+/*  ********* SplitBill ********* */
+.pos.mobile .splitbill-screen .order-info {
+    margin-bottom: 40px;
+    padding: 40px 0px;
+    font-size: 100px;
+    text-shadow: 0px 4px white, 0px 4px 4px rgba(0, 0, 0, 0.27);
+    border-bottom: dashed 2px rgb(215, 215, 215);
+}
+.pos.mobile .splitbill-screen .order {
+    padding-bottom: 30px;
+    padding-top: 30px;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    font-size: 32px;
+    border-radius: 6px;
+    border: solid 2px rgb(220, 220, 220);
+    max-width: 1000px;
+}
+.pos.mobile .splitbill-screen .order .orderline.selected .info-list em {
+    font-size: 48px;
+}
+.pos.mobile .paymentmethods {
+    margin: 15px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+.pos.mobile .paymentmethods .button {
+    line-height: 90px;
+    font-size: 32px;
+    border: 2px solid #e8e8e8;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 400px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.pos.mobile .paymentmethods .button:first-child {
+    border-top-width: 2px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.pos.mobile .paymentmethods .button:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.pos.mobile .splitbill-screen .left-content {
+    border-right: 0px;
+}
+/*  ********* The ActionBarWidget  ********* */
+
+.pos.mobile .pos-actionbar {
+    height: 210px;
+    border-top: solid 2px #cecece;
+}
+.pos.mobile .pos-actionbar-button-list {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.pos.mobile .pos-actionbar .button {
+    width: 180px;
+    height: 180px;
+    margin: 6px;
+    margin-top: 12px;
+    font-size: 28px;
+    border: 2px solid #cacaca;
+    border-radius: 6px;
+}
+.pos.mobile .pos-actionbar .button .label {
+    margin-top: 74px;
+}
+.pos.mobile .pos-actionbar .button .icon {
+    margin-top: 20px;
+}
+.pos.mobile .pos-actionbar .button:active {
+    border: 1px solid #7f82ac;
+}
+.pos.mobile .pos-actionbar .button.disabled:active {
+    border: 2px solid #cacaca;
+}
+/*  ********* The PopupWidgets  ********* */
+
+.pos.mobile .modal-dialog .popup {
+    max-width: 1000px;
+    width: 100%;
+    max-height: 1000px;
+    height: 800px;
+    font-size: 40px;
+    border-radius: 6px;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
+    font-weight: inherit;
+}
+.pos.mobile .popup .title {
+    padding: 40px;
+    border-radius: 6px 6px 0px 0px;
+    border-bottom: solid 2px rgba(60, 60, 60, 0.1);
+    background: white;
+}
+.pos.mobile .popup .body {
+    font-size: 36px;
+    margin: 32px;
+    margin-top: 40px;
+}
+.pos.mobile .popup .body.traceback {
+    height: 476px;
+    font-size: 28px;
+}
+.pos.mobile .popup .footer {
+    height: 120px;
+    border-top: solid 2px rgba(60, 60, 60, 0.1);
+    background: white;
+}
+.pos.mobile .popup .button {
+    width: 220px;
+    height: 80px;
+    line-height: 80px;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 28px;
+    border-radius: 15px;
+    box-shadow: 0px 9px 20px -14px black;
+    background: #ededed;
+    font-weight: inherit;
+    border: 2px solid #e8e8e8;
+}
+.pos.mobile .popup .button.icon {
+    width: 80px;
+    font-size: 40px;
+}
+.pos.mobile .popup .button:active {
+    border: 2px solid black;
+}
+.pos.mobile .popup .button.big-left {
+    top: 240px;
+    left: 80px;
+    width: 360px;
+    height: 360px;
+    line-height: 360px;
+}
+.pos.mobile .popup .button.big-right {
+    top: 240px;
+    right: 80px;
+    width: 360px;
+    height: 360px;
+    line-height: 360px;
+}
+.pos.mobile .popup input,
+.pos.mobile .popup-input {
+    min-height: 88px;
+    font-size: 40px;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 0px 2px rgb(220, 220, 220) inset;
+}
+.pos.mobile .popup .packlot-lines {
+    height: 500px;
+    margin: 20px;
+}
+.pos.mobile .popup .packlot-line-input {
+    margin: 6px;
+}
+.pos.mobile .popup input:focus,
+.pos.mobile .popup-input.active {
+    box-shadow: 0px 0px 0px 6px #6ec89b;
+}
+.pos.mobile .popup.popup-error {
+    box-shadow: 0px 20px 40px rgba(92, 51, 51, 0.4);
+}
+.pos.mobile .popup.popup-selection .selection {
+    max-height: 546px;
+    font-size: 32px;
+    line-height: 100px;
+    margin-top: -2px;
+    border-top: solid 6px #6ec89b;
+}
+.pos.mobile .popup.popup-selection .selection-item {
+    padding: 0px 32px;
+    background: #e8e8e8;
+}
+.pos.mobile .popup.popup-error .title,
+.pos.mobile .popup.popup-error .footer {
+    background: rgba(255, 76, 76, 0.5);
+}
+.pos.mobile .popup.popup-selection .selection-item:nth-child(even) {
+    background: white;
+}
+.pos.mobile .popup.popup-number {
+    width: 600px;
+    height: 900px;
+}
+.pos.mobile .footer.centered .button {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.pos.mobile .popup-numpad {
+    margin: 24px auto;
+    width: 508px;
+}
+.pos.mobile .popup-number .title,
+.pos.mobile .popup-textinput .title {
+    margin-bottom: 40px;
+}
+.pos.mobile .popup-numpad .input-button,
+.pos.mobile .popup-numpad .mode-button {
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    margin: 8px;
+}
+.pos.mobile .popup.popup-password {
+    width: 508px;
+}
+.pos.mobile .popup-password .popup-numpad {
+    width: 380px;
+}
+.pos.mobile .popup .body ul,
+.pos.mobile .popup ul.body {
+    margin-left: 2em;
+}
+.pos.mobile .popup .body li {
+    text-indent: 2em;
+}
+.pos.mobile .popup .body li:before {
+    font-size: 1.2em;
+    left: -2em;
+    bottom: 0.4em;
+}
+/*  ********* The Webkit Scrollbar  ********* */
+.pos.mobile *::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+.pos.mobile *::-webkit-scrollbar-track {
+    border-left: solid 4px rgb(200, 200, 200);
+}
+.pos.mobile *::-webkit-scrollbar-thumb {
+    min-height: 60px;
+}
+.pos.mobile.big-scrollbars *::-webkit-scrollbar {
+    width: 40px;
+    height: 40px;
+}
+.pos.mobile.big-scrollbars *::-webkit-scrollbar-thumb {
+    min-height: 40px;
+    border-radius: 6px;
+}
+.pos.mobile.big-scrollbars *::-webkit-scrollbar-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+}
+/*  ********* Unsupported Browser Page ********* */
+.pos.mobile .not-supported-browser .message {
+    width: 1200px;
+    margin-top: 200px;
+    font-size: 28px;
+}
+/*  ********* Styles for pos with swiper ********* */
+.pos.mobile .mobile-order-container,
+.pos.mobile .swiper-container-order {
+    height: 100%;
+}
+.pos.mobile .order-selector {
+    display: flex;
+    float: left;
+    max-width: 670px;
+    white-space: nowrap;
+}
+.pos.mobile .orders.touch-scrollable {
+    display: inline-block;
+    float: left;
+}
+.pos.mobile .rightpane-header .slide-categories-button,
+.pos.mobile .rightpane-header .slide-numpad-button,
+.pos.mobile .rightpane-header .slide-order-button {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    line-height: 150px;
+    font-size: 115px;
+    cursor: pointer;
+    margin: 0 10px;
+    color: #808080;
+}
+.pos.mobile .mobile-categories {
+    background: white;
+    width: 100%;
+    height: 100%;
+}
+.pos.mobile .slide-numpad-button .minus-square,
+.pos.mobile .slide-categories-button .category-close-menu {
+    display: none;
+}
+.pos.mobile .slide-numpad-button img,
+.pos.mobile .slide-categories-button img,
+.pos.mobile .slide-order-button img {
+    width: 75px;
+}
+.pos.mobile .swiper-container-numpad {
+    background: white;
+}
+.pos.mobile .slide-numpad {
+    overflow-y: auto;
+    height: 100%;
+    background: white;
+    border-bottom: 6px solid white;
+}
+.pos.mobile .rightpane-header .slide-order-button {
+    margin-left: 30px;
+}
+.pos.mobile .breadcrumbs {
+    margin-top: 30px;
+    width: 100%;
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+}
+.pos.mobile .order-and-products {
+    height: 100%;
+    height: calc(100% - 150px);
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+.pos.mobile .mobile-search-bar {
+    height: 150px;
+    border-top: 2px solid #e8e8e8;
+    border-bottom: 2px solid #e8e8e8;
+}
+.pos.mobile .mobile-search-bar-menu {
+    max-height: 650px;
+    height: 100%;
+}
+.pos.mobile .slide-buttons {
+    background: white;
+}
+/* New size for order-and-products blocks */
+.pos.mobile .swipe-is-open .order-and-products {
+    height: calc(100% - 654px) !important;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+/* Show or hide slide buttons */
+.pos.mobile .open-categories-slide .category-open-menu,
+.pos.mobile .open-numpad-slide .plus-square {
+    display: none;
+}
+.pos.mobile .open-categories-slide .category-close-menu,
+.pos.mobile .open-numpad-slide .minus-square {
+    display: inline-block;
+}
+/*Mobile screen*/
+.pos.mobile .mobile-active-screen {
+    display: block;
+}
+.pos.mobile .disable {
+    box-shadow: 0px 0px 0px 0px transparent !important;
+}
