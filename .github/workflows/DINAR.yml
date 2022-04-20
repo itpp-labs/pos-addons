@@ -83,7 +83,7 @@ jobs:
           password ${{ secrets.DINAR_TOKEN }}
           EOF
       - name: Build ${{ env.IMAGE_ODOO_BASE }}
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v4
         env:
           LOCAL_CUSTOM_DIR: ./image
           AGGREGATE: true
