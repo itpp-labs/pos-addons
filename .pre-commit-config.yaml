@@ -20,7 +20,7 @@ repos:
       - id: autoflake
         args: ["-i", "--ignore-init-module-imports"]
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
       - id: black
   - repo: https://github.com/pre-commit/mirrors-prettier
