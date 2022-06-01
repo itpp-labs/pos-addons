@@ -1,5 +1,6 @@
 env:
   browser: true
+  sourceType: module
 
 # See https://github.com/OCA/odoo-community.org/issues/37#issuecomment-470686449
 parserOptions:
@@ -151,7 +152,7 @@ rules:
   require-yield: warn
   sort-imports: warn
   spaced-comment: [error, always]
-  space-before-function-paren: ["warn", {"anonymous": "always", "named": "never"}]
+  space-before-function-paren: ["warn", { "anonymous": "always", "named": "never" }]
   strict: [error, function]
   use-isnan: error
   valid-jsdoc:
