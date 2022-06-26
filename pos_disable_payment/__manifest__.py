@@ -10,8 +10,6 @@
     "website": "https://yelizariev.github.io",
     "depends": ["point_of_sale"],
     "images": ["images/pos_payment_access.png"],
-    "price": 40.00,
-    "currency": "EUR",
     "data": ["views.xml"],
     "demo": ["views/assets_demo.xml"],
     "installable": True,
