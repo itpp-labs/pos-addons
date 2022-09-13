@@ -45,7 +45,7 @@ class PosOrderLine(models.Model):
         "price_unit", "tax_ids", "qty", "discount", "product_id", "absolute_discount"
     )
     def _compute_amount_line_all(self):
-        super(PosOrderLine, self)._compute_amount_line_all()
+        res = super(PosOrderLine, self)._compute_amount_line_all()
         for line in self:
             fpos = line.order_id.fiscal_position_id
             tax_ids_after_fiscal_position = (
@@ -53,8 +53,6 @@ class PosOrderLine(models.Model):
                 if fpos
                 else line.tax_ids
             )
-            price = line.price_unit
-            taxes = tax_ids_after_fiscal_position.compute_all(price, self.order_id.pricelist_id.currency_id, self.qty, product=self.product_id, partner=self.order_id.partner_id)
             if line.absolute_discount:
                 price = line.price_unit - line.absolute_discount
                 taxes = tax_ids_after_fiscal_position.compute_all(
@@ -64,10 +62,13 @@ class PosOrderLine(models.Model):
                     product=line.product_id,
                     partner=line.order_id.partner_id,
                 )
-            return {
-                    "price_subtotal_incl": taxes["total_included"],
-                    "price_subtotal": taxes["total_excluded"],
-                }
+                res.update(
+                    {
+                        "price_subtotal_incl": taxes["total_included"],
+                        "price_subtotal": taxes["total_excluded"],
+                    }
+                )
+        return res
 
     @api.onchange("qty", "discount", "price_unit", "tax_ids", "absolute_discount")
     def _onchange_qty(self):
