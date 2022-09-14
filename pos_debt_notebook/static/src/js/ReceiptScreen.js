@@ -1,5 +1,5 @@
 odoo.define("pos_debt_notebook.ReceiptScreen", function (require) {
-    "use strict";
+
 
     const ReceiptScreen = require("point_of_sale.ReceiptScreen");
     const Registries = require("point_of_sale.Registries");

@@ -718,7 +718,7 @@ class AccountBankStatement(models.Model):
     def _compute_credit_balance(self):
         for st in self:
             st.pos_credit_update_balance = -sum(
-                [credit_update.balance for credit_update in st.pos_credit_update_ids]
+                credit_update.balance for credit_update in st.pos_credit_update_ids
             )
 
 

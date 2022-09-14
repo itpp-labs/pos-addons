@@ -1,5 +1,5 @@
 odoo.define("pos_debt_notebook.CreditNote", function (require) {
-    "use strict";
+
 
     const PosComponent = require("point_of_sale.PosComponent");
     const Registries = require("point_of_sale.Registries");

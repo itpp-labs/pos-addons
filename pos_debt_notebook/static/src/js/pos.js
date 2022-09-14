@@ -7,7 +7,7 @@
 /* eslint complexity: "off"*/
 
 odoo.define("pos_debt_notebook.pos", function (require) {
-    "use strict";
+
 
     var models = require("point_of_sale.models");
     var core = require("web.core");
@@ -72,7 +72,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
 
             var progress = (this.models.length - 0.5) / this.models.length;
             this.setLoadingMessage(_t("Loading Credits data"), progress);
-            this.reload_debts(partner_ids, 0, {postpone: false}).then(function () {
+            this.reload_debts(partner_ids, 0, { postpone: false }).then(function () {
                 var result = _super_posmodel.after_load_server_data.apply(
                     self,
                     arguments
@@ -255,7 +255,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                     var client = this.get_client();
                     if (client) {
                         // Reload only debt value, use background mode, send request immediatly
-                        this.pos.reload_debts([client.id], 0, {postpone: false});
+                        this.pos.reload_debts([client.id], 0, { postpone: false });
                     }
                 },
                 this
@@ -420,7 +420,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
             var journal = cashregister.journal;
             if (!this.get_client() && (this.has_credit_product() || journal.debt)) {
                 setTimeout(() => {
-                    this.set_screen_data({name: "ClientListScreen"});
+                    this.set_screen_data({ name: "ClientListScreen" });
                 }, 30);
             }
             var due = this.get_due_debt();
@@ -820,7 +820,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                         this.env.pos.db.get_product_by_id(
                             this.env.pos.config.debt_dummy_product_id[0]
                         ),
-                        {price: 0}
+                        { price: 0 }
                     );
                 }
 
@@ -1049,7 +1049,7 @@ odoo.define("pos_debt_notebook.pos", function (require) {
                         var dummy_product = this.env.pos.db.get_product_by_id(
                             this.env.pos.config.debt_dummy_product_id[0]
                         );
-                        order.add_product(dummy_product, {price: 0});
+                        order.add_product(dummy_product, { price: 0 });
                     }
                 }
 
@@ -1078,12 +1078,12 @@ odoo.define("pos_debt_notebook.pos", function (require) {
 
                 var newDebtPaymentline = new models.Paymentline(
                     {},
-                    {order: order, payment_method: debtjournal, pos: this.env.pos}
+                    { order: order, payment_method: debtjournal, pos: this.env.pos }
                 );
                 newDebtPaymentline.set_amount(client.debt * -1);
                 order.paymentlines.add(newDebtPaymentline);
 
-                this.props.resolve({confirmed: true, payload: client});
+                this.props.resolve({ confirmed: true, payload: client });
                 this.showScreen("PaymentScreen");
                 this.trigger("close-temp-screen");
             }

@@ -1,5 +1,5 @@
 odoo.define("pos_debt_notebook.OrderReceipt", function (require) {
-    "use strict";
+
 
     const OrderReceipt = require("point_of_sale.OrderReceipt");
     const Registries = require("point_of_sale.Registries");
