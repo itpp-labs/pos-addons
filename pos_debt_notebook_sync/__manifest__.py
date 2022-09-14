@@ -7,7 +7,7 @@
     "summary": """Credit payment system for festivals, food courts, etc.""",
     "category": "Point of Sale",
     "images": ["images/credit.png"],
-    "version": "13.0.1.1.2",
+    "version": "14.0.1.1.2",
     "application": False,
     "author": "IT-Projects LLC, Dinar Gabbasov",
     "support": "apps@itpp.dev",
