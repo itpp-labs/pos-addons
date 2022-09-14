@@ -2,7 +2,7 @@
 // # License MIT (https://opensource.org/licenses/MIT).
 
 odoo.define("pos_debt_sync", function (require) {
-    "use strict";
+
     var models = require("point_of_sale.models");
     require("pos_longpolling.pos");
     var PosModelSuper = models.PosModel;
@@ -99,9 +99,9 @@ odoo.define("pos_debt_sync", function (require) {
                 }
             }
 
-            this.push_order(null, {show_error: true}).then(function () {
+            this.push_order(null, { show_error: true }).then(function () {
                 if (partners_to_reload.length) {
-                    self.reload_debts(_.uniq(partners_to_reload), 0, {shadow: false});
+                    self.reload_debts(_.uniq(partners_to_reload), 0, { shadow: false });
                 }
             });
         },
