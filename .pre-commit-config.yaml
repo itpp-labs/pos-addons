@@ -61,26 +61,25 @@ repos:
       - id: check-xml
       - id: mixed-line-ending
         args: ["--fix=lf"]
-  - repo: https://github.com/PyCQA/pylint
-    rev: v2.11.1
+  - repo: https://github.com/OCA/pylint-odoo
+    rev: 7.0.2
     hooks:
-      - id: pylint
+      - id: pylint_odoo
         name: pylint with optional checks
-        args: ["--rcfile=.pylintrc", "--exit-zero"]
+        args:
+          - --rcfile=.pylintrc
+          - --exit-zero
         verbose: true
-        additional_dependencies: &pylint_deps
-          - pylint-odoo==5.0.5
-      - id: pylint
-        name: pylint with mandatory checks
-        args: ["--rcfile=.pylintrc-mandatory"]
-        additional_dependencies: *pylint_deps
+      - id: pylint_odoo
+        args:
+          - --rcfile=.pylintrc-mandatory
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.29.0
     hooks:
       - id: pyupgrade
         args: ["--keep-percent-format"]
   - repo: https://github.com/acsone/setuptools-odoo
-    rev: 3.0.3
+    rev: 3.1.5
     hooks:
       - id: setuptools-odoo-make-default
       - id: setuptools-odoo-get-requirements
