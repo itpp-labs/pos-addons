@@ -27,9 +27,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-        with:
-          python-version: "3.7.x"
+      - uses: actions/setup-python@v2
       - name: Check Python Version
         run:
           echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
@@ -54,9 +52,7 @@ jobs:
           path: DINAR
           repository: itpp-labs/DINAR-fork
           ref: master
-      - uses: actions/setup-python@v1
-        with:
-          python-version: "3.7.x"
+      - uses: actions/setup-python@v2
       - name: Install python tools
         run: |
           pip install plumbum PyGithub pyyaml
