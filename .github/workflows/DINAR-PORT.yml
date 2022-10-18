@@ -37,8 +37,6 @@ jobs:
           repository: itpp-labs/DINAR-fork
           ref: master
       - uses: actions/setup-python@v2
-        with:
-          python-version: "3.7.x"
       - name: Install python tools
         run: |
           pip install plumbum pre-commit git-aggregator
