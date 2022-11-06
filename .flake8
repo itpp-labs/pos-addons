@@ -9,3 +9,5 @@ select = C,E,F,W,B,B9
 # W503: line break before binary operator (black behaviour)
 # C901: "method is too complex" -- it's too complex to fix existing modules. Disable for now
 ignore = E203,E501,W503,B950,C901
+per-file-ignores=
+    __init__.py:F401
