@@ -1,8 +1,6 @@
 odoo.define("pos_invoice_pay.InvoiceListScreen", function (require) {
-    "use strict";
-
-    const {debounce} = owl.utils;
-    const {useRef} = owl.hooks;
+    const { debounce } = owl.utils;
+    const { useRef } = owl.hooks;
     const core = require("web.core");
     const PosComponent = require("point_of_sale.PosComponent");
     const Registries = require("point_of_sale.Registries");
@@ -65,7 +63,7 @@ odoo.define("pos_invoice_pay.InvoiceListScreen", function (require) {
                     // TODO: это портированый костыль. На самом деле, у selectedInvoice должны быть свои методы
                     order.invoice_to_pay = this.state.selectedInvoice;
                 }
-                this.showScreen("InvoicePaymentScreen", {type: "invoices"});
+                this.showScreen("InvoicePaymentScreen", { type: "invoices" });
             } else {
                 this.showPopup("ErrorPopup", {
                     title: _t("No invoice"),

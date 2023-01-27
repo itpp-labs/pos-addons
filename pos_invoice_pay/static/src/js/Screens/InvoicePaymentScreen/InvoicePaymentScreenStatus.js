@@ -1,6 +1,4 @@
 odoo.define("pos_invoice_pay.InvoicePaymentScreenStatus", function (require) {
-    "use strict";
-
     const PaymentScreenStatus = require("point_of_sale.PaymentScreenStatus");
     const Registries = require("point_of_sale.Registries");
 

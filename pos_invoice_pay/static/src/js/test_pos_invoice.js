@@ -1,8 +1,6 @@
 //  Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
 //  License MIT (https://opensource.org/licenses/MIT).
 odoo.define("pos_invoice_pay.tour", function (require) {
-    "use strict";
-
     var tour = require("web_tour.tour");
     var core = require("web.core");
     var _t = core._t;
@@ -94,5 +92,5 @@ odoo.define("pos_invoice_pay.tour", function (require) {
     steps = steps.concat(select_invoice());
     steps = steps.concat(max_payment("Cash"));
 
-    tour.register("tour_pos_invoice_pay", {test: true, url: "/web"}, steps);
+    tour.register("tour_pos_invoice_pay", { test: true, url: "/web" }, steps);
 });

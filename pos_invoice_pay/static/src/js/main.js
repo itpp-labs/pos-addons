@@ -4,8 +4,6 @@
 //  License MIT (https://opensource.org/licenses/MIT).
 /* eslint no-useless-escape: "off"*/
 odoo.define("pos_invoices", function (require) {
-    "use strict";
-
     var models = require("point_of_sale.models");
     var PosDb = require("point_of_sale.DB");
     var utils = require("web.utils");

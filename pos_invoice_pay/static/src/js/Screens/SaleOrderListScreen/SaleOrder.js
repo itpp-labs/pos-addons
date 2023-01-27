@@ -1,6 +1,4 @@
 odoo.define("pos_invoice_pay.SaleOrder", function (require) {
-    "use strict";
-
     const PosComponent = require("point_of_sale.PosComponent");
     const Registries = require("point_of_sale.Registries");
 

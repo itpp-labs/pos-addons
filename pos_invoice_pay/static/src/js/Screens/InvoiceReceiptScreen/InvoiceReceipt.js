@@ -1,6 +1,4 @@
 odoo.define("pos_invoice_pay.InvoiceReceipt", function (require) {
-    "use strict";
-
     const OrderReceipt = require("point_of_sale.OrderReceipt");
     const Registries = require("point_of_sale.Registries");
 

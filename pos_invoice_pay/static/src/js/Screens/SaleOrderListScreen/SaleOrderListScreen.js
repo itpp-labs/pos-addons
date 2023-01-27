@@ -1,8 +1,6 @@
 odoo.define("pos_invoice_pay.SaleOrderListScreen", function (require) {
-    "use strict";
-
-    const {debounce} = owl.utils;
-    const {useRef} = owl.hooks;
+    const { debounce } = owl.utils;
+    const { useRef } = owl.hooks;
     const core = require("web.core");
     const rpc = require("web.rpc");
     const PosComponent = require("point_of_sale.PosComponent");
@@ -73,7 +71,7 @@ odoo.define("pos_invoice_pay.SaleOrderListScreen", function (require) {
                             this.env.pos.get_order().invoice_to_pay = this.env.pos.db.get_invoice_by_id(
                                 res
                             );
-                            this.showScreen("InvoicePaymentScreen", {type: "orders"});
+                            this.showScreen("InvoicePaymentScreen", { type: "orders" });
                         });
                 });
             } else {
