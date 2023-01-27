@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t
+        t-name="InvoiceReceipt"
+        t-inherit="point_of_sale.OrderReceipt"
+        t-inherit-mode="primary"
+        owl="1"
+    >
+        <xpath expr="//t[@t-foreach='receipt.tax_details']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//t[@t-foreach='receipt.tax_details']" position="before">
+            <div>
+                Tax
+                <span
+                    t-esc="env.pos.format_currency(receiptEnv.order.invoice_to_pay.amount_tax)"
+                    class="pos-receipt-right-align"
+                />
+            </div>
+            <br />
+        </xpath>
+        <xpath
+            expr="//t[@t-if='receipt.total_rounded != receipt.total_with_tax']"
+            position="replace"
+        />
+    </t>
+</templates>

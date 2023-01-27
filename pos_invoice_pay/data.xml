@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <template
+        id="assets_backend"
+        name="pos_invoice_pay"
+        inherit_id="point_of_sale.assets"
+    >
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/pos_invoice_pay/static/src/css/styles.css" />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/main.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoiceListScreen/Invoice.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoiceListScreen/InvoiceListScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoiceListScreen/InvoiceProducts.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoicePaymentScreen/InvoicePaymentScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoicePaymentScreen/InvoicePaymentScreenStatus.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoiceReceiptScreen/InvoiceReceipt.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/InvoiceReceiptScreen/InvoiceReceiptScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/ProductScreen/ControlButtons/FetchInvoicesButton.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/ProductScreen/ControlButtons/FetchOrdersButton.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/SaleOrderListScreen/SaleOrder.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/SaleOrderListScreen/SaleOrderProducts.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/Screens/SaleOrderListScreen/SaleOrderListScreen.js"
+            />
+        </xpath>
+    </template>
+    <template
+        id="assets_backend_web"
+        name="pos_invoice_backend_assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_invoice_pay/static/src/js/test_pos_invoice.js"
+            />
+        </xpath>
+    </template>
+</odoo>

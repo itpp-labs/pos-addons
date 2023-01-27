@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="Invoice" owl="1">
+        <tr
+            t-attf-class='invoice {{isSelected ? "highlight" : ""}}'
+            t-att-data-id='item.id'
+            t-on-click="trigger('click-invoice', {invoice: props.invoice})"
+        >
+            <td>
+                <t t-esc='item.partner_id[1]' />
+            </td>
+            <td>
+                <t t-esc='item.invoice_date' />
+            </td>
+            <td>
+                <t t-esc='item.name' />
+            </td>
+            <td>
+                <t t-esc='item.invoice_user_id[1]' />
+            </td>
+            <td>
+                <t t-esc='item.invoice_date_due' />
+            </td>
+            <td>
+                <t t-esc='env.pos.format_currency(item.amount_total)' />
+            </td>
+            <td>
+                <t t-esc='env.pos.format_currency(item.amount_residual)' />
+            </td>
+            <td style="text-transform: capitalize;">
+                <t t-esc='item.state' />
+            </td>
+        </tr>
+    </t>
+</templates>
