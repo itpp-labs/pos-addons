@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="SaleOrderListScreen" owl="1">
+        <div class="sale-orders-list-screen list-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <div class="buttons">
+                        <button class='button back' t-on-click="back">
+                            <i class='fa fa-angle-double-left' />
+                            Cancel
+                        </button>
+                        <button
+                            class='button next highlight'
+                            t-if="state.selectedSaleOrder"
+                            t-on-click="onClickCreateInvoice"
+                        >
+                            Create Invoice
+                            <i class='fa fa-angle-double-right' />
+                        </button>
+                    </div>
+                    <div class="pos-search-bar">
+                        <span class='searchbox'>
+                            <input
+                                placeholder='Search Sale Orders'
+                                t-ref="search-input"
+                                t-on-keyup="updateList"
+                            />
+                            <span class='search-icon' t-on-click="onClickSearchIcon()">
+                                <i class="fa fa-search" />
+                            </span>
+                        </span>
+                    </div>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div
+                                    class='subwindow-container-fix touch-scrollable scrollable-y'
+                                >
+                                    <table class='list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Date</th>
+                                                <th>Customer</th>
+                                                <th>Salesperson</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='list-contents'>
+                                            <t
+                                                t-foreach="items"
+                                                t-as="so"
+                                                t-key="so.id"
+                                            >
+                                                <SaleOrder
+                                                    saleOrder="so"
+                                                    selectedSaleOrder="state.selectedSaleOrder"
+                                                    t-on-click-sale-order="clickSaleOrder"
+                                                />
+                                                <tr
+                                                    t-if="state.selectedSaleOrder == so"
+                                                    class="line-element-container line-element"
+                                                >
+                                                    <td colspan="8">
+                                                        <SaleOrderProducts
+                                                            saleOrder="so"
+                                                            selectedSaleOrder="state.selectedSaleOrder"
+                                                            t-on-click-sale-order="clickSaleOrder"
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2018 Artyom Losev
+    Copyright 2018 Dinar Gabbasov <https://it-projects.info/team/GabbasovDinar>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <h2>Pay Sale Orders &amp; Invoices</h2>
+                <div class="row mt16 o_settings_container">
+                    <div id="show_sale_orders" class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="show_sale_orders" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="show_sale_orders" />
+                            <div class="text-muted">Fetch and pay sale orders</div>
+                            <div attrs="{'invisible':[('show_sale_orders','=',False)]}">
+                                <label for="sale_order_cashier_selection" />
+                                <field name="sale_order_cashier_selection" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="show_invoices" class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="show_invoices" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="show_invoices" />
+                            <div class="text-muted">Fetch and pay regular invoices</div>
+                            <div attrs="{'invisible':[('show_invoices','=',False)]}">
+                                <label for="invoice_cashier_selection" />
+                                <field name="invoice_cashier_selection" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="show_sale_orders" class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="pos_invoice_pay_writeoff_account_id" />
+                            <div>
+                                <field name="pos_invoice_pay_writeoff_account_id" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <!--POS SESSION-->
+    <record id="pos_invoice_pay_session_form_invoice" model="ir.ui.view">
+        <field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//sheet/div/button[@name='action_stock_picking']"
+                position="after"
+            >
+                <field name="session_payments" invisible="1" />
+                <button
+                    name="action_invoice_payments"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-list-alt"
+                >
+                    <field name="session_invoices_total" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

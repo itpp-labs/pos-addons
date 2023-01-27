@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="SaleOrderProducts" owl="1">
+        <table class="lines-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th>Delivered</th>
+                    <th>Invoiced</th>
+                    <th>Unit Price</th>
+                    <th>Taxes</th>
+                    <th>Discount(%)</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    t-foreach="props.saleOrder.lines"
+                    t-as="line"
+                    t-key="line.id"
+                    t-att-data-id='line.id'
+                    t-attf-class='sale-order-line {{line.invoiceble ? "invoiceble" : ""}}'
+                >
+                    <t t-if="line.display_type === 'line_note'">
+                        <td colspan="9">
+                            <i t-esc="line.description" />
+                        </td>
+                    </t>
+                    <t t-elif="line.display_type === 'line_section'">
+                        <td colspan="9">
+                            <b t-esc="line.description" />
+                        </td>
+                    </t>
+                    <t t-else="">
+                        <td>
+                            <t t-esc='line.product' />
+                        </td>
+                        <td>
+                            <t t-esc='line.description' />
+                        </td>
+                        <td>
+                            <t t-esc='line.uom_qty' />
+                        </td>
+                        <td>
+                            <t t-esc='line.qty_delivered' />
+                        </td>
+                        <td>
+                            <t t-esc='line.qty_invoiced' />
+                        </td>
+                        <td>
+                            <t t-esc='env.pos.format_currency(line.total)' />
+                        </td>
+                        <td>
+                            <t t-foreach="line.taxes" t-as="tax">
+                                <t t-esc='tax' />
+                            </t>
+                        </td>
+                        <td>
+                            <t t-esc="line.discount" />
+                        </td>
+                        <td>
+                            <t t-esc='env.pos.format_currency(line.subtotal)' />
+                        </td>
+                    </t>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+</templates>
