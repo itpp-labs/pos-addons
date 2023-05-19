@@ -31,6 +31,16 @@
                             options="{'not_delete': True}"
                         />
                         <field name="company_id" groups="base.group_multi_company" />
+                        <field name="order_ID" readonly="1" />
+                        <field name="load_unpaid_orders" />
+                        <field
+                            name="load_orders_of_last_n_days"
+                            attrs="{'invisible':[('load_unpaid_orders', '=', False)]}"
+                        />
+                        <field
+                            name="number_of_days"
+                            attrs="{'invisible':['|', ('load_unpaid_orders', '=', False), ('load_orders_of_last_n_days', '=', False)]}"
+                        />
                     </group>
                     <group>
                         <p
