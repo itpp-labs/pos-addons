@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright 2019 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <record model="ir.ui.view" id="view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='features']" position="after">
+                <group string="Inventory Adjustment">
+                    <group>
+                        <field name="inventory_adjustment" />
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
