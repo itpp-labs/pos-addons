@@ -15,7 +15,7 @@ default_language_version:
   node: "14.13.0"
 repos:
   - repo: https://github.com/myint/autoflake
-    rev: v1.4
+    rev: v1.6.1
     hooks:
       - id: autoflake
         args: ["-i", "--ignore-init-module-imports"]
