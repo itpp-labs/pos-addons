@@ -36,7 +36,9 @@ jobs:
           path: DINAR
           repository: itpp-labs/DINAR-fork
           ref: master
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
       - name: Install python tools
         run: |
           pip install plumbum pre-commit git-aggregator
