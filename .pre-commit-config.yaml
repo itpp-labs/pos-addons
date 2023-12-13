@@ -78,16 +78,16 @@ repos:
     hooks:
       - id: pyupgrade
         args: ["--keep-percent-format"]
-  - repo: https://github.com/acsone/setuptools-odoo
-    rev: 3.1.5
-    hooks:
-      - id: setuptools-odoo-make-default
-      - id: setuptools-odoo-get-requirements
-        args:
-          - --output
-          - requirements.txt
-          - --header
-          - "# generated from manifests external_dependencies"
+  #- repo: https://github.com/acsone/setuptools-odoo
+  #  rev: 3.1.5
+  #  hooks:
+  #    - id: setuptools-odoo-make-default
+  #    - id: setuptools-odoo-get-requirements
+  #      args:
+  #        - --output
+  #        - requirements.txt
+  #        - --header
+  #        - "# generated from manifests external_dependencies"
   - repo: https://github.com/pycqa/flake8
     rev: 3.9.2
     hooks:
