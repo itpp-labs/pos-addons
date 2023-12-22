@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Copyright 2016-2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    Copyright 2016-2017 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    Copyright 2018 Gabbasov Dinar <https://it-projects.info/team/GabbasovDinar>
+    Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    License MIT (https://opensource.org/licenses/MIT).
+ -->
+<templates id="template" xml:space="preserve">
+    <t
+        t-extend="ActionpadWidget"
+        t-inherit="point_of_sale.ActionpadWidget"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//t[@t-esc='client.name']" position="after">
+            <br />
+            <CreditNote client="client" />
+        </xpath>
+    </t>
+    <t
+        t-name="PaymentScreen"
+        t-inherit="point_of_sale.PaymentScreen"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//t[@t-if='!env.pos.get_client()']" position="after">
+            <CreditNote />
+        </xpath>
+        <xpath expr="//div[hasclass('customer-button')]" position="after">
+            <div class="customer-button">
+                <div
+                    class="button pay-full-debt"
+                    t-if="isPayFullDebtButtonVisible"
+                    t-on-click="payFullDebt()"
+                >
+                    <i class='fa fa-money' />
+                    Pay Full Debt
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('payment-screen')]" position="inside">
+            <t t-if="currentOrder &amp;&amp; !currentOrder.has_credit_product()">
+                <ValidationButton
+                    status="currentOrder.get_due() ? 'alert' : 'validate'"
+                    title="currentOrder.get_due() ? 'Not enough credits to autopay' : 'Validate'"
+                    t-on-click="click_autopay_validation()"
+                />
+            </t>
+        </xpath>
+    </t>
+    <t
+        t-name="ClientListScreen"
+        t-inherit="point_of_sale.ClientListScreen"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('searchbox-client')]" position="after">
+            <span
+                id="show_debt_history"
+                class="button debt_notebook_button highlight"
+                t-if="state.selectedClient &amp;&amp; !state.detailIsShown &amp;&amp; !state.isShowingDebtHistory"
+                t-on-click="showDebtHistory"
+            >
+                Show Debt History
+            </span>
+            <span
+                id="show_customers"
+                class="button debt_notebook_button highlight"
+                t-if="!state.detailIsShown &amp;&amp; state.isShowingDebtHistory"
+                t-on-click="showCustomers"
+            >
+                Show Customers
+            </span>
+            <!-- TODO: hide if debt is zero -->
+            <span
+                id="set-customer-pay-full-debt"
+                class="button debt_notebook_button highlight"
+                t-if="state.selectedClient &amp;&amp; !state.detailIsShown"
+                t-on-click="payFullDebt"
+            >
+                Pay Full Debt
+            </span>
+        </xpath>
+        <xpath expr="//table[hasclass('client-list')]/thead/tr" position="inside">
+            <th t-if="env.pos.config.debt_type == 'debt'" id="client-list-debt">
+                Debt
+            </th>
+            <th t-if="env.pos.config.debt_type == 'credit'" id="client-list-credit">
+                Credit
+            </th>
+        </xpath>
+        <xpath expr="//table[hasclass('client-list')]" position="attributes">
+            <attribute name="t-if">!state.isShowingDebtHistory</attribute>
+        </xpath>
+        <xpath expr="//table[hasclass('client-list')]" position="after">
+            <table
+                id="debt_history"
+                class='client-list'
+                t-if="state.isShowingDebtHistory"
+            >
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>POS</th>
+                        <th>Products</th>
+                        <th>Credit Payments</th>
+                        <th>Journal</th>
+                        <th>Journal Balance</th>
+                        <th>
+                            <t t-if="env.pos.config_debt_type == 'debt'">Total Debt</t>
+                            <t t-else="">Total Balance</t>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id='debt_history_contents'>
+                    <t
+                        t-foreach="state.selectedClientDebtHistory"
+                        t-as="line"
+                        t-key="line.id"
+                    >
+                        <DebtHistoryLine line="line" />
+                    </t>
+                    <tr t-if="state.isLoadingDebtHistory">
+                        <td colspan="7" class="pos_text_center">
+                            <div id="loading_history" class="o_spinner">
+                                <i class="fa fa-spinner fa-spin fa-4" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr
+                        t-elif="state.selectedClientDebtHistory.length !== state.selectedClient.records_count"
+                    >
+                        <td colspan="7" class="pos_text_center">
+                            <span
+                                id="load_more"
+                                class="button highlight"
+                                t-on-click="clickLoadMoreDebtHistory()"
+                            >
+                                Load More
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+    </t>
+    <t
+        t-extend="ClientLine"
+        t-inherit="point_of_sale.ClientLine"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//tr" position="inside">
+            <td
+                t-attf-class="client-debt {{((env.pos.config.debt_type == 'debt' and props.partner.debt lt 0) or (env.pos.config.debt_type == 'credit' and props.partner.debt lt 0)) ? 'negative' : ''}} {{((env.pos.config.debt_type == 'debt' and props.partner.debt gt 0) or (env.pos.config.debt_type == 'credit' and props.partner.debt gt 0)) ? 'positive' : ''}}"
+            >
+                <t
+                    t-if="env.pos.config.debt_type == 'debt'"
+                    t-esc='env.pos.format_currency(props.partner.debt)'
+                />
+                <t
+                    t-if="env.pos.config.debt_type == 'credit'"
+                    t-esc='env.pos.format_currency(-props.partner.debt)'
+                />
+            </td>
+        </xpath>
+    </t>
+    <t t-name="DebtHistoryLine" owl="1">
+        <t t-set="line" t-value="props.line" />
+        <tr>
+            <td>
+                <t t-esc="line ? line.date : ''" />
+            </td>
+            <td>
+                <t t-esc="line ? line.config_id[1] : ''" />
+            </td>
+            <td>
+                <t t-esc="line ? line.product_list : ''" />
+            </td>
+            <td class="pos_text_center">
+                <t
+                    t-esc="line and line.balance ? env.pos.format_currency(line.balance) : ''"
+                />
+            </td>
+            <td>
+                <t t-esc="line ? line.journal_code : ''" />
+            </td>
+            <td class="pos_text_center">
+                <span
+                    t-attf-class="client-credit {{(line and line.total_journal lt 0) ? 'negative' : ''}} {{(line and line.total_journal gt 0) ? 'positive' : ''}}"
+                >
+                    <t
+                        t-esc="line and line.total_journal ? env.pos.format_currency(line.total_journal) : ''"
+                    />
+                </span>
+            </td>
+            <td class="pos_text_center">
+                <span
+                    t-attf-class="client-{{env.pos.config.debt_type}} {{(line and line.total_balance lt 0) ? 'negative' : ''}} {{(line and line.total_balance gt 0) ? 'positive' : ''}}"
+                >
+                    <t
+                        t-esc="line and line.total_balance ? env.pos.format_currency(line.total_balance) : ''"
+                    />
+                </span>
+            </td>
+        </tr>
+    </t>
+    <t t-name="ValidationButton" owl="1">
+        <div class="bottom-left-content">
+            <div t-attf-class="button autopay {{props.status}}">
+                <div class="button-content">
+                    <span class="title" t-esc="props.title" />
+                    <span>
+
+                    </span>
+                    <!-- add space between title and arrow -->
+                    <span>
+                        <i class='fa fa-angle-double-right' />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-name="ThumbUpPopupWidget" owl="1">
+        <div class="modal-dialog thumb-up-modal">
+            <div class="popup thumb-up-popup">
+                <div class="container thumb-up-1">
+                    <div class="icon-wrapper">
+                        <span class="icon">
+                            <i class="fa fa-thumbs-up" />
+                        </span>
+                        <div class="border">
+                            <span />
+                        </div>
+                        <div class="satellite">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                        </div>
+                    </div>
+                </div>
+                <div class="container thumb-up-2">
+                    <div class="icon-wrapper-2">
+                        <span class="icon">
+                            <i class="fa fa-thumbs-up" />
+                        </span>
+                        <div class="border">
+                            <span />
+                        </div>
+                        <div class="spark">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
