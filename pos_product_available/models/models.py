@@ -13,3 +13,11 @@ class PosConfig(models.Model):
     default_location_src_id = fields.Many2one(
         "stock.location", related="picking_type_id.default_location_src_id"
     )
+    product_quantity_type = fields.Selection(
+        [
+            ("qty_available", "Quantity On Hand"),
+            ("virtual_available", "Forecast Quantity"),
+        ],
+        required=True,
+        default="qty_available"
+    )
