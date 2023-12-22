@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <!-- The menu is not visible until account_invoicing is installed. Force to activate it even when only POS is installed-->
+    <record id="account.menu_finance" model="ir.ui.menu">
+        <field name="active" eval="True" />
+    </record>
+</odoo>

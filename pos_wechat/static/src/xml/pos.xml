@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     Copyright 2021 Eugene Molotov <https://github.com/em230418>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <t
+        t-name="PaymentMethodButton"
+        t-inherit="point_of_sale.PaymentMethodButton"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//t[@t-esc='props.paymentMethod.name']" position="before">
+            <t t-if="props.paymentMethod.wechat_method == 'native'">
+                <i class="fa fa-qrcode" />
+            </t>
+        </xpath>
+    </t>
+</odoo>

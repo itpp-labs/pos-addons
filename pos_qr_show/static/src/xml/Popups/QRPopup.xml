@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="QRPopup" owl="1">
+        <div class="modal-dialog">
+            <div class="popup" style="height: 550px">
+                <p class="title" t-esc="props.title" />
+                <div class="qr-container" />
+                <div class="footer">
+                    <div
+                        class="button cancel"
+                        t-on-click="cancel"
+                        style="width: 100%; height: 100%; float: none; line-height: 50px"
+                    >
+                        <t t-esc="props.cancelText" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

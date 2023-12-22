@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <!-- POS -->
+    <template id="pos_assets" name="POS assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_qr_show/static/src/js/pos_qr_show.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_qr_show/static/src/js/Popups/QRPopup.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_qr_show/static/src/js/Screens/PaymentScreen/PaymentScreen.js"
+            />
+            <script
+                type="text/javascript"
+                src="/pos_qr_show/static/lib/jquery-qrcode.js"
+            />
+        </xpath>
+    </template>
+</odoo>
