@@ -12,3 +12,8 @@ class PosConfig(models.Model):
         help="Switch to Mobile view automatically depending on device",
         default=True,
     )
+    force_mobile = fields.Boolean(
+        "Force Mobile View",
+        help="Force switch to Mobile view",
+        default=False,
+    )
