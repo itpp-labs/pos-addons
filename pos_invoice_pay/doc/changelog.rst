@@ -1,3 +1,8 @@
+`1.0.7`
+-------
+
+- **Improvement:** Added possibility to derive "Invoice Payment" and "Invoice Receipt" screens
+
 `1.0.6`
 -------
 
