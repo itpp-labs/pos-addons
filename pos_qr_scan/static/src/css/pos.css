@@ -1,0 +1,51 @@
+.video_preview {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+.transparent_sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 250px;
+}
+.transparent_sidebar .title {
+    background: none !important;
+}
+.popup.popup-qr_scan {
+    height: 100% !important;
+    width: 100% !important;
+    overflow-y: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+.qr-content {
+    width: 100% !important;
+    overflow: hidden;
+    background: none !important;
+}
+
+.popup.popup-qr_scan .note {
+    position: absolute;
+    color: grey;
+    width: 100%;
+    top: 15px;
+}
+
+.sidebar {
+    background: #eceff1;
+    min-width: 250px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.fa-qrcode:before {
+    content: "\f029";
+}
