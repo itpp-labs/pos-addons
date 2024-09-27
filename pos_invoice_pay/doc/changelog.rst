@@ -1,3 +1,8 @@
+`1.1.0`
+-------
+
+**Improvement:** Store POS session in payment record
+
 `1.0.6`
 -------
 

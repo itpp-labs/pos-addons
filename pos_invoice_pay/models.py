@@ -1,5 +1,6 @@
 # Copyright 2018 Artyom Losev
 # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+# Copyright 2021 Eugene Molotov <https://github.com/em230418>
 # License MIT (https://opensource.org/licenses/MIT).
 
 from odoo import api, fields, models
@@ -49,7 +50,7 @@ class PosOrder(models.Model):
                 "partner_type": "customer",
                 "payment_difference_handling": payment_difference_handling,
                 "writeoff_account_id": writeoff_acc_id,
-                "paid_by_pos": True,
+                "pos_session_id": invoice["data"]["pos_session_id"],
                 "cashier": cashier,
             }
             payment = self.env["account.payment"].create(vals)
@@ -66,8 +67,14 @@ class PosOrder(models.Model):
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    paid_by_pos = fields.Boolean(default=False)
+    paid_by_pos = fields.Boolean(compute="_compute_paid_by_pos", store=True)
+    pos_session_id = fields.Many2one("pos.session")
     cashier = fields.Many2one("res.users")
+
+    @api.depends("pos_session_id")
+    def _compute_paid_by_pos(self):
+        for record in self:
+            record.paid_by_pos = bool(record.pos_session_id.id)
 
 
 class AccountInvoice(models.Model):
@@ -171,3 +178,9 @@ class PosConfig(models.Model):
         help="Ask for a cashier when fetch orders",
         defaul=True,
     )
+
+
+class PosSession(models.Model):
+    _inherit = "pos.session"
+
+    invoice_payment_ids = fields.One2many("account.payment", "pos_session_id")
