@@ -34,7 +34,7 @@ jobs:
         run:
           echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
           $GITHUB_ENV
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
@@ -83,7 +83,7 @@ jobs:
         run:
           echo "PY=$(python --version --version | sha256sum | cut -d' ' -f1)" >>
           $GITHUB_ENV
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.PY }}|${{ hashFiles('REPO/.pre-commit-config.yaml') }}
@@ -166,7 +166,7 @@ jobs:
           echo "${{ env.PR_MODULES_DEPS }}" > new-deps/modules.txt
           echo "ARTIFACT=yes" >> $GITHUB_ENV
       - name: Save DINAR with dependencies
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: new-deps
           path: new-deps/
