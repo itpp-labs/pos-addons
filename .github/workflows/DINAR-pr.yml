@@ -122,9 +122,9 @@ jobs:
           pip install plumbum PyGithub pyyaml
       - name: Download Docker images with preinstalled modules
         run: |
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
       - name: Analyze PR
         run: |
           # Get list of installed modules
@@ -145,8 +145,8 @@ jobs:
           # Install new dependencies without tests
           export MODULES="${{ env.PR_MODULES_DEPS }}"
           export LOAD_MODULES="${{ env.PR_MODULES_LOAD }}"
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
       - name: Install Additional Dependencies (Packages)
         if: env.PR_DEPS != ''
         run: |
@@ -187,8 +187,8 @@ jobs:
           export MODULES="${{ env.PR_MODULES }}"
           export LOAD_MODULES="${{ env.PR_MODULES_LOAD }}"
           export ODOO_EXTRA_ARG=--test-enable
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
 
   tests-all:
     name: Integration Tests
@@ -248,9 +248,9 @@ jobs:
           bash DINAR/workflow-files/how-to-run-locally.sh ${{ secrets.GITHUB_TOKEN }}
       - name: Download base images
         run: |
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml pull
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --no-start
       - name: Apply new-deps artifact
         if: env.ARTIFACT != 'empty'
         run: |
@@ -260,5 +260,5 @@ jobs:
           export MODULES="${{ env.ALL_MODULES }}"
           export LOAD_MODULES="${{ env.ALL_MODULES_LOAD }}"
           export ODOO_EXTRA_ARG=--test-enable
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
-          docker-compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml config
+          docker compose -p DINAR -f DINAR/workflow-files/docker-compose-DINAR-pr.yml up --abort-on-container-exit
