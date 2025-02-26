@@ -58,7 +58,7 @@ jobs:
           path: REPO
           fetch-depth: 0
           ref: ${{ env.PORT_TO_BRANCH }}
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.PY }}|${{ hashFiles('REPO/.pre-commit-config.yaml') }}
