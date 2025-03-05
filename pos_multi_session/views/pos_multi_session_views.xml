@@ -33,6 +33,77 @@
             />
         </xpath>
     </template>
+
+    <record id="view_pos_multi_session_sync_order_form" model="ir.ui.view">
+        <field name="name">pos_multi_session_sync.order.form</field>
+        <field name="model">pos_multi_session_sync.order</field>
+        <field name="arch" type="xml">
+            <form string="POS Multi-Session Sync Orders" create="false" edit="false" delete="false">
+                <header>
+                    <button name="action_pos_multi_session_restore_order" string="Restore" type="object" states="deleted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,paid,deleted" />
+                </header>
+                <sheet>
+                    <group col="4" colspan="4">
+                        <field name="order_uid"/>
+                        <field name="write_date"/>
+                        <field name="revision_ID"/>
+                        <field name="multi_session_ID"/>
+                        <field name="pos_session_ID"/>
+                        <field name="run_ID"/>
+                    </group>
+                    <group>
+                        <field name="order"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_multi_session_sync_order_tree" model="ir.ui.view">
+        <field name="name">pos_multi_session_sync.order.tree</field>
+        <field name="model">pos_multi_session_sync.order</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="order_uid"/>
+                <field name="write_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pos_multi_session_sync_order_filter" model="ir.ui.view">
+        <field name="name">pos_multi_session_sync.order.filter</field>
+        <field name="model">pos_multi_session_sync.order</field>
+        <field name="arch" type="xml">
+            <search string="Search POS Multi-Session Order">
+                <field name="state"/>
+                <filter name="paid" string="Paid" domain="[('state','=','paid')]"/>
+                <filter name="new" string="New" domain="[('state','=','draft')]"/>
+                <filter name="deleted" string="Deleted" domain="[('state','=','deleted')]"/>
+                <filter name="unpaid" string="Unpaid" domain="[('state','=','unpaid')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pos_multi_session_sync_order" model="ir.actions.act_window">
+        <field name="name">Multi Session Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos_multi_session_sync.order</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_pos_multi_session_sync_order_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_deleted': 1}
+        </field>
+    </record>
+
+    <menuitem id="menu_multi_session_orders"
+              parent="point_of_sale.menu_point_of_sale"
+              action="action_pos_multi_session_sync_order"
+              sequence="99"
+              groups="base.group_no_one"/>
+
+
     <record model="ir.ui.view" id="view_pos_config_form">
         <field name="name">pos.config.form.view.inherit</field>
         <field name="model">pos.config</field>
