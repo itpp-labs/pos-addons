@@ -58,6 +58,8 @@ var MobileCheck = function MobileCheck() {
     var force_mobile = getUrlParameter('m');
     if (force_mobile === "1") {
         odoo.is_mobile = true;
+    } else if (odoo.session_info.force_mobile) {
+        odoo.is_mobile = true;
     } else if (force_mobile === "0") {
         odoo.is_mobile = false;
     } else if (odoo.session_info.auto_mobile && MobileCheck()) {
