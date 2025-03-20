@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <record id="refund_form" model="ir.ui.view">
+        <field name="name">wechat.refund.form</field>
+        <field name="model">wechat.refund</field>
+        <field name="arch" type="xml">
+            <form string="Wechat Refund">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,done"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="refund_ref" />
+                        <field name="refund_fee" />
+                        <field name="order_id" />
+                        <field name="micropay_id" />
+                        <field name="debug" />
+                    </group>
+                    <notebook>
+                        <page string="Raw Response">
+                            <field name="result_raw" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="refund_list" model="ir.ui.view">
+        <field name="name">wechat.refund.list</field>
+        <field name="model">wechat.refund</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="refund_ref" />
+                <field name="refund_fee" />
+            </tree>
+        </field>
+    </record>
+    <record id="refund_search" model="ir.ui.view">
+        <field name="name">wechat.refund.search</field>
+        <field name="model">wechat.refund</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="refund_ref" />
+                <filter string="Sandbox" name="sandbox" domain="[('debug','=',True)]" />
+                <filter
+                    string="Non-Sandbox"
+                    name="nonsandbox"
+                    domain="[('debug','=',False)]"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="action_wechat_refund" model="ir.actions.act_window">
+        <field name="name">Wechat Refund</field>
+        <field name="res_model">wechat.refund</field>
+        <field name='view_mode'>tree,form</field>
+    </record>
+    <menuitem
+        action='action_wechat_refund'
+        id='wechat_refund_menu'
+        parent='root_wechat_menu'
+        sequence='100'
+    />
+</odoo>
