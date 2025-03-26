@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!--# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    # Copyright 2018 Kolushov Alexandr <https://it-projects.info/team/KolushovAlexandr>
+    # Copyright 2021 Denis Mudarisov <https://github.com/trojikman>
+    # License MIT (https://opensource.org/licenses/MIT).
+     -->
+<odoo>
+    <!-- debt payments -->
+    <record id="rule_new_payment" model="base.automation">
+        <field name="name">Notify POS about Debt updates (on new payment).</field>
+        <field name="model_id" ref="account.model_account_bank_statement_line" />
+        <field name="trigger">on_create</field>
+        <field name="filter_domain">
+            [('statement_id.journal_id.debt', '=', True)]
+        </field>
+        <field name="active" eval="True" />
+        <field name="state">code</field>
+        <field name="code">action = env['pos.config'].notify_debt_updates()</field>
+    </record>
+    <!-- Credit products: pos.order -->
+    <record id="rule_credit_products" model="base.automation">
+        <field name="name">
+            Notify POS about Debt updates (on selling Credit products).
+        </field>
+        <field name="model_id" ref="point_of_sale.model_pos_order" />
+        <field name="trigger">on_create_or_write</field>
+        <field name="filter_domain">[('state', 'in', ['paid', 'done'])]</field>
+        <field name="active" eval="True" />
+        <field name="state">code</field>
+        <field name="code">env['pos.config'].notify_debt_updates()</field>
+    </record>
+    <!-- Credit products: account.invoice -->
+    <record id="rule_credit_products_invoice" model="base.automation">
+        <field name="name">
+            Notify POS about Debt updates (on selling Credit products via invoices).
+        </field>
+        <field name="model_id" ref="account.model_account_move" />
+        <field name="trigger">on_create_or_write</field>
+        <field name="active" eval="True" />
+        <field name="state">code</field>
+        <field name="filter_domain">[('invoice_payment_state', 'in', ['paid'])]</field>
+        <field name="code">env['pos.config'].notify_debt_updates()</field>
+    </record>
+    <!-- manual credit updates -->
+    <record id="rule_pos_credit_updates" model="base.automation">
+        <field name="name">
+            Notify POS about Debt updates (on addins Manual Credit Updates).
+        </field>
+        <field name="model_id" ref="pos_debt_notebook.model_pos_credit_update" />
+        <field name="trigger">on_create_or_write</field>
+        <field name="active" eval="True" />
+        <field name="state">code</field>
+        <field name="code">env['pos.config'].notify_debt_updates()</field>
+    </record>
+</odoo>

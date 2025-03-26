@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--# Copyright 2017 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+    # License MIT (https://opensource.org/licenses/MIT).-->
+<odoo>
+    <template
+        id="assets_backend"
+        name="pos_debt_notebook_sync assets"
+        inherit_id="point_of_sale.assets"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook_sync/static/src/js/sync.js"
+            />
+        </xpath>
+    </template>
+    <template id="demo_assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/pos_debt_notebook_sync/static/src/js/tour.js"
+            />
+        </xpath>
+    </template>
+</odoo>
