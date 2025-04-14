@@ -1,3 +1,8 @@
+`2.0.2`
+-------
+
+- **FIX:** Error appeared during work when two requests coming to posbox almost simultaneously
+
 `2.0.1`
 -------
 
