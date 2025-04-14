@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2018 Ivan Yelizariev <https://it-projects.info/team/yelizariev>
+     License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <t t-extend="PaymentScreen-Paymentmethods">
+        <t t-jquery=".paymentmethod" t-operation="prepend">
+            <t t-if="cashregister.journal.wechat == 'native'">
+                <i class="fa fa-qrcode" />
+            </t>
+        </t>
+    </t>
+</odoo>
