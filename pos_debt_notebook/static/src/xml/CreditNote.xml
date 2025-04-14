@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="CreditNote" owl="1">
+        <t t-if="client">
+            <t t-if="client.debt == 0">
+                <span />
+            </t>
+            <t t-else="">
+                <span
+                    t-attf-class="client-debt {{(client.debt lt 0) ? 'negative' : ''}} {{(client.debt gt 0) ? 'positive' : ''}}"
+                >
+                    <t
+                        t-esc="(env.pos.config.debt_type == 'debt' ? ' [Debt: ' + env.pos.format_currency(client.debt) + ']': '')"
+                    />
+                </span>
+                <span
+                    t-attf-class="client-credit {{(client.debt lt 0) ? 'positive' : ''}} {{(client.debt gt 0) ? 'negative' : ''}}"
+                >
+                    <t
+                        t-esc="(env.pos.config.debt_type == 'credit' ? ' [Credit: ' + env.pos.format_currency(-client.debt) + ']': '')"
+                    />
+                </span>
+            </t>
+        </t>
+        <t t-else="">
+            <span />
+        </t>
+    </t>
+</templates>

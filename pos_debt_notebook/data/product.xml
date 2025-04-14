@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<!--Copyright 2016 Stanislav Krotov <https://it-projects.info/team/ufaks>
+    License MIT (https://opensource.org/licenses/MIT). -->
+<odoo>
+    <data noupdate="1">
+        <record id="product_pay_debt" model="product.product">
+            <field name="name">Pay Debt</field>
+            <field name="default_code">POS-DEBT</field>
+            <field name="sale_ok" eval="True" />
+            <field name="available_in_pos" eval="True" />
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit" />
+            <field name="taxes_id" eval="[(5,)]" />
+            <field name="supplier_taxes_id" eval="[(5,)]" />
+            <field name="description">
+                This is a dummy product used when a customer pays his debt without
+                ordering new products. This is a workaround to the fact that Odoo needs
+                to have at least one product on the order to validate the transaction.
+            </field>
+        </record>
+    </data>
+</odoo>
