@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="QrButton">
+        <div class='control-button'>
+            <i class='fa fa-qrcode' />
+            QR Scan
+        </div>
+    </t>
+    <t t-name="QrScanPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-qr_scan">
+                <div id="preview-container">
+                    <video id="preview" class="video_preview" autoplay="true" />
+                </div>
+                <div class="transparent_sidebar">
+                    <div class="title">
+                        <p>QR Scanning</p>
+                    </div>
+                    <div class="body">
+                        <p>Cameras:</p>
+                        <p />
+                    </div>
+                </div>
+                <div class="note">
+                    <p>Tap on the video to quit</p>
+                </div>
+            </div>
+            <canvas
+                id="qr-canvas"
+                width="800"
+                height="600"
+                style="width: 800px; height: 600px; display:none"
+            />
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!-- POS -->
+        <template
+            id="assets_backend"
+            name="pos_qr_scan assets"
+            inherit_id="point_of_sale.assets"
+        >
+            <xpath expr="." position="inside">
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/src/js/qr_scan.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/grid.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/version.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/detector.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/formatinf.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/errorlevel.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/bitmat.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/datablock.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/bmparser.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/datamask.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/rsdecoder.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/gf256poly.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/gf256.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/decoder.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/qrcode.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/findpat.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/alignpat.js"
+                />
+                <script
+                    type="text/javascript"
+                    src="/pos_qr_scan/static/lib/jsqrcode/databr.js"
+                />
+            </xpath>
+            <xpath expr="//link[@id='pos-stylesheet']" position="after">
+                <link rel="stylesheet" href="/pos_qr_scan/static/src/css/pos.css" />
+            </xpath>
+        </template>
+    </data>
+</odoo>
